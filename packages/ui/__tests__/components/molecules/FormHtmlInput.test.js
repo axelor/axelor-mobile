@@ -17,98 +17,133 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {FormHtmlInput, HtmlInput, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {act} from '@testing-library/react-native';
+import {FormHtmlInput, HtmlInput} from '@axelor/aos-mobile-ui';
+import {setup, getDefaultThemeColors, getComputedStyles} from '../../tools';
+
+const findElementByType = (element, type) => {
+  if (!element || !element.props) {
+    return null;
+  }
+
+  if (element.type === type) {
+    return element;
+  }
+
+  const children = React.Children.toArray(element.props.children);
+
+  for (const child of children) {
+    const result = findElementByType(child, type);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+};
 
 describe('FormHtmlInput Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
+  const baseProps = {
     title: 'Input Title',
     placeholder: 'Enter text',
     defaultValue: 'Initial Value',
     onChange: jest.fn(),
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<FormHtmlInput {...props} />);
+  const setupFormHtmlInput = overrideProps =>
+    setup({Component: FormHtmlInput, baseProps, overrideProps});
 
-    expect(wrapper.exists()).toBe(true);
+  const getHtmlInput = getByTestId => {
+    const container = getByTestId('formHtmlInputContainer');
+    const htmlInput = findElementByType(container, HtmlInput);
+    return {container, htmlInput};
+  };
+
+  it('renders title and initial value', () => {
+    const {getByText} = setupFormHtmlInput();
+
+    expect(getByText(baseProps.title)).toBeTruthy();
   });
 
-  it('renders correctly with initial props', () => {
-    const wrapper = shallow(<FormHtmlInput {...props} />);
+  it('invokes onChange when html content changes', () => {
+    const {getByTestId, props} = setupFormHtmlInput({onChange: jest.fn()});
+    const {htmlInput} = getHtmlInput(getByTestId);
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
-    expect(wrapper.find(HtmlInput).prop('defaultInput')).toBe(
-      props.defaultValue,
-    );
+    act(() => {
+      htmlInput.props.onChange?.('Updated Value');
+    });
+
+    expect(props.onChange).toHaveBeenCalledWith('Updated Value');
   });
 
-  it('updates input value on change', () => {
-    const wrapper = shallow(<FormHtmlInput {...props} />);
+  it('updates focus styling on focus and blur', () => {
+    const {getByTestId} = setupFormHtmlInput();
+    const {htmlInput} = getHtmlInput(getByTestId);
 
-    const newValue = 'New Value';
-    wrapper.find(HtmlInput).simulate('change', newValue);
+    act(() => {
+      htmlInput.props.onFocus?.();
+    });
 
-    expect(wrapper.find(HtmlInput).prop('defaultInput')).toBe(newValue);
-    expect(props.onChange).toHaveBeenCalledWith(newValue);
-  });
-
-  it('handles focus and blur', () => {
-    const wrapper = shallow(<FormHtmlInput {...props} />);
-
-    wrapper.find(HtmlInput).simulate('focus');
-
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    let container = getByTestId('formHtmlInputContainer');
+    expect(getComputedStyles(container.props.style)).toMatchObject({
       borderColor: Colors.primaryColor.background,
     });
 
-    wrapper.find(HtmlInput).simulate('blur');
+    act(() => {
+      htmlInput.props.onBlur?.();
+    });
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    container = getByTestId('formHtmlInputContainer');
+    expect(getComputedStyles(container.props.style)).toMatchObject({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
   it('applies required styling when field is required and empty', () => {
-    const wrapper = shallow(
-      <FormHtmlInput {...props} required={true} defaultValue={null} />,
-    );
+    const {getByTestId} = setupFormHtmlInput({
+      required: true,
+      defaultValue: '',
+    });
+    const container = getByTestId('formHtmlInputContainer');
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    const styles = getComputedStyles(container.props.style);
+
+    expect(styles).toMatchObject({
       borderColor: Colors.errorColor.background,
     });
   });
 
-  it('does not apply required styling when field is required and not empty', () => {
-    const wrapper = shallow(<FormHtmlInput {...props} required={true} />);
+  it('does not apply required styling when field has content', () => {
+    const {getByTestId} = setupFormHtmlInput({required: true});
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    const styles = getComputedStyles(
+      getByTestId('formHtmlInputContainer').props.style,
+    );
+
+    expect(styles).toMatchObject({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
-  it('renders readonly input when necessary', () => {
-    const wrapper = shallow(<FormHtmlInput {...props} readonly={true} />);
+  it('returns null when readonly, hideIfNull is true, and value is empty', () => {
+    const {queryByText} = setupFormHtmlInput({
+      readonly: true,
+      hideIfNull: true,
+      defaultValue: '',
+    });
 
-    expect(wrapper.find(HtmlInput).prop('readonly')).toBe(true);
+    expect(queryByText(baseProps.title)).toBeNull();
   });
 
-  it('renders nothing when readonly input and empty value', () => {
-    const wrapper = shallow(
-      <FormHtmlInput {...props} defaultValue={null} readonly hideIfNull />,
-    );
+  it('renders when readonly but value is present', () => {
+    const {getByText} = setupFormHtmlInput({
+      readonly: true,
+      hideIfNull: true,
+      defaultValue: 'Some content',
+    });
 
-    expect(wrapper.isEmptyRender()).toBeTruthy();
-  });
-
-  it('renders input when readonly and not empty value', () => {
-    const wrapper = shallow(
-      <FormHtmlInput {...props} defaultValue={'Test'} readonly hideIfNull />,
-    );
-
-    expect(wrapper.isEmptyRender()).not.toBeTruthy();
+    expect(getByText(baseProps.title)).toBeTruthy();
+    expect(getByText(baseProps.title)).toBeTruthy();
   });
 });

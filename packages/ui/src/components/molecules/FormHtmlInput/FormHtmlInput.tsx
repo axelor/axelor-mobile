@@ -92,6 +92,7 @@ const FormHtmlInput = ({
     <View style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <View
+        testID="formHtmlInputContainer"
         style={[
           commonStyles.filter,
           styles.content,
