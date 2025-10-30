@@ -57,6 +57,7 @@ const FloatingTools = ({
   toggleReadonly,
   actions,
   onCreate,
+  onReset,
   onPressWrapper,
   defaultOpenValue = false,
 }: {
@@ -67,6 +68,7 @@ const FloatingTools = ({
   toggleReadonly: () => void;
   actions: FormatedAction[];
   onCreate?: () => void;
+  onReset?: () => void;
   onPressWrapper: (onPress: () => void, needValidation: boolean) => void;
   defaultOpenValue?: boolean;
 }) => {
@@ -74,9 +76,18 @@ const FloatingTools = ({
   const Colors = useThemeColor();
 
   const createAction = useMemo(() => findAction(actions, 'create'), [actions]);
-  const resetAction = useMemo(() => findAction(actions, 'reset'), [actions]);
   const updateAction = useMemo(() => findAction(actions, 'update'), [actions]);
   const deleteAction = useMemo(() => findAction(actions, 'delete'), [actions]);
+  const resetAction = useMemo(
+    () =>
+      findAction(actions, 'reset') ?? {
+        key: 'default-reset',
+        type: 'reset' as FormActionType,
+        onPress: onReset,
+        isDisabled: false,
+      },
+    [actions, onReset],
+  );
 
   const [alertConfig, setAlertConfig] = useState(DEFAULT_ALERT_STATE);
 
@@ -128,7 +139,7 @@ const FloatingTools = ({
                   })
                 : getOnPress(resetAction, onPressWrapper),
             color: Colors.cautionColor,
-            closeOnPress: true,
+            closeOnPress: false,
           },
           {
             key: 'formAction_delete',
