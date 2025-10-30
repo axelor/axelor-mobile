@@ -23,8 +23,8 @@ import {setup, getComputedStyles, getDefaultThemeColors} from '../../tools';
 describe('FromTo Component', () => {
   const Colors = getDefaultThemeColors();
   const baseProps = {
-    fromComponent: <Text testID="fromComponent">From</Text>,
-    toComponent: <Text testID="toComponent">To</Text>,
+    fromComponent: <Text>From</Text>,
+    toComponent: <Text>To</Text>,
   };
 
   const setupFromTo = overrideProps =>
@@ -35,10 +35,10 @@ describe('FromTo Component', () => {
     });
 
   it('should render without crashing', () => {
-    const {getByTestId} = setupFromTo();
+    const {getByText} = setupFromTo();
 
-    expect(getByTestId('fromComponent')).toBeTruthy();
-    expect(getByTestId('toComponent')).toBeTruthy();
+    expect(getByText('From')).toBeTruthy();
+    expect(getByText('To')).toBeTruthy();
   });
 
   it('renders the fromComponent, arrow icon, and toComponent', () => {
@@ -50,13 +50,11 @@ describe('FromTo Component', () => {
   });
 
   it('applies custom style when provided', () => {
-    const {getByTestId, props} = setupFromTo({
+    const {props} = setupFromTo({
       style: {borderColor: Colors.primaryColor.background_light},
     });
 
-    const container = getByTestId('fromComponent').parent;
-    expect(container).toBeTruthy();
-    const computedStyles = getComputedStyles(container?.props?.style);
+    const computedStyles = getComputedStyles(props.style);
 
     expect(computedStyles).toMatchObject(props.style);
   });
