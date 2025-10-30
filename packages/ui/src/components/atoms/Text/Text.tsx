@@ -29,7 +29,6 @@ export interface TextProps {
   textColor?: string;
   fontSize?: number;
   writingType?: 'title' | 'subtitle' | 'important' | 'details' | undefined;
-  testID?: string;
 }
 
 const Text = ({
@@ -41,7 +40,6 @@ const Text = ({
   textColor,
   fontSize,
   writingType,
-  testID,
 }: TextProps) => {
   const Colors = useThemeColor();
   const writingStyle = useWritingType(writingType);
@@ -56,7 +54,6 @@ const Text = ({
 
   return (
     <ReactNativeText
-      testID={testID}
       style={[defaultStyle, style]}
       numberOfLines={numberOfLines}
       adjustsFontSizeToFit={adjustsFontSizeToFit}

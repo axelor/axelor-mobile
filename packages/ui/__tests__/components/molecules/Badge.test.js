@@ -17,21 +17,18 @@
  */
 
 import {Badge} from '@axelor/aos-mobile-ui';
-import {getComputedStyles, getDefaultThemeColors, setup} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('Badge Component', () => {
   const Colors = getDefaultThemeColors();
-  const setupBadge = overrideProps =>
-    setup({
-      Component: Badge,
-      baseProps: {
-        title: 'Badge Title',
-      },
-      overrideProps,
-    });
 
-  it('should render without crashing', () => {
-    expect(() => setupBadge()).not.toThrow();
+  const setupBadge = overrideProps =>
+    setup({Component: Badge, baseProps: {title: 'Badge Title'}, overrideProps});
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupBadge();
+
+    expect(getByTestId('bagdeContainer')).toBeTruthy();
   });
 
   it('should render the correct title', () => {
@@ -41,43 +38,35 @@ describe('Badge Component', () => {
   });
 
   it('should apply custom styles', () => {
-    const customStyle = {backgroundColor: 'blue'};
-    const customTxtStyle = {color: 'white'};
-    const {getByTestId} = setupBadge({
-      style: customStyle,
-      txtStyle: customTxtStyle,
+    const {getByTestId, getByText, props} = setupBadge({
+      style: {backgroundColor: 'blue'},
+      txtStyle: {color: 'white'},
     });
-    const containerStyles = getComputedStyles(
-      getByTestId('badgeContainer').props.style,
-    );
-    const textStyles = getComputedStyles(getByTestId('badgeTitle').props.style);
 
-    expect(containerStyles).toMatchObject(customStyle);
-    expect(textStyles).toMatchObject(customTxtStyle);
+    expect(getByTestId('bagdeContainer')).toHaveStyle(props.style);
+    expect(getByText(props.title)).toHaveStyle(props.txtStyle);
   });
 
   it('should apply default color if color prop is not provided', () => {
     const {getByTestId} = setupBadge();
-    const containerStyles = getComputedStyles(
-      getByTestId('badgeContainer').props.style,
-    );
 
-    expect(containerStyles).toMatchObject({
+    expect(getByTestId('bagdeContainer')).toHaveStyle({
       backgroundColor: Colors.primaryColor.background_light,
       borderColor: Colors.primaryColor.background,
     });
   });
 
   it('should apply custom color if color prop is provided', () => {
-    const color = Colors.infoColor;
-    const {getByTestId} = setupBadge({color});
-    const containerStyles = getComputedStyles(
-      getByTestId('badgeContainer').props.style,
-    );
+    const {getByTestId, getByText, props} = setupBadge({
+      color: Colors.infoColor,
+    });
 
-    expect(containerStyles).toMatchObject({
-      backgroundColor: color.background_light,
-      borderColor: color.background,
+    expect(getByTestId('bagdeContainer')).toHaveStyle({
+      backgroundColor: props.color.background_light,
+      borderColor: props.color.background,
+    });
+    expect(getByText(props.title)).toHaveStyle({
+      color: props.color.foreground,
     });
   });
 
@@ -88,13 +77,10 @@ describe('Badge Component', () => {
   });
 
   it('should apply custom number of lines if numberOfLines prop is provided', () => {
-    const customNumberOfLines = 2;
-    const {getByText, props} = setupBadge({
-      numberOfLines: customNumberOfLines,
-    });
+    const {getByText, props} = setupBadge({numberOfLines: 2});
 
     expect(getByText(props.title).props.numberOfLines).toBe(
-      customNumberOfLines,
+      props.numberOfLines,
     );
   });
 });
