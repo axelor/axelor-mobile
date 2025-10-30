@@ -17,82 +17,132 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {FormIncrementInput, Increment, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {act} from '@testing-library/react-native';
+import {FormIncrementInput, Increment} from '@axelor/aos-mobile-ui';
+import {setup, getDefaultThemeColors, getComputedStyles} from '../../tools';
+
+const findElementByType = (element, type) => {
+  if (!element || !element.props) {
+    return null;
+  }
+
+  if (element.type === type) {
+    return element;
+  }
+
+  const children = React.Children.toArray(element.props.children);
+
+  for (const child of children) {
+    const result = findElementByType(child, type);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+};
 
 describe('FormIncrementInput Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
+  const baseProps = {
     title: 'Input Title',
     defaultValue: 10,
     onChange: jest.fn(),
     stepSize: 1,
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<FormIncrementInput {...props} />);
+  const setupFormIncrementInput = overrideProps =>
+    setup({Component: FormIncrementInput, baseProps, overrideProps});
 
-    expect(wrapper.exists()).toBe(true);
+  const getIncrement = getByTestId => {
+    const container = getByTestId('formIncrementContainer');
+    const increment = findElementByType(container, Increment);
+
+    return {container, increment};
+  };
+
+  it('renders without crashing', () => {
+    const {getByTestId, getByText} = setupFormIncrementInput();
+
+    expect(getByTestId('formIncrementContainer')).toBeTruthy();
+    expect(getByText(baseProps.title)).toBeTruthy();
   });
 
-  it('renders correctly with initial props', () => {
-    const wrapper = shallow(<FormIncrementInput {...props} />);
+  it('renders title and passes default value', () => {
+    const {getByText, getByTestId} = setupFormIncrementInput();
+    const {increment} = getIncrement(getByTestId);
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
-    expect(wrapper.find(Increment).prop('value')).toBe(props.defaultValue);
+    expect(getByText(baseProps.title)).toBeTruthy();
+    expect(increment.props.value).toBe(baseProps.defaultValue);
   });
 
-  it('updates input value on change', () => {
-    const {defaultValue, stepSize} = props;
+  it('notifies value changes', () => {
+    const {getByTestId, props} = setupFormIncrementInput({
+      onChange: jest.fn(),
+    });
+    const {increment} = getIncrement(getByTestId);
 
-    const wrapper = shallow(<FormIncrementInput {...props} />);
+    act(() => {
+      increment.props.onValueChange(
+        baseProps.defaultValue + baseProps.stepSize,
+      );
+    });
 
-    const newValue = defaultValue + stepSize;
-
-    wrapper.find(Increment).simulate('valueChange', newValue);
-
-    expect(props.onChange).toHaveBeenCalledWith(newValue);
+    expect(props.onChange).toHaveBeenCalledWith(
+      baseProps.defaultValue + baseProps.stepSize,
+    );
   });
 
-  it('handles focus and blur', () => {
-    const wrapper = shallow(<FormIncrementInput {...props} />);
+  it('updates styles on focus and blur', () => {
+    const {getByTestId} = setupFormIncrementInput();
+    const {increment} = getIncrement(getByTestId);
 
-    wrapper.find(Increment).simulate('focus');
+    act(() => {
+      increment.props.onFocus?.();
+    });
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    let container = getByTestId('formIncrementInnerContainer');
+    expect(getComputedStyles(container.props.style)).toMatchObject({
       borderColor: Colors.primaryColor.background,
     });
 
-    wrapper.find(Increment).simulate('blur');
+    act(() => {
+      increment.props.onBlur?.();
+    });
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    container = getByTestId('formIncrementInnerContainer');
+    expect(getComputedStyles(container.props.style)).toMatchObject({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
-  it('applies required styling when field is required and no default value', () => {
-    const wrapper = shallow(
-      <FormIncrementInput {...props} required={true} defaultValue={null} />,
-    );
+  it('applies required styling when value is empty', () => {
+    const {getByTestId} = setupFormIncrementInput({
+      required: true,
+      defaultValue: null,
+    });
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    const container = getByTestId('formIncrementInnerContainer');
+
+    expect(getComputedStyles(container.props.style)).toMatchObject({
       borderColor: Colors.errorColor.background,
     });
   });
 
-  it('does not apply required styling when field is required and not empty', () => {
-    const wrapper = shallow(<FormIncrementInput {...props} required={true} />);
+  it('does not apply required styling when value is present', () => {
+    const {getByTestId} = setupFormIncrementInput({required: true});
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    const container = getByTestId('formIncrementInnerContainer');
+
+    expect(getComputedStyles(container.props.style)).toMatchObject({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
-  it('renders readonly input when necessary', () => {
-    const wrapper = shallow(<FormIncrementInput {...props} readOnly={true} />);
+  it('renders readonly increment when requested', () => {
+    const {getByTestId} = setupFormIncrementInput({readOnly: true});
+    const {increment} = getIncrement(getByTestId);
 
-    expect(wrapper.find(Increment).prop('readonly')).toBe(true);
+    expect(increment.props.readonly).toBe(true);
   });
 });
