@@ -16,68 +16,73 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
-import {
-  BlockInteractionMessage,
-  Button,
-  Card,
-  WarningCard,
-} from '@axelor/aos-mobile-ui';
+import {fireEvent, within} from '@testing-library/react-native';
+import {BlockInteractionMessage} from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
-import {getGlobalStyles} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('BlockInteractionMessage Component', () => {
+  const Colors = getDefaultThemeColors();
+
+  const setupBlockInteractionMessage = () =>
+    setup({Component: BlockInteractionMessage});
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<BlockInteractionMessage />);
+    const {queryByTestId} = setupBlockInteractionMessage();
 
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('does not render if blockInteractionConfig.visible is not defined', () => {
-    const wrapper = shallow(<BlockInteractionMessage />);
-
-    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(queryByTestId('blockInteractionContainer')).toBeFalsy();
   });
 
   it('renders the informations given in context', () => {
-    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
-      blockInteractionConfig: {
-        visible: true,
-        message: 'Test Message',
-        style: {backgroundColor: 'blue'},
-        actionItems: [
-          {
-            iconName: 'check',
-            title: 'Action 1',
-            onPress: jest.fn(),
-            color: 'green',
-          },
-          {
-            title: 'Action 2',
-            onPress: jest.fn(),
-            color: 'red',
-          },
-        ],
-      },
-    }));
-    const wrapper = shallow(<BlockInteractionMessage />);
+    const mockConfig = {
+      visible: true,
+      message: 'Test Message',
+      style: {backgroundColor: 'blue'},
+      actionItems: [
+        {
+          iconName: 'plus-lg',
+          title: 'Action 1',
+          onPress: jest.fn(),
+          color: Colors.amber,
+        },
+        {
+          title: 'Action 2',
+          onPress: jest.fn(),
+          color: Colors.cyan,
+        },
+      ],
+    };
 
-    expect(wrapper.find(WarningCard).prop('errorMessage')).toBe('Test Message');
+    jest
+      .spyOn(configContext, 'useConfig')
+      .mockImplementation(() => ({blockInteractionConfig: mockConfig}));
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject({
-      backgroundColor: 'blue',
+    const {getByText, getByTestId, getAllByTestId} =
+      setupBlockInteractionMessage();
+
+    expect(getByTestId('blockInteractionContainer')).toBeTruthy();
+    expect(getByText(mockConfig.message)).toBeTruthy();
+    expect(getByTestId('cardContainer')).toHaveStyle(mockConfig.style);
+
+    expect(getAllByTestId(/^blockInteractionMessageButton-idx.*/)).toHaveLength(
+      mockConfig.actionItems.length,
+    );
+
+    mockConfig.actionItems.forEach((_a, idx) => {
+      const _elt = getByTestId(`blockInteractionMessageButton-idx${idx}`);
+      expect(_elt).toHaveStyle({
+        backgroundColor: _a.color.background_light,
+        borderColor: _a.color.background,
+      });
+
+      expect(within(_elt).getByText(_a.title)).toBeTruthy();
+
+      if (_a.iconName != null) {
+        expect(within(_elt).getByTestId(`icon-${_a.iconName}`)).toBeTruthy();
+      }
+
+      fireEvent.press(_elt);
+      expect(_a.onPress).toHaveBeenCalled();
     });
-
-    const buttons = wrapper.find(Button);
-    expect(buttons).toHaveLength(2);
-
-    expect(buttons.at(0).prop('title')).toBe('Action 1');
-    expect(buttons.at(0).prop('color')).toBe('green');
-    expect(buttons.at(0).prop('iconName')).toBe('check');
-
-    expect(buttons.at(1).prop('title')).toBe('Action 2');
-    expect(buttons.at(1).prop('color')).toBe('red');
-    expect(buttons.at(1).prop('iconName')).toBe(undefined);
   });
 });
