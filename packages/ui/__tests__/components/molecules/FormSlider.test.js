@@ -17,13 +17,33 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Slider, Text, FormSlider} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {act} from '@testing-library/react-native';
+import {FormSlider, Slider} from '@axelor/aos-mobile-ui';
+import {setup, getComputedStyles} from '../../tools';
+
+const findElementByType = (element, type) => {
+  if (!element || !element.props) {
+    return null;
+  }
+
+  if (element.type === type) {
+    return element;
+  }
+
+  const children = React.Children.toArray(element.props.children);
+
+  for (const child of children) {
+    const result = findElementByType(child, type);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+};
 
 describe('FormSlider Component', () => {
-  const props = {
+  const baseProps = {
     title: 'Volume',
     minValue: 0,
     maxValue: 100,
@@ -33,51 +53,61 @@ describe('FormSlider Component', () => {
     readonly: false,
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<FormSlider {...props} />);
+  const setupFormSlider = overrideProps =>
+    setup({Component: FormSlider, baseProps, overrideProps});
 
-    expect(wrapper.exists()).toBe(true);
+  const getSlider = getByTestId => {
+    const container = getByTestId('formSliderContainer');
+    const slider = findElementByType(container, Slider);
+
+    return {container, slider};
+  };
+
+  it('renders without crashing', () => {
+    const {getByTestId, getByText} = setupFormSlider();
+
+    expect(getByTestId('formSliderContainer')).toBeTruthy();
+    expect(getByText(baseProps.title)).toBeTruthy();
   });
 
-  it('should render the title correctly', () => {
-    const wrapper = shallow(<FormSlider {...props} />);
+  it('passes slider props correctly', () => {
+    const {getByTestId} = setupFormSlider();
+    const {slider} = getSlider(getByTestId);
 
-    expect(wrapper.find(Text).first().prop('children')).toBe(props.title);
-  });
-
-  it('should pass correct props to Slider component', () => {
-    const wrapper = shallow(<FormSlider {...props} />);
-    const sliderComponent = wrapper.find(Slider);
-
-    expect(sliderComponent.props()).toMatchObject({
-      minValue: props.minValue,
-      maxValue: props.maxValue,
-      defaultValue: props.defaultValue,
-      step: props.step,
-      disabled: props.readonly,
+    expect(slider.props).toMatchObject({
+      minValue: baseProps.minValue,
+      maxValue: baseProps.maxValue,
+      defaultValue: baseProps.defaultValue,
+      step: baseProps.step,
+      disabled: baseProps.readonly,
     });
   });
 
-  it('should handle value changes correctly', () => {
-    const wrapper = shallow(<FormSlider {...props} />);
-    const sliderComponent = wrapper.find(Slider);
+  it('triggers onChange when slider value changes', () => {
+    const {getByTestId, props} = setupFormSlider({onChange: jest.fn()});
+    const {slider} = getSlider(getByTestId);
 
-    sliderComponent.simulate('change', 60);
+    act(() => {
+      slider.props.onChange?.(60);
+    });
+
     expect(props.onChange).toHaveBeenCalledWith(60);
   });
 
-  it('should render as read-only when readonly is true', () => {
-    const wrapper = shallow(<FormSlider {...props} readonly />);
+  it('disables slider when readonly is true', () => {
+    const {getByTestId} = setupFormSlider({readonly: true});
+    const {slider} = getSlider(getByTestId);
 
-    expect(wrapper.find(Slider).prop('disabled')).toBe(true);
+    expect(slider.props.disabled).toBe(true);
   });
 
-  it('should render with custom styles', () => {
+  it('applies custom style to container', () => {
     const customStyle = {margin: 20};
-    const wrapper = shallow(<FormSlider {...props} style={customStyle} />);
+    const {getByTestId} = setupFormSlider({style: customStyle});
 
-    expect(getGlobalStyles(wrapper.find(View).first())).toMatchObject(
-      customStyle,
+    const styles = getComputedStyles(
+      getByTestId('formSliderContainer').props.style,
     );
+    expect(styles).toMatchObject(customStyle);
   });
 });
