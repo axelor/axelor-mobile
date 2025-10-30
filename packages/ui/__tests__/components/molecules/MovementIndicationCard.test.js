@@ -17,12 +17,12 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, MovementIndicationCard, Text} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {Icon, MovementIndicationCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('MovementIndicationCard Component', () => {
-  const props = {
+  const baseProps = {
     titleTop: 'Top Title',
     iconTop: <Icon name="top-icon" />,
     onPressTitleTop: jest.fn(),
@@ -33,69 +33,60 @@ describe('MovementIndicationCard Component', () => {
     disabledDown: false,
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
+  const setupCard = overrideProps =>
+    setup({
+      Component: MovementIndicationCard,
+      baseProps,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders both titles and icons', () => {
+    const {getByText, queryAllByTestId} = setupCard();
+
+    expect(getByText(baseProps.titleTop)).toBeTruthy();
+    expect(getByText(baseProps.titleDown)).toBeTruthy();
+    expect(queryAllByTestId('iconTouchable').length).toBe(2);
   });
 
-  it('should render two TouchableOpacity components', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
+  it('calls onPressTitleTop when the top title is pressed', () => {
+    const {getByText, props} = setupCard({
+      onPressTitleTop: jest.fn(),
+    });
 
-    expect(wrapper.find(TouchableOpacity).length).toBe(2);
-  });
-
-  it('should render two titles', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
-
-    expect(wrapper.find(Text).length).toBe(2);
-  });
-
-  it('should render top Icon', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
-
-    expect(wrapper.find('Icon[name="top-icon"]').exists()).toBe(true);
-  });
-
-  it('should render down Icon', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
-
-    expect(wrapper.find('Icon[name="down-icon"]').exists()).toBe(true);
-  });
-
-  it('should call onPressTitleTop when the top title is pressed', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
-
-    wrapper.find(TouchableOpacity).at(0).simulate('press');
+    fireEvent.press(getByText(baseProps.titleTop));
 
     expect(props.onPressTitleTop).toHaveBeenCalled();
   });
 
-  it('should call onPressTitleDown when the down title is pressed', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
+  it('calls onPressTitleDown when the bottom title is pressed', () => {
+    const {getByText, props} = setupCard({
+      onPressTitleDown: jest.fn(),
+    });
 
-    wrapper.find(TouchableOpacity).at(1).simulate('press');
+    fireEvent.press(getByText(baseProps.titleDown));
 
     expect(props.onPressTitleDown).toHaveBeenCalled();
   });
 
-  it('should not render a touchable titleTop when disabledTop is true', () => {
-    const wrapper = shallow(
-      <MovementIndicationCard {...props} disabledTop={true} />,
-    );
-    const touchableComponent = wrapper.find(TouchableOpacity).at(0);
+  it('disables the top action when disabledTop is true', () => {
+    const {getByText, props} = setupCard({
+      disabledTop: true,
+      onPressTitleTop: jest.fn(),
+    });
 
-    expect(touchableComponent.exists()).toBeTruthy();
-    expect(touchableComponent.prop('disabled')).toBe(true);
+    fireEvent.press(getByText(baseProps.titleTop));
+
+    expect(props.onPressTitleTop).not.toHaveBeenCalled();
   });
 
-  it('should not render a touchable titleDown when disabledDown is true', () => {
-    const wrapper = shallow(
-      <MovementIndicationCard {...props} disabledDown={true} />,
-    );
-    const touchableComponent = wrapper.find(TouchableOpacity).at(1);
+  it('disables the bottom action when disabledDown is true', () => {
+    const {getByText, props} = setupCard({
+      disabledDown: true,
+      onPressTitleDown: jest.fn(),
+    });
 
-    expect(touchableComponent.exists()).toBeTruthy();
-    expect(touchableComponent.prop('disabled')).toBe(true);
+    fireEvent.press(getByText(baseProps.titleDown));
+
+    expect(props.onPressTitleDown).not.toHaveBeenCalled();
   });
 });
