@@ -17,7 +17,8 @@
  */
 
 import React from 'react';
-import {Alert, Text} from '@axelor/aos-mobile-ui';
+import {View} from 'react-native';
+import {Alert} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
 describe('Alert Component', () => {
@@ -26,26 +27,28 @@ describe('Alert Component', () => {
       Component: Alert,
       baseProps: {
         visible: true,
-        title: 'TEST',
-        children: <Text>ALERT</Text>,
+        title: 'Alert title',
+        children: <View testID="alertChildren" />,
       },
       overrideProps,
     });
 
-  it('should render without crashing', () => {
-    expect(() => setupAlert()).not.toThrow();
+  it('renders without crashing', () => {
+    const {getByTestId} = setupAlert();
+
+    expect(getByTestId('alertModal')).toBeTruthy();
   });
 
   it('should render the content when visible', () => {
     const {getByTestId} = setupAlert();
 
-    expect(getByTestId('cardContainer')).toBeTruthy();
+    expect(getByTestId('alertChildren')).toBeTruthy();
   });
 
   it('should not render the content when visible prop is false', () => {
     const {queryByTestId} = setupAlert({visible: false});
 
-    expect(queryByTestId('cardContainer')).toBeNull();
+    expect(queryByTestId('alertChildren')).toBeFalsy();
   });
 
   it('should render the title', () => {
@@ -54,58 +57,39 @@ describe('Alert Component', () => {
     expect(getByText(props.title)).toBeTruthy();
   });
 
-  it('should render the children', () => {
-    const {getByText, props} = setupAlert();
-    const childContent = props.children.props.children;
-
-    expect(getByText(childContent)).toBeTruthy();
-  });
-
   it('should render the cancelButtonConfig and the confirmButtonConfig', () => {
-    const cancelButtonConfig = {title: 'Cancel', testID: 'cancelButton'};
-    const confirmButtonConfig = {title: 'Confirm', testID: 'confirmButton'};
     const {getByTestId} = setupAlert({
-      cancelButtonConfig,
-      confirmButtonConfig,
+      cancelButtonConfig: {title: 'Cancel'},
+      confirmButtonConfig: {title: 'Confirm'},
     });
 
-    expect(getByTestId(cancelButtonConfig.testID)).toBeTruthy();
-    expect(getByTestId(confirmButtonConfig.testID)).toBeTruthy();
+    expect(getByTestId('alertCancelButton')).toBeTruthy();
+    expect(getByTestId('alertConfirmButton')).toBeTruthy();
   });
 
   it('should not render the cancelButtonConfig and the confirmButtonConfig when hide prop is true', () => {
-    const cancelButtonConfig = {
-      title: 'Cancel',
-      testID: 'cancelButton',
-      hide: true,
-    };
-    const confirmButtonConfig = {
-      title: 'Confirm',
-      testID: 'confirmButton',
-      hide: true,
-    };
     const {queryByTestId} = setupAlert({
-      cancelButtonConfig,
-      confirmButtonConfig,
+      cancelButtonConfig: {title: 'Cancel', hide: true},
+      confirmButtonConfig: {title: 'Confirm', hide: true},
     });
 
-    expect(queryByTestId(cancelButtonConfig.testID)).toBeNull();
-    expect(queryByTestId(confirmButtonConfig.testID)).toBeNull();
+    expect(queryByTestId('alertCancelButton')).toBeFalsy();
+    expect(queryByTestId('alertConfirmButton')).toBeFalsy();
   });
 
   it('should render the cancel button in the header when showInHeader prop is true', () => {
-    const cancelButtonConfig = {
-      testID: 'cancelButton',
-      title: 'Cancel',
-      showInHeader: true,
-    };
     const {getAllByTestId, getByTestId, queryByTestId} = setupAlert({
-      cancelButtonConfig,
-      confirmButtonConfig: {hide: true},
+      cancelButtonConfig: {title: 'Cancel', showInHeader: true},
     });
 
-    expect(queryByTestId(cancelButtonConfig.testID)).toBeNull();
-    expect(getByTestId('iconTouchable')).toBeTruthy();
+    expect(queryByTestId('alertCancelButton')).toBeFalsy();
     expect(getAllByTestId('iconTouchable')).toHaveLength(1);
+    expect(getByTestId('icon-x-lg')).toBeTruthy();
+  });
+
+  it('renders with custom style', () => {
+    const {getByTestId, props} = setupAlert({style: {margin: 10}});
+
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });
