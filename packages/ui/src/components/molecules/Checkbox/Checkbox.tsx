@@ -86,7 +86,7 @@ const Checkbox = ({
   }, [isDefaultPartialChecked]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="checkboxContainer">
       <View style={styles.iconContainer}>
         <Icon
           name={iconName}
