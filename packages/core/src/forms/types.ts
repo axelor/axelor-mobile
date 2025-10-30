@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Dispatch} from '@reduxjs/toolkit';
-import {ReactElement} from 'react';
+import {Dispatch, ReactElement} from 'react';
 import {Color} from '@axelor/aos-mobile-ui';
 
 export const DEFAULT_COLSPAN = 12;

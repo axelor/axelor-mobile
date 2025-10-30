@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from '../../../redux/hooks';
 import {
   Button,
   KeyboardAvoidingScrollView,
@@ -353,6 +353,7 @@ const FormView = ({
         actions={actions}
         isCreation={isCreation}
         onCreate={() => setObject(creationDefaultValue)}
+        onReset={handleReset}
         onPressWrapper={handleValidate}
         isDirty={isDirty}
         defaultOpenValue={defaultEditMode}
