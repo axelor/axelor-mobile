@@ -16,48 +16,57 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {Card, HalfLabelCard, Icon, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {HalfLabelCard} from '@axelor/aos-mobile-ui';
+import {setup, getDefaultThemeColors} from '../../tools';
 
 describe('HalfLabelCard Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
+  const baseProps = {
     title: 'Card Title',
     iconName: 'star',
     onPress: jest.fn(),
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<HalfLabelCard {...props} />);
+  const setupHalfLabelCard = overrideProps =>
+    setup({
+      Component: HalfLabelCard,
+      baseProps,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('should render without crashing', () => {
+    const {getByTestId, getByText, props} = setupHalfLabelCard();
+
+    expect(getByTestId('cardContainer')).toBeTruthy();
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('renders the provided icon, title, and chevron icon', () => {
-    const wrapper = shallow(<HalfLabelCard {...props} />);
+    const {getByTestId, getByText, props} = setupHalfLabelCard();
 
-    expect(wrapper.find(Icon).at(0).prop('name')).toBe(props.iconName);
-
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
-
-    expect(wrapper.find(Icon).at(1).prop('name')).toBe('chevron-right');
+    expect(getByTestId(`icon-${props.iconName}`)).toBeTruthy();
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByTestId('icon-chevron-right')).toBeTruthy();
   });
 
   it('renders a touchable component', () => {
-    const wrapper = shallow(<HalfLabelCard {...props} />);
-    const touchableComponent = wrapper.find(TouchableOpacity);
+    const {getByTestId, props} = setupHalfLabelCard({onPress: jest.fn()});
 
-    expect(touchableComponent.exists()).toBeTruthy();
-    expect(touchableComponent.prop('disabled')).not.toBe(true);
+    const touchableComponent = getByTestId('cardContainer').parent;
+    expect(touchableComponent).toBeTruthy();
+
+    expect(touchableComponent.props.disabled).not.toBe(true);
+
+    fireEvent.press(touchableComponent);
+
+    expect(props.onPress).toHaveBeenCalled();
   });
 
   it('applies custom style when provided', () => {
     const customStyle = {backgroundColor: Colors.primaryColor.background_light};
-    const wrapper = shallow(<HalfLabelCard {...props} style={customStyle} />);
+    const {getByTestId} = setupHalfLabelCard({style: customStyle});
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject(customStyle);
+    expect(getByTestId('cardContainer')).toHaveStyle(customStyle);
   });
 });
