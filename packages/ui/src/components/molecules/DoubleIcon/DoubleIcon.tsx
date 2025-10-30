@@ -70,6 +70,7 @@ const DoubleIcon = ({
 
   return (
     <TouchableOpacity
+      testID="doubleIconTouchable"
       style={[styles.container, style]}
       onPress={onPress}
       disabled={!touchable}>
@@ -77,7 +78,9 @@ const DoubleIcon = ({
         {...bottomIconConfig}
         size={bottomIconConfig?.size != null ? bottomIconConfig?.size : size}
       />
-      <View style={[styles.topIcon, topIconStyle, topIconPosition]}>
+      <View
+        testID="topIconContainer"
+        style={[styles.topIcon, topIconStyle, topIconPosition]}>
         <Icon
           {...topIconConfig}
           size={topIconConfig?.size != null ? topIconConfig?.size : size * 0.6}
