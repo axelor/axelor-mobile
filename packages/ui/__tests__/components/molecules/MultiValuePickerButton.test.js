@@ -16,11 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {MultiValuePickerButton, Text} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {MultiValuePickerButton} from '@axelor/aos-mobile-ui';
+import {setup, getDefaultThemeColors, getComputedStyles} from '../../tools';
 
 describe('MultiValuePickerButton Component', () => {
   const Colors = getDefaultThemeColors();
@@ -41,70 +39,68 @@ describe('MultiValuePickerButton Component', () => {
       key: '3',
     },
   ];
-  const props = {
+  const baseProps = {
     onPress: jest.fn(),
-    listItem: listItem,
+    listItem,
     onPressItem: jest.fn(),
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<MultiValuePickerButton {...props} />);
+  const setupButton = overrideProps =>
+    setup({
+      Component: MultiValuePickerButton,
+      baseProps,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
-  });
+  it('renders each selected item with title and color', () => {
+    const {getAllByTestId, getAllByText} = setupButton();
 
-  it('should render Text component for each listItem', () => {
-    const wrapper = shallow(<MultiValuePickerButton {...props} />);
-
-    expect(wrapper.find(Text).length).toBe(listItem.length);
-  });
-
-  it('should render Icon component for each listItem', () => {
-    const wrapper = shallow(<MultiValuePickerButton {...props} />);
-
-    expect(wrapper.find('Icon[name="x-lg"]').length).toBe(listItem.length);
-  });
-
-  it('should render the correct listItem titles and colors', () => {
-    const wrapper = shallow(<MultiValuePickerButton {...props} />);
-
-    listItem.forEach((item, index) => {
-      const textElement = wrapper.find(Text).at(index);
-      const iconElement = wrapper.find('Icon[name="x-lg"]').at(index);
-
-      expect(textElement.prop('children')).toBe(item.title);
-      expect(textElement.prop('textColor')).toBe(item.color.foreground);
-      expect(iconElement.prop('color')).toBe(item.color.foreground);
+    listItem.forEach(item => {
+      const [textNode] = getAllByText(item.title);
+      expect(textNode).toBeTruthy();
+      expect(
+        getComputedStyles(
+          getAllByTestId('multiValueItem')[listItem.indexOf(item)].props?.style,
+        ),
+      ).toMatchObject({
+        backgroundColor: item.color.background_light,
+        borderColor: item.color.background,
+      });
     });
   });
 
-  it('should call onPressItem when a listItem is pressed', () => {
-    const wrapper = shallow(<MultiValuePickerButton {...props} />);
+  it('calls onPressItem when a list item is pressed', () => {
+    const {getAllByText, props} = setupButton({
+      onPressItem: jest.fn(),
+    });
 
-    wrapper.find(TouchableOpacity).at(1).simulate('press');
+    fireEvent.press(getAllByText(listItem[0].title)[0]);
+
     expect(props.onPressItem).toHaveBeenCalledWith(listItem[0]);
   });
 
-  it('should render disabled items when readonly is true', () => {
-    const wrapper = shallow(<MultiValuePickerButton {...props} readonly />);
+  it('does not call onPressItem when readonly is true', () => {
+    const {getAllByText, props} = setupButton({
+      readonly: true,
+      onPressItem: jest.fn(),
+    });
 
-    for (let i = 1; i <= listItem.length; i++) {
-      expect(wrapper.find(TouchableOpacity).at(i).prop('disabled')).toBe(true);
-    }
+    fireEvent.press(getAllByText(listItem[0].title)[0]);
+
+    expect(props.onPressItem).not.toHaveBeenCalled();
   });
 
-  it('should display placeholder when no items are selected', () => {
+  it('displays placeholder when no items are selected', () => {
     const placeholder = 'Select items';
-    const wrapper = shallow(
-      <MultiValuePickerButton
-        {...props}
-        listItem={[]}
-        placeholder={placeholder}
-      />,
-    );
+    const {getByText, queryAllByText} = setupButton({
+      listItem: [],
+      placeholder,
+    });
 
-    const placeholderText = wrapper.find(Text).at(0);
-    expect(placeholderText.prop('children')).toBe(placeholder);
-    expect(placeholderText.prop('textColor')).toBe(Colors.placeholderTextColor);
+    expect(queryAllByText(/Item/).length).toBe(0);
+    expect(getByText(placeholder)).toBeTruthy();
+    expect(getByText(placeholder)).toHaveStyle({
+      color: Colors.placeholderTextColor,
+    });
   });
 });

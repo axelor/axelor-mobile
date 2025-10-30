@@ -59,6 +59,7 @@ const MultiValuePickerButton = ({
                   disabled={readonly}
                   key={index}
                   style={[styles.cardItem, getItemColor(item.color)]}
+                  testID="multiValueItem"
                   activeOpacity={0.9}>
                   <Text
                     style={styles.text}
