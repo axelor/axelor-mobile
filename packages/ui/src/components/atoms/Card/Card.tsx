@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
 
-export interface CardProps {
+interface CardProps {
   style?: any;
   children: any;
 }
