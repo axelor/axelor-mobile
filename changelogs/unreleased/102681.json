@@ -1,5 +1,5 @@
 {
-  "title": "FormView: restore initial values when using reset",
+  "title": "FormView: improve default reset action behavior",
   "type": "fix",
   "packages": "core"
 }

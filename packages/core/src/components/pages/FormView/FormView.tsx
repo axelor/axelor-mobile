@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from '../../../redux/hooks';
 import {
   Button,
   KeyboardAvoidingScrollView,
@@ -85,18 +85,14 @@ const FormView = ({
     modelName: config?.modelName,
   });
 
-  const initialReadonly = useMemo(
-    () => floatingTools && !defaultEditMode,
-    [floatingTools, defaultEditMode],
-  );
-
   const [object, setObject] = useState(
     defaultValue ?? creationDefaultValue ?? {},
   );
   const [errors, setErrors] = useState<any[]>();
-  const [isReadonly, setIsReadonly] = useState<boolean>(initialReadonly);
+  const [isReadonly, setIsReadonly] = useState<boolean>(
+    floatingTools && !defaultEditMode,
+  );
   const [buttonHeight, setButtonHeight] = useState<number>(0);
-  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
     () => sortContent(config),
@@ -123,18 +119,6 @@ const FormView = ({
   useEffect(() => {
     dispatch(clearRecord());
   }, [dispatch]);
-
-  useEffect(() => {
-    return () => {
-      if (resetTimerRef.current != null) {
-        clearTimeout(resetTimerRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    setIsReadonly(initialReadonly);
-  }, [initialReadonly]);
 
   useEffect(() => {
     setObject(_current => {
@@ -203,16 +187,7 @@ const FormView = ({
 
   const handleReset = useCallback(() => {
     setObject((isCreation ? creationDefaultValue : defaultValue) ?? {});
-
-    if (resetTimerRef.current != null) {
-      clearTimeout(resetTimerRef.current);
-    }
-
-    resetTimerRef.current = setTimeout(() => {
-      setIsReadonly(initialReadonly);
-      resetTimerRef.current = null;
-    }, 0);
-  }, [creationDefaultValue, defaultValue, initialReadonly, isCreation]);
+  }, [creationDefaultValue, defaultValue, isCreation]);
 
   const handleValidate = (_action, needValidation) => {
     if (needValidation) {
@@ -232,69 +207,38 @@ const FormView = ({
   };
 
   const actions: FormatedAction[] = useMemo(() => {
-    const formattedActions = (
-      Array.isArray(_actions)
-        ? _actions
-            .filter(
-              _action =>
-                isButtonAuthorized(_action) &&
-                _action.hideIf?.({objectState: object, storeState}) !== true,
-            )
-            .map(_action =>
-              getActionConfig(
-                _action,
-                config,
-                {
-                  handleObjectChange: setObject,
-                  objectState: object,
-                  storeState,
-                  dispatch,
-                  handleReset,
-                },
-                I18n,
-              ),
-            )
-            .filter(Boolean)
-        : []
-    ) as FormatedAction[];
-
-    const hasResetAction = formattedActions.some(
-      _action => _action?.type === 'reset',
-    );
-
-    if (floatingTools && !hasResetAction) {
-      const defaultResetAction = getActionConfig(
-        {
-          key: 'form-default-reset',
-          type: 'reset',
-        },
-        config,
-        {
-          handleObjectChange: setObject,
-          objectState: object,
-          storeState,
-          dispatch,
-          handleReset,
-        },
-        I18n,
-      );
-
-      if (defaultResetAction != null) {
-        formattedActions.push(defaultResetAction);
-      }
+    if (!Array.isArray(_actions) || _actions.length === 0) {
+      return [];
     }
 
-    return formattedActions;
+    return _actions
+      .filter(
+        _action =>
+          isButtonAuthorized(_action) &&
+          _action.hideIf?.({objectState: object, storeState}) !== true,
+      )
+      .map(_action =>
+        getActionConfig(
+          _action,
+          config,
+          {
+            handleObjectChange: setObject,
+            objectState: object,
+            storeState,
+            dispatch,
+            handleReset,
+          },
+          I18n,
+        ),
+      );
   }, [
     I18n,
     _actions,
     config,
     dispatch,
-    floatingTools,
     handleReset,
     isButtonAuthorized,
     object,
-    setObject,
     storeState,
   ]);
 
@@ -411,6 +355,7 @@ const FormView = ({
         actions={actions}
         isCreation={isCreation}
         onCreate={() => setObject(creationDefaultValue)}
+        onReset={handleReset}
         onPressWrapper={handleValidate}
         isDirty={isDirty}
         defaultOpenValue={defaultEditMode}
