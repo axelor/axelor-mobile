@@ -17,39 +17,47 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {FromTo, Icon, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {FromTo, Text} from '@axelor/aos-mobile-ui';
+import {setup, getComputedStyles, getDefaultThemeColors} from '../../tools';
 
 describe('FromTo Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    fromComponent: <Text>From</Text>,
-    toComponent: <Text>To</Text>,
-    style: {borderColor: Colors.primaryColor.background_light},
+  const baseProps = {
+    fromComponent: <Text testID="fromComponent">From</Text>,
+    toComponent: <Text testID="toComponent">To</Text>,
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<FromTo {...props} />);
+  const setupFromTo = overrideProps =>
+    setup({
+      Component: FromTo,
+      baseProps,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('should render without crashing', () => {
+    const {getByTestId} = setupFromTo();
+
+    expect(getByTestId('fromComponent')).toBeTruthy();
+    expect(getByTestId('toComponent')).toBeTruthy();
   });
 
   it('renders the fromComponent, arrow icon, and toComponent', () => {
-    const wrapper = shallow(<FromTo {...props} />);
+    const {getByTestId, getByText} = setupFromTo();
 
-    expect(wrapper.contains(props.fromComponent)).toBe(true);
-    expect(wrapper.contains(props.toComponent)).toBe(true);
-
-    expect(wrapper.find(Icon).exists()).toBe(true);
+    expect(getByText('From')).toBeTruthy();
+    expect(getByTestId('iconTouchable')).toBeTruthy();
+    expect(getByText('To')).toBeTruthy();
   });
 
   it('applies custom style when provided', () => {
-    const wrapper = shallow(<FromTo {...props} />);
+    const {getByTestId, props} = setupFromTo({
+      style: {borderColor: Colors.primaryColor.background_light},
+    });
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      props.style,
-    );
+    const container = getByTestId('fromComponent').parent;
+    expect(container).toBeTruthy();
+    const computedStyles = getComputedStyles(container?.props?.style);
+
+    expect(computedStyles).toMatchObject(props.style);
   });
 });
