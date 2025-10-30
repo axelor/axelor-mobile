@@ -19,31 +19,28 @@
 import React from 'react';
 import {fireEvent} from '@testing-library/react-native';
 import {IconInput, Icon} from '@axelor/aos-mobile-ui';
-import {setup, getDefaultThemeColors} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('IconInput Component', () => {
   const Colors = getDefaultThemeColors();
-  const baseProps = {
-    placeholder: 'Enter text',
-    value: 'Initial value',
-    onChange: jest.fn(),
-    onSelection: jest.fn(),
-    onEndFocus: jest.fn(),
-  };
 
   const setupIconInput = overrideProps =>
     setup({
       Component: IconInput,
-      baseProps,
+      baseProps: {
+        placeholder: 'Enter text',
+        value: 'Initial value',
+        onChange: jest.fn(),
+        onSelection: jest.fn(),
+        onEndFocus: jest.fn(),
+      },
       overrideProps,
     });
 
-  const getContainer = getByTestId => getByTestId('iconInputContainer');
-
   it('should render without crashing', () => {
-    const {getByPlaceholderText, props} = setupIconInput();
+    const {getByTestId} = setupIconInput();
 
-    expect(getByPlaceholderText(props.placeholder)).toBeTruthy();
+    expect(getByTestId('iconInputContainer')).toBeTruthy();
   });
 
   it('renders the provided value', () => {
@@ -53,15 +50,14 @@ describe('IconInput Component', () => {
   });
 
   it('renders the provided left and right icons', () => {
-    const leftIconsList = [<Icon name="check" />, <Icon name="camera" />];
-    const rightIconsList = [<Icon name="alarm" />];
-    const {getAllByTestId} = setupIconInput({
-      leftIconsList,
-      rightIconsList,
+    const {getAllByTestId, props} = setupIconInput({
+      leftIconsList: [<Icon name="check" />, <Icon name="camera" />],
+      rightIconsList: [<Icon name="alarm" />],
     });
 
-    const icons = getAllByTestId('iconTouchable');
-    expect(icons).toHaveLength(leftIconsList.length + rightIconsList.length);
+    expect(getAllByTestId(/^icon-.*/)).toHaveLength(
+      props.leftIconsList.length + props.rightIconsList.length,
+    );
   });
 
   it('handles selection and end focus', () => {
@@ -70,66 +66,60 @@ describe('IconInput Component', () => {
       onEndFocus: jest.fn(),
     });
 
-    const input = getByPlaceholderText(props.placeholder);
-    const container = getContainer(getByTestId);
+    const _inputElt = getByPlaceholderText(props.placeholder);
+    const _containerElt = getByTestId('iconInputContainer');
 
-    expect(container).toHaveStyle({
+    expect(_containerElt).toHaveStyle({
       borderColor: Colors.secondaryColor.background,
     });
 
-    fireEvent(input, 'focus');
+    fireEvent(_inputElt, 'focus');
 
     expect(props.onSelection).toHaveBeenCalled();
-    expect(container).toHaveStyle({
+    expect(_containerElt).toHaveStyle({
       borderColor: Colors.primaryColor.background,
     });
 
-    fireEvent(input, 'blur');
+    fireEvent(_inputElt, 'blur');
 
     expect(props.onEndFocus).toHaveBeenCalled();
-    expect(container).toHaveStyle({
+    expect(_containerElt).toHaveStyle({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
   it('updates input value on change', () => {
-    const {getByPlaceholderText, props} = setupIconInput({
-      onChange: jest.fn(),
-    });
+    const {getByPlaceholderText, props} = setupIconInput({onChange: jest.fn()});
 
-    const input = getByPlaceholderText(props.placeholder);
     const newValue = 'New Value';
 
-    fireEvent.changeText(input, newValue);
-
+    fireEvent.changeText(getByPlaceholderText(props.placeholder), newValue);
     expect(props.onChange).toHaveBeenCalledWith(newValue);
   });
 
   it('applies required styling when field is required, focused, and empty', () => {
-    const {getByPlaceholderText, getByTestId, props} = setupIconInput({
-      required: true,
-      value: null,
-      onSelection: jest.fn(),
+    const {getByPlaceholderText, getByTestId, rerender, props} = setupIconInput(
+      {
+        required: true,
+        value: null,
+        onSelection: jest.fn(),
+      },
+    );
+
+    expect(getByTestId('iconInputContainer')).toHaveStyle({
+      borderColor: Colors.secondaryColor.background,
     });
 
-    const input = getByPlaceholderText(props.placeholder);
-    const container = getContainer(getByTestId);
+    fireEvent(getByPlaceholderText(props.placeholder), 'focus');
 
-    fireEvent(input, 'focus');
-
-    expect(props.onSelection).toHaveBeenCalled();
-    expect(container).toHaveStyle({
+    expect(getByTestId('iconInputContainer')).toHaveStyle({
       borderColor: Colors.errorColor.background,
     });
-  });
 
-  it('does not apply required styling when field is required and not empty', () => {
-    const {getByTestId} = setupIconInput({required: true});
+    rerender({value: 'Not empty value'});
 
-    const container = getContainer(getByTestId);
-
-    expect(container).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+    expect(getByTestId('iconInputContainer')).toHaveStyle({
+      borderColor: Colors.primaryColor.background,
     });
   });
 
@@ -140,5 +130,13 @@ describe('IconInput Component', () => {
       'editable',
       false,
     );
+  });
+
+  it('should apply custom styles', () => {
+    const {getByTestId, props} = setupIconInput({
+      style: {backgroundColor: 'blue'},
+    });
+
+    expect(getByTestId('iconInputContainer')).toHaveStyle(props.style);
   });
 });

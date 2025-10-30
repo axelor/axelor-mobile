@@ -90,7 +90,7 @@ const IconInput = ({
 
   return (
     <View
-      testID={'iconInputContainer'}
+      testID="iconInputContainer"
       style={[styles.container, isFocused && commonStyles.inputFocused, style]}>
       {leftIconsList.map((iconComponent, index) =>
         React.cloneElement(iconComponent, {key: index}),
