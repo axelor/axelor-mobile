@@ -17,54 +17,78 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {DropdownCard, Icon, Text} from '@axelor/aos-mobile-ui';
+import {View} from 'react-native';
+import {fireEvent} from '@testing-library/react-native';
+import {DropdownCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('DropdownCard Component', () => {
-  const props = {
-    title: 'title',
-    children: <Text testID="CHILDREN-CONTENT">Content goes here</Text>,
-    dropdownIsOpen: false,
-    showIcon: true,
-  };
+  const setupDropdownCard = overrideProps =>
+    setup({
+      Component: DropdownCard,
+      baseProps: {
+        title: 'title',
+        children: <View testID="mocked_children" />,
+        dropdownIsOpen: false,
+        showIcon: true,
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<DropdownCard {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupDropdownCard();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('dropdownCardContainer')).toBeTruthy();
   });
 
   it('renders correctly with title and icon', () => {
-    const wrapper = shallow(<DropdownCard {...props} />);
+    const {getByText, getByTestId, props} = setupDropdownCard();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
+    expect(getByText(props.title)).toBeTruthy();
+    expect(
+      getByTestId(
+        `icon-${props.dropdownIsOpen ? 'chevron-up' : 'chevron-down'}`,
+      ),
+    ).toBeTruthy();
   });
 
   it('renders correctly without icon', () => {
-    const wrapper = shallow(<DropdownCard {...props} showIcon={false} />);
+    const {queryByTestId} = setupDropdownCard({showIcon: false});
 
-    expect(wrapper.find(Icon).exists()).toBe(false);
+    expect(queryByTestId('icon-chevron-down')).toBeFalsy();
+    expect(queryByTestId('icon-chevron-up')).toBeFalsy();
   });
 
   it('toggles the dropdown on touchable press', () => {
-    const wrapper = shallow(<DropdownCard {...props} />);
+    const {queryByTestId} = setupDropdownCard();
 
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
+    expect(queryByTestId('icon-chevron-down')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-up')).toBeFalsy();
+    expect(queryByTestId('cardContainer')).toBeFalsy();
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(queryByTestId('dropdownCardTouchable'));
 
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-up');
+    expect(queryByTestId('icon-chevron-down')).toBeFalsy();
+    expect(queryByTestId('icon-chevron-up')).toBeTruthy();
+    expect(queryByTestId('cardContainer')).toBeTruthy();
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(queryByTestId('dropdownCardTouchable'));
 
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
+    expect(queryByTestId('icon-chevron-down')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-up')).toBeFalsy();
+    expect(queryByTestId('cardContainer')).toBeFalsy();
+  });
+
+  it('invokes onPress on touch when provided', () => {
+    const {queryByTestId, props} = setupDropdownCard({onPress: jest.fn()});
+
+    fireEvent.press(queryByTestId('dropdownCardTouchable'));
+    expect(props.onPress).toHaveBeenCalledTimes(1);
   });
 
   it('renders children content when DropdownIsOpen prop is true', () => {
-    const wrapper = shallow(<DropdownCard {...props} dropdownIsOpen={true} />);
+    const {getByTestId} = setupDropdownCard({dropdownIsOpen: true});
 
-    expect(wrapper.find('Text[testID="CHILDREN-CONTENT"]').exists()).toBe(true);
+    expect(getByTestId('mocked_children')).toBeTruthy();
   });
 });
