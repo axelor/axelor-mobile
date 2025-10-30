@@ -17,75 +17,79 @@
  */
 
 import React from 'react';
-import {Modal} from 'react-native';
-import {shallow} from 'enzyme';
-import {Alert, Button, Card, Icon, Text} from '@axelor/aos-mobile-ui';
+import {View} from 'react-native';
+import {Alert} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
-describe('Alert Card Component', () => {
-  const props = {
-    visible: true,
-    title: 'TEST',
-    children: <Text>ALERT</Text>,
-  };
+describe('Alert Component', () => {
+  const setupAlert = overrideProps =>
+    setup({
+      Component: Alert,
+      baseProps: {
+        visible: true,
+        title: 'Alert title',
+        children: <View testID="alertChildren" />,
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<Alert {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupAlert();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('alertModal')).toBeTruthy();
   });
 
-  it('should render a non visible Modal component when visible prop is false', () => {
-    const wrapper = shallow(<Alert {...props} visible={false} />);
+  it('should render the content when visible', () => {
+    const {getByTestId} = setupAlert();
 
-    expect(wrapper.find(Modal).prop('visible')).toBe(false);
+    expect(getByTestId('alertChildren')).toBeTruthy();
+  });
+
+  it('should not render the content when visible prop is false', () => {
+    const {queryByTestId} = setupAlert({visible: false});
+
+    expect(queryByTestId('alertChildren')).toBeFalsy();
   });
 
   it('should render the title', () => {
-    const wrapper = shallow(<Alert {...props} />);
+    const {getByText, props} = setupAlert();
 
-    expect(wrapper.find(Text).at(0).prop('children')).toBe(props.title);
-  });
-
-  it('should render the children', () => {
-    const wrapper = shallow(<Alert {...props} />);
-
-    expect(wrapper.find(Card).children().contains(props.children)).toBe(true);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('should render the cancelButtonConfig and the confirmButtonConfig', () => {
-    const cancelButtonConfig = {};
-    const confirmButtonConfig = {};
-    const wrapper = shallow(
-      <Alert
-        {...props}
-        cancelButtonConfig={cancelButtonConfig}
-        confirmButtonConfig={confirmButtonConfig}
-      />,
-    );
+    const {getByTestId} = setupAlert({
+      cancelButtonConfig: {title: 'Cancel'},
+      confirmButtonConfig: {title: 'Confirm'},
+    });
 
-    expect(wrapper.find(Button).length).toBe(2);
+    expect(getByTestId('alertCancelButton')).toBeTruthy();
+    expect(getByTestId('alertConfirmButton')).toBeTruthy();
   });
 
   it('should not render the cancelButtonConfig and the confirmButtonConfig when hide prop is true', () => {
-    const cancelButtonConfig = {hide: true};
-    const confirmButtonConfig = {hide: true};
-    const wrapper = shallow(
-      <Alert
-        {...props}
-        cancelButtonConfig={cancelButtonConfig}
-        confirmButtonConfig={confirmButtonConfig}
-      />,
-    );
+    const {queryByTestId} = setupAlert({
+      cancelButtonConfig: {title: 'Cancel', hide: true},
+      confirmButtonConfig: {title: 'Confirm', hide: true},
+    });
 
-    expect(wrapper.find(Button).length).toBe(0);
+    expect(queryByTestId('alertCancelButton')).toBeFalsy();
+    expect(queryByTestId('alertConfirmButton')).toBeFalsy();
   });
 
-  it('should render the cancelButtonConfig in header when showInHeader prop is true', () => {
-    const cancelButtonConfig = {showInHeader: true};
-    const wrapper = shallow(
-      <Alert {...props} cancelButtonConfig={cancelButtonConfig} />,
-    );
+  it('should render the cancel button in the header when showInHeader prop is true', () => {
+    const {getAllByTestId, getByTestId, queryByTestId} = setupAlert({
+      cancelButtonConfig: {title: 'Cancel', showInHeader: true},
+    });
 
-    expect(wrapper.find(Icon).length).toBe(1);
+    expect(queryByTestId('alertCancelButton')).toBeFalsy();
+    expect(getAllByTestId('iconTouchable')).toHaveLength(1);
+    expect(getByTestId('icon-x-lg')).toBeTruthy();
+  });
+
+  it('renders with custom style', () => {
+    const {getByTestId, props} = setupAlert({style: {margin: 10}});
+
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });
