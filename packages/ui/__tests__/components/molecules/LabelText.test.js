@@ -16,73 +16,67 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, LabelText, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {LabelText} from '@axelor/aos-mobile-ui';
+import {setup, getComputedStyles} from '../../tools';
 
 describe('LabelText Component', () => {
-  const Colors = getDefaultThemeColors();
-  const props = {
+  const baseProps = {
     title: 'Title',
     value: 'Value',
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<LabelText {...props} />);
+  const setupLabelText = overrideProps =>
+    setup({
+      Component: LabelText,
+      baseProps,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders title and value', () => {
+    const {getByText} = setupLabelText();
+
+    expect(getByText(/Title/)).toBeTruthy();
+    expect(getByText(baseProps.value)).toBeTruthy();
   });
 
-  it('should render with title and value', () => {
-    const wrapper = shallow(<LabelText {...props} />);
+  it('renders an icon when iconName is provided', () => {
+    const {getByTestId} = setupLabelText({iconName: 'camera'});
 
-    const childrenTextContainer = wrapper.find(Text).at(0).prop('children');
-
-    expect(childrenTextContainer[0].trim()).toBe(props.title);
-    expect(childrenTextContainer[1].props.children).toBe(props.value);
+    expect(getByTestId('icon-camera')).toBeTruthy();
   });
 
-  it('should render with an icon when iconName is provided', () => {
-    const wrapper = shallow(<LabelText {...props} iconName="icon-name" />);
+  it('applies custom container style', () => {
+    const style = {backgroundColor: 'red'};
+    const {getByTestId} = setupLabelText({style});
 
-    expect(wrapper.find('Icon[name="icon-name"]').exists()).toBe(true);
+    expect(
+      getComputedStyles(getByTestId('labelTextContainer').props?.style),
+    ).toMatchObject(style);
   });
 
-  it('should apply custom styles when customStyle prop is provided', () => {
-    const customStyle = {backgroundColor: Colors.primaryColor.background_light};
+  it('applies custom icon style', () => {
+    const iconStyle = {marginRight: 10};
+    const {getByTestId} = setupLabelText({
+      iconName: 'camera',
+      iconStyle,
+    });
 
-    const wrapper = shallow(<LabelText {...props} style={customStyle} />);
+    const iconTouchable = getByTestId('iconTouchable');
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(iconTouchable).toHaveStyle(iconStyle);
   });
 
-  it('should apply custom styles to the icon when iconStyle prop is provided', () => {
-    const customIconStyle = {color: Colors.secondaryColor.background};
+  it('applies custom text style', () => {
+    const textStyle = {fontSize: 20};
+    const {getByText} = setupLabelText({textStyle});
 
-    const wrapper = shallow(
-      <LabelText {...props} iconName="icon-name" iconStyle={customIconStyle} />,
-    );
-
-    expect(getGlobalStyles(wrapper.find(Icon))).toMatchObject(customIconStyle);
+    expect(getByText(/Title/)).toHaveStyle(textStyle);
+    expect(getByText(baseProps.value)).toHaveStyle(textStyle);
   });
 
-  it('should apply custom styles to text when textStyle prop is provided', () => {
-    const customTextStyle = {fontSize: 25};
+  it('limits text to a single line when onlyOneLine is true', () => {
+    const {getByText} = setupLabelText({onlyOneLine: true});
 
-    const wrapper = shallow(
-      <LabelText {...props} textStyle={customTextStyle} />,
-    );
-
-    expect(getGlobalStyles(wrapper.find(Text).at(0))).toMatchObject(
-      customTextStyle,
-    );
-  });
-
-  it('should render only one line of text when onlyOneLine prop is true', () => {
-    const wrapper = shallow(<LabelText {...props} onlyOneLine />);
-
-    expect(wrapper.find(Text).at(0).prop('numberOfLines')).toBe(1);
+    expect(getByText(/Title/).props.numberOfLines).toBe(1);
   });
 });
