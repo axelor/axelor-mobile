@@ -21,58 +21,53 @@ import {EditableInput} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
 describe('EditableInput Component', () => {
-  const baseProps = {
-    placeholder: 'Enter text',
-    onValidate: jest.fn(),
-    defaultValue: 'Initial value',
-  };
-
   const setupEditableInput = overrideProps =>
     setup({
       Component: EditableInput,
-      baseProps,
+      baseProps: {
+        placeholder: 'Enter text',
+        onValidate: jest.fn(),
+        defaultValue: 'Initial value',
+      },
       overrideProps,
     });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+  it('renders without crashing', () => {
+    const {getByTestId} = setupEditableInput();
+
+    expect(getByTestId('editableInput')).toBeTruthy();
   });
 
   it('should render readonly input with pencil icon by default', () => {
-    const {getByDisplayValue, getByTestId} = setupEditableInput();
+    const {getByTestId} = setupEditableInput();
 
-    const input = getByDisplayValue(baseProps.defaultValue);
-    expect(input.props.editable).toBe(false);
+    expect(getByTestId('editableInput').props.editable).toBe(false);
     expect(getByTestId('icon-pencil-fill')).toBeTruthy();
   });
 
   it('toggles to editable mode and back, validating with latest value', () => {
-    const {getByDisplayValue, getByTestId, props} = setupEditableInput({
-      onValidate: jest.fn(),
-    });
+    const {getByTestId, props} = setupEditableInput({onValidate: jest.fn()});
 
-    fireEvent.press(getByTestId('iconTouchable'));
+    fireEvent.press(getByTestId('editableInputToggle'));
 
     expect(getByTestId('icon-check-lg')).toBeTruthy();
 
     const newValue = 'New Value';
-    fireEvent.changeText(getByDisplayValue(baseProps.defaultValue), newValue);
-
-    fireEvent.press(getByTestId('iconTouchable'));
+    fireEvent.changeText(getByTestId('editableInput'), newValue);
+    fireEvent.press(getByTestId('editableInputToggle'));
+    expect(props.onValidate).toHaveBeenCalledWith(newValue);
 
     expect(getByTestId('icon-pencil-fill')).toBeTruthy();
-    expect(getByDisplayValue(newValue).props.editable).toBe(false);
-    expect(props.onValidate).toHaveBeenCalledWith(newValue);
+    expect(getByTestId('editableInput').props.editable).toBe(false);
   });
 
   it('supports multiline input when requested', () => {
-    const {getByDisplayValue} = setupEditableInput({
+    const {getByTestId} = setupEditableInput({
       multiline: true,
       numberOfLines: 3,
     });
 
-    const inputProps = getByDisplayValue(baseProps.defaultValue).props;
-    expect(inputProps.multiline).toBe(true);
-    expect(inputProps.numberOfLines).toBe(3);
+    expect(getByTestId('editableInput').props.multiline).toBe(true);
+    expect(getByTestId('editableInput').props.numberOfLines).toBe(3);
   });
 });
