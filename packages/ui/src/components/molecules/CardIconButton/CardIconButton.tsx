@@ -47,12 +47,12 @@ const CardIconButton = ({
 
   return (
     <TouchableOpacity
-      testID="cardIconButtonTouchable"
       style={[styles.container, style]}
       disabled={disabled}
       onLongPress={onLongPress}
       onPress={onPress}
-      activeOpacity={0.9}>
+      activeOpacity={0.9}
+      testID="cardIconButtonContainer">
       <Card style={styles.cardContainer}>
         <Icon size={20} name={iconName} color={_iconColor} />
       </Card>
