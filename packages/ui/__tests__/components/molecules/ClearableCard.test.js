@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
 import {fireEvent} from '@testing-library/react-native';
 import {ClearableCard} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
@@ -33,38 +32,33 @@ describe('ClearableCard Component', () => {
       overrideProps,
     });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+  it('renders without crashing', () => {
+    const {getByTestId} = setupClearableCard();
 
-  it('should render without crashing', () => {
-    expect(() => setupClearableCard()).not.toThrow();
+    expect(getByTestId('cardContainer')).toBeTruthy();
   });
 
   it('renders clear icon when clearable is true', () => {
-    const {getAllByTestId, getByText, props} = setupClearableCard();
+    const {getByTestId, getByText, props} = setupClearableCard();
 
     expect(getByText(props.valueTxt)).toBeTruthy();
-    expect(getAllByTestId('iconTouchable')[0]).toBeTruthy();
-    expect(getAllByTestId('icon-x-lg')[0]).toBeTruthy();
+    expect(getByTestId('iconTouchable')).toBeTruthy();
+    expect(getByTestId('icon-x-lg')).toBeTruthy();
   });
 
   it('does not render clear icon when clearable is false', () => {
-    const {queryAllByTestId, getByText, props} = setupClearableCard({
+    const {queryByTestId, getByText, props} = setupClearableCard({
       clearable: false,
     });
 
     expect(getByText(props.valueTxt)).toBeTruthy();
-    expect(queryAllByTestId('iconTouchable')).toHaveLength(0);
+    expect(queryByTestId('iconTouchable')).toBeFalsy();
   });
 
   it('calls onClearPress when clear icon is pressed', () => {
-    const {getAllByTestId, props} = setupClearableCard({
-      onClearPress: jest.fn(),
-    });
+    const {getByTestId, props} = setupClearableCard({onClearPress: jest.fn()});
 
-    fireEvent.press(getAllByTestId('iconTouchable')[0]);
-
+    fireEvent.press(getByTestId('iconTouchable'));
     expect(props.onClearPress).toHaveBeenCalledTimes(1);
   });
 });
