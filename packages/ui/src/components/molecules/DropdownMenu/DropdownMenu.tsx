@@ -47,12 +47,11 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
   }, [clickOutside, visible]);
 
   return (
-    <View style={style} ref={wrapperRef}>
+    <View style={style} ref={wrapperRef} testID="dropdownMenuContainer">
       <TouchableOpacity
         style={styles.action}
-        onPress={() => {
-          setVisible(!visible);
-        }}>
+        onPress={() => setVisible(!visible)}
+        testID="dropdownMenuTouchable">
         <Icon
           name="three-dots-vertical"
           color={Colors.primaryColor.background}
