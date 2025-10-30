@@ -18,28 +18,24 @@
 
 import {fireEvent} from '@testing-library/react-native';
 import {HalfLabelCard} from '@axelor/aos-mobile-ui';
-import {setup, getDefaultThemeColors} from '../../tools';
+import {setup} from '../../tools';
 
 describe('HalfLabelCard Component', () => {
-  const Colors = getDefaultThemeColors();
-  const baseProps = {
-    title: 'Card Title',
-    iconName: 'star',
-    onPress: jest.fn(),
-  };
-
   const setupHalfLabelCard = overrideProps =>
     setup({
       Component: HalfLabelCard,
-      baseProps,
+      baseProps: {
+        title: 'Card Title',
+        iconName: 'star',
+        onPress: jest.fn(),
+      },
       overrideProps,
     });
 
   it('should render without crashing', () => {
-    const {getByTestId, getByText, props} = setupHalfLabelCard();
+    const {getByTestId} = setupHalfLabelCard();
 
-    expect(getByTestId('cardContainer')).toBeTruthy();
-    expect(getByText(props.title)).toBeTruthy();
+    expect(getByTestId('halfLabelCardTouchable')).toBeTruthy();
   });
 
   it('renders the provided icon, title, and chevron icon', () => {
@@ -53,20 +49,15 @@ describe('HalfLabelCard Component', () => {
   it('renders a touchable component', () => {
     const {getByTestId, props} = setupHalfLabelCard({onPress: jest.fn()});
 
-    const touchableComponent = getByTestId('cardContainer').parent;
-    expect(touchableComponent).toBeTruthy();
+    expect(getByTestId('halfLabelCardTouchable')).toBeTruthy();
 
-    expect(touchableComponent.props.disabled).not.toBe(true);
-
-    fireEvent.press(touchableComponent);
-
+    fireEvent.press(getByTestId('halfLabelCardTouchable'));
     expect(props.onPress).toHaveBeenCalled();
   });
 
   it('applies custom style when provided', () => {
-    const customStyle = {backgroundColor: Colors.primaryColor.background_light};
-    const {getByTestId} = setupHalfLabelCard({style: customStyle});
+    const {getByTestId, props} = setupHalfLabelCard({style: {width: 200}});
 
-    expect(getByTestId('cardContainer')).toHaveStyle(customStyle);
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });
