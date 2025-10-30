@@ -82,7 +82,10 @@ const CardIndicator = ({
   };
 
   return (
-    <View ref={wrapperRef} style={[styles.container, style]}>
+    <View
+      ref={wrapperRef}
+      style={[styles.container, style]}
+      testID="cardIndicatorContainer">
       {children}
       {isVisible && renderIndication()}
     </View>
