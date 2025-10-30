@@ -16,32 +16,81 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {CardIconButton, Icon} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {CardIconButton} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('CardIconButton Component', () => {
-  const props = {iconName: 'heart', iconColor: 'red', onPress: jest.fn()};
+  const Colors = getDefaultThemeColors();
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<CardIconButton {...props} />);
+  const setupCardIconButton = overrideProps =>
+    setup({
+      Component: CardIconButton,
+      baseProps: {iconName: 'heart', iconColor: 'red', onPress: jest.fn()},
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupCardIconButton();
+
+    expect(getByTestId('cardIconButtonContainer')).toBeTruthy();
   });
 
-  it('renders the right informations', () => {
-    const wrapper = shallow(<CardIconButton {...props} />);
+  it('should render icon with provided name and color', () => {
+    const {getByTestId, props} = setupCardIconButton();
+    const icon = getByTestId(`icon-${props.iconName}`);
 
-    expect(wrapper.find(Icon).prop('name')).toBe(props.iconName);
-    expect(wrapper.find(Icon).prop('color')).toBe(props.iconColor);
+    expect(icon).toBeTruthy();
+    expect(icon.props.fill).toBe(props.iconColor);
   });
 
-  it('renders a touchable component', () => {
-    const wrapper = shallow(<CardIconButton {...props} />);
-    const touchableComponent = wrapper.find(TouchableOpacity);
+  it('should invoke onPress handler when pressed', () => {
+    const {getByTestId, props} = setupCardIconButton({onPress: jest.fn()});
 
-    expect(touchableComponent.exists()).toBeTruthy();
-    expect(touchableComponent.prop('disabled')).not.toBe(true);
+    fireEvent.press(getByTestId('cardIconButtonContainer'));
+    expect(props.onPress).toHaveBeenCalled();
+  });
+
+  it('should not invoke onPress when disabled', () => {
+    const {getByTestId, props} = setupCardIconButton({
+      onPress: jest.fn(),
+      disabled: true,
+    });
+
+    fireEvent.press(getByTestId('cardIconButtonContainer'));
+    expect(props.onPress).not.toHaveBeenCalled();
+  });
+
+  it('should call onLongPress when provided', () => {
+    const {getByTestId, props} = setupCardIconButton({onLongPress: jest.fn()});
+
+    fireEvent(getByTestId('cardIconButtonContainer'), 'longPress');
+    expect(props.onLongPress).toHaveBeenCalled();
+  });
+
+  it('should not invoke onLongPress when disabled', () => {
+    const {getByTestId, props} = setupCardIconButton({
+      onLongPress: jest.fn(),
+      disabled: true,
+    });
+
+    fireEvent(getByTestId('cardIconButtonContainer'), 'longPress');
+    expect(props.onLongPress).not.toHaveBeenCalled();
+  });
+
+  it('should update icon color when disabled', () => {
+    const {getByTestId, props} = setupCardIconButton({disabled: true});
+
+    expect(getByTestId(`icon-${props.iconName}`).props.fill).toBe(
+      Colors.secondaryColor.background,
+    );
+  });
+
+  it('should apply custom container style', () => {
+    const {getByTestId, props} = setupCardIconButton({
+      style: {margin: 16, opacity: 0.5},
+    });
+
+    expect(getByTestId('cardIconButtonContainer')).toHaveStyle(props.style);
   });
 });
