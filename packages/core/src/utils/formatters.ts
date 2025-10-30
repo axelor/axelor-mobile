@@ -148,6 +148,9 @@ export const getDateZonesISOString = (dateString: string) => {
   return `${date}T${time}`;
 };
 
+const isValidObject = (value: any) =>
+  value != null && typeof value === 'object';
+
 export const formatRequestBody = (
   data: object,
   matcherPrefix: string = null,
@@ -163,7 +166,9 @@ export const formatRequestBody = (
     const matcherKey = `${matcherPrefix ? matcherPrefix + '.' : ''}${_key}`;
     matchers[matcherKey] = _key;
 
-    if (_value != null && typeof _value === 'object') {
+    if (Array.isArray(_value)) {
+      _data[_key] = _value.map(_i => (isValidObject(_i) ? {id: _i.id} : _i));
+    } else if (isValidObject(_value)) {
       _data[_key] = {id: _value.id};
     } else {
       _data[_key] = _value;

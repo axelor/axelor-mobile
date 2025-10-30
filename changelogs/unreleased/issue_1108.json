@@ -1,0 +1,5 @@
+{
+  "title": "AOP request formatter: resolve issue when body contains an array",
+  "type": "fix",
+  "packages": "core"
+}
