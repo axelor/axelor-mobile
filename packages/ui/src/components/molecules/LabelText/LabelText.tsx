@@ -59,7 +59,7 @@ const LabelText = ({
   };
 
   return (
-    <View testID={'labelTextContainer'} style={[styles.container, style]}>
+    <View testID="labelTextContainer" style={[styles.container, style]}>
       {iconName && (
         <Icon
           style={[styles.icon, iconStyle]}

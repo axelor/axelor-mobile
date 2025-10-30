@@ -17,66 +17,66 @@
  */
 
 import {LabelText} from '@axelor/aos-mobile-ui';
-import {setup, getComputedStyles} from '../../tools';
+import {setup} from '../../tools';
 
 describe('LabelText Component', () => {
-  const baseProps = {
-    title: 'Title',
-    value: 'Value',
-  };
-
   const setupLabelText = overrideProps =>
     setup({
       Component: LabelText,
-      baseProps,
+      baseProps: {title: 'Title', value: 'Value'},
       overrideProps,
     });
 
-  it('renders title and value', () => {
-    const {getByText} = setupLabelText();
+  function getTitleElt(getter, title) {
+    return getter(new RegExp(title, 'i'));
+  }
 
-    expect(getByText(/Title/)).toBeTruthy();
-    expect(getByText(baseProps.value)).toBeTruthy();
+  it('should render without crashing', () => {
+    const {getByTestId} = setupLabelText();
+
+    expect(getByTestId('labelTextContainer')).toBeTruthy();
+  });
+
+  it('renders title and value', () => {
+    const {getByText, props} = setupLabelText();
+
+    expect(getTitleElt(getByText, props.title)).toBeTruthy();
+    expect(getByText(props.value)).toBeTruthy();
   });
 
   it('renders an icon when iconName is provided', () => {
-    const {getByTestId} = setupLabelText({iconName: 'camera'});
+    const {getByTestId, props} = setupLabelText({iconName: 'camera'});
 
-    expect(getByTestId('icon-camera')).toBeTruthy();
+    expect(getByTestId(`icon-${props.iconName}`)).toBeTruthy();
   });
 
   it('applies custom container style', () => {
-    const style = {backgroundColor: 'red'};
-    const {getByTestId} = setupLabelText({style});
+    const {getByTestId, props} = setupLabelText({
+      style: {backgroundColor: 'red'},
+    });
 
-    expect(
-      getComputedStyles(getByTestId('labelTextContainer').props?.style),
-    ).toMatchObject(style);
+    expect(getByTestId('labelTextContainer')).toHaveStyle(props.style);
   });
 
   it('applies custom icon style', () => {
-    const iconStyle = {marginRight: 10};
-    const {getByTestId} = setupLabelText({
+    const {getByTestId, props} = setupLabelText({
       iconName: 'camera',
-      iconStyle,
+      iconStyle: {marginRight: 10},
     });
 
-    const iconTouchable = getByTestId('iconTouchable');
-
-    expect(iconTouchable).toHaveStyle(iconStyle);
+    expect(getByTestId('iconTouchable')).toHaveStyle(props.iconStyle);
   });
 
   it('applies custom text style', () => {
-    const textStyle = {fontSize: 20};
-    const {getByText} = setupLabelText({textStyle});
+    const {getByText, props} = setupLabelText({textStyle: {fontSize: 20}});
 
-    expect(getByText(/Title/)).toHaveStyle(textStyle);
-    expect(getByText(baseProps.value)).toHaveStyle(textStyle);
+    expect(getTitleElt(getByText, props.title)).toHaveStyle(props.textStyle);
+    expect(getByText(props.value)).toHaveStyle(props.textStyle);
   });
 
   it('limits text to a single line when onlyOneLine is true', () => {
-    const {getByText} = setupLabelText({onlyOneLine: true});
+    const {getByText, props} = setupLabelText({onlyOneLine: true});
 
-    expect(getByText(/Title/).props.numberOfLines).toBe(1);
+    expect(getTitleElt(getByText, props.title).props.numberOfLines).toBe(1);
   });
 });
