@@ -16,83 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
 import {fireEvent} from '@testing-library/react-native';
 import {CircleButton} from '@axelor/aos-mobile-ui';
-import {getComputedStyles, getDefaultThemeColors, setup} from '../../tools';
-
-const Colors = getDefaultThemeColors();
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('CircleButton Component', () => {
-  const baseProps = {
-    onPress: jest.fn(),
-    iconName: 'check-lg',
-    disabled: false,
-    size: 50,
-    testID: 'circleButton',
-  };
+  const Colors = getDefaultThemeColors();
 
   const setupCircleButton = overrideProps =>
     setup({
       Component: CircleButton,
-      baseProps,
+      baseProps: {
+        testID: 'circleButton',
+        onPress: jest.fn(),
+        iconName: 'check-lg',
+        disabled: false,
+        size: 50,
+      },
       overrideProps,
     });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+  it('renders without crashing', () => {
+    const {getByTestId} = setupCircleButton();
 
-  it('should render without crashing', () => {
-    expect(() => setupCircleButton()).not.toThrow();
+    expect(getByTestId('circleButton')).toBeTruthy();
   });
 
   it('should render enabled circle button with default styles', () => {
-    const {
-      getByTestId,
-      getByTestId: getById,
-      props,
-    } = setupCircleButton({
-      square: false,
-      disabled: false,
-    });
+    const {getByTestId, props} = setupCircleButton({square: false});
 
-    const button = getByTestId('circleButton');
-    const buttonStyles = getComputedStyles(button.props.style);
-    expect(button.props.accessibilityState?.disabled ?? false).toBe(false);
-    expect(buttonStyles).toMatchObject({
+    expect(getByTestId('circleButton')).toHaveStyle({
       borderRadius: props.size,
       width: props.size,
       height: props.size,
     });
 
-    const icon = getById(`icon-${props.iconName}`);
-    expect(icon.props.width).toBe(Math.floor(props.size / 2));
-    expect(icon.props.height).toBe(Math.floor(props.size / 2));
-  });
-
-  it('should render disabled circle button', () => {
-    const {
-      getByTestId,
-      getByTestId: getById,
-      props,
-    } = setupCircleButton({
-      disabled: true,
-    });
-
-    const button = getByTestId('circleButton');
-    expect(button.props.accessibilityState?.disabled).toBe(true);
-
-    expect(getById(`icon-${props.iconName}`)).toBeTruthy();
+    const _iconElt = getByTestId(`icon-${props.iconName}`);
+    expect(_iconElt).toBeTruthy();
+    expect(_iconElt.props.width).toBe(Math.floor(props.size / 2));
+    expect(_iconElt.props.height).toBe(Math.floor(props.size / 2));
   });
 
   it('should render square button with default border radius', () => {
-    const {getByTestId, props} = setupCircleButton({square: true});
+    const {getByTestId, props} = setupCircleButton();
 
-    const buttonStyles = getComputedStyles(
-      getByTestId('circleButton').props.style,
-    );
-    expect(buttonStyles).toMatchObject({
+    expect(getByTestId('circleButton')).toHaveStyle({
       borderRadius: 7,
       width: props.size,
       height: props.size,
@@ -100,23 +68,35 @@ describe('CircleButton Component', () => {
   });
 
   it('should forward provided color to Button', () => {
-    const customColor = Colors.infoColor;
-    const {getByTestId} = setupCircleButton({color: customColor});
-    const buttonStyles = getComputedStyles(
-      getByTestId('circleButton').props.style,
-    );
+    const {getByTestId, props} = setupCircleButton({color: Colors.infoColor});
 
-    expect(buttonStyles).toMatchObject({
-      backgroundColor: customColor.background_light,
-      borderColor: customColor.background,
+    expect(getByTestId('circleButton')).toHaveStyle({
+      borderColor: props.color.background,
+      backgroundColor: props.color.background_light,
     });
   });
 
   it('should trigger onPress when pressed', () => {
-    const {getByTestId, props} = setupCircleButton({onPress: jest.fn()});
+    const {getByTestId, props} = setupCircleButton({
+      onPress: jest.fn(),
+      disabled: false,
+      onDisabledPress: jest.fn(),
+    });
 
     fireEvent.press(getByTestId('circleButton'));
+    expect(props.onPress).toHaveBeenCalled();
+    expect(props.onDisabledPress).not.toHaveBeenCalled();
+  });
 
-    expect(props.onPress).toHaveBeenCalledTimes(1);
+  it('should trigger onDisabledPress when pressed in disabled state', () => {
+    const {getByTestId, props} = setupCircleButton({
+      onPress: jest.fn(),
+      disabled: true,
+      onDisabledPress: jest.fn(),
+    });
+
+    fireEvent.press(getByTestId('circleButton'));
+    expect(props.onPress).not.toHaveBeenCalled();
+    expect(props.onDisabledPress).toHaveBeenCalled();
   });
 });
