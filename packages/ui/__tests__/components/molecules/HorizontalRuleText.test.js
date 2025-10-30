@@ -16,42 +16,74 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
-import {HorizontalRule, HorizontalRuleText, Text} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
-import {View} from 'react-native';
+import {HorizontalRuleText} from '@axelor/aos-mobile-ui';
+import {setup, getDefaultThemeColors, getComputedStyles} from '../../tools';
+
+const findParentWithStyle = (node, expectedStyle) => {
+  let current = node?.parent;
+
+  while (current) {
+    const styles = getComputedStyles(current.props?.style);
+
+    const matches =
+      styles != null &&
+      Object.entries(expectedStyle).every(
+        ([key, value]) => styles[key] === value,
+      );
+
+    if (matches) {
+      return current;
+    }
+
+    current = current.parent;
+  }
+
+  return null;
+};
 
 describe('HorizontalRuleText Component', () => {
-  const props = {
+  const baseProps = {
     text: 'Hello',
   };
 
-  it('renders without crashing', () => {
-    const wrapper = shallow(<HorizontalRuleText {...props} />);
+  const setupHorizontalRuleText = overrideProps =>
+    setup({
+      Component: HorizontalRuleText,
+      baseProps,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders without crashing', () => {
+    const {getByText, props} = setupHorizontalRuleText();
+
+    expect(getByText(props.text)).toBeTruthy();
   });
 
   it('renders correctly with the provided title', () => {
     const defaultColor =
       getDefaultThemeColors().secondaryColor?.background_light;
-    const wrapper = shallow(<HorizontalRuleText {...props} />);
+    const {getByText, getAllByTestId, props} = setupHorizontalRuleText();
 
-    expect(wrapper.find(Text).exists()).toBe(true);
-    expect(wrapper.find(Text).prop('children')).toBe(props.text);
-    expect(wrapper.find(Text).prop('textColor')).toBe(defaultColor);
+    const text = getByText(props.text);
+    expect(text).toBeTruthy();
+    expect(text).toHaveStyle({color: defaultColor});
 
-    expect(wrapper.find(HorizontalRule)?.length).toBe(2);
+    const lines = getAllByTestId('horizontalRule');
+    expect(lines.length).toBe(2);
+    lines.forEach(line => {
+      expect(line).toHaveStyle({borderColor: defaultColor});
+    });
   });
 
   it('renders correctly with the provided color', () => {
     const color = getDefaultThemeColors().cautionColor?.background_light;
-    const wrapper = shallow(<HorizontalRuleText {...props} color={color} />);
+    const {getByText, getAllByTestId, props} = setupHorizontalRuleText({
+      color,
+    });
 
-    expect(wrapper.find(Text).prop('textColor')).toBe(color);
-    wrapper.find(HorizontalRule).forEach(_v => {
-      expect(getGlobalStyles(_v)).toMatchObject({borderColor: color});
+    expect(getByText(props.text)).toHaveStyle({color});
+    getAllByTestId('horizontalRule').forEach(line => {
+      expect(line).toHaveStyle({borderColor: color});
     });
   });
 
@@ -59,19 +91,21 @@ describe('HorizontalRuleText Component', () => {
     const style = {width: '50%'};
     const lineStyle = {marginHorizontal: 40};
     const textStyle = {alignSelf: 'flex-start'};
-    const wrapper = shallow(
-      <HorizontalRuleText
-        {...props}
-        textStyle={textStyle}
-        lineStyle={lineStyle}
-        style={style}
-      />,
-    );
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(style);
-    wrapper.find(HorizontalRule).forEach(_v => {
-      expect(getGlobalStyles(_v)).toMatchObject(lineStyle);
+    const {getByText, getAllByTestId} = setupHorizontalRuleText({
+      textStyle,
+      lineStyle,
+      style,
     });
-    expect(getGlobalStyles(wrapper.find(Text))).toMatchObject(textStyle);
+
+    const text = getByText(baseProps.text);
+    expect(text).toHaveStyle(textStyle);
+
+    const firstLine = getAllByTestId('horizontalRule')[0];
+    const container = findParentWithStyle(firstLine, style);
+    expect(container).toBeTruthy();
+
+    getAllByTestId('horizontalRule').forEach(line => {
+      expect(line).toHaveStyle(lineStyle);
+    });
   });
 });
