@@ -17,46 +17,50 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Label, Text} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {Label} from '@axelor/aos-mobile-ui';
 import {hexToRgb} from '../../../lib/utils/commons-utlis';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {setup, getComputedStyles, getDefaultThemeColors} from '../../tools';
 
 describe('Label Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
+  const baseProps = {
     message: 'This is label message.',
     onClose: jest.fn(),
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<Label {...props} />);
+  const setupLabel = overrideProps =>
+    setup({
+      Component: Label,
+      baseProps,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders the provided message', () => {
+    const {getByText} = setupLabel();
+
+    expect(getByText(baseProps.message)).toBeTruthy();
   });
 
-  it('should render with the correct message', () => {
-    const wrapper = shallow(<Label {...props} />);
+  it('applies default "error" styles when type is not provided', () => {
+    const {getByTestId} = setupLabel();
+    const styles = getComputedStyles(
+      getByTestId('labelContainer').props?.style,
+    );
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.message);
-  });
-
-  it('should apply default "error" style when type is not provided', () => {
-    const wrapper = shallow(<Label {...props} />);
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      backgroundColor: `rgba(${hexToRgb(
-        Colors.errorColor.background_light,
-      )}, 0.4)`,
+    expect(styles).toMatchObject({
+      backgroundColor: `rgba(${hexToRgb(Colors.errorColor.background_light)}, 0.4)`,
       borderColor: Colors.errorColor.background_light,
     });
   });
 
-  it('should apply "success" style when type is "success"', () => {
-    const wrapper = shallow(<Label {...props} type="success" />);
+  it('applies "success" styles when type is "success"', () => {
+    const {getByTestId} = setupLabel({type: 'success'});
+    const styles = getComputedStyles(
+      getByTestId('labelContainer').props?.style,
+    );
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+    expect(styles).toMatchObject({
       backgroundColor: `rgba(${hexToRgb(
         Colors.successColor.background_light,
       )}, 0.4)`,
@@ -64,21 +68,25 @@ describe('Label Component', () => {
     });
   });
 
-  it('should apply "info" style when type is "info"', () => {
-    const wrapper = shallow(<Label {...props} type="info" />);
+  it('applies "info" styles when type is "info"', () => {
+    const {getByTestId} = setupLabel({type: 'info'});
+    const styles = getComputedStyles(
+      getByTestId('labelContainer').props?.style,
+    );
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      backgroundColor: `rgba(${hexToRgb(
-        Colors.infoColor.background_light,
-      )}, 0.4)`,
+    expect(styles).toMatchObject({
+      backgroundColor: `rgba(${hexToRgb(Colors.infoColor.background_light)}, 0.4)`,
       borderColor: Colors.infoColor.background_light,
     });
   });
 
-  it('should apply "danger" style when type is "danger"', () => {
-    const wrapper = shallow(<Label {...props} type="danger" />);
+  it('applies "danger" styles when type is "danger"', () => {
+    const {getByTestId} = setupLabel({type: 'danger'});
+    const styles = getComputedStyles(
+      getByTestId('labelContainer').props?.style,
+    );
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+    expect(styles).toMatchObject({
       backgroundColor: `rgba(${hexToRgb(
         Colors.cautionColor.background_light,
       )}, 0.4)`,
@@ -86,16 +94,29 @@ describe('Label Component', () => {
     });
   });
 
-  it('should render a close icon when showClose is true', () => {
-    const wrapper = shallow(<Label {...props} showClose />);
+  it('renders the corresponding icon for each type', () => {
+    const {getByTestId} = setupLabel();
 
-    expect(wrapper.find('Icon[name="x-lg"]').exists()).toBe(true);
+    expect(getByTestId('icon-exclamation-triangle-fill')).toBeTruthy();
   });
 
-  it('should call onClose when close icon is pressed', () => {
-    const wrapper = shallow(<Label {...props} showClose />);
+  it('renders a close icon only when showClose is true', () => {
+    const {queryByTestId} = setupLabel();
+    const {getByTestId} = setupLabel({showClose: true});
 
-    wrapper.find('Icon[name="x-lg"]').simulate('press');
+    expect(queryByTestId('icon-x-lg')).toBeNull();
+    expect(getByTestId('icon-x-lg')).toBeTruthy();
+  });
+
+  it('calls onClose and hides the label when the close icon is pressed', () => {
+    const {getByTestId, props, queryByTestId} = setupLabel({
+      showClose: true,
+      onClose: jest.fn(),
+    });
+
+    fireEvent.press(getByTestId('icon-x-lg'));
+
     expect(props.onClose).toHaveBeenCalled();
+    expect(queryByTestId('labelContainer')).toBeNull();
   });
 });
