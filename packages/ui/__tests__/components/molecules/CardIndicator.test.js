@@ -35,40 +35,55 @@ describe('CardIndicator Component', () => {
       overrideProps,
     });
 
-  it('should render without crashing', () => {
-    expect(() => setupCardIndicator()).not.toThrow();
+  it('renders without crashing', () => {
+    const {getByTestId} = setupCardIndicator();
+
+    expect(getByTestId('cardIndicatorContainer')).toBeTruthy();
   });
 
   it('should render card indicator when visible and usePopup is false', () => {
-    const {
-      getByTestId,
-      getByText,
-      queryByTestId,
-      queryByText,
-      rerender,
-      props,
-    } = setupCardIndicator();
+    const {queryByTestId, queryByText, rerender, props} = setupCardIndicator();
 
-    expect(getByTestId('indicatorChild')).toBeTruthy();
-    expect(getByText(props.indication)).toBeTruthy();
-    expect(getByTestId('cardIndicatorCard')).toBeTruthy();
+    expect(queryByTestId('indicatorChild')).toBeTruthy();
 
-    rerender(<CardIndicator {...props} isVisible={false} />);
+    expect(queryByTestId('cardContainer')).toBeTruthy();
+    expect(queryByText(props.indication)).toBeTruthy();
 
-    expect(queryByText(props.indication)).toBeNull();
-    expect(queryByTestId('cardIndicatorCard')).toBeNull();
+    expect(queryByTestId('alertModal')).toBeFalsy();
+
+    rerender({isVisible: false});
+
+    expect(queryByTestId('indicatorChild')).toBeTruthy();
+
+    expect(queryByText(props.indication)).toBeFalsy();
+    expect(queryByTestId('cardContainer')).toBeFalsy();
+
+    expect(queryByTestId('alertModal')).toBeFalsy();
   });
 
   it('should render alert indicator when usePopup is true', () => {
-    const {getByText, queryByTestId, queryByText, rerender, props} =
-      setupCardIndicator({usePopup: true});
+    const {queryByTestId, queryByText, rerender, props} = setupCardIndicator({
+      usePopup: true,
+    });
 
-    expect(getByText(props.indication)).toBeTruthy();
-    expect(queryByTestId('cardIndicatorCard')).toBeNull();
+    expect(queryByTestId('indicatorChild')).toBeTruthy();
 
-    rerender(<CardIndicator {...props} isVisible={false} />);
+    expect(queryByTestId('alertModal')).toBeTruthy();
+    expect(queryByText(props.indication)).toBeTruthy();
 
-    expect(queryByText(props.indication)).toBeNull();
-    expect(queryByTestId('cardIndicatorCard')).toBeNull();
+    rerender({isVisible: false});
+
+    expect(queryByTestId('indicatorChild')).toBeTruthy();
+
+    expect(queryByTestId('alertModal')).toBeFalsy();
+    expect(queryByText(props.indication)).toBeFalsy();
+  });
+
+  it('should apply custom container style', () => {
+    const {getByTestId, props} = setupCardIndicator({
+      style: {margin: 16, opacity: 0.5},
+    });
+
+    expect(getByTestId('cardIndicatorContainer')).toHaveStyle(props.style);
   });
 });
