@@ -17,45 +17,38 @@
  */
 
 import React from 'react';
-import {FromTo, Text} from '@axelor/aos-mobile-ui';
-import {setup, getComputedStyles, getDefaultThemeColors} from '../../tools';
+import {View} from 'react-native';
+import {FromTo} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('FromTo Component', () => {
-  const Colors = getDefaultThemeColors();
-  const baseProps = {
-    fromComponent: <Text>From</Text>,
-    toComponent: <Text>To</Text>,
-  };
-
   const setupFromTo = overrideProps =>
     setup({
       Component: FromTo,
-      baseProps,
+      baseProps: {
+        fromComponent: <View testID="mocked_from" />,
+        toComponent: <View testID="mocked_to" />,
+      },
       overrideProps,
     });
 
   it('should render without crashing', () => {
-    const {getByText} = setupFromTo();
+    const {getByTestId} = setupFromTo();
 
-    expect(getByText('From')).toBeTruthy();
-    expect(getByText('To')).toBeTruthy();
+    expect(getByTestId('fromToContainer')).toBeTruthy();
   });
 
   it('renders the fromComponent, arrow icon, and toComponent', () => {
-    const {getByTestId, getByText} = setupFromTo();
+    const {getByTestId} = setupFromTo();
 
-    expect(getByText('From')).toBeTruthy();
-    expect(getByTestId('iconTouchable')).toBeTruthy();
-    expect(getByText('To')).toBeTruthy();
+    expect(getByTestId('mocked_from')).toBeTruthy();
+    expect(getByTestId('icon-chevron-right')).toBeTruthy();
+    expect(getByTestId('mocked_to')).toBeTruthy();
   });
 
   it('applies custom style when provided', () => {
-    const {props} = setupFromTo({
-      style: {borderColor: Colors.primaryColor.background_light},
-    });
+    const {getByTestId, props} = setupFromTo({style: {width: 200}});
 
-    const computedStyles = getComputedStyles(props.style);
-
-    expect(computedStyles).toMatchObject(props.style);
+    expect(getByTestId('fromToContainer')).toHaveStyle(props.style);
   });
 });
