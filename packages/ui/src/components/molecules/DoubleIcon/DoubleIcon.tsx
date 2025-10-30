@@ -75,7 +75,6 @@ const DoubleIcon = ({
       onPress={onPress}
       disabled={!touchable}>
       <Icon
-        testID="bottomIcon"
         {...bottomIconConfig}
         size={bottomIconConfig?.size != null ? bottomIconConfig?.size : size}
       />
@@ -83,7 +82,6 @@ const DoubleIcon = ({
         testID="topIconContainer"
         style={[styles.topIcon, topIconStyle, topIconPosition]}>
         <Icon
-          testID="topIcon"
           {...topIconConfig}
           size={topIconConfig?.size != null ? topIconConfig?.size : size * 0.6}
         />
