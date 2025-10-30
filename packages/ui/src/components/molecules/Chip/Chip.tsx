@@ -69,12 +69,12 @@ const Chip = ({
 
   return (
     <TouchableOpacity
-      testID="chipTouchable"
       style={[{width: width, marginHorizontal: marginHorizontal}, style]}
       disabled={readonly}
       onPress={onPress}
-      activeOpacity={0.8}>
-      <View testID="chipContainer" style={styles.container}>
+      activeOpacity={0.8}
+      testID="chipTouchable">
+      <View style={styles.container} testID="chipContainer">
         <Text
           textColor={selected ? chipColor.foreground : Colors.text}
           numberOfLines={numberOfLines}

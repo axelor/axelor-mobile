@@ -18,91 +18,78 @@
 
 import {fireEvent} from '@testing-library/react-native';
 import {Chip} from '@axelor/aos-mobile-ui';
-import {getComputedStyles, getDefaultThemeColors, setup} from '../../tools';
-
-const Colors = getDefaultThemeColors();
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('Chip Component', () => {
-  const baseProps = {
-    onPress: jest.fn(),
-    title: 'Chip title',
-    selected: true,
-    selectedColor: Colors.infoColor,
-    readonly: false,
-  };
+  const Colors = getDefaultThemeColors();
 
   const setupChip = overrideProps =>
     setup({
       Component: Chip,
-      baseProps,
+      baseProps: {
+        onPress: jest.fn(),
+        title: 'Chip title',
+        selected: true,
+        selectedColor: Colors.infoColor,
+        readonly: false,
+      },
       overrideProps,
     });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+  function checkChipStyle(viewElt, textElt, color) {
+    expect(viewElt).toHaveStyle({
+      borderColor: color.background,
+      backgroundColor: color.background_light,
+    });
 
-  it('should render without crashing', () => {
-    expect(() => setupChip()).not.toThrow();
+    expect(textElt).toHaveStyle({color: color.foreground});
+  }
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupChip();
+
+    expect(getByTestId('chipTouchable')).toBeTruthy();
   });
 
   it('should render a touchable chip with label', () => {
-    const {getByTestId, getByText, props} = setupChip({
-      selectedColor: null,
-      readonly: false,
-    });
+    const {getByTestId, getByText, props} = setupChip({selectedColor: null});
 
-    expect(getByText(props.title)).toBeTruthy();
-    expect(
-      getByTestId('chipTouchable').props.accessibilityState?.disabled ?? false,
-    ).toBe(false);
+    const _viewElt = getByTestId('chipContainer');
+    const _textElt = getByText(props.title);
 
-    const chipContainerStyles = getComputedStyles(
-      getByTestId('chipContainer').props.style,
-    );
+    expect(_viewElt).toBeTruthy();
+    expect(_textElt).toBeTruthy();
 
-    expect(chipContainerStyles).toMatchObject({
-      backgroundColor: Colors.primaryColor.background_light,
-      borderColor: Colors.primaryColor.background,
-    });
-
-    const labelStyles = getComputedStyles(getByText(props.title).props.style);
-    expect(labelStyles).toMatchObject({
-      color: Colors.primaryColor.foreground,
-    });
+    checkChipStyle(_viewElt, _textElt, Colors.primaryColor);
   });
 
   it('should disable touchable when readonly', () => {
-    const {getByTestId} = setupChip({readonly: true});
+    const {getByTestId, props} = setupChip({
+      readonly: true,
+      onPress: jest.fn(),
+    });
 
-    expect(
-      getByTestId('chipTouchable').props.accessibilityState?.disabled,
-    ).toBe(true);
+    fireEvent.press(getByTestId('chipTouchable'));
+    expect(props.onPress).not.toHaveBeenCalledTimes(1);
   });
 
   it('should invoke onPress when pressed', () => {
     const {getByTestId, props} = setupChip({onPress: jest.fn()});
 
     fireEvent.press(getByTestId('chipTouchable'));
-
     expect(props.onPress).toHaveBeenCalledTimes(1);
   });
 
   it('should use custom selected color', () => {
     const {getByTestId, getByText, props} = setupChip();
-    const chipContainerStyles = getComputedStyles(
-      getByTestId('chipContainer').props.style,
-    );
 
-    expect(chipContainerStyles).toMatchObject({
-      backgroundColor: props.selectedColor.background_light,
-      borderColor: props.selectedColor.background,
-    });
+    const _viewElt = getByTestId('chipContainer');
+    const _textElt = getByText(props.title);
 
-    const labelStyles = getComputedStyles(getByText(props.title).props.style);
-    expect(labelStyles).toMatchObject({
-      color: props.selectedColor.foreground,
-    });
+    expect(_viewElt).toBeTruthy();
+    expect(_textElt).toBeTruthy();
+
+    checkChipStyle(_viewElt, _textElt, props.selectedColor);
   });
 
   it('should use default colors when not selected', () => {
@@ -111,35 +98,54 @@ describe('Chip Component', () => {
       selectedColor: null,
     });
 
-    const chipContainerStyles = getComputedStyles(
-      getByTestId('chipContainer').props.style,
-    );
+    const _viewElt = getByTestId('chipContainer');
+    const _textElt = getByText(props.title);
 
-    expect(chipContainerStyles).toMatchObject({
-      backgroundColor: Colors.backgroundColor,
-      borderColor: Colors.primaryColor.background,
-    });
+    expect(_viewElt).toBeTruthy();
+    expect(_textElt).toBeTruthy();
 
-    const labelStyles = getComputedStyles(getByText(props.title).props.style);
-    expect(labelStyles).toMatchObject({
-      color: Colors.text,
+    checkChipStyle(_viewElt, _textElt, {
+      foreground: Colors.text,
+      background_light: Colors.backgroundColor,
+      background: Colors.primaryColor.background,
     });
   });
 
   it('should use provided color border when not selected', () => {
     const {getByTestId, getByText, props} = setupChip({selected: false});
-    const chipContainerStyles = getComputedStyles(
-      getByTestId('chipContainer').props.style,
-    );
 
-    expect(chipContainerStyles).toMatchObject({
-      backgroundColor: Colors.backgroundColor,
-      borderColor: props.selectedColor.background,
+    const _viewElt = getByTestId('chipContainer');
+    const _textElt = getByText(props.title);
+
+    expect(_viewElt).toBeTruthy();
+    expect(_textElt).toBeTruthy();
+
+    checkChipStyle(_viewElt, _textElt, {
+      foreground: Colors.text,
+      background_light: Colors.backgroundColor,
+      background: props.selectedColor.background,
+    });
+  });
+
+  it('should apply custom marginHorizontal when provided', () => {
+    const {getByTestId, props} = setupChip({marginHorizontal: 15});
+
+    expect(getByTestId('chipTouchable')).toHaveStyle({
+      marginHorizontal: props.marginHorizontal,
+    });
+  });
+
+  it('should apply custom width when provided', () => {
+    const {getByTestId, props} = setupChip({width: 200});
+
+    expect(getByTestId('chipTouchable')).toHaveStyle({width: props.width});
+  });
+
+  it('should apply custom styles', () => {
+    const {getByTestId, props} = setupChip({
+      style: {backgroundColor: 'blue'},
     });
 
-    const labelStyles = getComputedStyles(getByText(props.title).props.style);
-    expect(labelStyles).toMatchObject({
-      color: Colors.text,
-    });
+    expect(getByTestId('chipTouchable')).toHaveStyle(props.style);
   });
 });
