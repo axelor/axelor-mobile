@@ -17,14 +17,13 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {IconInput, Icon, Input} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {IconInput, Icon} from '@axelor/aos-mobile-ui';
+import {setup, getDefaultThemeColors} from '../../tools';
 
 describe('IconInput Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
+  const baseProps = {
     placeholder: 'Enter text',
     value: 'Initial value',
     onChange: jest.fn(),
@@ -32,96 +31,114 @@ describe('IconInput Component', () => {
     onEndFocus: jest.fn(),
   };
 
+  const setupIconInput = overrideProps =>
+    setup({
+      Component: IconInput,
+      baseProps,
+      overrideProps,
+    });
+
+  const getContainer = getByTestId => getByTestId('iconInputContainer');
+
   it('should render without crashing', () => {
-    const wrapper = shallow(<IconInput {...props} />);
+    const {getByPlaceholderText, props} = setupIconInput();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByPlaceholderText(props.placeholder)).toBeTruthy();
   });
 
-  it('check if the input value is rendered', () => {
-    const wrapper = shallow(<IconInput {...props} />);
+  it('renders the provided value', () => {
+    const {getByDisplayValue, props} = setupIconInput();
 
-    expect(wrapper.find(Input).prop('value')).toBe(props.value);
+    expect(getByDisplayValue(props.value)).toBeTruthy();
   });
 
-  it('renders input value and left/right icons', () => {
-    const leftIconsList = [<Icon name="leftIcon" />, <Icon name="leftIcon2" />];
-    const rightIconsList = [<Icon name="rightIcon" />];
-    const wrapper = shallow(
-      <IconInput
-        {...props}
-        leftIconsList={leftIconsList}
-        rightIconsList={rightIconsList}
-      />,
-    );
-
-    leftIconsList.forEach((iconComponent, index) => {
-      expect(
-        wrapper.findWhere(
-          node => node.equals(iconComponent) && node.key() === index.toString(),
-        ),
-      ).toHaveLength(1);
+  it('renders the provided left and right icons', () => {
+    const leftIconsList = [<Icon name="check" />, <Icon name="camera" />];
+    const rightIconsList = [<Icon name="alarm" />];
+    const {getAllByTestId} = setupIconInput({
+      leftIconsList,
+      rightIconsList,
     });
 
-    rightIconsList.forEach((iconComponent, index) => {
-      expect(
-        wrapper.findWhere(
-          node => node.equals(iconComponent) && node.key() === index.toString(),
-        ),
-      ).toHaveLength(1);
-    });
+    const icons = getAllByTestId('iconTouchable');
+    expect(icons).toHaveLength(leftIconsList.length + rightIconsList.length);
   });
 
   it('handles selection and end focus', () => {
-    const wrapper = shallow(<IconInput {...props} />);
-
-    wrapper.find(Input).simulate('selection');
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      borderColor: Colors.primaryColor.background,
+    const {getByPlaceholderText, getByTestId, props} = setupIconInput({
+      onSelection: jest.fn(),
+      onEndFocus: jest.fn(),
     });
-    expect(props.onSelection).toHaveBeenCalled();
 
-    wrapper.find(Input).simulate('endFocus');
+    const input = getByPlaceholderText(props.placeholder);
+    const container = getContainer(getByTestId);
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+    expect(container).toHaveStyle({
       borderColor: Colors.secondaryColor.background,
     });
+
+    fireEvent(input, 'focus');
+
+    expect(props.onSelection).toHaveBeenCalled();
+    expect(container).toHaveStyle({
+      borderColor: Colors.primaryColor.background,
+    });
+
+    fireEvent(input, 'blur');
+
     expect(props.onEndFocus).toHaveBeenCalled();
+    expect(container).toHaveStyle({
+      borderColor: Colors.secondaryColor.background,
+    });
   });
 
   it('updates input value on change', () => {
-    const wrapper = shallow(<IconInput {...props} />);
+    const {getByPlaceholderText, props} = setupIconInput({
+      onChange: jest.fn(),
+    });
 
+    const input = getByPlaceholderText(props.placeholder);
     const newValue = 'New Value';
-    wrapper.find(Input).simulate('change', newValue);
+
+    fireEvent.changeText(input, newValue);
 
     expect(props.onChange).toHaveBeenCalledWith(newValue);
   });
 
-  it('applies required styling when field is required, focus and has no value', () => {
-    const wrapper = shallow(
-      <IconInput {...props} required={true} value={null} />,
-    );
+  it('applies required styling when field is required, focused, and empty', () => {
+    const {getByPlaceholderText, getByTestId, props} = setupIconInput({
+      required: true,
+      value: null,
+      onSelection: jest.fn(),
+    });
 
-    wrapper.find(Input).simulate('selection');
+    const input = getByPlaceholderText(props.placeholder);
+    const container = getContainer(getByTestId);
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+    fireEvent(input, 'focus');
+
+    expect(props.onSelection).toHaveBeenCalled();
+    expect(container).toHaveStyle({
       borderColor: Colors.errorColor.background,
     });
   });
 
   it('does not apply required styling when field is required and not empty', () => {
-    const wrapper = shallow(<IconInput {...props} required={true} />);
+    const {getByTestId} = setupIconInput({required: true});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+    const container = getContainer(getByTestId);
+
+    expect(container).toHaveStyle({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
-  it('renders readonly input when necessary', () => {
-    const wrapper = shallow(<IconInput {...props} readOnly={true} />);
+  it('renders input as readonly when requested', () => {
+    const {getByPlaceholderText, props} = setupIconInput({readOnly: true});
 
-    expect(wrapper.find(Input).prop('readOnly')).toBe(true);
+    expect(getByPlaceholderText(props.placeholder)).toHaveProp(
+      'editable',
+      false,
+    );
   });
 });
