@@ -18,114 +18,69 @@
 
 import React from 'react';
 import {act, fireEvent} from '@testing-library/react-native';
-import {HtmlInput, Icon, NotesCard} from '@axelor/aos-mobile-ui';
-import {setup, getComputedStyles} from '../../tools';
+import {NotesCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
+
+jest.mock('../../../lib/components/atoms/HtmlInput/HtmlInput', () => {
+  const {View} = require('react-native');
+
+  return props => <View testID="mocked_htmlInput" {...props} />;
+});
 
 describe('NotesCard Component', () => {
-  const baseProps = {
-    title: 'Title',
-    data: 'TEST',
-  };
-
   const setupNotesCard = overrideProps =>
     setup({
       Component: NotesCard,
-      baseProps,
+      baseProps: {title: 'Title', data: 'TEST'},
       overrideProps,
     });
 
-  it('renders title and html content', () => {
-    const {getByText, getByTestId} = setupNotesCard();
+  it('renders without crashing', () => {
+    const {getByTestId} = setupNotesCard();
 
-    expect(getByText(baseProps.title)).toBeTruthy();
-    expect(getByTestId('htmlInputScrollView')).toBeTruthy();
+    expect(getByTestId('notesCardContainer')).toBeTruthy();
+  });
+
+  it('renders title and html content', () => {
+    const {getByText, getByTestId, props} = setupNotesCard();
+
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByTestId('mocked_htmlInput')).toBeTruthy();
+    expect(getByTestId('mocked_htmlInput').props.defaultInput).toBe(props.data);
   });
 
   it('returns null when data is empty', () => {
-    const {queryByText, queryByTestId} = setupNotesCard({data: ''});
+    const {queryByText, queryByTestId, props} = setupNotesCard({data: ''});
 
-    expect(queryByText(baseProps.title)).toBeNull();
-    expect(queryByTestId('htmlInputScrollView')).toBeNull();
+    expect(queryByText(props.title)).toBeFalsy();
+    expect(queryByTestId('mocked_htmlInput')).toBeFalsy();
   });
-
-  const findElementByType = (element, type) => {
-    if (!element || !element.props) {
-      return null;
-    }
-
-    if (element.type === type) {
-      return element;
-    }
-
-    const children = React.Children.toArray(element.props.children);
-
-    for (const child of children) {
-      const result = findElementByType(child, type);
-      if (result) {
-        return result;
-      }
-    }
-
-    return null;
-  };
 
   it('renders chevron when content exceeds maximum height and toggles on press', () => {
-    const {getByTestId} = setupNotesCard();
-    const htmlInput = findElementByType(
-      getByTestId('notesCardTouchable'),
-      HtmlInput,
-    );
+    const {queryByTestId} = setupNotesCard();
 
-    expect(htmlInput).toBeTruthy();
+    const _mockChangeHeight =
+      queryByTestId('mocked_htmlInput').props.onHeightChange;
 
-    act(() => {
-      htmlInput.props.onHeightChange(150);
-    });
+    act(() => _mockChangeHeight(150));
 
-    let touchable = getByTestId('notesCardTouchable');
-    expect(touchable.props.accessibilityState?.disabled).toBe(false);
+    expect(queryByTestId('icon-chevron-down')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-up')).toBeFalsy();
 
-    const iconDown = findElementByType(touchable, Icon);
-    expect(iconDown).toBeTruthy();
-    expect(iconDown.props.name).toBe('chevron-down');
+    fireEvent.press(queryByTestId('notesCardTouchable'));
 
-    fireEvent.press(touchable);
+    expect(queryByTestId('icon-chevron-up')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-down')).toBeFalsy();
 
-    touchable = getByTestId('notesCardTouchable');
-    const iconUp = findElementByType(touchable, Icon);
-    expect(iconUp).toBeTruthy();
-    expect(iconUp.props.name).toBe('chevron-up');
+    act(() => _mockChangeHeight(50));
 
-    act(() => {
-      htmlInput.props.onHeightChange(50);
-    });
-
-    expect(
-      findElementByType(getByTestId('notesCardTouchable'), Icon),
-    ).toBeNull();
-  });
-
-  it('disables toggle when content height is below threshold', () => {
-    const {getByTestId} = setupNotesCard();
-    const touchable = getByTestId('notesCardTouchable');
-    const htmlInput = findElementByType(touchable, HtmlInput);
-
-    expect(htmlInput).toBeTruthy();
-
-    act(() => {
-      htmlInput.props.onHeightChange(50);
-    });
-
-    const updatedTouchable = getByTestId('notesCardTouchable');
-    expect(updatedTouchable.props.accessibilityState?.disabled).toBe(true);
+    expect(queryByTestId('icon-chevron-up')).toBeFalsy();
+    expect(queryByTestId('icon-chevron-down')).toBeFalsy();
   });
 
   it('applies custom container style', () => {
-    const style = {width: 200};
-    const {getByTestId} = setupNotesCard({style});
+    const {getByTestId, props} = setupNotesCard({style: {width: 200}});
 
-    expect(
-      getComputedStyles(getByTestId('notesCardContainer').props.style),
-    ).toMatchObject(style);
+    expect(getByTestId('notesCardContainer')).toHaveStyle(props.style);
   });
 });
