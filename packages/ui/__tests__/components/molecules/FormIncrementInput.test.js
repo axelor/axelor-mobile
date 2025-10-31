@@ -18,100 +18,69 @@
 
 import React from 'react';
 import {act} from '@testing-library/react-native';
-import {FormIncrementInput, Increment} from '@axelor/aos-mobile-ui';
-import {setup, getDefaultThemeColors, getComputedStyles} from '../../tools';
+import {FormIncrementInput} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
-const findElementByType = (element, type) => {
-  if (!element || !element.props) {
-    return null;
-  }
+jest.mock('../../../lib/components/molecules/Increment/Increment', () => {
+  const {View} = require('react-native');
 
-  if (element.type === type) {
-    return element;
-  }
-
-  const children = React.Children.toArray(element.props.children);
-
-  for (const child of children) {
-    const result = findElementByType(child, type);
-    if (result) {
-      return result;
-    }
-  }
-
-  return null;
-};
+  return props => <View testID="mocked_increment" {...props} />;
+});
 
 describe('FormIncrementInput Component', () => {
   const Colors = getDefaultThemeColors();
-  const baseProps = {
-    title: 'Input Title',
-    defaultValue: 10,
-    onChange: jest.fn(),
-    stepSize: 1,
-  };
 
   const setupFormIncrementInput = overrideProps =>
-    setup({Component: FormIncrementInput, baseProps, overrideProps});
-
-  const getIncrement = getByTestId => {
-    const container = getByTestId('formIncrementContainer');
-    const increment = findElementByType(container, Increment);
-
-    return {container, increment};
-  };
+    setup({
+      Component: FormIncrementInput,
+      baseProps: {
+        title: 'Input Title',
+        defaultValue: 10,
+        onChange: jest.fn(),
+        stepSize: 1,
+      },
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const {getByTestId, getByText} = setupFormIncrementInput();
+    const {getByTestId} = setupFormIncrementInput();
 
     expect(getByTestId('formIncrementContainer')).toBeTruthy();
-    expect(getByText(baseProps.title)).toBeTruthy();
   });
 
   it('renders title and passes default value', () => {
-    const {getByText, getByTestId} = setupFormIncrementInput();
-    const {increment} = getIncrement(getByTestId);
+    const {getByText, getByTestId, props} = setupFormIncrementInput();
 
-    expect(getByText(baseProps.title)).toBeTruthy();
-    expect(increment.props.value).toBe(baseProps.defaultValue);
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByTestId('mocked_increment').props.value).toBe(
+      props.defaultValue,
+    );
   });
 
   it('notifies value changes', () => {
-    const {getByTestId, props} = setupFormIncrementInput({
-      onChange: jest.fn(),
-    });
-    const {increment} = getIncrement(getByTestId);
+    const {getByTestId, props} = setupFormIncrementInput({onChange: jest.fn()});
 
-    act(() => {
-      increment.props.onValueChange(
-        baseProps.defaultValue + baseProps.stepSize,
-      );
-    });
+    const increment = getByTestId('mocked_increment');
 
-    expect(props.onChange).toHaveBeenCalledWith(
-      baseProps.defaultValue + baseProps.stepSize,
-    );
+    const _value = 20;
+    act(() => increment.props.onValueChange(_value));
+
+    expect(props.onChange).toHaveBeenCalledWith(_value);
   });
 
   it('updates styles on focus and blur', () => {
     const {getByTestId} = setupFormIncrementInput();
-    const {increment} = getIncrement(getByTestId);
+    const increment = getByTestId('mocked_increment');
 
-    act(() => {
-      increment.props.onFocus?.();
-    });
+    act(() => increment.props.onFocus());
 
-    let container = getByTestId('formIncrementInnerContainer');
-    expect(getComputedStyles(container.props.style)).toMatchObject({
+    expect(getByTestId('formIncrementInnerContainer')).toHaveStyle({
       borderColor: Colors.primaryColor.background,
     });
 
-    act(() => {
-      increment.props.onBlur?.();
-    });
+    act(() => increment.props.onBlur());
 
-    container = getByTestId('formIncrementInnerContainer');
-    expect(getComputedStyles(container.props.style)).toMatchObject({
+    expect(getByTestId('formIncrementInnerContainer')).toHaveStyle({
       borderColor: Colors.secondaryColor.background,
     });
   });
@@ -122,9 +91,7 @@ describe('FormIncrementInput Component', () => {
       defaultValue: null,
     });
 
-    const container = getByTestId('formIncrementInnerContainer');
-
-    expect(getComputedStyles(container.props.style)).toMatchObject({
+    expect(getByTestId('formIncrementInnerContainer')).toHaveStyle({
       borderColor: Colors.errorColor.background,
     });
   });
@@ -132,17 +99,20 @@ describe('FormIncrementInput Component', () => {
   it('does not apply required styling when value is present', () => {
     const {getByTestId} = setupFormIncrementInput({required: true});
 
-    const container = getByTestId('formIncrementInnerContainer');
-
-    expect(getComputedStyles(container.props.style)).toMatchObject({
+    expect(getByTestId('formIncrementInnerContainer')).toHaveStyle({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
   it('renders readonly increment when requested', () => {
     const {getByTestId} = setupFormIncrementInput({readOnly: true});
-    const {increment} = getIncrement(getByTestId);
 
-    expect(increment.props.readonly).toBe(true);
+    expect(getByTestId('mocked_increment').props.readonly).toBe(true);
+  });
+
+  it('applies custom style when provided', () => {
+    const {getByTestId, props} = setupFormIncrementInput({style: {width: 200}});
+
+    expect(getByTestId('formIncrementContainer')).toHaveStyle(props.style);
   });
 });
