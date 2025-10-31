@@ -81,9 +81,10 @@ const FormIncrementInput = ({
   const handleBlur = useCallback(() => setIsFocused(false), []);
 
   return (
-    <View style={[styles.container, style]}>
+    <View testID="formIncrementContainer" style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <View
+        testID="formIncrementInnerContainer"
         style={[
           commonStyles.filter,
           commonStyles.filterSize,
