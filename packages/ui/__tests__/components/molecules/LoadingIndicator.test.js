@@ -16,42 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {ActivityIndicator} from 'react-native';
-import {shallow} from 'enzyme';
 import {LoadingIndicator} from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
-import {getDefaultThemeColors} from '../../tools';
+import {setup, getDefaultThemeColors} from '../../tools';
 
 describe('LoadingIndicator Component', () => {
   const Colors = getDefaultThemeColors();
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<LoadingIndicator />);
+  const setupLoadingIndicator = () => setup({Component: LoadingIndicator});
 
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('should not render an ActivityIndicator when showActivityIndicator is false', () => {
+  it('does not render the indicator when showActivityIndicator is false', () => {
     jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
       showActivityIndicator: false,
     }));
 
-    const wrapper = shallow(<LoadingIndicator />);
+    const {queryByTestId} = setupLoadingIndicator();
 
-    expect(wrapper.find(ActivityIndicator).exists()).toBe(false);
+    expect(queryByTestId('activityIndicator')).toBeNull();
   });
 
-  it('should render an ActivityIndicator when showActivityIndicator is true', () => {
+  it('renders the indicator with the theme color when showActivityIndicator is true', () => {
     jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
       showActivityIndicator: true,
     }));
 
-    const wrapper = shallow(<LoadingIndicator />);
+    const {getByTestId} = setupLoadingIndicator();
+    const indicator = getByTestId('activityIndicator');
 
-    expect(wrapper.find(ActivityIndicator).exists()).toBe(true);
-    expect(wrapper.find(ActivityIndicator).prop('color')).toBe(
-      Colors.primaryColor.background,
-    );
+    expect(indicator).toBeTruthy();
+    expect(indicator.props.color).toBe(Colors.primaryColor.background);
   });
 });
