@@ -57,7 +57,8 @@ const Tab = ({
       onPress={handleChangeTab}
       disabled={disabled || isActive}
       style={[styles.tab, isActive ? styles.actifTab : styles.inactifTab]}
-      activeOpacity={0.8}>
+      activeOpacity={0.8}
+      testID="tabTouchable">
       <Text
         style={isActive ? styles.boldTitle : null}
         fontSize={16}
@@ -110,7 +111,7 @@ const PanelTabs = ({tabs}: {tabs: TabProps[]}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="panelTabsContainer">
       <View style={styles.tabs}>{tabsComponent}</View>
       <View style={styles.panel}>{panelComponent}</View>
     </View>

@@ -16,30 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
-import {Label, WarningCard} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {WarningCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('WarningCard Component', () => {
-  it('should render without crashing', () => {
-    const wrapper = shallow(<WarningCard />);
+  const setupWarningCard = overrideProps =>
+    setup({
+      Component: WarningCard,
+      baseProps: {errorMessage: 'Error message'},
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupWarningCard();
+
+    expect(getByTestId('labelContainer')).toBeTruthy();
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<WarningCard style={customStyle} />);
+    const {getByTestId, props} = setupWarningCard({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(Label))).toMatchObject(customStyle);
+    expect(getByTestId('labelContainer')).toHaveStyle(props.style);
   });
 
   it('should render errorMessage when provided', () => {
-    const errorMessage = 'Error';
-    const wrapper = shallow(<WarningCard errorMessage={errorMessage} />);
+    const {getByText, props} = setupWarningCard();
 
-    expect(wrapper.find(Label).prop('message')).toBe(errorMessage);
-    expect(wrapper.find(Label).prop('type')).toBe('error');
+    expect(getByText(props.errorMessage)).toBeTruthy();
   });
 });

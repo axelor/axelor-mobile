@@ -144,13 +144,14 @@ const ChipSelect = ({
   }
 
   return (
-    <View style={[styles.chipContainer, style]}>
+    <View style={[styles.chipContainer, style]} testID="chipSelectContainer">
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}>
         {showClearButton && (
           <Button
+            testID="chipSelectClearButton"
             iconName="trash"
             color={
               selectedChip.length > 0

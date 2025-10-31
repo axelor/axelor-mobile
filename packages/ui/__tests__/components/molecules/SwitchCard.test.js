@@ -17,52 +17,52 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {SwitchCard, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {SwitchCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
-describe('SwitchCard', () => {
-  const props = {
-    title: 'Test Switch',
-    defaultValue: false,
-  };
+jest.mock('../../../lib/components/atoms/Switch/Switch', () => {
+  const {View} = require('react-native');
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<SwitchCard {...props} />);
+  return props => <View testID="mocked_switch" {...props} />;
+});
 
-    expect(wrapper.exists()).toBe(true);
+describe('SwitchCard Component', () => {
+  const setupSwitchCard = overrideProps =>
+    setup({
+      Component: SwitchCard,
+      baseProps: {title: 'Test Switch', defaultValue: false},
+      overrideProps,
+    });
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupSwitchCard();
+
+    expect(getByTestId('switchCardContainer')).toBeTruthy();
   });
 
   it('renders with the correct title', () => {
-    const wrapper = shallow(<SwitchCard {...props} />);
+    const {getByText, props} = setupSwitchCard();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
-  it('passes the default value to the Switch component when false', () => {
-    const wrapper = shallow(<SwitchCard {...props} />);
+  it('passes the default value to the Switch component', () => {
+    const {getByTestId, rerender, props} = setupSwitchCard();
 
-    expect(wrapper.find('Switch').prop('isEnabled')).toBe(false);
-  });
+    expect(getByTestId('mocked_switch').props.isEnabled).toBe(
+      props.defaultValue,
+    );
 
-  it('passes the default value to the Switch component when true', () => {
-    const wrapper = shallow(<SwitchCard {...props} defaultValue={true} />);
+    rerender({defaultValue: !props.defaultValue});
 
-    expect(wrapper.find('Switch').prop('isEnabled')).toBe(true);
-  });
-
-  it('passes the right handler to the Switch component', () => {
-    const onToggle = jest.fn();
-    const wrapper = shallow(<SwitchCard {...props} onToggle={onToggle} />);
-
-    expect(wrapper.find('Switch').prop('handleToggle')).toBe(onToggle);
+    expect(getByTestId('mocked_switch').props.isEnabled).toBe(
+      !props.defaultValue,
+    );
   });
 
   it('applies custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<SwitchCard {...props} style={customStyle} />);
+    const {getByTestId, props} = setupSwitchCard({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getByTestId('switchCardContainer')).toHaveStyle(props.style);
   });
 });

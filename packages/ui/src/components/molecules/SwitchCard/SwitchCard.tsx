@@ -50,7 +50,8 @@ const SwitchCard = ({
         commonStyles.filterSize,
         styles.container,
         style,
-      ]}>
+      ]}
+      testID="switchCardContainer">
       <Text numberOfLines={2} style={styles.text}>
         {title}
       </Text>

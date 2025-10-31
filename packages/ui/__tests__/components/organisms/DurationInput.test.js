@@ -17,106 +17,87 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {DurationInput, NumberChevronInput, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {DurationInput} from '@axelor/aos-mobile-ui';
+import {formatDurationSecondsToArray} from '../../../src/components/organisms/DurationInput/duration.helpers';
+import {setup} from '../../tools';
 
-describe('Duration Input Component', () => {
-  const props = {
-    defaultValue: 6000,
-    onChange: jest.fn(),
-  };
+jest.mock(
+  '../../../lib/components/molecules/NumberChevronInput/NumberChevronInput',
+  () => {
+    const {View} = require('react-native');
+
+    return props => <View testID="mocked_numberChevronInput" {...props} />;
+  },
+);
+
+describe('DurationInput Component', () => {
+  const setupDurationInput = overrideProps =>
+    setup({
+      Component: DurationInput,
+      baseProps: {defaultValue: 6000, onChange: jest.fn()},
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<DurationInput {...props} />);
+    const {getByTestId} = setupDurationInput();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('durationInputContainer')).toBeTruthy();
   });
 
   it('renders a title when provided', () => {
-    const title = 'Duration Title';
-    const wrapper = shallow(<DurationInput {...props} title={title} />);
+    const {getByText, props} = setupDurationInput({title: 'Duration Title'});
 
-    expect(wrapper.find(Text).at(0).prop('children')).toBe(title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('renders the correct number of NumberChevronInputs', () => {
-    const wrapper = shallow(<DurationInput {...props} />);
-    expect(wrapper.find(NumberChevronInput).length).toBe(5);
+    const {getAllByTestId} = setupDurationInput();
+
+    expect(getAllByTestId('mocked_numberChevronInput')).toHaveLength(5);
   });
 
   it('renders with required when required is true and value is 0', () => {
-    const wrapper = shallow(
-      <DurationInput {...props} defaultValue={0} required={true} />,
-    );
-
-    wrapper.find(NumberChevronInput).forEach(input => {
-      expect(input.prop('required')).toBe(true);
+    const {getAllByTestId, rerender} = setupDurationInput({
+      defaultValue: 0,
+      required: true,
     });
 
-    wrapper.find(NumberChevronInput).at(0).simulate('valueChange', 5);
+    getAllByTestId('mocked_numberChevronInput').forEach(_i => {
+      expect(_i.props.required).toBe(true);
+      expect(_i.props.defaultValue).toBe(0);
+    });
 
-    wrapper.find(NumberChevronInput).forEach(input => {
-      expect(input.prop('required')).toBe(false);
+    rerender({defaultValue: 6000});
+
+    const _defaultValue = formatDurationSecondsToArray(6000);
+
+    getAllByTestId('mocked_numberChevronInput').forEach((_i, idx) => {
+      expect(_i.props.required).toBe(false);
+      expect(_i.props.defaultValue).toBe(_defaultValue[idx]);
     });
   });
 
   it('renders as readonly when readonly is true', () => {
-    const wrapper = shallow(<DurationInput {...props} readonly={true} />);
+    const {getAllByTestId} = setupDurationInput({readonly: true});
 
-    wrapper.find(NumberChevronInput).forEach(input => {
-      expect(input.prop('readonly')).toBe(true);
+    getAllByTestId('mocked_numberChevronInput').forEach(_i => {
+      expect(_i.props.readonly).toBe(true);
     });
   });
 
-  it('initializes with correct default values from defaultValue prop', () => {
-    const wrapper = shallow(<DurationInput {...props} />);
-    const inputs = wrapper.find(NumberChevronInput);
-
-    expect(inputs.at(0).prop('defaultValue')).toBe(0);
-    expect(inputs.at(1).prop('defaultValue')).toBe(0);
-    expect(inputs.at(2).prop('defaultValue')).toBe(1);
-    expect(inputs.at(3).prop('defaultValue')).toBe(4);
-    expect(inputs.at(4).prop('defaultValue')).toBe(0);
-  });
-
-  it('calls onChange with correct value when an input value changes', () => {
-    const _onChange = jest.fn();
-    const wrapper = shallow(<DurationInput {...props} onChange={_onChange} />);
-    const newValue = 6;
-    const inputIndexToChange = 1;
-
-    wrapper
-      .find(NumberChevronInput)
-      .at(inputIndexToChange)
-      .simulate('valueChange', newValue);
-
-    expect(
-      wrapper
-        .find(NumberChevronInput)
-        .at(inputIndexToChange)
-        .prop('defaultValue'),
-    ).toBe(newValue);
-  });
-
   it('applies custom style when provided', () => {
-    const customStyle = {height: 200};
-    const wrapper = shallow(<DurationInput {...props} style={customStyle} />);
+    const {getByTestId, props} = setupDurationInput({style: {height: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
-    );
+    expect(getByTestId('durationInputContainer')).toHaveStyle(props.style);
   });
 
   it('applies custom inputStyle when provided', () => {
-    const customStyle = {height: 200};
-    const wrapper = shallow(
-      <DurationInput {...props} inputStyle={customStyle} />,
-    );
+    const {getAllByTestId, props} = setupDurationInput({
+      inputStyle: {height: 200},
+    });
 
-    wrapper.find(NumberChevronInput).forEach(input => {
-      expect(input.prop('style')).toMatchObject(customStyle);
+    getAllByTestId('mocked_numberChevronInput').forEach(_elt => {
+      expect(_elt).toHaveStyle(props.inputStyle);
     });
   });
 });

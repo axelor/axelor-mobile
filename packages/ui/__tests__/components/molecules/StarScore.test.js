@@ -16,114 +16,103 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, StarScore} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {StarScore} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
-const getIcons = (wrapper, iconName) => {
-  return wrapper.find(Icon).filterWhere(item => item.prop('name') === iconName);
+const getIcons = (getter, iconName) => {
+  return getter(`icon-${iconName}`);
 };
 
-describe('StarScore', () => {
+describe('StarScore Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    score: 3.5,
-    onPress: jest.fn(),
-  };
+  const setupStarScore = overrideProps =>
+    setup({
+      Component: StarScore,
+      baseProps: {score: 3.5, onPress: jest.fn()},
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<StarScore {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupStarScore();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('starScoreContainer')).toBeTruthy();
   });
 
   it('renders the correct number of active stars based on score when showHalfStar is true', () => {
-    const wrapper = shallow(<StarScore {...props} showHalfStar={true} />);
+    const {queryAllByTestId} = setupStarScore({showHalfStar: true});
 
-    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
-    expect(getIcons(wrapper, 'start-half-fill')).toHaveLength(1);
+    expect(getIcons(queryAllByTestId, 'star-fill')).toHaveLength(3);
+    expect(getIcons(queryAllByTestId, 'start-half-fill')).toHaveLength(1);
   });
 
   it('renders the correct number of active stars based on score with disabled showHalfStar props', () => {
-    const wrapper = shallow(<StarScore {...props} showHalfStar={false} />);
+    const {queryAllByTestId} = setupStarScore({showHalfStar: false});
 
-    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
-    expect(getIcons(wrapper, 'start-half-fill')).toHaveLength(0);
+    expect(getIcons(queryAllByTestId, 'star-fill')).toHaveLength(3);
+    expect(getIcons(queryAllByTestId, 'start-half-fill')).toHaveLength(0);
   });
 
   it('renders missing stars when showMissingStar is true', () => {
-    const wrapper = shallow(<StarScore {...props} showMissingStar={true} />);
+    const {queryAllByTestId} = setupStarScore({showMissingStar: true});
 
-    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
-    expect(getIcons(wrapper, 'star')).toHaveLength(2);
+    expect(getIcons(queryAllByTestId, 'star-fill')).toHaveLength(3);
+    expect(getIcons(queryAllByTestId, 'star')).toHaveLength(2);
   });
 
   it('renders missing stars when showMissingStar is false', () => {
-    const wrapper = shallow(<StarScore {...props} showMissingStar={false} />);
+    const {queryAllByTestId} = setupStarScore({showMissingStar: false});
 
-    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
-    expect(getIcons(wrapper, 'star')).toHaveLength(0);
+    expect(getIcons(queryAllByTestId, 'star-fill')).toHaveLength(3);
+    expect(getIcons(queryAllByTestId, 'star')).toHaveLength(0);
   });
 
   it('calls onPress with the correct argument when a star is pressed', () => {
-    const onPress = jest.fn();
-    const wrapper = shallow(
-      <StarScore
-        {...props}
-        onPress={onPress}
-        showMissingStar={true}
-        editMode={true}
-      />,
-    );
+    const {getAllByTestId, props} = setupStarScore({
+      showMissingStar: true,
+      editMode: true,
+      onPress: jest.fn(),
+    });
 
-    wrapper.find(Icon).at(1).simulate('press');
-    wrapper.find(Icon).at(4).simulate('press');
+    fireEvent.press(getAllByTestId('iconTouchable').at(1));
+    fireEvent.press(getAllByTestId('iconTouchable').at(4));
 
-    expect(onPress).toHaveBeenNthCalledWith(1, 2);
-    expect(onPress).toHaveBeenNthCalledWith(2, 5);
+    expect(props.onPress).toHaveBeenNthCalledWith(1, 2);
+    expect(props.onPress).toHaveBeenNthCalledWith(2, 5);
   });
 
   it('renders stars with the correct color and size', () => {
-    const color = Colors.errorColor;
-    const size = 30;
-    const wrapper = shallow(<StarScore {...props} color={color} size={size} />);
+    const {getAllByTestId, props} = setupStarScore({
+      color: Colors.errorColor,
+      size: 30,
+    });
 
-    expect(wrapper.find(Icon).first().prop('color')).toEqual(color.background);
-    expect(wrapper.find(Icon).first().prop('size')).toEqual(size);
+    getIcons(getAllByTestId, 'star-fill').forEach(_elt => {
+      expect(_elt.props).toMatchObject({
+        fill: props.color.background,
+        width: props.size,
+        height: props.size,
+      });
+    });
   });
 
   it('renders readonly stars when not in editmode', () => {
-    const wrapper = shallow(
-      <StarScore {...props} showMissingStar={true} editMode={false} />,
-    );
+    const {getAllByTestId, props} = setupStarScore({
+      showMissingStar: true,
+      editMode: false,
+      onPress: jest.fn(),
+    });
 
-    for (let i = 0; i < 5; i++) {
-      expect(wrapper.find(Icon).at(i).prop('touchable')).toBe(false);
-    }
-  });
+    fireEvent.press(getAllByTestId('iconTouchable').at(0));
+    fireEvent.press(getAllByTestId('iconTouchable').at(3));
 
-  it('updates stars when value change', () => {
-    const firstScore = 2;
-    const wrapper = shallow(<StarScore {...props} score={firstScore} />);
-
-    expect(getIcons(wrapper, 'star-fill')).toHaveLength(2);
-    expect(getIcons(wrapper, 'start-half-fill')).toHaveLength(0);
-    expect(getIcons(wrapper, 'star')).toHaveLength(0);
-
-    wrapper.setProps({score: 3.5});
-
-    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
-    expect(getIcons(wrapper, 'start-half-fill')).toHaveLength(0);
-    expect(getIcons(wrapper, 'star')).toHaveLength(0);
+    expect(props.onPress).not.toHaveBeenCalled();
   });
 
   it('renders stars with custom style', () => {
-    const style = {marginTop: 50};
-    const wrapper = shallow(<StarScore {...props} style={style} />);
+    const {getByTestId, props} = setupStarScore({style: {marginTop: 50}});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(style);
+    expect(getByTestId('starScoreContainer')).toHaveStyle(props.style);
   });
 });

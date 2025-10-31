@@ -101,10 +101,9 @@ const SendMessageBox = ({
 
 const styles = StyleSheet.create({
   messageBox: {
-    width: Dimensions.get('screen').width,
+    width: Dimensions.get('window').width,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
   },
 });
 

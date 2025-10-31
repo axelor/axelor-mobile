@@ -19,7 +19,11 @@
 import React, {useEffect} from 'react';
 import {Icon} from '@axelor/aos-mobile-ui';
 import {useDispatch} from '../../../redux/hooks';
-import {enableCamera, useCameraValueByKey} from '../../../features/cameraSlice';
+import {
+  clearPhoto,
+  enableCamera,
+  useCameraValueByKey,
+} from '../../../features/cameraSlice';
 
 interface PictureIconProps {
   style?: any;
@@ -35,8 +39,9 @@ const PictureIcon = ({style, size, cameraKey, onChange}: PictureIconProps) => {
   useEffect(() => {
     if (photo) {
       onChange(photo);
+      dispatch(clearPhoto());
     }
-  }, [onChange, photo]);
+  }, [dispatch, onChange, photo]);
 
   return (
     <Icon

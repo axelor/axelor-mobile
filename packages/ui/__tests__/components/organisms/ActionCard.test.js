@@ -17,65 +17,74 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {ActionCard, InfoButton, Card} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {View} from 'react-native';
+import {ActionCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
+
+jest.mock('../../../lib/components/organisms/InfoButton/InfoButton', () => {
+  const {View} = require('react-native');
+
+  return props => <View testID="mocked_infoButton" {...props} />;
+});
 
 describe('ActionCard Component', () => {
-  const actionList = [
-    {iconName: 'edit', onPress: jest.fn(), key: '1'},
-    {iconName: 'delete', onPress: jest.fn(), key: '2'},
-    {iconName: 'share', onPress: jest.fn(), key: '3'},
-  ];
-  const props = {
-    children: <Card testID="childrenComponent">Card Content</Card>,
-    actionList,
-    translator: jest.fn(key => key),
-  };
+  const setupActionCard = overrideProps =>
+    setup({
+      Component: ActionCard,
+      baseProps: {
+        children: <View testID="childrenComponent" />,
+        actionList: [
+          {iconName: 'pencil-fill', onPress: jest.fn(), key: '1'},
+          {iconName: 'check-lg', onPress: jest.fn(), key: '2'},
+          {iconName: 'plus-lg', onPress: jest.fn(), key: '3'},
+        ],
+        translator: jest.fn(key => key),
+        forceActionsDisplay: true,
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<ActionCard {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupActionCard();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('actionCardContainer')).toBeTruthy();
   });
 
   it('should render children correctly', () => {
-    const wrapper = shallow(<ActionCard {...props} />);
+    const {getByTestId} = setupActionCard();
 
-    expect(wrapper.find('[testID="childrenComponent"]')).toHaveLength(1);
+    expect(getByTestId('childrenComponent')).toBeTruthy();
   });
 
   it('should render InfoButton components for each action in the list', () => {
-    const wrapper = shallow(<ActionCard {...props} />);
+    const {getAllByTestId, props} = setupActionCard();
 
-    expect(wrapper.find(InfoButton).length).toBe(actionList.length);
-  });
+    const _buttonElts = getAllByTestId('mocked_infoButton');
 
-  it('should call the appropriate onPress function when an action is pressed', () => {
-    const wrapper = shallow(<ActionCard {...props} />);
-
-    wrapper.find(InfoButton).at(0).simulate('press');
-    expect(actionList[0].onPress).toHaveBeenCalled();
+    expect(_buttonElts).toHaveLength(props.actionList.length);
+    props.actionList.forEach((_a, idx) => {
+      expect(_buttonElts.at(idx).props).toMatchObject({
+        iconName: _a.iconName,
+        onPress: _a.onPress,
+      });
+    });
   });
 
   it('should render InfoButton components for quick action if present', () => {
-    const quickAction = {iconName: 'heart', onPress: jest.fn()};
-    const wrapper = shallow(
-      <ActionCard {...props} quickAction={quickAction} />,
+    const {getAllByTestId, props} = setupActionCard({
+      quickAction: {iconName: 'heart', onPress: jest.fn()},
+    });
+
+    const _buttonElts = getAllByTestId('mocked_infoButton');
+    expect(_buttonElts).toHaveLength(props.actionList.length + 1);
+    expect(_buttonElts.at(props.actionList.length).props).toMatchObject(
+      props.quickAction,
     );
-
-    expect(wrapper.find(InfoButton).length).toBe(actionList.length + 1);
-
-    const quickActionWrapper = wrapper.find(InfoButton).at(actionList.length);
-    expect(quickActionWrapper.props()).toMatchObject(quickAction);
   });
 
   it('should apply custom style to the container if provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<ActionCard {...props} style={customStyle} />);
+    const {getByTestId, props} = setupActionCard({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find('View').at(0))).toMatchObject(
-      customStyle,
-    );
+    expect(getByTestId('actionCardContainer')).toHaveStyle(props.style);
   });
 });

@@ -50,10 +50,11 @@ function UnorderedList({
 
   return (
     <FlatList
+      testID="unorderedListFlatList"
       data={renderData}
       style={[styles.container, style]}
       renderItem={({item}) => (
-        <View style={styles.item}>
+        <View style={styles.item} testID="unorderedListItemContainer">
           <Text style={styles.dot}>{'\u2022 '}</Text>
           {renderItem({item})}
         </View>

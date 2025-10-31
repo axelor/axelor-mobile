@@ -127,7 +127,8 @@ const MultiValuePicker = ({
         styles.container,
         Platform.OS === 'ios' && pickerIsOpen ? styles.containerZIndex : null,
         style,
-      ]}>
+      ]}
+      testID="multiValuePickerContainer">
       {!checkNullString(title) && (
         <Text style={[styles.title, styleTxt]}>{title}</Text>
       )}

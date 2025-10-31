@@ -70,12 +70,12 @@ const KeyboardAvoidingScrollView = ({
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[getZIndexStyles(10), style]}
         refreshControl={
-          refresh != null && (
+          refresh != null ? (
             <RefreshControl
               refreshing={refresh.loading}
               onRefresh={refresh.fetcher}
             />
-          )
+          ) : undefined
         }>
         {children}
       </ScrollView>

@@ -18,13 +18,13 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from '../../../redux/hooks';
 import {
   Button,
   KeyboardAvoidingScrollView,
   Screen,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '../../../redux/hooks';
 import {useTranslator} from '../../../i18n';
 import {usePermitted} from '../../../permissions';
 import {

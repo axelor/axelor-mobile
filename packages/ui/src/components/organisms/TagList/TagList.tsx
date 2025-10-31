@@ -84,7 +84,7 @@ const TagList = ({
   }
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="tagListContainer">
       {!checkNullString(title) && <Text style={styles.text}>{title} :</Text>}
       {isEmpty
         ? renderEmptyState()

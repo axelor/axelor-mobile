@@ -46,13 +46,13 @@ const HtmlInput = ({
   containerStyle,
   editorBackgroundColor,
   title,
-  placeholder = '',
-  onChange = () => {},
-  defaultInput = '',
+  placeholder,
+  onChange,
+  defaultInput,
   readonly = false,
-  onHeightChange = () => {},
-  onFocus = () => {},
-  onBlur = () => {},
+  onHeightChange,
+  onFocus,
+  onBlur,
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
   const editor = useRef(null);
@@ -69,12 +69,12 @@ const HtmlInput = ({
 
   const handleFocus = useCallback(() => {
     setIsFocused(true);
-    onFocus();
+    onFocus?.();
   }, [onFocus]);
 
   const handleBlur = useCallback(() => {
     setIsFocused(false);
-    onBlur();
+    onBlur?.();
   }, [onBlur]);
 
   useEffect(() => {
@@ -110,7 +110,6 @@ const HtmlInput = ({
             key={key}
             ref={editor}
             placeholder={placeholder}
-            androidHardwareAccelerationDisabled={true}
             androidLayerType="software"
             initialContentHTML={defaultInput}
             onChange={onChange}
@@ -138,11 +137,11 @@ const HtmlInput = ({
           actions={[
             actions.setBold,
             actions.setItalic,
+            actions.setUnderline,
+            actions.setStrikethrough,
             actions.insertBulletsList,
             actions.insertOrderedList,
             actions.insertLink,
-            actions.setStrikethrough,
-            actions.setUnderline,
             actions.checkboxList,
             actions.undo,
             actions.redo,

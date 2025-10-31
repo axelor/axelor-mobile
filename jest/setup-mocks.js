@@ -15,38 +15,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/* eslint-disable no-undef */
 
-import React from 'react';
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native/jest/setup';
 
 jest.useFakeTimers();
 
-jest.mock('react-native', () => {
-  const RN = jest.requireActual('react-native');
-
-  const KeyboardAvoidingView = ({children, ...props}) => {
-    return (
-      <RN.View testID="keyboardAvoidingView" {...props}>
-        {children}
-      </RN.View>
-    );
-  };
-
-  return {
-    ...RN,
-    KeyboardAvoidingView,
-  };
-});
-
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native/Libraries/BatchedBridge/NativeModules');
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('react-native/Libraries/Settings/NativeSettingsManager', () => ({
   settings: {},
-  getConstants: () => ({
-    settings: {},
-  }),
+  getConstants: () => ({settings: {}}),
 }));
 jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
   const turboModuleRegistry = jest.requireActual(
@@ -55,10 +35,11 @@ jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
   return {
     ...turboModuleRegistry,
     getEnforcing: name => {
-      if (name === 'RNDocumentPicker') {
-        return null;
+      try {
+        return turboModuleRegistry.getEnforcing(name);
+      } catch (e) {
+        return {};
       }
-      return turboModuleRegistry.getEnforcing(name);
     },
   };
 });
@@ -120,20 +101,7 @@ jest.mock('react-native-pell-rich-editor', () => ({
   RichToolbar: jest.fn(),
 }));
 
-jest.mock('react-native-reanimated', () => {
-  const View = require('react-native').View;
-
-  return {
-    useSharedValue: jest.fn,
-    useAnimatedStyle: jest.fn,
-    useAnimatedRef: () => ({current: null}),
-    View: View,
-    default: {
-      call: jest.fn(),
-      createAnimatedComponent: Component => Component,
-    },
-  };
-});
+require('react-native-reanimated').setUpTests();
 
 jest.mock('react-native-share', () => ({
   turboModuleRegistry: jest.fn(),

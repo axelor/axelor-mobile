@@ -57,7 +57,7 @@ const GridView = ({
 
   const renderHeader = useCallback(() => {
     return (
-      <View style={styles.rowContainer}>
+      <View style={styles.rowContainer} testID="gridViewHeaderContainer">
         {columns.map((_c, idx, self) => (
           <CellView
             key={_c.key}
@@ -76,7 +76,10 @@ const GridView = ({
   const renderRow = useCallback(
     (row, rowIdx, dataArray) => {
       return (
-        <View key={rowIdx} style={styles.rowContainer}>
+        <View
+          key={rowIdx}
+          style={styles.rowContainer}
+          testID="gridViewRowContainer">
           {columns.map((_c, idx, self) => (
             <CellView
               key={`${_c.key} - ${rowIdx}`}
@@ -97,7 +100,7 @@ const GridView = ({
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="gridViewContainer">
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <Card style={[styles.cardContainer, style]}>
         <ScrollView horizontal contentContainerStyle={styles.scrollView}>

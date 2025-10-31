@@ -17,101 +17,99 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {GroupByScrollList, ScrollList, Text} from '@axelor/aos-mobile-ui';
+import {View} from 'react-native';
+import {within} from '@testing-library/react-native';
+import {GroupByScrollList} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
-describe('GroupByScrollList', () => {
-  const data = [
-    {id: 1, name: 'Aa'},
-    {id: 2, name: 'Ab'},
-    {id: 3, name: 'Ba'},
-    {id: 3, name: 'Ca'},
-    {id: 3, name: 'Cb'},
-  ];
+const DATA = [
+  {id: 1, name: 'Aa'},
+  {id: 2, name: 'Ab'},
+  {id: 3, name: 'Ba'},
+  {id: 4, name: 'Ca'},
+  {id: 5, name: 'Cb'},
+];
 
-  const renderItem = ({item}) => <Text>{item.name}</Text>;
-  const fetchData = jest.fn();
-  const separatorCondition = (prevItem, currentItem) =>
-    prevItem.name[0] !== currentItem.name[0];
-
-  const fetchTopIndicator = jest.fn(currentItem => ({
-    title: currentItem.name[0].toUpperCase(),
-    numberItems: data.filter(item => item.name[0] === currentItem.name[0])
-      .length,
-  }));
-
-  const fetchBottomIndicator = jest.fn(prevItem => ({
-    text: `Ended of: ${prevItem.name}`,
-  }));
-
-  const props = {
-    loadingList: false,
-    data,
-    renderItem,
-    fetchData,
-    moreLoading: false,
-    isListEnd: false,
-    filter: false,
-    translator: key => key,
-    horizontal: false,
-    disabledRefresh: false,
-    separatorCondition,
-    fetchTopIndicator,
-    fetchBottomIndicator,
-  };
-
-  it('should render without crashing', () => {
-    const wrapper = shallow(<GroupByScrollList {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('should render ScrollList with the correct props', () => {
-    const wrapper = shallow(<GroupByScrollList {...props} />);
-
-    expect(wrapper.find(ScrollList)).toHaveLength(1);
-    expect(wrapper.find(ScrollList).props()).toMatchObject({
-      loadingList: props.loadingList,
-      data: props.data,
-      fetchData: props.fetchData,
-      moreLoading: props.moreLoading,
-      isListEnd: props.isListEnd,
-      filter: props.filter,
-      translator: props.translator,
-      horizontal: props.horizontal,
-      disabledRefresh: props.disabledRefresh,
+describe('GroupByScrollList Component', () => {
+  const setupGroupByScrollList = overrideProps =>
+    setup({
+      Component: GroupByScrollList,
+      baseProps: {
+        loadingList: false,
+        moreLoading: false,
+        isListEnd: false,
+        data: DATA,
+        renderItem: ({index}) => <View testID={`item-${index}`} />,
+        fetchData: jest.fn(),
+        translator: key => key,
+        separatorCondition: (prevItem, currentItem) =>
+          prevItem.name[0] !== currentItem.name[0],
+      },
+      overrideProps,
     });
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupGroupByScrollList();
+
+    expect(getByTestId('scrollListContainer')).toBeTruthy();
   });
 
   it('should render Top and Bottom Separators correctly', () => {
-    const wrapper = shallow(<GroupByScrollList {...props} />);
+    const {queryAllByTestId, getAllByTestId, props} = setupGroupByScrollList({
+      fetchTopIndicator: jest.fn(currentItem => ({
+        title: currentItem.name[0].toUpperCase(),
+        numberItems: DATA.filter(item => item.name[0] === currentItem.name[0])
+          .length,
+      })),
+      fetchBottomIndicator: jest.fn(prevItem => ({
+        text: `Ended of: ${prevItem.name}`,
+      })),
+    });
 
-    data.forEach((item, index) => {
-      const renderItemElement = wrapper
-        .find(ScrollList)
-        .renderProp('renderItem')({item, index});
+    const _groupByItems = getAllByTestId('groupByScrollListItemContainer');
 
-      const prevItem = index !== 0 ? data[index - 1] : null;
+    expect(queryAllByTestId(/^item-.*/)).toHaveLength(props.data.length);
+    expect(_groupByItems).toHaveLength(props.data.length);
 
-      const isFirstItem = index === 0;
-      const isLastItem = index === data.length - 1;
-      const isSeparator = !isFirstItem && separatorCondition(prevItem, item);
+    props.data.forEach((_i, idx, self) => {
+      const prevItem = idx !== 0 ? self[idx - 1] : null;
 
-      if (isFirstItem || isLastItem || isSeparator) {
+      const isFirst = idx === 0;
+      const isLast = idx === self.length - 1;
+      const isSeparator = !isFirst && props.separatorCondition(prevItem, _i);
+
+      if (isFirst || isLast || isSeparator) {
         if (isSeparator) {
-          expect(renderItemElement.find('TopSeparator').length).toBe(1);
-          expect(fetchTopIndicator).toHaveBeenCalledWith(item);
-          expect(renderItemElement.find('BottomSeparator').length).toBe(1);
-          expect(fetchBottomIndicator).toHaveBeenCalledWith(prevItem);
+          expect(
+            within(_groupByItems.at(idx)).getByTestId('topSeparatorContainer'),
+          ).toBeTruthy();
+          expect(props.fetchTopIndicator).toHaveBeenCalledWith(_i);
+
+          expect(
+            within(_groupByItems.at(idx)).getByTestId(
+              'bottomSeparatorContainer',
+            ),
+          ).toBeTruthy();
+          expect(props.fetchBottomIndicator).toHaveBeenCalledWith(prevItem);
         }
 
-        if (isLastItem) {
-          expect(renderItemElement.find('BottomSeparator').length).toBe(1);
-          expect(fetchBottomIndicator).toHaveBeenCalledWith(item);
+        if (isLast) {
+          expect(
+            within(_groupByItems.at(idx)).getByTestId(
+              'bottomSeparatorContainer',
+            ),
+          ).toBeTruthy();
+          expect(props.fetchBottomIndicator).toHaveBeenCalledWith(_i);
         }
       } else {
-        expect(renderItemElement.find('TopSeparator').length).toBe(0);
-        expect(renderItemElement.find('BottomSeparator').length).toBe(0);
+        expect(
+          within(_groupByItems.at(idx)).queryByTestId('topSeparatorContainer'),
+        ).toBeFalsy();
+        expect(
+          within(_groupByItems.at(idx)).queryByTestId(
+            'bottomSeparatorContainer',
+          ),
+        ).toBeFalsy();
       }
     });
   });

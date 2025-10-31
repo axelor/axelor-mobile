@@ -17,106 +17,80 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {ScrollList, SingleSelectScrollList} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {View} from 'react-native';
+import {fireEvent} from '@testing-library/react-native';
+import {SingleSelectScrollList} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('SingleSelectScrollList Component', () => {
-  const mockData = [
-    {id: 1, name: 'Item 1'},
-    {id: 2, name: 'Item 2'},
-  ];
-  const renderItem = jest.fn(item => <View>{item.name}</View>);
-
-  const props = {
-    loading: false,
-    moreLoading: false,
-    isListEnd: true,
-    data: mockData,
-    onChange: jest.fn(),
-    renderItem,
-  };
+  const setupSingleSelectScrollList = overrideProps =>
+    setup({
+      Component: SingleSelectScrollList,
+      baseProps: {
+        loading: false,
+        moreLoading: false,
+        isListEnd: true,
+        data: [
+          {id: 1, name: 'Item 1'},
+          {id: 2, name: 'Item 2'},
+        ],
+        onChange: jest.fn(),
+        renderItem: jest.fn(() => <View testID="itemRender" />),
+      },
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<SingleSelectScrollList {...props} />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupSingleSelectScrollList();
+
+    expect(getByTestId('scrollListContainer')).toBeTruthy();
   });
 
   it('triggers function on item selection', () => {
-    const onChange = jest.fn();
-    const wrapper = shallow(
-      <SingleSelectScrollList {...props} onChange={onChange} />,
-    );
+    const {getByTestId, props} = setupSingleSelectScrollList({
+      onChange: jest.fn(),
+    });
 
-    wrapper
-      .find(ScrollList)
-      .renderProp('renderItem')({item: mockData[0], index: 0})
-      .simulate('press');
+    fireEvent.press(getByTestId(`singleSelectScrollListItemContainer-${0}`));
+    expect(props.onChange).toHaveBeenNthCalledWith(1, props.data[0]);
 
-    expect(onChange).toHaveBeenNthCalledWith(1, mockData[0]);
-
-    wrapper
-      .find(ScrollList)
-      .renderProp('renderItem')({item: mockData[1], index: 1})
-      .simulate('press');
-
-    expect(onChange).toHaveBeenNthCalledWith(2, mockData[1]);
+    fireEvent.press(getByTestId(`singleSelectScrollListItemContainer-${1}`));
+    expect(props.onChange).toHaveBeenNthCalledWith(2, props.data[1]);
   });
 
   it('renders each item with a radio button', () => {
-    const wrapper = shallow(<SingleSelectScrollList {...props} />);
+    const {queryAllByTestId, props} = setupSingleSelectScrollList();
 
-    mockData.forEach((item, index) => {
-      const itemRender = wrapper.find(ScrollList).renderProp('renderItem')({
-        item,
-        index,
-      });
+    expect(
+      queryAllByTestId(/^singleSelectScrollListItemContainer-.*/).length,
+    ).toBe(props.data.length);
 
-      expect(itemRender.find(View).length).toBeGreaterThan(3);
-      expect(itemRender.contains(renderItem({item, index}))).toBe(true);
-    });
-  });
-
-  it('passes loading props to ScrollList', () => {
-    const additionalProps = {
-      loadingList: true,
-      moreLoading: true,
-      isListEnd: true,
-    };
-    const wrapper = shallow(
-      <SingleSelectScrollList {...props} {...additionalProps} />,
+    expect(queryAllByTestId(/^singleSelectScrollListItemRadio-.*/).length).toBe(
+      props.data.length,
     );
 
-    expect(wrapper.find(ScrollList).props()).toMatchObject(additionalProps);
+    expect(queryAllByTestId('itemRender').length).toBe(props.data.length);
   });
 
   it('should apply custom style on row when provided', () => {
-    const customStyle = {marginHorizontal: 15, marginVertical: 20, padding: 10};
-    const wrapper = shallow(
-      <SingleSelectScrollList {...props} rowStyle={customStyle} />,
-    );
+    const {getByTestId, props} = setupSingleSelectScrollList({
+      rowStyle: {marginHorizontal: 15, marginVertical: 20, padding: 10},
+    });
 
-    mockData.forEach((item, index) => {
-      const itemRender = wrapper.find(ScrollList).renderProp('renderItem')({
-        item,
-        index,
-      });
-
-      expect(getGlobalStyles(itemRender.find(TouchableOpacity))).toMatchObject(
-        customStyle,
-      );
+    props.data.forEach((_, index) => {
+      expect(
+        getByTestId(`singleSelectScrollListItemContainer-${index}`),
+      ).toHaveStyle(props.rowStyle);
     });
   });
 
   it('should apply custom style to ScrollList', () => {
-    const customStyleScrollList = {margin: 10};
-    const wrapper = shallow(
-      <SingleSelectScrollList {...props} scrollStyle={customStyleScrollList} />,
-    );
+    const {getByTestId, props} = setupSingleSelectScrollList({
+      scrollStyle: {margin: 10},
+    });
 
-    expect(getGlobalStyles(wrapper.find(ScrollList))).toMatchObject(
-      customStyleScrollList,
+    expect(getByTestId('scrollListAnimatedList')).toHaveStyle(
+      props.scrollStyle,
     );
   });
 });

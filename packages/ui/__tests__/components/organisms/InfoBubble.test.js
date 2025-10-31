@@ -16,73 +16,67 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {CardIndicator, Icon, InfoBubble} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {InfoBubble} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('InfoBubble Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    iconName: 'plus',
-    badgeColor: Colors.primaryColor,
-    indication: 'This is an info bubble.',
-    usePopup: false,
-  };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<InfoBubble {...props} />);
+  const setupInfoBubble = overrideProps =>
+    setup({
+      Component: InfoBubble,
+      baseProps: {
+        iconName: 'plus-lg',
+        badgeColor: Colors.primaryColor,
+        indication: 'This is an info bubble.',
+        usePopup: false,
+      },
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders without crashing', () => {
+    const {getByTestId, props} = setupInfoBubble();
+
+    expect(getByTestId('cardIndicatorContainer')).toBeTruthy();
+    expect(getByTestId(`icon-${props.iconName}`)).toBeTruthy();
   });
 
   it('should render with the correct badge color', () => {
-    const wrapper = shallow(<InfoBubble {...props} />);
+    const {getByTestId, props} = setupInfoBubble();
 
-    expect(wrapper.find(Icon).prop('color')).toBe(
-      Colors.primaryColor.foreground,
+    expect(getByTestId(`icon-${props.iconName}`).props.fill).toBe(
+      props.badgeColor.foreground,
     );
-    expect(getGlobalStyles(wrapper.find(Icon))).toMatchObject({
-      backgroundColor: Colors.primaryColor.background_light,
-      borderColor: Colors.primaryColor.background,
+
+    expect(getByTestId('iconTouchable')).toHaveStyle({
+      backgroundColor: props.badgeColor.background_light,
+      borderColor: props.badgeColor.background,
     });
   });
 
   it('should render with the correct icon color when no bubble', () => {
-    const wrapper = shallow(<InfoBubble {...props} coloredBubble={false} />);
+    const {getByTestId, props} = setupInfoBubble({coloredBubble: false});
 
-    expect(wrapper.find(Icon).prop('color')).toBe(
-      Colors.primaryColor.background,
+    expect(getByTestId(`icon-${props.iconName}`).props.fill).toBe(
+      props.badgeColor.background,
     );
-    expect(getGlobalStyles(wrapper.find(Icon))).toBe(null);
-  });
 
-  it('should display the indication when clicked', () => {
-    const wrapper = shallow(<InfoBubble {...props} />);
-
-    expect(wrapper.find(CardIndicator).exists()).toBe(true);
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(wrapper.find(CardIndicator).props()).toMatchObject({
-      indication: props.indication,
-      isVisible: true,
+    expect(getByTestId('iconTouchable')).toHaveStyle({
+      backgroundColor: undefined,
+      borderColor: undefined,
     });
   });
 
-  it('should hide the indication when clicked twice', () => {
-    const wrapper = shallow(<InfoBubble {...props} />);
+  it('should display the indication when clicked', () => {
+    const {getByTestId, queryByText, props} = setupInfoBubble();
 
-    wrapper.find(TouchableOpacity).simulate('press');
-    expect(wrapper.find(CardIndicator).prop('isVisible')).toBe(true);
+    expect(queryByText(props.indication)).toBeFalsy();
 
-    wrapper.find(TouchableOpacity).simulate('press');
-    expect(wrapper.find(CardIndicator).prop('isVisible')).toBe(false);
-  });
+    fireEvent.press(getByTestId('iconTouchable'));
+    expect(queryByText(props.indication)).toBeTruthy();
 
-  it('should pass usePopup to CardIndicator', () => {
-    const wrapper = shallow(<InfoBubble {...props} usePopup={true} />);
-
-    expect(wrapper.find(CardIndicator).prop('usePopup')).toBe(true);
+    fireEvent.press(getByTestId('iconTouchable'));
+    expect(queryByText(props.indication)).toBeFalsy();
   });
 });

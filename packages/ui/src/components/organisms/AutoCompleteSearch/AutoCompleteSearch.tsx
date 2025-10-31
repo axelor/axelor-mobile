@@ -101,8 +101,8 @@ const AutoCompleteSearch = ({
   const [searchText, setSearchText] = useState(
     value ? displayValue(value) : null,
   );
-  let timeOutRequestCall = useRef<number>();
-  let intervalRequestCall = useRef<number>();
+  let timeOutRequestCall = useRef<number>(null);
+  let intervalRequestCall = useRef<number>(null);
   const inputRef = useRef<TextInput>(null);
 
   const wrapperRef = useRef(null);
@@ -297,7 +297,8 @@ const AutoCompleteSearch = ({
         styles.container,
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
-      ]}>
+      ]}
+      testID="autoCompleteSearchContainer">
       <SearchBar
         title={title}
         inputRef={inputRef}

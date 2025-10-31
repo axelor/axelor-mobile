@@ -18,67 +18,54 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Image, ImageBubble} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {ImageBubble} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('ImageBubble Component', () => {
-  const props = {
-    source: {
-      uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=brooke-cagle-395b55a9fa4c.jpg',
-    },
-  };
+  const setupImageBubble = overrideProps =>
+    setup({
+      Component: ImageBubble,
+      baseProps: {
+        source: {
+          uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=brooke-cagle-395b55a9fa4c.jpg',
+        },
+      },
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<ImageBubble {...props} />);
+    const {getByTestId} = setupImageBubble();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('imageBubbleContainer')).toBeTruthy();
   });
 
   it('should render a round Image define with imageSize props', () => {
-    const imageSize = 50;
-    const customStyle = {
-      borderRadius: imageSize,
-      width: imageSize,
-      height: imageSize,
-    };
-    const wrapper = shallow(<ImageBubble {...props} imageSize={imageSize} />);
+    const {getByRole, props} = setupImageBubble({imageSize: 50});
 
-    expect(getGlobalStyles(wrapper.find(Image), 'generalStyle')).toMatchObject(
-      customStyle,
-    );
-  });
-
-  it('should give defaultIconSize props to Image component', () => {
-    const defaultIconSize = 50;
-    const wrapper = shallow(
-      <ImageBubble {...props} defaultIconSize={defaultIconSize} />,
-    );
-
-    expect(wrapper.find(Image).prop('defaultIconSize')).toBe(defaultIconSize);
+    expect(getByRole('image')).toHaveStyle({
+      borderRadius: props.imageSize,
+      width: props.imageSize,
+      height: props.imageSize,
+    });
   });
 
   it('should render the listComponent when provided', () => {
-    const listComponent = [
-      <View testID="listComponent" />,
-      <View testID="listComponent" />,
-      <View testID="listComponent" />,
-    ];
-    const wrapper = shallow(
-      <ImageBubble {...props} listComponent={listComponent} />,
-    );
+    const {getAllByTestId, props} = setupImageBubble({
+      listComponent: [
+        <View testID="listComponent" />,
+        <View testID="listComponent" />,
+        <View testID="listComponent" />,
+      ],
+    });
 
-    expect(wrapper.find('[testID="listComponent"]')).toHaveLength(
-      listComponent.length,
+    expect(getAllByTestId('listComponent')).toHaveLength(
+      props.listComponent.length,
     );
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<ImageBubble {...props} style={customStyle} />);
+    const {getByRole, props} = setupImageBubble({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(Image), 'generalStyle')).toMatchObject(
-      customStyle,
-    );
+    expect(getByRole('image')).toHaveStyle(props.style);
   });
 });

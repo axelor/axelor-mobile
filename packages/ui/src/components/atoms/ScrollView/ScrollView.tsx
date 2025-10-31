@@ -48,13 +48,13 @@ const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
         style,
       ]}
       refreshControl={
-        refresh != null && (
+        refresh != null ? (
           <RefreshControl
             refreshing={refresh.loading}
             onRefresh={refresh.fetcher}
             enabled={isScrollEnabled}
           />
-        )
+        ) : undefined
       }
       scrollEnabled={isScrollEnabled}>
       {children}
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     paddingBottom: 10,
-    height: '100%',
   },
   containerZIndex: {
     zIndex: 10,

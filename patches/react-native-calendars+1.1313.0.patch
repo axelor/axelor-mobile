@@ -1,0 +1,41 @@
+diff --git a/node_modules/react-native-calendars/src/agenda/index.js b/node_modules/react-native-calendars/src/agenda/index.js
+index 30c113a..25a55e6 100644
+--- a/node_modules/react-native-calendars/src/agenda/index.js
++++ b/node_modules/react-native-calendars/src/agenda/index.js
+@@ -179,7 +179,10 @@ class Agenda extends Component {
+         // scroll position actually changes (it would stay at 0, when scrolled to the top).
+         this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+         // delay rendering calendar in full height because otherwise it still flickers sometimes
+-        setTimeout(() => this.setState({ calendarIsReady: true }), 0);
++        setTimeout(() => {
++            this.setState({calendarIsReady: true});
++            this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset(), false);
++        }, 0);
+     };
+     onCalendarListLayout = () => {
+         this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset(), false);
+diff --git a/node_modules/react-native-calendars/src/agenda/reservation-list/index.js b/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
+index 3917729..52ce5bd 100644
+--- a/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
++++ b/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
+@@ -51,12 +51,14 @@ class ReservationList extends Component {
+         this.updateDataSource(this.getReservations(this.props).reservations);
+     }
+     componentDidUpdate(prevProps) {
+-        if (this.props.topDay && prevProps.topDay && prevProps !== this.props) {
+-            if (!sameDate(prevProps.topDay, this.props.topDay)) {
+-                this.setState({ reservations: [] }, () => this.updateReservations(this.props));
+-            }
+-            else {
+-                this.updateReservations(this.props);
++        if (this.props.topDay && prevProps.topDay) {
++            if (this.props.showOnlySelectedDayItems !== prevProps.showOnlySelectedDayItems || this.props.items !== prevProps.items || !sameDate(this.props.selectedDay, prevProps.selectedDay)) {
++                if (!sameDate(prevProps.topDay, this.props.topDay)) {
++                    this.setState({ reservations: [] }, () => this.updateReservations(this.props));
++                }
++                else {
++                    this.updateReservations(this.props);
++                }
+             }
+         }
+     }

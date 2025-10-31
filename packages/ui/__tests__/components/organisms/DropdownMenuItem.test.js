@@ -17,83 +17,90 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Badge, DropdownMenuItem, Icon, Text} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {View} from 'react-native';
+import {fireEvent, within} from '@testing-library/react-native';
+import {DropdownMenuItem} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('DropdownMenuItem Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    placeholder: 'Text',
-    onPress: jest.fn(),
-  };
+  const setupDropdownMenuItem = overrideProps =>
+    setup({
+      Component: DropdownMenuItem,
+      baseProps: {
+        placeholder: 'Placeholder',
+        onPress: jest.fn(),
+        icon: 'plus-lg',
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<DropdownMenuItem {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupDropdownMenuItem();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('dropdownMenuItemTouchable')).toBeTruthy();
   });
 
   it('should render the placeholder', () => {
-    const wrapper = shallow(<DropdownMenuItem {...props} />);
+    const {getByText, props} = setupDropdownMenuItem();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.placeholder);
+    expect(getByText(props.placeholder)).toBeTruthy();
   });
 
   it('should call onPress when TouchableOpacity is pressed', () => {
-    const wrapper = shallow(<DropdownMenuItem {...props} />);
+    const {getByTestId, props} = setupDropdownMenuItem({onPress: jest.fn()});
 
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
-
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(getByTestId('dropdownMenuItemTouchable'));
     expect(props.onPress).toHaveBeenCalledTimes(1);
   });
 
   it('should render an Icon with the right icon and color  values', () => {
-    const icon = 'check';
-    const color = Colors.primaryColor.background;
-    const wrapper = shallow(
-      <DropdownMenuItem {...props} icon={icon} color={color} />,
-    );
+    const {getByTestId, props} = setupDropdownMenuItem({
+      color: Colors.primaryColor.background,
+    });
 
-    expect(wrapper.find(Icon).prop('name')).toBe(icon);
-    expect(wrapper.find(Icon).prop('color')).toBe(color);
+    expect(getByTestId(`icon-${props.icon}`)).toBeTruthy();
+    expect(getByTestId(`icon-${props.icon}`).props.fill).toBe(props.color);
   });
 
   it('should render Badge component with the right title if indicator > 0', () => {
-    const indicator = 3;
-    const wrapper = shallow(
-      <DropdownMenuItem {...props} indicator={indicator} />,
-    );
+    const {getByTestId, props} = setupDropdownMenuItem({indicator: 3});
 
-    expect(wrapper.find(Badge).exists()).toBe(true);
-    expect(wrapper.find(Badge).prop('title')).toBe(indicator);
+    expect(getByTestId('bagdeContainer')).toBeTruthy();
+    expect(
+      within(getByTestId('bagdeContainer')).getByText(`${props.indicator}`),
+    ).toBeTruthy();
   });
 
   it('should not render if hideIf is true', () => {
-    const wrapper = shallow(<DropdownMenuItem {...props} hideIf />);
+    const {queryByTestId, props} = setupDropdownMenuItem({
+      hideIf: true,
+    });
 
-    expect(wrapper.type()).toBeNull();
+    expect(queryByTestId('dropdownMenuItemTouchable')).toBeFalsy();
   });
 
   it('should render a disabled component if disableIf is true', () => {
-    const wrapper = shallow(<DropdownMenuItem {...props} disableIf />);
+    const {getByTestId, props} = setupDropdownMenuItem({
+      disableIf: true,
+      onPress: jest.fn(),
+    });
 
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(true);
-    expect(wrapper.find(Icon).prop('color')).toBe(
+    expect(getByTestId(`icon-${props.icon}`).props.fill).toBe(
       Colors.secondaryColor.background,
     );
+
+    fireEvent.press(getByTestId('dropdownMenuItemTouchable'));
+    expect(props.onPress).not.toHaveBeenCalled();
   });
 
   it('should render a custom component instead of Icon if provided', () => {
-    const customComponent = <View testID="customComponent" />;
-    const wrapper = shallow(
-      <DropdownMenuItem {...props} customComponent={customComponent} />,
-    );
+    const {getByTestId, queryByTestId, props} = setupDropdownMenuItem({
+      customComponent: <View testID="customComponent" />,
+    });
 
-    expect(wrapper.find(Icon)).toHaveLength(0);
-    expect(wrapper.find('[testID="customComponent"]')).toHaveLength(1);
+    expect(getByTestId('customComponent')).toBeTruthy();
+    expect(queryByTestId('iconTouchable')).toBeFalsy();
   });
 });

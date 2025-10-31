@@ -45,8 +45,8 @@ const RootNavigator = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const tokenInterval = useRef();
-  const connectionInterval = useRef();
+  const tokenInterval = useRef(null);
+  const connectionInterval = useRef(null);
 
   const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();

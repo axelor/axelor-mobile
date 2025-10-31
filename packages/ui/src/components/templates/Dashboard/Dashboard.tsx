@@ -88,7 +88,7 @@ const Dashboard = ({
                   return React.cloneElement(customChart, {
                     key: indexGraph,
                     widthGraph,
-                  });
+                  } as any);
                 }
 
                 return (

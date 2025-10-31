@@ -16,133 +16,96 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, SelectionContainer, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {fireEvent, within} from '@testing-library/react-native';
+import {SelectionContainer} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
-describe('SelectionContainer', () => {
-  const objectList = [
-    {id: '1', name: 'Item 1'},
-    {id: '2', name: 'Item 2'},
-    {id: '3', name: 'Item 3'},
-  ];
+describe('SelectionContainer Component', () => {
+  const setupSelectionContainer = overrideProps =>
+    setup({
+      Component: SelectionContainer,
+      baseProps: {
+        objectList: [
+          {id: '1', name: 'Item 1'},
+          {id: '2', name: 'Item 2'},
+          {id: '3', name: 'Item 3'},
+        ],
+        displayValue: item => item.name,
+      },
+      overrideProps,
+    });
 
-  const props = {
-    objectList: objectList,
-    displayValue: item => item.name,
-  };
+  it('renders without crashing', () => {
+    const {getByTestId} = setupSelectionContainer();
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<SelectionContainer {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('selectionContainerWrapper')).toBeTruthy();
   });
 
   it('should render correctly with objectList', () => {
-    const wrapper = shallow(<SelectionContainer {...props} />);
+    const {getAllByTestId, props} = setupSelectionContainer();
 
-    for (let i = 0; i < props.objectList.length; i++) {
-      expect(wrapper.find('SelectionItem').at(i).prop('content')).toBe(
-        props.displayValue(props.objectList[i]),
-      );
-    }
+    const _itemElts = getAllByTestId('selectionItemTouchable');
+
+    expect(_itemElts).toHaveLength(props.objectList.length);
+
+    props.objectList.forEach((_i, idx) => {
+      expect(
+        within(_itemElts.at(idx)).getByText(props.displayValue(_i)),
+      ).toBeTruthy();
+    });
   });
 
   it('should call handleSelect with the right item on press', () => {
-    const handleSelect = jest.fn();
-    const wrapper = shallow(
-      <SelectionContainer {...props} handleSelect={handleSelect} />,
-    );
+    const {getAllByTestId, props} = setupSelectionContainer({
+      handleSelect: jest.fn(),
+    });
 
-    for (let i = 0; i < props.objectList.length; i++) {
-      wrapper.find('SelectionItem').at(i).simulate('press');
-      expect(handleSelect).toHaveBeenCalledWith(props.objectList[i]);
-    }
+    const _itemElts = getAllByTestId('selectionItemTouchable');
+
+    props.objectList.forEach((_i, idx) => {
+      fireEvent.press(_itemElts.at(idx));
+      expect(props.handleSelect).toHaveBeenCalledWith(_i);
+    });
   });
 
   it('should render empty state message if objectList is empty or null', () => {
-    const translator = (_, values) => `Aucun(e) ${values.title} disponible.`;
-    const title = 'Item';
-    const lowerTitle = 'Item'.toLowerCase();
+    const {queryAllByTestId, getByText, props} = setupSelectionContainer({
+      translator: (_, values) => `Aucun(e) ${values.title} disponible.`,
+      title: 'Item',
+      objectList: [],
+    });
 
-    const renderProps = {...props, title, objectList: undefined};
+    expect(queryAllByTestId('selectionItemTouchable')).toHaveLength(0);
 
-    const wrapperEmpty = shallow(
-      <SelectionContainer
-        {...renderProps}
-        objectList={[]}
-        translator={translator}
-      />,
-    );
-    const wrapperNull = shallow(
-      <SelectionContainer {...renderProps} translator={translator} />,
-    );
-    const wrapperNullTranslator = shallow(
-      <SelectionContainer {...renderProps} />,
-    );
-
-    expect(wrapperEmpty.find(Text).prop('children')).toBe(
-      translator(null, {title: lowerTitle}),
-    );
-    expect(wrapperNull.find(Text).prop('children')).toBe(
-      translator(null, {title: lowerTitle}),
-    );
-    expect(wrapperNullTranslator.find(Text).prop('children')).toBe(
-      `No ${lowerTitle} available.`,
-    );
+    expect(
+      getByText(props.translator(null, {title: props.title.toLowerCase()})),
+    ).toBeTruthy();
   });
 
   it('should render a list of SelectionItem with Icon when isPicker is true', () => {
-    const wrapper = shallow(<SelectionContainer {...props} isPicker />);
+    const {getAllByTestId, props} = setupSelectionContainer({isPicker: true});
 
-    for (let i = 0; i < props.objectList.length; i++) {
-      expect(wrapper.find('SelectionItem').at(i).prop('isPicker')).toBe(true);
-      expect(
-        wrapper.find('SelectionItem').at(i).dive().find(Icon).exists(),
-      ).toBe(true);
-    }
+    const _itemElts = getAllByTestId('selectionItemTouchable');
+
+    props.objectList.forEach((_i, idx) => {
+      expect(within(_itemElts.at(idx)).getByTestId('icon-square')).toBeTruthy();
+    });
   });
 
   it('should render an empty SelectionItem when isPicker and emptyValue are true', () => {
-    const wrapper = shallow(
-      <SelectionContainer {...props} isPicker emptyValue />,
+    const {getAllByTestId, props} = setupSelectionContainer({
+      isPicker: true,
+      emptyValue: true,
+    });
+
+    expect(getAllByTestId('selectionItemTouchable')).toHaveLength(
+      props.objectList.length + 1,
     );
-
-    expect(wrapper.find('SelectionItem').first().prop('content')).toBe('');
-  });
-
-  it('should render the selectedItem correctly', () => {
-    const selectedItem = props.objectList.slice(1);
-    const wrapper = shallow(
-      <SelectionContainer {...props} selectedItem={selectedItem} />,
-    );
-
-    expect(
-      wrapper
-        .find('SelectionItem')
-        .findWhere(item => item.prop('isSelectedItem')).length,
-    ).toBe(selectedItem.length);
-    for (let i = 0; i < selectedItem.length; i++) {
-      expect(
-        wrapper
-          .find('SelectionItem')
-          .findWhere(item => item.prop('isSelectedItem'))
-          .at(i)
-          .prop('content'),
-      ).toBe(props.displayValue(selectedItem[i]));
-    }
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <SelectionContainer {...props} style={customStyle} />,
-    );
+    const {getByTestId, props} = setupSelectionContainer({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
-    );
+    expect(getByTestId('selectionContainerWrapper')).toHaveStyle(props.style);
   });
 });

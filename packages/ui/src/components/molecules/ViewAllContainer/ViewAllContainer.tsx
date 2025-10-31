@@ -53,7 +53,7 @@ const ViewAllContainer = ({
   return (
     <Card style={[styles.container, style]}>
       {isHeaderExist && (
-        <View style={styles.headLineMove}>
+        <View style={styles.headLineMove} testID="viewAllContainerHeader">
           <Text>
             {translator == null ? 'Content' : translator('Base_Content')}
           </Text>
@@ -73,7 +73,10 @@ const ViewAllContainer = ({
         {children}
       </View>
       {!disabled && (
-        <TouchableOpacity onPress={onViewPress} activeOpacity={0.9}>
+        <TouchableOpacity
+          onPress={onViewPress}
+          activeOpacity={0.9}
+          testID="viewAllContainerButton">
           <View style={styles.iconContainer}>
             <Text style={styles.txtDetails}>
               {translator == null ? 'View all' : translator('Base_ViewAll')}

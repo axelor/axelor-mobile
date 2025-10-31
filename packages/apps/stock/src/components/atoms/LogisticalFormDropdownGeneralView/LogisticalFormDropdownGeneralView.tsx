@@ -72,7 +72,7 @@ const LogisticalFormDropdownGeneralView = ({
     value?: string | number,
     formatter?: (value: any) => string,
     isNumber: boolean = false,
-  ): JSX.Element => {
+  ): React.JSX.Element => {
     if (isNumber ? !isNumberValid(value) : checkNullString(value)) return null;
 
     const _value = formatter ? formatter(value) : value;

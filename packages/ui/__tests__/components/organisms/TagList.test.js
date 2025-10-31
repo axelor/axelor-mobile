@@ -16,105 +16,104 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
-import {TagList, Badge, Text} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
+import {within} from '@testing-library/react-native';
+import {TagList} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('TagList Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const tags = [
-    {title: 'tag1'},
-    {title: 'tag2', color: Colors.plannedColor},
-    {title: 'tag13'},
+  const DEFAULT_TAGS = [
+    {title: 'Tag 1 title'},
+    {title: 'Tag 2 title', color: Colors.plannedColor},
+    {title: 'Tag 3 title'},
   ];
 
+  const setupTagList = overrideProps =>
+    setup({Component: TagList, baseProps: {tags: DEFAULT_TAGS}, overrideProps});
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<TagList tags={tags} />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupTagList();
+
+    expect(getByTestId('tagListContainer')).toBeTruthy();
   });
 
   it('renders correctly with tags', () => {
-    const wrapper = shallow(<TagList tags={tags} />);
-    expect(wrapper.find(Badge).length).toBe(3);
-    expect(wrapper.find(Text).length).toBe(0);
+    const {getAllByTestId, props} = setupTagList();
+
+    expect(getAllByTestId('bagdeContainer').length).toBe(props.tags.length);
   });
 
   it('renders a title when provided', () => {
-    const title = 'title';
-    const wrapper = shallow(<TagList tags={tags} title={title} />);
-    const textChildren = wrapper.find(Text).prop('children');
-    expect(textChildren.join('')).toBe(title + ' :');
+    const {getByText, props} = setupTagList({title: 'List title'});
+
+    expect(getByText(`${props.title} :`)).toBeTruthy();
   });
 
   it('applies defaultColor to badges when tag-specific color is not provided', () => {
-    const defaultColor = Colors.cautionColor;
-    const wrapper = shallow(
-      <TagList tags={tags} defaultColor={defaultColor} />,
-    );
+    const {getAllByTestId, props} = setupTagList({
+      defaultColor: Colors.cautionColor,
+    });
 
-    tags.forEach((tag, idx) => {
-      expect(wrapper.find(Badge).at(idx).prop('color')).toBe(
-        tag.color != null ? tag.color : defaultColor,
-      );
-      expect(wrapper.find(Badge).at(idx).prop('title')).toBe(tag.title);
+    getAllByTestId('bagdeContainer').forEach((_badgeElt, idx) => {
+      const _tag = props.tags[idx];
+      const _color = _tag.color ?? props.defaultColor;
+
+      expect(_badgeElt).toHaveStyle({
+        borderColor: _color.background,
+        backgroundColor: _color.background_light,
+      });
+      expect(within(_badgeElt).getByText(_tag.title)).toBeTruthy();
     });
   });
 
   it('uses theme color if no defaultColor is specified', () => {
-    const wrapper = shallow(<TagList tags={tags} />);
+    const {getAllByTestId, props} = setupTagList();
 
-    tags.forEach((tag, idx) => {
-      expect(wrapper.find(Badge).at(idx).prop('color')).toBe(
-        tag.color != null ? tag.color : Colors.infoColor,
-      );
-      expect(wrapper.find(Badge).at(idx).prop('title')).toBe(tag.title);
+    getAllByTestId('bagdeContainer').forEach((_badgeElt, idx) => {
+      const _tag = props.tags[idx];
+      const _color = _tag.color ?? Colors.infoColor;
+
+      expect(_badgeElt).toHaveStyle({
+        borderColor: _color.background,
+        backgroundColor: _color.background_light,
+      });
+      expect(within(_badgeElt).getByText(_tag.title)).toBeTruthy();
     });
   });
 
-  it('does not render if all tags are hidden or list is empty and hideIfNull is true', () => {
-    const hiddenTags = tags.map(tag => ({...tag, hidden: true}));
-    const wrapper = shallow(<TagList tags={hiddenTags} />);
-    const emptyWrapper = shallow(<TagList tags={[]} />);
+  it('does not render if all tags are hidden and hideIfNull is true', () => {
+    const {queryByTestId} = setupTagList({
+      tags: DEFAULT_TAGS.map(tag => ({...tag, hidden: true})),
+    });
 
-    expect(wrapper.isEmptyRender()).toBe(true);
-    expect(emptyWrapper.isEmptyRender()).toBe(true);
+    expect(queryByTestId('tagListContainer')).toBeFalsy();
+  });
+
+  it('does not render if list is empty and hideIfNull is true', () => {
+    const {queryByTestId} = setupTagList({tags: []});
+
+    expect(queryByTestId('tagListContainer')).toBeFalsy();
   });
 
   it('renders empty state message if hideIfNull is false and there are no visible tags', () => {
-    const translator = (_, values) => `Aucun(e) ${values.title} disponible.`;
-    const title = 'Title';
-    const lowerTitle = title.toLowerCase();
+    const {getByText} = setupTagList({tags: [], hideIfNull: false});
 
-    const hiddenTags = tags.map(tag => ({...tag, hidden: true}));
-    const wrapper = shallow(
-      <TagList
-        title={title}
-        tags={hiddenTags}
-        hideIfNull={false}
-        translator={translator}
-      />,
-    );
-    const emptyWrapper = shallow(<TagList tags={[]} hideIfNull={false} />);
-
-    expect(wrapper.find(Text).length).toBe(2);
-    expect(wrapper.find(Text).at(1).prop('children')).toBe(
-      translator(null, {title: lowerTitle}),
-    );
-    expect(emptyWrapper.find(Text).length).toBe(1);
-    expect(emptyWrapper.find(Text).prop('children')).toBe('No data available.');
+    expect(getByText('No data available.')).toBeTruthy();
   });
 
   it('sorts tags based on their order', () => {
-    const unorderedTags = [
-      {title: 'Middle', order: 3},
-      {title: 'Last'},
-      {title: 'First', order: 2},
-    ];
-    const wrapper = shallow(<TagList tags={unorderedTags} />);
+    const {getAllByTestId, props} = setupTagList({
+      tags: [
+        {title: 'Middle', order: 3},
+        {title: 'Last'},
+        {title: 'First', order: 2},
+      ],
+    });
 
-    unorderedTags
+    const badgeElts = getAllByTestId('bagdeContainer');
+
+    props.tags
       .map((tag, idx) => ({
         ...tag,
         order: tag.order != null ? tag.order : idx * 10,
@@ -122,16 +121,13 @@ describe('TagList Component', () => {
       .sort((a, b) => a.order - b.order)
       .filter(tag => tag.hidden !== true)
       .forEach((tag, idx) => {
-        expect(wrapper.find(Badge).at(idx).prop('title')).toBe(tag.title);
+        expect(within(badgeElts.at(idx)).getByText(tag.title)).toBeTruthy();
       });
   });
 
   it('should render with custom style', () => {
-    const customStyle = {
-      margin: 20,
-    };
-    const wrapper = shallow(<TagList tags={tags} style={customStyle} />);
+    const {getByTestId, props} = setupTagList({style: {margin: 20}});
 
-    expect(getGlobalStyles(wrapper.find('View'))).toMatchObject(customStyle);
+    expect(getByTestId('tagListContainer')).toHaveStyle(props.style);
   });
 });

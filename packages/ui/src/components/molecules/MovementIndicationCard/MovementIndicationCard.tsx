@@ -49,7 +49,7 @@ function MovementIndicationCard({
       style={[styles.container, style]}
       testID="movementIndicationCardContainer">
       <View style={styles.titleContainer}>
-        {React.cloneElement(iconTop, {style: styles.icon})}
+        {React.cloneElement(iconTop, {style: styles.icon} as any)}
         <TouchableOpacity
           style={styles.title}
           onPress={onPressTitleTop}
@@ -60,7 +60,7 @@ function MovementIndicationCard({
       </View>
       <DottedLine style={styles.dottedLine} />
       <View style={styles.titleContainer}>
-        {React.cloneElement(iconDown, {style: styles.icon})}
+        {React.cloneElement(iconDown, {style: styles.icon} as any)}
         <TouchableOpacity
           style={styles.title}
           onPress={onPressTitleDown}

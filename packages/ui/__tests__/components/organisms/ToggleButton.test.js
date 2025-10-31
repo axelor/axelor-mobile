@@ -16,70 +16,78 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
-import {Button, ToggleButton} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {ToggleButton} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('ToggleButton Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    activeColor: Colors.errorColor,
-    inactiveColor: Colors.warningColor,
-  };
+  const setupToggleButton = overrideProps =>
+    setup({
+      Component: ToggleButton,
+      baseProps: {
+        activeColor: Colors.errorColor,
+        inactiveColor: Colors.warningColor,
+        buttonConfig: {title: 'Button title', iconName: 'check'},
+        onPress: jest.fn(),
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<ToggleButton {...props} />);
+  it('renders without crashing', () => {
+    const {getByRole} = setupToggleButton();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByRole('button')).toBeTruthy();
   });
 
   it('should give the props of buttonConfig to Button component', () => {
-    const buttonConfig = {
-      title: 'TEST',
-      iconName: 'car',
-    };
-    const wrapper = shallow(
-      <ToggleButton {...props} buttonConfig={buttonConfig} />,
-    );
+    const {getByTestId, getByText, props} = setupToggleButton();
 
-    Object.entries(buttonConfig).forEach(([key, value]) =>
-      expect(wrapper.find(Button).prop(key)).toBe(value),
-    );
+    expect(getByText(props.buttonConfig.title)).toBeTruthy();
+    expect(getByTestId(`icon-${props.buttonConfig.iconName}`)).toBeTruthy();
   });
 
   it('should render a Button whose color changes if pressed', () => {
-    const onPress = jest.fn();
-    const wrapper = shallow(<ToggleButton {...props} onPress={onPress} />);
+    const {getByRole, props} = setupToggleButton({onPress: jest.fn()});
 
-    expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(true);
-    expect(wrapper.find(Button).prop('color')).toBe(props.inactiveColor);
+    expect(getByRole('button')).toHaveStyle({
+      borderColor: props.inactiveColor.background,
+      backgroundColor: Colors.backgroundColor,
+    });
 
-    wrapper.simulate('press');
-    expect(onPress).toHaveBeenCalledWith(true);
+    fireEvent.press(getByRole('button'));
+    expect(props.onPress).toHaveBeenCalledWith(true);
 
-    expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(false);
-    expect(wrapper.find(Button).prop('color')).toBe(props.activeColor);
+    expect(getByRole('button')).toHaveStyle({
+      borderColor: props.activeColor.background,
+      backgroundColor: props.activeColor.background_light,
+    });
 
-    wrapper.simulate('press');
-    expect(onPress).toHaveBeenCalledWith(false);
+    fireEvent.press(getByRole('button'));
+    expect(props.onPress).toHaveBeenCalledWith(false);
 
-    expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(true);
-    expect(wrapper.find(Button).prop('color')).toBe(props.inactiveColor);
+    expect(getByRole('button')).toHaveStyle({
+      borderColor: props.inactiveColor.background,
+      backgroundColor: Colors.backgroundColor,
+    });
   });
 
   it('should render a Button with isNeutralBackground props set to false if provided', () => {
-    const wrapper = shallow(
-      <ToggleButton {...props} isNeutralBackground={false} />,
-    );
+    const {getByRole, props} = setupToggleButton({isNeutralBackground: false});
 
-    expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(false);
+    expect(getByRole('button')).toHaveStyle({
+      borderColor: props.inactiveColor.background,
+      backgroundColor: props.inactiveColor.background_light,
+    });
   });
 
   it('should render a Button with default color set to activeColor if isActive is true', () => {
-    const wrapper = shallow(<ToggleButton {...props} isActive />);
+    const {getByRole, props} = setupToggleButton({isActive: true});
 
-    expect(wrapper.find(Button).prop('color')).toBe(props.activeColor);
+    expect(getByRole('button')).toHaveStyle({
+      borderColor: props.activeColor.background,
+      backgroundColor: props.activeColor.background_light,
+    });
   });
 });

@@ -32,7 +32,7 @@ const BottomSeparator = ({text}: BottomSeparatorProps) => {
   const styles = useMemo(() => getStyles(Colors.secondaryColor), [Colors]);
 
   return (
-    <View style={styles.separatorContainer}>
+    <View style={styles.separatorContainer} testID="bottomSeparatorContainer">
       <Text>{text}</Text>
     </View>
   );
