@@ -105,7 +105,10 @@ const BottomBar = ({
   const renderItem = useCallback(
     (item: BottomBarItem) => {
       return (
-        <View key={item.key} onLayout={event => onItemLayout(event, item.key)}>
+        <View
+          key={item.key}
+          onLayout={event => onItemLayout(event, item.key)}
+          testID={`bar-item-${(item as any).testID}`}>
           <BarItem
             {...item}
             title={manageActiveTitle ? undefined : item.title}
@@ -145,8 +148,11 @@ const BottomBar = ({
 
   return (
     <View style={styles.container}>
-      <View style={{height: viewHeight}}>{activeView?.viewComponent}</View>
+      <View style={{height: viewHeight}} testID="bottomBarViewComtainer">
+        {activeView?.viewComponent}
+      </View>
       <View
+        testID="bottomBarComtainer"
         onLayout={event => {
           const {height: barHeight} = event.nativeEvent.layout;
           setViewHeight(

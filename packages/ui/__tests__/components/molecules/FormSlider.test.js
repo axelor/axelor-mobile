@@ -17,39 +17,42 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Slider, Text, FormSlider} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {act} from '@testing-library/react-native';
+import {FormSlider} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
+
+jest.mock('../../../lib/components/atoms/Slider/Slider', () => {
+  const {View} = require('react-native');
+
+  return props => <View testID="mocked_slider" {...props} />;
+});
 
 describe('FormSlider Component', () => {
-  const props = {
-    title: 'Volume',
-    minValue: 0,
-    maxValue: 100,
-    step: 10,
-    defaultValue: 50,
-    onChange: jest.fn(),
-    readonly: false,
-  };
+  const setupFormSlider = overrideProps =>
+    setup({
+      Component: FormSlider,
+      baseProps: {
+        title: 'Volume',
+        minValue: 0,
+        maxValue: 100,
+        step: 10,
+        defaultValue: 50,
+        onChange: jest.fn(),
+        readonly: false,
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<FormSlider {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupFormSlider();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('formSliderContainer')).toBeTruthy();
   });
 
-  it('should render the title correctly', () => {
-    const wrapper = shallow(<FormSlider {...props} />);
+  it('passes slider props correctly', () => {
+    const {getByTestId, props} = setupFormSlider();
 
-    expect(wrapper.find(Text).first().prop('children')).toBe(props.title);
-  });
-
-  it('should pass correct props to Slider component', () => {
-    const wrapper = shallow(<FormSlider {...props} />);
-    const sliderComponent = wrapper.find(Slider);
-
-    expect(sliderComponent.props()).toMatchObject({
+    expect(getByTestId('mocked_slider').props).toMatchObject({
       minValue: props.minValue,
       maxValue: props.maxValue,
       defaultValue: props.defaultValue,
@@ -58,26 +61,23 @@ describe('FormSlider Component', () => {
     });
   });
 
-  it('should handle value changes correctly', () => {
-    const wrapper = shallow(<FormSlider {...props} />);
-    const sliderComponent = wrapper.find(Slider);
+  it('triggers onChange when slider value changes', () => {
+    const {getByTestId, props} = setupFormSlider({onChange: jest.fn()});
 
-    sliderComponent.simulate('change', 60);
+    act(() => getByTestId('mocked_slider').props.onChange(60));
+
     expect(props.onChange).toHaveBeenCalledWith(60);
   });
 
-  it('should render as read-only when readonly is true', () => {
-    const wrapper = shallow(<FormSlider {...props} readonly />);
+  it('disables slider when readonly is true', () => {
+    const {getByTestId} = setupFormSlider({readonly: true});
 
-    expect(wrapper.find(Slider).prop('disabled')).toBe(true);
+    expect(getByTestId('mocked_slider').props.disabled).toBe(true);
   });
 
-  it('should render with custom styles', () => {
-    const customStyle = {margin: 20};
-    const wrapper = shallow(<FormSlider {...props} style={customStyle} />);
+  it('applies custom style to container', () => {
+    const {getByTestId, props} = setupFormSlider({style: {margin: 20}});
 
-    expect(getGlobalStyles(wrapper.find(View).first())).toMatchObject(
-      customStyle,
-    );
+    expect(getByTestId('formSliderContainer')).toHaveStyle(props.style);
   });
 });

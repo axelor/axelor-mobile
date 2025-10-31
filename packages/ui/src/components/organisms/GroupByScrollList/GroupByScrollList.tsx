@@ -99,7 +99,7 @@ const GroupByScrollList = ({
         : null;
 
       return (
-        <>
+        <View testID="groupByScrollListItemContainer">
           {bottomIndicator &&
             renderSeparator(
               customBottomSeparator,
@@ -119,11 +119,15 @@ const GroupByScrollList = ({
               BottomSeparator,
               lastBottomIndicator,
             )}
-        </>
+        </View>
       );
     }
 
-    return renderItem({item, index});
+    return (
+      <View testID="groupByScrollListItemContainer">
+        {renderItem({item, index})}
+      </View>
+    );
   };
 
   const onViewableItemsChanged = useRef(({viewableItems}) => {

@@ -16,77 +16,85 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {DoubleIcon, Icon} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {DoubleIcon} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('DoubleIcon Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    topIconConfig: {
-      name: 'plus',
-    },
-    bottomIconConfig: {
-      name: 'person-fill',
-    },
-  };
+  const setupDoubleIcon = overrideProps =>
+    setup({
+      Component: DoubleIcon,
+      baseProps: {
+        topIconConfig: {
+          name: 'plus-lg',
+          color: Colors.primaryColor.background,
+          size: 20,
+        },
+        bottomIconConfig: {
+          name: 'person-fill',
+          color: Colors.secondaryColor.background,
+          size: 15,
+        },
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<DoubleIcon {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupDoubleIcon();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('doubleIconTouchable')).toBeTruthy();
   });
 
   it('should give all props of topIconConfig and bottomIconConfig to the right icons', () => {
-    const topIconConfig = {
-      name: 'plus',
-      color: Colors.primaryColor.background,
-      size: 20,
-    };
-    const bottomIconConfig = {
-      name: 'person-fill',
-      color: Colors.secondaryColor.background,
-      size: 15,
-    };
-    const wrapper = shallow(
-      <DoubleIcon
-        topIconConfig={topIconConfig}
-        bottomIconConfig={bottomIconConfig}
-      />,
-    );
+    const {getByTestId, props} = setupDoubleIcon();
 
-    expect(wrapper.find(Icon).at(0).props()).toMatchObject(bottomIconConfig);
-    expect(wrapper.find(Icon).at(1).props()).toMatchObject(topIconConfig);
+    const bottomIcon = getByTestId(`icon-${props.bottomIconConfig.name}`);
+    expect(bottomIcon.props.fill).toBe(props.bottomIconConfig.color);
+    expect(bottomIcon.props.width).toBe(props.bottomIconConfig.size);
+    expect(bottomIcon.props.height).toBe(props.bottomIconConfig.size);
+
+    const topIcon = getByTestId(`icon-${props.topIconConfig.name}`);
+    expect(topIcon.props.fill).toBe(props.topIconConfig.color);
+    expect(topIcon.props.width).toBe(props.topIconConfig.size);
+    expect(topIcon.props.height).toBe(props.topIconConfig.size);
   });
 
   it('should use size props if size is not defined in icon configs', () => {
-    const size = 50;
-    const wrapper = shallow(<DoubleIcon {...props} size={size} />);
+    const {getByTestId, props} = setupDoubleIcon({
+      size: 50,
+      topIconConfig: {name: 'plus-lg'},
+      bottomIconConfig: {name: 'person-fill'},
+    });
 
-    expect(wrapper.find(Icon).at(0).prop('size')).toBe(size);
-    expect(wrapper.find(Icon).at(1).prop('size')).toBe(size * 0.6);
+    const bottomIcon = getByTestId(`icon-${props.bottomIconConfig.name}`);
+    expect(bottomIcon.props.width).toBe(props.size);
+    expect(bottomIcon.props.height).toBe(props.size);
+
+    const topIcon = getByTestId(`icon-${props.topIconConfig.name}`);
+    expect(topIcon.props.width).toBeCloseTo(props.size * 0.6);
+    expect(topIcon.props.height).toBeCloseTo(props.size * 0.6);
   });
 
-  it('should give touchable props when provided', () => {
-    const wrapper = shallow(<DoubleIcon {...props} touchable={true} />);
+  it('should call onPress when pressed', () => {
+    const {getByTestId, props} = setupDoubleIcon({
+      onPress: jest.fn(),
+      touchable: true,
+    });
 
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
-
-    wrapper.setProps({touchable: false});
-
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(true);
+    fireEvent.press(getByTestId('doubleIconTouchable'));
+    expect(props.onPress).toHaveBeenCalled();
   });
 
-  it('should call onPress when icons are pressed', () => {
-    const onPress = jest.fn();
-    const wrapper = shallow(<DoubleIcon {...props} onPress={onPress} />);
+  it('should not invocke onPress when pressed in disabled state', () => {
+    const {getByTestId, props} = setupDoubleIcon({
+      onPress: jest.fn(),
+      touchable: false,
+    });
 
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(onPress).toHaveBeenCalledTimes(1);
+    fireEvent.press(getByTestId('doubleIconTouchable'));
+    expect(props.onPress).not.toHaveBeenCalled();
   });
 
   it('should use predefinedPositions props if provided', () => {
@@ -100,38 +108,26 @@ describe('DoubleIcon Component', () => {
       'top-left': {top: -10, left: -10},
       'top-right': {top: -10, right: -10},
     };
+    const {getByTestId, rerender} = setupDoubleIcon();
 
-    for (const positionKey of Object.keys(predefinedPositions)) {
-      const wrapper = shallow(
-        <DoubleIcon {...props} predefinedPosition={positionKey} />,
-      );
+    Object.entries(predefinedPositions).forEach(([positionKey, expected]) => {
+      rerender({predefinedPosition: positionKey});
 
-      expect(getGlobalStyles(wrapper.find(View))).toMatchObject(
-        predefinedPositions[positionKey],
-      );
-    }
+      expect(getByTestId('topIconContainer')).toHaveStyle(expected);
+    });
   });
 
   it('should use topIconPosition props if provided', () => {
-    const topIconPosition = {
-      left: 10,
-      right: -15,
-    };
-    const wrapper = shallow(
-      <DoubleIcon {...props} topIconPosition={topIconPosition} />,
-    );
+    const {getByTestId, props} = setupDoubleIcon({
+      topIconPosition: {left: 10, right: -15},
+    });
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(topIconPosition);
+    expect(getByTestId('topIconContainer')).toHaveStyle(props.topIconPosition);
   });
 
   it('should render with custom style', () => {
-    const customStyle = {
-      margin: 20,
-    };
-    const wrapper = shallow(<DoubleIcon {...props} style={customStyle} />);
+    const {getByTestId, props} = setupDoubleIcon({style: {margin: 20}});
 
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject(
-      customStyle,
-    );
+    expect(getByTestId('doubleIconTouchable')).toHaveStyle(props.style);
   });
 });

@@ -39,6 +39,7 @@ const LoadingIndicator = () => {
     <BlockInteractionScreen hideHeader={true}>
       <Card style={styles.loadingIndicatorCard}>
         <ActivityIndicator
+          testID="activityIndicator"
           size="large"
           color={Colors.primaryColor.background}
         />

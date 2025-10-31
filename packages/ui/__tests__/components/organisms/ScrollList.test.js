@@ -18,96 +18,68 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {ScrollList, TopActions} from '@axelor/aos-mobile-ui';
+import {fireEvent, within} from '@testing-library/react-native';
+import {ScrollList} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('ScrollList Component', () => {
-  const props = {
-    loadingList: false,
-    data: [
-      {id: 1, name: 'Item 1'},
-      {id: 2, name: 'Item 2'},
-    ],
-    renderItem: ({index}) => <View testID={`item_${index}`} />,
-    fetchData: jest.fn(),
-    moreLoading: false,
-    isListEnd: false,
-    horizontal: true,
-    actionList: [{iconName: 'add', title: 'Add', onPress: jest.fn()}],
-    verticalActions: false,
-  };
+  const setupScrollList = overrideProps =>
+    setup({
+      Component: ScrollList,
+      baseProps: {
+        loadingList: false,
+        data: [
+          {id: 1, name: 'Item 1'},
+          {id: 2, name: 'Item 2'},
+        ],
+        renderItem: ({index}) => <View testID={`item_${index}`} />,
+        fetchData: jest.fn(),
+        moreLoading: false,
+        isListEnd: false,
+        horizontal: true,
+        actionList: [
+          {iconName: 'plus-lg', title: 'Add', onPress: jest.fn()},
+          {iconName: 'check', title: 'Validate', onPress: jest.fn()},
+        ],
+        verticalActions: false,
+      },
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<ScrollList {...props} />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupScrollList();
+
+    expect(getByTestId('scrollListContainer')).toBeTruthy();
   });
 
-  it('passes the correct props to FlatList', () => {
-    const renderItem = jest.fn();
-    const wrapper = shallow(<ScrollList {...props} renderItem={renderItem} />);
+  it('renders correctly all data with provided renderItem function', () => {
+    const {queryAllByTestId, props} = setupScrollList();
 
-    const animatedFlatList = wrapper.find('Animated(Anonymous)').at(0);
-
-    expect(animatedFlatList.props()).toMatchObject({
-      data: props.data,
-      horizontal: props.horizontal,
-    });
-
-    props.data.forEach((item, index) => {
-      animatedFlatList.props().renderItem({item, index});
-    });
-
-    expect(renderItem).toHaveBeenCalledTimes(props.data.length);
+    expect(queryAllByTestId(/^item_.*/).length).toBe(props.data.length);
   });
 
   it('renders TopActions if actionList is provided', () => {
-    const wrapper = shallow(<ScrollList {...props} />);
+    const {getAllByTestId, getByTestId, props} = setupScrollList();
 
-    const animatedFlatList = wrapper.find('Animated(Anonymous)').at(0);
+    expect(getByTestId('topActionsContainer')).toBeTruthy();
 
-    props.data.forEach((item, index) => {
-      const itemWrapper = animatedFlatList.props().renderItem({item, index});
-      expect(itemWrapper.props.children.length).toBe(2);
+    const _actions = getAllByTestId('dottedButtonContainer');
+    expect(_actions.length).toBe(props.actionList.length);
 
-      if (index === 0) {
-        expect(itemWrapper.props.children[0]).toMatchObject({
-          type: TopActions,
-          props: {
-            actionList: props.actionList,
-            verticalActions: props.verticalActions,
-          },
-        });
-      } else {
-        expect(itemWrapper.props.children[0]).toBe(false);
-      }
+    props.actionList.forEach((_a, idx) => {
+      expect(within(_actions.at(idx)).getByText(_a.title)).toBeTruthy();
+      expect(
+        within(_actions.at(idx)).getByTestId(`icon-${_a.iconName}`),
+      ).toBeTruthy();
 
-      expect(itemWrapper.props.children[1]).toMatchObject({
-        type: View,
-        props: {
-          testID: `item_${index}`,
-        },
-      });
+      fireEvent.press(within(_actions.at(idx)).getByTestId('iconTouchable'));
+      expect(_a.onPress).toHaveBeenCalled();
     });
-
-    const emptyWrapper = shallow(<ScrollList {...props} data={[]} />);
-    expect(emptyWrapper.find(TopActions).exists()).toBe(true);
   });
 
   it('does not render TopActions if actionList is empty', () => {
-    const wrapper = shallow(<ScrollList {...props} actionList={[]} />);
+    const {queryByTestId} = setupScrollList({actionList: []});
 
-    const animatedFlatList = wrapper.find('Animated(Anonymous)').at(0);
-
-    props.data.forEach((item, index) => {
-      const itemWrapper = animatedFlatList.props().renderItem({item, index});
-      expect(itemWrapper.props.children.length).toBe(2);
-      expect(itemWrapper.props.children[0]).toBeFalsy();
-      expect(itemWrapper.props.children[1]).toMatchObject({
-        type: View,
-        props: {
-          testID: `item_${index}`,
-        },
-      });
-    });
+    expect(queryByTestId('topActionsContainer')).toBeFalsy();
   });
 });

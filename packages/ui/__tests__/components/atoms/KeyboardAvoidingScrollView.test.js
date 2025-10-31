@@ -25,6 +25,18 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
+jest.mock('react-native', () => {
+  const React = require('react');
+  const RN = jest.requireActual('react-native');
+
+  return {
+    ...RN,
+    KeyboardAvoidingView: props => (
+      <RN.View testID="keyboardAvoidingView" {...props} />
+    ),
+  };
+});
+
 describe('KeyboardAvoidingScrollView Component', () => {
   const setupKeyboardAvoidingScrollView = overrideProps =>
     setup({

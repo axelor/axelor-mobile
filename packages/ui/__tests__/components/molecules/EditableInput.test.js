@@ -16,57 +16,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {EditableInput, Input} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {EditableInput} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('EditableInput Component', () => {
-  const props = {
-    placeholder: 'Enter text',
-    onValidate: jest.fn(),
-    defaultValue: 'Initial value',
-  };
+  const setupEditableInput = overrideProps =>
+    setup({
+      Component: EditableInput,
+      baseProps: {
+        placeholder: 'Enter text',
+        onValidate: jest.fn(),
+        defaultValue: 'Initial value',
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<EditableInput {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupEditableInput();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('editableInput')).toBeTruthy();
   });
 
-  it('toggles between editable and non-editable modes when the icon is pressed', () => {
-    const wrapper = shallow(<EditableInput {...props} />);
+  it('should render readonly input with pencil icon by default', () => {
+    const {getByTestId} = setupEditableInput();
 
-    expect(wrapper.find(Input).prop('readOnly')).toBe(true);
-    expect(wrapper.find(Input).prop('value')).toBe(props.defaultValue);
-
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(wrapper.find(Input).prop('readOnly')).toBe(false);
+    expect(getByTestId('editableInput').props.editable).toBe(false);
+    expect(getByTestId('icon-pencil-fill')).toBeTruthy();
   });
 
-  it('updates input value when changed and toggles back to non-editable', () => {
-    const wrapper = shallow(<EditableInput {...props} />);
+  it('toggles to editable mode and back, validating with latest value', () => {
+    const {getByTestId, props} = setupEditableInput({onValidate: jest.fn()});
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(getByTestId('editableInputToggle'));
+
+    expect(getByTestId('icon-check-lg')).toBeTruthy();
 
     const newValue = 'New Value';
-    wrapper.find(Input).simulate('change', newValue);
-    expect(wrapper.find(Input).prop('value')).toBe(newValue);
-
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(wrapper.find(Input).prop('readOnly')).toBe(true);
-
+    fireEvent.changeText(getByTestId('editableInput'), newValue);
+    fireEvent.press(getByTestId('editableInputToggle'));
     expect(props.onValidate).toHaveBeenCalledWith(newValue);
+
+    expect(getByTestId('icon-pencil-fill')).toBeTruthy();
+    expect(getByTestId('editableInput').props.editable).toBe(false);
   });
 
-  it('displays multiline input when multiline prop is true', () => {
-    const wrapper = shallow(
-      <EditableInput {...props} multiline={true} numberOfLines={3} />,
-    );
+  it('supports multiline input when requested', () => {
+    const {getByTestId} = setupEditableInput({
+      multiline: true,
+      numberOfLines: 3,
+    });
 
-    expect(wrapper.find(Input).prop('multiline')).toBe(true);
-    expect(wrapper.find(Input).prop('numberOfLines')).toBe(3);
+    expect(getByTestId('editableInput').props.multiline).toBe(true);
+    expect(getByTestId('editableInput').props.numberOfLines).toBe(3);
   });
 });

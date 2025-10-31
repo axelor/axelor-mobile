@@ -137,7 +137,7 @@ const StarScore = ({
   );
 
   return (
-    <View style={[styles.leadScoring, style]}>
+    <View style={[styles.leadScoring, style]} testID="starScoreContainer">
       {starScoring.map(star => star)}
     </View>
   );

@@ -107,7 +107,7 @@ const ImageBubble = ({
   const styles = useMemo(() => getStyles(imageSize), [imageSize]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="imageBubbleContainer">
       <Image
         resizeMode="contain"
         generalStyle={[styles.generalImageStyle, style]}

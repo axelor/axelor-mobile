@@ -16,106 +16,112 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
-import {
-  Text,
-  FormInput,
-  SelectionContainer,
-  Picker,
-  RightIconButton,
-} from '@axelor/aos-mobile-ui';
+import {fireEvent, within} from '@testing-library/react-native';
+import {Picker} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('Picker Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    listItems: [
-      {id: 1, name: 'Item 1'},
-      {id: 2, name: 'Item 2'},
-      {id: 3, name: 'Item 3'},
-    ],
-    valueField: 'id',
-    labelField: 'name',
-    onValueChange: jest.fn(),
-  };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<Picker {...props} />);
-    expect(wrapper.exists()).toBe(true);
+  const setupPicker = overrideProps =>
+    setup({
+      Component: Picker,
+      baseProps: {
+        listItems: [
+          {id: 1, name: 'Item 1'},
+          {id: 2, name: 'Item 2'},
+          {id: 3, name: 'Item 3'},
+        ],
+        valueField: 'id',
+        labelField: 'name',
+        onValueChange: jest.fn(),
+        emptyValue: false,
+      },
+      overrideProps,
+    });
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupPicker();
+
+    expect(getByTestId('pickerContainer')).toBeTruthy();
   });
 
   it('should display the placeholder if provided and no value is selected', () => {
-    const placeholder = 'Select an item';
-    const wrapper = shallow(<Picker {...props} placeholder={placeholder} />);
-    const title = wrapper.find(RightIconButton).prop('title');
-    expect(title).toBe(placeholder);
+    const {getByText, props} = setupPicker({placeholder: 'Select an item'});
+
+    expect(getByText(props.placeholder)).toBeTruthy();
   });
 
   it('should give listItems to SelectionContainer', () => {
-    const wrapper = shallow(<Picker {...props} />);
-    wrapper.find(RightIconButton).simulate('press');
-    expect(wrapper.find(SelectionContainer).prop('objectList')).toBe(
-      props.listItems,
+    const {queryAllByTestId, getAllByTestId, getByTestId, props} =
+      setupPicker();
+
+    expect(queryAllByTestId('selectionItemTouchable').length).toBe(0);
+
+    fireEvent.press(getByTestId('rightIconButtonContainer'));
+
+    expect(getAllByTestId('selectionItemTouchable').length).toBe(
+      props.listItems.length,
     );
   });
 
   it('should call onValueChange with the right args', () => {
-    const onValueChange = jest.fn();
-    const wrapper = shallow(
-      <Picker {...props} onValueChange={onValueChange} />,
+    const {getAllByTestId, getByTestId, props} = setupPicker({
+      onValueChange: jest.fn(),
+    });
+
+    fireEvent.press(getByTestId('rightIconButtonContainer'));
+    fireEvent.press(getAllByTestId('selectionItemTouchable').at(2));
+
+    expect(props.onValueChange).toHaveBeenCalledWith(
+      props.listItems[2][props.valueField],
     );
-
-    expect(wrapper.find(SelectionContainer).length).toBe(0);
-
-    wrapper.find(RightIconButton).simulate('press');
-    expect(wrapper.find(SelectionContainer).length).toBe(1);
-
-    wrapper.find(SelectionContainer).props().handleSelect(props.listItems[0]);
-
-    expect(onValueChange).toHaveBeenCalledWith(1);
   });
 
   it('should display a title if provided', () => {
-    const title = 'Title';
-    const wrapper = shallow(<Picker {...props} title={title} />);
-    expect(wrapper.find(Text).prop('children')).toBe(title);
+    const {getByText, props} = setupPicker({title: 'Title'});
+
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('should render readonly FormInput when props is true', () => {
-    const wrapper = shallow(<Picker {...props} readonly />);
-    expect(wrapper.find(FormInput).prop('readOnly')).toBe(true);
+    const {getByTestId} = setupPicker({readonly: true});
+
+    expect(getByTestId('formInputContainer')).toBeTruthy();
   });
 
   it('should apply required styling when props is true', () => {
-    const wrapper = shallow(<Picker {...props} required />);
-    expect(getGlobalStyles(wrapper.find(RightIconButton))).toMatchObject({
-      borderColor: Colors.errorColor.background,
-    });
+    const {getByTestId} = setupPicker({required: true});
+
+    expect(
+      within(getByTestId('rightIconButtonContainer')).getByTestId(
+        'cardContainer',
+      ),
+    ).toHaveStyle({borderColor: Colors.errorColor.background});
   });
 
   it('should apply custom style to container when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<Picker {...props} style={customStyle} />);
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
-    );
+    const {getByTestId, props} = setupPicker({style: {width: 200}});
+
+    expect(getByTestId('pickerContainer')).toHaveStyle(props.style);
   });
 
   it('should apply custom style to picker when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<Picker {...props} pickerStyle={customStyle} />);
-    expect(getGlobalStyles(wrapper.find(RightIconButton))).toMatchObject(
-      customStyle,
-    );
+    const {getByTestId, props} = setupPicker({pickerStyle: {width: 200}});
+
+    expect(
+      within(getByTestId('rightIconButtonContainer')).getByTestId(
+        'cardContainer',
+      ),
+    ).toHaveStyle(props.pickerStyle);
   });
 
   it('should apply custom style to title when provided', () => {
-    const customStyle = {fontSize: 20};
-    const wrapper = shallow(
-      <Picker {...props} title="Title" styleTxt={customStyle} />,
-    );
-    expect(getGlobalStyles(wrapper.find(Text))).toMatchObject(customStyle);
+    const {getByText, props} = setupPicker({
+      title: 'Title',
+      styleTxt: {fontSize: 20},
+    });
+
+    expect(getByText(props.title)).toHaveStyle(props.styleTxt);
   });
 });

@@ -29,5 +29,10 @@ export function setup({Component, baseProps, overrideProps}: SetupProps) {
   const props = {...baseProps, ...overrideProps};
   const utils = render(React.createElement(Component, props));
 
-  return {...utils, props};
+  const rerender = (rerenderProps?: any) =>
+    utils.rerender(
+      React.createElement(Component, {...props, ...rerenderProps}),
+    );
+
+  return {...utils, rerender, props};
 }

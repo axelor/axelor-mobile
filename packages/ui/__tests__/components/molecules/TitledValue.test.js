@@ -16,36 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {TitledValue, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {TitledValue} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('TitledValue Component', () => {
-  const props = {
-    title: 'Test Title',
-    value: 'Test Value',
-  };
+  const setupTitledValue = overrideProps =>
+    setup({
+      Component: TitledValue,
+      baseProps: {title: 'Test Title', value: 'Test Value'},
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<TitledValue {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupTitledValue();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('titledValueContainer')).toBeTruthy();
   });
 
   it('renders the title and value', () => {
-    const wrapper = shallow(<TitledValue {...props} />);
+    const {getByText, props} = setupTitledValue();
 
-    expect(wrapper.find(Text).at(0).prop('children')).toBe(props.title);
-
-    expect(wrapper.find(Text).at(1).prop('children')).toBe(props.value);
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByText(props.value)).toBeTruthy();
   });
 
   it('applies custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<TitledValue {...props} style={customStyle} />);
+    const {getByTestId, props} = setupTitledValue({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getByTestId('titledValueContainer')).toHaveStyle(props.style);
   });
 });

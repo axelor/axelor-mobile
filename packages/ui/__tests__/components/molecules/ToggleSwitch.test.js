@@ -16,89 +16,74 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
+import {fireEvent} from '@testing-library/react-native';
 import {ToggleSwitch} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('ToggleSwitch Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    leftTitle: 'Left',
-    rightTitle: 'rightTitle',
-    onSwitch: jest.fn(),
-  };
+  const setupToggleSwitch = overrideProps =>
+    setup({
+      Component: ToggleSwitch,
+      baseProps: {
+        leftTitle: 'Left',
+        rightTitle: 'rightTitle',
+        onSwitch: jest.fn(),
+      },
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<ToggleSwitch {...props} />);
+    const {getByTestId} = setupToggleSwitch();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('toggleSwitchContainer')).toBeTruthy();
   });
 
   it('calls onSwitch when left side is pressed', () => {
-    const onSwitch = jest.fn();
-    const wrapper = shallow(<ToggleSwitch {...props} onSwitch={onSwitch} />);
+    const {getByTestId, props} = setupToggleSwitch({onSwitch: jest.fn()});
 
-    wrapper.find(TouchableOpacity).at(0).simulate('press');
-    expect(onSwitch).toHaveBeenCalledTimes(1);
+    // Make left side disabled first as function is not called if the item is active
+    fireEvent.press(getByTestId('toggleSwitchRightButton'));
+
+    fireEvent.press(getByTestId('toggleSwitchLeftButton'));
+    expect(props.onSwitch).toHaveBeenCalledTimes(2);
   });
 
   it('calls onSwitch when right side is pressed', () => {
-    const onSwitch = jest.fn();
-    const wrapper = shallow(<ToggleSwitch {...props} onSwitch={onSwitch} />);
+    const {getByTestId, props} = setupToggleSwitch({onSwitch: jest.fn()});
 
-    wrapper.find(TouchableOpacity).at(1).simulate('press');
-    expect(onSwitch).toHaveBeenCalledTimes(1);
+    fireEvent.press(getByTestId('toggleSwitchRightButton'));
+    expect(props.onSwitch).toHaveBeenCalledTimes(1);
   });
 
   it('changes active style on press', () => {
-    const selectedColor = Colors.primaryColor.background_light;
-    const onSwitch = jest.fn();
-    const wrapper = shallow(<ToggleSwitch {...props} onSwitch={onSwitch} />);
+    const style = {backgroundColor: Colors.primaryColor.background_light};
+    const {getByTestId} = setupToggleSwitch({onSwitch: jest.fn()});
 
-    const getButton = side => {
-      return wrapper.find(TouchableOpacity).at(side === 'left' ? 0 : 1);
-    };
+    expect(getByTestId('toggleSwitchLeftButton')).toHaveStyle(style);
+    expect(getByTestId('toggleSwitchRightButton')).not.toHaveStyle(style);
 
-    expect(getGlobalStyles(getButton('left'))).toMatchObject({
-      backgroundColor: selectedColor,
-    });
+    fireEvent.press(getByTestId('toggleSwitchRightButton'));
 
-    expect(getGlobalStyles(getButton('right'))).not.toMatchObject({
-      backgroundColor: selectedColor,
-    });
-
-    getButton('right').simulate('press');
-
-    expect(getGlobalStyles(getButton('left'))).not.toMatchObject({
-      backgroundColor: selectedColor,
-    });
-
-    expect(getGlobalStyles(getButton('right'))).toMatchObject({
-      backgroundColor: selectedColor,
-    });
+    expect(getByTestId('toggleSwitchLeftButton')).not.toHaveStyle(style);
+    expect(getByTestId('toggleSwitchRightButton')).toHaveStyle(style);
   });
 
   it('applies custom style when provided', () => {
-    const customStyle = {width: 200};
-    const toggleStyle = {height: 50};
+    const {getByTestId, props} = setupToggleSwitch({
+      styleToogle: {height: 50},
+      styleContainer: {width: 200},
+    });
 
-    const wrapper = shallow(
-      <ToggleSwitch
-        {...props}
-        styleContainer={customStyle}
-        styleToogle={toggleStyle}
-      />,
+    expect(getByTestId('toggleSwitchContainer')).toHaveStyle(
+      props.styleContainer,
     );
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity).at(0))).toMatchObject(
-      toggleStyle,
+    expect(getByTestId('toggleSwitchLeftButton')).toHaveStyle(
+      props.styleToogle,
     );
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity).at(1))).toMatchObject(
-      toggleStyle,
+    expect(getByTestId('toggleSwitchRightButton')).toHaveStyle(
+      props.styleToogle,
     );
   });
 });

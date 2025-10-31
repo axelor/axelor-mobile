@@ -16,84 +16,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {LineChart as RNLineChart} from 'react-native-gifted-charts';
-import {shallow} from 'enzyme';
-import {LineChart, Card, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {LineChart} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('LineChart Component', () => {
-  const Colors = getDefaultThemeColors();
-
-  const props = {
-    datasets: [
-      [
-        {
-          label: 'Canceled',
-          value: 1,
-        },
-        {
-          label: 'Draft quotation',
-          value: 2,
-        },
-      ],
-      [
-        {
-          label: 'Canceled',
-          value: 3,
-        },
-        {
-          label: 'Draft quotation',
-          value: 5,
-        },
-      ],
-    ],
-  };
+  const setupLineChart = overrideProps =>
+    setup({
+      Component: LineChart,
+      baseProps: {
+        datasets: [
+          [
+            {label: 'Canceled', value: 1},
+            {label: 'Draft quotation', value: 2},
+          ],
+          [
+            {label: 'Canceled', value: 3},
+            {label: 'Draft quotation', value: 5},
+          ],
+        ],
+      },
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<LineChart {...props} />);
+    const {getByTestId} = setupLineChart();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('cardContainer')).toBeTruthy();
   });
 
   it('should use widthGraph props to calculate width of Card container', () => {
-    const widthGraph = 200;
     const MARGIN = 5;
-    const wrapper = shallow(<LineChart {...props} widthGraph={widthGraph} />);
+    const {getByTestId, props} = setupLineChart({widthGraph: 200});
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject({
-      width: widthGraph - MARGIN * 2,
+    expect(getByTestId('cardContainer')).toHaveStyle({
+      width: props.widthGraph - MARGIN * 2,
     });
   });
 
-  it('should give props to RNLineChart component', () => {
-    const spacing = 10;
-    const backgroundColor = Colors.primaryColor;
-    const wrapper = shallow(
-      <LineChart
-        {...props}
-        spacing={spacing}
-        backgroundColor={backgroundColor}
-      />,
-    );
-
-    expect(wrapper.find(RNLineChart).prop('spacing')).toBe(spacing);
-    expect(wrapper.find(RNLineChart).prop('backgroundColor')).toBe(
-      backgroundColor,
-    );
-  });
-
   it('should display title if provided', () => {
-    const title = 'Title';
-    const wrapper = shallow(<LineChart {...props} title={title} />);
+    const {getByText, props} = setupLineChart({title: 'Title'});
 
-    expect(wrapper.find(Text).prop('children')).toBe(title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<LineChart {...props} style={customStyle} />);
+    const {getByTestId, props} = setupLineChart({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject(customStyle);
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });

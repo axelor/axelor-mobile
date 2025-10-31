@@ -60,6 +60,7 @@ const DistributionBar = ({
             isLastItem && groupStyles.borderRightRadius,
           ]}
           key={index}
+          testID={`distributionBarGroup-idx${index}`}
         />
       );
     });
@@ -70,7 +71,11 @@ const DistributionBar = ({
     [Colors, height],
   );
 
-  return <View style={[styles.container, style]}>{renderGroups()}</View>;
+  return (
+    <View style={[styles.container, style]} testID="distributionBarContainer">
+      {renderGroups()}
+    </View>
+  );
 };
 
 const getGroupStyles = (percentWidth: number, height: number, color: string) =>

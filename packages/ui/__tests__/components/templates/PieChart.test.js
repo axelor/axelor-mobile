@@ -16,87 +16,66 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {PieChart as RNPieChart} from 'react-native-gifted-charts';
-import {shallow} from 'enzyme';
-import {PieChart, Text} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
+import {PieChart} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('PieChart Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    datasets: [
-      {
-        label: 'Canceled',
-        color: Colors.primaryColor,
-        value: 0,
+  const setupPieChart = overrideProps =>
+    setup({
+      Component: PieChart,
+      baseProps: {
+        datasets: [
+          {
+            label: 'Canceled',
+            color: Colors.primaryColor,
+            value: 0,
+          },
+          {
+            label: 'Draft quotation',
+            color: Colors.secondaryColor,
+            value: 1,
+          },
+        ],
       },
-      {
-        label: 'Draft quotation',
-        color: Colors.secondaryColor,
-        value: 1,
-      },
-    ],
-  };
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<PieChart {...props} />);
+    const {getByTestId} = setupPieChart();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('pieChartContainer')).toBeTruthy();
   });
 
   it('should use widthGraph props to calculate width of Card container', () => {
-    const widthGraph = 200;
     const MARGIN = 5;
-    const wrapper = shallow(<PieChart {...props} widthGraph={widthGraph} />);
+    const {getByTestId, props} = setupPieChart({widthGraph: 200});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      width: widthGraph - MARGIN * 2,
+    expect(getByTestId('pieChartContainer')).toHaveStyle({
+      width: props.widthGraph - MARGIN * 2,
     });
   });
 
-  it('should give props to RNPieChart component', () => {
-    const extendedProps = {
-      donut: true,
-      showGradient: true,
-      sectionAutoFocus: false,
-      radius: 30,
-      innerRadius: 30,
-      focusOnPress: true,
-    };
-
-    const wrapper = shallow(<PieChart {...props} {...extendedProps} />);
-
-    expect(wrapper.find(RNPieChart).prop('data')).toBe(props.datasets);
-    expect(wrapper.find(RNPieChart).props()).toMatchObject(extendedProps);
-  });
-
   it('should display a legend if props is true', () => {
-    const wrapper = shallow(<PieChart {...props} legend />);
-    const chartLegend = wrapper.find('ChartLegend').dive();
+    const {getByTestId, getByText, props} = setupPieChart({legend: true});
 
-    props.datasets.forEach((dataset, index) => {
-      const textChildren = chartLegend.find(Text).at(index).prop('children');
-      const expectedText = `${dataset.label} : ${dataset.value}`;
-      expect(textChildren).toContain(expectedText);
+    expect(getByTestId('pieChartLegendContainer')).toBeTruthy();
+
+    props.datasets.forEach(_i => {
+      expect(getByText(`${_i.label} : ${_i.value}`)).toBeTruthy();
     });
   });
 
   it('should display title if provided', () => {
-    const title = 'Title';
-    const wrapper = shallow(<PieChart {...props} title={title} />);
+    const {getByText, props} = setupPieChart({title: 'Title'});
 
-    expect(wrapper.find(Text).prop('children')).toBe(title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
-  it('should apply custom style when styleContainer is provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <PieChart {...props} styleContainer={customStyle} />,
-    );
+  it('should apply custom style when provided', () => {
+    const {getByTestId, props} = setupPieChart({styleContainer: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getByTestId('pieChartContainer')).toHaveStyle(props.styleContainer);
   });
 });

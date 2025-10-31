@@ -30,7 +30,7 @@ interface FromToProps {
 function FromTo({fromComponent, toComponent, style}: FromToProps) {
   const Colors = useThemeColor();
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="fromToContainer">
       {fromComponent}
       <View style={styles.panel}>
         <Icon

@@ -110,7 +110,8 @@ const PieChart = ({
         styles.container,
         {width: containerWidth, minWidth: containerMinWidth},
         styleContainer,
-      ]}>
+      ]}
+      testID="pieChartContainer">
       {!donut && renderLabelView()}
       <RNPieChart
         data={dataSet}

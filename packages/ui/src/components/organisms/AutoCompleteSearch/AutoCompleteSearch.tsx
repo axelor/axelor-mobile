@@ -297,7 +297,8 @@ const AutoCompleteSearch = ({
         styles.container,
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
-      ]}>
+      ]}
+      testID="autoCompleteSearchContainer">
       <SearchBar
         title={title}
         inputRef={inputRef}

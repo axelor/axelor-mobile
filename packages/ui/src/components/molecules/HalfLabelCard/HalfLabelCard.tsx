@@ -34,7 +34,10 @@ const HalfLabelCard = ({
   onPress,
 }: HalfLabelCardProps) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.9}
+      testID="halfLabelCardTouchable">
       <Card style={[styles.container, style]}>
         <Icon name={iconName} />
         <Text style={styles.text} numberOfLines={2}>

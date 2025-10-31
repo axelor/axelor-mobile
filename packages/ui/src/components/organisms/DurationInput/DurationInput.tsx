@@ -85,7 +85,7 @@ const DurationInput = ({
   };
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="durationInputContainer">
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <View style={styles.inputContainer}>
         <NumberChevronInput

@@ -16,86 +16,84 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Label, Text} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {Label} from '@axelor/aos-mobile-ui';
 import {hexToRgb} from '../../../lib/utils/commons-utlis';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('Label Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    message: 'This is label message.',
-    onClose: jest.fn(),
-  };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<Label {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('should render with the correct message', () => {
-    const wrapper = shallow(<Label {...props} />);
-
-    expect(wrapper.find(Text).prop('children')).toBe(props.message);
-  });
-
-  it('should apply default "error" style when type is not provided', () => {
-    const wrapper = shallow(<Label {...props} />);
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      backgroundColor: `rgba(${hexToRgb(
-        Colors.errorColor.background_light,
-      )}, 0.4)`,
-      borderColor: Colors.errorColor.background_light,
+  const setupLabel = overrideProps =>
+    setup({
+      Component: Label,
+      baseProps: {message: 'This is label message.', onClose: jest.fn()},
+      overrideProps,
     });
-  });
 
-  it('should apply "success" style when type is "success"', () => {
-    const wrapper = shallow(<Label {...props} type="success" />);
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      backgroundColor: `rgba(${hexToRgb(
-        Colors.successColor.background_light,
-      )}, 0.4)`,
-      borderColor: Colors.successColor.background_light,
+  function checkColorStyle(elt, color) {
+    expect(elt).toHaveStyle({
+      backgroundColor: `rgba(${hexToRgb(color.background_light)}, 0.4)`,
+      borderColor: color.background_light,
     });
+  }
+
+  it('renders the provided message', () => {
+    const {getByTestId, props} = setupLabel();
+
+    expect(getByTestId('labelContainer')).toBeTruthy();
   });
 
-  it('should apply "info" style when type is "info"', () => {
-    const wrapper = shallow(<Label {...props} type="info" />);
+  it('applies default "error" styles when type is not provided', () => {
+    const {getByTestId} = setupLabel();
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      backgroundColor: `rgba(${hexToRgb(
-        Colors.infoColor.background_light,
-      )}, 0.4)`,
-      borderColor: Colors.infoColor.background_light,
+    checkColorStyle(getByTestId('labelContainer'), Colors.errorColor);
+    expect(getByTestId('icon-exclamation-triangle-fill')).toBeTruthy();
+  });
+
+  it('applies "success" styles when type is "success"', () => {
+    const {getByTestId} = setupLabel({type: 'success'});
+
+    checkColorStyle(getByTestId('labelContainer'), Colors.successColor);
+    expect(getByTestId('icon-check-circle-fill')).toBeTruthy();
+  });
+
+  it('applies "info" styles when type is "info"', () => {
+    const {getByTestId} = setupLabel({type: 'info'});
+
+    checkColorStyle(getByTestId('labelContainer'), Colors.infoColor);
+    expect(getByTestId('icon-info-circle-fill')).toBeTruthy();
+  });
+
+  it('applies "danger" styles when type is "danger"', () => {
+    const {getByTestId} = setupLabel({type: 'danger'});
+
+    checkColorStyle(getByTestId('labelContainer'), Colors.cautionColor);
+    expect(getByTestId('icon-exclamation-circle-fill')).toBeTruthy();
+  });
+
+  it('renders a close icon only when showClose is true', () => {
+    const {queryByTestId} = setupLabel();
+
+    expect(queryByTestId('icon-x-lg')).toBeNull();
+  });
+
+  it('calls onClose and hides the label when the close icon is pressed', () => {
+    const {getByTestId, props, queryByTestId} = setupLabel({
+      showClose: true,
+      onClose: jest.fn(),
     });
-  });
+    expect(getByTestId('icon-x-lg')).toBeTruthy();
 
-  it('should apply "danger" style when type is "danger"', () => {
-    const wrapper = shallow(<Label {...props} type="danger" />);
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      backgroundColor: `rgba(${hexToRgb(
-        Colors.cautionColor.background_light,
-      )}, 0.4)`,
-      borderColor: Colors.cautionColor.background_light,
-    });
-  });
-
-  it('should render a close icon when showClose is true', () => {
-    const wrapper = shallow(<Label {...props} showClose />);
-
-    expect(wrapper.find('Icon[name="x-lg"]').exists()).toBe(true);
-  });
-
-  it('should call onClose when close icon is pressed', () => {
-    const wrapper = shallow(<Label {...props} showClose />);
-
-    wrapper.find('Icon[name="x-lg"]').simulate('press');
+    fireEvent.press(getByTestId('icon-x-lg'));
     expect(props.onClose).toHaveBeenCalled();
+
+    expect(queryByTestId('labelContainer')).toBeNull();
+  });
+
+  it('should apply custom styles', () => {
+    const {getByTestId, props} = setupLabel({style: {backgroundColor: 'blue'}});
+
+    expect(getByTestId('labelContainer')).toHaveStyle(props.style);
   });
 });

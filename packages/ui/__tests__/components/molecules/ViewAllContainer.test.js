@@ -17,92 +17,96 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Card, Icon, Text, ViewAllContainer} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {View} from 'react-native';
+import {fireEvent, within} from '@testing-library/react-native';
+import {ViewAllContainer} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('ViewAllContainer Component', () => {
-  const props = {
-    children: <View testID="children" />,
-    onViewPress: jest.fn(),
-  };
+  const setupViewAllContainer = overrideProps =>
+    setup({
+      Component: ViewAllContainer,
+      baseProps: {
+        children: <View testID="children" />,
+        onViewPress: jest.fn(),
+      },
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<ViewAllContainer {...props} />);
+    const {getByTestId} = setupViewAllContainer();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('cardContainer')).toBeTruthy();
   });
 
   it('should render children', () => {
-    const wrapper = shallow(<ViewAllContainer {...props} />);
+    const {getByTestId} = setupViewAllContainer();
 
-    expect(wrapper.find('[testID="children"]').exists()).toBe(true);
+    expect(getByTestId('children')).toBeTruthy();
   });
 
   it('should call onViewPress when TouchableOpacity is pressed', () => {
-    const wrapper = shallow(<ViewAllContainer {...props} />);
+    const {getByTestId, props} = setupViewAllContainer({
+      onViewPress: jest.fn(),
+    });
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(getByTestId('viewAllContainerButton'));
     expect(props.onViewPress).toHaveBeenCalledTimes(1);
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <ViewAllContainer {...props} style={customStyle} />,
-    );
+    const {getByTestId, props} = setupViewAllContainer({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject(customStyle);
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 
   it('should render title when provided', () => {
-    const title = 'Title';
-    const wrapper = shallow(<ViewAllContainer {...props} title={title} />);
+    const {getByText, props} = setupViewAllContainer({title: 'Title'});
 
-    expect(wrapper.find(Text).at(0).prop('children')).toBe(title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('should render first and second data whith renderFirstTwoItems function when provided', () => {
-    const data = ['Data 0', 'Data 1', 'Data 2'];
-    const renderFirstTwoItems = jest.fn((item, index) => (
-      <Text>
-        `${index} : ${item}`
-      </Text>
-    ));
-    const wrapper = shallow(
-      <ViewAllContainer
-        {...props}
-        data={data}
-        renderFirstTwoItems={renderFirstTwoItems}
-      />,
-    );
+    const {queryAllByTestId, props} = setupViewAllContainer({
+      data: ['Data 0', 'Data 1', 'Data 2'],
+      renderFirstTwoItems: jest.fn((_, index) => (
+        <View testID={`item-idx${index}`} />
+      )),
+    });
 
-    expect(wrapper.find(View).at(0).find(Text).length).toBe(2);
-    expect(renderFirstTwoItems).toHaveBeenNthCalledWith(1, data[0], 0);
-    expect(renderFirstTwoItems).toHaveBeenNthCalledWith(2, data[1], 1);
+    expect(queryAllByTestId(/^item-idx.*/)).toHaveLength(2);
+
+    expect(props.renderFirstTwoItems).toHaveBeenNthCalledWith(
+      1,
+      props.data[0],
+      0,
+    );
+    expect(props.renderFirstTwoItems).toHaveBeenNthCalledWith(
+      2,
+      props.data[1],
+      1,
+    );
   });
 
   it('should not render TouchableOpacity when disabled is true', () => {
-    const wrapper = shallow(<ViewAllContainer {...props} disabled />);
+    const {queryByTestId} = setupViewAllContainer({disabled: true});
 
-    expect(wrapper.find(TouchableOpacity).exists()).toBe(false);
+    expect(queryByTestId('viewAllContainerButton')).toBeFalsy();
   });
 
   it('should render a top View with Text and plus Icon when isHeaderExist is true', () => {
-    const onNewIcon = jest.fn();
-    const wrapper = shallow(
-      <ViewAllContainer {...props} isHeaderExist onNewIcon={onNewIcon} />,
-    );
+    const {getByTestId, props} = setupViewAllContainer({
+      isHeaderExist: true,
+      onNewIcon: jest.fn(),
+    });
 
-    const topView = wrapper.find(View).at(0);
+    const _view = getByTestId('viewAllContainerHeader');
 
-    expect(topView.find(Text).length).toBe(1);
-    expect(topView.find(Icon).length).toBe(1);
-    expect(topView.find(Icon).prop('name')).toBe('plus-lg');
-    expect(topView.find(Icon).prop('touchable')).toBe(true);
+    expect(_view).toBeTruthy();
+    expect(within(_view).getByText('Content')).toBeTruthy();
+    expect(within(_view).getByTestId('icon-plus-lg')).toBeTruthy();
 
-    topView.find(Icon).simulate('press');
-    expect(onNewIcon).toHaveBeenCalledTimes(1);
+    fireEvent.press(within(_view).getByTestId('iconTouchable'));
+    expect(props.onNewIcon).toHaveBeenCalledTimes(1);
   });
 });

@@ -43,7 +43,7 @@ const Badge = ({
   );
 
   return (
-    <View style={[badgeStyle.container, style]}>
+    <View style={[badgeStyle.container, style]} testID="bagdeContainer">
       <Text
         style={txtStyle}
         numberOfLines={numberOfLines}

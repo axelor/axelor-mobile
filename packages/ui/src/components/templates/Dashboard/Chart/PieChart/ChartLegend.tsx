@@ -27,7 +27,7 @@ interface ChartLegendProps {
 
 const ChartLegend = ({dataSet}: ChartLegendProps) => {
   return (
-    <View style={styles.legendContainer}>
+    <View style={styles.legendContainer} testID="pieChartLegendContainer">
       {dataSet.map((_data, index) => (
         <View key={index} style={styles.itemLegendContainer}>
           <View

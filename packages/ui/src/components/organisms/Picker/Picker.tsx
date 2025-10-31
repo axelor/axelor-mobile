@@ -189,7 +189,8 @@ const Picker = ({
         styles.container,
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
-      ]}>
+      ]}
+      testID="pickerContainer">
       {!checkNullString(title) && (
         <Text style={[styles.title, styleTxt]}>{title}</Text>
       )}

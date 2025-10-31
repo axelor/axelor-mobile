@@ -16,53 +16,66 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {NumberBubble, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {NumberBubble} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('NumberBubble Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    number: 4,
-    color: Colors.primaryColor,
-    isNeutralBackground: true,
-  };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<NumberBubble {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('should display the correct number', () => {
-    const wrapper = shallow(<NumberBubble {...props} />);
-
-    expect(wrapper.find(Text).prop('children')).toBe(props.number);
-  });
-
-  it('should have correct styles when neutral background is false', () => {
-    const wrapper = shallow(
-      <NumberBubble {...props} isNeutralBackground={false} />,
-    );
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      backgroundColor: Colors.primaryColor.background_light,
-      borderColor: Colors.primaryColor.background,
+  const setupNumberBubble = overrideProps =>
+    setup({
+      Component: NumberBubble,
+      baseProps: {
+        number: 4,
+        color: Colors.infoColor,
+        isNeutralBackground: true,
+      },
+      overrideProps,
     });
-    expect(wrapper.find(Text).prop('textColor')).toBe(
-      Colors.primaryColor.foreground,
-    );
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupNumberBubble();
+
+    expect(getByTestId('numberBubbleContainer')).toBeTruthy();
   });
 
-  it('should have correct styles when neutral background is true', () => {
-    const wrapper = shallow(<NumberBubble {...props} />);
+  it('renders the provided number', () => {
+    const {getByText, props} = setupNumberBubble();
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+    expect(getByText(props.number.toString())).toBeTruthy();
+  });
+
+  it('applies neutral background styles when isNeutralBackground is true', () => {
+    const {getByText, getByTestId, props} = setupNumberBubble();
+
+    expect(getByTestId('numberBubbleContainer')).toHaveStyle({
       backgroundColor: Colors.backgroundColor,
-      borderColor: Colors.primaryColor.background,
+      borderColor: props.color.background,
     });
-    expect(wrapper.find(Text).prop('textColor')).toBe(Colors.text);
+
+    expect(getByText(props.number.toString())).toHaveStyle({
+      color: Colors.text,
+    });
+  });
+
+  it('applies primary color styles when isNeutralBackground is false', () => {
+    const {getByText, getByTestId, props} = setupNumberBubble({
+      isNeutralBackground: false,
+    });
+
+    expect(getByTestId('numberBubbleContainer')).toHaveStyle({
+      backgroundColor: props.color.background_light,
+      borderColor: props.color.background,
+    });
+
+    expect(getByText(props.number.toString())).toHaveStyle({
+      color: props.color.foreground,
+    });
+  });
+
+  it('applies custom container style', () => {
+    const {getByTestId, props} = setupNumberBubble({style: {width: 200}});
+
+    expect(getByTestId('numberBubbleContainer')).toHaveStyle(props.style);
   });
 });

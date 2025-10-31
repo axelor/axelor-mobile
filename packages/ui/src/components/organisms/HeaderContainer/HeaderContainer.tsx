@@ -60,14 +60,16 @@ const HeaderContainer = ({
   }, [isVisible]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="headerContainerWrapper">
       <View pointerEvents="none" style={styles.topMask} />
       {expandableFilter && isVisible && topChildren}
       {fixedItems}
       {expandableFilter && isVisible && children}
       {chipComponent}
       {expandableFilter && (
-        <TouchableOpacity onPress={handleExpandPress}>
+        <TouchableOpacity
+          onPress={handleExpandPress}
+          testID="headerContainerExpandableIcon">
           <View style={styles.arrowContainer}>
             <Icon
               name={isVisible ? 'chevron-up' : 'chevron-down'}

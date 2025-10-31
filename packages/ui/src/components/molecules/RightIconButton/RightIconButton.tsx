@@ -38,7 +38,10 @@ const RightIconButton = ({
   numberOfLines = 2,
 }: RightIconProps) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.9}
+      testID="rightIconButtonContainer">
       <Card style={[styles.container, style]}>
         <Text style={[styleText, styles.text]} numberOfLines={numberOfLines}>
           {title != null ? title : ''}

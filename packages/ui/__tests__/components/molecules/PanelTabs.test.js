@@ -18,58 +18,78 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {PanelTabs, Text} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {PanelTabs} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('PanelTabs Component', () => {
-  const tabs = [
-    {
-      key: 1,
-      title: 'Page1',
-      isActive: false,
-      component: <Text>Page1</Text>,
-      translator: jest.fn(),
-    },
-    {
-      key: 2,
-      title: 'Page2',
-      isActive: true,
-      component: <Text>Page2</Text>,
-      translator: jest.fn(),
-    },
-    {
-      key: 3,
-      title: 'Page3',
-      isActive: false,
-      disabled: true,
-      component: <Text>Page3</Text>,
-      translator: jest.fn(),
-    },
-  ];
+  const setupPanelTabs = overrideProps =>
+    setup({
+      Component: PanelTabs,
+      baseProps: {
+        tabs: [
+          {
+            key: 1,
+            title: 'Page1',
+            isActive: false,
+            component: <View testID="mocked_page1" />,
+            translator: jest.fn(),
+          },
+          {
+            key: 2,
+            title: 'Page2',
+            isActive: true,
+            component: <View testID="mocked_page2" />,
+            translator: jest.fn(),
+          },
+          {
+            key: 3,
+            title: 'Page3',
+            isActive: false,
+            disabled: true,
+            component: <View testID="mocked_page3" />,
+            translator: jest.fn(),
+          },
+        ],
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<PanelTabs tabs={tabs} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupPanelTabs();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('panelTabsContainer')).toBeTruthy();
   });
 
   it('should render 3 tabs', () => {
-    const wrapper = shallow(<PanelTabs tabs={tabs} />);
+    const {getAllByTestId} = setupPanelTabs();
 
-    expect(wrapper.find(View).at(1).children()).toHaveLength(3);
+    expect(getAllByTestId('tabTouchable')).toHaveLength(3);
   });
 
   it('should render the component of active tab (tab 2)', () => {
-    const wrapper = shallow(<PanelTabs tabs={tabs} />);
+    const {getByTestId} = setupPanelTabs();
 
-    expect(wrapper.contains(tabs[1].component)).toBe(true);
+    expect(getByTestId('mocked_page2')).toBeTruthy();
   });
 
   it('should render disabled tab when disabled prop is true', () => {
-    const wrapper = shallow(<PanelTabs tabs={tabs} />);
+    const {queryByTestId, getAllByTestId} = setupPanelTabs();
 
-    expect(wrapper.find(View).at(1).children().at(2).prop('disabled')).toBe(
-      true,
-    );
+    expect(queryByTestId('mocked_page1')).toBeFalsy();
+    expect(queryByTestId('mocked_page2')).toBeTruthy();
+    expect(queryByTestId('mocked_page3')).toBeFalsy();
+
+    fireEvent.press(getAllByTestId('tabTouchable').at(0));
+
+    expect(queryByTestId('mocked_page1')).toBeTruthy();
+    expect(queryByTestId('mocked_page2')).toBeFalsy();
+    expect(queryByTestId('mocked_page3')).toBeFalsy();
+
+    fireEvent.press(getAllByTestId('tabTouchable').at(2));
+
+    expect(queryByTestId('mocked_page1')).toBeTruthy();
+    expect(queryByTestId('mocked_page2')).toBeFalsy();
+    expect(queryByTestId('mocked_page3')).toBeFalsy();
   });
 });
