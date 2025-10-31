@@ -17,76 +17,93 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {fireEvent} from '@testing-library/react-native';
-import {Icon, MovementIndicationCard} from '@axelor/aos-mobile-ui';
+import {MovementIndicationCard} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
 describe('MovementIndicationCard Component', () => {
-  const baseProps = {
-    titleTop: 'Top Title',
-    iconTop: <Icon name="top-icon" />,
-    onPressTitleTop: jest.fn(),
-    disabledTop: false,
-    titleDown: 'Down Title',
-    iconDown: <Icon name="down-icon" />,
-    onPressTitleDown: jest.fn(),
-    disabledDown: false,
-  };
-
-  const setupCard = overrideProps =>
+  const setupMovementIndicationCard = overrideProps =>
     setup({
       Component: MovementIndicationCard,
-      baseProps,
+      baseProps: {
+        titleTop: 'Top Title',
+        iconTop: <View testID="top-icon" />,
+        onPressTitleTop: jest.fn(),
+        disabledTop: false,
+        titleDown: 'Down Title',
+        iconDown: <View testID="down-icon" />,
+        onPressTitleDown: jest.fn(),
+        disabledDown: false,
+      },
       overrideProps,
     });
 
-  it('renders both titles and icons', () => {
-    const {getByText, queryAllByTestId} = setupCard();
+  it('renders without crashing', () => {
+    const {getByTestId} = setupMovementIndicationCard();
 
-    expect(getByText(baseProps.titleTop)).toBeTruthy();
-    expect(getByText(baseProps.titleDown)).toBeTruthy();
-    expect(queryAllByTestId('iconTouchable').length).toBe(2);
+    expect(getByTestId('movementIndicationCardContainer')).toBeTruthy();
+  });
+
+  it('renders both titles and icons', () => {
+    const {getByText, getByTestId, props} = setupMovementIndicationCard();
+
+    expect(getByText(props.titleTop)).toBeTruthy();
+    expect(getByText(props.titleDown)).toBeTruthy();
+
+    expect(getByTestId('top-icon')).toBeTruthy();
+    expect(getByTestId('down-icon')).toBeTruthy();
   });
 
   it('calls onPressTitleTop when the top title is pressed', () => {
-    const {getByText, props} = setupCard({
+    const {getAllByTestId, props} = setupMovementIndicationCard({
       onPressTitleTop: jest.fn(),
     });
 
-    fireEvent.press(getByText(baseProps.titleTop));
+    fireEvent.press(getAllByTestId('movementIndicationCardTouchable').at(0));
 
     expect(props.onPressTitleTop).toHaveBeenCalled();
   });
 
-  it('calls onPressTitleDown when the bottom title is pressed', () => {
-    const {getByText, props} = setupCard({
-      onPressTitleDown: jest.fn(),
-    });
-
-    fireEvent.press(getByText(baseProps.titleDown));
-
-    expect(props.onPressTitleDown).toHaveBeenCalled();
-  });
-
   it('disables the top action when disabledTop is true', () => {
-    const {getByText, props} = setupCard({
+    const {getAllByTestId, props} = setupMovementIndicationCard({
       disabledTop: true,
       onPressTitleTop: jest.fn(),
     });
 
-    fireEvent.press(getByText(baseProps.titleTop));
+    fireEvent.press(getAllByTestId('movementIndicationCardTouchable').at(0));
 
     expect(props.onPressTitleTop).not.toHaveBeenCalled();
   });
 
+  it('calls onPressTitleDown when the bottom title is pressed', () => {
+    const {getAllByTestId, props} = setupMovementIndicationCard({
+      onPressTitleDown: jest.fn(),
+    });
+
+    fireEvent.press(getAllByTestId('movementIndicationCardTouchable').at(1));
+
+    expect(props.onPressTitleDown).toHaveBeenCalled();
+  });
+
   it('disables the bottom action when disabledDown is true', () => {
-    const {getByText, props} = setupCard({
+    const {getAllByTestId, props} = setupMovementIndicationCard({
       disabledDown: true,
       onPressTitleDown: jest.fn(),
     });
 
-    fireEvent.press(getByText(baseProps.titleDown));
+    fireEvent.press(getAllByTestId('movementIndicationCardTouchable').at(1));
 
     expect(props.onPressTitleDown).not.toHaveBeenCalled();
+  });
+
+  it('applies custom style correctly', () => {
+    const {getByTestId, props} = setupMovementIndicationCard({
+      style: {marginBottom: 10},
+    });
+
+    expect(getByTestId('movementIndicationCardContainer')).toHaveStyle(
+      props.style,
+    );
   });
 });
