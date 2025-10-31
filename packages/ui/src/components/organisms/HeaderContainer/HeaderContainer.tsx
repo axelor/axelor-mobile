@@ -94,7 +94,6 @@ const getStyles = (Colors: ThemeColors) =>
       shadowOpacity: 0.12,
       shadowRadius: 6,
       shadowOffset: {width: 0, height: 4},
-      zIndex: 2,
       paddingBottom: 5,
       borderBottomEndRadius: 10,
       borderBottomStartRadius: 10,

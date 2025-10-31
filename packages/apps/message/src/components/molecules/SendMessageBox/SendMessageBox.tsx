@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
   },
 });
 
