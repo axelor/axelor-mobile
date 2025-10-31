@@ -21,30 +21,61 @@ import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('NumberBubble Component', () => {
   const Colors = getDefaultThemeColors();
-  const baseProps = {
-    number: 4,
-    color: Colors.primaryColor,
-    isNeutralBackground: true,
-  };
 
   const setupNumberBubble = overrideProps =>
-    setup({Component: NumberBubble, baseProps, overrideProps});
+    setup({
+      Component: NumberBubble,
+      baseProps: {
+        number: 4,
+        color: Colors.infoColor,
+        isNeutralBackground: true,
+      },
+      overrideProps,
+    });
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupNumberBubble();
+
+    expect(getByTestId('numberBubbleContainer')).toBeTruthy();
+  });
 
   it('renders the provided number', () => {
-    const {getByText} = setupNumberBubble();
+    const {getByText, props} = setupNumberBubble();
 
-    expect(getByText(baseProps.number.toString())).toBeTruthy();
+    expect(getByText(props.number.toString())).toBeTruthy();
   });
 
   it('applies neutral background styles when isNeutralBackground is true', () => {
-    const {getByText} = setupNumberBubble();
-    const textElement = getByText(baseProps.number.toString());
-    expect(textElement).toHaveStyle({color: Colors.text});
+    const {getByText, getByTestId, props} = setupNumberBubble();
+
+    expect(getByTestId('numberBubbleContainer')).toHaveStyle({
+      backgroundColor: Colors.backgroundColor,
+      borderColor: props.color.background,
+    });
+
+    expect(getByText(props.number.toString())).toHaveStyle({
+      color: Colors.text,
+    });
   });
 
   it('applies primary color styles when isNeutralBackground is false', () => {
-    const {getByText} = setupNumberBubble({isNeutralBackground: false});
-    const textElement = getByText(baseProps.number.toString());
-    expect(textElement).toHaveStyle({color: Colors.primaryColor.foreground});
+    const {getByText, getByTestId, props} = setupNumberBubble({
+      isNeutralBackground: false,
+    });
+
+    expect(getByTestId('numberBubbleContainer')).toHaveStyle({
+      backgroundColor: props.color.background_light,
+      borderColor: props.color.background,
+    });
+
+    expect(getByText(props.number.toString())).toHaveStyle({
+      color: props.color.foreground,
+    });
+  });
+
+  it('applies custom container style', () => {
+    const {getByTestId, props} = setupNumberBubble({style: {width: 200}});
+
+    expect(getByTestId('numberBubbleContainer')).toHaveStyle(props.style);
   });
 });
