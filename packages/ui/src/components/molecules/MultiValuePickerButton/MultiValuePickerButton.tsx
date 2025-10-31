@@ -49,7 +49,10 @@ const MultiValuePickerButton = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.9}
+      testID="multiValuePickerButtonTouchable">
       <Card style={[styles.container, style]}>
         <View style={styles.listItemContainer}>
           {listItem && listItem.length > 0
@@ -59,8 +62,8 @@ const MultiValuePickerButton = ({
                   disabled={readonly}
                   key={index}
                   style={[styles.cardItem, getItemColor(item.color)]}
-                  testID="multiValueItem"
-                  activeOpacity={0.9}>
+                  activeOpacity={0.9}
+                  testID="multiValuePickerBadgeTouchable">
                   <Text
                     style={styles.text}
                     fontSize={14}

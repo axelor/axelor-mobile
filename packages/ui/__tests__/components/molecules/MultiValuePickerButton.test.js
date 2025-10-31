@@ -16,91 +16,100 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {fireEvent} from '@testing-library/react-native';
+import {fireEvent, within} from '@testing-library/react-native';
 import {MultiValuePickerButton} from '@axelor/aos-mobile-ui';
-import {setup, getDefaultThemeColors, getComputedStyles} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('MultiValuePickerButton Component', () => {
   const Colors = getDefaultThemeColors();
-  const listItem = [
-    {
-      color: Colors.primaryColor,
-      title: 'Item 1',
-      key: '1',
-    },
-    {
-      color: Colors.cautionColor,
-      title: 'Item 2',
-      key: '2',
-    },
-    {
-      color: Colors.errorColor,
-      title: 'Item 3',
-      key: '3',
-    },
-  ];
-  const baseProps = {
-    onPress: jest.fn(),
-    listItem,
-    onPressItem: jest.fn(),
-  };
 
-  const setupButton = overrideProps =>
+  const setupMultiValuePickerButton = overrideProps =>
     setup({
       Component: MultiValuePickerButton,
-      baseProps,
+      baseProps: {
+        onPress: jest.fn(),
+        listItem: [
+          {color: Colors.primaryColor, title: 'Item 1', key: '1'},
+          {color: Colors.cautionColor, title: 'Item 2', key: '2'},
+          {color: Colors.errorColor, title: 'Item 3', key: '3'},
+        ],
+        onPressItem: jest.fn(),
+      },
       overrideProps,
     });
 
-  it('renders each selected item with title and color', () => {
-    const {getAllByTestId, getAllByText} = setupButton();
+  it('should render without crashing', () => {
+    const {getByTestId} = setupMultiValuePickerButton();
 
-    listItem.forEach(item => {
-      const [textNode] = getAllByText(item.title);
-      expect(textNode).toBeTruthy();
-      expect(
-        getComputedStyles(
-          getAllByTestId('multiValueItem')[listItem.indexOf(item)].props?.style,
-        ),
-      ).toMatchObject({
-        backgroundColor: item.color.background_light,
-        borderColor: item.color.background,
+    expect(getByTestId('multiValuePickerButtonTouchable')).toBeTruthy();
+  });
+
+  it('renders each selected item with title and color', () => {
+    const {getAllByTestId, props} = setupMultiValuePickerButton();
+
+    const _badgeElts = getAllByTestId('multiValuePickerBadgeTouchable');
+
+    expect(_badgeElts).toHaveLength(props.listItem.length);
+
+    props.listItem.forEach((_i, idx) => {
+      const _elt = _badgeElts.at(idx);
+      expect(within(_elt).getAllByText(_i.title)).toBeTruthy();
+      expect(_elt).toHaveStyle({
+        backgroundColor: _i.color.background_light,
+        borderColor: _i.color.background,
       });
     });
   });
 
+  it('calls onPress when the button is pressed', () => {
+    const {getByTestId, props} = setupMultiValuePickerButton({
+      onPress: jest.fn(),
+    });
+
+    fireEvent.press(getByTestId('multiValuePickerButtonTouchable'));
+
+    expect(props.onPress).toHaveBeenCalled();
+  });
+
   it('calls onPressItem when a list item is pressed', () => {
-    const {getAllByText, props} = setupButton({
+    const {getAllByTestId, props} = setupMultiValuePickerButton({
       onPressItem: jest.fn(),
     });
 
-    fireEvent.press(getAllByText(listItem[0].title)[0]);
+    fireEvent.press(getAllByTestId('multiValuePickerBadgeTouchable').at(0));
 
-    expect(props.onPressItem).toHaveBeenCalledWith(listItem[0]);
+    expect(props.onPressItem).toHaveBeenCalledWith(props.listItem[0]);
   });
 
   it('does not call onPressItem when readonly is true', () => {
-    const {getAllByText, props} = setupButton({
+    const {getAllByTestId, props} = setupMultiValuePickerButton({
       readonly: true,
       onPressItem: jest.fn(),
     });
 
-    fireEvent.press(getAllByText(listItem[0].title)[0]);
+    fireEvent.press(getAllByTestId('multiValuePickerBadgeTouchable').at(0));
 
     expect(props.onPressItem).not.toHaveBeenCalled();
   });
 
   it('displays placeholder when no items are selected', () => {
-    const placeholder = 'Select items';
-    const {getByText, queryAllByText} = setupButton({
+    const {getByText, queryAllByTestId, props} = setupMultiValuePickerButton({
       listItem: [],
-      placeholder,
+      placeholder: 'Select items',
     });
 
-    expect(queryAllByText(/Item/).length).toBe(0);
-    expect(getByText(placeholder)).toBeTruthy();
-    expect(getByText(placeholder)).toHaveStyle({
+    expect(queryAllByTestId('multiValuePickerBadgeTouchable')).toHaveLength(0);
+    expect(getByText(props.placeholder)).toBeTruthy();
+    expect(getByText(props.placeholder)).toHaveStyle({
       color: Colors.placeholderTextColor,
     });
+  });
+
+  it('applies custom container style', () => {
+    const {getByTestId, props} = setupMultiValuePickerButton({
+      style: {backgroundColor: 'red'},
+    });
+
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });
