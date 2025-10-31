@@ -18,34 +18,38 @@
 
 import {fireEvent} from '@testing-library/react-native';
 import {NumberChevronInput} from '@axelor/aos-mobile-ui';
-import {setup, getComputedStyles} from '../../tools';
+import {setup} from '../../tools';
 
-const INPUT_CHANGE_TYPE = {
-  button: 0,
-  keyboard: 1,
-  limit: 2,
-};
+const INPUT_CHANGE_TYPE = {button: 0, keyboard: 1, limit: 2};
 
 describe('NumberChevronInput Component', () => {
-  const baseProps = {
-    defaultValue: 5,
-    minValue: 0,
-    maxValue: 9,
-    onValueChange: jest.fn(),
-    onEndFocus: jest.fn(),
-  };
+  const setupNumberChevronInput = overrideProps =>
+    setup({
+      Component: NumberChevronInput,
+      baseProps: {
+        defaultValue: 5,
+        minValue: 0,
+        maxValue: 9,
+        onValueChange: jest.fn(),
+        onEndFocus: jest.fn(),
+      },
+      overrideProps,
+    });
 
-  const setupInput = overrideProps =>
-    setup({Component: NumberChevronInput, baseProps, overrideProps});
+  it('renders without crashing', () => {
+    const {getByTestId} = setupNumberChevronInput();
+
+    expect(getByTestId('numberChevronInputContainer')).toBeTruthy();
+  });
 
   it('renders with default value', () => {
-    const {getByDisplayValue} = setupInput();
+    const {getByDisplayValue, props} = setupNumberChevronInput();
 
-    expect(getByDisplayValue(baseProps.defaultValue.toString())).toBeTruthy();
+    expect(getByDisplayValue(props.defaultValue.toString())).toBeTruthy();
   });
 
   it('increments and decrements value via chevron buttons', () => {
-    const {getAllByTestId, props} = setupInput({
+    const {getAllByTestId, props} = setupNumberChevronInput({
       onValueChange: jest.fn(),
     });
 
@@ -53,19 +57,19 @@ describe('NumberChevronInput Component', () => {
 
     fireEvent.press(increaseButton);
     expect(props.onValueChange).toHaveBeenLastCalledWith(
-      baseProps.defaultValue + 1,
+      props.defaultValue + 1,
       INPUT_CHANGE_TYPE.button,
     );
 
     fireEvent.press(decreaseButton);
     expect(props.onValueChange).toHaveBeenLastCalledWith(
-      baseProps.defaultValue,
+      props.defaultValue,
       INPUT_CHANGE_TYPE.button,
     );
   });
 
   it('prevents increment when value reaches maxValue', () => {
-    const {getAllByTestId, props} = setupInput({
+    const {getAllByTestId, props} = setupNumberChevronInput({
       defaultValue: 9,
       onValueChange: jest.fn(),
     });
@@ -77,7 +81,7 @@ describe('NumberChevronInput Component', () => {
   });
 
   it('prevents decrement when value reaches minValue', () => {
-    const {getAllByTestId, props} = setupInput({
+    const {getAllByTestId, props} = setupNumberChevronInput({
       defaultValue: 0,
       onValueChange: jest.fn(),
     });
@@ -89,12 +93,12 @@ describe('NumberChevronInput Component', () => {
   });
 
   it('clamps keyboard input that exceeds bounds', () => {
-    const {getByDisplayValue, props} = setupInput({
+    const {getByDisplayValue, props} = setupNumberChevronInput({
       maxValue: 5,
       onValueChange: jest.fn(),
     });
 
-    const input = getByDisplayValue(baseProps.defaultValue.toString());
+    const input = getByDisplayValue(props.defaultValue.toString());
 
     fireEvent.changeText(input, '8');
 
@@ -105,11 +109,11 @@ describe('NumberChevronInput Component', () => {
   });
 
   it('handles valid keyboard input', () => {
-    const {getByDisplayValue, props} = setupInput({
+    const {getByDisplayValue, props} = setupNumberChevronInput({
       onValueChange: jest.fn(),
     });
 
-    const input = getByDisplayValue(baseProps.defaultValue.toString());
+    const input = getByDisplayValue(props.defaultValue.toString());
 
     fireEvent.changeText(input, '7');
 
@@ -127,12 +131,10 @@ describe('NumberChevronInput Component', () => {
   });
 
   it('applies custom container style', () => {
-    const style = {height: 200};
-    const {getByTestId} = setupInput({style});
+    const {getByTestId, props} = setupNumberChevronInput({
+      style: {height: 200},
+    });
 
-    const styles = getComputedStyles(
-      getByTestId('numberChevronInputContainer').props.style,
-    );
-    expect(styles).toMatchObject(style);
+    expect(getByTestId('numberChevronInputContainer')).toHaveStyle(props.style);
   });
 });

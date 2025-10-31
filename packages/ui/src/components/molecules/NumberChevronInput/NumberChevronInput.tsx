@@ -191,7 +191,7 @@ const NumberChevronInput = ({
 
   return (
     <View
-      testID={'numberChevronInputContainer'}
+      testID="numberChevronInputContainer"
       style={[styles.container, style]}>
       <ChevronButton
         isIncreasing={true}
