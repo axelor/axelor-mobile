@@ -23,15 +23,7 @@ import {setup, getDefaultThemeColors} from '../../tools';
 describe('LoadingIndicator Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const setupLoadingIndicator = overrideProps =>
-    setup({
-      Component: LoadingIndicator,
-      overrideProps,
-    });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
+  const setupLoadingIndicator = () => setup({Component: LoadingIndicator});
 
   it('does not render the indicator when showActivityIndicator is false', () => {
     jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
