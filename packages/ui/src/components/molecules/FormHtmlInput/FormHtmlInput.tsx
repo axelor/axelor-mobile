@@ -89,10 +89,10 @@ const FormHtmlInput = ({
   }
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="formHtmlInputContainer">
       <Text style={styles.title}>{title}</Text>
       <View
-        testID="formHtmlInputContainer"
+        testID="formHtmlInputWrapper"
         style={[
           commonStyles.filter,
           styles.content,

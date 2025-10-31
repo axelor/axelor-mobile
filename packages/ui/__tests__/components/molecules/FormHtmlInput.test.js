@@ -18,84 +18,69 @@
 
 import React from 'react';
 import {act} from '@testing-library/react-native';
-import {FormHtmlInput, HtmlInput} from '@axelor/aos-mobile-ui';
-import {setup, getDefaultThemeColors, getComputedStyles} from '../../tools';
+import {FormHtmlInput} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
-const findElementByType = (element, type) => {
-  if (!element || !element.props) {
-    return null;
-  }
+jest.mock('../../../lib/components/atoms/HtmlInput/HtmlInput', () => {
+  const {View} = require('react-native');
 
-  if (element.type === type) {
-    return element;
-  }
-
-  const children = React.Children.toArray(element.props.children);
-
-  for (const child of children) {
-    const result = findElementByType(child, type);
-    if (result) {
-      return result;
-    }
-  }
-
-  return null;
-};
+  return props => <View testID="mocked_htmlInput" {...props} />;
+});
 
 describe('FormHtmlInput Component', () => {
   const Colors = getDefaultThemeColors();
-  const baseProps = {
-    title: 'Input Title',
-    placeholder: 'Enter text',
-    defaultValue: 'Initial Value',
-    onChange: jest.fn(),
-  };
 
   const setupFormHtmlInput = overrideProps =>
-    setup({Component: FormHtmlInput, baseProps, overrideProps});
+    setup({
+      Component: FormHtmlInput,
+      baseProps: {
+        title: 'Input Title',
+        placeholder: 'Enter text',
+        defaultValue: 'Initial Value',
+        onChange: jest.fn(),
+      },
+      overrideProps,
+    });
 
-  const getHtmlInput = getByTestId => {
-    const container = getByTestId('formHtmlInputContainer');
-    const htmlInput = findElementByType(container, HtmlInput);
-    return {container, htmlInput};
-  };
+  it('renders without crashing', () => {
+    const {getByTestId} = setupFormHtmlInput();
+
+    expect(getByTestId('mocked_htmlInput')).toBeTruthy();
+  });
 
   it('renders title and initial value', () => {
-    const {getByText} = setupFormHtmlInput();
+    const {getByText, getByTestId, props} = setupFormHtmlInput();
 
-    expect(getByText(baseProps.title)).toBeTruthy();
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByTestId('mocked_htmlInput').props.defaultInput).toBe(
+      props.defaultValue,
+    );
   });
 
   it('invokes onChange when html content changes', () => {
     const {getByTestId, props} = setupFormHtmlInput({onChange: jest.fn()});
-    const {htmlInput} = getHtmlInput(getByTestId);
 
-    act(() => {
-      htmlInput.props.onChange?.('Updated Value');
-    });
+    const _value = 'Updated Value';
 
-    expect(props.onChange).toHaveBeenCalledWith('Updated Value');
+    act(() => getByTestId('mocked_htmlInput').props.onChange(_value));
+
+    expect(props.onChange).toHaveBeenCalledWith(_value);
   });
 
   it('updates focus styling on focus and blur', () => {
     const {getByTestId} = setupFormHtmlInput();
-    const {htmlInput} = getHtmlInput(getByTestId);
 
-    act(() => {
-      htmlInput.props.onFocus?.();
-    });
+    const htmlInput = getByTestId('mocked_htmlInput');
 
-    let container = getByTestId('formHtmlInputContainer');
-    expect(getComputedStyles(container.props.style)).toMatchObject({
+    act(() => htmlInput.props.onFocus());
+
+    expect(getByTestId('formHtmlInputWrapper')).toHaveStyle({
       borderColor: Colors.primaryColor.background,
     });
 
-    act(() => {
-      htmlInput.props.onBlur?.();
-    });
+    act(() => htmlInput.props.onBlur());
 
-    container = getByTestId('formHtmlInputContainer');
-    expect(getComputedStyles(container.props.style)).toMatchObject({
+    expect(getByTestId('formHtmlInputWrapper')).toHaveStyle({
       borderColor: Colors.secondaryColor.background,
     });
   });
@@ -105,11 +90,8 @@ describe('FormHtmlInput Component', () => {
       required: true,
       defaultValue: '',
     });
-    const container = getByTestId('formHtmlInputContainer');
 
-    const styles = getComputedStyles(container.props.style);
-
-    expect(styles).toMatchObject({
+    expect(getByTestId('formHtmlInputWrapper')).toHaveStyle({
       borderColor: Colors.errorColor.background,
     });
   });
@@ -117,33 +99,32 @@ describe('FormHtmlInput Component', () => {
   it('does not apply required styling when field has content', () => {
     const {getByTestId} = setupFormHtmlInput({required: true});
 
-    const styles = getComputedStyles(
-      getByTestId('formHtmlInputContainer').props.style,
-    );
-
-    expect(styles).toMatchObject({
+    expect(getByTestId('formHtmlInputWrapper')).toHaveStyle({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
   it('returns null when readonly, hideIfNull is true, and value is empty', () => {
-    const {queryByText} = setupFormHtmlInput({
+    const {queryByTestId} = setupFormHtmlInput({
       readonly: true,
       hideIfNull: true,
       defaultValue: '',
     });
 
-    expect(queryByText(baseProps.title)).toBeNull();
+    expect(queryByTestId('formHtmlInputContainer')).toBeFalsy();
   });
 
   it('renders when readonly but value is present', () => {
-    const {getByText} = setupFormHtmlInput({
+    const {getByText, getByTestId, props} = setupFormHtmlInput({
       readonly: true,
       hideIfNull: true,
       defaultValue: 'Some content',
     });
 
-    expect(getByText(baseProps.title)).toBeTruthy();
-    expect(getByText(baseProps.title)).toBeTruthy();
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByTestId('mocked_htmlInput').props.defaultInput).toBe(
+      props.defaultValue,
+    );
+    expect(getByTestId('mocked_htmlInput').props.readonly).toBe(true);
   });
 });
