@@ -72,7 +72,7 @@ const SignatureInput = ({
   iconSize = 25,
   popup = false,
 }: SignatureInputProps) => {
-  const ref = useRef<SignatureViewRef>();
+  const ref = useRef<SignatureViewRef>(null);
   const Colors = useThemeColor();
 
   const {baseUrl, jsessionId, token} = useSelector((state: any) => state.auth);

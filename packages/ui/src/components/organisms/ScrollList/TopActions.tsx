@@ -28,7 +28,7 @@ export interface TopActionsProps {
 
 const TopActions = ({actionList, verticalActions}: TopActionsProps) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="topActionsContainer">
       {actionList.map((action, index) => {
         let horizontal = verticalActions;
         if (!verticalActions && index === actionList.length - 1) {

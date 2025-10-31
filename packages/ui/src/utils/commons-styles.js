@@ -17,7 +17,6 @@
  */
 
 import {StyleSheet} from 'react-native';
-import {hexToRgb} from './commons-utlis';
 
 export const getCommonStyles = (Colors, _required = false) =>
   StyleSheet.create({
@@ -61,10 +60,5 @@ export const getCommonStyles = (Colors, _required = false) =>
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.primaryColor.background,
-      shadowColor: `rgba(${hexToRgb(Colors.primaryColor.background)}, 0.25)`,
-      shadowOffset: {width: 0, height: 0},
-      shadowOpacity: 1,
-      shadowRadius: 5,
-      elevation: 2,
     },
   });

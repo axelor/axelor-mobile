@@ -66,18 +66,21 @@ const ToggleSwitch = ({
         commonStyles.filterSize,
         styles.container,
         styleContainer,
-      ]}>
+      ]}
+      testID="toggleSwitchContainer">
       <TouchableOpacity
         style={[styles.toggle, active && styles.active, styleToogle]}
         disabled={active}
-        onPress={onLeftPress}>
+        onPress={onLeftPress}
+        testID="toggleSwitchLeftButton">
         <Text>{leftTitle}</Text>
         {leftElement != null && React.cloneElement(leftElement)}
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.toggle, !active && styles.active, styleToogle]}
         disabled={!active}
-        onPress={onRightPress}>
+        onPress={onRightPress}
+        testID="toggleSwitchRightButton">
         <Text>{rightTitle}</Text>
         {rigthElement != null && React.cloneElement(rigthElement)}
       </TouchableOpacity>

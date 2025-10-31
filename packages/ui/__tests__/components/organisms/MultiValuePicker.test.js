@@ -17,177 +17,150 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {
-  MultiValuePicker,
-  MultiValuePickerButton,
-  SelectionContainer,
-  Text,
-} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
+import {MultiValuePicker} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
+import {fireEvent, within} from '@testing-library/react-native';
 
 describe('MultiValuePicker Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    listItems: [
-      {
-        color: Colors.primaryColor,
-        title: 'Item 1',
-        key: '1',
-      },
-      {
-        color: Colors.cautionColor,
-        title: 'Item 2',
-        key: '2',
-      },
-      {
-        color: Colors.errorColor,
-        title: 'Item 3',
-        key: '3',
-      },
-    ],
-  };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<MultiValuePicker {...props} />);
+  const ITEMS = [
+    {color: Colors.primaryColor, title: 'Item 1', key: '1'},
+    {color: Colors.cautionColor, title: 'Item 2', key: '2'},
+    {color: Colors.errorColor, title: 'Item 3', key: '3'},
+  ];
 
-    expect(wrapper.exists()).toBe(true);
+  const setupMultiValuePicker = overrideProps =>
+    setup({
+      Component: MultiValuePicker,
+      baseProps: {listItems: ITEMS},
+      overrideProps,
+    });
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupMultiValuePicker();
+
+    expect(getByTestId('multiValuePickerContainer')).toBeTruthy();
   });
 
   it('should give listItems to SelectionContainer', () => {
-    const wrapper = shallow(<MultiValuePicker {...props} />);
+    const {queryAllByTestId, getAllByTestId, getByTestId, props} =
+      setupMultiValuePicker();
 
-    wrapper.find(MultiValuePickerButton).simulate('press');
-    expect(wrapper.find(SelectionContainer).prop('objectList')).toBe(
-      props.listItems,
+    expect(queryAllByTestId('selectionItemTouchable').length).toBe(0);
+
+    fireEvent.press(getByTestId('multiValuePickerButtonTouchable'));
+
+    expect(getAllByTestId('selectionItemTouchable').length).toBe(
+      props.listItems.length,
     );
   });
 
   it('should display the placeholder if provided and no value is selected', () => {
-    const placeholder = 'Select items';
-    const wrapper = shallow(
-      <MultiValuePicker {...props} placeholder={placeholder} />,
-    );
-    const title = wrapper.find(MultiValuePickerButton).prop('placeholder');
-    expect(title).toBe(placeholder);
+    const {getByText, props} = setupMultiValuePicker({
+      placeholder: 'Select items',
+    });
+
+    expect(getByText(props.placeholder)).toBeTruthy();
   });
 
-  it('should give defaultItems to MultiValuePickerButton', () => {
-    const defaultItems = [props.listItems[0]];
-    const wrapper = shallow(
-      <MultiValuePicker {...props} defaultItems={defaultItems} />,
-    );
+  it('should render correctly default values', () => {
+    const {getAllByTestId, props} = setupMultiValuePicker({
+      defaultItems: [ITEMS[0]],
+    });
 
-    expect(wrapper.find(MultiValuePickerButton).prop('listItem')).toEqual(
-      defaultItems,
-    );
+    const _badgeElts = getAllByTestId('multiValuePickerBadgeTouchable');
+
+    expect(_badgeElts.length).toBe(props.defaultItems.length);
+
+    props.defaultItems.forEach((_i, idx) => {
+      expect(within(_badgeElts.at(idx)).getByText(_i.title)).toBeTruthy();
+      expect(_badgeElts.at(idx)).toHaveStyle({
+        backgroundColor: _i.color.background_light,
+        borderColor: _i.color.background,
+      });
+    });
   });
 
   it('should call onValueChange with the right args', () => {
-    const onValueChange = jest.fn();
-    const wrapper = shallow(
-      <MultiValuePicker {...props} onValueChange={onValueChange} />,
-    );
+    const {getAllByTestId, getByTestId, props} = setupMultiValuePicker({
+      onValueChange: jest.fn(),
+    });
 
-    expect(wrapper.find(SelectionContainer).length).toBe(0);
+    fireEvent.press(getByTestId('multiValuePickerButtonTouchable'));
 
-    wrapper.find(MultiValuePickerButton).simulate('press');
+    fireEvent.press(getAllByTestId('selectionItemTouchable').at(0));
+    expect(props.onValueChange).toHaveBeenCalledWith([props.listItems[0]]);
 
-    expect(wrapper.find(SelectionContainer).length).toBe(1);
-
-    wrapper
-      .find(SelectionContainer)
-      .dive()
-      .find('SelectionItem')
-      .at(0)
-      .simulate('press');
-
-    expect(onValueChange).toHaveBeenCalledWith([props.listItems[0]]);
-
-    wrapper
-      .find(SelectionContainer)
-      .dive()
-      .find('SelectionItem')
-      .at(2)
-      .simulate('press');
-
-    expect(onValueChange).toHaveBeenCalledWith([
+    fireEvent.press(getAllByTestId('selectionItemTouchable').at(2));
+    expect(props.onValueChange).toHaveBeenCalledWith([
       props.listItems[0],
       props.listItems[2],
     ]);
 
-    wrapper
-      .find(MultiValuePickerButton)
-      .dive()
-      .find(TouchableOpacity)
-      .at(2)
-      .simulate('press');
+    fireEvent.press(getAllByTestId('selectionItemTouchable').at(2));
+    expect(props.onValueChange).toHaveBeenCalledWith([props.listItems[0]]);
 
-    expect(onValueChange).toHaveBeenCalledWith([props.listItems[0]]);
-
-    wrapper
-      .find(MultiValuePickerButton)
-      .dive()
-      .find(TouchableOpacity)
-      .at(1)
-      .simulate('press');
-
-    expect(onValueChange).toHaveBeenCalledWith([]);
+    fireEvent.press(getAllByTestId('multiValuePickerBadgeTouchable').at(0));
+    expect(props.onValueChange).toHaveBeenCalledWith([]);
   });
 
   it('should display a title if provided', () => {
-    const title = 'Title';
-    const wrapper = shallow(<MultiValuePicker {...props} title={title} />);
+    const {getByText, props} = setupMultiValuePicker({title: 'Title'});
 
-    expect(wrapper.find(Text).prop('children')).toBe(title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('should render readonly MultiValuePickerButton and SelectionContainer when props is true', () => {
-    const wrapper = shallow(<MultiValuePicker {...props} readonly />);
+    const {getAllByTestId, getByTestId, props} = setupMultiValuePicker({
+      defaultItems: [ITEMS[0]],
+      onValueChange: jest.fn(),
+      readonly: true,
+    });
 
-    expect(wrapper.find(MultiValuePickerButton).prop('readonly')).toBe(true);
+    fireEvent.press(getByTestId('multiValuePickerButtonTouchable'));
 
-    wrapper.find(MultiValuePickerButton).simulate('press');
-    expect(wrapper.find(SelectionContainer).prop('readonly')).toBe(true);
+    fireEvent.press(getAllByTestId('selectionItemTouchable').at(2));
+    expect(props.onValueChange).not.toHaveBeenCalled();
+
+    fireEvent.press(getAllByTestId('multiValuePickerBadgeTouchable').at(0));
+    expect(props.onValueChange).not.toHaveBeenCalled();
   });
 
   it('should apply required styling when props is true', () => {
-    const wrapper = shallow(<MultiValuePicker {...props} required />);
+    const {getByTestId} = setupMultiValuePicker({required: true});
 
-    expect(getGlobalStyles(wrapper.find(MultiValuePickerButton))).toMatchObject(
-      {
-        borderColor: Colors.errorColor.background,
-      },
-    );
+    expect(
+      within(getByTestId('multiValuePickerButtonTouchable')).getByTestId(
+        'cardContainer',
+      ),
+    ).toHaveStyle({borderColor: Colors.errorColor.background});
   });
 
   it('should apply custom style to container when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <MultiValuePicker {...props} style={customStyle} />,
-    );
+    const {getByTestId, props} = setupMultiValuePicker({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getByTestId('multiValuePickerContainer')).toHaveStyle(props.style);
   });
 
   it('should apply custom style to picker when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <MultiValuePicker {...props} pickerStyle={customStyle} />,
-    );
+    const {getByTestId, props} = setupMultiValuePicker({
+      pickerStyle: {width: 200},
+    });
 
-    expect(getGlobalStyles(wrapper.find(MultiValuePickerButton))).toMatchObject(
-      customStyle,
-    );
+    expect(
+      within(getByTestId('multiValuePickerButtonTouchable')).getByTestId(
+        'cardContainer',
+      ),
+    ).toHaveStyle(props.pickerStyle);
   });
 
   it('should apply custom style to title when provided', () => {
-    const customStyle = {fontSize: 20};
-    const wrapper = shallow(
-      <MultiValuePicker {...props} title="Title" styleTxt={customStyle} />,
-    );
+    const {getByText, props} = setupMultiValuePicker({
+      title: 'Title',
+      styleTxt: {fontSize: 20},
+    });
 
-    expect(getGlobalStyles(wrapper.find(Text))).toMatchObject(customStyle);
+    expect(getByText(props.title)).toHaveStyle(props.styleTxt);
   });
 });

@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-pell-rich-editor/src/RichEditor.js b/node_modules/react-native-pell-rich-editor/src/RichEditor.js
+index f194ac3..f2973db 100755
+--- a/node_modules/react-native-pell-rich-editor/src/RichEditor.js
++++ b/node_modules/react-native-pell-rich-editor/src/RichEditor.js
+@@ -281,7 +281,7 @@ export default class RichTextEditor extends Component {
+           ref={that.setRef}
+           onMessage={that.onMessage}
+           originWhitelist={['*']}
+-          dataDetectorTypes={dataDetectorTypes}
++          //dataDetectorTypes={dataDetectorTypes}
+           domStorageEnabled={false}
+           bounces={false}
+           javaScriptEnabled={true}

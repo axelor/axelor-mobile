@@ -16,100 +16,72 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Modal, TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {
-  Alert,
-  NumberBubble,
-  Text,
-  ViewAllContainer,
-  ViewAllEditList,
-} from '@axelor/aos-mobile-ui';
-
-const DATA = [
-  {
-    id: 0,
-    name: 'Line 1',
-    nameDetails: 'Details of line 1',
-    qty: 3,
-    unitName: 'unit',
-  },
-  {
-    id: 1,
-    name: 'Line 2',
-    qty: 500,
-    unitName: 'g',
-  },
-  {
-    id: 2,
-    name: 'Line 3',
-    nameDetails: 'Details of line 3',
-    qty: 5,
-    unitName: 'm',
-  },
-  {
-    id: 3,
-    name: 'Line 4',
-    nameDetails: 'Details of line 4',
-    qty: 3,
-    unitName: 'km',
-  },
-  {
-    id: 4,
-    name: 'Line 5',
-    qty: 10,
-    unitName: 'L',
-  },
-];
+import {fireEvent} from '@testing-library/react-native';
+import {ViewAllEditList} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('ViewAllEditList Component', () => {
-  const props = {
-    title: 'Title',
-    lines: DATA,
-    currentLineId: 1,
-    setLines: jest.fn(),
-    handleEditLine: jest.fn(),
-    translator: jest.fn(key => key),
-  };
+  const setupViewAllEditList = overrideProps =>
+    setup({
+      Component: ViewAllEditList,
+      baseProps: {
+        title: 'Title',
+        lines: [
+          {
+            id: 0,
+            name: 'Line 1',
+            nameDetails: 'Details of line 1',
+            qty: 3,
+            unitName: 'unit',
+          },
+          {id: 1, name: 'Line 2', qty: 500, unitName: 'g'},
+          {
+            id: 2,
+            name: 'Line 3',
+            nameDetails: 'Details of line 3',
+            qty: 5,
+            unitName: 'm',
+          },
+          {
+            id: 3,
+            name: 'Line 4',
+            nameDetails: 'Details of line 4',
+            qty: 3,
+            unitName: 'km',
+          },
+          {id: 4, name: 'Line 5', qty: 10, unitName: 'L'},
+        ],
+        currentLineId: 1,
+        setLines: jest.fn(),
+        handleEditLine: jest.fn(),
+        translator: jest.fn(key => key),
+      },
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<ViewAllEditList {...props} />);
+    const {getByTestId} = setupViewAllEditList();
 
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('should render a ViewAllContainer', () => {
-    const wrapper = shallow(<ViewAllEditList {...props} />);
-
-    expect(wrapper.find(ViewAllContainer).exists()).toBe(true);
+    expect(getByTestId('cardContainer')).toBeTruthy();
   });
 
   it('should render title and number of lines', () => {
-    const wrapper = shallow(<ViewAllEditList {...props} />);
+    const {getByTestId, getByText, props} = setupViewAllEditList();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
-    expect(wrapper.find(NumberBubble).prop('number')).toBe(DATA.length);
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByTestId('numberBubbleContainer')).toBeTruthy();
+    expect(getByText(props.lines.length.toString())).toBeTruthy();
   });
 
   it('should open modal with right title when click on view all button', () => {
-    const wrapper = shallow(<ViewAllEditList {...props} />);
+    const {queryByTestId, getByTestId, getAllByText, props} =
+      setupViewAllEditList();
 
-    expect(
-      wrapper.find('AllLinesAlert').dive().find(Alert).prop('visible'),
-    ).toBe(false);
+    expect(queryByTestId('modalContainer')).toBeFalsy();
 
-    wrapper
-      .find(ViewAllContainer)
-      .dive()
-      .find(TouchableOpacity)
-      .simulate('press');
+    fireEvent.press(getByTestId('viewAllContainerButton'));
 
-    expect(
-      wrapper.find('AllLinesAlert').dive().find(Alert).prop('visible'),
-    ).toBe(true);
-    expect(wrapper.find('AllLinesAlert').dive().find(Alert).prop('title')).toBe(
-      props.title,
-    );
+    expect(getByTestId('modalContainer')).toBeTruthy();
+    expect(getAllByText(props.title).length).toBe(2);
   });
 });

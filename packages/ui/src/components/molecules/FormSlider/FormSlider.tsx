@@ -63,7 +63,7 @@ const FormSlider = ({
   );
 
   return (
-    <View style={[styles.container, style]}>
+    <View testID="formSliderContainer" style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <View
         style={[

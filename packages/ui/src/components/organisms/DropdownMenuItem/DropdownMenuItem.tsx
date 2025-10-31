@@ -73,7 +73,8 @@ const DropdownMenuItem = ({
     <TouchableOpacity
       onPress={onPress}
       style={[styles.menuItem, style]}
-      disabled={disableIf}>
+      disabled={disableIf}
+      testID="dropdownMenuItemTouchable">
       <View style={styles.iconContainer}>
         {customComponent != null ? (
           React.cloneElement(customComponent)

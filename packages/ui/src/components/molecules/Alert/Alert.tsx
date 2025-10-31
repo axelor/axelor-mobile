@@ -102,11 +102,12 @@ const Alert = ({
 
   return (
     <Modal
+      testID="alertModal"
       visible={visible}
       transparent
       animationType="fade"
       onRequestClose={_cancelButtonConfig?.onPress}>
-      <View style={styles.modalBackground}>
+      <View style={styles.modalBackground} testID="modalContainer">
         <Card style={[styles.container, style]}>
           <View style={styles.headerContainer}>
             {!checkNullString(title) && (
@@ -137,10 +138,14 @@ const Alert = ({
             isConfirmButtonDisplayedBottom) && (
             <View style={[styles.buttonsContainer, buttonsContainerStyle]}>
               {isCancelButtonDisplayedBottom && (
-                <Button {..._cancelButtonConfig} style={styles.cancelButton} />
+                <Button
+                  {..._cancelButtonConfig}
+                  testID="alertCancelButton"
+                  style={styles.cancelButton}
+                />
               )}
               {isConfirmButtonDisplayedBottom && (
-                <Button {..._confirmButtonConfig} />
+                <Button {..._confirmButtonConfig} testID="alertConfirmButton" />
               )}
             </View>
           )}

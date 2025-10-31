@@ -18,120 +18,127 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {DropdownCardSwitch, DropdownCard, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {fireEvent, within} from '@testing-library/react-native';
+import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('DropdownCardSwitch', () => {
-  const dropdownItems = [
-    {
-      key: 1,
-      title: 'Item 1',
-      childrenComp: <Text>Content 1</Text>,
-      isDefaultVisible: true,
-    },
-    {
-      key: 2,
-      title: 'Item 2',
-      childrenComp: <Text>Content 2</Text>,
-      isDefaultVisible: false,
-    },
-    {
-      key: 3,
-      title: 'Item 3',
-      childrenComp: <Text>Content 3</Text>,
-      isDefaultVisible: false,
-    },
-  ];
+  const setupDropdownCardSwitch = overrideProps =>
+    setup({
+      Component: DropdownCardSwitch,
+      baseProps: {
+        dropdownItems: [
+          {
+            key: 1,
+            title: 'Item 1',
+            childrenComp: <View testID={`content-idx${0}`} />,
+            isDefaultVisible: true,
+          },
+          {
+            key: 2,
+            title: 'Item 2',
+            childrenComp: <View testID={`content-idx${1}`} />,
+            isDefaultVisible: false,
+          },
+          {
+            key: 3,
+            title: 'Item 3',
+            childrenComp: <View testID={`content-idx${2}`} />,
+            isDefaultVisible: false,
+          },
+        ],
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(
-      <DropdownCardSwitch dropdownItems={dropdownItems} />,
-    );
+  it('renders without crashing', () => {
+    const {getByTestId} = setupDropdownCardSwitch();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('dropdownCardSwitchContainer')).toBeTruthy();
   });
 
   it('should render correctly all the DropdownCards', () => {
-    const wrapper = shallow(
-      <DropdownCardSwitch dropdownItems={dropdownItems} />,
-    );
+    const {getAllByTestId, props} = setupDropdownCardSwitch();
 
-    expect(wrapper.find(DropdownCard)).toHaveLength(dropdownItems.length);
-    dropdownItems.forEach((item, idx) => {
-      expect(wrapper.find(DropdownCard).at(idx).prop('title')).toBe(item.title);
-      expect(
-        wrapper
-          .find(DropdownCard)
-          .at(idx)
-          .children()
-          .containsMatchingElement(item.childrenComp),
-      ).toBe(true);
-      expect(wrapper.find(DropdownCard).at(idx).prop('dropdownIsOpen')).toBe(
-        item.isDefaultVisible,
-      );
+    const _cardElts = getAllByTestId('dropdownCardContainer');
+
+    expect(_cardElts).toHaveLength(props.dropdownItems.length);
+
+    props.dropdownItems.forEach((item, idx) => {
+      const _elt = _cardElts.at(idx);
+
+      expect(within(_elt).getByText(item.title)).toBeTruthy();
+      if (item.isDefaultVisible) {
+        expect(within(_elt).getByTestId(`content-idx${idx}`)).toBeTruthy();
+      } else {
+        expect(within(_elt).queryByTestId(`content-idx${idx}`)).toBeFalsy();
+      }
     });
   });
 
   it('should open the right card when pressed and close the others', () => {
-    const wrapper = shallow(
-      <DropdownCardSwitch dropdownItems={dropdownItems} />,
-    );
+    const {getAllByTestId, props} = setupDropdownCardSwitch();
 
-    for (let i = 0; i < dropdownItems.length; i++) {
-      !wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen') &&
-        wrapper.find(DropdownCard).at(i).simulate('press');
+    const _cardElts = getAllByTestId('dropdownCardContainer');
 
-      expect(wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen')).toBe(
-        true,
-      );
-      dropdownItems.forEach(
-        (item, idx) =>
-          item !== dropdownItems[i] &&
+    for (let i = 0; i < props.dropdownItems.length; i++) {
+      const _openElt = _cardElts.at(i);
+
+      if (!props.dropdownItems[i].isDefaultVisible) {
+        fireEvent.press(within(_openElt).getByTestId('dropdownCardTouchable'));
+      }
+
+      expect(within(_openElt).getByTestId(`content-idx${i}`)).toBeTruthy();
+
+      props.dropdownItems.forEach((item, idx, self) => {
+        const _closeElt = _cardElts.at(idx);
+        if (item !== self[i]) {
           expect(
-            wrapper.find(DropdownCard).at(idx).prop('dropdownIsOpen'),
-          ).toBe(false),
-      );
+            within(_closeElt).queryByTestId(`content-idx${idx}`),
+          ).toBeFalsy();
+        }
+      });
     }
   });
 
   it('should be possible to open all cards if multiSelection is true', () => {
-    const wrapper = shallow(
-      <DropdownCardSwitch dropdownItems={dropdownItems} multiSelection />,
-    );
+    const {getAllByTestId, props} = setupDropdownCardSwitch({
+      multiSelection: true,
+    });
 
-    for (let i = 0; i < dropdownItems.length; i++) {
-      !wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen') &&
-        wrapper.find(DropdownCard).at(i).simulate('press');
-    }
+    const _cardElts = getAllByTestId('dropdownCardContainer');
 
-    for (let i = 0; i < dropdownItems.length; i++) {
-      expect(wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen')).toBe(
-        true,
-      );
+    props.dropdownItems.forEach((_i, idx) => {
+      if (!_i.isDefaultVisible) {
+        fireEvent.press(
+          within(_cardElts.at(idx)).getByTestId('dropdownCardTouchable'),
+        );
+      }
+    });
+
+    for (let i = 0; i < props.dropdownItems.length; i++) {
+      expect(
+        within(_cardElts.at(i)).getByTestId(`content-idx${i}`),
+      ).toBeTruthy();
     }
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <DropdownCardSwitch dropdownItems={dropdownItems} style={customStyle} />,
-    );
+    const {getByTestId, props} = setupDropdownCardSwitch({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getByTestId('dropdownCardSwitchContainer')).toHaveStyle(props.style);
   });
 
   it('should apply custom styleTitle when provided', () => {
-    const customStyleTitle = {fontWeight: 'bold'};
-    const wrapper = shallow(
-      <DropdownCardSwitch
-        dropdownItems={dropdownItems}
-        styleTitle={customStyleTitle}
-      />,
-    );
+    const {getAllByTestId, props} = setupDropdownCardSwitch({
+      styleTitle: {fontWeight: 'bold'},
+    });
+    const _cardElts = getAllByTestId('dropdownCardContainer');
 
-    wrapper.find(DropdownCard).forEach(dropdownCard => {
-      expect(dropdownCard.prop('styleText')).toEqual(customStyleTitle);
+    props.dropdownItems.forEach((item, idx) => {
+      expect(within(_cardElts.at(idx)).getByText(item.title)).toHaveStyle(
+        props.styleTitle,
+      );
     });
   });
 });

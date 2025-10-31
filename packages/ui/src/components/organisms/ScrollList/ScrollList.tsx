@@ -153,7 +153,7 @@ const ScrollList = ({
     [renderActions, renderItem],
   );
 
-  const flatList = useRef<FlatList>();
+  const flatList = useRef<FlatList>(null);
 
   const moveToTop = () => {
     flatList.current.scrollToIndex({index: 0, animated: true});
@@ -225,7 +225,7 @@ const ScrollList = ({
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="scrollListContainer">
       <Animated.View style={[styles.buttonContainer, animatedButtonStyle]}>
         <CircleButton
           square={false}
@@ -236,6 +236,7 @@ const ScrollList = ({
       </Animated.View>
       {!Array.isArray(data) || data.length === 0 ? renderActions() : null}
       <AnimatedFlatList
+        testID="scrollListAnimatedList"
         ref={flatList}
         style={[styles.scrollView, style]}
         data={data}

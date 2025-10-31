@@ -42,7 +42,7 @@ const Image = ({
   source,
   defaultIconSize = 60,
 }: ImageProps) => {
-  let timeOutReload = useRef<any>();
+  let timeOutReload = useRef<any>(null);
   const Colors = useThemeColor();
 
   const [isValid, setValid] = useState(true);

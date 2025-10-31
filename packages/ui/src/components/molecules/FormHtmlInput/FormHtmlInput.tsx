@@ -89,9 +89,10 @@ const FormHtmlInput = ({
   }
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="formHtmlInputContainer">
       <Text style={styles.title}>{title}</Text>
       <View
+        testID="formHtmlInputWrapper"
         style={[
           commonStyles.filter,
           styles.content,
@@ -125,16 +126,16 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
         : Colors.secondaryColor.background,
       borderWidth: 1,
     },
-    htmlToolBar: {
-      backgroundColor: null,
-      marginLeft: -5,
-    },
     input: {
       width: '100%',
       minHeight: 40,
     },
     title: {
       marginLeft: 10,
+    },
+    htmlToolBar: {
+      backgroundColor: null,
+      marginLeft: -5,
     },
   });
 

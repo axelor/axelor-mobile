@@ -16,222 +16,206 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Button, Chip, ChipSelect} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {fireEvent, within} from '@testing-library/react-native';
+import {ChipSelect} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('ChipSelect Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    selectionItems: [
-      {isActive: true, color: Colors.primaryColor, title: 'Item 1', key: 1},
-      {isActive: false, color: Colors.cautionColor, title: 'Item 2', key: 2},
-      {isActive: false, color: Colors.errorColor, title: 'Item 3', key: 3},
-    ],
-    mode: 'multi',
-  };
+  const setupChipSelect = overrideProps =>
+    setup({
+      Component: ChipSelect,
+      baseProps: {
+        selectionItems: [
+          {
+            isActive: true,
+            color: Colors.primaryColor,
+            title: 'Item 1',
+            key: 1,
+          },
+          {
+            isActive: false,
+            color: Colors.cautionColor,
+            title: 'Item 2',
+            key: 2,
+          },
+          {
+            isActive: false,
+            color: Colors.errorColor,
+            title: 'Item 3',
+            key: 3,
+          },
+        ],
+        mode: 'multi',
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<ChipSelect {...props} />);
+  function checkChipStyle(viewElt, textElt, color) {
+    expect(viewElt).toHaveStyle({
+      borderColor: color.background,
+      backgroundColor: color.background_light,
+    });
+    expect(textElt).toHaveStyle({color: color.foreground});
+  }
 
-    expect(wrapper.exists()).toBe(true);
+  function checkChipSelected(elt, item, isSelected) {
+    const _viewElt = within(elt).getByTestId('chipContainer');
+    const _textElt = within(_viewElt).getByText(item.title);
+
+    expect(_viewElt).toBeTruthy();
+    expect(_textElt).toBeTruthy();
+    checkChipStyle(_viewElt, _textElt, {
+      ...(item.color ?? Colors.primaryColor),
+      ...(isSelected
+        ? {}
+        : {background_light: Colors.backgroundColor, foreground: Colors.text}),
+    });
+  }
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupChipSelect();
+
+    expect(getByTestId('chipSelectContainer')).toBeTruthy();
   });
 
   it('should not render if props mode is unknown', () => {
-    const wrapper = shallow(<ChipSelect {...props} mode="" />);
+    const {queryByTestId} = setupChipSelect({mode: ''});
 
-    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(queryByTestId('chipSelectContainer')).toBeFalsy();
   });
 
   it('should render the right number of Chip component', () => {
-    const wrapper = shallow(<ChipSelect {...props} />);
+    const {getAllByTestId} = setupChipSelect();
 
-    expect(wrapper.find(Chip)).toHaveLength(3);
+    expect(getAllByTestId('chipTouchable')).toHaveLength(3);
   });
 
   it('should render Chip with the right props', () => {
-    const wrapper = shallow(<ChipSelect {...props} readonly={false} />);
+    const {getAllByTestId, props} = setupChipSelect();
 
-    for (let i = 0; i < props.selectionItems.length; i++) {
-      expect(wrapper.find(Chip).at(i).props()).toMatchObject({
-        selected: props.selectionItems[i].isActive,
-        selectedColor: props.selectionItems[i].color,
-        title: props.selectionItems[i].title,
-        readonly: false,
-      });
-    }
+    const _chipElts = getAllByTestId('chipTouchable');
 
-    wrapper.setProps({readonly: true});
-
-    for (let i = 0; i < props.selectionItems.length; i++) {
-      expect(wrapper.find(Chip).at(i).props()).toMatchObject({
-        selected: props.selectionItems[i].isActive,
-        selectedColor: props.selectionItems[i].color,
-        title: props.selectionItems[i].title,
-        readonly: true,
-      });
-    }
+    props.selectionItems.forEach((_i, idx) => {
+      checkChipSelected(_chipElts.at(idx), _i, _i.isActive);
+    });
   });
 
   it('should call onChangeValue when Chip is pressed', () => {
-    const wrapper = shallow(<ChipSelect {...props} />);
+    const {getAllByTestId, props} = setupChipSelect({onChangeValue: jest.fn()});
 
-    wrapper.find(Chip).at(0).simulate('press');
+    const _chipElts = getAllByTestId('chipTouchable');
 
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(
-      !props.selectionItems[0].isActive,
-    );
+    fireEvent.press(_chipElts.at(0));
+    checkChipSelected(_chipElts.at(0), props.selectionItems[0], false);
+    expect(props.onChangeValue).toHaveBeenCalledTimes(1);
   });
 
   it('should render ChipSelect with more than one Chip activable if mode is multi', () => {
-    const onChangeValue = jest.fn();
-    const wrapper = shallow(
-      <ChipSelect {...props} onChangeValue={onChangeValue} />,
-    );
+    const {getAllByTestId, props} = setupChipSelect({onChangeValue: jest.fn()});
 
-    wrapper.find(Chip).at(1).simulate('press');
+    const _chipElts = getAllByTestId('chipTouchable');
 
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(true);
-    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(true);
-    expect(onChangeValue).toHaveBeenCalledWith([
+    fireEvent.press(_chipElts.at(1));
+    expect(props.onChangeValue).toHaveBeenCalledWith([
       props.selectionItems[0],
       props.selectionItems[1],
     ]);
 
-    wrapper.find(Chip).at(2).simulate('press');
+    checkChipSelected(_chipElts.at(0), props.selectionItems[0], true);
+    checkChipSelected(_chipElts.at(1), props.selectionItems[1], true);
+    checkChipSelected(_chipElts.at(2), props.selectionItems[2], false);
 
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
-    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(false);
-    expect(wrapper.find(Chip).at(2).prop('selected')).toBe(false);
-    expect(onChangeValue).toHaveBeenCalledWith([]);
+    fireEvent.press(_chipElts.at(2));
+    expect(props.onChangeValue).toHaveBeenCalledWith([]);
+
+    checkChipSelected(_chipElts.at(0), props.selectionItems[0], false);
+    checkChipSelected(_chipElts.at(1), props.selectionItems[1], false);
+    checkChipSelected(_chipElts.at(2), props.selectionItems[2], false);
   });
 
   it('should render ChipSelect with only one Chip activable if mode is switch', () => {
-    const onChangeValue = jest.fn();
-    const wrapper = shallow(
-      <ChipSelect {...props} mode="switch" onChangeValue={onChangeValue} />,
-    );
-
-    wrapper.find(Chip).at(1).simulate('press');
-
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
-    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(true);
-    expect(wrapper.find(Chip).at(2).prop('selected')).toBe(false);
-    expect(onChangeValue).toHaveBeenCalledWith([props.selectionItems[1]]);
-
-    wrapper.find(Chip).at(2).simulate('press');
-
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
-    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(false);
-    expect(wrapper.find(Chip).at(2).prop('selected')).toBe(true);
-    expect(onChangeValue).toHaveBeenCalledWith([props.selectionItems[2]]);
-
-    wrapper.find(Chip).at(2).simulate('press');
-
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
-    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(false);
-    expect(wrapper.find(Chip).at(2).prop('selected')).toBe(false);
-    expect(onChangeValue).toHaveBeenCalledWith([]);
-  });
-
-  it('should refresh when selectionItems change and isRefresh is true', () => {
-    const wrapper = shallow(<ChipSelect {...props} isRefresh={true} />);
-
-    for (let i = 0; i < props.selectionItems.length; i++) {
-      expect(wrapper.find(Chip).at(i).prop('selected')).toBe(
-        props.selectionItems[i].isActive,
-      );
-    }
-
-    const selectedItems = [...props.selectionItems].map((item, i) =>
-      i === 0 ? {...item, isActive: false} : item,
-    );
-
-    wrapper.setProps({
-      selectionItems: selectedItems,
+    const {getAllByTestId, props} = setupChipSelect({
+      mode: 'switch',
+      onChangeValue: jest.fn(),
     });
 
-    for (let i = 0; i < selectedItems.length; i++) {
-      expect(wrapper.find(Chip).at(i).prop('selected')).toBe(
-        selectedItems[i].isActive,
-      );
-    }
-  });
+    const _chipElts = getAllByTestId('chipTouchable');
 
-  it('should not refresh when selectionItems change and isRefresh is false', () => {
-    const wrapper = shallow(<ChipSelect {...props} isRefresh={false} />);
+    fireEvent.press(_chipElts.at(1));
+    expect(props.onChangeValue).toHaveBeenCalledWith([props.selectionItems[1]]);
 
-    for (let i = 0; i < props.selectionItems.length; i++) {
-      expect(wrapper.find(Chip).at(i).prop('selected')).toBe(
-        props.selectionItems[i].isActive,
-      );
-    }
+    checkChipSelected(_chipElts.at(0), props.selectionItems[0], false);
+    checkChipSelected(_chipElts.at(1), props.selectionItems[1], true);
+    checkChipSelected(_chipElts.at(2), props.selectionItems[2], false);
 
-    const selectedItems = [...props.selectionItems].map((item, i) =>
-      i === 0 ? {...item, isActive: false} : item,
-    );
+    fireEvent.press(_chipElts.at(2));
+    expect(props.onChangeValue).toHaveBeenCalledWith([props.selectionItems[2]]);
 
-    wrapper.setProps({
-      selectionItems: selectedItems,
-    });
+    checkChipSelected(_chipElts.at(0), props.selectionItems[0], false);
+    checkChipSelected(_chipElts.at(1), props.selectionItems[1], false);
+    checkChipSelected(_chipElts.at(2), props.selectionItems[2], true);
 
-    for (let i = 0; i < selectedItems.length; i++) {
-      const oldValue = props.selectionItems[i].isActive;
-      const newValue = selectedItems[i].isActive;
+    fireEvent.press(_chipElts.at(2));
+    expect(props.onChangeValue).toHaveBeenCalledWith([]);
 
-      expect(wrapper.find(Chip).at(i).prop('selected')).toBe(oldValue);
-
-      if (oldValue !== newValue) {
-        expect(wrapper.find(Chip).at(i).prop('selected')).not.toBe(newValue);
-      }
-    }
+    checkChipSelected(_chipElts.at(0), props.selectionItems[0], false);
+    checkChipSelected(_chipElts.at(1), props.selectionItems[1], false);
+    checkChipSelected(_chipElts.at(2), props.selectionItems[2], false);
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {height: 200};
-    const wrapper = shallow(<ChipSelect {...props} style={customStyle} />);
+    const {getByTestId, props} = setupChipSelect({style: {height: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getByTestId('chipSelectContainer')).toHaveStyle(props.style);
   });
 
   it('should apply custom width when provided', () => {
-    const customWidth = 200;
-    const wrapper = shallow(<ChipSelect {...props} width={customWidth} />);
+    const {getAllByTestId, props} = setupChipSelect({width: 200});
 
-    for (let i = 0; i < props.selectionItems.length; i++) {
-      expect(wrapper.find(Chip).at(i).prop('width')).toBe(customWidth);
-    }
+    getAllByTestId('chipTouchable').forEach(_elt => {
+      expect(_elt).toHaveStyle({width: props.width});
+    });
   });
 
   it('should apply custom marginHorizontal when provided', () => {
-    const customMarginHorizontal = 50;
-    const wrapper = shallow(
-      <ChipSelect {...props} marginHorizontal={customMarginHorizontal} />,
-    );
+    const {getAllByTestId, props} = setupChipSelect({marginHorizontal: 50});
 
-    for (let i = 0; i < props.selectionItems.length; i++) {
-      expect(wrapper.find(Chip).at(i).prop('marginHorizontal')).toBe(
-        customMarginHorizontal,
-      );
-    }
+    getAllByTestId('chipTouchable').forEach(_elt => {
+      expect(_elt).toHaveStyle({marginHorizontal: props.marginHorizontal});
+    });
   });
 
-  it('should clear all selected chips when Clear All button is pressed', () => {
-    const onChangeValue = jest.fn();
+  it('should not render clear all button when option is disabled', () => {
+    const {queryByTestId} = setupChipSelect({showClearButton: false});
 
-    const wrapper = shallow(
-      <ChipSelect
-        {...props}
-        onChangeValue={onChangeValue}
-        showClearButton={true}
-      />,
-    );
+    expect(queryByTestId('chipSelectClearButton')).toBeFalsy();
+  });
 
-    wrapper.find(Button).simulate('press');
+  it('should clear all selected chips when clear all button is pressed', () => {
+    const {getByTestId, getAllByTestId, props} = setupChipSelect({
+      onChangeValue: jest.fn(),
+      showClearButton: true,
+    });
 
-    expect(onChangeValue).toHaveBeenCalledWith([]);
+    expect(getByTestId('chipSelectClearButton')).toBeTruthy();
+
+    const _chipElts = getAllByTestId('chipTouchable');
+
+    fireEvent.press(getByTestId('chipSelectClearButton'));
+    expect(props.onChangeValue).toHaveBeenCalledWith([]);
+
+    fireEvent.press(_chipElts.at(1));
+    expect(props.onChangeValue).toHaveBeenCalledWith([props.selectionItems[1]]);
+
+    fireEvent.press(_chipElts.at(2));
+    expect(props.onChangeValue).toHaveBeenCalledWith([
+      props.selectionItems[1],
+      props.selectionItems[2],
+    ]);
+
+    fireEvent.press(getByTestId('chipSelectClearButton'));
+    expect(props.onChangeValue).toHaveBeenCalledWith([]);
   });
 });

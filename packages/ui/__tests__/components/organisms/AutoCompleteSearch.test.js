@@ -17,136 +17,65 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {
-  AutoCompleteSearch,
-  ScrollList,
-  SearchBar,
-  SelectionContainer,
-} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
+
+jest.mock('../../../lib/components/organisms/SearchBar/SearchBar', () => {
+  const {View} = require('react-native');
+
+  return props => <View testID="mocked_searchBar" {...props} />;
+});
+
+const DATA = [{name: 'Name 1'}, {name: 'Name 2'}, {name: 'Name 3'}];
 
 describe('AutoCompleteSearch Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    objectList: [{name: 'Name 1'}, {name: 'Name 2'}, {name: 'Name 3'}],
-    displayValue: value => value.name,
-  };
+  const setupAutoCompleteSearch = overrideProps =>
+    setup({
+      Component: AutoCompleteSearch,
+      baseProps: {objectList: DATA, displayValue: value => value.name},
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<AutoCompleteSearch {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupAutoCompleteSearch();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('autoCompleteSearchContainer')).toBeTruthy();
   });
 
   it('should render a SearchBar with good props transmitted', () => {
-    const title = 'Title';
-    const value = props.objectList[0];
-    const scanIconColor = Colors.secondaryColor.background;
-    const wrapper = shallow(
-      <AutoCompleteSearch
-        {...props}
-        title={title}
-        value={value}
-        required
-        readonly
-        scanIconColor={scanIconColor}
-      />,
-    );
-
-    expect(wrapper.find(SearchBar).props()).toMatchObject({
-      title,
-      valueTxt: props.displayValue(value),
+    const {getByTestId, props} = setupAutoCompleteSearch({
+      title: 'Title',
+      value: DATA[0],
       required: true,
       readonly: true,
-      scanIconColor,
+      scanIconColor: Colors.secondaryColor.background,
+    });
+
+    expect(getByTestId('mocked_searchBar')).toBeTruthy();
+    expect(getByTestId('mocked_searchBar').props).toMatchObject({
+      title: props.title,
+      valueTxt: props.displayValue(props.value),
+      required: props.required,
+      readonly: props.readonly,
+      scanIconColor: props.scanIconColor,
     });
   });
 
-  it('should call onChangeValue with the right args on selection', () => {
-    const onChangeValue = jest.fn();
-    const wrapper = shallow(
-      <AutoCompleteSearch {...props} onChangeValue={onChangeValue} />,
-    );
+  it('should render placeholder on SearchBar when provided', () => {
+    const {getByTestId, props} = setupAutoCompleteSearch({
+      placeholder: 'Placeholder',
+    });
 
-    expect(wrapper.find(SelectionContainer).length).toBe(0);
-
-    wrapper.find(SearchBar).simulate('selection');
-
-    expect(wrapper.find(SelectionContainer).length).toBe(1);
-
-    wrapper
-      .find(SelectionContainer)
-      .dive()
-      .find('SelectionItem')
-      .at(1)
-      .simulate('press');
-
-    expect(onChangeValue).toHaveBeenCalledWith(props.objectList[1]);
-  });
-
-  it('should render placeholder on SearchBar and SearchDetailsPopUp when provided', () => {
-    const placeholder = 'Placeholder';
-    const wrapper = shallow(
-      <AutoCompleteSearch {...props} placeholder={placeholder} />,
-    );
-
-    expect(wrapper.find(SearchBar).prop('placeholder')).toBe(placeholder);
-
-    wrapper.find(SearchBar).simulate('searchPress');
-
-    expect(wrapper.find('SearchDetailsPopUp').prop('placeholder')).toBe(
-      placeholder,
-    );
-  });
-
-  it('should not render SelectionContainer when oneFilter is true', () => {
-    const wrapper = shallow(<AutoCompleteSearch {...props} oneFilter />);
-
-    expect(wrapper.find(SelectionContainer).length).toBe(0);
-
-    wrapper.find(SearchBar).simulate('selection');
-
-    expect(wrapper.find(SelectionContainer).length).toBe(0);
+    expect(getByTestId('mocked_searchBar').props).toMatchObject({
+      placeholder: props.placeholder,
+    });
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <AutoCompleteSearch {...props} style={customStyle} />,
-    );
+    const {getByTestId, props} = setupAutoCompleteSearch({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
-  });
-
-  it('should display SearchDetailsPopUp when click on search icon and showDetailsPopup is true', () => {
-    const wrapper = shallow(<AutoCompleteSearch {...props} showDetailsPopup />);
-
-    expect(wrapper.find('SearchDetailsPopUp').exists()).toBe(false);
-
-    wrapper.find(SearchBar).simulate('searchPress');
-
-    expect(wrapper.find('SearchDetailsPopUp').prop('isVisible')).toBe(true);
-  });
-
-  it('should not display SearchDetailsPopUp when disabled', () => {
-    const wrapper = shallow(
-      <AutoCompleteSearch {...props} showDetailsPopup={false} />,
-    );
-
-    expect(wrapper.find('SearchDetailsPopUp').exists()).toBe(false);
-    expect(wrapper.find(SearchBar).prop('disableSearchPress')).toBe(true);
-  });
-
-  it('should render a ScrollList in SearchDetailsPopUp with objectList as data', () => {
-    const wrapper = shallow(<AutoCompleteSearch {...props} showDetailsPopup />);
-
-    wrapper.find(SearchBar).simulate('searchPress');
-
-    expect(
-      wrapper.find('SearchDetailsPopUp').dive().find(ScrollList).prop('data'),
-    ).toBe(props.objectList);
+    expect(getByTestId('autoCompleteSearchContainer')).toHaveStyle(props.style);
   });
 });

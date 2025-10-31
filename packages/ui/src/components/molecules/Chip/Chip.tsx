@@ -72,9 +72,11 @@ const Chip = ({
       style={[{width: width, marginHorizontal: marginHorizontal}, style]}
       disabled={readonly}
       onPress={onPress}
-      activeOpacity={0.8}>
-      <View style={styles.container}>
+      activeOpacity={0.8}
+      testID="chipTouchable">
+      <View style={styles.container} testID="chipContainer">
         <Text
+          style={styles.text}
           textColor={selected ? chipColor.foreground : Colors.text}
           numberOfLines={numberOfLines}
           fontSize={14}>
@@ -101,6 +103,9 @@ const getStyles = (chipColor: Color, Colors: ThemeColors) =>
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
+    },
+    text: {
+      textAlign: 'center',
     },
   });
 

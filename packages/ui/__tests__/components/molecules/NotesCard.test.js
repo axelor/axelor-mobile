@@ -17,72 +17,70 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {HtmlInput, Icon, NotesCard, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {act, fireEvent} from '@testing-library/react-native';
+import {NotesCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
+
+jest.mock('../../../lib/components/atoms/HtmlInput/HtmlInput', () => {
+  const {View} = require('react-native');
+
+  return props => <View testID="mocked_htmlInput" {...props} />;
+});
 
 describe('NotesCard Component', () => {
-  const props = {
-    title: 'Title',
-    data: 'TEST',
-  };
+  const setupNotesCard = overrideProps =>
+    setup({
+      Component: NotesCard,
+      baseProps: {title: 'Title', data: 'TEST'},
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupNotesCard();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('notesCardContainer')).toBeTruthy();
   });
 
-  it('should render an Text component with title props', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
+  it('renders title and html content', () => {
+    const {getByText, getByTestId, props} = setupNotesCard();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByTestId('mocked_htmlInput')).toBeTruthy();
+    expect(getByTestId('mocked_htmlInput').props.defaultInput).toBe(props.data);
   });
 
-  it('should render an HtmlInput component', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
+  it('returns null when data is empty', () => {
+    const {queryByText, queryByTestId, props} = setupNotesCard({data: ''});
 
-    expect(wrapper.find(HtmlInput).exists()).toBe(true);
-    expect(wrapper.find(HtmlInput).prop('readonly')).toBe(true);
-    expect(wrapper.find(HtmlInput).prop('defaultInput')).toBe(props.data);
+    expect(queryByText(props.title)).toBeFalsy();
+    expect(queryByTestId('mocked_htmlInput')).toBeFalsy();
   });
 
-  it('should not render if data is null', () => {
-    const wrapper = shallow(<NotesCard {...props} data={null} />);
+  it('renders chevron when content exceeds maximum height and toggles on press', () => {
+    const {queryByTestId} = setupNotesCard();
 
-    expect(wrapper.isEmptyRender()).toBe(true);
-    expect(wrapper.find(Text).exists()).toBe(false);
-    expect(wrapper.find(HtmlInput).exists()).toBe(false);
+    const _mockChangeHeight =
+      queryByTestId('mocked_htmlInput').props.onHeightChange;
+
+    act(() => _mockChangeHeight(150));
+
+    expect(queryByTestId('icon-chevron-down')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-up')).toBeFalsy();
+
+    fireEvent.press(queryByTestId('notesCardTouchable'));
+
+    expect(queryByTestId('icon-chevron-up')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-down')).toBeFalsy();
+
+    act(() => _mockChangeHeight(50));
+
+    expect(queryByTestId('icon-chevron-up')).toBeFalsy();
+    expect(queryByTestId('icon-chevron-down')).toBeFalsy();
   });
 
-  it('should render chevron icon when content exceeds maximum height', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
+  it('applies custom container style', () => {
+    const {getByTestId, props} = setupNotesCard({style: {width: 200}});
 
-    wrapper.find(HtmlInput).simulate('heightChange', 150);
-
-    expect(wrapper.find(Icon).exists()).toBe(true);
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
-
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-up');
-  });
-
-  it('should not render chevron icon when content is within maximum height', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
-
-    wrapper
-      .find(TouchableOpacity)
-      .simulate('layout', {nativeEvent: {layout: {height: 20}}});
-
-    expect(wrapper.find(Icon).exists()).toBe(false);
-  });
-
-  it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<NotesCard {...props} style={customStyle} />);
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getByTestId('notesCardContainer')).toHaveStyle(props.style);
   });
 });

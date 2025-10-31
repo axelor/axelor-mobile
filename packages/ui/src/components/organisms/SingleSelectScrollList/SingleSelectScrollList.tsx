@@ -84,6 +84,7 @@ const SingleSelectScrollList = ({
 
       return (
         <TouchableOpacity
+          testID={`singleSelectScrollListItemContainer-${index}`}
           onPress={() => handleRowSelection(item)}
           activeOpacity={0.7}
           style={[
@@ -92,6 +93,7 @@ const SingleSelectScrollList = ({
             rowStyle,
           ]}>
           <View
+            testID={`singleSelectScrollListItemRadio-${index}`}
             style={[styles.buttonExt, isSelected && styles.selectedButtonExt]}>
             <View style={isSelected && styles.selectedButtonInt} />
           </View>

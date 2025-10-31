@@ -18,38 +18,37 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {FromTo, Icon, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {FromTo} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('FromTo Component', () => {
-  const Colors = getDefaultThemeColors();
-  const props = {
-    fromComponent: <Text>From</Text>,
-    toComponent: <Text>To</Text>,
-    style: {borderColor: Colors.primaryColor.background_light},
-  };
+  const setupFromTo = overrideProps =>
+    setup({
+      Component: FromTo,
+      baseProps: {
+        fromComponent: <View testID="mocked_from" />,
+        toComponent: <View testID="mocked_to" />,
+      },
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<FromTo {...props} />);
+    const {getByTestId} = setupFromTo();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('fromToContainer')).toBeTruthy();
   });
 
   it('renders the fromComponent, arrow icon, and toComponent', () => {
-    const wrapper = shallow(<FromTo {...props} />);
+    const {getByTestId} = setupFromTo();
 
-    expect(wrapper.contains(props.fromComponent)).toBe(true);
-    expect(wrapper.contains(props.toComponent)).toBe(true);
-
-    expect(wrapper.find(Icon).exists()).toBe(true);
+    expect(getByTestId('mocked_from')).toBeTruthy();
+    expect(getByTestId('icon-chevron-right')).toBeTruthy();
+    expect(getByTestId('mocked_to')).toBeTruthy();
   });
 
   it('applies custom style when provided', () => {
-    const wrapper = shallow(<FromTo {...props} />);
+    const {getByTestId, props} = setupFromTo({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      props.style,
-    );
+    expect(getByTestId('fromToContainer')).toHaveStyle(props.style);
   });
 });

@@ -45,23 +45,27 @@ function MovementIndicationCard({
   disabledDown = true,
 }: MovementIndicationCardProps) {
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[styles.container, style]}
+      testID="movementIndicationCardContainer">
       <View style={styles.titleContainer}>
-        {React.cloneElement(iconTop, {style: styles.icon})}
+        {React.cloneElement(iconTop, {style: styles.icon} as any)}
         <TouchableOpacity
           style={styles.title}
           onPress={onPressTitleTop}
-          disabled={disabledTop}>
+          disabled={disabledTop}
+          testID="movementIndicationCardTouchable">
           <Text numberOfLines={2}>{titleTop}</Text>
         </TouchableOpacity>
       </View>
       <DottedLine style={styles.dottedLine} />
       <View style={styles.titleContainer}>
-        {React.cloneElement(iconDown, {style: styles.icon})}
+        {React.cloneElement(iconDown, {style: styles.icon} as any)}
         <TouchableOpacity
           style={styles.title}
           onPress={onPressTitleDown}
-          disabled={disabledDown}>
+          disabled={disabledDown}
+          testID="movementIndicationCardTouchable">
           <Text numberOfLines={2}>{titleDown}</Text>
         </TouchableOpacity>
       </View>

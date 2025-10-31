@@ -64,12 +64,15 @@ const DropdownCard = ({
   };
 
   return (
-    <View style={[styles.container, styleContainer]}>
+    <View
+      style={[styles.container, styleContainer]}
+      testID="dropdownCardContainer">
       <TouchableOpacity
         style={styles.containerContent}
         onPress={handleCardPress}
         disabled={!showIcon}
-        activeOpacity={0.95}>
+        activeOpacity={0.95}
+        testID="dropdownCardTouchable">
         <View
           style={[
             commonStyles.filter,

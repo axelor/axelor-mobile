@@ -116,7 +116,7 @@ const Label = ({
   }
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="labelContainer">
       <Icon name={typeConfig?.iconName} color={typeConfig?.color?.foreground} />
       <Text style={styles.text}>{message}</Text>
       {showClose && (

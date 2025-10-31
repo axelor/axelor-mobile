@@ -81,7 +81,7 @@ const TopSeparator = ({
   );
 
   return (
-    <View style={styles.separatorContainer}>
+    <View style={styles.separatorContainer} testID="topSeparatorContainer">
       {iconName && (
         <InfoBubble
           style={styles.infoBubble}

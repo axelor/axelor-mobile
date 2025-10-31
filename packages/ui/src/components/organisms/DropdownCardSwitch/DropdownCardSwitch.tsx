@@ -82,7 +82,9 @@ const DropdownCardSwitch = ({
   );
 
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[styles.container, style]}
+      testID="dropdownCardSwitchContainer">
       {dropdownItems.map((elt, index) => {
         return (
           <DropdownCard

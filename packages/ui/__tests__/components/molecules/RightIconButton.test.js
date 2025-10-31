@@ -17,45 +17,51 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {RightIconButton, Text, Icon, Card} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {View} from 'react-native';
+import {fireEvent} from '@testing-library/react-native';
+import {RightIconButton} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('RightIconButton Component', () => {
-  const props = {
-    onPress: jest.fn(),
-    title: 'Click Me',
-    icon: <Icon name="right-icon" />,
-  };
+  const setupRightIconButton = overrideProps =>
+    setup({
+      Component: RightIconButton,
+      baseProps: {
+        onPress: jest.fn(),
+        title: 'Click Me',
+        icon: <View testID="mocked_icon" />,
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<RightIconButton {...props} />);
-    expect(wrapper.exists()).toBe(true);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupRightIconButton();
+
+    expect(getByTestId('rightIconButtonContainer')).toBeTruthy();
   });
 
   it('displays the title when provided', () => {
-    const wrapper = shallow(<RightIconButton {...props} />);
+    const {getByText, props} = setupRightIconButton();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('displays the icon', () => {
-    const wrapper = shallow(<RightIconButton {...props} />);
+    const {getByTestId} = setupRightIconButton();
 
-    expect(wrapper.contains(props.icon)).toBe(true);
+    expect(getByTestId('mocked_icon')).toBeTruthy();
   });
 
   it('touchable is not disabled', () => {
-    const wrapper = shallow(<RightIconButton {...props} />);
+    const {getByTestId, props} = setupRightIconButton({onPress: jest.fn()});
 
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeFalsy();
+    fireEvent.press(getByTestId('rightIconButtonContainer'));
+    expect(props.onPress).toHaveBeenCalled();
   });
 
   it('applies custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<RightIconButton {...props} style={customStyle} />);
+    const {getByTestId, props} = setupRightIconButton({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject(customStyle);
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });

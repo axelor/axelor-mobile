@@ -23,26 +23,27 @@
     "license:add": "npx add-copyright-header --generate --dir 'src'"
   },
   "peerDependencies": {
-    "react": "18.3.1",
-    "react-native": "0.75.5"
+    "react": "19.0.0",
+    "react-native": "0.79.6"
   },
   "dependencies": {
     "@axelor/aos-mobile-core": "8.5.0",
     "@axelor/aos-mobile-manufacturing": "8.5.0",
     "@axelor/aos-mobile-ui": "8.5.0",
-    "@reduxjs/toolkit": "^2.2.7"
+    "@reduxjs/toolkit": "2.9.0"
   },
   "devDependencies": {
-    "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.75.5",
-    "@react-native/eslint-config": "0.75.5",
-    "@types/react": "^18.3.20",
+    "@babel/runtime": "^7.25.0",
+    "@react-native/babel-preset": "0.79.6",
+    "@react-native/eslint-config": "0.79.6",
+    "@react-native/typescript-config": "0.79.6",
+    "@types/react": "^19.0.0",
     "eslint": "8.57.0",
     "prettier": "^3.3.3",
-    "react": "18.3.1",
-    "react-native": "0.75.5"
+    "react": "19.0.0",
+    "react-native": "0.79.6"
   },
   "resolutions": {
-    "@types/react": "^18.3.20"
+    "@types/react": "^19.0.0"
   }
 }

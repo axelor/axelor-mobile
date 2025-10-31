@@ -48,6 +48,7 @@ interface InputProps {
     e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
   ) => void;
   isScannableInput?: boolean;
+  testID?: string;
 }
 
 const Input = ({
@@ -67,6 +68,7 @@ const Input = ({
   writingType,
   onContentSizeChange,
   isScannableInput = false,
+  testID,
 }: InputProps) => {
   const Colors = useThemeColor();
   const {virtualKeyboardVisibility} = useConfig();
@@ -108,6 +110,7 @@ const Input = ({
   return (
     <TextInput
       ref={inputRef}
+      testID={testID}
       style={[defaultStyle, style]}
       value={value}
       onChangeText={onValueChange}

@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Icon} from '../../atoms';
 import {Color} from '../../../theme';
 import {CardIndicator} from '.././../molecules';
@@ -58,19 +58,19 @@ const InfoBubble = ({
       handleClose={() => setIsVisible(false)}
       textIndicationStyle={textIndicationStyle}
       usePopup={usePopup}>
-      <TouchableOpacity onPress={() => setIsVisible(current => !current)}>
-        <Icon
-          name={iconName}
-          style={coloredBubble ? styles.icon : null}
-          color={coloredBubble ? badgeColor.foreground : badgeColor.background}
-          size={coloredBubble ? size * 0.5 : size * 0.8}
-        />
-      </TouchableOpacity>
+      <Icon
+        name={iconName}
+        style={coloredBubble ? styles.icon : null}
+        color={coloredBubble ? badgeColor.foreground : badgeColor.background}
+        size={coloredBubble ? size * 0.5 : size * 0.8}
+        touchable
+        onPress={() => setIsVisible(current => !current)}
+      />
     </CardIndicator>
   );
 };
 
-const getStyles = (badgeColor, size) =>
+const getStyles = (badgeColor: Color, size: number) =>
   StyleSheet.create({
     icon: {
       alignSelf: 'center',

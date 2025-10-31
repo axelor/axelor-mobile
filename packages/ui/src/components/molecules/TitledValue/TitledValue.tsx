@@ -28,7 +28,7 @@ interface TitledValueProps {
 
 function TitledValue({title, value, style}: TitledValueProps) {
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="titledValueContainer">
       <Text style={styles.importantText}>{title}</Text>
       <Text>{value}</Text>
     </View>

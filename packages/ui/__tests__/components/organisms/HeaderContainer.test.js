@@ -17,45 +17,49 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {HeaderContainer, Icon} from '@axelor/aos-mobile-ui';
+import {View} from 'react-native';
+import {HeaderContainer} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
 import * as configContext from '../../../lib/config/ConfigContext';
-import {getGlobalStyles} from '../../tools';
+import {setup} from '../../tools';
 
 describe('HeaderContainer Component', () => {
-  const props = {
-    fixedItems: <View testID="fixedItems" />,
-    children: <View testID="children" />,
-    chipComponent: <View testID="chipComponent" />,
-  };
+  const setupHeaderContainer = overrideProps =>
+    setup({
+      Component: HeaderContainer,
+      baseProps: {
+        fixedItems: <View testID="fixedItems" />,
+        children: <View testID="children" />,
+        chipComponent: <View testID="chipComponent" />,
+      },
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<HeaderContainer {...props} />);
+    const {getByTestId} = setupHeaderContainer();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('headerContainerWrapper')).toBeTruthy();
   });
 
   it('should render fixedItems, children and chipComponent', () => {
-    const wrapper = shallow(<HeaderContainer {...props} />);
+    const {getByTestId} = setupHeaderContainer();
 
-    expect(wrapper.find('[testID="fixedItems"]').exists()).toBe(true);
-    expect(wrapper.find('[testID="children"]').exists()).toBe(true);
-    expect(wrapper.find('[testID="chipComponent"]').exists()).toBe(true);
+    expect(getByTestId('fixedItems')).toBeTruthy();
+    expect(getByTestId('children')).toBeTruthy();
+    expect(getByTestId('chipComponent')).toBeTruthy();
   });
 
   it('should not render children if expandableFilter is false', () => {
-    const wrapper = shallow(
-      <HeaderContainer {...props} expandableFilter={false} />,
-    );
+    const {queryByTestId} = setupHeaderContainer({expandableFilter: false});
 
-    expect(wrapper.find('[testID="children"]').exists()).toBe(false);
+    expect(queryByTestId('headerContainerExpandableIcon')).toBeFalsy();
+    expect(queryByTestId('children')).toBeFalsy();
   });
 
   it('should not render children if forceHideByDefault is true', () => {
-    const wrapper = shallow(<HeaderContainer {...props} forceHideByDefault />);
+    const {queryByTestId} = setupHeaderContainer({forceHideByDefault: true});
 
-    expect(wrapper.find('[testID="children"]').exists()).toBe(false);
+    expect(queryByTestId('children')).toBeFalsy();
   });
 
   it('should not render children if showFilter is false', () => {
@@ -63,9 +67,9 @@ describe('HeaderContainer Component', () => {
       showFilter: false,
     }));
 
-    const wrapper = shallow(<HeaderContainer {...props} />);
+    const {queryByTestId} = setupHeaderContainer();
 
-    expect(wrapper.find('[testID="children"]').exists()).toBe(false);
+    expect(queryByTestId('children')).toBeFalsy();
   });
 
   it('should render children if showFilter is true', () => {
@@ -73,27 +77,29 @@ describe('HeaderContainer Component', () => {
       showFilter: true,
     }));
 
-    const wrapper = shallow(<HeaderContainer {...props} />);
+    const {getByTestId} = setupHeaderContainer();
 
-    expect(wrapper.find('[testID="children"]').exists()).toBe(true);
+    expect(getByTestId('children')).toBeTruthy();
   });
 
   it('should render an Icon which toggle children when click on it', () => {
-    const wrapper = shallow(<HeaderContainer {...props} />);
+    const {getByTestId, queryByTestId} = setupHeaderContainer();
 
-    expect(wrapper.find(Icon).exists()).toBe(true);
+    expect(getByTestId('headerContainerExpandableIcon')).toBeTruthy();
+    expect(getByTestId('children')).toBeTruthy();
 
-    expect(wrapper.find('[testID="children"]').exists()).toBe(true);
-    wrapper.find(TouchableOpacity).simulate('press');
-    expect(wrapper.find('[testID="children"]').exists()).toBe(false);
+    fireEvent.press(getByTestId('headerContainerExpandableIcon'));
+
+    expect(queryByTestId('children')).toBeFalsy();
+
+    fireEvent.press(getByTestId('headerContainerExpandableIcon'));
+
+    expect(getByTestId('children')).toBeTruthy();
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<HeaderContainer {...props} style={customStyle} />);
+    const {getByTestId, props} = setupHeaderContainer({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
-    );
+    expect(getByTestId('headerContainerWrapper')).toHaveStyle(props.style);
   });
 });

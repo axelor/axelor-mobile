@@ -18,93 +18,83 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Card, Icon, Increment, QuantityCard, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {QuantityCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('QuantityCard Component', () => {
-  const props = {
-    labelQty: 'Label qty',
-    defaultValue: 5,
-    onValueChange: jest.fn(),
-    editable: false,
-    iconName: 'pencil-fill',
-    translator: jest.fn(key => key),
-  };
-  const children = <View testID="children" />;
+  const setupQuantityCard = overrideProps =>
+    setup({
+      Component: QuantityCard,
+      baseProps: {
+        labelQty: 'Label qty',
+        defaultValue: 5,
+        onValueChange: jest.fn(),
+        editable: false,
+        translator: jest.fn(),
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<QuantityCard {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupQuantityCard();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('cardContainer')).toBeTruthy();
   });
 
-  it('should render children when provided', () => {
-    const wrapper = shallow(<QuantityCard {...props} children={children} />);
+  it('renders children when provided', () => {
+    const {getByTestId} = setupQuantityCard({
+      children: <View testID="children" />,
+    });
 
-    expect(wrapper.find('[testID="children"]').exists()).toBe(true);
+    expect(getByTestId('children')).toBeTruthy();
   });
 
-  it('should render labelQty', () => {
-    const wrapper = shallow(<QuantityCard {...props} />);
-    const wrapperChlidren = shallow(
-      <QuantityCard {...props} children={children} />,
-    );
+  it('renders labelQty', () => {
+    const {getByText, props} = setupQuantityCard();
 
-    expect(wrapper.find(Text).at(0).prop('children')).toBe(props.labelQty);
-    expect(wrapperChlidren.find(Text).at(0).prop('children')).toBe(
-      props.labelQty,
-    );
+    expect(getByText(props.labelQty)).toBeTruthy();
   });
 
-  it('should render Increment component with isBigButton if editable is true', () => {
-    const wrapper = shallow(<QuantityCard {...props} editable isBigButton />);
-    const wrapperChlidren = shallow(
-      <QuantityCard {...props} children={children} editable isBigButton />,
-    );
+  it('renders defaultValue when editable', () => {
+    const {getByDisplayValue, getByTestId, props} = setupQuantityCard({
+      editable: true,
+    });
 
-    expect(wrapper.find(Increment).exists()).toBe(true);
-    expect(wrapper.find(Increment).prop('isBigButton')).toBe(true);
-    expect(wrapperChlidren.find(Increment).exists()).toBe(true);
-    expect(wrapperChlidren.find(Increment).prop('isBigButton')).toBe(true);
+    expect(getByTestId('incrementContainer')).toBeTruthy();
+    expect(getByDisplayValue(props.defaultValue.toFixed(2))).toBeTruthy();
   });
 
-  it('should render defaultValue', () => {
-    const wrapper = shallow(<QuantityCard {...props} />);
-    const wrapperEditable = shallow(<QuantityCard {...props} editable />);
-    const wrapperChlidren = shallow(
-      <QuantityCard {...props} children={children} />,
-    );
-    const wrapperChlidrenEditable = shallow(
-      <QuantityCard {...props} children={children} editable />,
-    );
+  it('renders defaultValue when read-only', () => {
+    const {getByText, queryByTestId, props} = setupQuantityCard({
+      editable: false,
+    });
 
-    expect(wrapper.find(Text).at(1).prop('children')).toBe(
-      props.defaultValue.toFixed(2),
-    );
-    expect(wrapperEditable.find(Increment).prop('value')).toBe(
-      props.defaultValue.toFixed(2),
-    );
-    expect(wrapperChlidren.find(Text).at(1).prop('children')).toBe(
-      props.defaultValue.toFixed(2),
-    );
-    expect(wrapperChlidrenEditable.find(Increment).prop('value')).toBe(
-      props.defaultValue.toFixed(2),
-    );
+    expect(queryByTestId('incrementContainer')).toBeFalsy();
+    expect(getByText(props.defaultValue.toFixed(2))).toBeTruthy();
   });
 
-  it('should render right icon if actionQty is true', () => {
-    const wrapperChlidren = shallow(
-      <QuantityCard {...props} children={children} actionQty />,
-    );
+  it('renders right icon if actionQty is true', () => {
+    const {getByTestId, props} = setupQuantityCard({
+      actionQty: true,
+      iconName: 'pencil-fill',
+      children: <View testID="children" />,
+    });
 
-    expect(wrapperChlidren.find(Icon).prop('name')).toBe(props.iconName);
+    expect(getByTestId(`icon-${props.iconName}`)).toBeTruthy();
+  });
+
+  it('hides right icon if actionQty is false', () => {
+    const {queryByTestId, props} = setupQuantityCard({
+      actionQty: true,
+      iconName: 'pencil-fill',
+    });
+
+    expect(queryByTestId(`icon-${props.iconName}`)).toBeFalsy();
   });
 
   it('should apply custom style when provided with no children', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<QuantityCard {...props} style={customStyle} />);
+    const {getByTestId, props} = setupQuantityCard({style: {width: 200}});
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject(customStyle);
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });

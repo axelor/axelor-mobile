@@ -16,73 +16,67 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, LabelText, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {LabelText} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('LabelText Component', () => {
-  const Colors = getDefaultThemeColors();
-  const props = {
-    title: 'Title',
-    value: 'Value',
-  };
+  const setupLabelText = overrideProps =>
+    setup({
+      Component: LabelText,
+      baseProps: {title: 'Title', value: 'Value'},
+      overrideProps,
+    });
+
+  function getTitleElt(getter, title) {
+    return getter(new RegExp(title, 'i'));
+  }
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<LabelText {...props} />);
+    const {getByTestId} = setupLabelText();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('labelTextContainer')).toBeTruthy();
   });
 
-  it('should render with title and value', () => {
-    const wrapper = shallow(<LabelText {...props} />);
+  it('renders title and value', () => {
+    const {getByText, props} = setupLabelText();
 
-    const childrenTextContainer = wrapper.find(Text).at(0).prop('children');
-
-    expect(childrenTextContainer[0].trim()).toBe(props.title);
-    expect(childrenTextContainer[1].props.children).toBe(props.value);
+    expect(getTitleElt(getByText, props.title)).toBeTruthy();
+    expect(getByText(props.value)).toBeTruthy();
   });
 
-  it('should render with an icon when iconName is provided', () => {
-    const wrapper = shallow(<LabelText {...props} iconName="icon-name" />);
+  it('renders an icon when iconName is provided', () => {
+    const {getByTestId, props} = setupLabelText({iconName: 'camera'});
 
-    expect(wrapper.find('Icon[name="icon-name"]').exists()).toBe(true);
+    expect(getByTestId(`icon-${props.iconName}`)).toBeTruthy();
   });
 
-  it('should apply custom styles when customStyle prop is provided', () => {
-    const customStyle = {backgroundColor: Colors.primaryColor.background_light};
+  it('applies custom container style', () => {
+    const {getByTestId, props} = setupLabelText({
+      style: {backgroundColor: 'red'},
+    });
 
-    const wrapper = shallow(<LabelText {...props} style={customStyle} />);
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getByTestId('labelTextContainer')).toHaveStyle(props.style);
   });
 
-  it('should apply custom styles to the icon when iconStyle prop is provided', () => {
-    const customIconStyle = {color: Colors.secondaryColor.background};
+  it('applies custom icon style', () => {
+    const {getByTestId, props} = setupLabelText({
+      iconName: 'camera',
+      iconStyle: {marginRight: 10},
+    });
 
-    const wrapper = shallow(
-      <LabelText {...props} iconName="icon-name" iconStyle={customIconStyle} />,
-    );
-
-    expect(getGlobalStyles(wrapper.find(Icon))).toMatchObject(customIconStyle);
+    expect(getByTestId('iconTouchable')).toHaveStyle(props.iconStyle);
   });
 
-  it('should apply custom styles to text when textStyle prop is provided', () => {
-    const customTextStyle = {fontSize: 25};
+  it('applies custom text style', () => {
+    const {getByText, props} = setupLabelText({textStyle: {fontSize: 20}});
 
-    const wrapper = shallow(
-      <LabelText {...props} textStyle={customTextStyle} />,
-    );
-
-    expect(getGlobalStyles(wrapper.find(Text).at(0))).toMatchObject(
-      customTextStyle,
-    );
+    expect(getTitleElt(getByText, props.title)).toHaveStyle(props.textStyle);
+    expect(getByText(props.value)).toHaveStyle(props.textStyle);
   });
 
-  it('should render only one line of text when onlyOneLine prop is true', () => {
-    const wrapper = shallow(<LabelText {...props} onlyOneLine />);
+  it('limits text to a single line when onlyOneLine is true', () => {
+    const {getByText, props} = setupLabelText({onlyOneLine: true});
 
-    expect(wrapper.find(Text).at(0).prop('numberOfLines')).toBe(1);
+    expect(getTitleElt(getByText, props.title).props.numberOfLines).toBe(1);
   });
 });

@@ -16,62 +16,63 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
-import {HorizontalRule, HorizontalRuleText, Text} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
-import {View} from 'react-native';
+import {HorizontalRuleText} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('HorizontalRuleText Component', () => {
-  const props = {
-    text: 'Hello',
-  };
+  const Colors = getDefaultThemeColors();
+  const setupHorizontalRuleText = overrideProps =>
+    setup({
+      Component: HorizontalRuleText,
+      baseProps: {text: 'Hello'},
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<HorizontalRuleText {...props} />);
+    const {getByTestId} = setupHorizontalRuleText();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('horizontalRuleTextContainer')).toBeTruthy();
   });
 
   it('renders correctly with the provided title', () => {
-    const defaultColor =
-      getDefaultThemeColors().secondaryColor?.background_light;
-    const wrapper = shallow(<HorizontalRuleText {...props} />);
+    const defaultColor = Colors.secondaryColor.background_light;
+    const {getByText, getAllByTestId, props} = setupHorizontalRuleText();
 
-    expect(wrapper.find(Text).exists()).toBe(true);
-    expect(wrapper.find(Text).prop('children')).toBe(props.text);
-    expect(wrapper.find(Text).prop('textColor')).toBe(defaultColor);
+    const text = getByText(props.text);
+    expect(text).toBeTruthy();
+    expect(text).toHaveStyle({color: defaultColor});
 
-    expect(wrapper.find(HorizontalRule)?.length).toBe(2);
+    const lines = getAllByTestId('horizontalRule');
+    expect(lines.length).toBe(2);
+    lines.forEach(line => {
+      expect(line).toHaveStyle({borderColor: defaultColor});
+    });
   });
 
   it('renders correctly with the provided color', () => {
-    const color = getDefaultThemeColors().cautionColor?.background_light;
-    const wrapper = shallow(<HorizontalRuleText {...props} color={color} />);
+    const {getByText, getAllByTestId, props} = setupHorizontalRuleText({
+      color: Colors.cautionColor.background_light,
+    });
 
-    expect(wrapper.find(Text).prop('textColor')).toBe(color);
-    wrapper.find(HorizontalRule).forEach(_v => {
-      expect(getGlobalStyles(_v)).toMatchObject({borderColor: color});
+    expect(getByText(props.text)).toHaveStyle({color: props.color});
+    getAllByTestId('horizontalRule').forEach(line => {
+      expect(line).toHaveStyle({borderColor: props.color});
     });
   });
 
   it('applies custom style when provided', () => {
-    const style = {width: '50%'};
-    const lineStyle = {marginHorizontal: 40};
-    const textStyle = {alignSelf: 'flex-start'};
-    const wrapper = shallow(
-      <HorizontalRuleText
-        {...props}
-        textStyle={textStyle}
-        lineStyle={lineStyle}
-        style={style}
-      />,
-    );
+    const {getByText, getByTestId, getAllByTestId, props} =
+      setupHorizontalRuleText({
+        textStyle: {alignSelf: 'flex-start'},
+        lineStyle: {marginHorizontal: 40},
+        style: {width: '50%'},
+      });
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(style);
-    wrapper.find(HorizontalRule).forEach(_v => {
-      expect(getGlobalStyles(_v)).toMatchObject(lineStyle);
+    expect(getByText(props.text)).toHaveStyle(props.textStyle);
+    expect(getByTestId('horizontalRuleTextContainer')).toHaveStyle(props.style);
+
+    getAllByTestId('horizontalRule').forEach(line => {
+      expect(line).toHaveStyle(props.lineStyle);
     });
-    expect(getGlobalStyles(wrapper.find(Text))).toMatchObject(textStyle);
   });
 });

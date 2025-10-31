@@ -50,7 +50,9 @@ const HorizontalRuleText = ({
   }, [color, lineStyle]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[styles.container, style]}
+      testID="horizontalRuleTextContainer">
       {renderLine()}
       <Text style={[styles.text, textStyle]} fontSize={14} textColor={color}>
         {text}

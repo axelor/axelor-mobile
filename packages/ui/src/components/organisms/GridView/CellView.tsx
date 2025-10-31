@@ -46,7 +46,7 @@ const CellView = ({showRight = false, showBottom = false, width, ...props}) => {
     return result;
   }, [getBorderStyle, showBottom, showRight, width]);
 
-  return <View {...props} style={borderStyles} />;
+  return <View {...props} style={borderStyles} testID="cellView" />;
 };
 
 export default CellView;

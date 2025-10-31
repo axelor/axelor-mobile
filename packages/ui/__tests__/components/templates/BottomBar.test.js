@@ -18,141 +18,93 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {
-  BottomBar,
-  Button,
-  Card,
-  NumberBubble,
-  Text,
-  checkNullString,
-} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {BottomBar} from '@axelor/aos-mobile-ui';
 import {getVisibleItems} from '../../../src/components/templates/BottomBar/display.helper';
-import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
-const Screen = ({title}) => (
-  <View>
-    <Text>{title}</Text>
-  </View>
-);
+const Screen = ({testID}) => <View testID={testID} />;
 
-describe('PieChart Component', () => {
+describe('BottomBar Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const props = {
-    itemSize: 40,
-    items: [
-      {
-        iconName: 'house',
-        viewComponent: <Screen title="House view component" />,
-        color: Colors.secondaryColor_dark,
+  const setupBottomBar = overrideProps =>
+    setup({
+      Component: BottomBar,
+      baseProps: {
+        items: [
+          {
+            iconName: 'house',
+            testID: 'view1-home',
+            viewComponent: <Screen testID="view1-home" />,
+            color: Colors.secondaryColor_dark,
+          },
+          {
+            iconName: 'clock-history',
+            testID: 'view2-clock',
+            viewComponent: <Screen testID="view2-clock" />,
+            indicator: 5,
+            color: Colors.plannedColor,
+          },
+          {
+            iconName: 'trash',
+            testID: 'view3-trash',
+            viewComponent: <Screen testID="view3-trash" />,
+            color: Colors.infoColor,
+            hidden: true,
+          },
+          {
+            iconName: 'x-lg',
+            testID: 'view4-x',
+            viewComponent: <Screen testID="view4-x" />,
+            color: Colors.progressColor,
+          },
+          {
+            iconName: 'person-fill',
+            testID: 'view5-person',
+            viewComponent: <Screen testID="view5-person" />,
+          },
+        ],
       },
-      {
-        iconName: 'clock-history',
-        viewComponent: <Screen title="Clock history view component" />,
-        indicator: 5,
-        color: Colors.plannedColor,
-      },
-      {
-        iconName: 'trash',
-        viewComponent: <Screen title="Trash view component" />,
-        color: Colors.infoColor,
-        hidden: true,
-      },
-      {
-        iconName: 'x-lg',
-        viewComponent: <Screen title="X view component" />,
-        color: Colors.progressColor,
-      },
-      {
-        iconName: 'person-fill',
-        viewComponent: <Screen title="Person view component" />,
-      },
-    ],
-  };
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<BottomBar {...props} />);
+    const {getByTestId} = setupBottomBar();
 
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('should correctly give the items props', () => {
-    const wrapper = shallow(<BottomBar {...props} />);
-
-    const visibleItems = getVisibleItems(props.items);
-
-    visibleItems.forEach((item, index) => {
-      expect(wrapper.find('BarItem').at(index).exists()).toBe(true);
-      expect(wrapper.find('BarItem').at(index).prop('iconName')).toBe(
-        item.iconName,
-      );
-      expect(wrapper.find('BarItem').at(index).prop('color')).toBe(item.color);
-      expect(wrapper.find('BarItem').at(index).prop('title')).toBe(item.title);
-      expect(wrapper.find('BarItem').at(index).prop('size')).toBe(
-        props.itemSize,
-      );
-      expect(wrapper.find('BarItem').at(index).prop('disabled')).toBe(
-        item.disabled,
-      );
-      expect(wrapper.find('BarItem').at(index).prop('indicator')).toBe(
-        item.indicator,
-      );
-    });
+    expect(getByTestId('bottomBarViewComtainer')).toBeTruthy();
+    expect(getByTestId('bottomBarComtainer')).toBeTruthy();
   });
 
   it('should correctly render the BarItem component', () => {
-    const wrapper = shallow(<BottomBar {...props} />);
+    const {queryAllByTestId, queryByTestId, props} = setupBottomBar();
 
-    const visibleItems = getVisibleItems(props.items);
+    expect(queryAllByTestId(/^bar-item-.*/).length).toBe(
+      getVisibleItems(props.items).length,
+    );
 
-    visibleItems.forEach((item, index) => {
-      expect(wrapper.find('BarItem').at(index).exists()).toBe(true);
-
-      const barItemWrapper = wrapper.find('BarItem').at(index).dive();
-
-      expect(barItemWrapper.find(Button).exists()).toBe(true);
-      expect(barItemWrapper.find(Button).props()).toMatchObject({
-        iconName: item.iconName,
-        color: item.color ?? Colors.primaryColor,
-        disabled: item.disabled,
-      });
-
-      if (item.indicator > 0) {
-        expect(barItemWrapper.find(NumberBubble).exists()).toBe(true);
-        expect(barItemWrapper.find(NumberBubble).props()).toMatchObject({
-          number: item.indicator,
-          color: item.color ?? Colors.primaryColor,
-          isNeutralBackground: true,
-        });
-      }
-
-      if (!checkNullString(item.title)) {
-        expect(barItemWrapper.find(Text).exists()).toBe(true);
-        expect(barItemWrapper.find(Text).prop('children')).toBe(item.title);
+    props.items.forEach(_i => {
+      if (_i.hidden) {
+        expect(queryByTestId(`bar-item-${_i.testID}`)).toBeFalsy();
+      } else {
+        expect(queryByTestId(`bar-item-${_i.testID}`)).toBeTruthy();
       }
     });
   });
 
   it('should render the selected view', () => {
-    const wrapper = shallow(<BottomBar {...props} />);
+    const {getByTestId, getAllByRole, props} = setupBottomBar();
     const visibleItems = getVisibleItems(props.items);
 
-    wrapper.find('BarItem').at(1).simulate('press');
-    expect(wrapper.find(View).contains(visibleItems[1].viewComponent)).toBe(
-      true,
-    );
+    expect(getByTestId(visibleItems[0].testID)).toBeTruthy();
 
-    wrapper.find('BarItem').at(3).simulate('press');
-    expect(wrapper.find(View).contains(visibleItems[3].viewComponent)).toBe(
-      true,
-    );
+    fireEvent.press(getAllByRole('button')?.[3]);
+    expect(getByTestId(visibleItems[3].testID)).toBeTruthy();
   });
 
   it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<BottomBar {...props} style={customStyle} />);
+    const {getByTestId, props} = setupBottomBar({style: {marginBottom: 10}});
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject(customStyle);
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });

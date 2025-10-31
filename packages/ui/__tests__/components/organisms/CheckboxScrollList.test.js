@@ -18,142 +18,155 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {CheckboxScrollList, ScrollList, Checkbox} from '@axelor/aos-mobile-ui';
+import {fireEvent, within} from '@testing-library/react-native';
+import {CheckboxScrollList} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('CheckboxScrollList Component', () => {
-  const mockData = [
-    {id: 1, name: 'Item 1'},
-    {id: 2, name: 'Item 2'},
-  ];
-  const renderItem = jest.fn(item => <View>{item.name}</View>);
+  const setupCheckboxScrollList = overrideProps =>
+    setup({
+      Component: CheckboxScrollList,
+      baseProps: {
+        loading: false,
+        moreLoading: false,
+        isListEnd: true,
+        data: [
+          {id: 1, name: 'Item 1'},
+          {id: 2, name: 'Item 2'},
+        ],
+        onCheckedChange: jest.fn(),
+        renderItem: ({index}) => <View testID={`itemRender-idx${index}`} />,
+      },
+      overrideProps,
+    });
 
-  const props = {
-    data: mockData,
-    onCheckedChange: jest.fn(),
-    renderItem,
-  };
+  function checkCheckboxState(elt, isChecked, isPartialChecked) {
+    expect(within(elt).queryByTestId('icon-check-square-fill'))[
+      isChecked ? 'toBeTruthy' : 'toBeFalsy'
+    ]?.();
+    expect(within(elt).queryByTestId('icon-dash-square-fill'))[
+      isPartialChecked ? 'toBeTruthy' : 'toBeFalsy'
+    ]?.();
+    expect(within(elt).queryByTestId('icon-square'))[
+      !isChecked && !isPartialChecked ? 'toBeTruthy' : 'toBeFalsy'
+    ]?.();
+  }
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<CheckboxScrollList {...props} />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupCheckboxScrollList();
+
+    expect(getByTestId('scrollListContainer')).toBeTruthy();
   });
 
   it('toggles all items when main checkbox is clicked', () => {
-    const onCheckedChange = jest.fn();
-    const wrapper = shallow(
-      <CheckboxScrollList {...props} onCheckedChange={onCheckedChange} />,
-    );
+    const {getAllByTestId, props} = setupCheckboxScrollList({
+      onCheckedChange: jest.fn(),
+    });
 
-    wrapper.find(Checkbox).at(0).simulate('change', true);
-    expect(onCheckedChange).toHaveBeenNthCalledWith(1, mockData);
+    const _checkboxElts = getAllByTestId('checkboxContainer');
 
-    wrapper.find(Checkbox).at(0).simulate('change', false);
-    expect(onCheckedChange).toHaveBeenNthCalledWith(2, []);
+    fireEvent.press(within(_checkboxElts.at(0)).getByTestId('iconTouchable'));
+    expect(props.onCheckedChange).toHaveBeenNthCalledWith(1, props.data);
+
+    fireEvent.press(within(_checkboxElts.at(0)).getByTestId('iconTouchable'));
+    expect(props.onCheckedChange).toHaveBeenNthCalledWith(2, []);
   });
 
   it('toggles individual items', () => {
-    const onCheckedChange = jest.fn();
-    const wrapper = shallow(
-      <CheckboxScrollList {...props} onCheckedChange={onCheckedChange} />,
-    );
+    const {getAllByTestId, props} = setupCheckboxScrollList({
+      onCheckedChange: jest.fn(),
+    });
 
-    wrapper
-      .find(ScrollList)
-      .renderProp('renderItem')({item: mockData[0], index: 0})
-      .find(Checkbox)
-      .simulate('change', true);
-    expect(onCheckedChange).toHaveBeenNthCalledWith(1, [mockData[0]]);
+    const _checkboxElts = getAllByTestId('checkboxContainer');
 
-    wrapper
-      .find(ScrollList)
-      .renderProp('renderItem')({item: mockData[1], index: 1})
-      .find(Checkbox)
-      .simulate('change', true);
-    expect(onCheckedChange).toHaveBeenNthCalledWith(2, [
-      mockData[0],
-      mockData[1],
+    fireEvent.press(within(_checkboxElts.at(1)).getByTestId('iconTouchable'));
+    expect(props.onCheckedChange).toHaveBeenNthCalledWith(1, [props.data[0]]);
+
+    fireEvent.press(within(_checkboxElts.at(2)).getByTestId('iconTouchable'));
+    expect(props.onCheckedChange).toHaveBeenNthCalledWith(2, [
+      props.data[0],
+      props.data[1],
     ]);
 
-    wrapper
-      .find(ScrollList)
-      .renderProp('renderItem')({item: mockData[0], index: 0})
-      .find(Checkbox)
-      .simulate('change', false);
-    expect(onCheckedChange).toHaveBeenNthCalledWith(3, [mockData[1]]);
+    fireEvent.press(within(_checkboxElts.at(1)).getByTestId('iconTouchable'));
+    expect(props.onCheckedChange).toHaveBeenNthCalledWith(3, [props.data[1]]);
   });
 
   it('set isDefaultPartialChecked and isDefaultChecked props of main checkbox depends of checked items', () => {
-    const wrapper = shallow(<CheckboxScrollList {...props} />);
+    const {getAllByTestId, props} = setupCheckboxScrollList();
 
-    wrapper
-      .find(ScrollList)
-      .renderProp('renderItem')({item: mockData[0], index: 0})
-      .find(Checkbox)
-      .simulate('change', true);
-    expect(wrapper.find(Checkbox).at(0).prop('isDefaultPartialChecked')).toBe(
-      true,
-    );
-    expect(wrapper.find(Checkbox).at(0).prop('isDefaultChecked')).toBe(false);
+    const _checkboxElts = getAllByTestId('checkboxContainer');
+    expect(_checkboxElts).toHaveLength(props.data.length + 1);
 
-    wrapper
-      .find(ScrollList)
-      .renderProp('renderItem')({item: mockData[1], index: 1})
-      .find(Checkbox)
-      .simulate('change', true);
-    expect(wrapper.find(Checkbox).at(0).prop('isDefaultPartialChecked')).toBe(
-      false,
-    );
-    expect(wrapper.find(Checkbox).at(0).prop('isDefaultChecked')).toBe(true);
+    checkCheckboxState(_checkboxElts.at(0), false, false);
+
+    fireEvent.press(within(_checkboxElts.at(1)).getByTestId('iconTouchable'));
+    checkCheckboxState(_checkboxElts.at(0), false, true);
+
+    fireEvent.press(within(_checkboxElts.at(2)).getByTestId('iconTouchable'));
+    checkCheckboxState(_checkboxElts.at(0), true, false);
   });
 
   it('renders each item with a checkbox', () => {
-    const wrapper = shallow(<CheckboxScrollList {...props} />);
+    const {getAllByTestId, props} = setupCheckboxScrollList();
 
-    mockData.forEach((item, index) => {
-      const itemRender = wrapper.find(ScrollList).renderProp('renderItem')({
-        item,
-        index,
-      });
+    const _rowElts = getAllByTestId('checkboxScrollListRowContainer');
 
-      expect(itemRender.find(Checkbox).exists()).toBe(true);
-      expect(itemRender.contains(renderItem({item, index}))).toBe(true);
+    expect(_rowElts).toHaveLength(props.data.length);
+
+    props.data.forEach((_i, idx) => {
+      const _elt = _rowElts.at(idx);
+
+      const _checkboxElt = within(_elt).getByTestId('checkboxContainer');
+      expect(_checkboxElt).toBeTruthy();
+      checkCheckboxState(_checkboxElt, false, false);
+      expect(within(_elt).getByTestId(`itemRender-idx${idx}`)).toBeTruthy();
     });
   });
 
-  it('passes loadingList, moreLoading, isListEnd, filter, horizontal, disabledRefresh props to ScrollList', () => {
-    const additionalProps = {
-      loadingList: true,
-      moreLoading: true,
-      isListEnd: true,
-      filter: true,
-      horizontal: true,
-      disabledRefresh: true,
-    };
-    const wrapper = shallow(
-      <CheckboxScrollList {...props} {...additionalProps} />,
-    );
-
-    expect(wrapper.find(ScrollList).props()).toMatchObject(additionalProps);
-  });
-
   it('should apply custom style checkbox width when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <CheckboxScrollList {...props} styleTopCheckbox={customStyle} />,
-    );
+    const {getAllByTestId, props} = setupCheckboxScrollList({
+      styleTopCheckbox: {width: 200},
+    });
 
-    expect(wrapper.find(Checkbox).prop('style')).toContain(customStyle);
+    expect(getAllByTestId('checkboxContainer').at(0)).toHaveStyle(
+      props.styleTopCheckbox,
+    );
   });
 
   it('should apply custom style to ScrollList', () => {
-    const customStyleScrollList = {margin: 10};
-    const wrapper = shallow(
-      <CheckboxScrollList {...props} styleScrollList={customStyleScrollList} />,
-    );
+    const {getByTestId, props} = setupCheckboxScrollList({
+      styleScrollList: {margin: 10},
+    });
 
-    expect(wrapper.find(ScrollList).prop('style')).toContain(
-      customStyleScrollList,
+    expect(getByTestId('scrollListAnimatedList')).toHaveStyle(
+      props.styleScrollList,
     );
+  });
+
+  it('should apply custom style to each row', () => {
+    const {getAllByTestId, props} = setupCheckboxScrollList({
+      styleRender: {margin: 10},
+    });
+
+    const _rowElts = getAllByTestId('checkboxScrollListRowContainer');
+
+    props.data.forEach((_i, idx) => {
+      expect(_rowElts.at(idx)).toHaveStyle(props.styleRender);
+    });
+  });
+
+  it('should apply custom style to each row checkbox', () => {
+    const {getAllByTestId, props} = setupCheckboxScrollList({
+      styleCheckbox: {margin: 10},
+    });
+
+    const _rowElts = getAllByTestId('checkboxScrollListRowContainer');
+
+    props.data.forEach((_i, idx) => {
+      expect(
+        within(_rowElts.at(idx)).getByTestId('checkboxContainer'),
+      ).toHaveStyle(props.styleCheckbox);
+    });
   });
 });

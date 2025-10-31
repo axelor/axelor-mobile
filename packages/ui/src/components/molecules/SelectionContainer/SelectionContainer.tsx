@@ -66,7 +66,8 @@ const SelectionItem = ({
     <TouchableOpacity
       style={[itemStyles.item, style]}
       onPress={onPress}
-      disabled={readonly}>
+      disabled={readonly}
+      testID="selectionItemTouchable">
       {isPicker && (
         <Icon
           style={itemStyles.icon}
@@ -295,7 +296,9 @@ const SelectionContainer = ({
   }
 
   return (
-    <View style={[styles.flatListContainer, style]}>
+    <View
+      style={[styles.flatListContainer, style]}
+      testID="selectionContainerWrapper">
       <ScrollView keyboardShouldPersistTaps="always" nestedScrollEnabled={true}>
         {isPicker ? renderListItemContainerPicker() : renderListItemContainer()}
       </ScrollView>

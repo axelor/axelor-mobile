@@ -69,9 +69,10 @@ const EditableInput = ({
         readOnly={isEditable}
         multiline={multiline}
         numberOfLines={numberOfLines}
+        testID="editableInput"
       />
       <View style={styles.actions}>
-        <TouchableOpacity onPress={handleIcon}>
+        <TouchableOpacity testID="editableInputToggle" onPress={handleIcon}>
           <Icon name={isEditable ? 'pencil-fill' : 'check-lg'} size={15} />
         </TouchableOpacity>
       </View>

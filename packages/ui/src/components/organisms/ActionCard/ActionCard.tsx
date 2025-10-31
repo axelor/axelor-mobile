@@ -207,7 +207,10 @@ const ActionCard = ({
   };
 
   return (
-    <View style={[styles.container, style]} ref={wrapperRef}>
+    <View
+      style={[styles.container, style]}
+      ref={wrapperRef}
+      testID="actionCardContainer">
       <View style={styles.cardContainer}>
         {React.cloneElement(children, {
           style: {

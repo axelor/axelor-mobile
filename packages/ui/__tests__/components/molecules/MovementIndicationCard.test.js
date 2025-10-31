@@ -17,85 +17,93 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, MovementIndicationCard, Text} from '@axelor/aos-mobile-ui';
+import {View} from 'react-native';
+import {fireEvent} from '@testing-library/react-native';
+import {MovementIndicationCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('MovementIndicationCard Component', () => {
-  const props = {
-    titleTop: 'Top Title',
-    iconTop: <Icon name="top-icon" />,
-    onPressTitleTop: jest.fn(),
-    disabledTop: false,
-    titleDown: 'Down Title',
-    iconDown: <Icon name="down-icon" />,
-    onPressTitleDown: jest.fn(),
-    disabledDown: false,
-  };
+  const setupMovementIndicationCard = overrideProps =>
+    setup({
+      Component: MovementIndicationCard,
+      baseProps: {
+        titleTop: 'Top Title',
+        iconTop: <View testID="top-icon" />,
+        onPressTitleTop: jest.fn(),
+        disabledTop: false,
+        titleDown: 'Down Title',
+        iconDown: <View testID="down-icon" />,
+        onPressTitleDown: jest.fn(),
+        disabledDown: false,
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupMovementIndicationCard();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('movementIndicationCardContainer')).toBeTruthy();
   });
 
-  it('should render two TouchableOpacity components', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
+  it('renders both titles and icons', () => {
+    const {getByText, getByTestId, props} = setupMovementIndicationCard();
 
-    expect(wrapper.find(TouchableOpacity).length).toBe(2);
+    expect(getByText(props.titleTop)).toBeTruthy();
+    expect(getByText(props.titleDown)).toBeTruthy();
+
+    expect(getByTestId('top-icon')).toBeTruthy();
+    expect(getByTestId('down-icon')).toBeTruthy();
   });
 
-  it('should render two titles', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
+  it('calls onPressTitleTop when the top title is pressed', () => {
+    const {getAllByTestId, props} = setupMovementIndicationCard({
+      onPressTitleTop: jest.fn(),
+    });
 
-    expect(wrapper.find(Text).length).toBe(2);
-  });
-
-  it('should render top Icon', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
-
-    expect(wrapper.find('Icon[name="top-icon"]').exists()).toBe(true);
-  });
-
-  it('should render down Icon', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
-
-    expect(wrapper.find('Icon[name="down-icon"]').exists()).toBe(true);
-  });
-
-  it('should call onPressTitleTop when the top title is pressed', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
-
-    wrapper.find(TouchableOpacity).at(0).simulate('press');
+    fireEvent.press(getAllByTestId('movementIndicationCardTouchable').at(0));
 
     expect(props.onPressTitleTop).toHaveBeenCalled();
   });
 
-  it('should call onPressTitleDown when the down title is pressed', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
+  it('disables the top action when disabledTop is true', () => {
+    const {getAllByTestId, props} = setupMovementIndicationCard({
+      disabledTop: true,
+      onPressTitleTop: jest.fn(),
+    });
 
-    wrapper.find(TouchableOpacity).at(1).simulate('press');
+    fireEvent.press(getAllByTestId('movementIndicationCardTouchable').at(0));
+
+    expect(props.onPressTitleTop).not.toHaveBeenCalled();
+  });
+
+  it('calls onPressTitleDown when the bottom title is pressed', () => {
+    const {getAllByTestId, props} = setupMovementIndicationCard({
+      onPressTitleDown: jest.fn(),
+    });
+
+    fireEvent.press(getAllByTestId('movementIndicationCardTouchable').at(1));
 
     expect(props.onPressTitleDown).toHaveBeenCalled();
   });
 
-  it('should not render a touchable titleTop when disabledTop is true', () => {
-    const wrapper = shallow(
-      <MovementIndicationCard {...props} disabledTop={true} />,
-    );
-    const touchableComponent = wrapper.find(TouchableOpacity).at(0);
+  it('disables the bottom action when disabledDown is true', () => {
+    const {getAllByTestId, props} = setupMovementIndicationCard({
+      disabledDown: true,
+      onPressTitleDown: jest.fn(),
+    });
 
-    expect(touchableComponent.exists()).toBeTruthy();
-    expect(touchableComponent.prop('disabled')).toBe(true);
+    fireEvent.press(getAllByTestId('movementIndicationCardTouchable').at(1));
+
+    expect(props.onPressTitleDown).not.toHaveBeenCalled();
   });
 
-  it('should not render a touchable titleDown when disabledDown is true', () => {
-    const wrapper = shallow(
-      <MovementIndicationCard {...props} disabledDown={true} />,
-    );
-    const touchableComponent = wrapper.find(TouchableOpacity).at(1);
+  it('applies custom style correctly', () => {
+    const {getByTestId, props} = setupMovementIndicationCard({
+      style: {marginBottom: 10},
+    });
 
-    expect(touchableComponent.exists()).toBeTruthy();
-    expect(touchableComponent.prop('disabled')).toBe(true);
+    expect(getByTestId('movementIndicationCardContainer')).toHaveStyle(
+      props.style,
+    );
   });
 });

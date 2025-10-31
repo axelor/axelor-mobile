@@ -16,56 +16,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {CardIconButton, CardIndicator, InfoButton} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {InfoButton} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('InfoButton Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    iconName: 'plus',
-    iconColor: Colors.primaryColor,
-    indication: 'This is an info button.',
-  };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<InfoButton {...props} />);
+  const setupInfoButton = overrideProps =>
+    setup({
+      Component: InfoButton,
+      baseProps: {
+        iconName: 'plus-lg',
+        iconColor: Colors.primaryColor,
+        indication: 'This is an info button.',
+        onPress: jest.fn(),
+      },
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupInfoButton();
+
+    expect(getByTestId('cardIndicatorContainer')).toBeTruthy();
+    expect(getByTestId('cardIconButtonContainer')).toBeTruthy();
   });
 
   it('should render with the correct icon', () => {
-    const wrapper = shallow(<InfoButton {...props} />);
+    const {getByTestId, props} = setupInfoButton();
 
-    expect(wrapper.find(CardIconButton).props()).toMatchObject({
-      iconName: props.iconName,
-      iconColor: props.iconColor,
-    });
+    expect(getByTestId(`icon-${props.iconName}`)).toBeTruthy();
   });
 
-  it('should display the indication when clicked', () => {
-    const wrapper = shallow(<InfoButton {...props} />);
-    const card = wrapper.find(CardIconButton).dive();
+  it('calls the onPress function when the button is pressed', () => {
+    const {getByTestId, props} = setupInfoButton({onPress: jest.fn()});
 
-    expect(wrapper.find(CardIndicator).exists()).toBe(true);
-    card.find(TouchableOpacity).simulate('longPress');
-
-    expect(wrapper.find(CardIndicator).props()).toMatchObject({
-      indication: props.indication,
-      isVisible: true,
-    });
+    fireEvent.press(getByTestId('cardIconButtonContainer'));
+    expect(props.onPress).toHaveBeenCalled();
   });
 
-  it('should hide the indication when clicked twice', () => {
-    const wrapper = shallow(<InfoButton {...props} />);
-    const card = wrapper.find(CardIconButton).dive();
+  it('renders correctly the indication on long press', () => {
+    const {getByTestId, queryByText, props} = setupInfoButton();
 
-    card.find(TouchableOpacity).simulate('longPress');
-    expect(wrapper.find(CardIndicator).prop('isVisible')).toBe(true);
+    expect(queryByText(props.indication)).toBeFalsy();
 
-    card.find(TouchableOpacity).simulate('longPress');
-    expect(wrapper.find(CardIndicator).prop('isVisible')).toBe(false);
+    fireEvent(getByTestId('cardIconButtonContainer'), 'longPress');
+    expect(queryByText(props.indication)).toBeTruthy();
+
+    fireEvent(getByTestId('cardIconButtonContainer'), 'longPress');
+    expect(queryByText(props.indication)).toBeFalsy();
   });
 });
