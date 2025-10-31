@@ -93,9 +93,10 @@ const FormInput = ({
   }, [defaultValue]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View testID="formInputContainer" style={[styles.container, style]}>
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <View
+        testID="formInputInnerContainer"
         style={[
           commonStyles.filter,
           commonStyles.filterSize,
