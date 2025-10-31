@@ -66,7 +66,6 @@ const FormSlider = ({
     <View testID="formSliderContainer" style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <View
-        testID="formSliderInnerContainer"
         style={[
           commonStyles.filter,
           commonStyles.filterSize,
