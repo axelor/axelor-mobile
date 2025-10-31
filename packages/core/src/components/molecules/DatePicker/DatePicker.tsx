@@ -43,8 +43,7 @@ const DatePicker = ({
       date={defaultDate}
       onDateChange={onDateChange}
       mode={mode}
-      textColor={Colors.text}
-      fadeToColor={Colors.backgroundColor}
+      dividerColor={Colors.primaryColor.background}
       style={styles.container}
     />
   );
