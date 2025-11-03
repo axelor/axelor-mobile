@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {checkNullString, ObjectCard, Text} from '@axelor/aos-mobile-ui';
 import {
   AnomalyBubble,
   useTranslator,
-  useSelector,
   useTypes,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
+import {useTotalCurrency} from '../../../hooks';
 
 interface LiteExpenseCardProps {
   statusSelect: number;
@@ -34,6 +34,8 @@ interface LiteExpenseCardProps {
   onPress: () => void;
   periodeCode?: string;
   inTaxTotal?: string;
+  companyInTaxTotal?: string;
+  currency?: any;
   employeeName?: string;
 }
 
@@ -44,19 +46,36 @@ const LiteExpenseCard = ({
   expenseSeq,
   periodeCode,
   inTaxTotal,
+  companyInTaxTotal,
+  currency,
   employeeName,
 }: LiteExpenseCardProps) => {
   const I18n = useTranslator();
   const {Expense} = useTypes();
   const {getItemColor} = useTypeHelpers();
-
-  const {user} = useSelector((state: any) => state.user);
+  const {displayCompanyCurrency, companyTotal, expenseTotal} = useTotalCurrency(
+    {inTaxTotal, companyInTaxTotal, currency},
+  );
 
   const borderStyle = useMemo(() => {
     return getBorderStyle(
       getItemColor(Expense?.statusSelect, statusSelect)?.background,
     ).border;
   }, [Expense?.statusSelect, getItemColor, statusSelect]);
+
+  const renderTotal = useCallback(
+    (
+      config: {inTaxTotal: string; currency: string},
+      wrapper: (_s: string) => string = _s => _s,
+    ) => {
+      return (
+        <Text style={styles.price}>
+          {wrapper(`${config.inTaxTotal} ${config.currency}`)}
+        </Text>
+      );
+    },
+    [],
+  );
 
   return (
     <ObjectCard
@@ -91,16 +110,16 @@ const LiteExpenseCard = ({
           },
         ],
       }}
-      sideBadges={{
+      upperBadges={{
+        fixedOnRightSide: true,
         items: [
           {
-            customComponent: !checkNullString(inTaxTotal) && (
-              <Text style={styles.price}>{`${inTaxTotal} ${
-                user?.activeCompany?.currency?.symbol != null
-                  ? user?.activeCompany?.currency?.symbol
-                  : user?.activeCompany?.currency?.code
-              }`}</Text>
-            ),
+            customComponent: renderTotal(expenseTotal),
+          },
+          {
+            customComponent: displayCompanyCurrency
+              ? renderTotal(companyTotal, _s => ` (${_s})`)
+              : null,
           },
         ],
       }}
