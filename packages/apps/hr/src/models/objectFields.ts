@@ -30,6 +30,15 @@ export const hr_modelAPI: ObjectFields = {
     expenseSeq: schemaContructor.string(),
     period: schemaContructor.subObject('code'),
     inTaxTotal: schemaContructor.string(),
+    companyInTaxTotal: schemaContructor.string(),
+    currency: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({
+          symbol: schemaContructor.string(),
+          code: schemaContructor.string(),
+        }),
+      ),
     groundForRefusal: schemaContructor.string(),
     employee: schemaContructor
       .subObject()
