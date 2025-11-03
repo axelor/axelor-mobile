@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {FormView, useSelector} from '@axelor/aos-mobile-core';
+import {FormView, isEmpty, useSelector} from '@axelor/aos-mobile-core';
 import {PackagingType} from '../../types';
 import {
   createPackagingLine,
@@ -60,16 +60,12 @@ const PackagingItemFormScreen = ({navigation, route}: any) => {
   );
 
   const handleSavePackagingLine = useCallback(
-    (
-      objectState: any,
-      dispatch: (fct: any) => void,
-      isCreation: boolean = false,
-    ) => {
+    (objectState: any, dispatch: any, isCreation: boolean = false) => {
       const sliceFct: any = isCreation
         ? createPackagingLine
         : updatePackagingLine;
 
-      dispatch(
+      return dispatch(
         sliceFct({
           ...objectState,
           packagingId: objectState.parentPackaging?.id,
@@ -82,14 +78,10 @@ const PackagingItemFormScreen = ({navigation, route}: any) => {
   );
 
   const handleSavePackaging = useCallback(
-    (
-      objectState: any,
-      dispatch: (fct: any) => void,
-      isCreation: boolean = false,
-    ) => {
+    (objectState: any, dispatch: any, isCreation: boolean = false) => {
       const sliceFct: any = isCreation ? createPackaging : updatePackaging;
 
-      dispatch(
+      return dispatch(
         sliceFct({
           ...objectState,
           packageUsedId: objectState.packageUsed?.id,
@@ -102,23 +94,30 @@ const PackagingItemFormScreen = ({navigation, route}: any) => {
   );
 
   const handleSave = useCallback(
-    (
-      objectState: any,
-      dispatch: (fct: any) => void,
-      handleReset: () => void,
-    ) => {
+    (objectState: any, dispatch: any, handleReset: () => void) => {
       const isCreation = objectState.id == null;
+      const afterStep: Function = isCreation ? handleReset : navigation.pop;
 
       switch (objectState.packagingType ?? PackagingType.Packaging) {
         case PackagingType.Packaging:
-          handleSavePackaging(objectState, dispatch, isCreation);
+          handleSavePackaging(objectState, dispatch, isCreation).then(
+            (res: any) => {
+              const _packaging = res?.payload;
+              if (isCreation && !isEmpty(_packaging)) {
+                navigation.replace('PackagingItemFormScreen', {
+                  parentPackaging: _packaging,
+                });
+              } else {
+                afterStep();
+              }
+            },
+          );
           break;
         case PackagingType.Product:
           handleSavePackagingLine(objectState, dispatch, isCreation);
+          afterStep();
           break;
       }
-
-      isCreation ? handleReset() : navigation.pop();
     },
     [handleSavePackaging, handleSavePackagingLine, navigation],
   );

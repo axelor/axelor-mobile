@@ -39,6 +39,7 @@ const createSearchCriteria = (
   stockMoveId: number | number[],
   scanValue?: string,
   searchValue?: string,
+  checkQtyPackaged: boolean = false,
 ): Criteria[] => {
   const criterias: Criteria[] = [
     getSearchCriterias('stock_massStockMoveLine', scanValue),
@@ -53,6 +54,14 @@ const createSearchCriteria = (
     });
   }
 
+  if (checkQtyPackaged) {
+    criterias.push({
+      fieldName: 'qtyRemainingToPackage',
+      operator: '>',
+      value: 0,
+    });
+  }
+
   return criterias;
 };
 
@@ -60,12 +69,14 @@ export async function searchStockMoveLine({
   stockMoveId,
   scanValue,
   checkValidated = false,
+  checkQtyPackaged = false,
   page = 0,
   searchValue,
 }: {
   stockMoveId: number | number[];
   scanValue?: string;
   checkValidated?: boolean;
+  checkQtyPackaged?: boolean;
   page?: number;
   searchValue?: string;
 }) {
@@ -75,7 +86,12 @@ export async function searchStockMoveLine({
 
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
-    criteria: createSearchCriteria(stockMoveId, scanValue, searchValue),
+    criteria: createSearchCriteria(
+      stockMoveId,
+      scanValue,
+      searchValue,
+      checkQtyPackaged,
+    ),
     domain: checkValidated ? 'self.qty <= self.realQty' : undefined,
     fieldKey: 'stock_stockMoveLine',
     sortKey: 'stock_stockMoveLine',

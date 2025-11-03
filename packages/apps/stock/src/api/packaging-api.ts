@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   Criteria,
   getActionApi,
@@ -110,6 +111,15 @@ export async function createPackaging(body: {
         packageUsedId: 'packageUsed.id',
       },
     },
+  });
+}
+
+export async function fetchPackaging({id}: {id: number}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.supplychain.db.Packaging',
+    id,
+    fieldKey: 'stock_packaging',
+    provider: 'model',
   });
 }
 
