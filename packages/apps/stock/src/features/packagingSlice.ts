@@ -24,6 +24,7 @@ import {
 import {
   createPackaging as _createPackaging,
   deletePackaging as _deletePackaging,
+  fetchPackaging as _fetchPackaging,
   searchPackaging as _searchPackaging,
   updatePackaging as _updatePackaging,
 } from '../api/packaging-api';
@@ -87,6 +88,18 @@ export const createPackaging = createAsyncThunk(
       action: 'Stock_SliceAction_CreatePackaging',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(res => {
+      const _recordId = res.packagingId;
+
+      if (!_recordId) return res;
+
+      return handlerApiCall({
+        fetchFunction: _fetchPackaging,
+        data: {id: _recordId},
+        action: 'Stock_SliceAction_FetchPackaging',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );

@@ -22,6 +22,7 @@ import {
   PackagingLineMassScanner,
   PackagingLineQuantityCard,
   PackagingProductSearchBar,
+  ParentPackagingLabel,
   PartnerSearchBar,
   StockLocationSearchBar,
   StockMoveLineSearchBar,
@@ -117,6 +118,15 @@ export const stock_formsRegister: FormConfigs = {
   stock_logisticalFormPackagingItem: {
     modelName: 'com.axelor.apps.supplychain.db.Packaging',
     fields: {
+      parentPackaging: {
+        titleKey: 'Stock_ParentPackaging',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ParentPackagingLabel,
+        hideIf: ({objectState}) =>
+          objectState?.id != null || objectState?.parentPackaging == null,
+        readonly: true,
+      },
       packagingType: {
         type: 'string',
         widget: 'custom',
