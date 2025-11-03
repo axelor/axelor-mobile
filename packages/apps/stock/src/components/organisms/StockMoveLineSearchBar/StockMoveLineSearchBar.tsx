@@ -70,7 +70,14 @@ const StockMoveLineSearchBarAux = ({
 
   const fetchLines = useCallback(
     async ({page = 0, searchValue}: {page?: number; searchValue?: string}) => {
-      dispatch((fetchStockMoveLines as any)({stockMoveId, searchValue, page}));
+      dispatch(
+        (fetchStockMoveLines as any)({
+          stockMoveId,
+          searchValue,
+          page,
+          checkQtyPackaged: true,
+        }),
+      );
     },
     [dispatch, stockMoveId],
   );
