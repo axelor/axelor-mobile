@@ -35,6 +35,8 @@ interface ExpenseCardProps {
   onSend: () => void;
   periodeCode?: string;
   inTaxTotal?: string;
+  companyInTaxTotal?: string;
+  currency?: any;
   employeeManagerId?: number;
   employeeName?: string;
 }
@@ -48,6 +50,8 @@ const ExpenseCard = ({
   expenseSeq,
   periodeCode,
   inTaxTotal,
+  companyInTaxTotal,
+  currency,
   employeeManagerId,
   employeeName,
 }: ExpenseCardProps) => {
@@ -110,6 +114,8 @@ const ExpenseCard = ({
         expenseSeq={expenseSeq}
         periodeCode={periodeCode}
         inTaxTotal={inTaxTotal}
+        companyInTaxTotal={companyInTaxTotal}
+        currency={currency}
         employeeName={employeeName}
       />
     </ActionCard>

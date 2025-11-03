@@ -244,8 +244,10 @@ const ExpenseListScreen = ({navigation}) => {
             statusSelect={item.statusSelect}
             expenseId={item.id}
             expenseSeq={item.expenseSeq}
-            periodeCode={item?.period?.code}
+            periodeCode={item.period?.code}
             inTaxTotal={item.inTaxTotal}
+            companyInTaxTotal={item.companyInTaxTotal}
+            currency={item.currency}
             employeeManagerId={item.employee?.managerUser?.id}
             employeeName={
               mode === ExpenseType.mode.validation ? item.employee?.name : null
