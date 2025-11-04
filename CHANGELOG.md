@@ -3,6 +3,22 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.22] (2025-11-04)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- FormView: improve default reset action behavior
+- AOP request formatter: resolve issue when body contains an array
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: use the right API function from stock module to add a tracking number
+- Consumed products: resolve issue on tracking number computation when creating a new record
+
 ## [8.2.21] (2025-10-09)
 
 ### @axelor/aos-mobile-sale
@@ -837,6 +853,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.22]: https://github.com/axelor/axelor-mobile/compare/8.2.21...8.2.22
 [8.2.21]: https://github.com/axelor/axelor-mobile/compare/8.2.20...8.2.21
 [8.2.20]: https://github.com/axelor/axelor-mobile/compare/8.2.19...8.2.20
 [8.2.19]: https://github.com/axelor/axelor-mobile/compare/8.2.18...8.2.19
