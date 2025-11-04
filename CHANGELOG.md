@@ -3,6 +3,15 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.39] (2025-11-04)
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: use the right API function from stock module to add a tracking number
+- Consumed products: resolve issue on tracking number computation when creating a new record
+
 ## [7.2.38] (2025-10-02)
 
 ### @axelor/aos-mobile-core
@@ -1019,6 +1028,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.39]: https://github.com/axelor/axelor-mobile/compare/7.2.38...7.2.39
 [7.2.38]: https://github.com/axelor/axelor-mobile/compare/7.2.37...7.2.38
 [7.2.37]: https://github.com/axelor/axelor-mobile/compare/7.2.36...7.2.37
 [7.2.36]: https://github.com/axelor/axelor-mobile/compare/7.2.35...7.2.36
