@@ -3,6 +3,30 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.7] (2025-11-04)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- FormView: improve default reset action behavior
+- AOP request formatter: resolve issue when body contains an array
+
+### @axelor/aos-mobile-ui
+
+This version contains migration of a few molecules tests to RNTL.
+
+#### Changes
+
+- HalfLabelCard: improve component style
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: use the right API function from stock module to add a tracking number
+- Consumed products: resolve issue on tracking number computation when creating a new record
+
 ## [8.4.6] (2025-10-09)
 
 ### @axelor/aos-mobile-dms
@@ -395,6 +419,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.7]: https://github.com/axelor/axelor-mobile/compare/8.4.6...8.4.7
 [8.4.6]: https://github.com/axelor/axelor-mobile/compare/8.4.5...8.4.6
 [8.4.5]: https://github.com/axelor/axelor-mobile/compare/8.4.4...8.4.5
 [8.4.4]: https://github.com/axelor/axelor-mobile/compare/8.4.3...8.4.4
