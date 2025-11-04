@@ -1,5 +1,0 @@
-{
-  "title": "Consumed products: resolve issue on tracking number computation when creating a new record",
-  "type": "fix",
-  "packages": "manufacturing"
-}

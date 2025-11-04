@@ -3,6 +3,22 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.14] (2025-11-04)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- FormView: improve default reset action behavior
+- AOP request formatter: resolve issue when body contains an array
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: use the right API function from stock module to add a tracking number
+- Consumed products: resolve issue on tracking number computation when creating a new record
+
 ## [8.3.13] (2025-10-09)
 
 ### @axelor/aos-mobile-dms
@@ -526,6 +542,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.14]: https://github.com/axelor/axelor-mobile/compare/8.3.13...8.3.14
 [8.3.13]: https://github.com/axelor/axelor-mobile/compare/8.3.12...8.3.13
 [8.3.12]: https://github.com/axelor/axelor-mobile/compare/8.3.11...8.3.12
 [8.3.11]: https://github.com/axelor/axelor-mobile/compare/8.3.10...8.3.11

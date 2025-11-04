@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-stock",
-  "version": "8.3.13",
+  "version": "8.3.14",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -27,8 +27,8 @@
     "react-native": "0.73.9"
   },
   "dependencies": {
-    "@axelor/aos-mobile-ui": "8.3.13",
-    "@axelor/aos-mobile-core": "8.3.13",
+    "@axelor/aos-mobile-ui": "8.3.14",
+    "@axelor/aos-mobile-core": "8.3.14",
     "@reduxjs/toolkit": "^2.2.7"
   },
   "devDependencies": {
