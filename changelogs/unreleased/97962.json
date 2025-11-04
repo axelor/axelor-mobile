@@ -1,5 +1,0 @@
-{
-  "title": "SaleOrder: add possibility to fill payment mode & condition on quotation creation",
-  "type": "feat",
-  "packages": "sale"
-}

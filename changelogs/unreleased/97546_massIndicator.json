@@ -1,6 +1,0 @@
-{
-  "title": "Mass indicator: add provider to define color & icon to display depending on total mass",
-  "type": "feat",
-  "packages": "stock",
-  "description": "Any package can provide a pattern to use to fetch mass indicator configuration.\nThe pattern should define a JSON Object which associate a key (for override) to a limit value, a color and/or an icon name.\nThe configuration should be registered using the useMassIndicatorRegister hook."
-}

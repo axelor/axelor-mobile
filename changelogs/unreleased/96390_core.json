@@ -1,5 +1,0 @@
-{
-  "title": "UploadFileInput: add possibility to manage state outside of component",
-  "type": "feat",
-  "packages": "core"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Partners: remove contact information from form view in favor of details view widget",
-  "type": "refactor",
-  "packages": "crm"
-}

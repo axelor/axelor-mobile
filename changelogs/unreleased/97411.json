@@ -1,5 +1,0 @@
-{
-  "title": "Quality improvement: add management of default qiDetection value based on config",
-  "type": "feat",
-  "packages": "quality"
-}

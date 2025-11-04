@@ -1,5 +1,0 @@
-{
-  "title": "Web applications: add new hook to check if an app is installed on the ERP",
-  "type": "feat",
-  "packages": "core"
-}

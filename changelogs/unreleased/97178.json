@@ -1,5 +1,0 @@
-{
-  "title": "Client: add possibility to access crm event creation feature from details view",
-  "type": "feat",
-  "packages": "sale"
-}

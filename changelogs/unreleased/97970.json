@@ -1,5 +1,0 @@
-{
-  "title": "SaleOrder: display delivered and invoiced partners on details",
-  "type": "feat",
-  "packages": "sale"
-}

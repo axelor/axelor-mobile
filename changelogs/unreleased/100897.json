@@ -1,5 +1,0 @@
-{
-  "title": "Projects: remove unused mention of business projects",
-  "type": "refactor",
-  "packages": "hr"
-}

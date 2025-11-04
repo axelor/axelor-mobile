@@ -1,5 +1,0 @@
-{
-  "title": "Clients: add possibility to create new record from list view using crm feature",
-  "type": "feat",
-  "packages": "sale"
-}

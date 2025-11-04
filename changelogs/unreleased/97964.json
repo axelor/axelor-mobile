@@ -1,5 +1,0 @@
-{
-  "title": "SaleOrder: add possibility to fill delivered partner on quotation creation",
-  "type": "feat",
-  "packages": "sale"
-}

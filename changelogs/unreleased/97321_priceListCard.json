@@ -1,5 +1,0 @@
-{
-  "title": "PriceDetails: add possibility to define custom components inside the card above or under the price list items",
-  "type": "feat",
-  "packages": "sale"
-}

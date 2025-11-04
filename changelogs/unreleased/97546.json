@@ -1,5 +1,0 @@
-{
-  "title": "StockMoveLine: add total mass information on cards & details",
-  "type": "feat",
-  "packages": "stock"
-}

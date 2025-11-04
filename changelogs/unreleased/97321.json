@@ -1,5 +1,0 @@
-{
-  "title": "SaleOrderLine: add available status display on card & details",
-  "type": "feat",
-  "packages": "sale"
-}
