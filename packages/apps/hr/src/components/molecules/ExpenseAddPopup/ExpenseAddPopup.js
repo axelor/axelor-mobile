@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     width: '100%',
+    zIndex: 2,
   },
   labelText: {
     marginVertical: 5,
