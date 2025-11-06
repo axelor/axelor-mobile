@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {LegacyRef, useCallback, useMemo} from 'react';
+import React, {Ref, useCallback, useMemo} from 'react';
 import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
@@ -31,9 +31,9 @@ import {Keyboard} from '../../../types';
 
 interface InputProps {
   style?: any;
-  inputRef?: LegacyRef<TextInput>;
+  inputRef?: Ref<TextInput>;
   value: string;
-  onChange: (any) => void;
+  onChange: (value: string) => void;
   placeholder?: string;
   secureTextEntry?: boolean;
   readOnly?: boolean;
@@ -63,7 +63,7 @@ const Input = ({
   multiline = false,
   numberOfLines = 1,
   keyboardType,
-  onEndFocus = () => {},
+  onEndFocus,
   isFocus = false,
   writingType,
   onContentSizeChange,
@@ -97,7 +97,7 @@ const Input = ({
   }, [isScannableInput, virtualKeyboardVisibility]);
 
   const onValueChange = useCallback(
-    _value => {
+    (_value: string) => {
       if (checkNullString(_value)) {
         onChange(null);
       } else {
