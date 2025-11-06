@@ -126,7 +126,13 @@ const Input = ({
       onBlur={onEndFocus}
       showSoftInputOnFocus={displayKeyboard}
       autoFocus={isFocus}
-      onContentSizeChange={onContentSizeChange}
+      onLayout={e => {
+        const {height, width} = e.nativeEvent.layout;
+
+        onContentSizeChange?.({
+          nativeEvent: {contentSize: {width, height}},
+        } as any);
+      }}
     />
   );
 };
