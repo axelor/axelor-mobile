@@ -1,0 +1,5 @@
+{
+  "title": "SearchListView: avoid select behavior on search when no onChange is provided",
+  "type": "fix",
+  "packages": "core"
+}
