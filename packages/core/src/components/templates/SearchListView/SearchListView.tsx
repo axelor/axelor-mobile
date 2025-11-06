@@ -137,6 +137,7 @@ const SearchListView = ({
         displayValue={displaySearchValue}
         placeholder={searchPlaceholder}
         oneFilter={true}
+        selectLastItem={onChangeSearchValue != null}
         navigate={searchNavigate}
         scanKeySearch={scanKeySearch}
         isFocus={scanKeySearch != null}
