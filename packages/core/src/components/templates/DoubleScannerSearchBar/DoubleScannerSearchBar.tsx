@@ -151,6 +151,10 @@ const DoubleScannerSearchBar = ({
     if (!value) setBarCode(null);
   }, [value]);
 
+  useEffect(() => {
+    if (oneFilter && navigate != null) setBarCode(null);
+  }, [navigate, oneFilter]);
+
   return (
     <View style={[styles.container, style]}>
       <View style={styles.searchContainer}>
