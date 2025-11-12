@@ -3,6 +3,24 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.15] (2025-11-12)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Network check: use ERP healthcheck once user is connected
+
+#### Fixes
+
+- SearchListView: avoid select behavior on search when no onChange is provided
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense selection popup: avoid style issue on iOS with picker display
+
 ## [8.3.14] (2025-11-04)
 
 ### @axelor/aos-mobile-core
@@ -542,6 +560,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.15]: https://github.com/axelor/axelor-mobile/compare/8.3.14...8.3.15
 [8.3.14]: https://github.com/axelor/axelor-mobile/compare/8.3.13...8.3.14
 [8.3.13]: https://github.com/axelor/axelor-mobile/compare/8.3.12...8.3.13
 [8.3.12]: https://github.com/axelor/axelor-mobile/compare/8.3.11...8.3.12
