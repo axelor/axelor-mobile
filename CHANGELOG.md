@@ -3,6 +3,18 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.1] (2025-11-12)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Network check: use ERP healthcheck once user is connected
+
+#### Fixes
+
+- SearchListView: avoid select behavior on search when no onChange is provided
+
 ## [8.5.0] (2025-11-04)
 
 This release brings a major update to the project's dependencies, including React Native, which is now at 0.79.x. This version also removes the old test library Enzyme and remaining test cases have been migrated to RNTL.
@@ -114,4 +126,5 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.1]: https://github.com/axelor/axelor-mobile/compare/8.5.0...8.5.1
 [8.5.0]: https://github.com/axelor/axelor-mobile/compare/8.4.7...8.5.0
