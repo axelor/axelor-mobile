@@ -1,5 +1,0 @@
-{
-  "title": "Network check: use ERP healthcheck once user is connected",
-  "type": "refactor",
-  "packages": "core"
-}

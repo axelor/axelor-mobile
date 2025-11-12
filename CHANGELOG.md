@@ -3,6 +3,14 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.40] (2025-11-12)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Network check: use ERP healthcheck once user is connected
+
 ## [7.2.39] (2025-11-04)
 
 ### @axelor/aos-mobile-manufacturing
@@ -1028,6 +1036,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.40]: https://github.com/axelor/axelor-mobile/compare/7.2.39...7.2.40
 [7.2.39]: https://github.com/axelor/axelor-mobile/compare/7.2.38...7.2.39
 [7.2.38]: https://github.com/axelor/axelor-mobile/compare/7.2.37...7.2.38
 [7.2.37]: https://github.com/axelor/axelor-mobile/compare/7.2.36...7.2.37
