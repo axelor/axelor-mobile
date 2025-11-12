@@ -24,11 +24,21 @@ interface NetInfoState {
 
 export async function getNetInfo(): Promise<NetInfoState> {
   return axiosApiProvider
-    .get({
-      url: 'https://www.google.com/',
-    })
+    .get({url: '/ws/app/info'})
     .then(res => ({isConnected: res?.status === 200}))
-    .catch(() => {
+    .catch(err => {
+      const _status = err?.response?.status;
+
+      if (!_status) {
+        // User is not yet connected to a ERP instance
+        // So, path to get network info is incomplete and previous request was skipped
+        // We need to check google network to know if user is connected
+        return axiosApiProvider
+          .get({url: 'https://www.google.com'})
+          .then(res => ({isConnected: res?.status === 200}))
+          .catch(() => ({isConnected: false}));
+      }
+
       return {isConnected: false};
     });
 }
