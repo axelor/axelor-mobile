@@ -3,6 +3,14 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.24] (2025-11-12)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Network check: use ERP healthcheck once user is connected
+
 ## [7.1.23] (2025-01-28)
 
 ### @axelor/aos-mobile-ui
@@ -700,6 +708,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.24]: https://github.com/axelor/axelor-mobile/compare/7.1.23...7.1.24
 [7.1.23]: https://github.com/axelor/axelor-mobile/compare/7.1.22...7.1.23
 [7.1.22]: https://github.com/axelor/axelor-mobile/compare/7.1.21...7.1.22
 [7.1.21]: https://github.com/axelor/axelor-mobile/compare/7.1.20...7.1.21
