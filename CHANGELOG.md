@@ -3,6 +3,24 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.8] (2025-11-12)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Network check: use ERP healthcheck once user is connected
+
+#### Fixes
+
+- SearchListView: avoid select behavior on search when no onChange is provided
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense selection popup: avoid style issue on iOS with picker display
+
 ## [8.4.7] (2025-11-04)
 
 ### @axelor/aos-mobile-core
@@ -419,6 +437,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.8]: https://github.com/axelor/axelor-mobile/compare/8.4.7...8.4.8
 [8.4.7]: https://github.com/axelor/axelor-mobile/compare/8.4.6...8.4.7
 [8.4.6]: https://github.com/axelor/axelor-mobile/compare/8.4.5...8.4.6
 [8.4.5]: https://github.com/axelor/axelor-mobile/compare/8.4.4...8.4.5
