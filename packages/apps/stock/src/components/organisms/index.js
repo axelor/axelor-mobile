@@ -18,6 +18,7 @@
 
 export {default as CustomerDeliveryDropdownCard} from './CustomerDeliveryDropdownCard/CustomerDeliveryDropdownCard';
 export {default as DescriptionCard} from './DescriptionCard/DescriptionCard';
+export {default as DoubleSearchLineContainer} from './DoubleSearchLineContainer/DoubleSearchLineContainer';
 export {default as InternalMoveCreationPickingWidget} from './InternalMoveCreationPickingWidget/InternalMoveCreationPickingWidget';
 export {default as InventoryPickingWidget} from './InventoryPickingWidget/InventoryPickingWidget';
 export {default as PackagingProductSearchBar} from './PackagingProductSearchBar/PackagingProductSearchBar';
