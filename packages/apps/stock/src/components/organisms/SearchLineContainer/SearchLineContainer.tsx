@@ -26,7 +26,7 @@ import {
 import {Indicator} from './IndicatorBadge';
 import {displayLine} from '../../../utils/displayers';
 
-interface Props {
+export interface SearchLineContainerProps {
   style?: any;
   title: string;
   numberOfItems: number;
@@ -34,17 +34,12 @@ interface Props {
   onAction?: () => void;
   objectList: any[];
   handleSelect: (item: any) => void;
-  handleSearch?: ({
-    page,
-    searchValue,
-  }: {
-    page: number;
-    searchValue: string;
-  }) => void;
+  handleSearch?: (data: {page: number; searchValue: string}) => void;
   scanKey: string;
   onViewPress: () => void;
-  renderItem: (item, index) => ReactNode;
-  filterLine: (item: any) => boolean;
+  renderItem: (item: any, index: number) => ReactNode;
+  filterLine?: (item: any) => boolean;
+  renderCustomSearchBar?: () => React.JSX.Element;
 }
 
 const SearchLineContainer = ({
@@ -60,14 +55,15 @@ const SearchLineContainer = ({
   onViewPress,
   renderItem,
   filterLine,
-}: Props) => {
+  renderCustomSearchBar,
+}: SearchLineContainerProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const [navigate, setNavigate] = useState(false);
 
   const _handleSelect = useCallback(
-    item => {
+    (item: any) => {
       setNavigate(current => !current);
       handleSelect(item);
     },
@@ -109,19 +105,23 @@ const SearchLineContainer = ({
           )}
         </View>
       </View>
-      <ScannerAutocompleteSearch
-        style={styles.searchBar}
-        objectList={objectList}
-        onChangeValue={_handleSelect}
-        fetchData={handleSearch}
-        displayValue={displayLine}
-        scanKeySearch={scanKey}
-        placeholder={I18n.t('Stock_SearchLine')}
-        isFocus={true}
-        changeScreenAfter={true}
-        oneFilter={true}
-        navigate={navigate}
-      />
+      {renderCustomSearchBar != null ? (
+        renderCustomSearchBar()
+      ) : (
+        <ScannerAutocompleteSearch
+          style={styles.searchBar}
+          objectList={objectList}
+          onChangeValue={_handleSelect}
+          fetchData={handleSearch}
+          displayValue={displayLine}
+          scanKeySearch={scanKey}
+          placeholder={I18n.t('Stock_SearchLine')}
+          isFocus={true}
+          changeScreenAfter={true}
+          oneFilter={true}
+          navigate={navigate}
+        />
+      )}
       <View style={styles.cardContainer}>
         {!item ? (
           <Text style={styles.text}>{I18n.t('Base_NoData')}</Text>

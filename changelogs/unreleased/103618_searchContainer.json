@@ -1,0 +1,5 @@
+{
+  "title": "SearchLineContainer: allow render of a custom component instead of the ScannerAutocompleteSearch",
+  "type": "feat",
+  "packages": "stock"
+}
