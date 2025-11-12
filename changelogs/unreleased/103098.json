@@ -1,5 +1,0 @@
-{
-  "title": "Expense selection popup: avoid style issue on iOS with picker display",
-  "type": "fix",
-  "packages": "hr"
-}

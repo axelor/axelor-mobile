@@ -3,6 +3,24 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.23] (2025-11-12)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Network check: use ERP healthcheck once user is connected
+
+#### Fixes
+
+- SearchListView: avoid select behavior on search when no onChange is provided
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense selection popup: avoid style issue on iOS with picker display
+
 ## [8.2.22] (2025-11-04)
 
 ### @axelor/aos-mobile-core
@@ -853,6 +871,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.23]: https://github.com/axelor/axelor-mobile/compare/8.2.22...8.2.23
 [8.2.22]: https://github.com/axelor/axelor-mobile/compare/8.2.21...8.2.22
 [8.2.21]: https://github.com/axelor/axelor-mobile/compare/8.2.20...8.2.21
 [8.2.20]: https://github.com/axelor/axelor-mobile/compare/8.2.19...8.2.20
