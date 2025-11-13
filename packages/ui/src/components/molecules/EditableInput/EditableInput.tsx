@@ -24,7 +24,7 @@ import {Icon, Input} from '../../atoms';
 
 interface EditableInputProps {
   placeholder: string;
-  onValidate: (any) => void;
+  onValidate: (value: string) => void;
   defaultValue: string | undefined;
   multiline?: boolean;
   numberOfLines?: number;
@@ -59,7 +59,8 @@ const EditableInput = ({
       style={[
         commonStyles.filter,
         commonStyles.filterAlign,
-        multiline ? styles.size : commonStyles.filterSize,
+        commonStyles.filterSize,
+        multiline && {height: undefined},
       ]}>
       <Input
         style={styles.input}
@@ -81,10 +82,6 @@ const EditableInput = ({
 };
 
 const styles = StyleSheet.create({
-  size: {
-    width: '90%',
-    minHeight: 40,
-  },
   input: {
     width: '80%',
     fontSize: 14,

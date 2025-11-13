@@ -87,11 +87,16 @@ describe('Input component', () => {
     expect(props.onEndFocus).toHaveBeenCalled();
   });
 
-  it('calls onContentSizeChange handler on size cange', () => {
+  it('calls onContentSizeChange handler on size change', () => {
     const {input, props} = setupInput({onContentSizeChange: jest.fn()});
 
-    fireEvent(input, 'contentSizeChange');
-    expect(props.onContentSizeChange).toHaveBeenCalled();
+    fireEvent(input, 'layout', {
+      nativeEvent: {layout: {width: 50, height: 200}},
+    });
+
+    expect(props.onContentSizeChange).toHaveBeenCalledWith({
+      nativeEvent: {contentSize: {width: 50, height: 200}},
+    });
   });
 
   it('applies custom style when provided', () => {
