@@ -110,33 +110,48 @@ const styles = StyleSheet.create({
 export const useClickOutside = ({
   wrapperRef,
 }: {
-  wrapperRef: React.MutableRefObject<RefObject>;
+  wrapperRef: RefObject | RefObject[];
 }) => {
   const {ref: _ref} = useContext(OutsideAlerterContext);
 
   const [state, setState] = useState<Indicator | undefined>(undefined);
 
+  const isInsideRef = useCallback((componentRef: RefObject, ref: RefObject) => {
+    let isInside: boolean = false;
+
+    componentRef.measure((x, y, width, height, pageX, pageY) => {
+      ref.measure((tx, ty, tWidth, tHeight, tPageX, tPageY) => {
+        isInside =
+          tPageX >= pageX &&
+          tPageX + tWidth <= pageX + width &&
+          tPageY >= pageY &&
+          tPageY + tHeight <= pageY + height;
+      });
+    });
+
+    return isInside;
+  }, []);
+
   const handleClickOutside = useCallback(
-    (componentRef: RefObject, ref: RefObject) => {
+    (componentRef: RefObject | RefObject[], ref: RefObject) => {
       if (!componentRef || !ref) return;
 
-      componentRef.measure((x, y, width, height, pageX, pageY) => {
-        ref.measure((tx, ty, tWidth, tHeight, tPageX, tPageY) => {
-          const isInside =
-            tPageX >= pageX &&
-            tPageX + tWidth <= pageX + width &&
-            tPageY >= pageY &&
-            tPageY + tHeight <= pageY + height;
+      const wrapperRefs = !Array.isArray(componentRef)
+        ? [componentRef]
+        : componentRef;
 
-          setState(isInside ? INSIDE_INDICATOR : OUTSIDE_INDICATOR);
-        });
+      const isInside = wrapperRefs.some((_cref: RefObject) => {
+        if (!_cref?.current) return false;
+        return isInsideRef(_cref?.current, ref);
       });
+
+      setState(isInside ? INSIDE_INDICATOR : OUTSIDE_INDICATOR);
     },
     [],
   );
 
   useEffect(() => {
-    handleClickOutside(wrapperRef?.current, _ref);
+    handleClickOutside(wrapperRef, _ref);
   }, [handleClickOutside, wrapperRef, _ref]);
 
   return useMemo(() => state, [state]);
