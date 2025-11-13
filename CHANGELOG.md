@@ -3,6 +3,14 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.9] (2025-11-13)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Input: resolve content size update behavior on iOS
+
 ## [8.4.8] (2025-11-12)
 
 ### @axelor/aos-mobile-core
@@ -437,6 +445,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.9]: https://github.com/axelor/axelor-mobile/compare/8.4.8...8.4.9
 [8.4.8]: https://github.com/axelor/axelor-mobile/compare/8.4.7...8.4.8
 [8.4.7]: https://github.com/axelor/axelor-mobile/compare/8.4.6...8.4.7
 [8.4.6]: https://github.com/axelor/axelor-mobile/compare/8.4.5...8.4.6
