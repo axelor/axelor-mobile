@@ -178,8 +178,9 @@ const DateInput = ({
   }, [defaultDate]);
 
   const wrapperRef = useRef(null);
+  const dateWrapperRef = useRef(null);
   const clickOutside = useClickOutside({
-    wrapperRef,
+    wrapperRef: [wrapperRef, dateWrapperRef],
   });
 
   useEffect(() => {
@@ -257,7 +258,7 @@ const DateInput = ({
           </Alert>
         ) : (
           pickerIsOpen && (
-            <Card style={styles.selectionContainer}>
+            <Card wrapperRef={dateWrapperRef} style={styles.selectionContainer}>
               <DateInputSelection
                 mode={mode}
                 nullable={nullable}

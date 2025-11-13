@@ -16,22 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {RefObject, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
 
 interface CardProps {
   style?: any;
   children: any;
+  wrapperRef?: RefObject<any>;
 }
 
-const Card = ({style, children}: CardProps) => {
+const Card = ({style, children, wrapperRef}: CardProps) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View testID="cardContainer" style={[styles.container, style]}>
+    <View
+      ref={wrapperRef}
+      testID="cardContainer"
+      style={[styles.container, style]}>
       {children}
     </View>
   );

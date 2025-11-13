@@ -66,8 +66,9 @@ const MultiValuePicker = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const wrapperRef = useRef(null);
+  const selectionWrapperRef = useRef(null);
   const clickOutside = useClickOutside({
-    wrapperRef,
+    wrapperRef: [wrapperRef, selectionWrapperRef],
   });
 
   const [selectedItemList, setSelectedItemList] = useState(defaultItems as any);
@@ -149,6 +150,7 @@ const MultiValuePicker = ({
       />
       {pickerIsOpen ? (
         <SelectionContainer
+          wrapperRef={selectionWrapperRef}
           objectList={listItems}
           keyField="key"
           displayValue={(item: Item) => item.title}

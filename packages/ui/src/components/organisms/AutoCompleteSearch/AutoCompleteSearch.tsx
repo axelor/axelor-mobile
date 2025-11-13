@@ -106,8 +106,9 @@ const AutoCompleteSearch = ({
   const inputRef = useRef<TextInput>(null);
 
   const wrapperRef = useRef(null);
+  const selectionWrapperRef = useRef(null);
   const clickOutside = useClickOutside({
-    wrapperRef,
+    wrapperRef: [wrapperRef, selectionWrapperRef],
   });
 
   useEffect(() => {
@@ -319,6 +320,7 @@ const AutoCompleteSearch = ({
       />
       {displayList && !oneFilter && (
         <SelectionContainer
+          wrapperRef={selectionWrapperRef}
           style={styles.alignContainer}
           objectList={objectList}
           displayValue={displayValue}
