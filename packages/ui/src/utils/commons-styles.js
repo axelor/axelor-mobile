@@ -41,6 +41,7 @@ export const getCommonStyles = (Colors, _required = false) =>
     filterSize: {
       width: '90%',
       height: 40,
+      minHeight: 40,
     },
     button: {
       flexDirection: 'row',

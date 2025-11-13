@@ -18,9 +18,9 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
-import {Input, Text} from '../../atoms';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {getCommonStyles, checkNullString} from '../../../utils';
+import {Input, Text} from '../../atoms';
 
 interface FormInputProps {
   title: string;
@@ -38,32 +38,31 @@ interface FormInputProps {
 
 const FormInput = ({
   title,
-  defaultValue = null,
+  defaultValue,
   readOnly,
   style,
   required = false,
-  onChange = () => {},
-  onSelection = () => {},
-  onEndFocus = () => {},
+  onChange,
+  onSelection,
+  onEndFocus,
   keyboardType,
   multiline = false,
   adjustHeightWithLines = false,
 }: FormInputProps) => {
   const Colors = useThemeColor();
 
-  const [textHeight, setTextHeight] = useState(40);
   const [value, setValue] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
 
   const _required = useMemo(
-    () => required && (value == null || value === ''),
+    () => required && checkNullString(value),
     [required, value],
   );
 
   const onValueChange = useCallback(
-    _value => {
+    (_value: string) => {
       setValue(_value);
-      onChange(_value);
+      onChange?.(_value);
     },
     [onChange],
   );
@@ -78,15 +77,15 @@ const FormInput = ({
     [Colors, _required],
   );
 
-  const handleSelection = () => {
+  const handleSelection = useCallback(() => {
     setIsFocused(true);
-    onSelection();
-  };
+    onSelection?.();
+  }, [onSelection]);
 
-  const handleEndFocus = () => {
+  const handleEndFocus = useCallback(() => {
     setIsFocused(false);
-    onEndFocus();
-  };
+    onEndFocus?.();
+  }, [onEndFocus]);
 
   useEffect(() => {
     setValue(defaultValue);
@@ -103,9 +102,7 @@ const FormInput = ({
           commonStyles.filterAlign,
           styles.content,
           isFocused && commonStyles.inputFocused,
-          adjustHeightWithLines && {
-            height: parseInt(textHeight.toString(), 10),
-          },
+          adjustHeightWithLines && {height: undefined},
         ]}>
         <Input
           style={styles.input}
@@ -117,12 +114,6 @@ const FormInput = ({
           numberOfLines={null}
           readOnly={readOnly}
           multiline={multiline}
-          onContentSizeChange={e => {
-            const {height} = e.nativeEvent.contentSize;
-            if (adjustHeightWithLines) {
-              setTextHeight(height);
-            }
-          }}
         />
       </View>
     </View>

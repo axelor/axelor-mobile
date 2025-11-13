@@ -16,13 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {
-  LegacyRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {Ref, useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import {useThemeColor, ThemeColors} from '../../../theme';
 import {getCommonStyles} from '../../../utils';
@@ -90,7 +84,7 @@ export const INPUT_CHANGE_TYPE = {
 
 interface NumberChevronInputProps {
   style?: any;
-  inputRef?: LegacyRef<TextInput>;
+  inputRef?: Ref<TextInput>;
   defaultValue?: number;
   stepSize?: number;
   minValue?: number;

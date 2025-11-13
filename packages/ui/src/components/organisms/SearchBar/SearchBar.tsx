@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {LegacyRef, useMemo} from 'react';
+import React, {Ref, useMemo} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import {checkNullString, getCommonStyles} from '../../../utils';
 import {ThemeColors, useThemeColor} from '../../../theme';
@@ -26,7 +26,7 @@ import {FormInput, IconInput} from '../../molecules';
 interface SearchBarProps {
   title?: string;
   style?: any;
-  inputRef?: LegacyRef<TextInput>;
+  inputRef?: Ref<TextInput>;
   valueTxt: string;
   placeholder: string;
   required?: boolean;

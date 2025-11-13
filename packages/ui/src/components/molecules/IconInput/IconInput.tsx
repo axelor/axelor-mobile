@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {LegacyRef, useMemo, useState} from 'react';
+import React, {Ref, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, TextInput, View} from 'react-native';
 import {ThemeColors} from '../../../theme';
 import {getCommonStyles} from '../../../utils/commons-styles';
@@ -26,7 +26,7 @@ import {checkNullString} from '../../../utils/strings';
 
 interface IconInputProps {
   style?: any;
-  inputRef?: LegacyRef<TextInput>;
+  inputRef?: Ref<TextInput>;
   value: string;
   onChange: (value: any) => void;
   placeholder: string;
