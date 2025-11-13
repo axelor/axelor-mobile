@@ -1,5 +1,0 @@
-{
-  "title": "Outside click: allow to provide an array of refs instead of only one",
-  "type": "feat",
-  "packages": "ui"
-}

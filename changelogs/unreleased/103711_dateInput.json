@@ -1,5 +1,0 @@
-{
-  "title": "DateInput: avoid outside click noises on selection container",
-  "type": "fix",
-  "packages": "core"
-}

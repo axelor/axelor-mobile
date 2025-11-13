@@ -3,6 +3,28 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.2] (2025-11-13)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- DateInput: avoid outside click noises on selection container
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Outside click: allow to provide an array of refs instead of only one
+
+#### Fixes
+
+- Input: resolve content size update behavior on iOS
+- AutoCompleteSearch: avoid outside click noises on selection container
+- DropdownMenu: avoid outside click noises on selection container
+- MultiValuePicker: avoid outside click noises on selection container
+- Picker: avoid outside click noises on selection container
+
 ## [8.5.1] (2025-11-12)
 
 ### @axelor/aos-mobile-core
@@ -126,5 +148,6 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.2]: https://github.com/axelor/axelor-mobile/compare/8.5.1...8.5.2
 [8.5.1]: https://github.com/axelor/axelor-mobile/compare/8.5.0...8.5.1
 [8.5.0]: https://github.com/axelor/axelor-mobile/compare/8.4.7...8.5.0

@@ -1,5 +1,0 @@
-{
-  "title": "Picker: avoid outside click noises on selection container",
-  "type": "fix",
-  "packages": "ui"
-}
