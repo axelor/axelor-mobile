@@ -147,7 +147,7 @@ export const useClickOutside = ({
 
       setState(isInside ? INSIDE_INDICATOR : OUTSIDE_INDICATOR);
     },
-    [],
+    [isInsideRef],
   );
 
   useEffect(() => {
