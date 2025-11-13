@@ -36,7 +36,10 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
   const Colors = useThemeColor();
 
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({wrapperRef});
+  const dropdownWrapperRef = useRef(null);
+  const clickOutside = useClickOutside({
+    wrapperRef: [wrapperRef, dropdownWrapperRef],
+  });
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -59,7 +62,11 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
         />
       </TouchableOpacity>
       {visible && (
-        <Card style={[styles.menuContainer, styleMenu]}>{children}</Card>
+        <Card
+          wrapperRef={dropdownWrapperRef}
+          style={[styles.menuContainer, styleMenu]}>
+          {children}
+        </Card>
       )}
     </View>
   );

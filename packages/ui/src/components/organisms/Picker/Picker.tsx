@@ -79,8 +79,9 @@ const Picker = ({
   );
 
   const wrapperRef = useRef(null);
+  const selectionWrapperRef = useRef(null);
   const clickOutside = useClickOutside({
-    wrapperRef,
+    wrapperRef: [wrapperRef, selectionWrapperRef],
   });
 
   useEffect(() => {
@@ -217,6 +218,7 @@ const Picker = ({
       {isOpen && (
         <SelectionContainer
           style={pickerStyle}
+          wrapperRef={selectionWrapperRef}
           emptyValue={emptyValue}
           objectList={listItems}
           keyField={valueField}

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {RefObject, useCallback, useMemo, useState} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
@@ -143,6 +143,7 @@ interface SelectionContainerProps {
   readonly?: boolean;
   translator?: (key: string, values?: Object) => string;
   title?: string;
+  wrapperRef?: RefObject<any>;
 }
 
 const SelectionContainer = ({
@@ -158,6 +159,7 @@ const SelectionContainer = ({
   readonly = false,
   translator,
   title,
+  wrapperRef,
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
 
@@ -297,6 +299,7 @@ const SelectionContainer = ({
 
   return (
     <View
+      ref={wrapperRef}
       style={[styles.flatListContainer, style]}
       testID="selectionContainerWrapper">
       <ScrollView keyboardShouldPersistTaps="always" nestedScrollEnabled={true}>
