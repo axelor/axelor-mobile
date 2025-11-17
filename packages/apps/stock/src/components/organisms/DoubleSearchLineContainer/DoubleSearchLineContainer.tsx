@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   DoubleScannerSearchBar,
+  useIsFocused,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -53,6 +54,7 @@ const DoubleSearchLineContainer = ({
   ...props
 }: DoubleSearchLineContainerProps) => {
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
 
   const [navigate, setNavigate] = useState(false);
 
@@ -75,13 +77,17 @@ const DoubleSearchLineContainer = ({
   );
 
   useEffect(() => {
-    if (alternativeBarcodeList?.length > 0 && objectList?.length === 1) {
+    if (
+      isFocused &&
+      alternativeBarcodeList?.length > 0 &&
+      objectList?.length === 1
+    ) {
       const _line = objectList[0];
       if (checkLineValidity(alternativeBarcodeList, _line)) {
         _handleSelect(_line);
       }
     }
-  }, [_handleSelect, alternativeBarcodeList, objectList]);
+  }, [_handleSelect, alternativeBarcodeList, isFocused, objectList]);
 
   const renderDoubleSearchBar = useCallback(() => {
     return (
