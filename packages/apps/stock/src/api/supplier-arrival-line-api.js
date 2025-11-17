@@ -24,8 +24,12 @@ import {
   getTypes,
 } from '@axelor/aos-mobile-core';
 
-const createSearchCriteria = (supplierArrivalId, searchValue) => {
-  return [
+const createSearchCriteria = (
+  supplierArrivalId,
+  searchValue,
+  alternativeBarcodeList,
+) => {
+  const criteria = [
     {
       fieldName: 'stockMove.id',
       operator: '=',
@@ -33,16 +37,34 @@ const createSearchCriteria = (supplierArrivalId, searchValue) => {
     },
     getSearchCriterias('stock_supplierArrivalLine', searchValue),
   ];
+
+  if (
+    Array.isArray(alternativeBarcodeList) &&
+    alternativeBarcodeList.length > 0
+  ) {
+    criteria.push({
+      fieldName: 'product.id',
+      operator: 'in',
+      value: alternativeBarcodeList.map(barcode => barcode.product.id),
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchSupplierArrivalLines({
   supplierArrivalId,
+  alternativeBarcodeList,
   searchValue,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
-    criteria: createSearchCriteria(supplierArrivalId, searchValue),
+    criteria: createSearchCriteria(
+      supplierArrivalId,
+      searchValue,
+      alternativeBarcodeList,
+    ),
     fieldKey: 'stock_supplierArrivalLine',
     sortKey: 'stock_supplierArrivalLine',
     page,
