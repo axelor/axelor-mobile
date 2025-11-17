@@ -27,7 +27,10 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineActionCard} from '../../../templates';
-import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
+import {
+  DoubleSearchLineContainer,
+  StockMovePickingWidget,
+} from '../../../organisms';
 import {LineVerification, StockMoveLine} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
 import {useCustomerLinesWithRacks, useLineHandler} from '../../../../hooks';
@@ -50,23 +53,24 @@ const CustomerDeliverySearchLineContainer = ({}) => {
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
+  const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(
+    state => state.customerDeliveryLine,
+  );
   const {customerDeliveryLineList, totalNumberLines} =
     useCustomerLinesWithRacks(customerDelivery);
 
-  const handleNewLine = () => {
+  const handleNewLine = useCallback(() => {
     navigation.navigate('CustomerDeliveryLineCreationScreen', {
-      customerDelivery: customerDelivery,
+      customerDelivery,
     });
-  };
+  }, [navigation, customerDelivery]);
 
-  const handleViewAll = () => {
-    navigation.navigate('CustomerDeliveryLineListScreen', {
-      customerDelivery: customerDelivery,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('CustomerDeliveryLineListScreen', {customerDelivery});
+  }, [navigation, customerDelivery]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification = undefined) => {
       showLine({
         move: customerDelivery,
         line: item,
@@ -78,30 +82,21 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   );
 
   const handleLineSearch = useCallback(
-    item => handleShowLine(item, true),
+    (item: any) => handleShowLine(item, true),
     [handleShowLine],
   );
 
-  const fetchCustomerLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchCustomerDeliveryLines({
-          customerDeliveryId: customerDelivery.id,
-          searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, customerDelivery],
-  );
-
-  const handleRefresh = useCallback(
-    () => fetchCustomerLinesAPI({page: 0}),
-    [fetchCustomerLinesAPI],
-  );
+  const handleRefresh = useCallback(() => {
+    dispatch(
+      (fetchCustomerDeliveryLines as any)({
+        customerDeliveryId: customerDelivery.id,
+        page: 0,
+      }),
+    );
+  }, [dispatch, customerDelivery.id]);
 
   const filterLine = useCallback(
-    item => {
+    (item: any) => {
       return (
         StockMoveLine.hideLineQty(item, customerDelivery) ||
         parseFloat(item.realQty) == null ||
@@ -133,6 +128,11 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     readonly,
   ]);
 
+  const sliceFunctionData = useMemo(
+    () => ({customerDeliveryId: customerDelivery.id}),
+    [customerDelivery.id],
+  );
+
   return (
     <>
       <StockMovePickingWidget
@@ -143,12 +143,16 @@ const CustomerDeliverySearchLineContainer = ({}) => {
         onRefresh={handleRefresh}
         handleShowLine={handleLineSearch}
       />
-      <SearchLineContainer
+      <DoubleSearchLineContainer
         title={I18n.t('Stock_CustomerDeliveryLines')}
         numberOfItems={totalNumberLines}
         objectList={customerDeliveryLineList}
+        loadingList={loadingCDLinesList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchCustomerDeliveryLines}
+        sliceFunctionData={sliceFunctionData}
         handleSelect={handleLineSearch}
-        handleSearch={fetchCustomerLinesAPI}
         scanKey={scanKey}
         onViewPress={handleViewAll}
         filterLine={filterLine}

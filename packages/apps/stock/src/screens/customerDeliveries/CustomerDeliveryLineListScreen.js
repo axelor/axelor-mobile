@@ -19,6 +19,7 @@
 import React, {useCallback, useState, useMemo} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  DoubleScannerSearchBar,
   SearchListView,
   useSelector,
   useTranslator,
@@ -35,8 +36,10 @@ import {
 } from '../../types';
 import {useCustomerLinesWithRacks, useLineHandler} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
+import {searchAlternativeBarcode} from '../../features/alternativeBarcodeSlice';
 
-const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
+const scanKey = 'search-trackingNumber-or-product_customer-delivery-line-list';
+const altScanKey = 'search-alternative-product_customer-delivery-line-list';
 
 const CustomerDeliveryLineListScreen = ({route}) => {
   const customerDelivery = route.params.customerDelivery;
@@ -44,16 +47,25 @@ const CustomerDeliveryLineListScreen = ({route}) => {
   const I18n = useTranslator();
   const {showLine} = useLineHandler();
 
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {customerDeliveryLineList} =
     useCustomerLinesWithRacks(customerDelivery);
-  const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(
-    state => state.customerDeliveryLine,
+  const {
+    loadingCDLinesList,
+    moreLoading,
+    isListEnd,
+    customerDeliveryLineList: originalList,
+  } = useSelector(state => state.customerDeliveryLine);
+  const {alternativeBarcodeList} = useSelector(
+    state => state.stock_alternativeBarcode,
   );
 
+  const [navigate, setNavigate] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const handleShowLine = useCallback(
     (item, skipVerification = undefined) => {
+      setNavigate(current => !current);
       showLine({
         move: customerDelivery,
         line: item,
@@ -64,15 +76,14 @@ const CustomerDeliveryLineListScreen = ({route}) => {
     [customerDelivery, showLine],
   );
 
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
-  };
+  const handleLineSearch = useCallback(
+    item => handleShowLine(item, true),
+    [handleShowLine],
+  );
 
   const sliceFunctionData = useMemo(
-    () => ({
-      customerDeliveryId: customerDelivery.id,
-    }),
-    [customerDelivery.id],
+    () => ({alternativeBarcodeList, customerDeliveryId: customerDelivery.id}),
+    [alternativeBarcodeList, customerDelivery.id],
   );
 
   const filterOnStatus = useCallback(
@@ -110,12 +121,30 @@ const CustomerDeliveryLineListScreen = ({route}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchCustomerDeliveryLines}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={handleLineSearch}
-        displaySearchValue={displayLine}
         searchPlaceholder={I18n.t('Stock_SearchLine')}
         scanKeySearch={scanKey}
-        isHideableSearch
-        fixedItems={
+        customSearchBarComponent={
+          <DoubleScannerSearchBar
+            list={originalList}
+            loadingList={loadingCDLinesList}
+            moreLoading={moreLoading}
+            isListEnd={isListEnd}
+            sliceFunction={fetchCustomerDeliveryLines}
+            sliceFunctionData={sliceFunctionData}
+            placeholderSearchBar={I18n.t('Stock_SearchLine')}
+            onChangeValue={handleLineSearch}
+            displayValue={displayLine}
+            sliceBarCodeFunction={searchAlternativeBarcode}
+            displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
+            scanKeySearch={scanKey}
+            scanKeyBarCode={altScanKey}
+            navigate={navigate}
+            showDetailsPopup={false}
+            selectLastItem
+            oneFilter
+          />
+        }
+        headerTopChildren={
           <StockMoveHeader
             reference={customerDelivery.stockMoveSeq}
             status={customerDelivery.statusSelect}
