@@ -1,0 +1,5 @@
+{
+  "title": "Mass scanner: delay launch of fallback action to avoid display issue with camera",
+  "type": "fix",
+  "packages": "core"
+}
