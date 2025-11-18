@@ -1,5 +1,5 @@
 {
-  "title": "DoubleSearchLineContainer: add new component to render DoubleScannerSearchBar in ScannerAutocompleteSearch",
+  "title": "DoubleSearchLineContainer: add new component to render DoubleScannerSearchBar in SearchLineContainer",
   "type": "feat",
   "packages": "stock"
 }
