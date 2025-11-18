@@ -24,8 +24,13 @@ import {
   getActionApi,
 } from '@axelor/aos-mobile-core';
 
-const createSearchCriteria = (inventoryId, searchValue, useMassScanSortKey) => {
-  return [
+const createSearchCriteria = (
+  inventoryId,
+  alternativeBarcodeList,
+  searchValue,
+  useMassScanSortKey,
+) => {
+  const criteria = [
     {
       fieldName: 'inventory.id',
       operator: '=',
@@ -38,10 +43,24 @@ const createSearchCriteria = (inventoryId, searchValue, useMassScanSortKey) => {
       searchValue,
     ),
   ];
+
+  if (
+    Array.isArray(alternativeBarcodeList) &&
+    alternativeBarcodeList.length > 0
+  ) {
+    criteria.push({
+      fieldName: 'product.id',
+      operator: 'in',
+      value: alternativeBarcodeList.map(barcode => barcode.product.id),
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchInventoryLines({
   inventoryId,
+  alternativeBarcodeList = [],
   searchValue = null,
   page = 0,
   useMassScanSortKey = false,
@@ -50,6 +69,7 @@ export async function searchInventoryLines({
     model: 'com.axelor.apps.stock.db.InventoryLine',
     criteria: createSearchCriteria(
       inventoryId,
+      alternativeBarcodeList,
       searchValue,
       useMassScanSortKey,
     ),

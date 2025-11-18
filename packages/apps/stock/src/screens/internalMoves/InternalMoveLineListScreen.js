@@ -19,6 +19,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  DoubleScannerSearchBar,
   SearchListView,
   useSelector,
   useTranslator,
@@ -28,8 +29,10 @@ import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {LineVerification, StockMove, StockMoveLine} from '../../types';
 import {displayLine} from '../../utils/displayers';
 import {useInternalLinesWithRacks, useLineHandler} from '../../hooks';
+import {searchAlternativeBarcode} from '../../features/alternativeBarcodeSlice';
 
-const scanKey = 'trackingNumber-or-product_internal-move-line-list';
+const scanKey = 'search-trackingNumber-or-product_internal-move-line-list';
+const altScanKey = 'search-alternative-product_internal-move-line-list';
 
 const InternalMoveLineListScreen = ({route}) => {
   const internalMove = route.params.internalMove;
@@ -37,15 +40,24 @@ const InternalMoveLineListScreen = ({route}) => {
   const I18n = useTranslator();
   const {showLine} = useLineHandler();
 
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
-  const {loadingIMLinesList, moreLoading, isListEnd} = useSelector(
-    state => state.internalMoveLine,
+  const {
+    loadingIMLinesList,
+    moreLoading,
+    isListEnd,
+    internalMoveLineList: originalList,
+  } = useSelector(state => state.internalMoveLine);
+  const {alternativeBarcodeList} = useSelector(
+    state => state.stock_alternativeBarcode,
   );
 
+  const [navigate, setNavigate] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const handleShowLine = useCallback(
     (item, skipVerification = undefined) => {
+      setNavigate(current => !current);
       showLine({
         move: internalMove,
         line: item,
@@ -56,15 +68,14 @@ const InternalMoveLineListScreen = ({route}) => {
     [internalMove, showLine],
   );
 
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
-  };
+  const handleLineSearch = useCallback(
+    item => handleShowLine(item, true),
+    [handleShowLine],
+  );
 
   const sliceFunctionData = useMemo(
-    () => ({
-      internalMoveId: internalMove.id,
-    }),
-    [internalMove.id],
+    () => ({alternativeBarcodeList, internalMoveId: internalMove.id}),
+    [alternativeBarcodeList, internalMove.id],
   );
 
   const filterOnStatus = useCallback(
@@ -102,12 +113,30 @@ const InternalMoveLineListScreen = ({route}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchInternalMoveLines}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={handleLineSearch}
-        displaySearchValue={displayLine}
         searchPlaceholder={I18n.t('Stock_SearchLine')}
         scanKeySearch={scanKey}
-        isHideableSearch
-        fixedItems={
+        customSearchBarComponent={
+          <DoubleScannerSearchBar
+            list={originalList}
+            loadingList={loadingIMLinesList}
+            moreLoading={moreLoading}
+            isListEnd={isListEnd}
+            sliceFunction={fetchInternalMoveLines}
+            sliceFunctionData={sliceFunctionData}
+            placeholderSearchBar={I18n.t('Stock_SearchLine')}
+            onChangeValue={handleLineSearch}
+            displayValue={displayLine}
+            sliceBarCodeFunction={searchAlternativeBarcode}
+            displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
+            scanKeySearch={scanKey}
+            scanKeyBarCode={altScanKey}
+            navigate={navigate}
+            showDetailsPopup={false}
+            selectLastItem
+            oneFilter
+          />
+        }
+        headerTopChildren={
           <StockMoveHeader
             reference={internalMove.stockMoveSeq}
             status={internalMove.statusSelect}

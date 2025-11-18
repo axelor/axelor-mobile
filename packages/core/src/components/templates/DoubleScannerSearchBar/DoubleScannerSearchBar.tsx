@@ -57,11 +57,11 @@ interface DoubleScannerSearchBarProps {
 }
 
 const DoubleScannerSearchBar = ({
-  style = null,
-  title = '',
+  style,
+  title,
   showTitle = false,
-  value = null,
-  onChangeValue = () => {},
+  value,
+  onChangeValue,
   readonly = false,
   required = false,
   isScrollViewContainer = false,
@@ -150,6 +150,10 @@ const DoubleScannerSearchBar = ({
     setSearchValue(value);
     if (!value) setBarCode(null);
   }, [value]);
+
+  useEffect(() => {
+    if (oneFilter && navigate != null) setBarCode(null);
+  }, [navigate, oneFilter]);
 
   return (
     <View style={[styles.container, style]}>

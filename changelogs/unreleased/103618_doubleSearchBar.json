@@ -1,0 +1,5 @@
+{
+  "title": "DoubleScannerSearchBar: add barcode value reset after selection",
+  "type": "feat",
+  "packages": "core"
+}

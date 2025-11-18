@@ -75,7 +75,7 @@ export const useMassScanner = ({
         await backgroundAction(value, {disableScan});
       } catch (error) {
         if (disableOnError) disableScan();
-        fallbackAction?.(error);
+        setTimeout(() => fallbackAction?.(error), 50);
       } finally {
         timerRef.current = setTimeout(
           () => {

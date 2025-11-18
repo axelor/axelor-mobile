@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
@@ -26,7 +26,10 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {InventoryPickingWidget, SearchLineContainer} from '../../../organisms';
+import {
+  DoubleSearchLineContainer,
+  InventoryPickingWidget,
+} from '../../../organisms';
 import {InventoryLineActionCard} from '../../../templates';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 import {useLineHandler} from '../../../../hooks';
@@ -49,24 +52,24 @@ const InventorySearchLineContainer = ({}) => {
   const {showLine} = useLineHandler();
 
   const {inventory} = useSelector(state => state.inventory);
-  const {inventoryLineList, totalNumberLines} = useSelector(
-    state => state.inventoryLine,
-  );
+  const {
+    loadingInventoryLines,
+    moreLoading,
+    isListEnd,
+    inventoryLineList,
+    totalNumberLines,
+  } = useSelector(state => state.inventoryLine);
 
   const handleNewLine = useCallback(() => {
-    navigation.navigate('InventorySelectProductScreen', {
-      inventory: inventory,
-    });
+    navigation.navigate('InventorySelectProductScreen', {inventory});
   }, [inventory, navigation]);
 
-  const handleViewAll = () => {
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('InventoryLineListScreen', {inventory});
+  }, [inventory, navigation]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification = undefined) => {
       showLine({
         move: inventory,
         line: item,
@@ -77,30 +80,25 @@ const InventorySearchLineContainer = ({}) => {
     [inventory, showLine],
   );
 
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
-  };
-
-  const fetchInventoryLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchInventoryLines({
-          inventoryId: inventory?.id,
-          searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, inventory],
+  const handleLineSearch = useCallback(
+    (item: any) => handleShowLine(item, true),
+    [handleShowLine],
   );
 
-  const filterLine = useCallback(item => {
-    return item.realQty == null;
-  }, []);
+  const handleRefresh = useCallback(() => {
+    dispatch(
+      (fetchInventoryLines as any)({
+        inventoryId: inventory.id,
+        page: 0,
+      }),
+    );
+  }, [dispatch, inventory.id]);
 
-  const handleRefresh = useCallback(
-    () => fetchInventoryLinesAPI({page: 0}),
-    [fetchInventoryLinesAPI],
+  const filterLine = useCallback((item: any) => item.realQty == null, []);
+
+  const sliceFunctionData = useMemo(
+    () => ({inventoryId: inventory.id}),
+    [inventory.id],
   );
 
   return (
@@ -112,12 +110,16 @@ const InventorySearchLineContainer = ({}) => {
         onRefresh={handleRefresh}
         handleShowLine={handleLineSearch}
       />
-      <SearchLineContainer
+      <DoubleSearchLineContainer
         title={I18n.t('Stock_InventoryLines')}
         numberOfItems={totalNumberLines}
         objectList={inventoryLineList}
+        loadingList={loadingInventoryLines}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchInventoryLines}
+        sliceFunctionData={sliceFunctionData}
         handleSelect={handleLineSearch}
-        handleSearch={fetchInventoryLinesAPI}
         scanKey={scanKey}
         onViewPress={handleViewAll}
         filterLine={filterLine}

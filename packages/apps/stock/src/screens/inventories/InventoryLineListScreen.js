@@ -19,6 +19,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  DoubleScannerSearchBar,
   SearchListView,
   useSelector,
   useTranslator,
@@ -26,6 +27,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {InventoryHeader, InventoryLineActionCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
+import {searchAlternativeBarcode} from '../../features/alternativeBarcodeSlice';
 import {displayLine} from '../../utils/displayers';
 import {useLineHandler} from '../../hooks';
 import {LineVerification} from '../../types';
@@ -36,7 +38,8 @@ const STATUS = {
   undone: 'unDoneStatus',
 };
 
-const scanKey = 'trackingNumber-or-product_inventory-line-list';
+const scanKey = 'search-trackingNumber-or-product_inventory-line-list';
+const altScanKey = 'search-alternative-product_inventory-line-list';
 
 const InventoryLineListScreen = ({route}) => {
   const inventory = route.params.inventory;
@@ -45,13 +48,19 @@ const InventoryLineListScreen = ({route}) => {
   const {Inventory} = useTypes();
   const {showLine} = useLineHandler();
 
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
+  const {alternativeBarcodeList} = useSelector(
+    state => state.stock_alternativeBarcode,
+  );
 
+  const [navigate, setNavigate] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const handleShowLine = useCallback(
     (item, skipVerification = undefined) => {
+      setNavigate(current => !current);
       showLine({
         move: inventory,
         line: item,
@@ -62,15 +71,14 @@ const InventoryLineListScreen = ({route}) => {
     [inventory, showLine],
   );
 
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
-  };
+  const handleLineSearch = useCallback(
+    item => handleShowLine(item, true),
+    [handleShowLine],
+  );
 
   const sliceFunctionData = useMemo(
-    () => ({
-      inventoryId: inventory?.id,
-    }),
-    [inventory?.id],
+    () => ({alternativeBarcodeList, inventoryId: inventory.id}),
+    [alternativeBarcodeList, inventory.id],
   );
 
   const filterOnStatus = useCallback(
@@ -110,12 +118,30 @@ const InventoryLineListScreen = ({route}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchInventoryLines}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={handleLineSearch}
-        displaySearchValue={displayLine}
         searchPlaceholder={I18n.t('Stock_SearchLine')}
         scanKeySearch={scanKey}
-        isHideableSearch
-        fixedItems={
+        customSearchBarComponent={
+          <DoubleScannerSearchBar
+            list={filteredList}
+            loadingList={loadingInventoryLines}
+            moreLoading={moreLoading}
+            isListEnd={isListEnd}
+            sliceFunction={fetchInventoryLines}
+            sliceFunctionData={sliceFunctionData}
+            placeholderSearchBar={I18n.t('Stock_SearchLine')}
+            onChangeValue={handleLineSearch}
+            displayValue={displayLine}
+            sliceBarCodeFunction={searchAlternativeBarcode}
+            displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
+            scanKeySearch={scanKey}
+            scanKeyBarCode={altScanKey}
+            navigate={navigate}
+            showDetailsPopup={false}
+            selectLastItem
+            oneFilter
+          />
+        }
+        headerTopChildren={
           <InventoryHeader
             reference={inventory.inventorySeq}
             status={inventory.statusSelect}
