@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   DoubleScannerSearchBar,
-  useIsFocused,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -31,9 +30,6 @@ import {
 import {searchAlternativeBarcode} from '../../../features/alternativeBarcodeSlice';
 import {displayLine} from '../../../utils';
 
-function checkLineValidity(_list: any[], _line: any) {
-  return _list?.map(_b => _b.product.id).includes(_line?.product?.id);
-}
 interface DoubleSearchLineContainerProps extends SearchLineContainerProps {
   loadingList: boolean;
   moreLoading: boolean;
@@ -54,7 +50,6 @@ const DoubleSearchLineContainer = ({
   ...props
 }: DoubleSearchLineContainerProps) => {
   const I18n = useTranslator();
-  const isFocused = useIsFocused();
 
   const [navigate, setNavigate] = useState(false);
 
@@ -76,19 +71,6 @@ const DoubleSearchLineContainer = ({
     [alternativeBarcodeList, sliceFunctionData],
   );
 
-  useEffect(() => {
-    if (
-      isFocused &&
-      alternativeBarcodeList?.length > 0 &&
-      objectList?.length === 1
-    ) {
-      const _line = objectList[0];
-      if (checkLineValidity(alternativeBarcodeList, _line)) {
-        _handleSelect(_line);
-      }
-    }
-  }, [_handleSelect, alternativeBarcodeList, isFocused, objectList]);
-
   const renderDoubleSearchBar = useCallback(() => {
     return (
       <DoubleScannerSearchBar
@@ -108,6 +90,7 @@ const DoubleSearchLineContainer = ({
         oneFilter={true}
         isFocus={true}
         changeScreenAfter={true}
+        selectLastItem={true}
         scanKeyBarCode={`${scanKey}_alternative-barcode`}
         displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
       />
