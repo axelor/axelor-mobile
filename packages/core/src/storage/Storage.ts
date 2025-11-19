@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {MMKV} from 'react-native-mmkv';
+import {createMMKV} from 'react-native-mmkv';
 
 interface InternalStorage {
   set(key: string, value: any): void;
@@ -65,7 +65,16 @@ export class Storage {
   }
 }
 
-export const storage = new Storage(new MMKV());
+const mmkvStorage = createMMKV();
+
+export const storage = new Storage({
+  clearAll: () => mmkvStorage.clearAll(),
+  contains: (key: string) => mmkvStorage.contains(key),
+  delete: (key: string) => mmkvStorage.remove(key),
+  getAllKeys: () => mmkvStorage.getAllKeys(),
+  getString: (key: string) => mmkvStorage.getString(key),
+  set: (key: string, value: any) => mmkvStorage.set(key, value),
+});
 
 export function useStorage() {
   return storage;

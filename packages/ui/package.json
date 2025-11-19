@@ -25,20 +25,20 @@
     "icons:build": "npm run icons:clean && node scripts/icons-build.js"
   },
   "peerDependencies": {
-    "@react-native-community/slider": "5.0.1",
+    "@react-native-community/slider": "5.1.1",
     "bootstrap-icons": "1.13.1",
     "react": "*",
     "react-native": "*",
-    "react-native-gifted-charts": "1.4.64",
+    "react-native-gifted-charts": "1.4.65",
     "react-native-linear-gradient": "2.8.3",
     "react-native-pell-rich-editor": "1.10.0",
-    "react-native-svg": "15.13.0",
+    "react-native-svg": "15.15.0",
     "react-native-system-navigation-bar": "2.6.4",
     "react-native-webview": "13.16.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.25.0",
-    "@react-native-community/slider": "5.0.1",
+    "@react-native-community/slider": "5.1.1",
     "@react-native/babel-preset": "0.80.2",
     "@react-native/eslint-config": "0.80.2",
     "@react-native/typescript-config": "0.80.2",
@@ -53,10 +53,10 @@
     "prettier": "^3.3.3",
     "react": "19.1.0",
     "react-native": "0.80.2",
-    "react-native-gifted-charts": "1.4.64",
+    "react-native-gifted-charts": "1.4.65",
     "react-native-linear-gradient": "2.8.3",
     "react-native-pell-rich-editor": "1.10.0",
-    "react-native-svg": "15.13.0",
+    "react-native-svg": "15.15.0",
     "react-native-system-navigation-bar": "2.6.4",
     "react-native-webview": "13.16.0"
   },

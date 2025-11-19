@@ -30,7 +30,7 @@
     "@axelor/aos-mobile-core": "9.0.0",
     "@axelor/aos-mobile-stock": "9.0.0",
     "@axelor/aos-mobile-ui": "9.0.0",
-    "@reduxjs/toolkit": "2.9.0"
+    "@reduxjs/toolkit": "2.10.1"
   },
   "devDependencies": {
     "@babel/runtime": "^7.25.0",

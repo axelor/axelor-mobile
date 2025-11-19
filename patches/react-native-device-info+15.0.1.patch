@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java b/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
-index 768a713..98fb369 100644
+index 64253a1..9205718 100644
 --- a/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
 +++ b/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
-@@ -525,7 +525,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
+@@ -528,7 +528,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
    @ReactMethod(isBlockingSynchronousMethod = true)
    public boolean isBatteryChargingSync(){
      IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -17,7 +17,7 @@ index 768a713..98fb369 100644
      int status = 0;
      if (batteryStatus != null) {
        status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-@@ -561,7 +567,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
+@@ -564,7 +570,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
  
    @ReactMethod(isBlockingSynchronousMethod = true)
    public WritableMap getPowerStateSync() {
@@ -32,7 +32,7 @@ index 768a713..98fb369 100644
      return getPowerStateFromIntent(intent);
    }
  
-@@ -570,7 +582,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
+@@ -573,7 +585,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
  
    @ReactMethod(isBlockingSynchronousMethod = true)
    public double getBatteryLevelSync() {
