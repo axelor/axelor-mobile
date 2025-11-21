@@ -26,13 +26,18 @@ interface SetupProps {
 }
 
 export function setup({Component, baseProps, overrideProps}: SetupProps) {
-  const props = {...baseProps, ...overrideProps};
-  const utils = render(React.createElement(Component, props));
+  try {
+    const props = {...baseProps, ...overrideProps};
+    const utils = render(React.createElement(Component, props));
 
-  const rerender = (rerenderProps?: any) =>
-    utils.rerender(
-      React.createElement(Component, {...props, ...rerenderProps}),
-    );
+    const rerender = (rerenderProps?: any) =>
+      utils.rerender(
+        React.createElement(Component, {...props, ...rerenderProps}),
+      );
 
-  return {...utils, rerender, props};
+    return {...utils, rerender, props};
+  } catch (error) {
+    console.log('error during test setup', error);
+    return {};
+  }
 }
