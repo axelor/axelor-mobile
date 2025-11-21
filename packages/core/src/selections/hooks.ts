@@ -89,8 +89,7 @@ export const useTypeHelpers = (): SelectionHelpers => {
           color: getItemColor(selection, _i.value),
           value: _i.value,
           key: _i.value,
-          isActive:
-            selectedItem.find(({key}) => key === _i.value) != null ?? false,
+          isActive: selectedItem.find(({key}) => key === _i.value) != null,
         })) ?? []
       );
     },
@@ -122,8 +121,7 @@ export const useTypeHelpers = (): SelectionHelpers => {
           color: getRandomColor(Colors, idx),
           value: _i.id,
           key: _i.id,
-          isActive:
-            selectedItem.find(({key}) => key === _i.id) != null ?? false,
+          isActive: selectedItem.find(({key}) => key === _i.id) != null,
         })) ?? []
       );
     },
