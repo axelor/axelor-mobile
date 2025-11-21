@@ -12,7 +12,7 @@ Installation guide for Ubuntu operating systems. ([Official React Native documen
 ### Install NodeJS
 
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
@@ -20,7 +20,7 @@ To check the version of Node installed, simply run `node --version`.
 
 Once NodeJS is installed, npm is available. You can check its version with `npm -version`.
 
-This project is based on Node version 18.x
+This project is based on Node version 20.x
 
 ### Install Java 17
 
