@@ -1,8 +1,6 @@
+const eslintConfig = require('../../.eslintrc.js');
+
 module.exports = {
-  root: true,
-  extends: ['@react-native', 'prettier'],
+  ...eslintConfig,
   ignorePatterns: ['__tests__/', 'lib/', 'scripts/', 'stories/'],
-  rules: {
-    'prettier/prettier': 'off',
-  },
 };

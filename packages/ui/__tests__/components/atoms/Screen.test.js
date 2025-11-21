@@ -32,6 +32,12 @@ describe('Screen Component', () => {
       overrideProps,
     });
 
+  beforeEach(() => {
+    jest
+      .spyOn(Keyboard, 'addListener')
+      .mockImplementation(() => ({remove: jest.fn()}));
+  });
+
   it('renders without crashing', () => {
     const {getByTestId} = setupScreen();
 

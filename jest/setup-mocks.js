@@ -22,6 +22,24 @@ import 'react-native/jest/setup';
 
 jest.useFakeTimers();
 
+jest.mock('react-native/Libraries/Animated/nodes/AnimatedValue', () => {
+  const Actual = jest.requireActual(
+    'react-native/Libraries/Animated/nodes/AnimatedValue',
+  );
+
+  const AnimatedValue = Actual.default || Actual;
+  const proto = AnimatedValue.prototype;
+  const originalRemoveListener = proto.removeListener;
+
+  proto.removeListener = function (id) {
+    if (!this._listeners || !this._listeners[id]) return;
+
+    return originalRemoveListener.call(this, id);
+  };
+
+  return AnimatedValue;
+});
+
 jest.mock('react-native/Libraries/BatchedBridge/NativeModules');
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('react-native/Libraries/Settings/NativeSettingsManager', () => ({
