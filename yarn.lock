@@ -10466,15 +10466,10 @@ react-native-linear-gradient@2.8.3:
   resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz#9a116649f86d74747304ee13db325e20b21e564f"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
 
-react-native-mmkv@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-4.0.1.tgz#076baaec4056f6027aabec21d5d233c57b91ede9"
-  integrity sha512-0JjO0U33b2hngFACsGwxoMCOZlCChP6R42aqvU85kXBaxY/kltSYr0FW9T6lkU3uEkE4IWMV1eLjoJplEY920w==
-
-react-native-nitro-modules@0.31.7:
-  version "0.31.7"
-  resolved "https://registry.npmjs.org/react-native-nitro-modules/-/react-native-nitro-modules-0.31.7.tgz#8c9e29578858816a376e5bb2bd52f5749bc6aa3a"
-  integrity sha512-YpK4qNUrWvpvPp1Yp2yzHIWeUu9mHnZP6DDEQNgj47cmmkzYa89IMZFrWRjSh1muDeYru6lEgh7FOUAMC/SniQ==
+react-native-mmkv@3.3.3:
+  version "3.3.3"
+  resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-3.3.3.tgz#1f0326f6314e23725af8145964343224d074e6cd"
+  integrity sha512-GMsfOmNzx0p5+CtrCFRVtpOOMYNJXuksBVARSQrCFaZwjUyHJdQzcN900GGaFFNTxw2fs8s5Xje//RDKj9+PZA==
 
 react-native-pell-rich-editor@1.10.0:
   version "1.10.0"
