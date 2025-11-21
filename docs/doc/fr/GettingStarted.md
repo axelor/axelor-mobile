@@ -12,7 +12,7 @@ Guide d’installation pour les systèmes d’exploitation Ubuntu. ([Documentati
 ### Installer NodeJS
 
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
@@ -20,7 +20,7 @@ Pour vérifier la version de Node installée, il suffit d’exécuter `node --ve
 
 Une fois NodeJS installé, npm est disponible. On peut vérifier sa version avec `npm -version`.
 
-Ce projet est basé sur la version de Node 18.x
+Ce projet est basé sur la version de Node 20.x
 
 ### Installer Java 17
 
