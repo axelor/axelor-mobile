@@ -26,6 +26,7 @@ export {default as ClientHeader} from './ClientHeader/ClientHeader';
 export {default as DropdownMultipleQuantities} from './DropdownMultipleQuantities/DropdownMultipleQuantities';
 export {default as DropdownProductSale} from './DropdownProductSale/DropdownProductSale';
 export {default as DropdownProductTypology} from './DropdownProductTypology/DropdownProductTypology';
+export {default as LinkedPartnerCard} from './LinkedPartnerCard/LinkedPartnerCard';
 export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
 export {default as ProductDescription} from './ProductDescription/ProductDescription';
 export {default as ProductFloatingButton} from './ProductFloatingButton/ProductFloatingButton';
