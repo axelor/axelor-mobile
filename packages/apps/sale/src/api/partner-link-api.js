@@ -54,3 +54,27 @@ export async function searchDeliveryPartnerLinks({
     provider: 'model',
   });
 }
+
+const createPartnerLinkCriteria = partnerId => {
+  return [
+    {
+      operator: 'or',
+      criteria: [
+        {fieldName: 'partner1', operator: '=', value: partnerId},
+        {fieldName: 'partner2', operator: '=', value: partnerId},
+      ],
+    },
+  ];
+};
+
+export async function searchPartnerLinks({partnerId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.PartnerLink',
+    criteria: createPartnerLinkCriteria(partnerId),
+    fieldKey: 'sale_partnerLink',
+    sortKey: 'sale_partnerLink',
+    page: 0,
+    numberElementsByPage: null,
+    provider: 'model',
+  });
+}

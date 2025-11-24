@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchDeliveryPartnerLinks as _searchDeliveryPartnerLinks} from '../api/partner-link-api';
+import {
+  searchDeliveryPartnerLinks as _searchDeliveryPartnerLinks,
+  searchPartnerLinks as _searchPartnerLinks,
+} from '../api/partner-link-api';
 
 export const searchDeliveryPartnerLinks = createAsyncThunk(
   'sale_partnerLink/searchDeliveryPartnerLinks',
@@ -36,11 +39,29 @@ export const searchDeliveryPartnerLinks = createAsyncThunk(
   },
 );
 
+export const searchPartnerLinks = createAsyncThunk(
+  'sale_partnerLink/searchPartnerLinks',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchPartnerLinks,
+      data,
+      action: 'Sale_SliceAction_SearchPartnerLinks',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingLinks: false,
   moreLoadingLinks: false,
   isLinksListEnd: false,
   deliveryPartnerLinkList: [],
+
+  loadingPartnerLinks: true,
+  moreLoadingPartnerLinks: false,
+  isPartnerLinksEnd: false,
+  partnerLinks: [],
 };
 
 const partnerLinkSlice = createSlice({
@@ -52,6 +73,12 @@ const partnerLinkSlice = createSlice({
       moreLoading: 'moreLoadingLinks',
       isListEnd: 'isLinksListEnd',
       list: 'deliveryPartnerLinkList',
+    });
+    generateInifiniteScrollCases(builder, searchPartnerLinks, {
+      loading: 'loadingPartnerLinks',
+      moreLoading: 'moreLoadingPartnerLinks',
+      isListEnd: 'isPartnerLinksEnd',
+      list: 'partnerLinks',
     });
   },
 });
