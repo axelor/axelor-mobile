@@ -1,0 +1,5 @@
+{
+  "title": "Client: add managed by and for display on details view",
+  "type": "feat",
+  "packages": "sale"
+}

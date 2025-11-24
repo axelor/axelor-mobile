@@ -19,6 +19,7 @@
 export {default as CategorySearchBar} from './CategorySearchBar/CategorySearchBar';
 export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
 export {default as DeliveredPartnerSearchBar} from './DeliveredPartnerSearchBar/DeliveredPartnerSearchBar';
+export {default as DropDownPartnerLinks} from './DropDownPartnerLinks/DropDownPartnerLinks';
 export {default as DropDownSaleOrderView} from './DropDownSaleOrderView/DropDownSaleOrderView';
 export {default as PartnerLinkCards} from './PartnerLinkCards/PartnerLinkCards';
 export {default as PaymentConditionSearchBar} from './PaymentConditionSearchBar/PaymentConditionSearchBar';
