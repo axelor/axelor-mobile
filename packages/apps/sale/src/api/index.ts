@@ -38,7 +38,10 @@ export {
   searchCustomerCategory as searchCustomerCategoryApi,
 } from './customer-api';
 export {fetchCustomerDelivery as fetchCustomerDeliveryApi} from './customer-delivery-api';
-export {searchDeliveryPartnerLinks as searchDeliveryPartnerLinksApi} from './partner-link-api';
+export {
+  searchDeliveryPartnerLinks as searchDeliveryPartnerLinksApi,
+  searchPartnerLinks as searchPartnerLinksApi,
+} from './partner-link-api';
 export {searchPaymentCondition as searchPaymentConditionApi} from './payment-condition-api';
 export {searchPaymentMode as searchPaymentModeApi} from './payment-mode-api';
 export {fetchPriceListLine as fetchPriceListLineApi} from './price-list-line-api';
