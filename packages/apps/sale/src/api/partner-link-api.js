@@ -23,7 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createDeliveryLinksCriteria = (partnerId, searchValue) => {
-  const PartnerLink = getTypes().PartnerLink;
+  const PartnerLinkType = getTypes().PartnerLinkType;
 
   return [
     {
@@ -32,9 +32,9 @@ const createDeliveryLinksCriteria = (partnerId, searchValue) => {
       value: partnerId,
     },
     {
-      fieldName: 'partnerLinkType',
+      fieldName: 'partnerLinkType.typeSelect',
       operator: '=',
-      value: PartnerLink?.partnerLinkType.Delivery,
+      value: PartnerLinkType?.typeSelect.Delivery,
     },
     getSearchCriterias('sale_partnerLink', searchValue),
   ];
