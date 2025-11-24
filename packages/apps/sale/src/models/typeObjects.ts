@@ -337,6 +337,7 @@ export const sale_typeObjects: ModuleSelections = [
     modelName: 'com.axelor.apps.base.db.PartnerLinkType',
     fields: {
       typeSelect: {
+        useWebContent: true,
         content: [
           {
             key: 'Delivery',
