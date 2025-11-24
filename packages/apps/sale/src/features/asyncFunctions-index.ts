@@ -39,7 +39,10 @@ export {
   searchCustomer,
   searchCustomerCategory,
 } from './customerSlice';
-export {searchDeliveryPartnerLinks} from './partnerLinkSlice';
+export {
+  searchDeliveryPartnerLinks,
+  searchPartnerLinks,
+} from './partnerLinkSlice';
 export {searchPaymentCondition} from './paymentConditionSlice';
 export {searchPaymentMode} from './paymentModeSlice';
 export {fetchPriceListLine} from './priceListLineSlice';

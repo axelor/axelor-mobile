@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useDispatch,
@@ -31,7 +31,11 @@ import {
   ScrollView,
 } from '@axelor/aos-mobile-ui';
 import {ClientDropdownCards, getClientbyId} from '@axelor/aos-mobile-crm';
-import {ClientHeader, DropDownSaleOrderView} from '../../components';
+import {
+  ClientHeader,
+  DropDownPartnerLinks,
+  DropDownSaleOrderView,
+} from '../../components';
 import {fetchCustomerById} from '../../features/customerSlice';
 
 const ClientSaleDetailsScreen = ({route}) => {
@@ -40,10 +44,9 @@ const ClientSaleDetailsScreen = ({route}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const {loadingCustomer, customer} = useSelector(
-    (state: any) => state.sale_customer,
-  );
+  const {loadingCustomer, customer} = useSelector(state => state.sale_customer);
   const {client} = useSelector(state => state.client);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
 
   const getCustomer = useCallback(() => {
     dispatch((fetchCustomerById as any)({customerId}));
@@ -51,10 +54,31 @@ const ClientSaleDetailsScreen = ({route}) => {
   }, [dispatch, customerId]);
 
   useEffect(() => {
-    if (isFocused) {
-      getCustomer();
-    }
+    if (isFocused) getCustomer();
   }, [getCustomer, isFocused]);
+
+  const dropdownItems = useMemo(() => {
+    const _list = [
+      {
+        childrenComp: <DropDownSaleOrderView customer={customer} />,
+        title: I18n.t('Sale_LinkedQuotationsAndOrders'),
+      },
+    ];
+
+    if (baseConfig?.activatePartnerRelations) {
+      if (
+        customer?.managedByPartnerLinkList?.length > 0 ||
+        customer?.managedForPartnerLinkList?.length > 0
+      ) {
+        _list.push({
+          childrenComp: <DropDownPartnerLinks customer={customer} />,
+          title: I18n.t('Sale_PartnerLinks'),
+        });
+      }
+    }
+
+    return _list;
+  }, [I18n, baseConfig?.activatePartnerRelations, customer]);
 
   if (customer?.id !== customerId || client?.id !== customerId || !isFocused) {
     return null;
@@ -70,14 +94,7 @@ const ClientSaleDetailsScreen = ({route}) => {
         style={styles.scrollView}
         refresh={{loading: loadingCustomer, fetcher: getCustomer}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={customer.description} />
-        <ClientDropdownCards
-          additionalDropdowns={[
-            {
-              childrenComp: <DropDownSaleOrderView customer={customer} />,
-              title: I18n.t('Sale_LinkedQuotationsAndOrders'),
-            },
-          ]}
-        />
+        <ClientDropdownCards additionalDropdowns={dropdownItems} />
       </ScrollView>
     </Screen>
   );

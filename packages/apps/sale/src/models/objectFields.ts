@@ -32,9 +32,16 @@ const partnerModel = schemaContructor.object({
 
 export const sale_modelAPI: ObjectFields = {
   sale_partnerLink: schemaContructor.object({
-    partner1: schemaContructor.subObject(),
+    partner1: partnerModel,
     partner2: partnerModel,
-    partnerLinkType: schemaContructor.number(),
+    partnerLinkType: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        link1Name: schemaContructor.string(),
+        link2Name: schemaContructor.string(),
+        typeSelect: schemaContructor.string(),
+        name: schemaContructor.string(),
+      }),
+    ),
   }),
   sale_saleConfig: schemaContructor.object({
     saleOrderInAtiSelect: schemaContructor.number(),
@@ -176,6 +183,12 @@ export const sale_modelAPI: ObjectFields = {
     hasBlockedAccount: schemaContructor.boolean(),
     inPaymentMode: schemaContructor.subObject('name'),
     paymentCondition: schemaContructor.subObject('name'),
+    managedByPartnerLinkList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+    managedForPartnerLinkList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
   }),
   sale_paymentMode: schemaContructor.object({
     name: schemaContructor.string(),
