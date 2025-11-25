@@ -82,7 +82,6 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
           from={internalMove.fromStockLocation?.name}
           to={internalMove.toStockLocation?.name}
         />
-        <InternalMoveSearchLineContainer />
         <NotesCard
           title={I18n.t('Stock_PickingOrderComments')}
           data={internalMove.pickingOrderComments}
@@ -91,6 +90,7 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
           title={I18n.t('Stock_NotesOnStockMove')}
           data={internalMove.note}
         />
+        <InternalMoveSearchLineContainer />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
