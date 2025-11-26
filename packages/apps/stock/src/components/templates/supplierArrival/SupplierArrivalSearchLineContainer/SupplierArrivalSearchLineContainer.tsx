@@ -50,23 +50,22 @@ const SupplierArrivalSearchLineContainer = ({}) => {
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
+  const {loadingSALinesList, moreLoading, isListEnd} = useSelector(
+    state => state.supplierArrivalLine,
+  );
   const {supplierArrivalLineList, totalNumberLines} =
     useSupplierLinesWithRacks(supplierArrival);
 
-  const handleNewLine = () => {
-    navigation.navigate('SupplierArrivalLineCreationScreen', {
-      supplierArrival: supplierArrival,
-    });
-  };
+  const handleNewLine = useCallback(() => {
+    navigation.navigate('SupplierArrivalLineCreationScreen', {supplierArrival});
+  }, [navigation, supplierArrival]);
 
-  const handleViewAll = () => {
-    navigation.navigate('SupplierArrivalLineListScreen', {
-      supplierArrival: supplierArrival,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('SupplierArrivalLineListScreen', {supplierArrival});
+  }, [navigation, supplierArrival]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification = undefined) => {
       showLine({
         move: supplierArrival,
         line: item,
@@ -78,36 +77,28 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   );
 
   const handleLineSearch = useCallback(
-    item => handleShowLine(item, true),
+    (item: any) => handleShowLine(item, true),
     [handleShowLine],
   );
 
-  const fetchSupplierLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchSupplierArrivalLines({
-          supplierArrivalId: supplierArrival.id,
-          searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, supplierArrival],
+  const sliceFunctionData = useMemo(
+    () => ({supplierArrivalId: supplierArrival?.id}),
+    [supplierArrival?.id],
   );
 
   const handleRefresh = useCallback(
-    () => fetchSupplierLinesAPI({page: 0}),
-    [fetchSupplierLinesAPI],
+    () =>
+      dispatch(
+        (fetchSupplierArrivalLines as any)({...sliceFunctionData, page: 0}),
+      ),
+    [dispatch, sliceFunctionData],
   );
 
   const filterLine = useCallback(
-    item => {
-      return (
-        StockMoveLine.hideLineQty(item, supplierArrival) ||
-        parseFloat(item.realQty) == null ||
-        parseFloat(item.realQty) < parseFloat(item.qty)
-      );
-    },
+    (item: any) =>
+      StockMoveLine.hideLineQty(item, supplierArrival) ||
+      parseFloat(item.realQty) == null ||
+      parseFloat(item.realQty) < parseFloat(item.qty),
     [supplierArrival],
   );
 
@@ -147,8 +138,12 @@ const SupplierArrivalSearchLineContainer = ({}) => {
         title={I18n.t('Stock_SupplierArrivalLines')}
         numberOfItems={totalNumberLines}
         objectList={supplierArrivalLineList}
+        loading={loadingSALinesList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchSupplierArrivalLines}
+        sliceFunctionData={sliceFunctionData}
         handleSelect={handleLineSearch}
-        handleSearch={fetchSupplierLinesAPI}
         scanKey={scanKey}
         onViewPress={handleViewAll}
         filterLine={filterLine}
