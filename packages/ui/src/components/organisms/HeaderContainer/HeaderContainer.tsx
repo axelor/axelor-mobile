@@ -97,6 +97,7 @@ const getStyles = (Colors: ThemeColors) =>
       paddingBottom: 5,
       borderBottomEndRadius: 10,
       borderBottomStartRadius: 10,
+      zIndex: 10,
     },
     topMask: {
       position: 'absolute',
