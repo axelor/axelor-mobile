@@ -1,0 +1,6 @@
+{
+  "title": "DatePicker: define color of picker text to avoid theme issue",
+  "type": "fix",
+  "packages": "core",
+  "description": "This fix includes the addition of a new patch file inside the patchs/ folder. This patch concerns the react-native-date-picker package and is required to use this new version."
+}
