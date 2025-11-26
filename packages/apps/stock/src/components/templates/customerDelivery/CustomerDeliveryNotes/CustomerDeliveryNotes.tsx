@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {EditableHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -80,18 +79,11 @@ const CustomerDeliveryNotes = ({
 
   return (
     <EditableHtmlInput
-      style={styles.input}
       title={I18n.t(titleKey)}
       onValidate={handleValidate}
       defaultValue={notes}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    marginBottom: 30,
-  },
-});
 
 export default CustomerDeliveryNotes;
