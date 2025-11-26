@@ -44,6 +44,7 @@ const DatePicker = ({
       onDateChange={onDateChange}
       mode={mode}
       dividerColor={Colors.primaryColor.background}
+      textColor={Colors.text}
       style={styles.container}
     />
   );
