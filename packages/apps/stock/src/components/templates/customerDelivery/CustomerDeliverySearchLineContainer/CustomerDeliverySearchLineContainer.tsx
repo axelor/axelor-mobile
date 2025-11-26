@@ -50,23 +50,24 @@ const CustomerDeliverySearchLineContainer = ({}) => {
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
+  const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(
+    state => state.customerDeliveryLine,
+  );
   const {customerDeliveryLineList, totalNumberLines} =
     useCustomerLinesWithRacks(customerDelivery);
 
-  const handleNewLine = () => {
+  const handleNewLine = useCallback(() => {
     navigation.navigate('CustomerDeliveryLineCreationScreen', {
-      customerDelivery: customerDelivery,
+      customerDelivery,
     });
-  };
+  }, [customerDelivery, navigation]);
 
-  const handleViewAll = () => {
-    navigation.navigate('CustomerDeliveryLineListScreen', {
-      customerDelivery: customerDelivery,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('CustomerDeliveryLineListScreen', {customerDelivery});
+  }, [customerDelivery, navigation]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification = undefined) => {
       showLine({
         move: customerDelivery,
         line: item,
@@ -78,36 +79,28 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   );
 
   const handleLineSearch = useCallback(
-    item => handleShowLine(item, true),
+    (item: any) => handleShowLine(item, true),
     [handleShowLine],
   );
 
-  const fetchCustomerLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchCustomerDeliveryLines({
-          customerDeliveryId: customerDelivery.id,
-          searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, customerDelivery],
+  const sliceFunctionData = useMemo(
+    () => ({customerDeliveryId: customerDelivery?.id}),
+    [customerDelivery?.id],
   );
 
   const handleRefresh = useCallback(
-    () => fetchCustomerLinesAPI({page: 0}),
-    [fetchCustomerLinesAPI],
+    () =>
+      dispatch(
+        (fetchCustomerDeliveryLines as any)({...sliceFunctionData, page: 0}),
+      ),
+    [dispatch, sliceFunctionData],
   );
 
   const filterLine = useCallback(
-    item => {
-      return (
-        StockMoveLine.hideLineQty(item, customerDelivery) ||
-        parseFloat(item.realQty) == null ||
-        parseFloat(item.realQty) < parseFloat(item.qty)
-      );
-    },
+    (item: any) =>
+      StockMoveLine.hideLineQty(item, customerDelivery) ||
+      parseFloat(item.realQty) == null ||
+      parseFloat(item.realQty) < parseFloat(item.qty),
     [customerDelivery],
   );
 
@@ -147,8 +140,12 @@ const CustomerDeliverySearchLineContainer = ({}) => {
         title={I18n.t('Stock_CustomerDeliveryLines')}
         numberOfItems={totalNumberLines}
         objectList={customerDeliveryLineList}
+        loading={loadingCDLinesList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchCustomerDeliveryLines}
+        sliceFunctionData={sliceFunctionData}
         handleSelect={handleLineSearch}
-        handleSearch={fetchCustomerLinesAPI}
         scanKey={scanKey}
         onViewPress={handleViewAll}
         filterLine={filterLine}
