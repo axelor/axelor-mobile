@@ -17,7 +17,7 @@
  */
 
 import {PermissionsAndroid, Platform} from 'react-native';
-import * as Contacts from 'react-native-contacts';
+import Contacts from 'react-native-contacts';
 import {
   ContactData,
   PermissionResult,

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as Contacts from 'react-native-contacts';
+import Contacts from 'react-native-contacts';
 import {isEmpty} from '../utils';
 import {Platform} from 'react-native';
 

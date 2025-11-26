@@ -1,0 +1,6 @@
+{
+  "title": "Contact provider: resolve undefined issue on react-native-contacts package",
+  "type": "fix",
+  "packages": "core",
+  "description": "This fix includes the addition of a new patch file inside the patchs/ folder. This patch concerns the react-native-contacts package and is required to use this new version."
+}

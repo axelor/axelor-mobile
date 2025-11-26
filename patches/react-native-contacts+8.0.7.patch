@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-contacts/index.ts b/node_modules/react-native-contacts/index.ts
+index a294478..875b7c6 100644
+--- a/node_modules/react-native-contacts/index.ts
++++ b/node_modules/react-native-contacts/index.ts
+@@ -2,7 +2,7 @@ import { NativeModules } from "react-native";
+ import NativeContacts from "./src/NativeContacts";
+ import { Contact, Group, PermissionType } from "./type";
+ 
+-const Contacts = NativeModules.Contacts ?? NativeContacts;
++const Contacts = NativeContacts ?? NativeModules.Contacts ;
+ 
+ async function getAll(): Promise<Contact[]> {
+   return Contacts.getAll();
