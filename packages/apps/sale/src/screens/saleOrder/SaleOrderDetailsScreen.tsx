@@ -67,9 +67,7 @@ const SaleOrderDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<SaleOrderHeader saleOrder={saleOrder} />}
       />
-      <ScrollView
-        style={styles.scrollView}
-        refresh={{loading: loadingSaleOrder, fetcher: getSaleOrder}}>
+      <ScrollView refresh={{loading: loadingSaleOrder, fetcher: getSaleOrder}}>
         <SaleOrderPriceDetails
           style={styles.marginBottom}
           saleOrder={saleOrder}
@@ -97,9 +95,6 @@ const SaleOrderDetailsScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
   marginBottom: {
     marginBottom: 10,
   },

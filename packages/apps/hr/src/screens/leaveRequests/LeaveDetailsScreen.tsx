@@ -145,7 +145,6 @@ const LeaveDetailsScreen = ({route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: null,
     alignItems: 'center',
   },
   marginTop: {

@@ -95,7 +95,6 @@ const ProductSaleDetailsScreen = ({route}) => {
         fixedItems={<ProductHeader />}
       />
       <ScrollView
-        style={styles.container}
         refresh={{
           loading: loadingProduct,
           fetcher: () => {
@@ -123,9 +122,6 @@ const ProductSaleDetailsScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: null,
-  },
   label: {
     width: '90%',
     alignSelf: 'center',

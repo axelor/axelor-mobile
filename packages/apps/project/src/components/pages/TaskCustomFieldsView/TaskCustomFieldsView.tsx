@@ -43,9 +43,7 @@ const TaskCustomFieldsView = ({}) => {
         expandableFilter={false}
         fixedItems={<TaskDetailsHeader />}
       />
-      <ScrollView
-        style={styles.scrollView}
-        refresh={{fetcher: onRefresh, loading: false}}>
+      <ScrollView refresh={{fetcher: onRefresh, loading: false}}>
         <CustomSection
           titleKey="Project_ProjectAppCustomField"
           fieldType="appJson"
@@ -78,9 +76,6 @@ const TaskCustomFieldsView = ({}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  scrollView: {
-    height: null,
   },
 });
 

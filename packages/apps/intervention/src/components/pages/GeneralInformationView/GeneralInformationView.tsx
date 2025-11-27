@@ -146,7 +146,6 @@ const GeneralInformationView = ({}) => {
 const styles = StyleSheet.create({
   scrollView: {
     alignItems: 'center',
-    height: null,
   },
   dropdownCardTitle: {
     fontWeight: 'bold',

@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   Screen,
   HeaderContainer,
@@ -58,9 +57,7 @@ const LeadDetailsScreen = ({route}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<LeadHeader />} />
-      <ScrollView
-        refresh={{loading: loadingLead, fetcher: getLead}}
-        style={styles.scrollView}>
+      <ScrollView refresh={{loading: loadingLead, fetcher: getLead}}>
         <NotesCard title={I18n.t('Crm_Description')} data={lead.description} />
         <LeadDropdownCards />
       </ScrollView>
@@ -68,11 +65,5 @@ const LeadDetailsScreen = ({route}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
-});
 
 export default LeadDetailsScreen;
