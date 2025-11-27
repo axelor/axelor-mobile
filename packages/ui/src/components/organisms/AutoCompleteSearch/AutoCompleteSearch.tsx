@@ -18,10 +18,7 @@
 
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
 import {Platform, StyleSheet, TextInput, View} from 'react-native';
-import {
-  useClickOutside,
-  OUTSIDE_INDICATOR,
-} from '../../../hooks/use-click-outside';
+import {useOutsideClickHandler} from '../../../hooks';
 import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
 import SearchDetailsPopUp from './SearchDetailsPopUp';
@@ -107,16 +104,14 @@ const AutoCompleteSearch = ({
 
   const wrapperRef = useRef(null);
   const selectionWrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
+  useOutsideClickHandler({
     wrapperRef: [wrapperRef, selectionWrapperRef],
-  });
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && displayList) {
+    handleOutsideClick: () => {
       inputRef?.current?.blur();
       setDisplayList(false);
-    }
-  }, [clickOutside, displayList]);
+    },
+    activationCondition: displayList,
+  });
 
   const fetchDataAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -138,8 +133,8 @@ const AutoCompleteSearch = ({
   }, [handleAPICall]);
 
   const handleSelect = useCallback(
-    item => {
-      if (item !== null) {
+    (item: any) => {
+      if (item != null) {
         inputRef?.current?.blur();
         setDisplayList(false);
         setSelected(true);

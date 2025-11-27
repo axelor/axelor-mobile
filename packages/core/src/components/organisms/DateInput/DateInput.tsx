@@ -25,9 +25,8 @@ import {
   Icon,
   RightIconButton,
   Text,
-  useClickOutside,
+  useOutsideClickHandler,
   useThemeColor,
-  OUTSIDE_INDICATOR,
   ThemeColors,
   checkNullString,
 } from '@axelor/aos-mobile-ui';
@@ -179,16 +178,14 @@ const DateInput = ({
 
   const wrapperRef = useRef(null);
   const dateWrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
+  useOutsideClickHandler({
     wrapperRef: [wrapperRef, dateWrapperRef],
-  });
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
+    handleOutsideClick: () => {
       setSelectedDate(defaultDate);
       setPickerIsOpen(false);
-    }
-  }, [clickOutside, defaultDate, pickerIsOpen]);
+    },
+    activationCondition: pickerIsOpen,
+  });
 
   const togglePicker = () => {
     if (!readonly) {

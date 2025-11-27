@@ -20,6 +20,7 @@ export {
   OutsideAlerterProvider,
   useClickOutside,
   useClickOutsideContext,
+  useOutsideClickHandler,
   OUTSIDE_INDICATOR,
 } from './use-click-outside';
 export {useDigitFormat} from './use-digit-format';

@@ -16,12 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  OUTSIDE_INDICATOR,
-  useClickOutside,
-} from '../../../hooks/use-click-outside';
+import {useOutsideClickHandler} from '../../../hooks';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
 
@@ -37,17 +34,13 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
 
   const wrapperRef = useRef(null);
   const dropdownWrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
+  useOutsideClickHandler({
     wrapperRef: [wrapperRef, dropdownWrapperRef],
+    handleOutsideClick: () => setVisible(false),
+    activationCondition: visible,
   });
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && visible) {
-      setVisible(false);
-    }
-  }, [clickOutside, visible]);
 
   return (
     <View style={style} ref={wrapperRef} testID="dropdownMenuContainer">

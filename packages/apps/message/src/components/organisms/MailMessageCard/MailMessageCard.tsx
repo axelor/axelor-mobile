@@ -26,10 +26,9 @@ import {
 import {useIsFocused, useTranslator} from '@axelor/aos-mobile-core';
 import {
   Icon,
-  OUTSIDE_INDICATOR,
   Text,
-  useClickOutside,
   useClickOutsideContext,
+  useOutsideClickHandler,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {Avatar, AVATAR_SIZE, AVATAR_PADDING, AuthorText} from '../../atoms';
@@ -113,8 +112,12 @@ const MailMessageCard = ({
   );
 
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({wrapperRef});
   const {setRef} = useClickOutsideContext();
+  useOutsideClickHandler({
+    wrapperRef,
+    handleOutsideClick: () => setIsMessageBoxVisible(false),
+    activationCondition: isMessageBoxVisible && !isToggleMBDisabled,
+  });
 
   useEffect(() => {
     if (isFocused && isToggleMBDisabled) {
@@ -124,16 +127,6 @@ const MailMessageCard = ({
       }, 100);
     }
   }, [isFocused, isToggleMBDisabled, setRef]);
-
-  useEffect(() => {
-    if (
-      isMessageBoxVisible &&
-      clickOutside === OUTSIDE_INDICATOR &&
-      !isToggleMBDisabled
-    ) {
-      setIsMessageBoxVisible(false);
-    }
-  }, [clickOutside, isMessageBoxVisible, isToggleMBDisabled]);
 
   const isReply = useMemo(() => !!getParentReplies, [getParentReplies]);
 

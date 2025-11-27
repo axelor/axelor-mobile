@@ -28,14 +28,10 @@ import {
   formatNumber as _format,
   unformatNumber as _unformat,
 } from '../../../utils/formatters';
+import {useDigitFormat, useOutsideClickHandler} from '../../../hooks';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {Input} from '../../atoms';
 import IncrementButton from './IncrementButton';
-import {useDigitFormat} from '../../../hooks/use-digit-format';
-import {
-  OUTSIDE_INDICATOR,
-  useClickOutside,
-} from '../../../hooks/use-click-outside';
 
 interface IncrementProps {
   style?: any;
@@ -78,9 +74,6 @@ const Increment = ({
   const cutDecimalExcess = useDigitFormat();
   const containerRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
-  const clickOutside = useClickOutside({
-    wrapperRef: containerRef,
-  });
 
   const [valueQty, setValueQty] = useState<string>(value);
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -176,12 +169,6 @@ const Increment = ({
     onBlur?.();
   }, [defaultFormatting, handleResult, onBlur, unformat, valueQty]);
 
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && isFocused) {
-      handleEndInput();
-    }
-  }, [clickOutside, handleEndInput, isFocused]);
-
   const handleFocus = () => {
     setIsFocused(true);
 
@@ -196,6 +183,11 @@ const Increment = ({
   };
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+  useOutsideClickHandler({
+    wrapperRef: containerRef,
+    handleOutsideClick: handleEndInput,
+    activationCondition: isFocused,
+  });
 
   return (
     <TouchableOpacity
