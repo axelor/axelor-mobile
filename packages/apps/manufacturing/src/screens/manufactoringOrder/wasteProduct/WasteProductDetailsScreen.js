@@ -194,6 +194,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    minHeight: '100%',
   },
 });
 

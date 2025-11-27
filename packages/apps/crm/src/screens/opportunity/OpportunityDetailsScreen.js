@@ -83,6 +83,7 @@ const OpportunityDetailsScreen = ({route}) => {
 
 const styles = StyleSheet.create({
   scrollView: {
+    minHeight: '100%',
   },
 });
 
