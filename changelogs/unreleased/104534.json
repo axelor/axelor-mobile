@@ -1,0 +1,6 @@
+{
+  "title": "FormView: activate popup mode on SignatureInput component by default",
+  "type": "fix",
+  "packages": "core",
+  "description": "Popup mode has been activate for signature type fields to avoid conflicts with scroll behavior. This value can be overriden by adding options.popup false value on the field configuration."
+}
