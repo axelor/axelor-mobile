@@ -99,23 +99,26 @@ const Picker = ({
     }
   }, [clickOutside, isOpen]);
 
-  const togglePicker = () => {
-    setIsOpen(!isOpen);
-    setIsFocused(!isFocused);
-  };
+  const togglePicker = useCallback(() => {
+    setIsOpen(_current => !_current);
+    setIsFocused(_current => !_current);
+  }, []);
 
-  const handleValueChange = itemValue => {
-    setIsOpen(false);
-    setIsFocused(false);
-    setSelectedItem(itemValue);
-    itemValue
-      ? onValueChange(
-          isValueItem
-            ? getFromList(listItems, valueField, itemValue[valueField])
-            : itemValue[valueField],
-        )
-      : onValueChange(itemValue);
-  };
+  const handleValueChange = useCallback(
+    (itemValue: any) => {
+      setIsOpen(false);
+      setIsFocused(false);
+      setSelectedItem(itemValue);
+      itemValue
+        ? onValueChange(
+            isValueItem
+              ? getFromList(listItems, valueField, itemValue[valueField])
+              : itemValue[valueField],
+          )
+        : onValueChange(itemValue);
+    },
+    [isValueItem, listItems, onValueChange, valueField],
+  );
 
   const marginBottom = useMemo(() => {
     if (isScrollViewContainer && isOpen) {
