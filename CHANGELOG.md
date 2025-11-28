@@ -3,6 +3,47 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.3] (2025-11-28)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- DatePicker: define color of picker text to avoid theme issue
+
+<details>
+This fix includes the addition of a new patch file inside the patchs/ folder. This patch concerns the react-native-date-picker package and is required to use this new version.
+</details>
+
+- Contact provider: resolve undefined issue on react-native-contacts package
+
+<details>
+This fix includes the addition of a new patch file inside the patchs/ folder. This patch concerns the react-native-contacts package and is required to use this new version.
+</details>
+
+- FormView: activate popup mode on SignatureInput component by default
+
+<details>
+Popup mode has been activate for signature type fields to avoid conflicts with scroll behavior. This value can be overriden by adding options.popup false value on the field configuration.
+</details>
+
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- Outside click: add new hook to handle logic to avoid refresh issue on dependencies
+
+#### Fixes
+
+- HeaderContainer: add zIndex value to avoid display issue on list views
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Partner links: use the right selection values for the link type
+
 ## [8.5.2] (2025-11-13)
 
 ### @axelor/aos-mobile-core
@@ -148,6 +189,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.3]: https://github.com/axelor/axelor-mobile/compare/8.5.2...8.5.3
 [8.5.2]: https://github.com/axelor/axelor-mobile/compare/8.5.1...8.5.2
 [8.5.1]: https://github.com/axelor/axelor-mobile/compare/8.5.0...8.5.1
 [8.5.0]: https://github.com/axelor/axelor-mobile/compare/8.4.7...8.5.0

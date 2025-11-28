@@ -1,5 +1,0 @@
-{
-  "title": "Outside click: add new hook to handle logic to avoid refresh issue on dependencies",
-  "type": "refactor",
-  "packages": "ui"
-}

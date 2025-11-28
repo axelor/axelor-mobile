@@ -1,5 +1,0 @@
-{
-  "title": "HeaderContainer: add zIndex value to avoid display issue on list views",
-  "type": "fix",
-  "packages": "ui"
-}
