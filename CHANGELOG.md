@@ -3,6 +3,19 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.10] (2025-11-28)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- FormView: activate popup mode on SignatureInput component by default
+
+<details>
+Popup mode has been activate for signature type fields to avoid conflicts with scroll behavior. This value can be overriden by adding options.popup false value on the field configuration.
+</details>
+
+
 ## [8.4.9] (2025-11-13)
 
 ### @axelor/aos-mobile-ui
@@ -445,6 +458,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.10]: https://github.com/axelor/axelor-mobile/compare/8.4.9...8.4.10
 [8.4.9]: https://github.com/axelor/axelor-mobile/compare/8.4.8...8.4.9
 [8.4.8]: https://github.com/axelor/axelor-mobile/compare/8.4.7...8.4.8
 [8.4.7]: https://github.com/axelor/axelor-mobile/compare/8.4.6...8.4.7
