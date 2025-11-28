@@ -18,12 +18,9 @@
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import InfoButton from '../InfoButton/InfoButton';
 import {useThemeColor} from '../../../theme';
-import {
-  OUTSIDE_INDICATOR,
-  useClickOutside,
-} from '../../../hooks/use-click-outside';
+import {useOutsideClickHandler} from '../../../hooks';
+import InfoButton from '../InfoButton/InfoButton';
 
 const ACTION_WIDTH = 40;
 const TWO_ACTIONS_HEIGHT = 84;
@@ -64,23 +61,12 @@ const ActionCard = ({
   const [isDifferentLength, setIsDifferentLength] = useState(false);
 
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({wrapperRef});
-
-  useEffect(() => {
-    if (
-      clickOutside === OUTSIDE_INDICATOR &&
-      displaySeeActionsButton &&
-      isActionsVisible &&
-      !forceActionsDisplay
-    ) {
-      setIsActionsVisible(false);
-    }
-  }, [
-    clickOutside,
-    displaySeeActionsButton,
-    forceActionsDisplay,
-    isActionsVisible,
-  ]);
+  useOutsideClickHandler({
+    wrapperRef,
+    handleOutsideClick: () => setIsActionsVisible(false),
+    activationCondition:
+      displaySeeActionsButton && isActionsVisible && !forceActionsDisplay,
+  });
 
   const _actionList = useMemo(
     () =>
@@ -123,7 +109,7 @@ const ActionCard = ({
         : _actionList.length > 2 ||
           (_actionList[0]?.large && horizontal) ||
           _actionList[1]?.large) && !forceActionsDisplay;
-    setDisplaySeeActionsButton(shouldDisplay);
+    setDisplaySeeActionsButton(shouldDisplay ?? false);
     setIsActionsVisible(!shouldDisplay);
   }, [_actionList, forceActionsDisplay, horizontal, _quickAction]);
 

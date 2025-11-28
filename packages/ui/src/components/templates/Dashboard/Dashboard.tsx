@@ -119,7 +119,6 @@ const Dashboard = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    height: null,
   },
   lineContainer: {
     flexWrap: 'wrap',

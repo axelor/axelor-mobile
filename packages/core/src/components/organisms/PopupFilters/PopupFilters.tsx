@@ -92,7 +92,7 @@ const PopupFilters = ({
         cancelButtonConfig={{onPress: onClose}}
         confirmButtonConfig={{onPress: handleConfirm}}
         translator={I18n.t}>
-        <ScrollView style={styles.scrollview}>
+        <ScrollView>
           {renderRadioSelect(savedFilters, 'Base_Filters')}
           {renderRadioSelect(userFilters, 'Base_MyFilters')}
         </ScrollView>
@@ -102,9 +102,6 @@ const PopupFilters = ({
 };
 
 const styles = StyleSheet.create({
-  scrollview: {
-    height: null,
-  },
   container: {
     width: '100%',
   },

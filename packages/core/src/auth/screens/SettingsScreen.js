@@ -142,9 +142,7 @@ const SettingsScreen = ({children}) => {
 
   return (
     <Screen style={styles.screen}>
-      <ScrollView
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.container}>
+      <ScrollView>
         {isLanguagePicker && (
           <Picker
             title={I18n.t('User_Language')}
@@ -228,15 +226,6 @@ const SettingsScreen = ({children}) => {
 const styles = StyleSheet.create({
   screen: {
     justifyContent: 'space-between',
-  },
-  scrollContainer: {
-    height: null,
-  },
-  container: {
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
   },
   lineSeparator: {
     alignSelf: 'center',

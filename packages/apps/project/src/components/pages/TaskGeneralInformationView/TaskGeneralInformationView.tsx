@@ -48,7 +48,6 @@ const TaskGeneralInformationView = ({
         fixedItems={<TaskDetailsHeader />}
       />
       <ScrollView
-        style={styles.scrollView}
         refresh={{loading: loadingProjectTask, fetcher: handleRefresh}}>
         <ProjectSimpleCard
           code={projectTask.project?.code}
@@ -70,9 +69,6 @@ const TaskGeneralInformationView = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  scrollView: {
-    height: null,
   },
 });
 

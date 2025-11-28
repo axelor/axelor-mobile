@@ -122,7 +122,6 @@ const CartLineDetailsScreen = ({route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: null,
     alignItems: 'center',
   },
   card: {

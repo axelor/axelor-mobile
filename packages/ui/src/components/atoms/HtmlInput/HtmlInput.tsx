@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
-import {OUTSIDE_INDICATOR, useClickOutside} from '../../../hooks';
+import {useOutsideClickHandler} from '../../../hooks';
 import {useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
 
@@ -57,11 +57,16 @@ const HtmlInput = ({
   const Colors = useThemeColor();
   const editor = useRef(null);
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({wrapperRef});
 
   const [editorAttached, setEditorAttached] = useState(false);
   const [key, setKey] = useState(defaultInput);
   const [isFocused, setIsFocused] = useState(false);
+
+  useOutsideClickHandler({
+    wrapperRef,
+    handleOutsideClick: () => editor.current?.blurContentEditor?.(),
+    activationCondition: isFocused,
+  });
 
   const editorInitializedCallback = () => {
     setEditorAttached(true);
@@ -91,12 +96,6 @@ const HtmlInput = ({
       setKey(defaultInput);
     }
   }, [defaultInput, isFocused]);
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && isFocused) {
-      editor.current?.blurContentEditor?.();
-    }
-  }, [clickOutside, isFocused]);
 
   return (
     <ScrollView

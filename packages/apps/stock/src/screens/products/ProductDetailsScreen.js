@@ -60,8 +60,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
   return (
     <Screen fixedItems={<ProductVariantButton product={product} />}>
       <ScrollView
-        refresh={{loading: loadingProductFromId, fetcher: fetchProductFromId}}
-        style={styles.scroll}>
+        refresh={{loading: loadingProductFromId, fetcher: fetchProductFromId}}>
         <ProductCharacteristics
           onPressImage={() => navigateToImageProduct()}
           picture={product?.picture}
@@ -91,9 +90,6 @@ const styles = StyleSheet.create({
   item: {
     borderRadius: 0,
     elevation: 0,
-  },
-  scroll: {
-    height: null,
   },
   lineContainer: {
     alignItems: 'center',

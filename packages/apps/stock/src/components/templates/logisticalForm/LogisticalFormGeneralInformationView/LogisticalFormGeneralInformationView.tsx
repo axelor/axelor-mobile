@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     marginTop: 5,
-    height: null,
   },
 });
 

@@ -16,12 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useEffect, useRef} from 'react';
+import React, {useMemo, useRef} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {
-  OUTSIDE_INDICATOR,
-  useClickOutside,
-} from '../../../hooks/use-click-outside';
+import {useOutsideClickHandler} from '../../../hooks';
 import {checkNullString} from '../../../utils';
 import {Card, Text} from '../../atoms';
 import Alert from '../Alert/Alert';
@@ -50,18 +47,16 @@ const CardIndicator = ({
   usePopup = false,
 }: CardIndicatorProps) => {
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({wrapperRef});
+  useOutsideClickHandler({
+    wrapperRef,
+    handleOutsideClick: handleClose,
+    activationCondition: isVisible,
+  });
 
   const styles = useMemo(
     () => getStyles(isVisible, position, space),
     [isVisible, position, space],
   );
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && isVisible) {
-      handleClose();
-    }
-  }, [clickOutside, isVisible, handleClose]);
 
   const renderIndication = () => {
     if (checkNullString(indication)) {

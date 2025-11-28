@@ -93,9 +93,7 @@ function OperationOrderDetailsScreen({route, navigation}) {
         }
         expandableFilter={false}
       />
-      <ScrollView
-        style={styles.scrollView}
-        refresh={{loading: loadingOrder, fetcher: getOperationOrder}}>
+      <ScrollView refresh={{loading: loadingOrder, fetcher: getOperationOrder}}>
         <OperationOrderDatesCard />
         <OperationOrderLabelTextList />
         {showConsumedProducts && (
@@ -113,9 +111,6 @@ function OperationOrderDetailsScreen({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
   actionCard: {
     width: '90%',
     height: undefined,

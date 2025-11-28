@@ -89,7 +89,6 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
         fixedItems={<SaleOrderHeader saleOrder={saleOrder} />}
       />
       <ScrollView
-        style={styles.scrollView}
         refresh={{loading: loadingSaleOrderLine, fetcher: fetchSaleOrderLine}}>
         <SaleOrderLinePriceDetails
           style={styles.priceDetails}
@@ -126,9 +125,6 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
   priceDetails: {
     marginVertical: 10,
   },

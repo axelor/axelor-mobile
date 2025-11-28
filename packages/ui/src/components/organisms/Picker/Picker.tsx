@@ -20,10 +20,7 @@ import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {checkNullString, getCommonStyles, getFromList} from '../../../utils';
-import {
-  OUTSIDE_INDICATOR,
-  useClickOutside,
-} from '../../../hooks/use-click-outside';
+import {useOutsideClickHandler} from '../../../hooks';
 import {Icon, Text} from '../../atoms';
 import {FormInput, SelectionContainer, RightIconButton} from '../../molecules';
 
@@ -80,8 +77,13 @@ const Picker = ({
 
   const wrapperRef = useRef(null);
   const selectionWrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
+  useOutsideClickHandler({
     wrapperRef: [wrapperRef, selectionWrapperRef],
+    handleOutsideClick: () => {
+      setIsOpen(false);
+      setIsFocused(false);
+    },
+    activationCondition: isOpen,
   });
 
   useEffect(() => {
@@ -92,30 +94,26 @@ const Picker = ({
     );
   }, [defaultValue, isValueItem, listItems, valueField]);
 
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && isOpen) {
+  const togglePicker = useCallback(() => {
+    setIsOpen(_current => !_current);
+    setIsFocused(_current => !_current);
+  }, []);
+
+  const handleValueChange = useCallback(
+    (itemValue: any) => {
       setIsOpen(false);
       setIsFocused(false);
-    }
-  }, [clickOutside, isOpen]);
-
-  const togglePicker = () => {
-    setIsOpen(!isOpen);
-    setIsFocused(!isFocused);
-  };
-
-  const handleValueChange = itemValue => {
-    setIsOpen(false);
-    setIsFocused(false);
-    setSelectedItem(itemValue);
-    itemValue
-      ? onValueChange(
-          isValueItem
-            ? getFromList(listItems, valueField, itemValue[valueField])
-            : itemValue[valueField],
-        )
-      : onValueChange(itemValue);
-  };
+      setSelectedItem(itemValue);
+      itemValue
+        ? onValueChange(
+            isValueItem
+              ? getFromList(listItems, valueField, itemValue[valueField])
+              : itemValue[valueField],
+          )
+        : onValueChange(itemValue);
+    },
+    [isValueItem, listItems, onValueChange, valueField],
+  );
 
   const marginBottom = useMemo(() => {
     if (isScrollViewContainer && isOpen) {

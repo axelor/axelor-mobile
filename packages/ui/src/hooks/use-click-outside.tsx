@@ -85,7 +85,7 @@ export const OutsideAlerterProvider = ({children}) => {
 
   return (
     <OutsideAlerterContext.Provider value={outsideAlerterContextState}>
-      <View onTouchStart={e => setRef(e.target)} style={styles.container}>
+      <View onTouchEnd={e => setRef(e.target)} style={styles.container}>
         {children}
       </View>
     </OutsideAlerterContext.Provider>
@@ -159,4 +159,23 @@ export const useClickOutside = ({
 
 export const useClickOutsideContext = () => {
   return useContext(OutsideAlerterContext);
+};
+
+export const useOutsideClickHandler = ({
+  wrapperRef,
+  handleOutsideClick,
+  activationCondition = true,
+}: {
+  wrapperRef: RefObject | RefObject[];
+  handleOutsideClick: () => void;
+  activationCondition?: boolean;
+}) => {
+  const clickOutside = useClickOutside({wrapperRef});
+
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR && activationCondition) {
+      handleOutsideClick?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clickOutside]);
 };

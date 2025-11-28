@@ -16,16 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
-import {Text} from '../../atoms';
-import {SelectionContainer, MultiValuePickerButton} from '../../molecules';
 import {checkNullString, getCommonStyles} from '../../../utils';
-import {
-  OUTSIDE_INDICATOR,
-  useClickOutside,
-} from '../../../hooks/use-click-outside';
+import {useOutsideClickHandler} from '../../../hooks';
+import {SelectionContainer, MultiValuePickerButton} from '../../molecules';
+import {Text} from '../../atoms';
 
 interface Item {
   color: Color;
@@ -64,26 +61,23 @@ const MultiValuePicker = ({
 
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [selectedItemList, setSelectedItemList] = useState(defaultItems as any);
 
   const wrapperRef = useRef(null);
   const selectionWrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
+  useOutsideClickHandler({
     wrapperRef: [wrapperRef, selectionWrapperRef],
-  });
-
-  const [selectedItemList, setSelectedItemList] = useState(defaultItems as any);
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
+    handleOutsideClick: () => {
       setPickerIsOpen(false);
       setIsFocused(false);
-    }
-  }, [clickOutside, pickerIsOpen]);
+    },
+    activationCondition: pickerIsOpen,
+  });
 
-  const togglePicker = () => {
+  const togglePicker = useCallback(() => {
     setPickerIsOpen(current => !current);
     setIsFocused(current => !current);
-  };
+  }, []);
 
   const handleValueChange = useCallback(
     (itemValue: Item) => {

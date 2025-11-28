@@ -47,6 +47,7 @@ const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
       ]}
+      keyboardShouldPersistTaps="handled"
       refreshControl={
         refresh != null ? (
           <RefreshControl

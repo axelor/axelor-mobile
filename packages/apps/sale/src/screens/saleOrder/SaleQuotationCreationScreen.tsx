@@ -131,7 +131,7 @@ const SaleQuotationCreationScreen = ({route}) => {
           paymentConditionId={paymentCondition?.id}
         />
       }>
-      <ScrollView style={styles.container}>
+      <ScrollView>
         <CustomerSearchBar
           defaultValue={customer}
           onChange={cust => {
@@ -200,10 +200,6 @@ const SaleQuotationCreationScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: null,
-    flex: 1,
-  },
   label: {
     width: '90%',
     alignSelf: 'center',

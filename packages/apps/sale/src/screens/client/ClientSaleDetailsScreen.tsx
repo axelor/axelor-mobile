@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   useDispatch,
   useIsFocused,
@@ -66,9 +65,7 @@ const ClientSaleDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<ClientHeader customer={customer} />}
       />
-      <ScrollView
-        style={styles.scrollView}
-        refresh={{loading: loadingCustomer, fetcher: getCustomer}}>
+      <ScrollView refresh={{loading: loadingCustomer, fetcher: getCustomer}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={customer.description} />
         <ClientDropdownCards
           additionalDropdowns={[
@@ -82,11 +79,5 @@ const ClientSaleDetailsScreen = ({route}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
-});
 
 export default ClientSaleDetailsScreen;

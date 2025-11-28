@@ -16,12 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  OUTSIDE_INDICATOR,
-  useClickOutside,
-} from '../../../hooks/use-click-outside';
+import {useOutsideClickHandler} from '../../../hooks';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {CircleButton} from '../../molecules';
 import {Icon} from '../../atoms';
@@ -51,21 +48,17 @@ const FloatingButton = ({
 }: FloatingButtonProps) => {
   const Colors = useThemeColor();
 
-  const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
-    wrapperRef,
-  });
-
   const [isOpen, setIsOpen] = useState(defaultOpenValue);
   const [expanded, setExpanded] = useState(defaultOpenValue);
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const wrapperRef = useRef(null);
+  useOutsideClickHandler({
+    wrapperRef,
+    handleOutsideClick: () => setIsOpen(false),
+    activationCondition: isOpen && closeOnOutsideClick,
+  });
 
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && isOpen && closeOnOutsideClick) {
-      setIsOpen(false);
-    }
-  }, [clickOutside, closeOnOutsideClick, isOpen]);
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const handleFLoatingButtonPress = useCallback(() => {
     if (onGlobalPress) {

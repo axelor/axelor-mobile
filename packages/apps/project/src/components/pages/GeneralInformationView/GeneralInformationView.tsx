@@ -47,7 +47,7 @@ const GeneralInformationView = ({
         expandableFilter={false}
         fixedItems={<ProjectHeader />}
       />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView>
         <View style={styles.margin}>
           <DatesDisplay fromDate={project.fromDate} toDate={project.toDate} />
           <ProjectSiteTags />
@@ -65,9 +65,6 @@ const GeneralInformationView = ({
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
   margin: {
     width: '90%',
     alignSelf: 'center',

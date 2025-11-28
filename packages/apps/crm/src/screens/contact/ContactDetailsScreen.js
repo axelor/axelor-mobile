@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   Screen,
   HeaderContainer,
@@ -66,9 +65,7 @@ const ContactDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<ContactHeader />}
       />
-      <ScrollView
-        refresh={{loading, fetcher: getContactAPI}}
-        style={styles.scrollView}>
+      <ScrollView refresh={{loading, fetcher: getContactAPI}}>
         <ContactPartnerCard />
         <NotesCard title={I18n.t('Crm_Notes')} data={contact.description} />
         <ContactDropdownCards />
@@ -77,11 +74,5 @@ const ContactDetailsScreen = ({route}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
-});
 
 export default ContactDetailsScreen;
