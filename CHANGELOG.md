@@ -3,6 +3,19 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.16] (2025-11-28)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- FormView: activate popup mode on SignatureInput component by default
+
+<details>
+Popup mode has been activate for signature type fields to avoid conflicts with scroll behavior. This value can be overriden by adding options.popup false value on the field configuration.
+</details>
+
+
 ## [8.3.15] (2025-11-12)
 
 ### @axelor/aos-mobile-core
@@ -560,6 +573,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.16]: https://github.com/axelor/axelor-mobile/compare/8.3.15...8.3.16
 [8.3.15]: https://github.com/axelor/axelor-mobile/compare/8.3.14...8.3.15
 [8.3.14]: https://github.com/axelor/axelor-mobile/compare/8.3.13...8.3.14
 [8.3.13]: https://github.com/axelor/axelor-mobile/compare/8.3.12...8.3.13
