@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-intervention",
-  "version": "8.2.23",
+  "version": "8.2.24",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -27,9 +27,9 @@
     "react-native": "0.73.9"
   },
   "dependencies": {
-    "@axelor/aos-mobile-core": "8.2.23",
-    "@axelor/aos-mobile-crm": "8.2.23",
-    "@axelor/aos-mobile-ui": "8.2.23",
+    "@axelor/aos-mobile-core": "8.2.24",
+    "@axelor/aos-mobile-crm": "8.2.24",
+    "@axelor/aos-mobile-ui": "8.2.24",
     "@reduxjs/toolkit": "^2.2.7"
   },
   "devDependencies": {
