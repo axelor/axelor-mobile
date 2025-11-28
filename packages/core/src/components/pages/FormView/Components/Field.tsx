@@ -187,6 +187,7 @@ const Field = ({
             onChange={handleChange}
             required={isRequired}
             readonly={isReadonly}
+            popup={true}
             {..._field.options}
           />
         );
