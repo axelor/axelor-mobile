@@ -7,7 +7,7 @@ Installation guide for Ubuntu platforms
 ### Install NodeJS
 
 ```
-curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
@@ -17,7 +17,7 @@ To check version of NodeJS, run `node --version `
 
 Once NodeJS is installed, npm is available. Check version with `npm -version `
 
-This project is base on Node version **16.x**
+This project is base on Node version **18.x**
 
 ### :coffee: Install Java 11
 

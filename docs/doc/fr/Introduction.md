@@ -12,17 +12,21 @@ Basée sur une architecture modulaire, l'application peut être dédiée à un s
 
 L'objectif est de permettre aux processus de l’ERP d'être exécutés directement depuis le téléphone grâce à des écrans simplifiés.
 
-Cette nouvelle application mobile comprend actuellement les modules suivants avec différentes compatibilités AOS :
+Cette nouvelle application mobile comprend actuellement les modules suivants :
 
-- Stock (AOS v7.1+)
-- Production (AOS v6.4+)
-- CRM (AOS v7.1+)
-- Support Client (AOS v7.1+)
-- RH : Notes de frais (AOS v7.2+) & Feuilles de temps (AOS v8.0+)
-- Qualité (AOS v8.0+)
-- Intervention (AOS v8.1+)
-- Projet (AOS v8.2+)
-- Ventes (AOS v8.2+)
+- Stock
+- Production
+- CRM
+- Support Client
+- RH : Notes de frais, Feuilles de temps & Congés
+- Qualité : Relevés de contrôles & Améliorations qualité
+- Intervention
+- Projet
+- Ventes
+- Achats internes
+- GED
+- Message
+- Maintenance
 
 Les trois axes principaux lors du développement de cette application mobile étaient :
 
