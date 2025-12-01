@@ -1,0 +1,5 @@
+{
+  "title": "Date formatter: allow the use of half year display",
+  "type": "fix",
+  "packages": "core"
+}

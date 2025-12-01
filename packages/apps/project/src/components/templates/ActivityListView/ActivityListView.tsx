@@ -31,7 +31,7 @@ import {ActivityCard} from '../../molecules';
 const ActivityListView = () => {
   const I18n = useTranslator();
 
-  const {project} = useSelector((state: any) => state.project_project);
+  const {project} = useSelector(state => state.project_project);
 
   const [refreshing, setRefreshing] = useState(false);
   const [dataList, setDataList] = useState([]);
@@ -60,14 +60,13 @@ const ActivityListView = () => {
       try {
         const res = await previousProjectActivity({
           projectId: project?.id,
-          startDate: formatDate(_startDate, 'MM/DD/YYYY'),
+          startDate: formatDate(_startDate, 'YY-MM-DD'),
         });
 
         const activityList = res.data.data[0]?.values?.$activityList?.[0] || {};
-        const formattedData = Object.keys(activityList).map(date => ({
-          title: date,
-          data: activityList[date],
-        }));
+        const formattedData = Object.entries(activityList).map(
+          ([_date, _content]) => ({title: _date, data: _content}),
+        );
 
         if (formattedData.length === 0 && _startDate >= dateLimit) {
           handlePreviousActivity();
@@ -87,11 +86,6 @@ const ActivityListView = () => {
     }
   }, [fetchActivityData, startDate, project]);
 
-  const convertToDate = dateStr => {
-    const [month, day, year] = dateStr.split('/').map(Number);
-    return new Date(year, month - 1, day);
-  };
-
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setStartDate(() => {
@@ -105,7 +99,7 @@ const ActivityListView = () => {
   const renderItem = ({item}) => {
     const updates = item[Object.keys(item)[0]];
 
-    return updates.map(update => {
+    return updates.map((update: any) => {
       const {
         activity = {},
         modelName,
@@ -133,7 +127,7 @@ const ActivityListView = () => {
   };
 
   const renderSectionHeader = ({section: {title}}) => {
-    const dateToDisplay = convertToDate(title);
+    const dateToDisplay = new Date(title);
     const isValidDate = !isNaN(dateToDisplay.getTime());
     const displayDate = isValidDate ? dateToDisplay : new Date();
 

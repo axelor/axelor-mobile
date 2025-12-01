@@ -29,7 +29,11 @@ export function formatDate(inputDate, format) {
   const year = date.getFullYear();
 
   format = format.replace('MM', month.toString().padStart(2, '0'));
-  format = format.replace('YYYY', year.toString());
+  if (format.includes('YYYY')) {
+    format = format.replace('YYYY', year.toString());
+  } else if (format.includes('YY')) {
+    format = format.replace('YY', year.toString().slice(2));
+  }
   format = format.replace('DD', day.toString().padStart(2, '0'));
 
   return format;
