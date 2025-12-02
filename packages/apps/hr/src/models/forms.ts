@@ -44,11 +44,6 @@ import {
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {updateManufOrder} from '../features/manufOrderSlice';
 import {updateProject} from '../features/projectSlice';
-import {
-  needUpdateDistance,
-  updateFromCity,
-  updateToCity,
-} from '../features/distanceSlice';
 import {ExpenseLine} from '../types';
 import {checkUserImputationMode, getImputationMode} from '../utils';
 
@@ -167,7 +162,7 @@ export const hr_formsRegister: FormConfigs = {
       },
       kilometricTypeSelect: {
         titleKey: 'Hr_KilometricTypeSelect',
-        type: 'object',
+        type: 'number',
         widget: 'custom',
         customComponent: KilometricTypeSelectPicker,
         hideIf: ({objectState}) =>
@@ -184,16 +179,6 @@ export const hr_formsRegister: FormConfigs = {
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
-        dependsOn: {
-          toCity: ({newValue, dispatch, objectState}) => {
-            dispatch(updateToCity(newValue));
-            dispatch(needUpdateDistance(true));
-            return objectState?.fromCity;
-          },
-        },
-        options: {
-          isFromCity: true,
-        },
       },
       toCity: {
         titleKey: 'Hr_ToCity',
@@ -204,13 +189,6 @@ export const hr_formsRegister: FormConfigs = {
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
-        dependsOn: {
-          fromCity: ({newValue, dispatch, objectState}) => {
-            dispatch(updateFromCity(newValue));
-            dispatch(needUpdateDistance(true));
-            return objectState?.toCity;
-          },
-        },
       },
       distance: {
         titleKey: 'Hr_Distance',
