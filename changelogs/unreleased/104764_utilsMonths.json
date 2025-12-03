@@ -1,0 +1,5 @@
+{
+  "title": "Date: improve helpers getNextMonth & getPreviousMonth to define number of months to add/remove",
+  "type": "feat",
+  "packages": "core"
+}
