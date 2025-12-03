@@ -26,12 +26,7 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {fetchExpenseConfig} from '../features/expenseConfigSlice';
-import {
-  needUpdateDistance,
-  resetDistance,
-  updateFromCity,
-  updateToCity,
-} from '../features/distanceSlice';
+import {resetDistance} from '../features/distanceSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const {
@@ -55,8 +50,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
   const createExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
-      dispatch(needUpdateDistance(false));
-
       const dataToSend = {
         projectId: _expenseLine.project?.id,
         toInvoice: _expenseLine.toInvoice,
@@ -69,7 +62,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         comments: _expenseLine.comments,
         justificationFileId: _expenseLine.justificationMetaFile?.id,
         kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
-        kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
+        kilometricTypeSelect: _expenseLine.kilometricTypeSelect,
         distance: _expenseLine.distance,
         fromCity: _expenseLine.fromCity,
         toCity: _expenseLine.toCity,
@@ -100,8 +93,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
   const updateExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
-      dispatch(needUpdateDistance(false));
-
       const mode = ExpenseLine.getExpenseMode(expenseLine);
 
       const dataToSend = {
@@ -125,7 +116,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
             ? _expenseLine.justificationMetaFile?.id
             : null,
         kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
-        kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
+        kilometricTypeSelect: _expenseLine.kilometricTypeSelect,
         distance: _expenseLine.distance,
         fromCity: _expenseLine.fromCity,
         toCity: _expenseLine.toCity,
@@ -201,8 +192,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         };
       } else if (mode === ExpenseLine.modes.kilometric) {
         _dispatch(updateExpenseDate(expenseLine?.expenseDate));
-        _dispatch(updateFromCity(expenseLine?.fromCity));
-        _dispatch(updateToCity(expenseLine?.toCity));
 
         return {
           ..._default,
@@ -215,25 +204,16 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           toCity: expenseLine.toCity,
           distance: expenseLine.distance || 0,
           kilometricAllowParam: expenseLine.kilometricAllowParam,
-          kilometricTypeSelect: {
-            key: expenseLine.kilometricTypeSelect,
-            title: ExpenseLine.getKilomectricTypeSelect(
-              expenseLine.kilometricTypeSelect,
-              I18n,
-            ),
-          },
+          kilometricTypeSelect: expenseLine.kilometricTypeSelect,
           comments: expenseLine.comments,
         };
       }
     } else {
       _dispatch(updateExpenseDate(_defaultDate));
-      _dispatch(updateFromCity(null));
-      _dispatch(updateToCity(null));
     }
 
     return _default;
   }, [
-    I18n,
     _dispatch,
     expenseLine,
     justificationMetaFile,

@@ -17,13 +17,7 @@
  */
 
 export {searchCurrencies} from './currencySlice';
-export {
-  getDistance,
-  needUpdateDistance,
-  resetDistance,
-  updateFromCity,
-  updateToCity,
-} from './distanceSlice';
+export {getDistance, resetDistance} from './distanceSlice';
 export {searchManagedEmployee} from './employeeSlice';
 export {fetchExpenseConfig} from './expenseConfigSlice';
 export {
