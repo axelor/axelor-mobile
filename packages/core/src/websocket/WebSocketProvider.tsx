@@ -24,6 +24,8 @@ import {
   WebSocketMessage,
 } from './types';
 
+const SECURE_PREFIX_REGEX = /^https:\/\//;
+
 class WebSocketProvider {
   private isWebSocketEnabled = false;
   private ws: WebSocket | null = null;
@@ -47,10 +49,13 @@ class WebSocketProvider {
       return;
     }
 
-    // @ts-ignore
-    this.ws = new WebSocket(`wss://${baseUrl}/websocket`, [], {
-      headers: {Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`},
-    });
+    const isSecureInstance = SECURE_PREFIX_REGEX.test(baseUrl);
+    const urlWithoutProtocol = baseUrl.replace(/.*\/\//, '');
+    this.ws = new WebSocket(
+      `${isSecureInstance ? 'wss' : 'ws'}://${urlWithoutProtocol}/websocket`,
+      [], // @ts-ignore
+      {headers: {Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`}},
+    );
 
     this.ws.onopen = () => {
       this.sendMessage({type: MessageType.SUB, channel: WEBSOCKET_CHANNEL});
