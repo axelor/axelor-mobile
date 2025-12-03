@@ -46,9 +46,8 @@ export const login = createAsyncThunk(
 
     modulesProvider.getModuleRegisters().forEach(_f => _f(userId));
 
-    const urlWithoutProtocol = urlWithProtocol.replace(/.*\/\//, '');
     webSocketProvider.initWebSocket({
-      baseUrl: urlWithoutProtocol,
+      baseUrl: urlWithProtocol,
       token,
       jsessionId,
     });
