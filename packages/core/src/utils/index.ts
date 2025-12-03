@@ -21,9 +21,11 @@ export * from './api';
 export {
   isDate,
   isDateTime,
+  decreaseDate,
   getNextMonth,
   getPreviousMonth,
   diffDate,
+  isMidnightDate,
   sameDate,
   incrementDate,
   getDay,

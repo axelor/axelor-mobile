@@ -26,20 +26,28 @@ export const isDateTime = (date: string): boolean => {
   return isDate(date) && date?.length > 10;
 };
 
-export const getNextMonth = (date: Date): Date => {
+export const getNextMonth = (date: Date, months: number = 1): Date => {
+  let _date: Date;
+
   if (date.getMonth() === 11) {
-    return new Date(date.getFullYear() + 1, 0, date.getDate());
+    _date = new Date(date.getFullYear() + 1, 0, date.getDate());
   } else {
-    return new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    _date = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
   }
+
+  return months <= 1 ? _date : getNextMonth(_date, months - 1);
 };
 
-export const getPreviousMonth = (date: Date): Date => {
+export const getPreviousMonth = (date: Date, months: number = 1): Date => {
+  let _date: Date;
+
   if (date.getMonth() === 0) {
-    return new Date(date.getFullYear() - 1, 11, date.getDate());
+    _date = new Date(date.getFullYear() - 1, 11, date.getDate());
   } else {
-    return new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
+    _date = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
   }
+
+  return months <= 1 ? _date : getPreviousMonth(_date, months - 1);
 };
 
 export const sameDate = (date1: Date, date2: Date): boolean => {
@@ -60,8 +68,18 @@ export const diffDate = (start: Date, end: Date): number => {
   return _end.diff(_start, 'days') + 1;
 };
 
+export const isMidnightDate = (date: string): boolean => {
+  const _date = moment(date);
+
+  return _date.format('HH:mm') === '00:00';
+};
+
 export const incrementDate = (date: Date, days: number): Date => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
+};
+
+export const decreaseDate = (date: Date, days: number): Date => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
 };
 
 const dayOfWeek = [

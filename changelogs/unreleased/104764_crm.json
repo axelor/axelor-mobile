@@ -1,0 +1,5 @@
+{
+  "title": "Planning: load events 2 months around the current date instead of 1",
+  "type": "fix",
+  "packages": "crm"
+}
