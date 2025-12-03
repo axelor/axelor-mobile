@@ -30,8 +30,8 @@ const createEventCriteria = ({searchValue, date, isAssigned, userId}) => {
   const criteria = [getSearchCriterias('crm_event', searchValue)];
 
   if (date != null) {
-    const startDate = getPreviousMonth(date).toISOString();
-    const endDate = getNextMonth(date).toISOString();
+    const startDate = getPreviousMonth(date, 2).toISOString();
+    const endDate = getNextMonth(date, 2).toISOString();
 
     criteria.push({
       operator: 'or',
