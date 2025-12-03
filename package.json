@@ -55,7 +55,7 @@
     "react-native-blob-util": "0.23.2",
     "react-native-contacts": "8.0.7",
     "react-native-datawedge-intents": "^0.1.8",
-    "react-native-date-picker": "5.0.12",
+    "react-native-date-picker": "5.0.13",
     "react-native-device-info": "15.0.1",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
