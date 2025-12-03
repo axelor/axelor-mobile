@@ -18,7 +18,14 @@
 
 import {AgendaEntry, AgendaSchedule} from 'react-native-calendars';
 import {TranslatorProps} from '../../../i18n';
-import {formatTime, diffDate, sameDate, incrementDate} from '../../../utils';
+import {
+  formatTime,
+  diffDate,
+  sameDate,
+  incrementDate,
+  isMidnightDate,
+  decreaseDate,
+} from '../../../utils';
 
 export const EMPTY_TIME = '-';
 const START_OF_MONTH_DOTS = 'startOfMonth';
@@ -209,15 +216,19 @@ const createAgendaItem = (
   I18n: TranslatorProps,
 ): AgendaItem[] => {
   const _startDate = new Date(event.startDate);
-  const _endDate = new Date(event.endDate);
+  const _endDate = isMidnightDate(event.endDate)
+    ? decreaseDate(new Date(event.endDate), 1)
+    : new Date(event.endDate);
 
   if (sameDate(_startDate, _endDate)) {
     return [
       {
         id: event.id.toString(),
-        date: event.endDate,
+        date: _endDate,
         startHour: formatTime(event.startDate, I18n.t('Base_TimeFormat')),
         endHour: formatTime(event.endDate, I18n.t('Base_TimeFormat')),
+        isFullDayEvent:
+          isMidnightDate(event.startDate) && isMidnightDate(event.endDate),
         data: event.data,
       },
     ];
@@ -255,7 +266,7 @@ const createMultiDayAgendaItems = (
 
   agendaItems.push({
     id: `${event.id}_${diffDays + 1}`,
-    date: event.endDate,
+    date: endDate,
     data: event.data,
     startHour: EMPTY_TIME,
     endHour: formatTime(event.endDate, I18n.t('Base_TimeFormat')),
