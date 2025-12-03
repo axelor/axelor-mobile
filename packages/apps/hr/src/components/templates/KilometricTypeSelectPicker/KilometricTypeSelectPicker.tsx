@@ -17,17 +17,26 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 
+interface KilometricTypeSelectPickerProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+  readonly?: boolean;
+  required?: boolean;
+}
+
 const KilometricTypeSelectPickerAux = ({
+  style,
   title = 'Hr_KilometricTypeSelect',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
-}) => {
+}: KilometricTypeSelectPickerProps) => {
   const {ExpenseLine} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
@@ -38,7 +47,7 @@ const KilometricTypeSelectPickerAux = ({
 
   return (
     <Picker
-      style={styles.picker}
+      style={style}
       title={title}
       defaultValue={defaultValue}
       listItems={kilometricTypeSelectList}
@@ -48,33 +57,12 @@ const KilometricTypeSelectPickerAux = ({
       onValueChange={onChange}
       required={required}
       readonly={readonly}
-      isValueItem={true}
     />
   );
 };
 
-const KilometricTypeSelectPicker = ({
-  title,
-  defaultValue,
-  onChange,
-  readonly,
-  required,
-}) => {
-  return (
-    <KilometricTypeSelectPickerAux
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const KilometricTypeSelectPicker = (props: KilometricTypeSelectPickerProps) => {
+  return <KilometricTypeSelectPickerAux {...props} />;
 };
-
-const styles = StyleSheet.create({
-  picker: {
-    alignSelf: 'center',
-  },
-});
 
 export default KilometricTypeSelectPicker;

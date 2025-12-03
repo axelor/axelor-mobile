@@ -37,32 +37,23 @@ export const getDistance = createAsyncThunk(
 const initialState = {
   loadingDistance: true,
   distance: null,
-  fromCity: null,
-  toCity: null,
   showCityError: false,
-  needUpdateDistance: false,
 };
 
 const distanceSlice = createSlice({
   name: 'distance',
   initialState,
   reducers: {
-    updateFromCity: (state, action) => {
-      state.fromCity = action.payload;
-    },
-    updateToCity: (state, action) => {
-      state.toCity = action.payload;
-    },
     resetDistance: state => {
       state.distance = null;
     },
-    needUpdateDistance: (state, action) => {
-      state.needUpdateDistance = action.payload;
-    },
   },
   extraReducers: builder => {
-    builder.addCase(getDistance.pending, (state, action) => {
+    builder.addCase(getDistance.pending, state => {
       state.loadingDistance = true;
+    });
+    builder.addCase(getDistance.rejected, state => {
+      state.loadingDistance = false;
     });
     builder.addCase(getDistance.fulfilled, (state, action) => {
       state.loadingDistance = false;
@@ -78,7 +69,6 @@ const distanceSlice = createSlice({
     });
   },
 });
-export const {updateFromCity, updateToCity, resetDistance, needUpdateDistance} =
-  distanceSlice.actions;
+export const {resetDistance} = distanceSlice.actions;
 
 export const distanceReducer = distanceSlice.reducer;
