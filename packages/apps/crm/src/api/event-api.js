@@ -25,8 +25,8 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createEventCriteria = (searchValue, date) => {
-  const startDate = getPreviousMonth(date).toISOString();
-  const endDate = getNextMonth(date).toISOString();
+  const startDate = getPreviousMonth(date, 2).toISOString();
+  const endDate = getNextMonth(date, 2).toISOString();
 
   return [
     {
