@@ -19,6 +19,7 @@
 export {updateAgendaItems} from './agenda';
 export * from './api';
 export {
+  decreaseDate,
   diffDate,
   getDay,
   getEndOfDay,
@@ -31,6 +32,7 @@ export {
   isDate,
   isDateTime,
   ISODateTimeToDate,
+  isMidnightDate,
   isToday,
   sameDate,
 } from './date';
