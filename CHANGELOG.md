@@ -3,6 +3,37 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.41] (2025-12-04)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Date: add two new helpers (isMidnightDate & decreaseDate)
+- Date: improve helpers getNextMonth & getPreviousMonth to define number of months to add/remove
+
+#### Fixes
+
+- Planning: improve display of multidays events to match AOP behavior
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Expense line: simplify logic on distance computation
+
+#### Fixes
+
+- Expense line: save distance value when coming from API computation
+- Expense line: make kilometricTypeSelect a number inside form configuration
+- Expense line: manage kilometric type in distance computation
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Planning: load events 2 months around the current date instead of 1
+
 ## [7.2.40] (2025-11-12)
 
 ### @axelor/aos-mobile-core
@@ -1036,6 +1067,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.41]: https://github.com/axelor/axelor-mobile/compare/7.2.40...7.2.41
 [7.2.40]: https://github.com/axelor/axelor-mobile/compare/7.2.39...7.2.40
 [7.2.39]: https://github.com/axelor/axelor-mobile/compare/7.2.38...7.2.39
 [7.2.38]: https://github.com/axelor/axelor-mobile/compare/7.2.37...7.2.38
