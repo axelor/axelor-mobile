@@ -3,6 +3,45 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.4] (2025-12-04)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Date: add two new helpers (isMidnightDate & decreaseDate)
+- Date: improve helpers getNextMonth & getPreviousMonth to define number of months to add/remove
+
+#### Fixes
+
+- Date formatter: allow the use of half year display
+- Websocket: manage unsecure instances
+- Planning: improve display of multidays events to match AOP behavior
+
+### @axelor/aos-mobile-project
+
+#### Fixes
+
+- Project: resolve date issue on activities view
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Expense line: simplify logic on distance computation
+
+#### Fixes
+
+- Expense line: save distance value when coming from API computation
+- Expense line: make kilometricTypeSelect a number inside form configuration
+- Expense line: manage kilometric type in distance computation
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Planning: load events 2 months around the current date instead of 1
+
 ## [8.5.3] (2025-11-28)
 
 ### @axelor/aos-mobile-core
@@ -189,6 +228,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.4]: https://github.com/axelor/axelor-mobile/compare/8.5.3...8.5.4
 [8.5.3]: https://github.com/axelor/axelor-mobile/compare/8.5.2...8.5.3
 [8.5.2]: https://github.com/axelor/axelor-mobile/compare/8.5.1...8.5.2
 [8.5.1]: https://github.com/axelor/axelor-mobile/compare/8.5.0...8.5.1

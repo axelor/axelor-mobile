@@ -1,5 +1,0 @@
-{
-  "title": "Expense line: simplify logic on distance computation",
-  "type": "refactor",
-  "packages": "hr"
-}
