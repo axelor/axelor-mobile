@@ -3,6 +3,25 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.25] (2025-12-04)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Date: add two new helpers (isMidnightDate & decreaseDate)
+- Date: improve helpers getNextMonth & getPreviousMonth to define number of months to add/remove
+
+#### Fixes
+
+- Planning: improve display of multidays events to match AOP behavior
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Planning: load events 2 months around the current date instead of 1
+
 ## [7.1.24] (2025-11-12)
 
 ### @axelor/aos-mobile-core
@@ -708,6 +727,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.25]: https://github.com/axelor/axelor-mobile/compare/7.1.24...7.1.25
 [7.1.24]: https://github.com/axelor/axelor-mobile/compare/7.1.23...7.1.24
 [7.1.23]: https://github.com/axelor/axelor-mobile/compare/7.1.22...7.1.23
 [7.1.22]: https://github.com/axelor/axelor-mobile/compare/7.1.21...7.1.22
