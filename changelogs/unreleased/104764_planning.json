@@ -1,5 +1,0 @@
-{
-  "title": "Planning: improve display of multidays events to match AOP behavior",
-  "type": "fix",
-  "packages": "core"
-}

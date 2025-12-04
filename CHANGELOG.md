@@ -3,6 +3,37 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.17] (2025-12-04)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Date: add two new helpers (isMidnightDate & decreaseDate)
+- Date: improve helpers getNextMonth & getPreviousMonth to define number of months to add/remove
+
+#### Fixes
+
+- Planning: improve display of multidays events to match AOP behavior
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Expense line: simplify logic on distance computation
+
+#### Fixes
+
+- Expense line: save distance value when coming from API computation
+- Expense line: make kilometricTypeSelect a number inside form configuration
+- Expense line: manage kilometric type in distance computation
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Planning: load events 2 months around the current date instead of 1
+
 ## [8.3.16] (2025-11-28)
 
 ### @axelor/aos-mobile-core
@@ -14,7 +45,6 @@ tags: Changelog
 <details>
 Popup mode has been activate for signature type fields to avoid conflicts with scroll behavior. This value can be overriden by adding options.popup false value on the field configuration.
 </details>
-
 
 ## [8.3.15] (2025-11-12)
 
@@ -573,6 +603,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.17]: https://github.com/axelor/axelor-mobile/compare/8.3.16...8.3.17
 [8.3.16]: https://github.com/axelor/axelor-mobile/compare/8.3.15...8.3.16
 [8.3.15]: https://github.com/axelor/axelor-mobile/compare/8.3.14...8.3.15
 [8.3.14]: https://github.com/axelor/axelor-mobile/compare/8.3.13...8.3.14

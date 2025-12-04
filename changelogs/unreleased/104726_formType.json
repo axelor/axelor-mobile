@@ -1,5 +1,0 @@
-{
-  "title": "Expense line: make kilometricTypeSelect a number inside form configuration",
-  "type": "fix",
-  "packages": "hr"
-}
