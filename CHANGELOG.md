@@ -3,6 +3,37 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.25] (2025-12-04)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Date: add two new helpers (isMidnightDate & decreaseDate)
+- Date: improve helpers getNextMonth & getPreviousMonth to define number of months to add/remove
+
+#### Fixes
+
+- Planning: improve display of multidays events to match AOP behavior
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Expense line: simplify logic on distance computation
+
+#### Fixes
+
+- Expense line: save distance value when coming from API computation
+- Expense line: make kilometricTypeSelect a number inside form configuration
+- Expense line: manage kilometric type in distance computation
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Planning: load events 2 months around the current date instead of 1
+
 ## [8.2.24] (2025-11-28)
 
 ### @axelor/aos-mobile-core
@@ -884,6 +915,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.25]: https://github.com/axelor/axelor-mobile/compare/8.2.24...8.2.25
 [8.2.24]: https://github.com/axelor/axelor-mobile/compare/8.2.23...8.2.24
 [8.2.23]: https://github.com/axelor/axelor-mobile/compare/8.2.22...8.2.23
 [8.2.22]: https://github.com/axelor/axelor-mobile/compare/8.2.21...8.2.22

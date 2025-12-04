@@ -1,5 +1,0 @@
-{
-  "title": "Date: add two new helpers (isMidnightDate & decreaseDate)",
-  "type": "feat",
-  "packages": "core"
-}
