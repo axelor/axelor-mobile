@@ -1,5 +1,0 @@
-{
-  "title": "Websocket: manage unsecure instances",
-  "type": "fix",
-  "packages": "core"
-}

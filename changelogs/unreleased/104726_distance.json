@@ -1,5 +1,0 @@
-{
-  "title": "Expense line: save distance value when coming from API computation",
-  "type": "fix",
-  "packages": "hr"
-}

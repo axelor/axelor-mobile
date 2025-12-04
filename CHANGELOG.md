@@ -3,6 +3,38 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.11] (2025-12-04)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Date: add two new helpers (isMidnightDate & decreaseDate)
+- Date: improve helpers getNextMonth & getPreviousMonth to define number of months to add/remove
+
+#### Fixes
+
+- Websocket: manage unsecure instances
+- Planning: improve display of multidays events to match AOP behavior
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Expense line: simplify logic on distance computation
+
+#### Fixes
+
+- Expense line: save distance value when coming from API computation
+- Expense line: make kilometricTypeSelect a number inside form configuration
+- Expense line: manage kilometric type in distance computation
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Planning: load events 2 months around the current date instead of 1
+
 ## [8.4.10] (2025-11-28)
 
 ### @axelor/aos-mobile-core
@@ -458,6 +490,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.11]: https://github.com/axelor/axelor-mobile/compare/8.4.10...8.4.11
 [8.4.10]: https://github.com/axelor/axelor-mobile/compare/8.4.9...8.4.10
 [8.4.9]: https://github.com/axelor/axelor-mobile/compare/8.4.8...8.4.9
 [8.4.8]: https://github.com/axelor/axelor-mobile/compare/8.4.7...8.4.8
