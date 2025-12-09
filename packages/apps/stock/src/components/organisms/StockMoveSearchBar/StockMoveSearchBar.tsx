@@ -17,8 +17,12 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {displayStockMoveSeq} from '../../../utils';
 import {searchStockMove} from '../../../features/stockMoveSlice';
 
@@ -27,6 +31,7 @@ interface StockMoveSearchBarProps {
   title?: string;
   defaultValue?: any;
   onChange?: (value: any) => void;
+  scanKey: string;
   showDetailsPopup?: boolean;
   isScrollViewContainer?: boolean;
   required?: boolean;
@@ -45,6 +50,7 @@ const StockMoveSearchBarAux = ({
   title = 'Stock_StockMove',
   defaultValue,
   onChange,
+  scanKey,
   showDetailsPopup = true,
   isScrollViewContainer = false,
   required = false,
@@ -102,7 +108,7 @@ const StockMoveSearchBarAux = ({
   );
 
   return (
-    <AutoCompleteSearch
+    <ScannerAutocompleteSearch
       style={style}
       title={showTitle && I18n.t(title)}
       placeholder={I18n.t(title)}
@@ -116,6 +122,7 @@ const StockMoveSearchBarAux = ({
       onChangeValue={onChange}
       fetchData={fetchStockMovesAPI}
       displayValue={displayStockMoveSeq}
+      scanKeySearch={scanKey}
       showDetailsPopup={showDetailsPopup}
       isScrollViewContainer={isScrollViewContainer}
     />
