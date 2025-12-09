@@ -34,6 +34,7 @@ const stockOriginalLocationScanKey =
   'stock-original-location_internal-move-list';
 const stockDestinationLocationScanKey =
   'stock-destination-location_internal-move-list';
+const scanKey = 'stock-move_internal-move-list';
 
 const InternalMoveListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -99,6 +100,7 @@ const InternalMoveListScreen = ({navigation}) => {
         displaySearchValue={displayStockMoveSeq}
         searchPlaceholder={I18n.t('Stock_Ref')}
         searchNavigate={navigate}
+        scanKeySearch={scanKey}
         chipComponent={
           <ChipSelect
             mode="switch"
