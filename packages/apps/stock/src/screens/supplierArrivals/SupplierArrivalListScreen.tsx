@@ -34,6 +34,7 @@ import {searchSupplierArrivals} from '../../features/supplierArrivalSlice';
 import {displayStockMoveSeq} from '../../utils/displayers';
 
 const stockLocationScanKey = 'stock-location_supplier-arrival-list';
+const scanKey = 'stock-move_supplier-arrival-list';
 
 const SupplierArrivalListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -92,6 +93,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
         displaySearchValue={displayStockMoveSeq}
         searchPlaceholder={I18n.t('Stock_Ref')}
         searchNavigate={navigate}
+        scanKeySearch={scanKey}
         chipComponent={
           <ChipSelect
             mode="switch"

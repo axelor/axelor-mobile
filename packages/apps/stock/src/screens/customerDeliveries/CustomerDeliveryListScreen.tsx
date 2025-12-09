@@ -34,6 +34,7 @@ import {searchDeliveries} from '../../features/customerDeliverySlice';
 import {displayStockMoveSeq} from '../../utils/displayers';
 
 const stockLocationScanKey = 'stock-location_customer-delivery-list';
+const scanKey = 'stock-move_customer-delivery-list';
 
 const CustomerDeliveryListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -93,6 +94,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
         displaySearchValue={displayStockMoveSeq}
         searchPlaceholder={I18n.t('Stock_Ref')}
         searchNavigate={navigate}
+        scanKeySearch={scanKey}
         chipComponent={
           <ChipSelect
             mode="switch"
