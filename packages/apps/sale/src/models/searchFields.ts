@@ -23,6 +23,7 @@ export const sale_searchFields: SearchFields = {
     'name',
     'code',
     'serialNumber',
+    'alternativeBarcodeList.serialNumber',
     'productFamily.name',
     'productCategory.name',
     'description',
@@ -34,7 +35,6 @@ export const sale_searchFields: SearchFields = {
   sale_complementaryProduct: ['product.name', 'product.code'],
   sale_priceListLine: ['priceList.title'],
   sale_cartLine: ['product.name', 'product.code'],
-  sale_alternativeBarcode: ['serialNumber'],
   sale_partnerLink: [
     'partner2.fullName',
     'partner2.simpleFullName',
