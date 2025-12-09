@@ -189,7 +189,6 @@
   "Sale_SliceAction_CreateSaleOrder": "création d'un devis",
   "Sale_SliceAction_AddProductToActiveCart": "ajout du produit dans le panier actif",
   "Sale_SliceAction_CreateCustomer": "création d'un client",
-  "Sale_SliceAction_SearchAlternativeBarcode": "recherche des codes-barres alternatifs",
   "Sale_SliceAction_SearchDeliveryPartnerLinks": "recherche des liens partenaires de livraison",
   "Sale_SliceAction_SearchPaymentMode": "recherche modes de paiement",
   "Sale_SliceAction_SearchPaymentCondition": "recherche conditions de paiement"
