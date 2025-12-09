@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchAlternativeBarcode as searchAlternativeBarcodeApi} from './alternative-barcode-api';
 export {
   addProductToActiveCart as addProductToActiveCartApi,
   emptyCart as emptyCartApi,

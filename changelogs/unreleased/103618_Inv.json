@@ -1,0 +1,5 @@
+{
+  "title": "Inventories: add managament of alternatives barcodes on line search",
+  "type": "feat",
+  "packages": "stock"
+}

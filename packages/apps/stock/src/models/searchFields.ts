@@ -23,6 +23,7 @@ export const stock_searchFields: SearchFields = {
   stock_customerDeliveryLine: [
     'product.fullName',
     'product.serialNumber',
+    'product.alternativeBarcodeList.serialNumber',
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
@@ -30,6 +31,7 @@ export const stock_searchFields: SearchFields = {
   stock_internalMoveLine: [
     'product.fullName',
     'product.serialNumber',
+    'product.alternativeBarcodeList.serialNumber',
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
@@ -37,10 +39,14 @@ export const stock_searchFields: SearchFields = {
   stock_inventoryLine: [
     'product.fullName',
     'product.serialNumber',
+    'product.alternativeBarcodeList.serialNumber',
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
-  stock_inventoryLineMassScan: ['product.serialNumber'],
+  stock_inventoryLineMassScan: [
+    'product.serialNumber',
+    'product.alternativeBarcodeList.serialNumber',
+  ],
   stock_logisticalForm: ['deliveryNumberSeq'],
   stock_packaging: ['packagingNumber'],
   stock_packagingLine: [
@@ -56,11 +62,17 @@ export const stock_searchFields: SearchFields = {
     'firstName',
     'simpleFullName',
   ],
-  stock_product: ['name', 'code', 'serialNumber'],
+  stock_product: [
+    'name',
+    'code',
+    'serialNumber',
+    'alternativeBarcodeList.serialNumber',
+  ],
   stock_stockLocation: ['name', 'serialNumber'],
   stock_stockLocationLine: [
     'product.fullName',
     'product.serialNumber',
+    'product.alternativeBarcodeList.serialNumber',
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
@@ -68,6 +80,7 @@ export const stock_searchFields: SearchFields = {
   stock_stockMoveLine: [
     'product.fullName',
     'product.serialNumber',
+    'product.alternativeBarcodeList.serialNumber',
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
@@ -75,13 +88,14 @@ export const stock_searchFields: SearchFields = {
   stock_supplierArrivalLine: [
     'product.fullName',
     'product.serialNumber',
+    'product.alternativeBarcodeList.serialNumber',
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
   stock_trackingNumber: ['trackingNumberSeq', 'serialNumber', 'origin'],
-  stock_alternativeBarcode: ['serialNumber'],
   stock_massStockMoveLine: [
     'product.serialNumber',
+    'product.alternativeBarcodeList.serialNumber',
     'trackingNumber.serialNumber',
   ],
 };
