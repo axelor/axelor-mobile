@@ -1,0 +1,5 @@
+{
+  "title": "Mass picking: add managament of alternatives barcodes on line/product search",
+  "type": "feat",
+  "packages": "stock"
+}
