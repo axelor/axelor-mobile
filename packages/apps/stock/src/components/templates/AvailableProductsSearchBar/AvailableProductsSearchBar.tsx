@@ -16,21 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {
-  DoubleScannerSearchBar,
+  ScannerAutocompleteSearch,
+  useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchAvailableProducts} from '../../../features/stockLocationLineSlice';
-import {searchAlternativeBarcode} from '../../../features/alternativeBarcodeSlice';
 
-const barCodeScanKey = 'product_available-bar-code';
+const displayItem = (_item: any) =>
+  _item?.trackingNumber != null
+    ? `${_item?.product?.name} - ${_item?.trackingNumber?.trackingNumberSeq}`
+    : _item?.product?.name;
+
+type AvailableProductsSearchBarProps = {
+  style?: any;
+  placeholderKey?: string;
+  defaultValue?: any;
+  onChange?: (value: any) => void;
+  stockLocationId: number;
+  scanKey: string;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  isFocus?: boolean;
+  changeScreenAfter?: boolean;
+  isScrollViewContainer?: boolean;
+};
 
 const AvailableProductsSearchBar = ({
+  style,
   placeholderKey = 'Stock_Product',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   stockLocationId,
   scanKey,
   showDetailsPopup = true,
@@ -39,54 +58,45 @@ const AvailableProductsSearchBar = ({
   isFocus = false,
   changeScreenAfter = false,
   isScrollViewContainer = false,
-}) => {
+}: AvailableProductsSearchBarProps) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
-  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {
     availableProducts,
     loadingAvailableProducts,
     moreLoadingAvailableProducts,
     isListEndAvailableProducts,
   } = useSelector(state => state.stockLocationLine);
-  const {alternativeBarcodeList} = useSelector(
-    state => state.stock_alternativeBarcode,
-  );
 
-  const sliceFunctionData = useMemo(
-    () => ({
-      stockLocationId,
-      alternativeBarcodeList,
-    }),
-    [alternativeBarcodeList, stockLocationId],
+  const fetchAvailableProductsAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      dispatch(
+        (searchAvailableProducts as any)({page, searchValue, stockLocationId}),
+      );
+    },
+    [dispatch, stockLocationId],
   );
 
   return (
-    <DoubleScannerSearchBar
+    <ScannerAutocompleteSearch
+      style={style}
       value={defaultValue}
-      sliceFunction={searchAvailableProducts}
-      sliceFunctionData={sliceFunctionData}
-      list={availableProducts}
+      fetchData={fetchAvailableProductsAPI}
+      objectList={availableProducts}
       loadingList={loadingAvailableProducts}
       moreLoading={moreLoadingAvailableProducts}
       isListEnd={isListEndAvailableProducts}
       onChangeValue={onChange}
-      displayValue={_item =>
-        _item?.trackingNumber != null
-          ? `${_item?.product?.name} - ${_item?.trackingNumber?.trackingNumberSeq}`
-          : _item?.product?.name
-      }
+      displayValue={displayItem}
       scanKeySearch={scanKey}
-      placeholderSearchBar={I18n.t(placeholderKey)}
+      placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
       changeScreenAfter={changeScreenAfter}
-      scanKeyBarCode={barCodeScanKey}
-      sliceBarCodeFunction={searchAlternativeBarcode}
       isScrollViewContainer={isScrollViewContainer}
-      displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
     />
   );
 };

@@ -367,10 +367,6 @@ export const stock_modelAPI: ObjectFields = {
     receiptState: schemaContructor.number(),
     sequence: schemaContructor.number(),
   }),
-  stock_alternativeBarcode: schemaContructor.object({
-    product: schemaContructor.subObject(),
-    serialNumber: schemaContructor.number(),
-  }),
   stock_stockMove: schemaContructor.object({
     stockMoveSeq: schemaContructor.string(),
   }),

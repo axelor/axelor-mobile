@@ -16,22 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {
   displayItemName,
   useSelector,
   useTranslator,
-  DoubleScannerSearchBar,
+  ScannerAutocompleteSearch,
+  useDispatch,
 } from '@axelor/aos-mobile-core';
 import {searchProducts} from '../../../features/productSlice';
-import {searchAlternativeBarcode} from '../../../features/alternativeBarcodeSlice';
 
-const barCodeScanKey = 'product_bar-code_product-search-bar';
+type ProductSearchBarProps = {
+  style?: any;
+  placeholderKey?: string;
+  defaultValue?: any;
+  onChange?: (value: any) => void;
+  scanKey: string;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  isFocus?: boolean;
+  changeScreenAfter?: boolean;
+  onFetchDataAction?: (value: any) => void;
+};
 
 const ProductSearchBar = ({
+  style,
   placeholderKey = 'Stock_Product',
-  defaultValue = '',
-  onChange = () => {},
+  defaultValue,
+  onChange,
   scanKey,
   showDetailsPopup = true,
   navigate = false,
@@ -39,31 +52,28 @@ const ProductSearchBar = ({
   isFocus = false,
   changeScreenAfter = false,
   onFetchDataAction,
-}) => {
+}: ProductSearchBarProps) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
-  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
     useSelector(state => state.product);
-  const {alternativeBarcodeList} = useSelector(
-    state => state.stock_alternativeBarcode,
-  );
 
-  const sliceFunctionData = useMemo(
-    () => ({
-      alternativeBarcodeList,
-    }),
-    [alternativeBarcodeList],
+  const fetchProductsAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
+      dispatch((searchProducts as any)({page, searchValue}));
+    },
+    [dispatch, onFetchDataAction],
   );
 
   return (
-    <DoubleScannerSearchBar
+    <ScannerAutocompleteSearch
+      style={style}
       value={defaultValue}
-      placeholderSearchBar={I18n.t(placeholderKey)}
-      onFetchDataAction={onFetchDataAction}
-      sliceFunction={searchProducts}
-      sliceFunctionData={sliceFunctionData}
-      list={productList}
+      placeholder={I18n.t(placeholderKey)}
+      fetchData={fetchProductsAPI}
+      objectList={productList}
       loadingList={loadingProduct}
       moreLoading={moreLoadingProduct}
       isListEnd={isListEndProduct}
@@ -75,9 +85,6 @@ const ProductSearchBar = ({
       oneFilter={oneFilter}
       isFocus={isFocus}
       changeScreenAfter={changeScreenAfter}
-      sliceBarCodeFunction={searchAlternativeBarcode}
-      scanKeyBarCode={barCodeScanKey}
-      displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
     />
   );
 };

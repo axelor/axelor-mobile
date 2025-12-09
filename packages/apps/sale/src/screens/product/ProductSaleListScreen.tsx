@@ -19,7 +19,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
-  DoubleScannerSearchBar,
   SearchListView,
   displayItemName,
   useSelector,
@@ -28,11 +27,9 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {searchProduct} from '../../features/productSlice';
-import {searchAlternativeBarcode} from '../../features/alternativeBarcodeSlice';
 import {ProductCard, ProductCategorySearchBar} from '../../components';
 
 const productScanKey = 'product_sale_product-list';
-const barCodeScanKey = `${productScanKey}_alternative-barcode`;
 
 const ProductSaleListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -42,13 +39,9 @@ const ProductSaleListScreen = ({navigation}) => {
   const [productTypeSelect, setProductTypeSelect] = useState();
   const [productCategory, setProductCategory] = useState();
 
-  const {base: baseConfig} = useSelector(state => state.appConfig);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
-    (state: any) => state.sale_product,
-  );
-  const {alternativeBarcodeList} = useSelector(
-    state => state.sale_alternativeBarcode,
+    state => state.sale_product,
   );
 
   const filterProductTypeSelectForApi = useCallback(
@@ -69,14 +62,12 @@ const ProductSaleListScreen = ({navigation}) => {
       productTypeSelect: filterProductTypeSelectForApi(productTypeSelect),
       productCategory: productCategory,
       isConfiguratorProductShown: mobileSettings?.isConfiguratorProductShown,
-      alternativeBarcodeList,
     }),
     [
       filterProductTypeSelectForApi,
       productTypeSelect,
       productCategory,
       mobileSettings?.isConfiguratorProductShown,
-      alternativeBarcodeList,
     ],
   );
 
@@ -107,24 +98,7 @@ const ProductSaleListScreen = ({navigation}) => {
         sliceFunctionData={sliceFunctionData}
         displaySearchValue={displayItemName}
         searchPlaceholder={I18n.t('Base_Search')}
-        customSearchBarComponent={
-          <DoubleScannerSearchBar
-            list={productList}
-            loadingList={loadingList}
-            moreLoading={moreLoading}
-            isListEnd={isListEnd}
-            sliceFunction={searchProduct}
-            sliceFunctionData={sliceFunctionData}
-            placeholderSearchBar={I18n.t('Sale_Product')}
-            displayValue={displayItemName}
-            sliceBarCodeFunction={searchAlternativeBarcode}
-            displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
-            scanKeySearch={productScanKey}
-            scanKeyBarCode={barCodeScanKey}
-            showDetailsPopup={false}
-            oneFilter
-          />
-        }
+        scanKeySearch={productScanKey}
         headerChildren={
           <ProductCategorySearchBar
             defaultValue={productCategory}
