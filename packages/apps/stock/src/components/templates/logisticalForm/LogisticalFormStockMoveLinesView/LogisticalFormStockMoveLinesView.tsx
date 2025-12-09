@@ -37,6 +37,7 @@ import {fetchStockMoveLines} from '../../../../features/stockMoveLineSlice';
 import {useLogisticalFormState} from '../../../../hooks';
 
 const stockMoveLineScanKey = 'stock-move-line_logistical-form-state-list';
+const stockMoveScanKey = 'stock-move_logistical-form-state-list';
 
 const LogisticalFormStockMoveLinesView = () => {
   const I18n = useTranslator();
@@ -118,6 +119,7 @@ const LogisticalFormStockMoveLinesView = () => {
             defaultValue={selectedStockMove}
             onChange={setSelectedStockMove}
             stockMoveSet={logisticalForm?.stockMoveList ?? []}
+            scanKey={stockMoveScanKey}
           />
         }
         list={filteredList}
