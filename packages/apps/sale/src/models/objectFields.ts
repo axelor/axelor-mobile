@@ -83,10 +83,6 @@ export const sale_modelAPI: ObjectFields = {
     ),
     parentProduct: schemaContructor.subObject('name'),
   }),
-  sale_alternativeBarcode: schemaContructor.object({
-    product: schemaContructor.subObject(),
-    serialNumber: schemaContructor.number(),
-  }),
   sale_productVariantConfig: schemaContructor.object({
     name: schemaContructor.string(),
     productVariantAttr1: schemaContructor.subObject(),

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {alternativeBarcodeReducer as stock_alternativeBarcode} from './alternativeBarcodeSlice';
 export {customerDeliveryLineReducer as customerDeliveryLine} from './customerDeliveryLineSlice';
 export {customerDeliveryReducer as customerDelivery} from './customerDeliverySlice';
 export {internalMoveLineReducer as internalMoveLine} from './internalMoveLineSlice';
