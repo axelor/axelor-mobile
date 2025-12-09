@@ -26,34 +26,36 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
+  CustomerDeliveryCard,
   PartnerSearchBar,
   StockLocationSearchBar,
-  SupplierArrivalCard,
 } from '../../components';
-import {searchSupplierArrivals} from '../../features/supplierArrivalSlice';
+import {searchDeliveries} from '../../features/customerDeliverySlice';
 import {displayStockMoveSeq} from '../../utils/displayers';
 
-const stockLocationScanKey = 'stock-location_supplier-arrival-list';
+const stockLocationScanKey = 'stock-location_customer-delivery-list';
+const scanKey = 'stock-move_customer-delivery-list';
 
-const SupplierArrivalListScreen = ({navigation}) => {
+const CustomerDeliveryListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
-  const {loadingList, moreLoading, isListEnd, supplierArrivalsList} =
-    useSelector(state => state.supplierArrival);
+  const {loadingList, moreLoading, isListEnd, deliveryList} = useSelector(
+    state => state.customerDelivery,
+  );
   const {user} = useSelector(state => state.user);
 
   const [stockLocation, setStockLocation] = useState(null);
-  const [partner, setPartner] = useState(null);
+  const [customer, setCustomer] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
 
-  const navigateToSupplierDetail = item => {
+  const navigateToCustomerDelivery = item => {
     if (item != null) {
       setNavigate(current => !current);
-      navigation.navigate('SupplierArrivalDetailsScreen', {
-        supplierArrivalId: item?.id,
+      navigation.navigate('CustomerDeliveryDetailScreen', {
+        customerDeliveryId: item?.id,
       });
     }
   };
@@ -71,27 +73,28 @@ const SupplierArrivalListScreen = ({navigation}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      toStockLocationId: stockLocation?.id,
-      partnerId: partner?.id,
+      fromStockLocationId: stockLocation?.id,
+      partnerId: customer?.id,
       statusList: selectedStatus,
       companyId: user.activeCompany?.id,
     }),
-    [partner?.id, selectedStatus, stockLocation?.id, user.activeCompany?.id],
+    [customer?.id, selectedStatus, stockLocation?.id, user.activeCompany?.id],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
-        list={supplierArrivalsList}
+        list={deliveryList}
         loading={loadingList}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        sliceFunction={searchSupplierArrivals}
+        sliceFunction={searchDeliveries}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={navigateToSupplierDetail}
+        onChangeSearchValue={navigateToCustomerDelivery}
         displaySearchValue={displayStockMoveSeq}
         searchPlaceholder={I18n.t('Stock_Ref')}
         searchNavigate={navigate}
+        scanKeySearch={scanKey}
         chipComponent={
           <ChipSelect
             mode="switch"
@@ -108,25 +111,27 @@ const SupplierArrivalListScreen = ({navigation}) => {
               onChange={setStockLocation}
             />
             <PartnerSearchBar
-              defaultValue={partner}
-              onChange={setPartner}
-              title="Stock_Supplier"
-              partnerType="supplier"
+              defaultValue={customer}
+              onChange={setCustomer}
+              title="Stock_Customer"
             />
           </>
         }
         renderListItem={({item}) => (
-          <SupplierArrivalCard
+          <CustomerDeliveryCard
             reference={item.stockMoveSeq}
             client={item.partner?.fullName}
             status={item.statusSelect}
             date={
-              item.statusSelect === StockMove?.statusSelect.Planned
-                ? item.estimatedDate
-                : item.realDate
+              item.statusSelect === StockMove?.statusSelect.Draft
+                ? item.createdOn
+                : item.statusSelect === StockMove?.statusSelect.Planned
+                  ? item.estimatedDate
+                  : item.realDate
             }
-            onPress={() => navigateToSupplierDetail(item)}
             origin={item.origin}
+            availability={item.availableStatusSelect}
+            onPress={() => navigateToCustomerDelivery(item)}
           />
         )}
       />
@@ -134,4 +139,4 @@ const SupplierArrivalListScreen = ({navigation}) => {
   );
 };
 
-export default SupplierArrivalListScreen;
+export default CustomerDeliveryListScreen;

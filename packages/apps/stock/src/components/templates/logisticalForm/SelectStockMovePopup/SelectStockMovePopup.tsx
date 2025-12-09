@@ -25,6 +25,8 @@ import {
   removeStockMoveFromLogisticalForm,
 } from '../../../../features/logisticalFormSlice';
 
+const stockMoveScanKey = 'stock-move_logistical-form-select-move-alert';
+
 export enum PopupType {
   add = 'add',
   remove = 'remove',
@@ -97,6 +99,7 @@ const SelectStockMovePopup = ({
         }
         logisticalFormId={logisticalForm.id}
         stockLocationId={logisticalForm.stockLocation?.id}
+        scanKey={stockMoveScanKey}
       />
     </Alert>
   );
