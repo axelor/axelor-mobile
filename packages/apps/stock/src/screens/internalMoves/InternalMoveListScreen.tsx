@@ -25,42 +25,44 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {
-  CustomerDeliveryCard,
-  PartnerSearchBar,
-  StockLocationSearchBar,
-} from '../../components';
-import {searchDeliveries} from '../../features/customerDeliverySlice';
+import {InternalMoveCard, StockLocationSearchBar} from '../../components';
+import {searchInternalMoves} from '../../features/internalMoveSlice';
 import {displayStockMoveSeq} from '../../utils/displayers';
+import {default as StockMoveType} from '../../types/stock-move';
 
-const stockLocationScanKey = 'stock-location_customer-delivery-list';
+const stockOriginalLocationScanKey =
+  'stock-original-location_internal-move-list';
+const stockDestinationLocationScanKey =
+  'stock-destination-location_internal-move-list';
+const scanKey = 'stock-move_internal-move-list';
 
-const CustomerDeliveryListScreen = ({navigation}) => {
+const InternalMoveListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
-  const {loadingList, moreLoading, isListEnd, deliveryList} = useSelector(
-    state => state.customerDelivery,
-  );
+  const {loadingInternalMoveList, moreLoading, isListEnd, internalMoveList} =
+    useSelector(state => state.internalMove);
   const {user} = useSelector(state => state.user);
 
-  const [stockLocation, setStockLocation] = useState(null);
-  const [customer, setCustomer] = useState(null);
+  const [originalStockLocation, setOriginalStockLocation] = useState(null);
+  const [destinationStockLocation, setDestinationStockLocation] =
+    useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
 
-  const navigateToCustomerDelivery = item => {
-    if (item != null) {
+  const showInternalMoveDetails = internalMove => {
+    if (internalMove != null) {
       setNavigate(current => !current);
-      navigation.navigate('CustomerDeliveryDetailScreen', {
-        customerDeliveryId: item?.id,
+      navigation.navigate('InternalMoveDetailsGeneralScreen', {
+        internalMoveId: internalMove?.id,
       });
     }
   };
 
   const statusList = useMemo(() => {
     const statusToDisplay = [
+      StockMove?.statusSelect.Draft,
       StockMove?.statusSelect.Planned,
       StockMove?.statusSelect.Realized,
     ];
@@ -72,27 +74,33 @@ const CustomerDeliveryListScreen = ({navigation}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      fromStockLocationId: stockLocation?.id,
-      partnerId: customer?.id,
+      fromStockLocationId: originalStockLocation?.id,
+      toStockLocationId: destinationStockLocation?.id,
       statusList: selectedStatus,
       companyId: user.activeCompany?.id,
     }),
-    [customer?.id, selectedStatus, stockLocation?.id, user.activeCompany?.id],
+    [
+      destinationStockLocation?.id,
+      originalStockLocation?.id,
+      selectedStatus,
+      user.activeCompany?.id,
+    ],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
-        list={deliveryList}
-        loading={loadingList}
+        list={internalMoveList}
+        loading={loadingInternalMoveList}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        sliceFunction={searchDeliveries}
+        sliceFunction={searchInternalMoves}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={navigateToCustomerDelivery}
+        onChangeSearchValue={showInternalMoveDetails}
         displaySearchValue={displayStockMoveSeq}
         searchPlaceholder={I18n.t('Stock_Ref')}
         searchNavigate={navigate}
+        scanKeySearch={scanKey}
         chipComponent={
           <ChipSelect
             mode="switch"
@@ -103,33 +111,30 @@ const CustomerDeliveryListScreen = ({navigation}) => {
         headerChildren={
           <>
             <StockLocationSearchBar
-              scanKey={stockLocationScanKey}
-              placeholderKey="Stock_StockLocation"
-              defaultValue={stockLocation}
-              onChange={setStockLocation}
+              placeholderKey="Stock_OriginalStockLocation"
+              defaultValue={originalStockLocation}
+              onChange={setOriginalStockLocation}
+              scanKey={stockOriginalLocationScanKey}
             />
-            <PartnerSearchBar
-              defaultValue={customer}
-              onChange={setCustomer}
-              title="Stock_Customer"
+            <StockLocationSearchBar
+              placeholderKey="Stock_DestinationStockLocation"
+              defaultValue={destinationStockLocation}
+              onChange={setDestinationStockLocation}
+              scanKey={stockDestinationLocationScanKey}
+              secondFilter={true}
             />
           </>
         }
         renderListItem={({item}) => (
-          <CustomerDeliveryCard
-            reference={item.stockMoveSeq}
-            client={item.partner?.fullName}
+          <InternalMoveCard
+            name={item.stockMoveSeq}
             status={item.statusSelect}
-            date={
-              item.statusSelect === StockMove?.statusSelect.Draft
-                ? item.createdOn
-                : item.statusSelect === StockMove?.statusSelect.Planned
-                  ? item.estimatedDate
-                  : item.realDate
-            }
-            origin={item.origin}
             availability={item.availableStatusSelect}
-            onPress={() => navigateToCustomerDelivery(item)}
+            fromStockLocation={item.fromStockLocation.name}
+            toStockLocation={item.toStockLocation.name}
+            origin={item.origin}
+            date={StockMoveType.getStockMoveDate(item.statusSelect, item)}
+            onPress={() => showInternalMoveDetails(item)}
           />
         )}
       />
@@ -137,4 +142,4 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   );
 };
 
-export default CustomerDeliveryListScreen;
+export default InternalMoveListScreen;
