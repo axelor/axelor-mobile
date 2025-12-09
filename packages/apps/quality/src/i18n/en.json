@@ -54,6 +54,7 @@
   "Quality_Send": "Send",
   "Quality_DeclareNonConformity": "Declare non-conformity",
   "Quality_SeeAttachedFiles": "See attached files",
+  "Quality_CheckControlEntries": "Check control entries",
   "Quality_SliceAction_SearchControlEntry": "search control entries",
   "Quality_SliceAction_FetchControlEntryById": "fetch control entry by id",
   "Quality_SliceAction_SearchControlEntrySample": "search control entry samples",

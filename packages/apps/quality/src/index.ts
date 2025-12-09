@@ -30,6 +30,14 @@ import {
 } from './models';
 import * as qualityReducers from './features';
 import {useQualityHeaders} from './hooks/use-quality-header-actions';
+import {searchControlEntry} from './features/controlEntrySlice';
+
+const MODELS = {
+  STOCK_MOVE: 'com.axelor.apps.stock.db.StockMove',
+  STOCK_MOVE_LINE: 'com.axelor.apps.stock.db.StockMoveLine',
+  MANUFACTURING_ORDER: 'com.axelor.apps.production.db.ManufOrder',
+  OPERATION_ORDER: 'com.axelor.apps.production.db.OperationOrder',
+};
 
 export const QualityModule: Module = {
   name: 'app-quality',
@@ -83,29 +91,59 @@ export const QualityModule: Module = {
       iconName: 'clipboard2-x',
       onPress: ({navigation, screenContext}) =>
         navigation.navigate('QualityImprovementFormScreen', {
-          stockMoveId: getModelId(
-            screenContext,
-            'com.axelor.apps.stock.db.StockMove',
-          ),
-          stockMoveLineId: getModelId(
-            screenContext,
-            'com.axelor.apps.stock.db.StockMoveLine',
-          ),
-          manufOrderId: getModelId(
-            screenContext,
-            'com.axelor.apps.production.db.ManufOrder',
-          ),
-          operationOrderId: getModelId(
-            screenContext,
-            'com.axelor.apps.production.db.OperationOrder',
-          ),
+          stockMoveId: getModelId(screenContext, MODELS.STOCK_MOVE),
+          stockMoveLineId: getModelId(screenContext, MODELS.STOCK_MOVE_LINE),
+          manufOrderId: getModelId(screenContext, MODELS.MANUFACTURING_ORDER),
+          operationOrderId: getModelId(screenContext, MODELS.OPERATION_ORDER),
         }),
       title: 'Quality_DeclareNonConformity',
       hideIf: ({screenContext}) =>
-        !isModel(screenContext, 'com.axelor.apps.stock.db.StockMove') &&
-        !isModel(screenContext, 'com.axelor.apps.stock.db.StockMoveLine') &&
-        !isModel(screenContext, 'com.axelor.apps.production.db.ManufOrder') &&
-        !isModel(screenContext, 'com.axelor.apps.production.db.OperationOrder'),
+        !isModel(screenContext, MODELS.STOCK_MOVE) &&
+        !isModel(screenContext, MODELS.STOCK_MOVE_LINE) &&
+        !isModel(screenContext, MODELS.MANUFACTURING_ORDER) &&
+        !isModel(screenContext, MODELS.OPERATION_ORDER),
+    },
+    {
+      key: 'quality_accessControlEntry',
+      iconName: 'card-checklist',
+      onPress: ({navigation, screenContext, storeState}) => {
+        const _controlEntryList = storeState?.controlEntry?.controlEntryList;
+
+        if (_controlEntryList?.length === 1) {
+          navigation.navigate('ControlEntryDetailsScreen', {
+            controlEntryId: _controlEntryList[0].id,
+          });
+        } else {
+          navigation.navigate('ControlEntryListScreen', {
+            relatedToSelect: MODELS.OPERATION_ORDER,
+            relatedToSelectId: getModelId(
+              screenContext,
+              MODELS.OPERATION_ORDER,
+            ),
+          });
+        }
+      },
+      title: 'Quality_CheckControlEntries',
+      hideIf: ({screenContext, dispatch, storeState}) => {
+        const _isOperationModel = isModel(
+          screenContext,
+          MODELS.OPERATION_ORDER,
+        );
+
+        if (!_isOperationModel) return true;
+
+        dispatch(
+          (searchControlEntry as any)({
+            relatedToSelect: MODELS.OPERATION_ORDER,
+            relatedToSelectId: getModelId(
+              screenContext,
+              MODELS.OPERATION_ORDER,
+            ),
+          }),
+        );
+
+        return storeState?.controlEntry?.controlEntryList?.length > 0;
+      },
     },
   ],
 };
