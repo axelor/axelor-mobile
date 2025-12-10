@@ -25,7 +25,7 @@ import {
 } from '../apiProviders';
 
 const LOGIN_PATH = 'callback';
-const SESSION_REGEX = /JSESSIONID=\w+/g;
+const SESSION_REGEX = /JSESSIONID=([^;]*);/g;
 
 const getJsessionId = (cookie: string) => {
   return cookie?.match(SESSION_REGEX)?.[0];
