@@ -1,0 +1,5 @@
+{
+  "title": "Global tools: allow use of async function to define hideIf condition",
+  "type": "feat",
+  "packages": "core"
+}
