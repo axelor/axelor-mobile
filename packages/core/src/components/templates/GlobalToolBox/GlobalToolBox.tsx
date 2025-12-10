@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   DraggableWrapper,
@@ -40,20 +40,44 @@ const GlobalToolBox = () => {
   const storeState = useSelector(state => state);
   const {token} = useSelector(state => state.auth);
 
-  const visibleActions = useMemo(() => {
-    const data = {dispatch, storeState, screenContext: context};
+  const [visibleActions, setVisibleActions] = useState([]);
 
-    return modulesActions
-      .filter(_a => !_a.hideIf(data))
-      .sort((a, b) => a.order - b.order)
-      .map(_a => ({
-        key: _a.key,
-        title: _a.title,
-        color: Colors[_a.color],
-        iconName: _a.iconName,
-        disabled: _a.disabledIf(data),
-        onPress: () => _a.onPress({...data, navigation, translator: I18n.t}),
-      }));
+  useEffect(() => {
+    let isMounted = true;
+
+    async function computeActions() {
+      const data = {dispatch, storeState, screenContext: context};
+
+      const results = await Promise.all(
+        modulesActions.map(async action => {
+          const shouldHide = await action.hideIf?.(data);
+          return {action, shouldHide};
+        }),
+      );
+
+      const visible = results
+        .filter(r => !r.shouldHide)
+        .map(r => r.action)
+        .sort((a, b) => a.order - b.order)
+        .map(_a => ({
+          key: _a.key,
+          title: _a.title,
+          color: Colors[_a.color],
+          iconName: _a.iconName,
+          disabled: _a.disabledIf(data),
+          onPress: () => _a.onPress({...data, navigation, translator: I18n.t}),
+        }));
+
+      if (isMounted) {
+        setVisibleActions(visible);
+      }
+    }
+
+    computeActions();
+
+    return () => {
+      isMounted = false;
+    };
   }, [
     Colors,
     I18n.t,
