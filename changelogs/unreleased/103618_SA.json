@@ -1,5 +1,5 @@
 {
-  "title": "Supplier arrivals: add managament of alternatives barcodes on line search",
+  "title": "Supplier arrivals: add management of alternatives barcodes on line search",
   "type": "feat",
   "packages": "stock"
 }
