@@ -32,6 +32,8 @@ const createControlEntryCriteria = (
   userId,
   date,
   selectedStatus,
+  relatedToSelect,
+  relatedToSelectId,
 ) => {
   const criteria = [getSearchCriterias('quality_controlEntry', searchValue)];
 
@@ -68,6 +70,24 @@ const createControlEntryCriteria = (
     );
   }
 
+  if (relatedToSelect && relatedToSelectId) {
+    criteria.push({
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'relatedToSelect',
+          operator: '=',
+          value: relatedToSelect,
+        },
+        {
+          fieldName: 'relatedToSelectId',
+          operator: '=',
+          value: relatedToSelectId,
+        },
+      ],
+    });
+  }
+
   return criteria;
 };
 
@@ -79,6 +99,8 @@ export async function searchControlEntry({
   date = null,
   selectedStatus = null,
   filterDomain,
+  relatedToSelect,
+  relatedToSelectId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.ControlEntry',
@@ -88,6 +110,8 @@ export async function searchControlEntry({
       userId,
       date,
       selectedStatus,
+      relatedToSelect,
+      relatedToSelectId,
     ),
     fieldKey: 'quality_controlEntry',
     sortKey: 'quality_controlEntry',
