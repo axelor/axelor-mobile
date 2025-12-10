@@ -107,7 +107,7 @@ export interface Tool {
   title?: string;
   iconName: string;
   color?: string;
-  hideIf?: (data: ToolData) => boolean;
+  hideIf?: (data: ToolData) => boolean | Promise<boolean>;
   disabledIf?: (data: ToolData) => boolean;
   onPress: (data: ActionToolData) => void;
 }
