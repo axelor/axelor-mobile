@@ -30,7 +30,7 @@ import {
 } from './models';
 import * as qualityReducers from './features';
 import {useQualityHeaders} from './hooks/use-quality-header-actions';
-import {searchControlEntry} from './features/controlEntrySlice';
+import {searchControlEntry} from './api/control-entry-api';
 
 const MODELS = {
   STOCK_MOVE: 'com.axelor.apps.stock.db.StockMove',
@@ -106,8 +106,13 @@ export const QualityModule: Module = {
     {
       key: 'quality_accessControlEntry',
       iconName: 'card-checklist',
-      onPress: ({navigation, screenContext, storeState}) => {
-        const _controlEntryList = storeState?.controlEntry?.controlEntryList;
+      onPress: async ({navigation, screenContext}) => {
+        const _controlEntryList = await searchControlEntry({
+          relatedToSelect: MODELS.OPERATION_ORDER,
+          relatedToSelectId: getModelId(screenContext, MODELS.OPERATION_ORDER),
+        } as any)
+          .then(res => res?.data?.data)
+          .catch(() => []);
 
         if (_controlEntryList?.length === 1) {
           navigation.navigate('ControlEntryDetailsScreen', {
@@ -124,7 +129,7 @@ export const QualityModule: Module = {
         }
       },
       title: 'Quality_CheckControlEntries',
-      hideIf: ({screenContext, dispatch, storeState}) => {
+      hideIf: async ({screenContext}) => {
         const _isOperationModel = isModel(
           screenContext,
           MODELS.OPERATION_ORDER,
@@ -132,17 +137,14 @@ export const QualityModule: Module = {
 
         if (!_isOperationModel) return true;
 
-        dispatch(
-          (searchControlEntry as any)({
-            relatedToSelect: MODELS.OPERATION_ORDER,
-            relatedToSelectId: getModelId(
-              screenContext,
-              MODELS.OPERATION_ORDER,
-            ),
-          }),
-        );
+        const _controlEntryList = await searchControlEntry({
+          relatedToSelect: MODELS.OPERATION_ORDER,
+          relatedToSelectId: getModelId(screenContext, MODELS.OPERATION_ORDER),
+        } as any)
+          .then(res => res?.data?.data ?? [])
+          .catch(() => []);
 
-        return storeState?.controlEntry?.controlEntryList?.length > 0;
+        return _controlEntryList?.length === 0;
       },
     },
   ],
