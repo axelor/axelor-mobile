@@ -54,6 +54,7 @@
   "Quality_Send": "Envoyer",
   "Quality_DeclareNonConformity": "Déclarer une non-conformité",
   "Quality_SeeAttachedFiles": "Voir les fichiers joints",
+  "Quality_CheckControlEntries": "Accéder aux relevés de contrôle",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
