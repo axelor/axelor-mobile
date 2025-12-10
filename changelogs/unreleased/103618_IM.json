@@ -1,5 +1,5 @@
 {
-  "title": "Internal moves: add managament of alternatives barcodes on line search",
+  "title": "Internal moves: add management of alternatives barcodes on line search",
   "type": "feat",
   "packages": "stock"
 }

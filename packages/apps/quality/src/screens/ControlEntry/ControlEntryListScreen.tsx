@@ -37,7 +37,8 @@ import {
 import {searchControlEntry} from '../../features/controlEntrySlice';
 import {ControlEntryCard} from '../../components';
 
-const ControlEntryListScreen = ({navigation}) => {
+const ControlEntryListScreen = ({navigation, route}) => {
+  const {relatedToSelect, relatedToSelectId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {ControlEntry} = useTypes();
@@ -57,27 +58,32 @@ const ControlEntryListScreen = ({navigation}) => {
     [ControlEntry?.statusSelect, getSelectionItems, selectedStatus],
   );
 
-  const fetchControlEntryAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        searchControlEntry({
-          page: page,
-          isInspector: isInspectorFilter,
-          userId: userId,
-          date: dateFilter,
-          selectedStatus: selectedStatus,
-          filterDomain: activeFilter,
-        }),
-      );
-    },
+  const sliceFunctionData = useMemo(
+    () => ({
+      isInspector: isInspectorFilter,
+      userId,
+      date: dateFilter,
+      selectedStatus,
+      filterDomain: activeFilter,
+      relatedToSelect,
+      relatedToSelectId,
+    }),
     [
       activeFilter,
       dateFilter,
-      dispatch,
       isInspectorFilter,
+      relatedToSelect,
+      relatedToSelectId,
       selectedStatus,
       userId,
     ],
+  );
+
+  const fetchControlEntryAPI = useCallback(
+    (page = 0) => {
+      dispatch((searchControlEntry as any)({page, ...sliceFunctionData}));
+    },
+    [dispatch, sliceFunctionData],
   );
 
   return (
