@@ -174,6 +174,10 @@ jest.mock('react-native-vision-camera', () => ({
 
 jest.mock('react-native-webview', () => ({default: jest.fn()}));
 
+jest.mock('react-native-worklets', () =>
+  require('react-native-worklets/src/mock'),
+);
+
 jest.mock(
   'react-redux',
   () => ({

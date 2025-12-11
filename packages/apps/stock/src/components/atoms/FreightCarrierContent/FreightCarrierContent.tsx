@@ -27,6 +27,7 @@ import {
 import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 
 type ObjectRecord<T extends 'name' | 'fullname' | 'fullName'> = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in T]: string;
 };
 
