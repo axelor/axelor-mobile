@@ -23,7 +23,7 @@
     "license:add": "npx add-copyright-header --generate --dir 'src'"
   },
   "peerDependencies": {
-    "react": "19.1.2",
+    "react": "19.1.1",
     "react-native": "0.82.1"
   },
   "dependencies": {
@@ -41,7 +41,7 @@
     "@types/react": "^19.1.17",
     "eslint": "8.57.0",
     "prettier": "^3.3.3",
-    "react": "19.1.2",
+    "react": "19.1.1",
     "react-native": "0.82.1"
   },
   "resolutions": {
