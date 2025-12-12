@@ -1,0 +1,5 @@
+{
+  "title": "Attached files: hide action when app is disabled on web config",
+  "type": "fix",
+  "packages": "dms"
+}

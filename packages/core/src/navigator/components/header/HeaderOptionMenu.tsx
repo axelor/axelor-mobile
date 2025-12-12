@@ -20,6 +20,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {ActionType, GenericHeaderActions} from '../../../header';
+import {useSelector} from '../../../redux/hooks';
 import HeaderOptionMenuItem from './HeaderOptionMenuItem';
 
 const SMALLEST_WINDOW_WIDTH = 300;
@@ -39,6 +40,8 @@ const HeaderOptionMenu = ({
   genericActions = {},
   options,
 }: HeaderOptionMenuProps) => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
   const collapseMenuItems = useMemo(
     () => Dimensions.get('window').width <= SMALLEST_WINDOW_WIDTH,
     [],
@@ -56,14 +59,19 @@ const HeaderOptionMenu = ({
       const _genericActions = await Promise.all(
         Object.entries(genericActions).map(
           async ([key, func]) =>
-            await func({model, modelId, options: options?.[key]}),
+            await func({
+              model,
+              modelId,
+              options: options?.[key],
+              config: mobileSettings?.apps,
+            }),
         ),
       );
       setVisibleGenericActions(_genericActions ?? []);
     };
 
     getVisibleGenericActions();
-  }, [genericActions, model, modelId, options]);
+  }, [genericActions, mobileSettings?.apps, model, modelId, options]);
 
   const allActions = useMemo(
     () =>

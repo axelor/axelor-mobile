@@ -1,0 +1,5 @@
+{
+  "title": "Generic header action: provide web config to generic action handlers",
+  "type": "feat",
+  "packages": "core"
+}
