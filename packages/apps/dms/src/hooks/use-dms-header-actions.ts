@@ -37,12 +37,12 @@ const useAttachedFilesGenericAction = () => {
     modelName: 'com.axelor.dms.db.DMSFile',
   });
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
       'dms_attachedFiles',
-      async ({model, modelId, options}) =>
+      async ({model, modelId, options, config}) =>
         await getAction({
           model,
           modelId,
@@ -52,6 +52,7 @@ const useAttachedFilesGenericAction = () => {
             mobileSettings?.isFolderCreationAllowed &&
             mobileSettings?.isFileCreationAllowed,
           navigation,
+          appConfig: config,
           translator: I18n.t,
         }),
     );
