@@ -74,6 +74,8 @@ const PopupPrintTemplate = ({
       } else if (fileName) {
         handleShowFile(fileName);
       }
+    } else {
+      setShowPopup(false);
     }
   }, [fileName, handleShowFile, templateSet, visible]);
 
