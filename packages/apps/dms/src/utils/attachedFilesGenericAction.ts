@@ -25,6 +25,7 @@ export const getAction = async ({
   options,
   canCreateObject = true,
   navigation,
+  appConfig,
   translator,
 }: {
   model: string;
@@ -32,6 +33,7 @@ export const getAction = async ({
   options: any;
   canCreateObject?: boolean;
   navigation: any;
+  appConfig?: any[];
   translator: (key: string) => string;
 }) => {
   const _defaultAction = {
@@ -45,6 +47,8 @@ export const getAction = async ({
   };
 
   if (modelId == null || model == null) return _defaultAction;
+
+  const _dmsConfig = appConfig?.find(({sequence}) => sequence === 'app-dms');
 
   const directory = await handlerApiCall({
     fetchFunction: fetchDirectory,
@@ -80,6 +84,6 @@ export const getAction = async ({
         modelId,
         options,
       }),
-    hideIf: !directory && !canCreateObject,
+    hideIf: !_dmsConfig?.isAppEnabled || (!directory && !canCreateObject),
   };
 };
