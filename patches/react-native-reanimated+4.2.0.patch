@@ -1,0 +1,24 @@
+diff --git a/node_modules/react-native-reanimated/src/createAnimatedComponent/createAnimatedComponent.tsx b/node_modules/react-native-reanimated/src/createAnimatedComponent/createAnimatedComponent.tsx
+index cbe8a1a..4318b6c 100644
+--- a/node_modules/react-native-reanimated/src/createAnimatedComponent/createAnimatedComponent.tsx
++++ b/node_modules/react-native-reanimated/src/createAnimatedComponent/createAnimatedComponent.tsx
+@@ -1,6 +1,5 @@
+ 'use strict';
+-import type { ComponentRef, ComponentType, ReactNode, Ref } from 'react';
+-import type React from 'react';
++import React, { ComponentRef, ComponentType, ReactNode, Ref } from 'react';
+ import type { FlatList, FlatListProps } from 'react-native';
+ 
+ import type { AnyRecord } from '../common';
+diff --git a/node_modules/react-native-reanimated/src/css/component/AnimatedComponent.tsx b/node_modules/react-native-reanimated/src/css/component/AnimatedComponent.tsx
+index 8f5da7a..e155f89 100644
+--- a/node_modules/react-native-reanimated/src/css/component/AnimatedComponent.tsx
++++ b/node_modules/react-native-reanimated/src/css/component/AnimatedComponent.tsx
+@@ -1,6 +1,5 @@
+ 'use strict';
+-import type { ComponentProps, Ref } from 'react';
+-import { Component } from 'react';
++import React, { Component, ComponentProps, Ref } from 'react';
+ import type { StyleProp } from 'react-native';
+ import { Platform, StyleSheet } from 'react-native';
+ 
