@@ -28,6 +28,33 @@ const APP_STATE = {
   activeMode: 'active',
 };
 
+const TimerButton = ({
+  name,
+  disabled,
+  onPress,
+}: {
+  name: string;
+  disabled: boolean;
+  onPress: () => void;
+}) => {
+  const Colors = useThemeColor();
+
+  return (
+    <Icon
+      name={name}
+      size={25}
+      color={
+        disabled
+          ? Colors.secondaryColor.background_light
+          : Colors.secondaryColor_dark.background
+      }
+      touchable={!disabled}
+      onPress={onPress}
+      style={styles.btn}
+    />
+  );
+};
+
 interface StopwatchProps {
   startTime: number;
   status: number;
@@ -130,31 +157,6 @@ const Stopwatch = ({
     setState(StopwatchType.status.Canceled);
     setTime(0);
     onCancel();
-  };
-
-  const TimerButton = ({
-    name,
-    disabled,
-    onPress,
-  }: {
-    name: string;
-    disabled: boolean;
-    onPress: () => void;
-  }) => {
-    return (
-      <Icon
-        name={name}
-        size={25}
-        color={
-          disabled
-            ? Colors.secondaryColor.background_light
-            : Colors.secondaryColor_dark.background
-        }
-        touchable={!disabled}
-        onPress={onPress}
-        style={styles.btn}
-      />
-    );
   };
 
   return (

@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-static-safe-area-insets/android/build.gradle b/node_modules/react-native-static-safe-area-insets/android/build.gradle
+index 9fca6af..6613fbc 100644
+--- a/node_modules/react-native-static-safe-area-insets/android/build.gradle
++++ b/node_modules/react-native-static-safe-area-insets/android/build.gradle
+@@ -1,7 +1,7 @@
+ buildscript {
+     repositories {
+         google()
+-        jcenter()
++        mavenCentral()
+     }
+ 
+     dependencies {
