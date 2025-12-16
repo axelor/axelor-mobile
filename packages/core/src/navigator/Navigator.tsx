@@ -156,6 +156,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
       <Stack.Navigator
         id={undefined}
         {...rest}
+        screenOptions={{headerMode: 'float'}}
         initialRouteName={initialRouteName}
         screenListeners={{
           state: e => {
@@ -181,12 +182,12 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
                 name={key}
                 component={component}
                 options={{
-                  headerStyle: [
-                    {elevation: 0},
-                    Platform.OS === 'ios' && !options?.shadedHeader
+                  headerStyle: {
+                    elevation: 0,
+                    ...(Platform.OS === 'ios' && !options?.shadedHeader
                       ? {shadowOpacity: 0}
-                      : null,
-                  ],
+                      : {}),
+                  },
                   headerLeft: () => null,
                   headerRight: () => null,
                   headerTitleStyle: {width: '100%'},
