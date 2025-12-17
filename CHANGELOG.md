@@ -3,6 +3,26 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.5] (2025-12-17)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Generic header action: provide web config to generic action handlers
+
+#### Fixes
+
+- Mass scanner: delay launch of fallback action to avoid display issue with camera
+- Print reports: resolve close alert issue
+- Header: resolve issue of hidden dropdown on additional actions
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- Attached files: hide action when app is disabled on web config
+
 ## [8.5.4] (2025-12-04)
 
 ### @axelor/aos-mobile-core
@@ -228,6 +248,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.5]: https://github.com/axelor/axelor-mobile/compare/8.5.4...8.5.5
 [8.5.4]: https://github.com/axelor/axelor-mobile/compare/8.5.3...8.5.4
 [8.5.3]: https://github.com/axelor/axelor-mobile/compare/8.5.2...8.5.3
 [8.5.2]: https://github.com/axelor/axelor-mobile/compare/8.5.1...8.5.2

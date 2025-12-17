@@ -1,5 +1,0 @@
-{
-  "title": "Header: resolve issue of hidden dropdown on additional actions",
-  "type": "fix",
-  "packages": "core"
-}
