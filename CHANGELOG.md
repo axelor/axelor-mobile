@@ -3,6 +3,25 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.12] (2025-12-17)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Generic header action: provide web config to generic action handlers
+
+#### Fixes
+
+- Mass scanner: delay launch of fallback action to avoid display issue with camera
+- Print reports: resolve close alert issue
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- Attached files: hide action when app is disabled on web config
+
 ## [8.4.11] (2025-12-04)
 
 ### @axelor/aos-mobile-core
@@ -490,6 +509,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.12]: https://github.com/axelor/axelor-mobile/compare/8.4.11...8.4.12
 [8.4.11]: https://github.com/axelor/axelor-mobile/compare/8.4.10...8.4.11
 [8.4.10]: https://github.com/axelor/axelor-mobile/compare/8.4.9...8.4.10
 [8.4.9]: https://github.com/axelor/axelor-mobile/compare/8.4.8...8.4.9
