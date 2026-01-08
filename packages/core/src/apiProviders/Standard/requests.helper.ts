@@ -30,7 +30,7 @@ interface SearchProps {
   criteria?: Criteria[];
   domain?: string;
   domainContext?: any;
-  fieldKey: string;
+  fieldKey: string[] | string;
   sortKey?: string;
   page: number;
   numberElementsByPage?: number;
@@ -50,7 +50,7 @@ interface HierarchicalSearchProps extends SearchProps {
 
 interface FetchProps {
   model: string;
-  fieldKey: string;
+  fieldKey: string[] | string;
   id: number;
   relatedFields?: any;
   provider?: 'axios' | 'model';
@@ -144,9 +144,11 @@ class RequestBuilder {
       };
     }
 
-    const fields = includeNestedArrayFields
-      ? getObjectFields(fieldKey)
-      : getObjectFieldsForSearch(fieldKey);
+    const fields = Array.isArray(fieldKey)
+      ? fieldKey
+      : includeNestedArrayFields
+        ? getObjectFields(fieldKey)
+        : getObjectFieldsForSearch(fieldKey);
 
     if (provider === 'axios') {
       axiosApiProvider.post({
@@ -280,11 +282,15 @@ class RequestBuilder {
       return null;
     }
 
+    const fields = Array.isArray(fieldKey)
+      ? fieldKey
+      : getObjectFields(fieldKey);
+
     if (provider === 'axios') {
       axiosApiProvider.post({
         url: `/ws/rest/${model}/${id}/fetch`,
         data: {
-          fields: getObjectFields(fieldKey),
+          fields: fields,
           related: relatedFields,
           translate: true,
         },
@@ -295,7 +301,7 @@ class RequestBuilder {
       modelName: model,
       id: id,
       query: {
-        fields: getObjectFields(fieldKey),
+        fields: fields,
         related: relatedFields,
       },
     });
