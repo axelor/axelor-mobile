@@ -16,41 +16,74 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   useDispatch,
   useNavigation,
   usePermitted,
+  useSelector,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {realizeCustomerDelivery} from '../../../../features/customerDeliverySlice';
+import CarrierTrackingAlert from './CarrierTrackingAlert';
+
+const trackingScanKey = 'customer-delivery_carrier-tracking-number';
 
 const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const navigation = useNavigation();
   const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMove',
   });
 
-  const handleRealize = () => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
+  const [visible, setVisible] = useState(false);
+
+  const handleRealize = useCallback(() => {
     dispatch(
-      realizeCustomerDelivery({
+      (realizeCustomerDelivery as any)({
         version: customerDelivery.version,
         stockMoveId: customerDelivery.id,
       }),
-    );
-    navigation.popToTop();
-  };
+    ).then(() => navigation.popToTop());
+  }, [customerDelivery, dispatch, navigation]);
+
+  const handleValidate = useCallback(() => {
+    if (
+      mobileSettings?.freightCarrierModeTrackingIds?.includes(
+        customerDelivery?.freightCarrierMode?.id,
+      )
+    ) {
+      setVisible(true);
+    } else {
+      handleRealize();
+    }
+  }, [
+    customerDelivery?.freightCarrierMode?.id,
+    handleRealize,
+    mobileSettings?.freightCarrierModeTrackingIds,
+  ]);
 
   if (
     !readonly &&
     customerDelivery.statusSelect !== StockMove?.statusSelect.Realized
   ) {
-    return <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />;
+    return (
+      <>
+        <CarrierTrackingAlert
+          visible={visible}
+          setVisible={setVisible}
+          trackingScanKey={trackingScanKey}
+          stockMove={customerDelivery}
+        />
+        <Button onPress={handleValidate} title={I18n.t('Base_Realize')} />
+      </>
+    );
   }
 
   return null;
