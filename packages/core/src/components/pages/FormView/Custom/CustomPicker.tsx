@@ -34,9 +34,11 @@ interface props extends customComponentOptions {
   onChange: () => any;
   required?: boolean;
   readonly?: boolean;
+  showTitle?: boolean;
+  isScrollViewContainer?: boolean;
 }
 
-const CustomPicker = ({
+const CustomPickerAux = ({
   item,
   style,
   title,
@@ -44,6 +46,8 @@ const CustomPicker = ({
   onChange,
   required,
   readonly,
+  showTitle = true,
+  isScrollViewContainer = true,
 }: props) => {
   const [selection, setSelection] = useState<SelectionItem[]>([]);
 
@@ -62,7 +66,8 @@ const CustomPicker = ({
   return (
     <Picker
       style={style}
-      title={title}
+      title={showTitle && title}
+      placeholder={title}
       onValueChange={onChange}
       listItems={selection}
       labelField="title"
@@ -70,9 +75,13 @@ const CustomPicker = ({
       defaultValue={defaultValue}
       required={required}
       readonly={readonly}
-      isScrollViewContainer={true}
+      isScrollViewContainer={isScrollViewContainer}
     />
   );
+};
+
+const CustomPicker = (props: props) => {
+  return <CustomPickerAux {...props} />;
 };
 
 export default CustomPicker;
