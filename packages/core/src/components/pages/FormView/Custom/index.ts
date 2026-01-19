@@ -17,6 +17,7 @@
  */
 
 export {default as CustomButton} from './CustomButton';
+export {default as CustomMultiPicker} from './CustomMultiPicker';
 export {default as CustomPasswordInput} from './CustomPasswordInput';
 export {default as CustomPicker} from './CustomPicker';
 export {default as CustomSearchBar} from './CustomSearchBar';

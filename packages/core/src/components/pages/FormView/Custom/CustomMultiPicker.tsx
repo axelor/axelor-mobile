@@ -16,14 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
-import {Picker} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Color, MultiValuePicker, useThemeColor} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {fetchSelectionOptions} from '../../../../forms/studio/api.helpers';
 
 interface SelectionItem {
   title: string;
   value: number | string;
+  color: Color;
+  key: string;
 }
 
 interface props extends customComponentOptions {
@@ -35,10 +37,9 @@ interface props extends customComponentOptions {
   required?: boolean;
   readonly?: boolean;
   showTitle?: boolean;
-  isScrollViewContainer?: boolean;
 }
 
-const CustomPickerAux = ({
+const CustomMultiPickerAux = ({
   item,
   style,
   title,
@@ -47,41 +48,59 @@ const CustomPickerAux = ({
   required,
   readonly,
   showTitle = true,
-  isScrollViewContainer = true,
 }: props) => {
+  const Colors = useThemeColor();
+
   const [selection, setSelection] = useState<SelectionItem[]>([]);
+
+  const addColor = useCallback(
+    (items: Partial<SelectionItem>[]): SelectionItem[] => {
+      const getRandomColor = (index: number): Color => {
+        const values = Object.values(Colors).filter(
+          _color => typeof _color !== 'string',
+        );
+
+        return values[index % values.length];
+      };
+
+      return (items ?? [])?.map((_i, idx) => ({
+        title: _i.title ?? '',
+        value: _i.value,
+        color: _i.color ?? getRandomColor(idx),
+        key: `${_i.value}`,
+      }));
+    },
+    [Colors],
+  );
 
   useEffect(() => {
     if (Array.isArray(item.selectionList) && item.selectionList.length > 0) {
-      setSelection(item.selectionList);
+      setSelection(addColor(item.selectionList));
     } else {
       fetchSelectionOptions({
         modelName: item.uniqueModel,
         attrsPanelName: item.modelField,
         fieldName: item.name,
-      }).then(setSelection);
+      }).then(res => setSelection(addColor(res)));
     }
-  }, [item]);
+  }, [addColor, item]);
 
   return (
-    <Picker
+    <MultiValuePicker
       style={style}
       title={showTitle && title}
       placeholder={title}
       onValueChange={onChange}
       listItems={selection}
-      labelField="title"
-      valueField="value"
-      defaultValue={defaultValue}
+      defaultItems={defaultValue}
       required={required}
       readonly={readonly}
-      isScrollViewContainer={isScrollViewContainer}
     />
   );
 };
 
-const CustomPicker = (props: props) => {
-  return <CustomPickerAux {...props} />;
+const CustomMultiPicker = (props: props) => {
+  return <CustomMultiPickerAux {...props} />;
 };
 
-export default CustomPicker;
+export default CustomMultiPicker;

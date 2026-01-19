@@ -1,0 +1,5 @@
+{
+  "title": "MultiValuePicker: improve style of component",
+  "type": "fix",
+  "packages": "ui"
+}
