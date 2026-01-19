@@ -164,6 +164,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     container: {
       width: '90%',
+      alignSelf: 'center',
     },
     containerZIndex: {
       zIndex: 100,

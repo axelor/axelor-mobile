@@ -1,0 +1,5 @@
+{
+  "title": "API helpers: add possiblity to provide string array instead of key to define search fields",
+  "type": "feat",
+  "packages": "core"
+}
