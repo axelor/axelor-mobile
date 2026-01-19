@@ -45,7 +45,9 @@ export function testUrl(url: string): Promise<string | null> {
           resolve(urlWithProtocol);
           return;
         }
-      } catch (error) {}
+      } catch (error) {
+        console.warn('error while testing url', error);
+      }
     }
 
     const {isConnected} = await getNetInfo();

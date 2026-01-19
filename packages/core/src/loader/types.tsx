@@ -33,7 +33,6 @@ export enum ProcessStatus {
 export type CallBack = (...args) => void;
 
 export type Event = {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [e in ProcessStatus]: CallBack[];
 };
 

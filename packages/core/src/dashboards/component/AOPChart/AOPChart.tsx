@@ -92,6 +92,7 @@ const AOPChart = ({
           result = {...DEFAULT_CHART_CONFIG};
         }
       } catch (error) {
+        console.warn('error while fetching chart data', error);
         result = {...DEFAULT_CHART_CONFIG};
       }
 
