@@ -129,8 +129,13 @@ class ObjectFieldsProvider {
     return [];
   }
 
-  getSearchCriterias(objectKey: string, searchValue: string): CriteriaGroup {
-    const searchFields: string[] = this.getSearchFields(objectKey);
+  getSearchCriterias(
+    objectKey: string | string[],
+    searchValue: string,
+  ): CriteriaGroup {
+    const searchFields: string[] = Array.isArray(objectKey)
+      ? objectKey
+      : this.getSearchFields(objectKey);
 
     let criteria: CriteriaField[] = [];
 
@@ -161,7 +166,7 @@ export function getSortFields(objectKey: string): string[] {
 }
 
 export function getSearchCriterias(
-  objectKey: string,
+  objectKey: string | string[],
   searchValue: string,
 ): CriteriaGroup {
   return objectFieldsProvider.getSearchCriterias(objectKey, searchValue);
