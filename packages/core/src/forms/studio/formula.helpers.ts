@@ -90,6 +90,7 @@ export const createFormulaFunction = (formula: string) => {
       // eslint-disable-next-line no-eval
       return eval(expr);
     } catch (error) {
+      console.warn('error while evaluating formula', error);
       return false;
     }
   };

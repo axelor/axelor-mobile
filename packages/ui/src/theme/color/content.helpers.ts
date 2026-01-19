@@ -184,7 +184,9 @@ export function registerThemes(
           colors,
           isCustom: true,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.warn('error while parsing theme colors', error);
+      }
     } else {
       result.push(_theme as Theme);
     }

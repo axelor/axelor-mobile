@@ -82,6 +82,7 @@ async function requestStoragePermission(I18n: TranslatorProps) {
     );
     return granted === PermissionsAndroid.RESULTS.GRANTED;
   } catch (err) {
+    console.warn('error while requesting storage permission', err);
     return false;
   }
 }

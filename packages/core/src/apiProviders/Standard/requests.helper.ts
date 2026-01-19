@@ -333,6 +333,7 @@ export function getFilterDomains(
 
       return {};
     } catch (err) {
+      console.warn('error while parsing filter criterias', err);
       return {};
     }
   }
