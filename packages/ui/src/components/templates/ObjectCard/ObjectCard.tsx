@@ -47,7 +47,7 @@ const filterList = (list: any[]): any[] => {
     .sort((a, b) => a.order - b.order);
 };
 
-interface TextElement {
+export interface TextElement {
   style?: any;
   displayText?: string;
   indicatorText?: string;
@@ -63,7 +63,7 @@ interface TextElement {
   customComponent?: ReactElement<any>;
 }
 
-interface BadgeElement {
+export interface BadgeElement {
   style?: any;
   displayText?: string;
   color?: Color;
@@ -72,7 +72,7 @@ interface BadgeElement {
   customComponent?: ReactElement<any>;
 }
 
-interface ImageElement {
+export interface ImageElement {
   source: ImageSourcePropType;
   defaultIconSize?: number;
   resizeMode: ImageResizeMode;

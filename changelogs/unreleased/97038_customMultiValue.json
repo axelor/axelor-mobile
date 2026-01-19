@@ -1,0 +1,5 @@
+{
+  "title": "Custom components: add a new component CustomMultiPicker to manage multi selection",
+  "type": "feat",
+  "packages": "core"
+}

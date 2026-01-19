@@ -32,9 +32,11 @@ interface props extends customComponentOptions {
   onChange: () => any;
   required?: boolean;
   readonly?: boolean;
+  showTitle?: boolean;
+  oneFilter?: boolean;
 }
 
-const CustomSearchBar = ({
+const CustomSearchBarAux = ({
   item,
   style,
   title,
@@ -42,6 +44,8 @@ const CustomSearchBar = ({
   onChange,
   required,
   readonly,
+  showTitle = true,
+  oneFilter = true,
 }: props) => {
   const [searchFields, setSearchFields] = useState<string[]>(['name']);
   const [loading, setLoading] = useState<boolean>(false);
@@ -95,7 +99,7 @@ const CustomSearchBar = ({
   return (
     <AutoCompleteSearch
       style={style}
-      title={title}
+      title={showTitle && title}
       objectList={data}
       value={defaultValue}
       required={required}
@@ -108,9 +112,13 @@ const CustomSearchBar = ({
       loadingList={loading}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
-      oneFilter={true}
+      oneFilter={oneFilter}
     />
   );
+};
+
+const CustomSearchBar = (props: props) => {
+  return <CustomSearchBarAux {...props} />;
 };
 
 export default CustomSearchBar;
