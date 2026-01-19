@@ -98,14 +98,30 @@ const useSaleOrderLineDetailsActions = () => {
 };
 
 const useProductDetailsActions = () => {
-  const {product} = useSelector((state: any) => state.sale_product);
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+  const {checkModule} = useModules();
+
+  const {product} = useSelector(state => state.sale_product);
 
   useEffect(() => {
     headerActionsProvider.registerModel('sale_product_details', {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
+      actions: [
+        {
+          key: 'product_accessStockView',
+          title: I18n.t('Sale_AccessProductStockDetails'),
+          iconName: 'boxes',
+          order: 50,
+          onPress: () =>
+            navigation.navigate('ProductStockDetailsScreen', {product}),
+          hideIf: !product?.stockManaged || !checkModule('app-stock'),
+          showInHeader: true,
+        },
+      ],
     });
-  }, [product?.id]);
+  }, [I18n, checkModule, navigation, product]);
 };
 
 const useClientListActions = () => {

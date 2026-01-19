@@ -1,0 +1,5 @@
+{
+  "title": "Product: add quick access to stock details when stock application is installed",
+  "type": "feat",
+  "packages": "sale"
+}
