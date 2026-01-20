@@ -89,6 +89,7 @@ export const stock_modelAPI: ObjectFields = {
         ),
       }),
     ),
+    sequence: schemaContructor.number(),
   }),
   stock_internalMove: schemaContructor.object({
     name: schemaContructor.string(),
