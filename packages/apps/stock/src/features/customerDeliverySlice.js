@@ -24,6 +24,7 @@ import {
 import {
   fetchCustomerDelivery as _fetchCustomerDelivery,
   updateCustomerDeliveryNote as _updateCustomerDeliveryNote,
+  updateCustomerDeliveryCarrierTracking as _updateCustomerDeliveryCarrierTracking,
   addLineStockMove,
   realizeSockMove,
   searchDeliveryFilter,
@@ -92,6 +93,21 @@ export const updateCustomerDeliveryNote = createAsyncThunk(
       responseOptions: {showToast: true},
     }).then(() => {
       dispatch(fetchCustomerDelivery(data));
+    });
+  },
+);
+
+export const updateCustomerDeliveryCarrierTracking = createAsyncThunk(
+  'deliveries/updateCustomerDeliveryCarrierTracking',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateCustomerDeliveryCarrierTracking,
+      data,
+      action: 'Stock_SliceAction_UpdateCustomerDeliveryCarrierTracking',
+      getState,
+      responseOptions: {showToast: true, isArrayResponse: false},
+    }).then(res => {
+      dispatch(realizeCustomerDelivery({...data, version: res?.version}));
     });
   },
 );

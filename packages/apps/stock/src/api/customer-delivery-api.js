@@ -203,3 +203,25 @@ export async function updateCustomerDeliveryNote({
     },
   });
 }
+
+export async function updateCustomerDeliveryCarrierTracking({
+  stockMoveId,
+  version,
+  trackingNumber,
+}) {
+  const body = {id: stockMoveId, version, trackingNumber};
+
+  const {matchers} = formatRequestBody(body, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockMove',
+    method: 'post',
+    body: {data: body},
+    description: 'update customer delivery tracking number',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMove',
+      id: stockMoveId,
+      fields: matchers,
+    },
+  });
+}
