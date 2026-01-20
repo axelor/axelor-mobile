@@ -1,0 +1,5 @@
+{
+  "title": "Android: restore cleartext option for webviews integration",
+  "type": "fix",
+  "packages": "core"
+}
