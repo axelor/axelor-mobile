@@ -211,6 +211,7 @@
   "Stock_LogisticalForm_TotalVolume": "Total volume (m³)",
   "Stock_NoInformationAvailable": "No information available",
   "Stock_ScanCarrierTracking": "Scan carrier tracking number",
+  "Stock_ValidateContinue": "Validate & continue",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "fetch customer delivery lines",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "fetch customer delivery line",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "update customer delivery line",
