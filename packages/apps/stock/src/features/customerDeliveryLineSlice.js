@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   fetchCustomerDeliveryLine as _fetchCustomerDeliveryLine,
@@ -45,21 +44,15 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
 
 export const updateCustomerDeliveryLine = createAsyncThunk(
   'customerDeliveryLine/updateCustomerDeliveryLine',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateLine,
       data,
       action: 'Stock_SliceAction_UpdateCustomerDeliveryLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: _fetchCustomerDeliveryLine,
-        data: {customerDeliveryLineId: res?.id},
-        action: 'Stock_SliceAction_FetchCustomerDeliveryLine',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+    }).then(() => {
+      dispatch(fetchCustomerDeliveryLines(data));
     });
   },
 );
@@ -146,17 +139,6 @@ const CustomerDeliveryLineSlice = createSlice({
         manageTotal: true,
       },
     );
-    builder.addCase(updateCustomerDeliveryLine.pending, state => {
-      state.loadingCustomerDeliveryLine = true;
-    });
-    builder.addCase(updateCustomerDeliveryLine.fulfilled, (state, action) => {
-      state.loadingCustomerDeliveryLine = false;
-      state.customerDeliveryLine = action.payload;
-      state.customerDeliveryLineList = updateAgendaItems(
-        state.customerDeliveryLineList,
-        [action.payload],
-      );
-    });
     builder.addCase(fetchCustomerDeliveryLine.pending, state => {
       state.loadingCustomerDeliveryLine = true;
     });
