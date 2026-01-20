@@ -159,6 +159,7 @@
   "Sale_PartnerLinks": "Relations entre tiers",
   "Sale_ManagedBy": "Géré par",
   "Sale_ManagedFor": "Géré pour",
+  "Sale_AccessProductStockDetails": "Accéder aux détails des stocks",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sale_SliceAction_SearchCustomer": "recherche sur les clients",
