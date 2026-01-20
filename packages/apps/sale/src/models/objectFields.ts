@@ -82,6 +82,7 @@ export const sale_modelAPI: ObjectFields = {
       }),
     ),
     parentProduct: schemaContructor.subObject('name'),
+    stockManaged: schemaContructor.boolean(),
   }),
   sale_productVariantConfig: schemaContructor.object({
     name: schemaContructor.string(),
