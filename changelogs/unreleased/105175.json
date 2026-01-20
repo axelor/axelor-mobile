@@ -1,0 +1,5 @@
+{
+  "title": "Customer delivery: add possibility to scan carrier tracking number on validation",
+  "type": "feat",
+  "packages": "stock"
+}

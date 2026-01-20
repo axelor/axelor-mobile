@@ -1,0 +1,5 @@
+{
+  "title": "Scan helpers: improve activation hook to provide clear function",
+  "type": "feat",
+  "packages": "core"
+}
