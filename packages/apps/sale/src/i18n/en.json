@@ -159,6 +159,7 @@
   "Sale_PartnerLinks": "Partner links",
   "Sale_ManagedBy": "Managed by",
   "Sale_ManagedFor": "Managed for",
+  "Sale_AccessProductStockDetails": "Access stock details",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sale_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sale_SliceAction_SearchCustomer": "search customers",
