@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {Ref, useMemo, useState} from 'react';
+import React, {Ref, useCallback, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, TextInput, View} from 'react-native';
 import {ThemeColors} from '../../../theme';
 import {getCommonStyles} from '../../../utils/commons-styles';
@@ -29,7 +29,7 @@ interface IconInputProps {
   inputRef?: Ref<TextInput>;
   value: string;
   onChange: (value: any) => void;
-  placeholder: string;
+  placeholder?: string;
   readOnly?: boolean;
   required?: boolean;
   secureTextEntry?: boolean;
@@ -37,7 +37,7 @@ interface IconInputProps {
   multiline?: boolean;
   numberOfLines?: number;
   keyboardType?: KeyboardTypeOptions;
-  onEndFocus: () => void;
+  onEndFocus?: () => void;
   isFocus?: boolean;
   leftIconsList?: any[];
   rightIconsList?: any[];
@@ -53,11 +53,11 @@ const IconInput = ({
   readOnly,
   required = false,
   secureTextEntry,
-  onSelection = () => {},
+  onSelection,
   multiline,
   numberOfLines,
   keyboardType,
-  onEndFocus = () => {},
+  onEndFocus,
   isFocus = false,
   leftIconsList = [],
   rightIconsList = [],
@@ -78,15 +78,15 @@ const IconInput = ({
     [Colors, _required],
   );
 
-  const handleSelection = () => {
+  const handleSelection = useCallback(() => {
     setIsFocused(true);
-    onSelection();
-  };
+    onSelection?.();
+  }, [onSelection]);
 
-  const handleEndFocus = () => {
+  const handleEndFocus = useCallback(() => {
     setIsFocused(false);
-    onEndFocus();
-  };
+    onEndFocus?.();
+  }, [onEndFocus]);
 
   return (
     <View
