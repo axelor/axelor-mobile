@@ -19,23 +19,28 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import DeviceInfo from 'react-native-device-info';
 import {
+  clearBarcode,
   disableCameraScanner,
   enableCameraScanner,
   enableMassCameraScanner,
 } from '../features/cameraScannerSlice';
-import {enableScan, disableScan} from '../features/scannerSlice';
+import {enableScan, disableScan, clearScan} from '../features/scannerSlice';
 import {useDispatch} from '../redux/hooks';
 
 export const useScanActivator = (
   scanKeySearch: string,
   isMassScan: boolean = false,
 ) => {
-  const {enable: enableScanner, disable: disableScanner} =
-    useScannerDeviceActivator(scanKeySearch);
+  const {
+    enable: enableScanner,
+    disable: disableScanner,
+    clear: clearScanner,
+  } = useScannerDeviceActivator(scanKeySearch);
   const {
     enable: enableCamera,
     enableMassCamera,
     disable: disableCamera,
+    clear: clearCamera,
   } = useCameraScannerActivator(scanKeySearch);
 
   const [isZebraDevice, setIsZebraDevice] = useState(false);
@@ -70,9 +75,17 @@ export const useScanActivator = (
     }
   }, [isZebraDevice, disableScanner, disableCamera]);
 
+  const clear = useCallback(() => {
+    if (isZebraDevice) {
+      clearScanner();
+    } else {
+      clearCamera();
+    }
+  }, [isZebraDevice, clearScanner, clearCamera]);
+
   return useMemo(
-    () => ({disable, enable, isZebraDevice}),
-    [disable, enable, isZebraDevice],
+    () => ({clear, disable, enable, isZebraDevice}),
+    [clear, disable, enable, isZebraDevice],
   );
 };
 
@@ -87,7 +100,11 @@ export const useScannerDeviceActivator = (scanKeySearch: string) => {
     dispatch(disableScan());
   }, [dispatch]);
 
-  return useMemo(() => ({enable, disable}), [disable, enable]);
+  const clear = useCallback(() => {
+    dispatch(clearScan());
+  }, [dispatch]);
+
+  return useMemo(() => ({enable, disable, clear}), [clear, disable, enable]);
 };
 
 export const useCameraScannerActivator = (scanKeySearch: string) => {
@@ -105,8 +122,17 @@ export const useCameraScannerActivator = (scanKeySearch: string) => {
     dispatch(disableCameraScanner());
   }, [dispatch]);
 
+  const clearCamera = useCallback(() => {
+    dispatch(clearBarcode());
+  }, [dispatch]);
+
   return useMemo(
-    () => ({enable: enableCamera, enableMassCamera, disable: disableCamera}),
-    [enableCamera, enableMassCamera, disableCamera],
+    () => ({
+      enable: enableCamera,
+      enableMassCamera,
+      disable: disableCamera,
+      clear: clearCamera,
+    }),
+    [enableCamera, enableMassCamera, disableCamera, clearCamera],
   );
 };
