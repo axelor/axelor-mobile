@@ -283,7 +283,7 @@
   "Stock_SliceAction_FetchProductCompanyWithId": "récupération du produit par société",
   "Stock_SliceAction_SplitCustomerDeliveryLine": "séparation de la ligne de livraison client",
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "mise à jour de la note de la livraison client",
-  "Stock_SliceAction_UpdateCustomerDeliveryCarrierTracking": "mise à jour dy numéro de suivi d'expédition de la livraison client",
+  "Stock_SliceAction_UpdateCustomerDeliveryCarrierTracking": "mise à jour du numéro de suivi d'expédition de la livraison client",
   "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique",
   "Stock_SliceAction_SearchPackaging": "recherche sur les emballages",
   "Stock_SliceAction_SearchParentPackaging": "recherche sur les emballages parent",
