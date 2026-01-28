@@ -17,7 +17,7 @@
  */
 
 import React, {ReactNode, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -26,6 +26,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Indicator} from './IndicatorBadge';
 import {displayLine} from '../../../utils/displayers';
+
+const SCREEN_HEIGHT_50_PERCENT = Dimensions.get('window').height * 0.4;
 
 interface Props {
   style?: any;
@@ -121,21 +123,24 @@ const SearchLineContainer = ({
           )}
         </View>
       </View>
-      <SearchListView
-        list={filteredList}
-        loading={loading}
-        moreLoading={moreLoading}
-        isListEnd={!showSimplifiedDisplay && isListEnd}
-        sliceFunction={sliceFunction}
-        sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={_handleSelect}
-        displaySearchValue={displayLine}
-        searchPlaceholder={I18n.t('Stock_SearchLine')}
-        scanKeySearch={scanKey}
-        useHeaderContainer={false}
-        searchNavigate={navigate}
-        renderListItem={({item}) => renderItem(item)}
-      />
+      <View style={styles.listContainer}>
+        <SearchListView
+          list={filteredList}
+          loading={loading}
+          moreLoading={moreLoading}
+          isListEnd={!showSimplifiedDisplay && isListEnd}
+          sliceFunction={sliceFunction}
+          sliceFunctionData={sliceFunctionData}
+          onChangeSearchValue={_handleSelect}
+          displaySearchValue={displayLine}
+          searchPlaceholder={I18n.t('Stock_SearchLine')}
+          scanKeySearch={scanKey}
+          useHeaderContainer={false}
+          searchNavigate={navigate}
+          renderListItem={({item}) => renderItem(item)}
+          useSimpleScrollView={true}
+        />
+      </View>
       {showSimplifiedDisplay && (
         <TouchableOpacity onPress={onViewPress} activeOpacity={0.9}>
           <View style={styles.iconContainer}>
@@ -162,6 +167,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 12,
     marginVertical: 4,
+  },
+  listContainer: {
+    maxHeight: SCREEN_HEIGHT_50_PERCENT,
   },
   header: {
     flexDirection: 'row',

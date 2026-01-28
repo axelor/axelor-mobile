@@ -53,6 +53,7 @@ interface SearchListViewProps {
   verticalActions?: boolean;
   customSearchBarComponent?: React.JSX.Element;
   useHeaderContainer?: boolean;
+  useSimpleScrollView?: boolean;
 }
 
 const SearchListView = ({
@@ -79,6 +80,7 @@ const SearchListView = ({
   verticalActions,
   customSearchBarComponent,
   useHeaderContainer = true,
+  useSimpleScrollView = false,
 }: SearchListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -186,6 +188,7 @@ const SearchListView = ({
         translator={I18n.t}
         actionList={actionList}
         verticalActions={verticalActions}
+        useSimpleScrollView={useSimpleScrollView}
       />
     </View>
   );
