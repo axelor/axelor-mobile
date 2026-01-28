@@ -1,0 +1,5 @@
+{
+  "title": "AOS compatibility: propagates compatibility when adding a menu to another module",
+  "type": "fix",
+  "packages": "core"
+}
