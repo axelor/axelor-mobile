@@ -170,7 +170,13 @@ export function manageSubMenusOverriding(modules) {
                     parentMenu.subMenus = {};
                   }
 
-                  parentMenu.subMenus[subMenuKey] = {...subMenu};
+                  parentMenu.subMenus[subMenuKey] = {
+                    ...subMenu,
+                    compatibilityAOS:
+                      subMenu.compatibilityAOS ??
+                      menu.compatibilityAOS ??
+                      module.compatibilityAOS,
+                  };
                   delete parentMenu.subMenus[subMenuKey].parent;
                 }
               } else {
