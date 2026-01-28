@@ -52,6 +52,8 @@ interface SearchListViewProps {
   actionList?: ActionType[];
   verticalActions?: boolean;
   customSearchBarComponent?: React.JSX.Element;
+  useHeaderContainer?: boolean;
+  useSimpleScrollView?: boolean;
 }
 
 const SearchListView = ({
@@ -77,6 +79,8 @@ const SearchListView = ({
   actionList,
   verticalActions,
   customSearchBarComponent,
+  useHeaderContainer = true,
+  useSimpleScrollView = false,
 }: SearchListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -156,20 +160,24 @@ const SearchListView = ({
 
   return (
     <View style={styles.container}>
-      <FilterContainer
-        topChildren={headerTopChildren}
-        fixedItems={
-          <>
-            {topFixedItems}
-            {!isHideableSearch && renderSearchBar()}
-            {fixedItems}
-          </>
-        }
-        chipComponent={chipComponent}
-        expandableFilter={expandableFilter}>
-        {isHideableSearch && renderSearchBar()}
-        {headerChildren}
-      </FilterContainer>
+      {useHeaderContainer ? (
+        <FilterContainer
+          topChildren={headerTopChildren}
+          fixedItems={
+            <>
+              {topFixedItems}
+              {!isHideableSearch && renderSearchBar()}
+              {fixedItems}
+            </>
+          }
+          chipComponent={chipComponent}
+          expandableFilter={expandableFilter}>
+          {isHideableSearch && renderSearchBar()}
+          {headerChildren}
+        </FilterContainer>
+      ) : (
+        renderSearchBar()
+      )}
       <ScrollList
         loadingList={loading}
         data={list}
@@ -180,6 +188,7 @@ const SearchListView = ({
         translator={I18n.t}
         actionList={actionList}
         verticalActions={verticalActions}
+        useSimpleScrollView={useSimpleScrollView}
       />
     </View>
   );

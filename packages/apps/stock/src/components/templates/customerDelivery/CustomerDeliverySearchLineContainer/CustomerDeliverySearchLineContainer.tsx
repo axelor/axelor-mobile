@@ -26,16 +26,16 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {CustomerDeliveryLineActionCard} from '../../../templates';
 import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
-import {SupplierArrivalLineActionCard} from '../../../templates';
-import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
-import {useLineHandler, useSupplierLinesWithRacks} from '../../../../hooks';
 import {LineVerification, StockMoveLine} from '../../../../types';
+import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
+import {useCustomerLinesWithRacks, useLineHandler} from '../../../../hooks';
 
-const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
-const massScanKey = 'supplier-arrival-line_mass-scan';
+const scanKey = 'trackingNumber-or-product_dustomer-delivery-details';
+const massScanKey = 'customer-delivery-line_mass-scan';
 
-const SupplierArrivalSearchLineContainer = ({}) => {
+const CustomerDeliverySearchLineContainer = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -49,115 +49,112 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   const {showLine} = useLineHandler();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
-  const {supplierArrival} = useSelector(state => state.supplierArrival);
-  const {supplierArrivalLineList, totalNumberLines} =
-    useSupplierLinesWithRacks(supplierArrival);
+  const {customerDelivery} = useSelector(state => state.customerDelivery);
+  const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(
+    state => state.customerDeliveryLine,
+  );
+  const {customerDeliveryLineList, totalNumberLines} =
+    useCustomerLinesWithRacks(customerDelivery);
 
-  const handleNewLine = () => {
-    navigation.navigate('SupplierArrivalLineCreationScreen', {
-      supplierArrival: supplierArrival,
+  const handleNewLine = useCallback(() => {
+    navigation.navigate('CustomerDeliveryLineCreationScreen', {
+      customerDelivery,
     });
-  };
+  }, [customerDelivery, navigation]);
 
-  const handleViewAll = () => {
-    navigation.navigate('SupplierArrivalLineListScreen', {
-      supplierArrival: supplierArrival,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('CustomerDeliveryLineListScreen', {customerDelivery});
+  }, [customerDelivery, navigation]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification = undefined) => {
       showLine({
-        move: supplierArrival,
+        move: customerDelivery,
         line: item,
         skipVerification,
-        type: LineVerification.type.incoming,
+        type: LineVerification.type.outgoing,
       });
     },
-    [showLine, supplierArrival],
+    [customerDelivery, showLine],
   );
 
   const handleLineSearch = useCallback(
-    item => handleShowLine(item, true),
+    (item: any) => handleShowLine(item, true),
     [handleShowLine],
   );
 
-  const fetchSupplierLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchSupplierArrivalLines({
-          supplierArrivalId: supplierArrival.id,
-          searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, supplierArrival],
+  const sliceFunctionData = useMemo(
+    () => ({customerDeliveryId: customerDelivery?.id}),
+    [customerDelivery?.id],
   );
 
   const handleRefresh = useCallback(
-    () => fetchSupplierLinesAPI({page: 0}),
-    [fetchSupplierLinesAPI],
+    () =>
+      dispatch(
+        (fetchCustomerDeliveryLines as any)({...sliceFunctionData, page: 0}),
+      ),
+    [dispatch, sliceFunctionData],
   );
 
   const filterLine = useCallback(
-    item => {
-      return (
-        StockMoveLine.hideLineQty(item, supplierArrival) ||
-        parseFloat(item.realQty) == null ||
-        parseFloat(item.realQty) < parseFloat(item.qty)
-      );
-    },
-    [supplierArrival],
+    (item: any) =>
+      StockMoveLine.hideLineQty(item, customerDelivery) ||
+      parseFloat(item.realQty) == null ||
+      parseFloat(item.realQty) < parseFloat(item.qty),
+    [customerDelivery],
   );
 
   const showLineAdditionIcon = useMemo(() => {
     if (
       readonly ||
       !canCreate ||
-      supplierArrival.statusSelect >= StockMove?.statusSelect.Realized
+      customerDelivery.statusSelect >= StockMove?.statusSelect.Realized
     ) {
       return false;
     }
 
-    if (mobileSettings?.isSupplierArrivalLineAdditionEnabled == null) {
+    if (mobileSettings?.isCustomerDeliveryLineAdditionEnabled == null) {
       return true;
     }
 
-    return mobileSettings.isSupplierArrivalLineAdditionEnabled;
+    return mobileSettings.isCustomerDeliveryLineAdditionEnabled;
   }, [
-    readonly,
-    canCreate,
-    supplierArrival,
     StockMove?.statusSelect.Realized,
+    canCreate,
+    customerDelivery,
     mobileSettings,
+    readonly,
   ]);
 
   return (
     <>
       <StockMovePickingWidget
         scanKey={massScanKey}
-        stockMoveId={supplierArrival.id}
-        stockMoveStatus={supplierArrival.statusSelect}
+        stockMoveId={customerDelivery.id}
+        stockMoveStatus={customerDelivery.statusSelect}
         totalLines={totalNumberLines}
         onRefresh={handleRefresh}
         handleShowLine={handleLineSearch}
       />
       <SearchLineContainer
-        title={I18n.t('Stock_SupplierArrivalLines')}
+        title={I18n.t('Stock_CustomerDeliveryLines')}
         numberOfItems={totalNumberLines}
-        objectList={supplierArrivalLineList}
+        objectList={customerDeliveryLineList}
+        loading={loadingCDLinesList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchCustomerDeliveryLines}
+        sliceFunctionData={sliceFunctionData}
         handleSelect={handleLineSearch}
-        handleSearch={fetchSupplierLinesAPI}
         scanKey={scanKey}
         onViewPress={handleViewAll}
         filterLine={filterLine}
         showAction={showLineAdditionIcon}
         onAction={handleNewLine}
         renderItem={item => (
-          <SupplierArrivalLineActionCard
-            style={styles.container}
-            supplierArrivalLine={item}
+          <CustomerDeliveryLineActionCard
+            style={styles.card}
+            customerDeliveryLine={item}
             handleShowLine={handleShowLine}
           />
         )}
@@ -167,9 +164,9 @@ const SupplierArrivalSearchLineContainer = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  card: {
     width: '100%',
   },
 });
 
-export default SupplierArrivalSearchLineContainer;
+export default CustomerDeliverySearchLineContainer;

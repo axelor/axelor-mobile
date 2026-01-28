@@ -22,6 +22,10 @@ import {
   ActivityIndicator,
   Dimensions,
   FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  RefreshControl,
+  ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
@@ -61,6 +65,7 @@ interface ScrollListProps {
   actionList?: Action[];
   verticalActions?: boolean;
   onViewableItemsChanged?: (viewableItems: any) => void;
+  useSimpleScrollView?: boolean;
 }
 
 const ScrollList = ({
@@ -79,6 +84,7 @@ const ScrollList = ({
   actionList,
   verticalActions = true,
   onViewableItemsChanged,
+  useSimpleScrollView = false,
 }: ScrollListProps) => {
   const {isScrollEnabled} = useConfig();
 
@@ -153,18 +159,34 @@ const ScrollList = ({
     [renderActions, renderItem],
   );
 
-  const flatList = useRef<FlatList>(null);
+  const flatList = useRef<FlatList | ScrollView>(null);
 
-  const moveToTop = () => {
-    flatList.current.scrollToIndex({index: 0, animated: true});
-  };
+  const moveToTop = useCallback(() => {
+    if (useSimpleScrollView) {
+      (flatList.current as ScrollView)?.scrollTo({y: 0, animated: true});
+    } else {
+      (flatList.current as FlatList)?.scrollToIndex({index: 0, animated: true});
+    }
+  }, [useSimpleScrollView]);
 
-  const translateY = new Animated.Value(0);
+  const translateY = useRef(new Animated.Value(0)).current;
 
-  const handleScroll = Animated.event(
-    [{nativeEvent: {contentOffset: {y: translateY}}}],
-    {useNativeDriver: true},
-  );
+  const handleScroll = useSimpleScrollView
+    ? (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        const {layoutMeasurement, contentOffset, contentSize} =
+          event.nativeEvent;
+
+        translateY.setValue(contentOffset.y);
+
+        const isNearBottom =
+          layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
+        if (isNearBottom) {
+          handleMoreData();
+        }
+      }
+    : Animated.event([{nativeEvent: {contentOffset: {y: translateY}}}], {
+        useNativeDriver: true,
+      });
 
   const interpolation = translateY.interpolate({
     inputRange: [SCREEN_HEIGHT_50_PERCENT, SCREEN_HEIGHT_50_PERCENT + 180],
@@ -224,6 +246,40 @@ const ScrollList = ({
     );
   }
 
+  if (useSimpleScrollView) {
+    return (
+      <View style={styles.container} testID="scrollListContainer">
+        <Animated.View style={[styles.buttonContainer, animatedButtonStyle]}>
+          <CircleButton
+            square={false}
+            iconName="arrow-up"
+            size={BUTTON_SIZE}
+            onPress={moveToTop}
+          />
+        </Animated.View>
+        {!Array.isArray(data) || data.length === 0 ? renderActions() : null}
+        <ScrollView
+          ref={flatList as React.RefObject<ScrollView>}
+          style={[styles.scrollView, style]}
+          nestedScrollEnabled={true}
+          keyboardShouldPersistTaps="handled"
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          refreshControl={
+            disabledRefresh ? undefined : (
+              <RefreshControl refreshing={loadingList} onRefresh={updateData} />
+            )
+          }>
+          {Array.isArray(data) && data.length > 0 && renderActions()}
+          {data.map((item, index) => (
+            <View key={item?.id ?? index}>{renderItem({item, index})}</View>
+          ))}
+          {renderFooter()}
+        </ScrollView>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container} testID="scrollListContainer">
       <Animated.View style={[styles.buttonContainer, animatedButtonStyle]}>
@@ -237,7 +293,7 @@ const ScrollList = ({
       {!Array.isArray(data) || data.length === 0 ? renderActions() : null}
       <AnimatedFlatList
         testID="scrollListAnimatedList"
-        ref={flatList}
+        ref={flatList as React.RefObject<FlatList>}
         style={[styles.scrollView, style]}
         data={data}
         onRefresh={disabledRefresh ? null : updateData}
