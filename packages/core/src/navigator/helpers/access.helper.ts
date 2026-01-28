@@ -53,7 +53,14 @@ export function manageOverridingMenus(modules: Module[]): Module[] {
           if (index && parentModule) {
             result[index] = {
               ...parentModule,
-              menus: {...parentModule.menus, [_menuKey]: menu},
+              menus: {
+                ...parentModule.menus,
+                [_menuKey]: {
+                  ...menu,
+                  compatibilityAOS:
+                    (menu as any).compatibilityAOS ?? _module.compatibilityAOS,
+                },
+              },
             };
           }
 
