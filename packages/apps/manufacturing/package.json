@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-manufacturing",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -27,9 +27,9 @@
     "react-native": "0.83.1"
   },
   "dependencies": {
-    "@axelor/aos-mobile-core": "9.0.0",
-    "@axelor/aos-mobile-stock": "9.0.0",
-    "@axelor/aos-mobile-ui": "9.0.0",
+    "@axelor/aos-mobile-core": "9.0.1",
+    "@axelor/aos-mobile-stock": "9.0.1",
+    "@axelor/aos-mobile-ui": "9.0.1",
     "@reduxjs/toolkit": "2.11.2"
   },
   "devDependencies": {
