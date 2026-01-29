@@ -3,6 +3,14 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.13] (2026-01-29)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- AOS compatibility: propagates compatibility when adding a menu to another module
+
 ## [8.4.12] (2025-12-17)
 
 ### @axelor/aos-mobile-core
@@ -509,6 +517,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.13]: https://github.com/axelor/axelor-mobile/compare/8.4.12...8.4.13
 [8.4.12]: https://github.com/axelor/axelor-mobile/compare/8.4.11...8.4.12
 [8.4.11]: https://github.com/axelor/axelor-mobile/compare/8.4.10...8.4.11
 [8.4.10]: https://github.com/axelor/axelor-mobile/compare/8.4.9...8.4.10
