@@ -3,6 +3,14 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.18] (2026-01-29)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- AOS compatibility: propagates compatibility when adding a menu to another module
+
 ## [8.3.17] (2025-12-04)
 
 ### @axelor/aos-mobile-core
@@ -603,6 +611,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.18]: https://github.com/axelor/axelor-mobile/compare/8.3.17...8.3.18
 [8.3.17]: https://github.com/axelor/axelor-mobile/compare/8.3.16...8.3.17
 [8.3.16]: https://github.com/axelor/axelor-mobile/compare/8.3.15...8.3.16
 [8.3.15]: https://github.com/axelor/axelor-mobile/compare/8.3.14...8.3.15
