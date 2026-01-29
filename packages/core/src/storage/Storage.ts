@@ -47,8 +47,7 @@ export class Storage {
     try {
       const item = JSON.parse(strItem);
       return item;
-    } catch (e) {
-      console.warn('error while parsing storage item', e);
+    } catch {
       return strItem;
     }
   }
