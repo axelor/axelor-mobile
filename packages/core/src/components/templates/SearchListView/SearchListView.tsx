@@ -22,6 +22,7 @@ import {
   ActionType,
   AutoCompleteSearch,
   ScrollList,
+  Text,
 } from '@axelor/aos-mobile-ui';
 import {FilterContainer, ScannerAutocompleteSearch} from '../../organisms';
 import {useDispatch} from '../../../redux/hooks';
@@ -30,6 +31,7 @@ import {useIsFocused} from '../../../hooks/use-navigation';
 import {useActiveFilter} from '../../../header/FilterProvider';
 
 interface SearchListViewProps {
+  style?: any;
   list: any[];
   loading: boolean;
   moreLoading: boolean;
@@ -52,9 +54,13 @@ interface SearchListViewProps {
   actionList?: ActionType[];
   verticalActions?: boolean;
   customSearchBarComponent?: React.JSX.Element;
+  useHeaderContainer?: boolean;
+  /** Use this props to disable the scroll behavior, this can be useful when the list items contains only a few items. */
+  simplifiedMode?: boolean;
 }
 
 const SearchListView = ({
+  style,
   list,
   loading,
   moreLoading,
@@ -77,6 +83,8 @@ const SearchListView = ({
   actionList,
   verticalActions,
   customSearchBarComponent,
+  useHeaderContainer = true,
+  simplifiedMode = false,
 }: SearchListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -155,32 +163,46 @@ const SearchListView = ({
   ]);
 
   return (
-    <View style={styles.container}>
-      <FilterContainer
-        topChildren={headerTopChildren}
-        fixedItems={
-          <>
-            {topFixedItems}
-            {!isHideableSearch && renderSearchBar()}
-            {fixedItems}
-          </>
-        }
-        chipComponent={chipComponent}
-        expandableFilter={expandableFilter}>
-        {isHideableSearch && renderSearchBar()}
-        {headerChildren}
-      </FilterContainer>
-      <ScrollList
-        loadingList={loading}
-        data={list}
-        renderItem={renderListItem}
-        fetchData={fetchListAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
-        actionList={actionList}
-        verticalActions={verticalActions}
-      />
+    <View style={[styles.container, style]}>
+      {useHeaderContainer ? (
+        <FilterContainer
+          topChildren={headerTopChildren}
+          fixedItems={
+            <>
+              {topFixedItems}
+              {!isHideableSearch && renderSearchBar()}
+              {fixedItems}
+            </>
+          }
+          chipComponent={chipComponent}
+          expandableFilter={expandableFilter}>
+          {isHideableSearch && renderSearchBar()}
+          {headerChildren}
+        </FilterContainer>
+      ) : (
+        renderSearchBar()
+      )}
+      {simplifiedMode ? (
+        <View style={styles.cardContainer}>
+          {!Array.isArray(list) || list.length === 0 ? (
+            <Text>{I18n.t('Base_NoData')}</Text>
+          ) : (
+            list.map((item, index) => renderListItem({item, index}))
+          )}
+        </View>
+      ) : (
+        <ScrollList
+          loadingList={loading}
+          data={list}
+          renderItem={renderListItem}
+          fetchData={fetchListAPI}
+          moreLoading={moreLoading}
+          isListEnd={isListEnd}
+          translator={I18n.t}
+          actionList={actionList}
+          verticalActions={verticalActions}
+        />
+      )}
     </View>
   );
 };
@@ -188,6 +210,11 @@ const SearchListView = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  cardContainer: {
+    flexDirection: 'column',
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
