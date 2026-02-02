@@ -22,6 +22,7 @@ import {
   ActionType,
   AutoCompleteSearch,
   ScrollList,
+  Text,
 } from '@axelor/aos-mobile-ui';
 import {FilterContainer, ScannerAutocompleteSearch} from '../../organisms';
 import {useDispatch} from '../../../redux/hooks';
@@ -54,6 +55,8 @@ interface SearchListViewProps {
   verticalActions?: boolean;
   customSearchBarComponent?: React.JSX.Element;
   useHeaderContainer?: boolean;
+  /** Use this props to disable the scroll behavior, this can be useful when the list items contains only a few items. */
+  simplifiedMode?: boolean;
 }
 
 const SearchListView = ({
@@ -81,6 +84,7 @@ const SearchListView = ({
   verticalActions,
   customSearchBarComponent,
   useHeaderContainer = true,
+  simplifiedMode = false,
 }: SearchListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -178,17 +182,27 @@ const SearchListView = ({
       ) : (
         renderSearchBar()
       )}
-      <ScrollList
-        loadingList={loading}
-        data={list}
-        renderItem={renderListItem}
-        fetchData={fetchListAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
-        actionList={actionList}
-        verticalActions={verticalActions}
-      />
+      {simplifiedMode ? (
+        <View style={styles.cardContainer}>
+          {!Array.isArray(list) || list.length === 0 ? (
+            <Text>{I18n.t('Base_NoData')}</Text>
+          ) : (
+            list.map((item, index) => renderListItem({item, index}))
+          )}
+        </View>
+      ) : (
+        <ScrollList
+          loadingList={loading}
+          data={list}
+          renderItem={renderListItem}
+          fetchData={fetchListAPI}
+          moreLoading={moreLoading}
+          isListEnd={isListEnd}
+          translator={I18n.t}
+          actionList={actionList}
+          verticalActions={verticalActions}
+        />
+      )}
     </View>
   );
 };
@@ -196,6 +210,11 @@ const SearchListView = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  cardContainer: {
+    flexDirection: 'column',
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
