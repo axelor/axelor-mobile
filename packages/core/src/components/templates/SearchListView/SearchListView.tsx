@@ -30,6 +30,7 @@ import {useIsFocused} from '../../../hooks/use-navigation';
 import {useActiveFilter} from '../../../header/FilterProvider';
 
 interface SearchListViewProps {
+  style?: any;
   list: any[];
   loading: boolean;
   moreLoading: boolean;
@@ -56,6 +57,7 @@ interface SearchListViewProps {
 }
 
 const SearchListView = ({
+  style,
   list,
   loading,
   moreLoading,
@@ -157,7 +159,7 @@ const SearchListView = ({
   ]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {useHeaderContainer ? (
         <FilterContainer
           topChildren={headerTopChildren}
