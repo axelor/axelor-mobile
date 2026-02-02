@@ -137,6 +137,7 @@ const SearchLineContainer = ({
         useHeaderContainer={false}
         searchNavigate={navigate}
         renderListItem={({item}) => renderItem(item)}
+        simplifiedMode={showSimplifiedDisplay}
       />
       {showSimplifiedDisplay && (
         <TouchableOpacity
