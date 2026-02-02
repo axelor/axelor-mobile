@@ -1,0 +1,5 @@
+{
+  "title": "SearchListView: add possibility to disabled scroll behavior through a simplified mode option",
+  "type": "feat",
+  "packages": "core"
+}

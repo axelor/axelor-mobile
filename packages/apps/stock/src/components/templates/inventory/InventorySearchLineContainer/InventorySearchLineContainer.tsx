@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
@@ -49,24 +49,24 @@ const InventorySearchLineContainer = ({}) => {
   const {showLine} = useLineHandler();
 
   const {inventory} = useSelector(state => state.inventory);
-  const {inventoryLineList, totalNumberLines} = useSelector(
-    state => state.inventoryLine,
-  );
+  const {
+    loadingInventoryLines,
+    moreLoading,
+    isListEnd,
+    inventoryLineList,
+    totalNumberLines,
+  } = useSelector(state => state.inventoryLine);
 
   const handleNewLine = useCallback(() => {
-    navigation.navigate('InventorySelectProductScreen', {
-      inventory: inventory,
-    });
+    navigation.navigate('InventorySelectProductScreen', {inventory});
   }, [inventory, navigation]);
 
-  const handleViewAll = () => {
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('InventoryLineListScreen', {inventory});
+  }, [inventory, navigation]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification = undefined) => {
       showLine({
         move: inventory,
         line: item,
@@ -77,31 +77,23 @@ const InventorySearchLineContainer = ({}) => {
     [inventory, showLine],
   );
 
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
-  };
-
-  const fetchInventoryLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchInventoryLines({
-          inventoryId: inventory?.id,
-          searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, inventory],
+  const handleLineSearch = useCallback(
+    (item: any) => handleShowLine(item, true),
+    [handleShowLine],
   );
 
-  const filterLine = useCallback(item => {
-    return item.realQty == null;
-  }, []);
+  const sliceFunctionData = useMemo(
+    () => ({inventoryId: inventory?.id}),
+    [inventory?.id],
+  );
 
   const handleRefresh = useCallback(
-    () => fetchInventoryLinesAPI({page: 0}),
-    [fetchInventoryLinesAPI],
+    () =>
+      dispatch((fetchInventoryLines as any)({...sliceFunctionData, page: 0})),
+    [dispatch, sliceFunctionData],
   );
+
+  const filterLine = useCallback((item: any) => item.realQty == null, []);
 
   return (
     <View style={styles.container}>
@@ -116,8 +108,12 @@ const InventorySearchLineContainer = ({}) => {
         title={I18n.t('Stock_InventoryLines')}
         numberOfItems={totalNumberLines}
         objectList={inventoryLineList}
+        loading={loadingInventoryLines}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchInventoryLines}
+        sliceFunctionData={sliceFunctionData}
         handleSelect={handleLineSearch}
-        handleSearch={fetchInventoryLinesAPI}
         scanKey={scanKey}
         onViewPress={handleViewAll}
         filterLine={filterLine}
