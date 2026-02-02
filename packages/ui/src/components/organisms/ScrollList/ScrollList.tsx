@@ -252,6 +252,7 @@ const ScrollList = ({
           itemVisiblePercentThreshold: 1,
         }}
         scrollEnabled={isScrollEnabled}
+        nestedScrollEnabled
       />
     </View>
   );

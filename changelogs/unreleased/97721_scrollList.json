@@ -1,0 +1,5 @@
+{
+  "title": "ScrollList: allow nested scroll",
+  "type": "fix",
+  "packages": "ui"
+}
