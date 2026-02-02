@@ -19,11 +19,18 @@
 import React, {ReactNode, useMemo} from 'react';
 import {
   KeyboardAvoidingView,
+  LogBox,
   Platform,
   RefreshControl,
   ScrollView,
   StyleSheet,
 } from 'react-native';
+
+// Suppress warning for nested VirtualizedLists - we handle this intentionally
+// with nestedScrollEnabled and constrained heights on inner lists
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.',
+]);
 
 export const DEFAULT_OFFSET = {ios: 70, android: 115};
 
@@ -69,6 +76,7 @@ const KeyboardAvoidingScrollView = ({
         style={globalStyle}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[getZIndexStyles(10), style]}
+        nestedScrollEnabled
         refreshControl={
           refresh != null ? (
             <RefreshControl

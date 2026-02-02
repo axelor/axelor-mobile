@@ -17,14 +17,17 @@
  */
 
 import React, {ReactNode, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  ScannerAutocompleteSearch,
+  SearchListView,
+  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Indicator} from './IndicatorBadge';
 import {displayLine} from '../../../utils/displayers';
+
+const SCREEN_HEIGHT_50_PERCENT = Dimensions.get('window').height * 0.5;
 
 interface Props {
   style?: any;
@@ -33,17 +36,15 @@ interface Props {
   showAction?: boolean;
   onAction?: () => void;
   objectList: any[];
+  loading: boolean;
+  moreLoading: boolean;
+  isListEnd: boolean;
+  sliceFunction: any;
+  sliceFunctionData?: Object;
   handleSelect: (item: any) => void;
-  handleSearch?: ({
-    page,
-    searchValue,
-  }: {
-    page: number;
-    searchValue: string;
-  }) => void;
   scanKey: string;
   onViewPress: () => void;
-  renderItem: (item, index) => ReactNode;
+  renderItem: (item: any) => ReactNode;
   filterLine: (item: any) => boolean;
 }
 
@@ -54,8 +55,12 @@ const SearchLineContainer = ({
   showAction = false,
   onAction,
   objectList,
+  loading,
+  moreLoading,
+  isListEnd,
+  sliceFunction,
+  sliceFunctionData,
   handleSelect,
-  handleSearch,
   scanKey,
   onViewPress,
   renderItem,
@@ -66,30 +71,39 @@ const SearchLineContainer = ({
 
   const [navigate, setNavigate] = useState(false);
 
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
   const _handleSelect = useCallback(
-    item => {
+    (item: any) => {
       setNavigate(current => !current);
       handleSelect(item);
     },
     [handleSelect],
   );
 
-  const item = useMemo(() => {
-    if (!Array.isArray(objectList) || objectList.length === 0) {
-      return null;
+  const showSimplifiedDisplay = useMemo(
+    () => mobileSettings?.isSimplifiedStockMoveLineDisplayEnabled,
+    [mobileSettings?.isSimplifiedStockMoveLineDisplayEnabled],
+  );
+
+  const filteredList = useMemo(() => {
+    if (showSimplifiedDisplay) {
+      if (!Array.isArray(objectList) || objectList.length === 0) {
+        return [];
+      }
+
+      const _list = objectList.filter(filterLine);
+      return [_list?.at(0) ?? objectList[0]];
     }
 
-    const filteredList = objectList.filter(filterLine);
-
-    const itemToDisplay =
-      filteredList?.length > 0 ? filteredList[0] : objectList[0];
-
-    const itemIndex = objectList.findIndex(
-      _item => _item.id === itemToDisplay.id,
+    return (
+      objectList?.sort((a, b) => {
+        const condA = filterLine(a);
+        const condB = filterLine(b);
+        return condA === condB ? 0 : condA ? -1 : 1;
+      }) ?? []
     );
-
-    return {data: itemToDisplay, index: itemIndex};
-  }, [filterLine, objectList]);
+  }, [filterLine, objectList, showSimplifiedDisplay]);
 
   return (
     <Card style={[styles.container, style]}>
@@ -99,7 +113,6 @@ const SearchLineContainer = ({
           <Indicator indicator={numberOfItems} />
           {showAction && (
             <Icon
-              style={styles.icon}
               name="plus-lg"
               color={Colors.primaryColor.background}
               size={20}
@@ -109,45 +122,44 @@ const SearchLineContainer = ({
           )}
         </View>
       </View>
-      <ScannerAutocompleteSearch
-        style={styles.searchBar}
-        objectList={objectList}
-        onChangeValue={_handleSelect}
-        fetchData={handleSearch}
-        displayValue={displayLine}
+      <SearchListView
+        style={showSimplifiedDisplay ? undefined : styles.listContainer}
+        list={filteredList}
+        loading={loading}
+        moreLoading={moreLoading}
+        isListEnd={showSimplifiedDisplay || isListEnd}
+        sliceFunction={sliceFunction}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={_handleSelect}
+        displaySearchValue={displayLine}
+        searchPlaceholder={I18n.t('Stock_SearchLine')}
         scanKeySearch={scanKey}
-        placeholder={I18n.t('Stock_SearchLine')}
-        isFocus={true}
-        changeScreenAfter={true}
-        oneFilter={true}
-        navigate={navigate}
+        useHeaderContainer={false}
+        searchNavigate={navigate}
+        renderListItem={({item}) => renderItem(item)}
+        simplifiedMode={showSimplifiedDisplay}
       />
-      <View style={styles.cardContainer}>
-        {!item ? (
-          <Text style={styles.text}>{I18n.t('Base_NoData')}</Text>
-        ) : (
-          renderItem(item.data, item.index)
-        )}
-      </View>
-      <TouchableOpacity onPress={onViewPress} activeOpacity={0.9}>
-        <View style={styles.iconContainer}>
-          <Text style={styles.txtDetails}>{I18n.t('Base_ViewAll')}</Text>
+      {showSimplifiedDisplay && (
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={onViewPress}
+          activeOpacity={0.9}>
+          <Text fontSize={14}>{I18n.t('Base_ViewAll')}</Text>
           <Icon
             name="chevron-right"
             color={Colors.secondaryColor.background_light}
-            size={20}
           />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      )}
     </Card>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: '2%',
-    paddingHorizontal: '3%',
-    paddingRight: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 0,
+    paddingRight: 0,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -158,38 +170,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 1,
-    marginVertical: 2,
-    width: '100%',
+    width: '90%',
+    alignSelf: 'center',
   },
   headerIcons: {
     flexDirection: 'row',
+    gap: 10,
   },
-  icon: {
-    marginLeft: 10,
-  },
-  searchBar: {
-    width: '100%',
-  },
-  cardContainer: {
-    marginBottom: 2,
-    width: '100%',
-  },
-  text: {
-    alignSelf: 'center',
+  listContainer: {
+    maxHeight: SCREEN_HEIGHT_50_PERCENT,
   },
   iconContainer: {
-    width: '100%',
+    width: '95%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
     alignContent: 'center',
-    marginBottom: 2,
-    elevation: 3,
-  },
-  txtDetails: {
-    fontSize: 14,
-    marginHorizontal: 15,
+    margin: 2,
+    gap: 5,
   },
 });
 
