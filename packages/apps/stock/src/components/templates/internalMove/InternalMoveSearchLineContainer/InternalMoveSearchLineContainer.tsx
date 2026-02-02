@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useDispatch,
@@ -40,17 +40,18 @@ const InternalMoveSearchLineContainer = ({}) => {
   const {showLine} = useLineHandler();
 
   const {internalMove} = useSelector(state => state.internalMove);
+  const {loadingIMLinesList, moreLoading, isListEnd} = useSelector(
+    state => state.internalMoveLine,
+  );
   const {internalMoveLineList, totalNumberLines} =
     useInternalLinesWithRacks(internalMove);
 
-  const handleViewAll = () => {
-    navigation.navigate('InternalMoveLineListScreen', {
-      internalMove: internalMove,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('InternalMoveLineListScreen', {internalMove});
+  }, [internalMove, navigation]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification = undefined) => {
       showLine({
         move: internalMove,
         line: item,
@@ -62,36 +63,28 @@ const InternalMoveSearchLineContainer = ({}) => {
   );
 
   const handleLineSearch = useCallback(
-    item => handleShowLine(item, true),
+    (item: any) => handleShowLine(item, true),
     [handleShowLine],
   );
 
-  const fetchInternalLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchInternalMoveLines({
-          internalMoveId: internalMove?.id,
-          searchValue: searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, internalMove],
+  const sliceFunctionData = useMemo(
+    () => ({internalMoveId: internalMove?.id}),
+    [internalMove?.id],
   );
 
   const handleRefresh = useCallback(
-    () => fetchInternalLinesAPI({page: 0}),
-    [fetchInternalLinesAPI],
+    () =>
+      dispatch(
+        (fetchInternalMoveLines as any)({...sliceFunctionData, page: 0}),
+      ),
+    [dispatch, sliceFunctionData],
   );
 
   const filterLine = useCallback(
-    item => {
-      return (
-        StockMoveLine.hideLineQty(item, internalMove) ||
-        parseFloat(item.realQty) == null ||
-        parseFloat(item.realQty) < parseFloat(item.qty)
-      );
-    },
+    (item: any) =>
+      StockMoveLine.hideLineQty(item, internalMove) ||
+      parseFloat(item.realQty) == null ||
+      parseFloat(item.realQty) < parseFloat(item.qty),
     [internalMove],
   );
 
@@ -109,8 +102,12 @@ const InternalMoveSearchLineContainer = ({}) => {
         title={I18n.t('Stock_InternalMoveLines')}
         numberOfItems={totalNumberLines}
         objectList={internalMoveLineList}
+        loading={loadingIMLinesList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchInternalMoveLines}
+        sliceFunctionData={sliceFunctionData}
         handleSelect={handleLineSearch}
-        handleSearch={fetchInternalLinesAPI}
         scanKey={scanKey}
         onViewPress={handleViewAll}
         filterLine={filterLine}
