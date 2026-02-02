@@ -1,0 +1,5 @@
+{
+  "title": "SearchListView: add possibility to hide header container",
+  "type": "feat",
+  "packages": "core"
+}

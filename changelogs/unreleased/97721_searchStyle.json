@@ -1,0 +1,5 @@
+{
+  "title": "SearchListView: add possibility to provide style to container",
+  "type": "feat",
+  "packages": "core"
+}
