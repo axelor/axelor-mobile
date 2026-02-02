@@ -137,10 +137,10 @@ export const useLineHandler = () => {
       move: any;
       line: any;
       skipVerification?: boolean;
-      type: keyof typeof LineVerification.type;
+      type: string;
     }) => {
       if (line != null) {
-        const config = LineVerification.getLineVerificationConfig(type);
+        const config = LineVerification.getLineVerificationConfig(type as any);
         const _skipVerification =
           skipVerification ?? !mobileSettings?.[config.configName];
         const product = await fetchProductByCompany(line.product);
