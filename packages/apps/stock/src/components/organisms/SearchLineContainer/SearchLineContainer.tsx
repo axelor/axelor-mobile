@@ -17,7 +17,7 @@
  */
 
 import React, {ReactNode, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -26,6 +26,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Indicator} from './IndicatorBadge';
 import {displayLine} from '../../../utils/displayers';
+
+const SCREEN_HEIGHT_50_PERCENT = Dimensions.get('window').height * 0.5;
 
 interface Props {
   style?: any;
@@ -111,7 +113,6 @@ const SearchLineContainer = ({
           <Indicator indicator={numberOfItems} />
           {showAction && (
             <Icon
-              style={styles.icon}
               name="plus-lg"
               color={Colors.primaryColor.background}
               size={20}
@@ -122,10 +123,11 @@ const SearchLineContainer = ({
         </View>
       </View>
       <SearchListView
+        style={showSimplifiedDisplay ? undefined : styles.listContainer}
         list={filteredList}
         loading={loading}
         moreLoading={moreLoading}
-        isListEnd={showSimplifiedDisplay ?? isListEnd}
+        isListEnd={showSimplifiedDisplay || isListEnd}
         sliceFunction={sliceFunction}
         sliceFunctionData={sliceFunctionData}
         onChangeSearchValue={_handleSelect}
@@ -137,15 +139,15 @@ const SearchLineContainer = ({
         renderListItem={({item}) => renderItem(item)}
       />
       {showSimplifiedDisplay && (
-        <TouchableOpacity onPress={onViewPress} activeOpacity={0.9}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.txtDetails}>{I18n.t('Base_ViewAll')}</Text>
-            <Icon
-              name="chevron-right"
-              color={Colors.secondaryColor.background_light}
-              size={20}
-            />
-          </View>
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={onViewPress}
+          activeOpacity={0.9}>
+          <Text fontSize={14}>{I18n.t('Base_ViewAll')}</Text>
+          <Icon
+            name="chevron-right"
+            color={Colors.secondaryColor.background_light}
+          />
         </TouchableOpacity>
       )}
     </Card>
@@ -172,32 +174,19 @@ const styles = StyleSheet.create({
   },
   headerIcons: {
     flexDirection: 'row',
+    gap: 10,
   },
-  icon: {
-    marginLeft: 10,
-  },
-  searchBar: {
-    width: '100%',
-  },
-  cardContainer: {
-    marginBottom: 2,
-    width: '100%',
-  },
-  text: {
-    alignSelf: 'center',
+  listContainer: {
+    maxHeight: SCREEN_HEIGHT_50_PERCENT,
   },
   iconContainer: {
-    width: '100%',
+    width: '95%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
     alignContent: 'center',
-    marginBottom: 2,
-    elevation: 3,
-  },
-  txtDetails: {
-    fontSize: 14,
-    marginHorizontal: 15,
+    margin: 2,
+    gap: 5,
   },
 });
 
