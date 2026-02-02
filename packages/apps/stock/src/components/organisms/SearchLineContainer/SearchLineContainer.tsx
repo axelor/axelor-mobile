@@ -80,8 +80,8 @@ const SearchLineContainer = ({
   );
 
   const showSimplifiedDisplay = useMemo(
-    () => mobileSettings?.showSimplifySearch,
-    [mobileSettings?.showSimplifySearch],
+    () => mobileSettings?.isSimplifiedStockMoveLineDisplayEnabled,
+    [mobileSettings?.isSimplifiedStockMoveLineDisplayEnabled],
   );
 
   const filteredList = useMemo(() => {
@@ -125,7 +125,7 @@ const SearchLineContainer = ({
         list={filteredList}
         loading={loading}
         moreLoading={moreLoading}
-        isListEnd={!showSimplifiedDisplay && isListEnd}
+        isListEnd={showSimplifiedDisplay ?? isListEnd}
         sliceFunction={sliceFunction}
         sliceFunctionData={sliceFunctionData}
         onChangeSearchValue={_handleSelect}
