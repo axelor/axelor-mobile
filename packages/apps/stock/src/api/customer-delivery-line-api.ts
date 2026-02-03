@@ -19,12 +19,21 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  Criteria,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createSearchCriteria = (customerDeliveryId, searchValue) => {
-  return [
+const createSearchCriteria = ({
+  customerDeliveryId,
+  searchValue,
+  sequence,
+}: {
+  customerDeliveryId: number;
+  searchValue?: string;
+  sequence?: number;
+}) => {
+  const criteria: Criteria[] = [
     {
       fieldName: 'stockMove.id',
       operator: '=',
@@ -32,6 +41,16 @@ const createSearchCriteria = (customerDeliveryId, searchValue) => {
     },
     getSearchCriterias('stock_customerDeliveryLine', searchValue),
   ];
+
+  if (sequence != null) {
+    criteria.push({
+      fieldName: 'sequence',
+      operator: '>',
+      value: sequence,
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchCustomerDeliveryLines({
@@ -41,7 +60,7 @@ export async function searchCustomerDeliveryLines({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
-    criteria: createSearchCriteria(customerDeliveryId, searchValue),
+    criteria: createSearchCriteria({customerDeliveryId, searchValue}),
     fieldKey: 'stock_customerDeliveryLine',
     sortKey: 'stock_customerDeliveryLine',
     page,
@@ -93,5 +112,25 @@ export async function splitCustomerDeliveryLine({id, version}) {
     method: 'put',
     body: {version},
     description: 'split customer delivery line',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+      id: Date.now(),
+      fields: {},
+    },
+  });
+}
+
+export async function fetchNextCustomerDeliveryLine({
+  customerDeliveryId,
+  sequence,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockMoveLine',
+    criteria: createSearchCriteria({customerDeliveryId, sequence}),
+    fieldKey: 'stock_customerDeliveryLine',
+    sortKey: 'stock_customerDeliveryLine',
+    page: 0,
+    numberElementsByPage: 1,
+    provider: 'model',
   });
 }
