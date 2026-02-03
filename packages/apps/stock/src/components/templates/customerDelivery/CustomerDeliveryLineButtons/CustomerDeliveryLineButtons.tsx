@@ -28,6 +28,8 @@ import {
 import {Button} from '@axelor/aos-mobile-ui';
 import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
 import {fetchNextCustomerDeliveryLine} from '../../../../api/customer-delivery-line-api';
+import {LineVerification} from '../../../../types';
+import {useLineHandler} from '../../../../hooks';
 
 const CustomerDeliveryLineButtons = ({
   customerDeliveryLine,
@@ -49,6 +51,7 @@ const CustomerDeliveryLineButtons = ({
   const navigation = useNavigation();
   const {StockMove} = useTypes();
   const isScreenMounted = useStackChecker();
+  const {showLine} = useLineHandler();
 
   const [nextLine, setNextLine] = useState<any>();
 
@@ -102,11 +105,13 @@ const CustomerDeliveryLineButtons = ({
 
   const handleValidateContinue = useCallback(() => {
     handleValidateApi();
-    navigation.replace('CustomerDeliveryLineDetailScreen', {
-      customerDeliveryLineId: nextLine?.id,
-      customerDelivery,
+    showLine({
+      move: customerDelivery,
+      line: nextLine,
+      type: LineVerification.type.outgoing,
+      replace: true,
     });
-  }, [customerDelivery, handleValidateApi, navigation, nextLine?.id]);
+  }, [customerDelivery, handleValidateApi, nextLine, showLine]);
 
   if (!visible) {
     return null;
