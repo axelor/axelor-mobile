@@ -187,7 +187,11 @@ const SearchListView = ({
           {!Array.isArray(list) || list.length === 0 ? (
             <Text>{I18n.t('Base_NoData')}</Text>
           ) : (
-            list.map((item, index) => renderListItem({item, index}))
+            list.map((item, index) => (
+              <React.Fragment key={index}>
+                {renderListItem({item, index})}
+              </React.Fragment>
+            ))
           )}
         </View>
       ) : (
