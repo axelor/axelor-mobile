@@ -1,0 +1,5 @@
+{
+  "title": "Customer delivery line: add possibility to go to next line on validation",
+  "type": "feat",
+  "packages": "stock"
+}

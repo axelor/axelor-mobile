@@ -1,0 +1,5 @@
+{
+  "title": "Customer delivery line: improve refresh management on validation",
+  "type": "refactor",
+  "packages": "stock"
+}

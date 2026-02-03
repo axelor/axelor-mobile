@@ -21,10 +21,51 @@ import {
   useNavigation as useReactNavigation,
   useIsFocused as useReactIsFocused,
   useNavigationState as useReactNavigationState,
+  CommonActions,
 } from '@react-navigation/native';
 
 export const useNavigation = (): any => {
-  return useReactNavigation();
+  const navigation = useReactNavigation();
+
+  const navigateAndReset = useCallback(
+    ({
+      screenName,
+      params,
+      screensToRemove,
+    }: {
+      screenName: string;
+      params?: any;
+      screensToRemove?: string[];
+    }) => {
+      const _list = (screensToRemove ?? []).filter(screen => screen != null);
+
+      if (_list.length === 0) {
+        (navigation.navigate as any)(screenName, params);
+        return;
+      }
+
+      navigation.dispatch((state: any) => {
+        const _routes = state.routes.filter(({name}) => !_list.includes(name));
+
+        const newRoutes = [..._routes, {name: screenName, params}];
+
+        return CommonActions.reset({
+          ...state,
+          routes: newRoutes,
+          index: newRoutes.length - 1,
+        });
+      });
+    },
+    [navigation],
+  );
+
+  return useMemo(
+    () => ({
+      ...navigation,
+      navigateAndReset,
+    }),
+    [navigation, navigateAndReset],
+  );
 };
 
 export const useIsFocused = (): boolean => {
