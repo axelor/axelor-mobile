@@ -1,0 +1,5 @@
+{
+  "title": "Navigation: add navigateAndReset method to remove screens from stack",
+  "type": "feat",
+  "packages": "core"
+}

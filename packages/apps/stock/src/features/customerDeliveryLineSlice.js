@@ -53,11 +53,7 @@ export const updateCustomerDeliveryLine = createAsyncThunk(
       getState,
       responseOptions: {showToast: true},
     }).then(() => {
-      dispatch(
-        fetchCustomerDeliveryLine({
-          customerDeliveryLineId: data?.stockMoveLineId,
-        }),
-      );
+      dispatch(fetchCustomerDeliveryLines(data));
     });
   },
 );
