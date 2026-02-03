@@ -133,11 +133,13 @@ export const useLineHandler = () => {
       line,
       skipVerification,
       type,
+      replace,
     }: {
       move: any;
       line: any;
       skipVerification?: boolean;
       type: string;
+      replace?: boolean;
     }) => {
       if (line != null) {
         const config = LineVerification.getLineVerificationConfig(type as any);
@@ -151,6 +153,7 @@ export const useLineHandler = () => {
           itemLine: {name: config.itemLine, data: {...line, product}},
           skipVerification: _skipVerification,
           navigation,
+          replace,
         });
       }
     },

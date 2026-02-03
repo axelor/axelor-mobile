@@ -28,6 +28,7 @@ export const showLine = ({
   skipTrackingNumberVerification = false,
   skipVerification = false,
   navigation,
+  replace = false,
 }: {
   item: {name: string; data: any};
   itemLine: {name: string; data: any};
@@ -38,6 +39,7 @@ export const showLine = ({
   skipTrackingNumberVerification?: boolean;
   skipVerification?: boolean;
   navigation: any;
+  replace?: boolean;
 }) => {
   const StockMove = getTypes().StockMove;
   const detailStatus = _detailStatus ?? StockMove?.statusSelect.Realized;
@@ -52,6 +54,22 @@ export const showLine = ({
 
   const {trackingNumberConfiguration} = product;
 
+  const doNavigate = (screenName: string, params: Record<string, any>) => {
+    if (replace) {
+      navigation.navigateAndReset({
+        screenName,
+        params,
+        screensToRemove: [
+          lineDetailsScreen,
+          selectTrackingScreen,
+          selectProductScreen,
+        ],
+      });
+    } else {
+      navigation.navigate(screenName, params);
+    }
+  };
+
   if (
     item?.data?.statusSelect === detailStatus ||
     skipVerification ||
@@ -59,20 +77,20 @@ export const showLine = ({
       trackingNumberConfiguration &&
       trackingNumber == null)
   ) {
-    navigation.navigate(lineDetailsScreen, {
+    doNavigate(lineDetailsScreen, {
       [itemLine.name]: line,
       [item.name]: item.data,
       [`${itemLine.name}Id`]: line.id,
       productId: product.id,
     });
   } else if (trackingNumberConfiguration && trackingNumber != null) {
-    navigation.navigate(selectTrackingScreen, {
+    doNavigate(selectTrackingScreen, {
       [itemLine.name]: line,
       [item.name]: item.data,
       product,
     });
   } else {
-    navigation.navigate(selectProductScreen, {
+    doNavigate(selectProductScreen, {
       [itemLine.name]: itemLine.data,
       [item.name]: item.data,
       product,

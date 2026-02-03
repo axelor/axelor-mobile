@@ -1,0 +1,5 @@
+{
+  "title": "Line navigation: add replace option to remove screens from stack on navigation",
+  "type": "feat",
+  "packages": "stock"
+}
