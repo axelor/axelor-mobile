@@ -104,17 +104,11 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   }, [customerDeliveryLine, customerDelivery]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
+    navigation.navigate('ProductStockDetailsScreen', {product});
   };
 
   const getCustomerDeliveryLine = useCallback(() => {
-    dispatch(
-      fetchCustomerDeliveryLine({
-        customerDeliveryLineId: customerDeliveryLineId,
-      }),
-    );
+    dispatch((fetchCustomerDeliveryLine as any)({customerDeliveryLineId}));
   }, [customerDeliveryLineId, dispatch]);
 
   useEffect(() => {
