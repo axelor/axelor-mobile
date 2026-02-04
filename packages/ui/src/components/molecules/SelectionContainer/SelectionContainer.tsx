@@ -33,6 +33,7 @@ interface SelectionItemProps {
   isSelectedItem?: boolean;
   readonly?: boolean;
   isMoreResultsItem?: boolean;
+  multiLineLabels?: boolean;
 }
 
 const SelectionItem = ({
@@ -44,6 +45,7 @@ const SelectionItem = ({
   isSelectedItem = false,
   readonly = false,
   isMoreResultsItem = false,
+  multiLineLabels = false,
 }: SelectionItemProps) => {
   const Colors = useThemeColor();
 
@@ -82,7 +84,7 @@ const SelectionItem = ({
       <View style={itemStyles.textContainer}>
         <Text
           style={itemStyles.text}
-          numberOfLines={1}
+          numberOfLines={multiLineLabels ? undefined : 1}
           writingType={isMoreResultsItem ? 'title' : null}>
           {content}
         </Text>
@@ -107,7 +109,7 @@ const getIndicatorColor = (color: string) => {
 const getItemStyles = (isPicker: boolean, isMoreResultsItem: boolean) =>
   StyleSheet.create({
     item: {
-      height: 40,
+      minHeight: 40,
       flexDirection: 'row',
       alignItems: 'center',
       width: '100%',
@@ -144,6 +146,7 @@ interface SelectionContainerProps {
   translator?: (key: string, values?: Object) => string;
   title?: string;
   wrapperRef?: RefObject<any>;
+  multiLineLabels?: boolean;
 }
 
 const SelectionContainer = ({
@@ -160,6 +163,7 @@ const SelectionContainer = ({
   translator,
   title,
   wrapperRef,
+  multiLineLabels = false,
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
 
@@ -178,9 +182,15 @@ const SelectionContainer = ({
     }
   }, [isPicker, objectList]);
 
+  const selectionHeight = useMemo(() => {
+    return emptyValue || isMoreResultsItem
+      ? listLength * 40 + 45
+      : listLength * 40 + 5;
+  }, [emptyValue, isMoreResultsItem, listLength]);
+
   const styles = useMemo(
-    () => getStyles(Colors, listLength, emptyValue || isMoreResultsItem),
-    [Colors, listLength, emptyValue, isMoreResultsItem],
+    () => getStyles(Colors, selectionHeight),
+    [Colors, selectionHeight],
   );
 
   const selectedKeys = useMemo(
@@ -229,6 +239,7 @@ const SelectionContainer = ({
               isPicker={isPicker}
               isSelectedItem={selectedKeys.includes(item[keyField])}
               readonly={readonly}
+              multiLineLabels={multiLineLabels}
             />
             <View
               key={'border' + index}
@@ -262,6 +273,7 @@ const SelectionContainer = ({
     keyField,
     listLength,
     objectList,
+    multiLineLabels,
     readonly,
     selectedKeys,
     styles.border,
@@ -309,10 +321,10 @@ const SelectionContainer = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, listLength: number, addItem: boolean) =>
+const getStyles = (Colors: ThemeColors, height: number) =>
   StyleSheet.create({
     flatListContainer: {
-      height: addItem ? listLength * 40 + 45 : listLength * 40 + 5,
+      height: height,
       width: '100%',
       position: 'absolute',
       top: '94%',
