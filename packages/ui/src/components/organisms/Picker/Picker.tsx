@@ -45,6 +45,7 @@ interface PickerProps {
   readonly?: boolean;
   required?: boolean;
   isScrollViewContainer?: boolean;
+  multiLineLabels?: boolean;
   translator?: (key: string, values?: Object) => string;
 }
 
@@ -64,6 +65,7 @@ const Picker = ({
   readonly = false,
   required = false,
   isScrollViewContainer = false,
+  multiLineLabels = false,
   translator,
 }: PickerProps) => {
   const Colors = useThemeColor();
@@ -192,6 +194,7 @@ const Picker = ({
           />
         }
         title={_displayValue(selectedItem)}
+        numberOfLines={multiLineLabels ? null : 1}
         styleText={styles.textPicker}
         style={[
           commonStyles.filter,
@@ -199,6 +202,7 @@ const Picker = ({
           commonStyles.filterAlign,
           isFocused && commonStyles.inputFocused,
           styles.content,
+          multiLineLabels && styles.adjustableHeight,
           pickerStyle,
         ]}
       />
@@ -213,6 +217,7 @@ const Picker = ({
           isPicker={true}
           selectedItem={[selectedItem]}
           title={title}
+          multiLineLabels={multiLineLabels}
           translator={translator}
         />
       )}
@@ -243,6 +248,10 @@ const getStyles = (
       borderWidth: 1,
       marginHorizontal: 0,
       minHeight: 40,
+    },
+    adjustableHeight: {
+      height: undefined,
+      paddingVertical: 10,
     },
     textPicker: {
       left: '-20%',
