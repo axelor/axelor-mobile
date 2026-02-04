@@ -3,6 +3,14 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.26] (2026-02-04)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Picker: add possibility to have labels on multiple lines through new prop multiLineLabels
+
 ## [8.2.25] (2025-12-04)
 
 ### @axelor/aos-mobile-core
@@ -915,6 +923,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.26]: https://github.com/axelor/axelor-mobile/compare/8.2.25...8.2.26
 [8.2.25]: https://github.com/axelor/axelor-mobile/compare/8.2.24...8.2.25
 [8.2.24]: https://github.com/axelor/axelor-mobile/compare/8.2.23...8.2.24
 [8.2.23]: https://github.com/axelor/axelor-mobile/compare/8.2.22...8.2.23
