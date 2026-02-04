@@ -46,6 +46,7 @@ interface PickerProps {
   readonly?: boolean;
   required?: boolean;
   isScrollViewContainer?: boolean;
+  multiLineLabels?: boolean;
   translator?: (key: string, values?: Object) => string;
 }
 
@@ -66,6 +67,7 @@ const Picker = ({
   readonly = false,
   required = false,
   isScrollViewContainer = false,
+  multiLineLabels = false,
   translator,
 }: PickerProps) => {
   const Colors = useThemeColor();
@@ -194,7 +196,7 @@ const Picker = ({
         <Text style={[styles.title, styleTxt]}>{title}</Text>
       )}
       <RightIconButton
-        numberOfLines={1}
+        numberOfLines={multiLineLabels ? null : 1}
         onPress={togglePicker}
         icon={
           <Icon
@@ -210,6 +212,7 @@ const Picker = ({
           commonStyles.filterAlign,
           isFocused && commonStyles.inputFocused,
           styles.content,
+          multiLineLabels && styles.adjustableHeight,
           pickerStyle,
         ]}
       />
@@ -224,6 +227,7 @@ const Picker = ({
           isPicker={true}
           selectedItem={[selectedItem]}
           title={title}
+          multiLineLabels={multiLineLabels}
           translator={translator}
         />
       )}
@@ -256,6 +260,10 @@ const getStyles = (
       marginHorizontal: 0,
       minHeight: 40,
       paddingLeft: displayPlaceholder ? 9 : 20,
+    },
+    adjustableHeight: {
+      height: undefined,
+      paddingVertical: 10,
     },
     textPicker: {
       left: displayPlaceholder ? 0 : '-20%',
