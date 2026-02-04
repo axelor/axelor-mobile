@@ -3,6 +3,14 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.7] (2026-02-04)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Picker: add possibility to have labels on multiple lines through new prop multiLineLabels
+
 ## [8.5.6] (2026-01-29)
 
 ### @axelor/aos-mobile-core
@@ -256,6 +264,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.7]: https://github.com/axelor/axelor-mobile/compare/8.5.6...8.5.7
 [8.5.6]: https://github.com/axelor/axelor-mobile/compare/8.5.5...8.5.6
 [8.5.5]: https://github.com/axelor/axelor-mobile/compare/8.5.4...8.5.5
 [8.5.4]: https://github.com/axelor/axelor-mobile/compare/8.5.3...8.5.4
