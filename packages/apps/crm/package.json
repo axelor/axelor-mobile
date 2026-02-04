@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-crm",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -27,8 +27,8 @@
     "react-native": "0.83.1"
   },
   "dependencies": {
-    "@axelor/aos-mobile-core": "9.0.1",
-    "@axelor/aos-mobile-ui": "9.0.1",
+    "@axelor/aos-mobile-core": "9.0.2",
+    "@axelor/aos-mobile-ui": "9.0.2",
     "@reduxjs/toolkit": "2.11.2"
   },
   "devDependencies": {

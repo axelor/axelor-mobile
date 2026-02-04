@@ -1,5 +1,0 @@
-{
-  "title": "Picker: add possibility to have labels on multiple lines through new prop multiLineLabels",
-  "type": "feat",
-  "packages": "ui"
-}
