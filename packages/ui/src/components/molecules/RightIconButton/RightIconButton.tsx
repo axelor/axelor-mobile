@@ -23,23 +23,25 @@ import {Card, Text} from '../../atoms';
 interface RightIconProps {
   style?: any;
   styleText?: any;
-  onPress: (any) => void;
+  onPress: () => void;
   title?: string;
   icon: React.ReactNode;
+  numberOfLines?: number;
 }
 
 const RightIconButton = ({
   style,
   styleText,
-  onPress = () => {},
-  title = null,
+  onPress,
+  title,
   icon,
+  numberOfLines = 2,
 }: RightIconProps) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
-        <Text style={[styleText, styles.text]} numberOfLines={2}>
-          {title != null ? title : ''}
+        <Text style={[styles.text, styleText]} numberOfLines={numberOfLines}>
+          {title ?? ''}
         </Text>
         {icon}
       </Card>
