@@ -3,6 +3,14 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.14] (2026-02-04)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Picker: add possibility to have labels on multiple lines through new prop multiLineLabels
+
 ## [8.4.13] (2026-01-29)
 
 ### @axelor/aos-mobile-core
@@ -517,6 +525,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.14]: https://github.com/axelor/axelor-mobile/compare/8.4.13...8.4.14
 [8.4.13]: https://github.com/axelor/axelor-mobile/compare/8.4.12...8.4.13
 [8.4.12]: https://github.com/axelor/axelor-mobile/compare/8.4.11...8.4.12
 [8.4.11]: https://github.com/axelor/axelor-mobile/compare/8.4.10...8.4.11
