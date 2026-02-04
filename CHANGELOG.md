@@ -3,6 +3,14 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.42] (2026-02-04)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Picker: add possibility to have labels on multiple lines through new prop multiLineLabels
+
 ## [7.2.41] (2025-12-04)
 
 ### @axelor/aos-mobile-core
@@ -1067,6 +1075,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.42]: https://github.com/axelor/axelor-mobile/compare/7.2.41...7.2.42
 [7.2.41]: https://github.com/axelor/axelor-mobile/compare/7.2.40...7.2.41
 [7.2.40]: https://github.com/axelor/axelor-mobile/compare/7.2.39...7.2.40
 [7.2.39]: https://github.com/axelor/axelor-mobile/compare/7.2.38...7.2.39
