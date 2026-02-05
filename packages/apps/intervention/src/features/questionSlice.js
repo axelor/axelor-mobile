@@ -62,20 +62,13 @@ export const fetchQuestionById = createAsyncThunk(
 
 export const updateQuestion = createAsyncThunk(
   'intervention_question/updateQuestion',
-  async function (data, {getState, dispatch}) {
+  async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _updateQuestion,
       data,
       action: 'Intervention_SliceAction_UpdateQuestion',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      dispatch(
-        fetchQuestion({
-          interventionId: data.interventionId,
-          rangeId: data.rangeId,
-        }),
-      );
     });
   },
 );
@@ -104,11 +97,17 @@ const initialState = {
 
   loadingRangeList: true,
   rangeList: [],
+  selectedRangeId: null,
 };
 
 const questionSlice = createSlice({
   name: 'intervention_question',
   initialState,
+  reducers: {
+    setSelectedRangeId: (state, action) => {
+      state.selectedRangeId = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchQuestion, {
       loading: 'loading',
@@ -122,15 +121,27 @@ const questionSlice = createSlice({
     builder.addCase(fetchQuestionById.fulfilled, (state, action) => {
       state.loadingQuestion = false;
       state.question = action.payload;
+      state.selectedRangeId = action.payload?.interventionRange?.id ?? null;
     });
     builder.addCase(fetchRange.pending, state => {
       state.loadingRangeList = true;
+      state.rangeList = [];
+      state.selectedRangeId = null;
     });
     builder.addCase(fetchRange.fulfilled, (state, action) => {
       state.loadingRangeList = false;
       state.rangeList = action.payload;
+      if (action.payload?.length > 0) {
+        state.selectedRangeId = action.payload[0].id;
+      }
+    });
+    builder.addCase(fetchRange.rejected, state => {
+      state.loadingRangeList = false;
+      state.rangeList = [];
+      state.selectedRangeId = null;
     });
   },
 });
 
+export const {setSelectedRangeId} = questionSlice.actions;
 export const questionReducer = questionSlice.reducer;

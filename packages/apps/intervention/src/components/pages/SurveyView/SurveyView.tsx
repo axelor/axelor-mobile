@@ -28,24 +28,23 @@ import {HeaderContainer, ScrollList} from '@axelor/aos-mobile-ui';
 import {QuestionCard} from '../../atoms';
 import {InterventionHeader} from '../../molecules';
 import {SurveyRangeNavigation} from '../../templates';
-import {fetchQuestion} from '../../../features/questionSlice';
+import {fetchQuestion, setSelectedRangeId} from '../../../features/questionSlice';
 import {Question} from '../../../types';
 
-interface SurveyViewProps {
-  selectedRangeId: number;
-  onChangeRangeId: (rangeId: number) => void;
-}
-
-const SurveyView = ({selectedRangeId, onChangeRangeId}: SurveyViewProps) => {
+const SurveyView = () => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
-  const {loading, moreLoading, isListEnd, questionlist} = useSelector(
-    (state: any) => state.intervention_question,
+  const {intervention} = useSelector(state => state.intervention_intervention);
+  const {loading, moreLoading, isListEnd, questionlist, selectedRangeId} =
+    useSelector(state => state.intervention_question);
+
+  const handleChangeRangeId = useCallback(
+    (rangeId: number) => {
+      dispatch(setSelectedRangeId(rangeId));
+    },
+    [dispatch],
   );
 
   const fetchQuestionAPI = useCallback(
@@ -82,7 +81,7 @@ const SurveyView = ({selectedRangeId, onChangeRangeId}: SurveyViewProps) => {
             <InterventionHeader intervention={intervention} />
             <SurveyRangeNavigation
               selectedRangeId={selectedRangeId}
-              onChangeRangeId={onChangeRangeId}
+              onChangeRangeId={handleChangeRangeId}
             />
           </>
         }
@@ -96,7 +95,6 @@ const SurveyView = ({selectedRangeId, onChangeRangeId}: SurveyViewProps) => {
             onPress={() =>
               navigation.navigate('InterventionQuestionFormScreen', {
                 questionId: item.id,
-                rangeId: selectedRangeId,
               })
             }
             {...item}
