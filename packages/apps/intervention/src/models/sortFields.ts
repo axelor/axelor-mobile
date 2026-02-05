@@ -26,5 +26,6 @@ export const intervention_sortFields: SortFields = {
   intervention_equipmentFamily: ['name'],
   intervention_equipmentLine: ['product.name'],
   intervention_question: ['interventionRange.orderSeq', 'orderSeq'],
+  intervention_question_reversed: ['-interventionRange.orderSeq', '-orderSeq'],
   intervention_interventionNote: ['-createdOn'],
 };

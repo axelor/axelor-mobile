@@ -18,7 +18,7 @@
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
-import {fetchNextQuestion} from '../api/question-api';
+import {fetchNextQuestion, fetchPreviousQuestion} from '../api/question-api';
 
 export const useQuestionNavigation = () => {
   const navigation = useNavigation();
@@ -26,6 +26,7 @@ export const useQuestionNavigation = () => {
   const {intervention} = useSelector(state => state.intervention_intervention);
   const {question} = useSelector(state => state.intervention_question);
 
+  const [previousQuestionId, setPreviousQuestionId] = useState<number>();
   const [nextQuestionId, setNextQuestionId] = useState<number>();
 
   const handleQuestionFetch = useCallback(
@@ -54,6 +55,7 @@ export const useQuestionNavigation = () => {
   );
 
   useEffect(() => {
+    handleQuestionFetch(fetchPreviousQuestion, setPreviousQuestionId);
     handleQuestionFetch(fetchNextQuestion, setNextQuestionId);
   }, [handleQuestionFetch]);
 
@@ -64,6 +66,11 @@ export const useQuestionNavigation = () => {
     [navigation],
   );
 
+  const handleNavigatePrevious = useCallback(
+    () => handleNavigate(previousQuestionId),
+    [handleNavigate, previousQuestionId],
+  );
+
   const handleNavigateNext = useCallback(
     () => handleNavigate(nextQuestionId),
     [handleNavigate, nextQuestionId],
@@ -72,8 +79,15 @@ export const useQuestionNavigation = () => {
   return useMemo(
     () => ({
       handleNavigateNext,
+      handleNavigatePrevious,
       nextQuestionId,
+      previousQuestionId,
     }),
-    [handleNavigateNext, nextQuestionId],
+    [
+      handleNavigateNext,
+      handleNavigatePrevious,
+      nextQuestionId,
+      previousQuestionId,
+    ],
   );
 };

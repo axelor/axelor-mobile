@@ -161,3 +161,24 @@ export async function fetchNextQuestion({
     provider: 'model',
   });
 }
+
+export async function fetchPreviousQuestion({
+  interventionId,
+  currentRangeOrderSeq,
+  currentQuestionOrderSeq,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.InterventionQuestion',
+    criteria: createAdjacentQuestionCriteria(
+      interventionId,
+      currentRangeOrderSeq,
+      currentQuestionOrderSeq,
+      '<',
+    ),
+    fieldKey: 'intervention_simpleQuestion',
+    sortKey: 'intervention_question_reversed',
+    page: 0,
+    numberElementsByPage: 1,
+    provider: 'model',
+  });
+}

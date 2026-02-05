@@ -34,7 +34,7 @@ import {
   useThemeColor,
   InfoBubble,
 } from '@axelor/aos-mobile-ui';
-import {InterventionHeader} from '../../components';
+import {InterventionHeader, QuestionNavigation} from '../../components';
 import {fetchQuestionById, updateQuestion} from '../../features/questionSlice';
 import {Question as QuestionType} from '../../types';
 import {useQuestionNavigation} from '../../hooks';
@@ -52,7 +52,12 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
     state => state.intervention_question,
   );
 
-  const {nextQuestionId, handleNavigateNext} = useQuestionNavigation();
+  const {
+    nextQuestionId,
+    previousQuestionId,
+    handleNavigateNext,
+    handleNavigatePrevious,
+  } = useQuestionNavigation();
 
   const questionStatus = useMemo(
     () =>
@@ -111,6 +116,12 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
         style={styles.headerContainer}
         expandableFilter={false}
         fixedItems={<InterventionHeader intervention={intervention} />}
+      />
+      <QuestionNavigation
+        nextQuestionId={nextQuestionId}
+        previousQuestionId={previousQuestionId}
+        handleNavigateNext={handleNavigateNext}
+        handleNavigatePrevious={handleNavigatePrevious}
       />
       <View style={styles.questionContainer}>
         <View style={styles.questionTitleContainer}>
