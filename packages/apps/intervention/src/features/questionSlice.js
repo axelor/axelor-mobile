@@ -30,19 +30,13 @@ import {
 
 export const fetchQuestion = createAsyncThunk(
   'intervention_question/fetchQuestion',
-  async function (data, {getState, dispatch}) {
+  async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchQuestion,
       data,
       action: 'Intervention_SliceAction_FetchQuestion',
       getState,
       responseOptions: {isArrayResponse: true},
-    }).then(res => {
-      if (data.rangeId == null && data.page === 0) {
-        dispatch(fetchRange({interventionId: data.interventionId}));
-      }
-
-      return res;
     });
   },
 );

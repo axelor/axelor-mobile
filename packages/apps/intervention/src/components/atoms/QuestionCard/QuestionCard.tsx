@@ -18,26 +18,32 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {InfoBubble, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface QuestionCardProps {
+  id: number;
   status: number;
   interventionRange: any;
   title: string;
   isPrivate?: boolean;
-  onPress: () => void;
 }
 
 const QuestionCard = ({
+  id,
   status,
   interventionRange,
   title,
   isPrivate = false,
-  onPress,
 }: QuestionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const {InterventionQuestion} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
@@ -57,7 +63,9 @@ const QuestionCard = ({
     <ObjectCard
       style={styles.border}
       leftContainerFlex={6}
-      onPress={onPress}
+      onPress={() =>
+        navigation.navigate('InterventionQuestionFormScreen', {questionId: id})
+      }
       upperTexts={{
         items: [
           {
