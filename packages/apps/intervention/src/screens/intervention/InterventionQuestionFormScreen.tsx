@@ -37,6 +37,7 @@ import {
 import {InterventionHeader} from '../../components';
 import {fetchQuestionById, updateQuestion} from '../../features/questionSlice';
 import {Question as QuestionType} from '../../types';
+import {useQuestionNavigation} from '../../hooks';
 
 const InterventionQuestionFormScreen = ({route, navigation}) => {
   const {questionId} = route?.params ?? {};
@@ -50,6 +51,8 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
   const {question, questionlist} = useSelector(
     state => state.intervention_question,
   );
+
+  const {nextQuestionId, handleNavigateNext} = useQuestionNavigation();
 
   const questionStatus = useMemo(
     () =>
@@ -93,9 +96,13 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
         }),
       );
 
-      navigation.pop();
+      if (nextQuestionId != null) {
+        handleNavigateNext();
+      } else {
+        navigation.pop();
+      }
     },
-    [dispatch, navigation],
+    [dispatch, handleNavigateNext, navigation, nextQuestionId],
   );
 
   return (
