@@ -16,105 +16,76 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useCallback, useMemo} from 'react';
 import {
+  SearchListView,
   useDispatch,
-  useNavigation,
   useSelector,
-  useTranslator,
 } from '@axelor/aos-mobile-core';
-import {HeaderContainer, ScrollList} from '@axelor/aos-mobile-ui';
 import {QuestionCard} from '../../atoms';
 import {InterventionHeader} from '../../molecules';
 import {SurveyRangeNavigation} from '../../templates';
-import {fetchQuestion} from '../../../features/questionSlice';
+import {
+  fetchQuestion,
+  setSelectedRangeId,
+} from '../../../features/questionSlice';
 import {Question} from '../../../types';
 
-interface SurveyViewProps {
-  selectedRangeId: number;
-  onChangeRangeId: (rangeId: number) => void;
-}
-
-const SurveyView = ({selectedRangeId, onChangeRangeId}: SurveyViewProps) => {
-  const I18n = useTranslator();
+const SurveyView = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
-  const {loading, moreLoading, isListEnd, questionlist} = useSelector(
-    (state: any) => state.intervention_question,
-  );
+  const {intervention} = useSelector(state => state.intervention_intervention);
+  const {loading, moreLoading, isListEnd, questionlist, selectedRangeId} =
+    useSelector(state => state.intervention_question);
 
-  const fetchQuestionAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        (fetchQuestion as any)({
-          interventionId: intervention.id,
-          rangeId: selectedRangeId,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, intervention, selectedRangeId],
+  const handleChangeRangeId = useCallback(
+    (rangeId: number) => dispatch(setSelectedRangeId(rangeId)),
+    [dispatch],
   );
 
   const getQuestionStatus = useCallback(
-    question => {
-      return Question.getStatus(
-        question,
+    (_q: any) =>
+      Question.getStatus(
+        _q,
         questionlist.find(
-          q => q.id === question.conditionalInterventionQuestion?.id,
+          ({id}) => id === _q.conditionalInterventionQuestion?.id,
         ),
-      );
-    },
+      ),
     [questionlist],
   );
 
+  const sliceFunctionData = useMemo(
+    () => ({
+      interventionId: intervention.id,
+      rangeId: selectedRangeId,
+    }),
+    [intervention.id, selectedRangeId],
+  );
+
   return (
-    <View style={styles.flexOne}>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
-          <>
-            <InterventionHeader intervention={intervention} />
-            <SurveyRangeNavigation
-              selectedRangeId={selectedRangeId}
-              onChangeRangeId={onChangeRangeId}
-            />
-          </>
-        }
-      />
-      <ScrollList
-        loadingList={loading}
-        data={questionlist}
-        renderItem={({item}) => (
-          <QuestionCard
-            status={getQuestionStatus(item)}
-            onPress={() =>
-              navigation.navigate('InterventionQuestionFormScreen', {
-                questionId: item.id,
-                rangeId: selectedRangeId,
-              })
-            }
-            {...item}
+    <SearchListView
+      list={questionlist}
+      loading={loading}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
+      sliceFunction={fetchQuestion}
+      sliceFunctionData={sliceFunctionData}
+      displaySearchBar={false}
+      expandableFilter={false}
+      fixedItems={
+        <>
+          <InterventionHeader intervention={intervention} />
+          <SurveyRangeNavigation
+            selectedRangeId={selectedRangeId}
+            onChangeRangeId={handleChangeRangeId}
           />
-        )}
-        fetchData={fetchQuestionAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
-      />
-    </View>
+        </>
+      }
+      renderListItem={({item}) => (
+        <QuestionCard status={getQuestionStatus(item)} {...item} />
+      )}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  flexOne: {
-    flex: 1,
-  },
-});
 
 export default SurveyView;

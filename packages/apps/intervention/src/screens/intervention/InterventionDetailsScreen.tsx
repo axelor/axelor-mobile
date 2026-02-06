@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {useDispatch, useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -44,13 +44,9 @@ const InterventionDetailsScreen = ({
   const dispatch = useDispatch();
   const {Intervention} = useTypes();
 
-  const [selectedRangeId, setSelectedRangeId] = useState(null);
-
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
+  const {intervention} = useSelector(state => state.intervention_intervention);
   const {totalNumberInterventionEquipment} = useSelector(
-    (state: any) => state.intervention_equipment,
+    state => state.intervention_equipment,
   );
 
   const idsInterventionEquipement = useMemo(
@@ -63,10 +59,9 @@ const InterventionDetailsScreen = ({
   }, [_interventionId, dispatch]);
 
   useEffect(() => {
-    intervention?.id &&
-      (dispatch as any)(
-        (fetchRange as any)({interventionId: intervention?.id}),
-      ).then(res => setSelectedRangeId(res.payload[0].id));
+    if (intervention?.id) {
+      dispatch((fetchRange as any)({interventionId: intervention.id}));
+    }
   }, [dispatch, intervention?.id]);
 
   useEffect(() => {
@@ -86,12 +81,7 @@ const InterventionDetailsScreen = ({
       },
       {
         iconName: 'card-checklist',
-        viewComponent: (
-          <SurveyView
-            selectedRangeId={selectedRangeId}
-            onChangeRangeId={setSelectedRangeId}
-          />
-        ),
+        viewComponent: <SurveyView />,
         color: Colors.progressColor,
         disabled:
           intervention.statusSelect < Intervention?.statusSelect.Started,
@@ -117,7 +107,6 @@ const InterventionDetailsScreen = ({
       Colors,
       Intervention?.statusSelect.Started,
       intervention.statusSelect,
-      selectedRangeId,
       totalNumberInterventionEquipment,
     ],
   );

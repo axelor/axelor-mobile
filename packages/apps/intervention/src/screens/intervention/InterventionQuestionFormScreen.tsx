@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   FormView,
@@ -34,33 +34,37 @@ import {
   useThemeColor,
   InfoBubble,
 } from '@axelor/aos-mobile-ui';
-import {InterventionHeader} from '../../components';
+import {InterventionHeader, QuestionNavigation} from '../../components';
 import {fetchQuestionById, updateQuestion} from '../../features/questionSlice';
 import {Question as QuestionType} from '../../types';
+import {useQuestionNavigation} from '../../hooks';
 
 const InterventionQuestionFormScreen = ({route, navigation}) => {
+  const {questionId} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {InterventionQuestion} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const rangeId = route?.params?.rangeId;
-  const [questionId] = useState(route?.params?.questionId);
-
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
+  const {intervention} = useSelector(state => state.intervention_intervention);
   const {question, questionlist} = useSelector(
-    (state: any) => state.intervention_question,
+    state => state.intervention_question,
   );
+
+  const {
+    nextQuestionId,
+    previousQuestionId,
+    handleNavigateNext,
+    handleNavigatePrevious,
+  } = useQuestionNavigation();
 
   const questionStatus = useMemo(
     () =>
       QuestionType.getStatus(
         question,
         questionlist.find(
-          q => q.id === question.conditionalInterventionQuestion?.id,
+          ({id}) => id === question.conditionalInterventionQuestion?.id,
         ),
       ),
     [question, questionlist],
@@ -68,16 +72,16 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
 
   const questionBadge = useMemo(() => {
     if (
-      questionStatus === InterventionQuestion?.statusSelect.Required ||
-      questionStatus === InterventionQuestion?.statusSelect.Conditional
+      [
+        InterventionQuestion?.statusSelect.Required,
+        InterventionQuestion?.statusSelect.Conditional,
+      ].includes(questionStatus)
     ) {
       return {
         title: getItemTitle(InterventionQuestion?.statusSelect, questionStatus),
         color: getItemColor(InterventionQuestion?.statusSelect, questionStatus),
       };
-    } else {
-      return null;
-    }
+    } else return null;
   }, [
     InterventionQuestion?.statusSelect,
     getItemColor,
@@ -90,18 +94,20 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
   }, [dispatch, questionId]);
 
   const updateQuestionAPI = useCallback(
-    objectState => {
+    (objectState: any) => {
       dispatch(
         (updateQuestion as any)({
           question: objectState,
-          interventionId: intervention?.id,
-          rangeId: rangeId,
         }),
       );
 
-      navigation.pop();
+      if (nextQuestionId != null) {
+        handleNavigateNext();
+      } else {
+        navigation.pop();
+      }
     },
-    [dispatch, intervention?.id, navigation, rangeId],
+    [dispatch, handleNavigateNext, navigation, nextQuestionId],
   );
 
   return (
@@ -110,6 +116,12 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
         style={styles.headerContainer}
         expandableFilter={false}
         fixedItems={<InterventionHeader intervention={intervention} />}
+      />
+      <QuestionNavigation
+        nextQuestionId={nextQuestionId}
+        previousQuestionId={previousQuestionId}
+        handleNavigateNext={handleNavigateNext}
+        handleNavigatePrevious={handleNavigatePrevious}
       />
       <View style={styles.questionContainer}>
         <View style={styles.questionTitleContainer}>

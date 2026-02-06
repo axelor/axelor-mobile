@@ -52,6 +52,46 @@ const createRangeCriteria = interventionId => {
   ];
 };
 
+const createAdjacentQuestionCriteria = (
+  interventionId,
+  currentRangeOrderSeq,
+  currentQuestionOrderSeq,
+  comparisonOperator = '>',
+) => {
+  return [
+    {
+      fieldName: 'interventionRange.intervention.id',
+      operator: '=',
+      value: interventionId,
+    },
+    {
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'interventionRange.orderSeq',
+              operator: '=',
+              value: currentRangeOrderSeq,
+            },
+            {
+              fieldName: 'orderSeq',
+              operator: comparisonOperator,
+              value: currentQuestionOrderSeq,
+            },
+          ],
+        },
+        {
+          fieldName: 'interventionRange.orderSeq',
+          operator: comparisonOperator,
+          value: currentRangeOrderSeq,
+        },
+      ],
+    },
+  ];
+};
+
 export async function fetchQuestion({interventionId, rangeId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.InterventionQuestion',
@@ -97,6 +137,48 @@ export async function fetchRange({interventionId}) {
     fieldKey: 'intervention_range',
     page: 0,
     numberElementsByPage: null,
+    provider: 'model',
+  });
+}
+
+export async function fetchNextQuestion({
+  interventionId,
+  currentRangeOrderSeq,
+  currentQuestionOrderSeq,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.InterventionQuestion',
+    criteria: createAdjacentQuestionCriteria(
+      interventionId,
+      currentRangeOrderSeq,
+      currentQuestionOrderSeq,
+      '>',
+    ),
+    fieldKey: 'intervention_simpleQuestion',
+    sortKey: 'intervention_question',
+    page: 0,
+    numberElementsByPage: 1,
+    provider: 'model',
+  });
+}
+
+export async function fetchPreviousQuestion({
+  interventionId,
+  currentRangeOrderSeq,
+  currentQuestionOrderSeq,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.InterventionQuestion',
+    criteria: createAdjacentQuestionCriteria(
+      interventionId,
+      currentRangeOrderSeq,
+      currentQuestionOrderSeq,
+      '<',
+    ),
+    fieldKey: 'intervention_simpleQuestion',
+    sortKey: 'intervention_question_reversed',
+    page: 0,
+    numberElementsByPage: 1,
     provider: 'model',
   });
 }
