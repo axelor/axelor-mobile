@@ -111,9 +111,11 @@ export const intervention_modelAPI: ObjectFields = {
     user: schemaContructor.subObject('fullName'),
   }),
   intervention_question: schemaContructor.object({
+    orderSeq: schemaContructor.number(),
     interventionRange: schemaContructor.subObject().concat(
       schemaContructor.object({
         name: schemaContructor.string(),
+        orderSeq: schemaContructor.number(),
         equipment: schemaContructor.subObject('name'),
         rangeVal: schemaContructor.subObject('title'),
       }),
