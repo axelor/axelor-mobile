@@ -1,0 +1,5 @@
+{
+  "title": "Question list: simplify selected range management",
+  "type": "refactor",
+  "packages": "intervention"
+}

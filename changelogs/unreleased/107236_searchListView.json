@@ -1,0 +1,5 @@
+{
+  "title": "SearchListView: add possibility to hide search bar",
+  "type": "feat",
+  "packages": "core"
+}
