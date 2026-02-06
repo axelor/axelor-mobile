@@ -1,0 +1,5 @@
+{
+  "title": "Question: handle navigation to next question after validation",
+  "type": "feat",
+  "packages": "intervention"
+}
