@@ -59,5 +59,6 @@ export {
   fetchQuestion,
   fetchQuestionById,
   fetchRange,
+  setSelectedRangeId,
   updateQuestion,
 } from './questionSlice';
