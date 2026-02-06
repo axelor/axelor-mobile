@@ -28,3 +28,4 @@ export {default as QuestionAdvancedMonitoring} from './QuestionAdvancedMonitorin
 export {default as QuestionCheckbox} from './QuestionCheckbox/QuestionCheckbox';
 export {default as QuestionList} from './QuestionList/QuestionList';
 export {default as QuestionMeasure} from './QuestionMeasure/QuestionMeasure';
+export {default as QuestionNavigation} from './QuestionNavigation/QuestionNavigation';
