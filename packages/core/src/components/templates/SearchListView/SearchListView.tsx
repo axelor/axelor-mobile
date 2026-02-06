@@ -44,6 +44,7 @@ interface SearchListViewProps {
   searchNavigate?: boolean;
   scanKeySearch?: string;
   isHideableSearch?: boolean;
+  displaySearchBar?: boolean;
   fixedItems?: any;
   topFixedItems?: any;
   chipComponent?: any;
@@ -73,6 +74,7 @@ const SearchListView = ({
   searchNavigate,
   scanKeySearch = null,
   isHideableSearch = false,
+  displaySearchBar = true,
   fixedItems,
   topFixedItems,
   chipComponent,
@@ -133,6 +135,8 @@ const SearchListView = ({
       return customSearchBarComponent;
     }
 
+    if (!displaySearchBar) return null;
+
     const SearchBar = scanKeySearch
       ? ScannerAutocompleteSearch
       : AutoCompleteSearch;
@@ -153,6 +157,7 @@ const SearchListView = ({
     );
   }, [
     customSearchBarComponent,
+    displaySearchBar,
     displaySearchValue,
     fetchSearchAPI,
     list,
