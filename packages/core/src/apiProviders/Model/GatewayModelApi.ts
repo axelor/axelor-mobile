@@ -17,7 +17,7 @@
  */
 
 import {ModelApi} from './ModelApiProvider';
-import {Query, ReadOptions, RequestResponse} from './utils';
+import {Query, ReadOptions, RequestResponse, FieldsResponse} from './utils';
 
 async function getAvailableModelApi(modelsApi: ModelApi[]): Promise<ModelApi> {
   for (const _modelApi of modelsApi) {
@@ -98,6 +98,12 @@ export class GatewayModelApi implements ModelApi {
     const _modelApi: ModelApi = await getAvailableModelApi(this.modelsApi);
 
     return _modelApi.search({modelName, query});
+  }
+
+  async getFields({modelName}: {modelName: string}): Promise<FieldsResponse> {
+    const _modelApi: ModelApi = await getAvailableModelApi(this.modelsApi);
+
+    return _modelApi.getFields({modelName});
   }
 
   async insert({
