@@ -26,7 +26,24 @@ There are two other types of provider that allow you to generalize the use of qu
 
 ## Model
 
-Specialized data recovery providers must follow the following interface in order to offer the same functionality and avoid errors:
+Specialized data recovery providers must follow the following interface in order to offer the same functionality and avoid errors.
+
+Response types used by the interface are based on a generic `ApiResponse<T>`:
+
+```tsx
+export interface ApiResponse<T> {
+  data: {data: T};
+}
+
+export type RequestResponse = ApiResponse<any[]>;
+
+export interface FieldsResult {
+  fields: any[];
+  jsonFields?: any;
+}
+
+export type FieldsResponse = ApiResponse<FieldsResult>;
+```
 
 ```tsx
 export interface ModelApi {
@@ -62,6 +79,7 @@ export interface ModelApi {
     modelName: string;
     query: Query;
   }): Promise<RequestResponse>;
+  getFields({modelName}: {modelName: string}): Promise<FieldsResponse>;
   insert({
     modelName,
     id,
@@ -80,6 +98,8 @@ The _init_ method is used to initialize the provider if it requires certain acti
 The _isAvailable_ function lets you know whether the provider is available for use or not: no Internet connection or other.
 
 The _getAll_, _get_, _fetch_ and _search_ functions can be used to retrieve data in different ways.
+
+The _getFields_ function retrieves the field definitions of a model from the server. It calls the `ws/meta/fields/{modelName}` endpoint and returns a `FieldsResponse` containing the list of fields and optional JSON field metadata.
 
 The _insert_ function is used to modify stored data for offline use.
 
