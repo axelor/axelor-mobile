@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Query, ReadOptions, RequestResponse} from './utils';
+import {Query, ReadOptions, RequestResponse, FieldsResponse} from './utils';
 
 export interface ModelApi {
   init(data?: any): void;
@@ -51,6 +51,7 @@ export interface ModelApi {
     modelName: string;
     query: Query;
   }): Promise<RequestResponse>;
+  getFields({modelName}: {modelName: string}): Promise<FieldsResponse>;
   insert({
     modelName,
     id,
