@@ -64,11 +64,18 @@ export type ReadOptions = {
   };
 };
 
-export interface RequestResponse {
-  data: {
-    data: any[];
-  };
+export interface ApiResponse<T> {
+  data: {data: T};
 }
+
+export type RequestResponse = ApiResponse<any[]>;
+
+export interface FieldsResult {
+  fields: any[];
+  jsonFields?: any;
+}
+
+export type FieldsResponse = ApiResponse<FieldsResult>;
 
 export type Domain = {
   domain: string;
