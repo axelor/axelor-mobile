@@ -19,7 +19,13 @@
 import axios from 'axios';
 import {getNetInfo} from '../../api/net-info-utils';
 import {ModelApi} from './ModelApiProvider';
-import {Query, ReadOptions, RequestResponse, REQUEST_LIMIT} from './utils';
+import {
+  Query,
+  ReadOptions,
+  RequestResponse,
+  REQUEST_LIMIT,
+  FieldsResponse,
+} from './utils';
 
 export class AopModelApi implements ModelApi {
   constructor() {}
@@ -80,6 +86,10 @@ export class AopModelApi implements ModelApi {
     query: ReadOptions;
   }): Promise<RequestResponse> {
     return axios.post(`ws/rest/${modelName}/${id}/fetch`, query);
+  }
+
+  getFields({modelName}: {modelName: string}): Promise<FieldsResponse> {
+    return axios.get(`ws/meta/fields/${modelName}`);
   }
 
   search({

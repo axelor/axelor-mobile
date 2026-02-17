@@ -26,7 +26,24 @@ Il existe deux autres types de providers qui permettent de généraliser l’uti
 
 ## Model
 
-Les providers spécialisés pour la récupération de données doivent suivre l’interface suivante afin d’offrir les mêmes fonctionnalités et d'éviter les erreurs :
+Les providers spécialisés pour la récupération de données doivent suivre l'interface suivante afin d'offrir les mêmes fonctionnalités et d'éviter les erreurs.
+
+Les types de réponse utilisés par l'interface sont basés sur un type générique `ApiResponse<T>` :
+
+```tsx
+export interface ApiResponse<T> {
+  data: {data: T};
+}
+
+export type RequestResponse = ApiResponse<any[]>;
+
+export interface FieldsResult {
+  fields: any[];
+  jsonFields?: any;
+}
+
+export type FieldsResponse = ApiResponse<FieldsResult>;
+```
 
 ```tsx
 export interface ModelApi {
@@ -40,6 +57,7 @@ export interface ModelApi {
     query: ReadOptions;
   }): Promise<RequestResponse>;
   search(data: {modelName: string; query: Query}): Promise<RequestResponse>;
+  getFields({modelName}: {modelName: string}): Promise<FieldsResponse>;
   insert(data: {modelName: string; id: number; data: any}): Promise<any>;
   reset(modelName?: string): void;
 }
@@ -51,7 +69,9 @@ La fonction _isAvailable_ permet de savoir si le provider est disponible pour ut
 
 Les fonctions _getAll_, _get_, _fetch_ et _search_ permettent de récupérer les données sous différentes manières.
 
-La fonction _insert_ permet de venir modifier les données enregistrées pour l’utilisation hors-ligne.
+La fonction _getFields_ permet de récupérer les définitions des champs d'un modèle depuis le serveur. Elle appelle l'endpoint `ws/meta/fields/{modelName}` et retourne une `FieldsResponse` contenant la liste des champs ainsi que les métadonnées optionnelles des champs JSON.
+
+La fonction _insert_ permet de venir modifier les données enregistrées pour l'utilisation hors-ligne.
 
 La fonction _reset_ permet de venir réinitialiser les données enregistrées pour tous les modèles ou bien seulement pour le modèle renseigné en argument.
 
