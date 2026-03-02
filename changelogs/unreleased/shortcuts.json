@@ -1,0 +1,5 @@
+{
+  "title": "Screen: avoid params crash when screen is usable on shortcuts",
+  "type": "fix",
+  "packages": ["crm", "hr"]
+}

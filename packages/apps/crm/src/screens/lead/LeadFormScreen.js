@@ -21,7 +21,7 @@ import {useSelector, FormView} from '@axelor/aos-mobile-core';
 import {createLead, updateLead} from '../../features/leadSlice';
 
 const LeadFormScreen = ({navigation, route}) => {
-  const idLead = route.params.idLead;
+  const {idLead} = route?.params ?? {};
 
   const {lead} = useSelector(state => state.lead);
   const {user} = useSelector(state => state.user);

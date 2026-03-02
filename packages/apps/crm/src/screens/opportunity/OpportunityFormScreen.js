@@ -24,7 +24,7 @@ import {
 } from '../../features/opportunitySlice';
 
 const OpportunityFormScreen = ({navigation, route}) => {
-  const idOpportunity = route.params.opportunityId;
+  const {opportunityId: idOpportunity} = route?.params ?? {};
 
   const {opportunity} = useSelector(state => state.opportunity);
   const {user} = useSelector(state => state.user);
