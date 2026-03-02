@@ -39,7 +39,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     versionExpense,
     modeExpense,
     justificationMetaFile,
-  } = route?.params;
+  } = route?.params ?? {};
   const _dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
