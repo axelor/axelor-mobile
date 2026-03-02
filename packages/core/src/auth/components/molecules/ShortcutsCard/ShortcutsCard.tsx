@@ -17,7 +17,13 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {Dimensions, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Card, Icon, Text} from '@axelor/aos-mobile-ui';
 import {useSelector} from '../../../../index';
 import {useNavigation} from '../../../../hooks/use-navigation';
@@ -57,13 +63,15 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
           onPress={() => navigation.navigate(item.mobileScreenName)}
           key={item.shortcutId}>
           <Icon name={item.iconName} size={35} />
-          <Text fontSize={14} numberOfLines={2}>
-            {item.name}
-          </Text>
+          <View style={styles.shortcutTextContainer}>
+            <Text fontSize={14} numberOfLines={2} style={styles.shortcutText}>
+              {item.name}
+            </Text>
+          </View>
         </TouchableOpacity>
       );
     },
-    [navigation, styles.shortcut],
+    [navigation, styles],
   );
 
   if (
@@ -103,6 +111,15 @@ const getStyles = (shortCutWidth: number) =>
       width: shortCutWidth,
       padding: 5,
       alignItems: 'center',
+      gap: 5,
+    },
+    shortcutTextContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    shortcutText: {
+      textAlign: 'center',
     },
   });
 
