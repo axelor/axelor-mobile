@@ -17,6 +17,7 @@
  */
 
 import {useEffect, useMemo, useState} from 'react';
+import {useIsFocused} from '../hooks';
 
 export interface Filter {
   id: string;
@@ -56,14 +57,17 @@ class FilterProvider {
 export const filterProvider = new FilterProvider();
 
 export const useActiveFilter = () => {
-  const [activeFilter, setActiveFilterState] = useState(
-    filterProvider.getActiveFilter(),
-  );
+  const [activeFilter, setActiveFilterState] = useState<Filter | null>(null);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    filterProvider.register(setActiveFilterState);
-    return () => filterProvider.unregister(setActiveFilterState);
-  }, []);
+    const listener = (filter: Filter | null) => {
+      if (isFocused) setActiveFilterState(filter);
+    };
+
+    filterProvider.register(listener);
+    return () => filterProvider.unregister(listener);
+  }, [isFocused]);
 
   return useMemo(() => ({activeFilter}), [activeFilter]);
 };
