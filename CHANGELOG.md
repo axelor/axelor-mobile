@@ -3,6 +3,36 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.3] (2026-03-03)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Shortcut: improve display to align text
+
+#### Fixes
+
+- AOP filters: avoid conflicts between mounted screens
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Screen: avoid params crash when screen is usable on shortcuts
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Screen: avoid params crash when screen is usable on shortcuts
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Screen: avoid params crash when screen is usable on shortcuts
+
 ## [9.0.2] (2026-02-04)
 
 ### @axelor/aos-mobile-ui
@@ -30,6 +60,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.3]: https://github.com/axelor/axelor-mobile/compare/9.0.2...9.0.3
 [9.0.2]: https://github.com/axelor/axelor-mobile/compare/9.0.1...9.0.2
 [9.0.1]: https://github.com/axelor/axelor-mobile/compare/9.0.0...9.0.1
 [9.0.0]: https://github.com/axelor/axelor-mobile/compare/8.5.5...9.0.0
