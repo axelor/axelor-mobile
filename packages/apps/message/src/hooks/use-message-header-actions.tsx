@@ -28,6 +28,7 @@ import {
 import {DoubleIcon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getAction} from '../utils';
 import {
+  clearModelData,
   countUnreadMailMessages,
   getModelSubscribers,
   markAllMailMessageAsRead,
@@ -76,8 +77,12 @@ const useMailMessagesDetailsAction = () => {
   );
 
   useEffect(() => {
-    dispatch((getModelSubscribers as any)({model, modelId}));
-    dispatch((countUnreadMailMessages as any)({model, modelId}));
+    if (model != null && modelId != null) {
+      dispatch((getModelSubscribers as any)({model, modelId}));
+      dispatch((countUnreadMailMessages as any)({model, modelId}));
+    } else {
+      dispatch((clearModelData as any)());
+    }
   }, [dispatch, model, modelId]);
 
   const handleMarkAllAsRead = useCallback(() => {
