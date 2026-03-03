@@ -17,6 +17,7 @@
  */
 
 export {
+  clearModelData,
   countUnreadMailMessages,
   fetchInboxMessages,
   getMailMessages,

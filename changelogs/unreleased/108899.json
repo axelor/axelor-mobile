@@ -1,0 +1,5 @@
+{
+  "title": "MailMessage: check model & modelId before fetching subscribers and unread messages",
+  "type": "fix",
+  "packages": "message"
+}
