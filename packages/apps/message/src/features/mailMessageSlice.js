@@ -209,6 +209,10 @@ const mailMessagesSlice = createSlice({
     saveLinkFiles: (state, action) => {
       state.linkFiles = action.payload;
     },
+    clearModelData: state => {
+      state.modelFollowersList = [];
+      state.unreadMessages = 0;
+    },
   },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, getMailMessages, {
@@ -232,7 +236,12 @@ const mailMessagesSlice = createSlice({
   },
 });
 
-export const {registerModel, registerModelId, saveInboxFolder, saveLinkFiles} =
-  mailMessagesSlice.actions;
+export const {
+  registerModel,
+  registerModelId,
+  saveInboxFolder,
+  saveLinkFiles,
+  clearModelData,
+} = mailMessagesSlice.actions;
 
 export const mailMessagesReducer = mailMessagesSlice.reducer;
