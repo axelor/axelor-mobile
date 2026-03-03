@@ -1,5 +1,0 @@
-{
-  "title": "AOP filters: avoid conflicts between mounted screens",
-  "type": "fix",
-  "packages": "core"
-}
