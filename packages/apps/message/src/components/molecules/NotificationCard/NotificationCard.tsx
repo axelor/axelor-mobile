@@ -73,7 +73,7 @@ const NotificationCard = ({
     <TouchableOpacity
       style={style}
       onPress={() => setMoreItems(!moreItems)}
-      disabled={tracks.length < MAX_TRACK_ITEMS}
+      disabled={(tracks?.length ?? 0) < MAX_TRACK_ITEMS}
       activeOpacity={0.9}>
       <Card style={styles.card}>
         <View style={styles.cardHeader}>
