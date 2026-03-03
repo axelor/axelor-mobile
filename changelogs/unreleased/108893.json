@@ -1,0 +1,5 @@
+{
+  "title": "MailMessage: avoid undefined issue if the body doesn't contain any tracks or tags",
+  "type": "fix",
+  "packages": "message"
+}
