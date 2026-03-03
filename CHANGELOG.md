@@ -3,6 +3,36 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.8] (2026-03-03)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Shortcut: improve display to align text
+
+#### Fixes
+
+- AOP filters: avoid conflicts between mounted screens
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Screen: avoid params crash when screen is usable on shortcuts
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Screen: avoid params crash when screen is usable on shortcuts
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Screen: avoid params crash when screen is usable on shortcuts
+
 ## [8.5.7] (2026-02-04)
 
 ### @axelor/aos-mobile-ui
@@ -264,6 +294,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.8]: https://github.com/axelor/axelor-mobile/compare/8.5.7...8.5.8
 [8.5.7]: https://github.com/axelor/axelor-mobile/compare/8.5.6...8.5.7
 [8.5.6]: https://github.com/axelor/axelor-mobile/compare/8.5.5...8.5.6
 [8.5.5]: https://github.com/axelor/axelor-mobile/compare/8.5.4...8.5.5
