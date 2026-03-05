@@ -137,6 +137,7 @@ const logisticalFormSlice = createSlice({
     });
     builder.addCase(fetchLogisticalForm.rejected, state => {
       state.loading = false;
+      state.logisticalForm = null;
     });
   },
 });

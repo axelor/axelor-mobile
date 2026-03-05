@@ -44,21 +44,17 @@ export const fetchInternalMoveLines = createAsyncThunk(
 
 export const updateInternalMoveLine = createAsyncThunk(
   'internalMoveLine/updateInternalMoveLine',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateInternalMoveLine,
       data,
       action: 'Stock_SliceAction_UpdateInternalMoveLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: _fetchInternalMoveLine,
-        data: {internalMoveLineId: res?.id},
-        action: 'Stock_SliceAction_FetchInternalMoveLine',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+    }).then(() => {
+      dispatch(
+        fetchInternalMoveLine({internalMoveLineId: data?.stockMoveLineId}),
+      );
     });
   },
 );
@@ -78,7 +74,7 @@ export const fetchInternalMoveLine = createAsyncThunk(
 
 export const addTrackingNumber = createAsyncThunk(
   'internalMoveLine/addTrackingNumber',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateStockMoveLineTrackingNumber,
       data,
@@ -86,13 +82,9 @@ export const addTrackingNumber = createAsyncThunk(
       getState,
       responseOptions: {showToast: true},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _fetchInternalMoveLine,
-        data: {internalMoveLineId: data.stockMoveLineId},
-        action: 'Stock_SliceAction_FetchInternalMoveLine',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+      dispatch(
+        fetchInternalMoveLine({internalMoveLineId: data?.stockMoveLineId}),
+      );
     });
   },
 );
@@ -122,14 +114,12 @@ const internalMoveLineSlice = createSlice({
         list: 'internalMoveLineList',
         total: 'totalNumberLines',
       },
-      {
-        manageTotal: true,
-      },
+      {manageTotal: true},
     );
-    builder.addCase(updateInternalMoveLine.pending, state => {
+    builder.addCase(fetchInternalMoveLine.pending, state => {
       state.loadingInternalMoveLine = true;
     });
-    builder.addCase(updateInternalMoveLine.fulfilled, (state, action) => {
+    builder.addCase(fetchInternalMoveLine.fulfilled, (state, action) => {
       state.loadingInternalMoveLine = false;
       state.internalMoveLine = action.payload;
       state.internalMoveLineList = updateAgendaItems(
@@ -137,19 +127,9 @@ const internalMoveLineSlice = createSlice({
         [action.payload],
       );
     });
-    builder.addCase(fetchInternalMoveLine.pending, state => {
-      state.loadingInternalMoveLine = true;
-    });
-    builder.addCase(fetchInternalMoveLine.fulfilled, (state, action) => {
+    builder.addCase(fetchInternalMoveLine.rejected, state => {
       state.loadingInternalMoveLine = false;
-      state.internalMoveLine = action.payload;
-    });
-    builder.addCase(addTrackingNumber.pending, state => {
-      state.loadingInternalMoveLine = true;
-    });
-    builder.addCase(addTrackingNumber.fulfilled, (state, action) => {
-      state.loadingInternalMoveLine = false;
-      state.internalMoveLine = action.payload;
+      state.internalMoveLine = null;
     });
   },
 });

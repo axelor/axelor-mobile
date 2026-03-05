@@ -76,7 +76,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   );
 
   const product = useProductByCompany(
-    supplierArrivalLine.product?.id ?? productId,
+    supplierArrivalLine?.product?.id ?? productId,
   );
 
   const trackingNumber = useMemo(
@@ -102,16 +102,11 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         ? 0
         : supplierArrivalLine?.realQty || 0,
     );
+    const _conformityValue =
+      supplierArrivalLine?.conformitySelect ?? StockMove?.conformitySelect.None;
     setConformity({
-      title: getItemTitle(
-        StockMove?.conformitySelect,
-        supplierArrivalLine?.conformitySelect ??
-          StockMove?.conformitySelect.None,
-      ),
-      value:
-        supplierArrivalLine != null
-          ? supplierArrivalLine.conformitySelect
-          : StockMove?.conformitySelect.None,
+      title: getItemTitle(StockMove?.conformitySelect, _conformityValue),
+      value: _conformityValue,
     });
     setDescription(supplierArrivalLine?.description ?? '');
     setToStockLocation(supplierArrivalLine?.toStockLocation);
@@ -131,17 +126,13 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     dispatch(
       fetchProductForSupplier({
         supplierId: supplierArrival?.partner?.id,
-        productId: supplierArrivalLine.product?.id ?? productId,
+        productId: supplierArrivalLine?.product?.id ?? productId,
       }),
     );
   }, [dispatch, productId, supplierArrival, supplierArrivalLine]);
 
   const getSupplierArrivalLine = useCallback(() => {
-    dispatch(
-      fetchSupplierArrivalLine({
-        supplierArrivalLineId: supplierArrivalLineId,
-      }),
-    );
+    dispatch(fetchSupplierArrivalLine({supplierArrivalLineId}));
   }, [dispatch, supplierArrivalLineId]);
 
   useEffect(() => {
@@ -165,23 +156,24 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     }
   };
 
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
-  };
+  const handleShowProduct = useCallback(() => {
+    navigation.navigate('ProductStockDetailsScreen', {product});
+  }, [navigation, product]);
 
-  const handleTrackingNumberSelection = item => {
-    if (item !== null) {
-      dispatch(
-        updateStockMoveLineTrackingNumber({
-          trackingNumber: item,
-          stockMoveLineId: supplierArrivalLine.id,
-          stockMoveLineVersion: supplierArrivalLine.version,
-        }),
-      );
-    }
-  };
+  const handleTrackingNumberSelection = useCallback(
+    item => {
+      if (item !== null) {
+        dispatch(
+          updateStockMoveLineTrackingNumber({
+            trackingNumber: item,
+            stockMoveLineId: supplierArrivalLine.id,
+            stockMoveLineVersion: supplierArrivalLine.version,
+          }),
+        );
+      }
+    },
+    [dispatch, supplierArrivalLine],
+  );
 
   const conformityList = useMemo(() => {
     const conformityToDisplay = [
@@ -193,6 +185,8 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
       conformityToDisplay.includes(value),
     );
   }, [StockMove?.conformitySelect, getSelectionItems]);
+
+  if (supplierArrivalLine?.id !== supplierArrivalLineId) return null;
 
   return (
     <Screen
@@ -245,7 +239,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             }
           />
         )}
-        {product.trackingNumberConfiguration != null &&
+        {product?.trackingNumberConfiguration != null &&
           trackingNumber == null && (
             <SupplierArrivalTrackingNumberSelect
               supplierArrival={supplierArrival}

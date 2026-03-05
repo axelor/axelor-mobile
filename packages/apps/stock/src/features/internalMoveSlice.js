@@ -65,33 +65,23 @@ export const createInternalMove = createAsyncThunk(
       action: 'Stock_SliceAction_CreateInternalMove',
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
-    })
-      .then(res => {
-        if (checkNullString(data.notes)) {
-          return res;
-        }
+    }).then(res => {
+      if (checkNullString(data.notes)) {
+        return res;
+      }
 
-        return handlerApiCall({
-          fetchFunction: modifyInternalMoveNotes,
-          data: {
-            internalMoveId: res.id,
-            notes: data.notes,
-            version: res.version,
-          },
-          action: 'Stock_SliceAction_ModifyInternalMoveNotes',
-          getState,
-          responseOptions: {showToast: false},
-        });
-      })
-      .then(() =>
-        handlerApiCall({
-          fetchFunction: searchInternalMoveFilter,
-          data: {companyId: data.companyId},
-          action: 'Stock_SliceAction_FilterInternalMoves',
-          getState,
-          responseOptions: {isArrayResponse: true},
-        }),
-      );
+      return handlerApiCall({
+        fetchFunction: modifyInternalMoveNotes,
+        data: {
+          internalMoveId: res.id,
+          notes: data.notes,
+          version: res.version,
+        },
+        action: 'Stock_SliceAction_ModifyInternalMoveNotes',
+        getState,
+        responseOptions: {showToast: false},
+      });
+    });
   },
 );
 
@@ -135,8 +125,9 @@ const internalMoveSlice = createSlice({
       state.loadingInternalMove = false;
       state.internalMove = action.payload;
     });
-    builder.addCase(createInternalMove.fulfilled, (state, action) => {
-      state.internalMoveList = action.payload;
+    builder.addCase(fetchInternalMove.rejected, state => {
+      state.loadingInternalMove = false;
+      state.internalMove = null;
     });
   },
 });

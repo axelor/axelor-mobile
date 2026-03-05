@@ -49,6 +49,9 @@ const unitSlice = createSlice({
       state.loadingUnit = false;
       state.unitList = action.payload;
     });
+    builder.addCase(fetchUnit.rejected, state => {
+      state.loadingUnit = false;
+    });
   },
 });
 

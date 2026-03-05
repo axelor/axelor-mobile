@@ -1,0 +1,5 @@
+{
+  "title": "Details screens: avoid stale data and infinite loading on request failure",
+  "type": "fix",
+  "packages": "stock"
+}
