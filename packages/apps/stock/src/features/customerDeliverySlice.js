@@ -107,6 +107,10 @@ const customerDeliverySlice = createSlice({
       state.loading = false;
       state.customerDelivery = action.payload;
     });
+    builder.addCase(fetchCustomerDelivery.rejected, state => {
+      state.loading = false;
+      state.customerDelivery = null;
+    });
   },
 });
 

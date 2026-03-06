@@ -49,6 +49,10 @@ const supplierCatalogSlice = createSlice({
       state.loadingSupplierCatalog = false;
       state.supplierProductInfo = action.payload;
     });
+    builder.addCase(fetchProductForSupplier.rejected, state => {
+      state.loadingSupplierCatalog = false;
+      state.supplierProductInfo = null;
+    });
   },
 });
 
