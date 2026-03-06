@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   fetchInventory,
@@ -44,28 +43,22 @@ export const searchInventories = createAsyncThunk(
 
 export const modifyDescription = createAsyncThunk(
   'inventories/modifyDescription',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: modifyDescriptionInventory,
       data,
       action: 'Stock_SliceAction_ModifyInventoryDescritption',
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
-    }).then(object =>
-      handlerApiCall({
-        fetchFunction: fetchInventory,
-        data: {inventoryId: object.id},
-        action: 'Stock_SliceAction_FetchInventoryById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      }),
+    }).then(() =>
+      dispatch(fetchInventoryById({inventoryId: data.inventoryId})),
     );
   },
 );
 
 export const updateInventory = createAsyncThunk(
   'inventories/updateInventory',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateInventoryStatus,
       data,
@@ -73,13 +66,7 @@ export const updateInventory = createAsyncThunk(
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
     }).then(() =>
-      handlerApiCall({
-        fetchFunction: fetchInventory,
-        data: {inventoryId: data.inventoryId},
-        action: 'Stock_SliceAction_FetchInventoryById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      }),
+      dispatch(fetchInventoryById({inventoryId: data.inventoryId})),
     );
   },
 );
@@ -111,6 +98,12 @@ const inventorySlice = createSlice({
   name: 'inventories',
   initialState,
   extraReducers: builder => {
+    generateInifiniteScrollCases(builder, searchInventories, {
+      loading: 'loadingList',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'inventoryList',
+    });
     builder.addCase(fetchInventoryById.pending, state => {
       state.loading = true;
     });
@@ -118,28 +111,9 @@ const inventorySlice = createSlice({
       state.loading = false;
       state.inventory = action.payload;
     });
-    generateInifiniteScrollCases(builder, searchInventories, {
-      loading: 'loadingList',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'inventoryList',
-    });
-    builder.addCase(modifyDescription.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(modifyDescription.fulfilled, (state, action) => {
+    builder.addCase(fetchInventoryById.rejected, state => {
       state.loading = false;
-      state.inventory = action.payload;
-    });
-    builder.addCase(updateInventory.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(updateInventory.fulfilled, (state, action) => {
-      state.loading = false;
-      state.inventory = action.payload;
-      state.inventoryList = updateAgendaItems(state.inventoryList, [
-        action.payload,
-      ]);
+      state.inventory = null;
     });
   },
 });

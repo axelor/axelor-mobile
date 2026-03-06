@@ -66,6 +66,9 @@ const rackSlice = createSlice({
       state.loadingRacks = false;
       state.racksList = action.payload;
     });
+    builder.addCase(getRacks.rejected, state => {
+      state.loadingRacks = false;
+    });
   },
 });
 
