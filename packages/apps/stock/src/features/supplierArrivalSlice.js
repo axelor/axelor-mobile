@@ -107,6 +107,10 @@ const supplierArrivalSlice = createSlice({
       state.loading = false;
       state.supplierArrival = action.payload;
     });
+    builder.addCase(fetchSupplierArrival.rejected, state => {
+      state.loading = false;
+      state.supplierArrival = null;
+    });
   },
 });
 

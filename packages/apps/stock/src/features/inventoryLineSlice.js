@@ -20,6 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   createInventoryLine,
@@ -44,7 +45,7 @@ export const fetchInventoryLines = createAsyncThunk(
 
 export const updateInventoryLine = createAsyncThunk(
   'inventoryLines/updateInventoryLine',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateInventoryLineDetails,
       data,
@@ -52,13 +53,7 @@ export const updateInventoryLine = createAsyncThunk(
       getState,
       responseOptions: {showToast: true},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: searchInventoryLines,
-        data: {inventoryId: data?.inventoryId},
-        action: 'Stock_SliceAction_FetchInventoryLines',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
+      dispatch(fetchInventoryLine({inventoryLineId: data?.inventoryLineId}));
     });
   },
 );
@@ -78,21 +73,15 @@ export const createNewInventoryLine = createAsyncThunk(
 
 export const addTrackingNumber = createAsyncThunk(
   'inventoryLines/addTrackingNumber',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _addTrackingNumber,
       data,
       action: 'Stock_SliceAction_AddTrackingNumberToInventoryLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: _fetchInventoryLine,
-        data: {inventoryLineId: res?.id},
-        action: 'Stock_SliceAction_FetchInventoryLine',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+    }).then(() => {
+      dispatch(fetchInventoryLine({inventoryLineId: data?.inventoryLineId}));
     });
   },
 );
@@ -135,33 +124,21 @@ const inventoryLineSlice = createSlice({
         list: 'inventoryLineList',
         total: 'totalNumberLines',
       },
-      {
-        manageTotal: true,
-      },
+      {manageTotal: true},
     );
-    builder.addCase(addTrackingNumber.pending, state => {
-      state.loadingInventoryLine = true;
-    });
-    builder.addCase(addTrackingNumber.fulfilled, (state, action) => {
-      state.loadingInventoryLine = false;
-      state.inventoryLine = action.payload;
-    });
-    builder.addCase(updateInventoryLine.pending, state => {
-      state.loadingInventoryLine = true;
-    });
-    builder.addCase(updateInventoryLine.fulfilled, (state, action) => {
-      state.loadingInventoryLine = false;
-      state.inventoryLineList = action.payload;
-    });
-    builder.addCase(addTrackingNumber.rejected, (state, action) => {
-      state.loadingInventoryLine = false;
-    });
     builder.addCase(fetchInventoryLine.pending, state => {
       state.loadingInventoryLine = true;
     });
     builder.addCase(fetchInventoryLine.fulfilled, (state, action) => {
       state.loadingInventoryLine = false;
       state.inventoryLine = action.payload;
+      state.inventoryLineList = updateAgendaItems(state.inventoryLineList, [
+        action.payload,
+      ]);
+    });
+    builder.addCase(fetchInventoryLine.rejected, state => {
+      state.loadingInventoryLine = false;
+      state.inventoryLine = null;
     });
   },
 });

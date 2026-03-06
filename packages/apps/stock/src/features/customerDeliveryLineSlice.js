@@ -44,21 +44,19 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
 
 export const updateCustomerDeliveryLine = createAsyncThunk(
   'customerDeliveryLine/updateCustomerDeliveryLine',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateLine,
       data,
       action: 'Stock_SliceAction_UpdateCustomerDeliveryLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: _fetchCustomerDeliveryLine,
-        data: {customerDeliveryLineId: res?.id},
-        action: 'Stock_SliceAction_FetchCustomerDeliveryLine',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+    }).then(() => {
+      dispatch(
+        fetchCustomerDeliveryLine({
+          customerDeliveryLineId: data?.stockMoveLineId,
+        }),
+      );
     });
   },
 );
@@ -78,7 +76,7 @@ export const fetchCustomerDeliveryLine = createAsyncThunk(
 
 export const addTrackingNumber = createAsyncThunk(
   'customerDeliveryLine/addTrackingNumber',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateStockMoveLineTrackingNumber,
       data,
@@ -86,13 +84,11 @@ export const addTrackingNumber = createAsyncThunk(
       getState,
       responseOptions: {showToast: true},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _fetchCustomerDeliveryLine,
-        data: {customerDeliveryLineId: data.stockMoveLineId},
-        action: 'Stock_SliceAction_FetchCustomerDeliveryLine',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+      dispatch(
+        fetchCustomerDeliveryLine({
+          customerDeliveryLineId: data?.stockMoveLineId,
+        }),
+      );
     });
   },
 );
@@ -122,14 +118,12 @@ const CustomerDeliveryLineSlice = createSlice({
         list: 'customerDeliveryLineList',
         total: 'totalNumberLines',
       },
-      {
-        manageTotal: true,
-      },
+      {manageTotal: true},
     );
-    builder.addCase(updateCustomerDeliveryLine.pending, state => {
+    builder.addCase(fetchCustomerDeliveryLine.pending, state => {
       state.loadingCustomerDeliveryLine = true;
     });
-    builder.addCase(updateCustomerDeliveryLine.fulfilled, (state, action) => {
+    builder.addCase(fetchCustomerDeliveryLine.fulfilled, (state, action) => {
       state.loadingCustomerDeliveryLine = false;
       state.customerDeliveryLine = action.payload;
       state.customerDeliveryLineList = updateAgendaItems(
@@ -137,19 +131,9 @@ const CustomerDeliveryLineSlice = createSlice({
         [action.payload],
       );
     });
-    builder.addCase(fetchCustomerDeliveryLine.pending, state => {
-      state.loadingCustomerDeliveryLine = true;
-    });
-    builder.addCase(fetchCustomerDeliveryLine.fulfilled, (state, action) => {
+    builder.addCase(fetchCustomerDeliveryLine.rejected, state => {
       state.loadingCustomerDeliveryLine = false;
-      state.customerDeliveryLine = action.payload;
-    });
-    builder.addCase(addTrackingNumber.pending, state => {
-      state.loadingCustomerDeliveryLine = true;
-    });
-    builder.addCase(addTrackingNumber.fulfilled, (state, action) => {
-      state.loadingCustomerDeliveryLine = false;
-      state.customerDeliveryLine = action.payload;
+      state.customerDeliveryLine = null;
     });
   },
 });

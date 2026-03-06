@@ -154,6 +154,9 @@ const productIndicators = createSlice({
       state.loadingProductIndicators = false;
       state.productIndicators = action.payload;
     });
+    builder.addCase(fetchProductIndicators.rejected, state => {
+      state.loadingProductIndicators = false;
+    });
   },
 });
 
