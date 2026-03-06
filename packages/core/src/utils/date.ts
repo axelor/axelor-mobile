@@ -167,5 +167,7 @@ export const ISODateTimeToDate = (date: string): string => {
 };
 
 export const getFromNowDate = (date: string, localeCode: string) => {
-  return moment(date).locale(localeCode).fromNow();
+  return moment(date)
+    .locale(localeCode ?? 'en')
+    .fromNow();
 };
