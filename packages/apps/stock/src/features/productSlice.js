@@ -113,6 +113,9 @@ const productSlice = createSlice({
       state.loadingProductFromId = false;
       state.productFromId = action.payload;
     });
+    builder.addCase(fetchProductWithId.rejected, state => {
+      state.loadingProductFromId = false;
+    });
     builder.addCase(updateProductLocker.pending, state => {
       state.loadingProductLocker = true;
     });
@@ -120,12 +123,18 @@ const productSlice = createSlice({
       state.loadingProductLocker = false;
       state.updateResponde = action.payload;
     });
+    builder.addCase(updateProductLocker.rejected, state => {
+      state.loadingProductLocker = false;
+    });
     builder.addCase(fetchProductCompanyWithId.pending, state => {
       state.loadingCompanyProduct = true;
     });
     builder.addCase(fetchProductCompanyWithId.fulfilled, (state, action) => {
       state.loadingCompanyProduct = false;
       state.productCompany = action.payload;
+    });
+    builder.addCase(fetchProductCompanyWithId.rejected, state => {
+      state.loadingCompanyProduct = false;
     });
   },
 });
