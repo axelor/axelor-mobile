@@ -58,13 +58,13 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     state => state.inventoryLine,
   );
 
-  const productFromId = useProductByCompany(
-    productId ?? inventoryLine?.product?.id,
-  );
-
   const inventoryLine = useMemo(
     () => (inventoryLineId != null ? _inventoryLine : null),
     [_inventoryLine, inventoryLineId],
+  );
+
+  const productFromId = useProductByCompany(
+    productId ?? inventoryLine?.product?.id,
   );
 
   const [loading, setLoading] = useState(true);
@@ -112,6 +112,10 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   useEffect(() => {
     getInventoryLine();
   }, [getInventoryLine]);
+
+  if (inventoryLineId != null && inventoryLine?.id !== inventoryLineId) {
+    return null;
+  }
 
   return (
     <Screen

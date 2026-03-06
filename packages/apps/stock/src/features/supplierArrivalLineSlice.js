@@ -44,21 +44,19 @@ export const fetchSupplierArrivalLines = createAsyncThunk(
 
 export const updateSupplierArrivalLine = createAsyncThunk(
   'supplierLine/updateSupplierArrivalLine',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateLine,
       data,
       action: 'Stock_SliceAction_UpdateSupplierArrivalLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: _fetchSupplierArrivalLine,
-        data: {supplierArrivalLineId: res?.id},
-        action: 'Stock_SliceAction_FetchSupplierArrivalLine',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+    }).then(() => {
+      dispatch(
+        fetchSupplierArrivalLine({
+          supplierArrivalLineId: data?.stockMoveLineId,
+        }),
+      );
     });
   },
 );
@@ -118,27 +116,22 @@ const supplierArrivalLineSlice = createSlice({
         list: 'supplierArrivalLineList',
         total: 'totalNumberLines',
       },
-      {
-        manageTotal: true,
-      },
+      {manageTotal: true},
     );
-    builder.addCase(updateSupplierArrivalLine.pending, state => {
+    builder.addCase(fetchSupplierArrivalLine.pending, state => {
       state.loadingSupplierArrivalLine = true;
     });
-    builder.addCase(updateSupplierArrivalLine.fulfilled, (state, action) => {
+    builder.addCase(fetchSupplierArrivalLine.rejected, state => {
+      state.loadingSupplierArrivalLine = false;
+      state.supplierArrivalLine = null;
+    });
+    builder.addCase(fetchSupplierArrivalLine.fulfilled, (state, action) => {
       state.loadingSupplierArrivalLine = false;
       state.supplierArrivalLine = action.payload;
       state.supplierArrivalLineList = updateAgendaItems(
         state.supplierArrivalLineList,
         [action.payload],
       );
-    });
-    builder.addCase(fetchSupplierArrivalLine.pending, state => {
-      state.loadingSupplierArrivalLine = true;
-    });
-    builder.addCase(fetchSupplierArrivalLine.fulfilled, (state, action) => {
-      state.loadingSupplierArrivalLine = false;
-      state.supplierArrivalLine = action.payload;
     });
   },
 });

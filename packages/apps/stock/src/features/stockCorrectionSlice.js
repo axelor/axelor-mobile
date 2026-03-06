@@ -132,6 +132,10 @@ const stockCorrectionSlice = createSlice({
       state.loading = false;
       state.stockCorrection = action.payload;
     });
+    builder.addCase(fetchStockCorrection.rejected, state => {
+      state.loading = false;
+      state.stockCorrection = null;
+    });
   },
 });
 
