@@ -132,7 +132,7 @@ function OperationOrderDetailsScreen({route, navigation}) {
       </ScrollView>
       <HazardPhraseAlert
         isVisible={alertVisible}
-        data={hazardPhraseSet}
+        data={[{hazardPhraseSet}]}
         handleClose={() => setAlertVisible(false)}
       />
     </Screen>

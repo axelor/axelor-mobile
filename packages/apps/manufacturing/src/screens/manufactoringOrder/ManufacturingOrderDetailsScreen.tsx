@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Screen,
@@ -40,9 +40,11 @@ import {
   ManufacturingOrderHalfLabelCardList,
   ManufacturingOrderNotesCardList,
   ManufacturingOrderDatesCard,
+  HazardPhraseAlert,
 } from '../../components';
 import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
+import {fetchHazardPhrases} from '../../features/hazardPhraseSlice';
 
 const MODELS = {ManufOrder: 'com.axelor.apps.production.db.ManufOrder'};
 
@@ -57,6 +59,15 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const {loadingOrder, manufOrder} = useSelector(
     state => state.manufacturingOrder,
   );
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+  const {hazardPhraseSet} = useSelector(state => state.hazardPhrase);
+
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  const hazardPhraseEnabled = useMemo(
+    () => baseConfig?.enableProductsSafety && hazardPhraseSet?.length > 0,
+    [baseConfig?.enableProductsSafety, hazardPhraseSet],
+  );
 
   useEffect(() => {
     if (manufOrder?.product != null) {
@@ -67,6 +78,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const fetchManufOrderAndOperation = useCallback(() => {
     dispatch((fetchManufOrder as any)({manufOrderId}));
     dispatch((fetchOperationOrders as any)({manufOrderId}));
+    dispatch((fetchHazardPhrases as any)({manufOrderId}));
   }, [dispatch, manufOrderId]);
 
   useEffect(() => {
@@ -90,8 +102,14 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
     [navigation],
   );
 
+  const handleStart = useCallback(() => {
+    if (hazardPhraseEnabled) setAlertVisible(true);
+  }, [hazardPhraseEnabled]);
+
   return (
-    <Screen removeSpaceOnTop={true} fixedItems={<ManufacturingOrderButtons />}>
+    <Screen
+      removeSpaceOnTop={true}
+      fixedItems={<ManufacturingOrderButtons onStart={handleStart} />}>
       <HeaderContainer
         fixedItems={
           <ManufacturingOrderHeader
@@ -136,6 +154,11 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
         )}
         <ManufacturingOrderNotesCardList manufOrder={manufOrder} />
       </KeyboardAvoidingScrollView>
+      <HazardPhraseAlert
+        isVisible={alertVisible}
+        data={hazardPhraseSet}
+        handleClose={() => setAlertVisible(false)}
+      />
     </Screen>
   );
 };
