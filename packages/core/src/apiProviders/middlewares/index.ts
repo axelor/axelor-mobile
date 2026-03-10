@@ -17,5 +17,6 @@
  */
 
 export * from './fieldParser';
+export * from './grouping';
 export * from './maintenance';
 export * from './translation';
