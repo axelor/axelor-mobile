@@ -50,6 +50,7 @@ function UnorderedList({
 
   return (
     <FlatList
+      nestedScrollEnabled
       testID="unorderedListFlatList"
       data={renderData}
       style={[styles.container, style]}

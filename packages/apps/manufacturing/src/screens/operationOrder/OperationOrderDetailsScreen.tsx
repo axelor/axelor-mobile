@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   HalfLabelCard,
@@ -31,6 +31,8 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
+  HazardPhraseAlert,
+  HazardPhraseDropdownCard,
   OperationOrderDatesCard,
   OperationOrderHeader,
   OperationOrderLabelTextList,
@@ -38,35 +40,50 @@ import {
 } from '../../components';
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 
+const MODELS = {
+  Operation: 'com.axelor.apps.production.db.OperationOrder',
+  Machine: 'com.axelor.apps.production.db.Machine',
+};
+
 function OperationOrderDetailsScreen({route, navigation}) {
   const {operationOrderId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingOrder, operationOrder} = useSelector(
     state => state.operationOrder,
   );
 
+  const [alertVisible, setAlertVisible] = useState(false);
+
   useContextRegister({
     models: [
-      {
-        model: 'com.axelor.apps.production.db.OperationOrder',
-        id: operationOrder?.id,
-      },
-      {
-        model: 'com.axelor.apps.production.db.Machine',
-        id: operationOrder?.machine?.id,
-      },
+      {model: MODELS.Operation, id: operationOrder?.id},
+      {model: MODELS.Machine, id: operationOrder?.machine?.id},
     ],
   });
 
   const getOperationOrder = useCallback(() => {
-    dispatch(fetchOperationOrderById({operationOrderId}));
+    dispatch((fetchOperationOrderById as any)({operationOrderId}));
   }, [dispatch, operationOrderId]);
 
   useEffect(() => {
     getOperationOrder();
   }, [getOperationOrder]);
+
+  const hazardPhraseSet = useMemo(
+    () => operationOrder?.prodProcessLine?.hazardPhraseSet,
+    [operationOrder?.prodProcessLine?.hazardPhraseSet],
+  );
+
+  const hazardPhraseEnabled = useMemo(
+    () =>
+      baseConfig?.enableProductsSafety &&
+      Array.isArray(hazardPhraseSet) &&
+      hazardPhraseSet.length > 0,
+    [baseConfig?.enableProductsSafety, hazardPhraseSet],
+  );
 
   const showConsumedProducts = useMemo(
     () => operationOrder?.manufOrder?.isConsProOnOperation,
@@ -79,6 +96,10 @@ function OperationOrderDetailsScreen({route, navigation}) {
       manufOrder: operationOrder.manufOrder,
     });
   }, [navigation, operationOrder.manufOrder, operationOrderId]);
+
+  const handleStart = useCallback(() => {
+    if (hazardPhraseEnabled) setAlertVisible(true);
+  }, [hazardPhraseEnabled]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -104,8 +125,16 @@ function OperationOrderDetailsScreen({route, navigation}) {
             onPress={handleOpenConsumedProducts}
           />
         )}
-        <OperationOrderStopwatch />
+        {hazardPhraseEnabled && (
+          <HazardPhraseDropdownCard data={hazardPhraseSet} />
+        )}
+        <OperationOrderStopwatch onPlay={handleStart} />
       </ScrollView>
+      <HazardPhraseAlert
+        isVisible={alertVisible}
+        data={hazardPhraseSet}
+        handleClose={() => setAlertVisible(false)}
+      />
     </Screen>
   );
 }
