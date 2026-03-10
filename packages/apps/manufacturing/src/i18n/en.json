@@ -51,6 +51,8 @@
   "Manufacturing_NavigateToMO": "Navigate to manufacturing order",
   "Manufacturing_NavigateToOO": "Navigate to operation order",
   "Manufacturing_NavigateToIM": "Navigate to internal move",
+  "Manufacturing_Caution": "Caution",
+  "Manufacturing_HazardPhrases": "Security",
   "Manufacturing_SliceAction_FilterMachines": "filter machines",
   "Manufacturing_SliceAction_FetchManufacturingOrders": "fetch manufacturing orders",
   "Manufacturing_SliceAction_FetchManufacturingOrdersFromId": "fetch manufacturing order by id",

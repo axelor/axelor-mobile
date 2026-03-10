@@ -31,7 +31,7 @@ interface OperationOrderLabelTextListProps {
   showMachineDuration?: boolean;
   showWorkCenter?: boolean;
   showMachine?: boolean;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const OperationOrderLabelTextList = ({
