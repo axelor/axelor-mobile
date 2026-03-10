@@ -51,6 +51,8 @@
   "Manufacturing_NavigateToMO": "Aller à l'ordre de fabrication",
   "Manufacturing_NavigateToOO": "Aller à l'opération de fabrication",
   "Manufacturing_NavigateToIM": "Aller au mouvement interne",
+  "Manufacturing_Caution": "Avertissement",
+  "Manufacturing_HazardPhrases": "Sécurité",
   "Manufacturing_SliceAction_FilterMachines": "filtre des machines",
   "Manufacturing_SliceAction_FetchManufacturingOrders": "récupération des ordres de fabrication",
   "Manufacturing_SliceAction_FetchManufacturingOrdersFromId": "récupération d'un ordre de fabrication par id",

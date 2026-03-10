@@ -18,6 +18,26 @@
 
 import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
+const operationOrderBaseSchema = schemaContructor.object({
+  operationName: schemaContructor.string(),
+  statusSelect: schemaContructor.number(),
+  priority: schemaContructor.number(),
+  workCenter: schemaContructor.subObject('name'),
+  plannedDuration: schemaContructor.string(),
+  plannedHumanDuration: schemaContructor.string(),
+  plannedMachineDuration: schemaContructor.string(),
+  manufOrder: schemaContructor.object({
+    manufOrderSeq: schemaContructor.string(),
+    isConsProOnOperation: schemaContructor.boolean(),
+  }),
+  machine: schemaContructor.subObject('name'),
+  plannedStartDateT: schemaContructor.string(),
+  plannedEndDateT: schemaContructor.string(),
+  realStartDateT: schemaContructor.string(),
+  realEndDateT: schemaContructor.string(),
+  realDuration: schemaContructor.string(),
+});
+
 export const manufacturing_modelAPI: ObjectFields = {
   manufacturing_machine: schemaContructor.object({
     code: schemaContructor.string(),
@@ -64,25 +84,21 @@ export const manufacturing_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject('manufOrderSeq')),
   }),
-  manufacturing_operationOrder: schemaContructor.object({
-    operationName: schemaContructor.string(),
-    statusSelect: schemaContructor.number(),
-    priority: schemaContructor.number(),
-    workCenter: schemaContructor.subObject('name'),
-    plannedDuration: schemaContructor.string(),
-    plannedHumanDuration: schemaContructor.string(),
-    plannedMachineDuration: schemaContructor.string(),
-    manufOrder: schemaContructor.object({
-      manufOrderSeq: schemaContructor.string(),
-      isConsProOnOperation: schemaContructor.boolean(),
+  manufacturing_operationOrder: operationOrderBaseSchema,
+  // TODO: merge into manufacturing_operationOrder once AOP issue !1711 is fixed
+  manufacturing_operationOrderDetails: operationOrderBaseSchema.concat(
+    schemaContructor.object({
+      prodProcessLine: schemaContructor.object({
+        hazardPhraseSet: schemaContructor.array().of(
+          schemaContructor.object({
+            phraseCode: schemaContructor.string(),
+            phrase: schemaContructor.string(),
+            clpDesignation: schemaContructor.string(),
+          }),
+        ),
+      }),
     }),
-    machine: schemaContructor.subObject('name'),
-    plannedStartDateT: schemaContructor.string(),
-    plannedEndDateT: schemaContructor.string(),
-    realStartDateT: schemaContructor.string(),
-    realEndDateT: schemaContructor.string(),
-    realDuration: schemaContructor.string(),
-  }),
+  ),
   manufacturing_productionFile: schemaContructor.object({
     image: schemaContructor.subObject('fileName'),
     description: schemaContructor.string(),
