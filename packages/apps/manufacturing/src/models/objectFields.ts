@@ -76,6 +76,15 @@ export const manufacturing_modelAPI: ObjectFields = {
       manufOrderSeq: schemaContructor.string(),
       isConsProOnOperation: schemaContructor.boolean(),
     }),
+    prodProcessLine: schemaContructor.object({
+      hazardPhraseSet: schemaContructor.array().of(
+        schemaContructor.object({
+          phraseCode: schemaContructor.string(),
+          phrase: schemaContructor.string(),
+          clpDesignation: schemaContructor.string(),
+        }),
+      ),
+    }),
     machine: schemaContructor.subObject('name'),
     plannedStartDateT: schemaContructor.string(),
     plannedEndDateT: schemaContructor.string(),

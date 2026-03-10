@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as HazardPhraseList} from './HazardPhraseList/HazardPhraseList';
 export {default as ManufacturingQtyIndicatorCard} from './ManufacturingQtyIndicatorCard/ManufacturingQtyIndicatorCard';
