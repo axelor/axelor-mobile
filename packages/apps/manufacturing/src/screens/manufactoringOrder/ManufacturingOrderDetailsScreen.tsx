@@ -44,18 +44,13 @@ import {
 import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 
+const MODELS = {ManufOrder: 'com.axelor.apps.production.db.ManufOrder'};
+
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
-  const {manufacturingOrderId} = route.params;
+  const {manufacturingOrderId: manufOrderId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  useContextRegister({
-    models: [
-      {
-        model: 'com.axelor.apps.production.db.ManufOrder',
-        id: manufacturingOrderId,
-      },
-    ],
-  });
+  useContextRegister({models: [{model: MODELS.ManufOrder, id: manufOrderId}]});
 
   const {operationOrderList} = useSelector(state => state.operationOrder);
   const {productFromId: product} = useSelector(state => state.product);
@@ -70,55 +65,30 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   }, [manufOrder, dispatch]);
 
   const fetchManufOrderAndOperation = useCallback(() => {
-    dispatch(fetchManufOrder({manufOrderId: manufacturingOrderId}));
-    dispatch(fetchOperationOrders({manufOrderId: manufacturingOrderId}));
-  }, [dispatch, manufacturingOrderId]);
+    dispatch((fetchManufOrder as any)({manufOrderId}));
+    dispatch((fetchOperationOrders as any)({manufOrderId}));
+  }, [dispatch, manufOrderId]);
 
   useEffect(() => {
     fetchManufOrderAndOperation();
   }, [fetchManufOrderAndOperation]);
 
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
-  };
+  const handleShowProduct = useCallback(() => {
+    navigation.navigate('ProductStockDetailsScreen', {product});
+  }, [navigation, product]);
 
-  const handleViewSaleOrderRefs = () => {
-    navigation.navigate('ManufacturingOrderListSaleOrderScreen', {
-      manufOrder: manufOrder,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('ManufacturingOrderOperationListScreen', {manufOrder});
+  }, [manufOrder, navigation]);
 
-  const handleViewProductionOrderRefs = () => {
-    navigation.navigate('ManufacturingOrderListProductionOrderScreen', {
-      manufOrder: manufOrder,
-    });
-  };
-
-  const handleViewAll = () => {
-    navigation.navigate('ManufacturingOrderOperationListScreen', {
-      manufOrder: manufOrder,
-    });
-  };
-
-  const handleShowLine = item => {
-    navigation.navigate('OperationOrderDetailsScreen', {
-      operationOrderId: item.id,
-    });
-  };
-
-  const handleShowConsumedProduct = () => {
-    navigation.navigate('ConsumedProductListScreen', {
-      manufOrder: manufOrder,
-    });
-  };
-
-  const handleShowProducedProduct = () => {
-    navigation.navigate('ProducedProductListScreen', {
-      manufOrder: manufOrder,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item: any) => {
+      navigation.navigate('OperationOrderDetailsScreen', {
+        operationOrderId: item.id,
+      });
+    },
+    [navigation],
+  );
 
   return (
     <Screen removeSpaceOnTop={true} fixedItems={<ManufacturingOrderButtons />}>
@@ -143,16 +113,9 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           code={product?.code}
           name={product?.name}
         />
-        <ManufacturingOrderSaleOrderSetView
-          onPressSaleOrder={handleViewSaleOrderRefs}
-        />
-        <ManufacturingOrderProductionOrderSetView
-          onPressViewProduction={handleViewProductionOrderRefs}
-        />
-        <ManufacturingOrderHalfLabelCardList
-          onPressConsumedProduct={handleShowConsumedProduct}
-          onPressProducedProduct={handleShowProducedProduct}
-        />
+        <ManufacturingOrderSaleOrderSetView />
+        <ManufacturingOrderProductionOrderSetView />
+        <ManufacturingOrderHalfLabelCardList />
         {operationOrderList != null && operationOrderList?.length > 0 && (
           <ViewAllContainer
             onViewPress={handleViewAll}
