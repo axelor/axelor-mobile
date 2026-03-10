@@ -192,7 +192,7 @@ export async function fetchOperationOrder({operationOrderId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.production.db.OperationOrder',
     id: operationOrderId,
-    fieldKey: 'manufacturing_operationOrder',
+    fieldKey: 'manufacturing_operationOrderDetails',
     relatedFields: {
       operationOrderDurationList: [
         'startingDateTime',
