@@ -35,7 +35,11 @@ import {StyleSheet, View} from 'react-native';
 const DEFAULT_STATUS = StopwatchType.status.Ready;
 const DEFAULT_TIME = 0;
 
-const OperationOrderStopwatch = ({}) => {
+interface OperationOrderStopwatch {
+  onPlay?: () => void;
+}
+
+const OperationOrderStopwatch = ({onPlay}: OperationOrderStopwatch) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {readonly} = usePermitted({
@@ -60,7 +64,7 @@ const OperationOrderStopwatch = ({}) => {
     setTimerStatus(timerState.status);
     setTime(timerState.time);
 
-    return timerState;
+    return timerState as any;
   }, [operationOrder, user]);
 
   useEffect(() => {
@@ -68,9 +72,9 @@ const OperationOrderStopwatch = ({}) => {
   }, [getTimerState]);
 
   const updateStatus = useCallback(
-    status => {
+    (status: number) => {
       dispatch(
-        updateOperationOrder({
+        (updateOperationOrder as any)({
           operationOrderId: operationOrder?.id,
           version: operationOrder?.version,
           status,
@@ -84,8 +88,13 @@ const OperationOrderStopwatch = ({}) => {
     setLabelVisible(updateMessage?.message != null);
   }, [updateMessage]);
 
+  const handleStart = useCallback(() => {
+    updateStatus(OperationOrder?.statusSelect.InProgress);
+    onPlay?.();
+  }, [OperationOrder?.statusSelect.InProgress, onPlay, updateStatus]);
+
   return (
-    <View style={styles.container}>
+    <View>
       <Label
         style={styles.label}
         message={updateMessage?.message}
@@ -100,7 +109,7 @@ const OperationOrderStopwatch = ({}) => {
         status={timerStatus}
         getTimerState={getTimerState}
         timerFormat={I18n.t('Stopwatch_TimerFormat')}
-        onPlay={() => updateStatus(OperationOrder?.statusSelect.InProgress)}
+        onPlay={handleStart}
         onPause={() => updateStatus(OperationOrder?.statusSelect.StandBy)}
         onStop={() => updateStatus(OperationOrder?.statusSelect.Finished)}
         disableStop={timerStatus !== StopwatchType.status.InProgress}
@@ -113,9 +122,6 @@ const OperationOrderStopwatch = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: '30%',
-  },
   label: {
     width: '90%',
     marginLeft: 20,
