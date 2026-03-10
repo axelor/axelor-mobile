@@ -1,0 +1,5 @@
+{
+  "title": "Standard requests: add support for fetching sub-array fields from object schema",
+  "type": "feat",
+  "packages": "core"
+}
