@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as HazardPhraseAlert} from './HazardPhraseAlert/HazardPhraseAlert';
+export {default as HazardPhraseDropdownCard} from './HazardPhraseDropdownCard/HazardPhraseDropdownCard';
 export {default as ManufacturingOrderDatesCard} from './ManufacturingOrderDatesCard/ManufacturingOrderDatesCard';
 export {default as ManufacturingQtyIndicatorActionCard} from './ManufacturingQtyIndicatorActionCard/ManufacturingQtyIndicatorActionCard';
 export {default as OperationOrderDatesCard} from './OperationOrderDatesCard/OperationOrderDatesCard';
