@@ -3,6 +3,24 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.28] (2026-03-11)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add numberOfLines prop to control text line wrapping
+
+#### Fixes
+
+- Button: improve style to avoid overlap issue with icon
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Details screens: avoid stale data and infinite loading on request failure
+
 ## [8.2.27] (2026-03-03)
 
 ### @axelor/aos-mobile-core
@@ -943,6 +961,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.28]: https://github.com/axelor/axelor-mobile/compare/8.2.27...8.2.28
 [8.2.27]: https://github.com/axelor/axelor-mobile/compare/8.2.26...8.2.27
 [8.2.26]: https://github.com/axelor/axelor-mobile/compare/8.2.25...8.2.26
 [8.2.25]: https://github.com/axelor/axelor-mobile/compare/8.2.24...8.2.25
