@@ -126,4 +126,16 @@ describe('Button Component', () => {
 
     expect(getByTestId(`icon-${props.iconName}`)).toBeTruthy();
   });
+
+  it('renders with default numberOfLines value', () => {
+    const {getByText, props} = setupButton();
+
+    expect(getByText(props.title).props.numberOfLines).toBe(2);
+  });
+
+  it('renders with custom numberOfLines value', () => {
+    const {getByText, props} = setupButton({numberOfLines: 1});
+
+    expect(getByText(props.title).props.numberOfLines).toBe(props.numberOfLines);
+  });
 });
