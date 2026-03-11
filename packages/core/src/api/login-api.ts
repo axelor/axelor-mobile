@@ -19,6 +19,7 @@
 import axios from 'axios';
 import {
   fieldsParserMiddleware,
+  groupingMiddleware,
   provider,
   translationMiddleware,
   maintenanceMiddleware,
@@ -58,7 +59,10 @@ export function initAxiosWithHeaders(res: any, url: string) {
   });
 
   const responseInterceptorId = axios.interceptors.response.use(
-    _response => fieldsParserMiddleware(translationMiddleware(_response)),
+    _response =>
+      groupingMiddleware(
+        fieldsParserMiddleware(translationMiddleware(_response)),
+      ),
     _error => maintenanceMiddleware(_error),
   );
 

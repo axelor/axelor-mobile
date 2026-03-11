@@ -48,17 +48,20 @@ class ObjectFieldsProvider {
     return null;
   }
 
-  getObjectFields(objectKey: string): string[] {
+  getObjectFields(objectKey: string, includeArrayFields?: boolean): string[] {
     const objectSchema: any = this.getObjectSchema(objectKey);
 
     if (objectSchema != null) {
-      return this.handleSchemaField(objectSchema);
+      return this.handleSchemaField(objectSchema, includeArrayFields);
     }
 
     return [];
   }
 
-  private handleSchemaField(schema: any): string[] {
+  private handleSchemaField(
+    schema: any,
+    includeArrayFields?: boolean,
+  ): string[] {
     const fields = schema.fields;
     const result: string[] = [];
 
@@ -66,17 +69,36 @@ class ObjectFieldsProvider {
       result.push(fieldName);
 
       if (fields[fieldName].type === 'object') {
-        this.handleSchemaField(fields[fieldName]).forEach(_field => {
-          if (
-            _field === 'id' ||
-            _field === '$version' ||
-            _field === 'version'
-          ) {
-            return;
-          }
+        this.handleSchemaField(fields[fieldName], includeArrayFields).forEach(
+          _field => {
+            if (
+              _field === 'id' ||
+              _field === '$version' ||
+              _field === 'version'
+            ) {
+              return;
+            }
 
-          result.push(`${fieldName}.${_field}`);
-        });
+            result.push(`${fieldName}.${_field}`);
+          },
+        );
+      } else if (includeArrayFields && fields[fieldName].type === 'array') {
+        const innerType = fields[fieldName].innerType;
+        if (innerType?.type === 'object' && innerType._nodes) {
+          result.push(`${fieldName}.id`);
+          this.handleSchemaField(innerType, includeArrayFields).forEach(
+            _field => {
+              if (
+                _field === 'id' ||
+                _field === '$version' ||
+                _field === 'version'
+              ) {
+                return;
+              }
+              result.push(`${fieldName}.${_field}`);
+            },
+          );
+        }
       }
     }
 
@@ -127,8 +149,11 @@ class ObjectFieldsProvider {
 
 export const objectFieldsProvider = new ObjectFieldsProvider();
 
-export function getObjectFields(objectKey: string): string[] {
-  return objectFieldsProvider.getObjectFields(objectKey);
+export function getObjectFields(
+  objectKey: string,
+  includeArrayFields?: boolean,
+): string[] {
+  return objectFieldsProvider.getObjectFields(objectKey, includeArrayFields);
 }
 
 export function getSortFields(objectKey: string): string[] {

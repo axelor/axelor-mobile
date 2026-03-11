@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Screen,
@@ -40,27 +40,33 @@ import {
   ManufacturingOrderHalfLabelCardList,
   ManufacturingOrderNotesCardList,
   ManufacturingOrderDatesCard,
+  HazardPhraseAlert,
 } from '../../components';
 import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
+import {fetchHazardPhrases} from '../../features/hazardPhraseSlice';
+
+const MODELS = {ManufOrder: 'com.axelor.apps.production.db.ManufOrder'};
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
-  const {manufacturingOrderId} = route.params;
+  const {manufacturingOrderId: manufOrderId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  useContextRegister({
-    models: [
-      {
-        model: 'com.axelor.apps.production.db.ManufOrder',
-        id: manufacturingOrderId,
-      },
-    ],
-  });
+  useContextRegister({models: [{model: MODELS.ManufOrder, id: manufOrderId}]});
 
   const {operationOrderList} = useSelector(state => state.operationOrder);
   const {productFromId: product} = useSelector(state => state.product);
   const {loadingOrder, manufOrder} = useSelector(
     state => state.manufacturingOrder,
+  );
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+  const {hazardPhraseSet} = useSelector(state => state.hazardPhrase);
+
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  const hazardPhraseEnabled = useMemo(
+    () => baseConfig?.enableProductsSafety && hazardPhraseSet?.length > 0,
+    [baseConfig?.enableProductsSafety, hazardPhraseSet],
   );
 
   useEffect(() => {
@@ -70,58 +76,40 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   }, [manufOrder, dispatch]);
 
   const fetchManufOrderAndOperation = useCallback(() => {
-    dispatch(fetchManufOrder({manufOrderId: manufacturingOrderId}));
-    dispatch(fetchOperationOrders({manufOrderId: manufacturingOrderId}));
-  }, [dispatch, manufacturingOrderId]);
+    dispatch((fetchManufOrder as any)({manufOrderId}));
+    dispatch((fetchOperationOrders as any)({manufOrderId}));
+    dispatch((fetchHazardPhrases as any)({manufOrderId}));
+  }, [dispatch, manufOrderId]);
 
   useEffect(() => {
     fetchManufOrderAndOperation();
   }, [fetchManufOrderAndOperation]);
 
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
-  };
+  const handleShowProduct = useCallback(() => {
+    navigation.navigate('ProductStockDetailsScreen', {product});
+  }, [navigation, product]);
 
-  const handleViewSaleOrderRefs = () => {
-    navigation.navigate('ManufacturingOrderListSaleOrderScreen', {
-      manufOrder: manufOrder,
-    });
-  };
+  const handleViewAll = useCallback(() => {
+    navigation.navigate('ManufacturingOrderOperationListScreen', {manufOrder});
+  }, [manufOrder, navigation]);
 
-  const handleViewProductionOrderRefs = () => {
-    navigation.navigate('ManufacturingOrderListProductionOrderScreen', {
-      manufOrder: manufOrder,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item: any) => {
+      navigation.navigate('OperationOrderDetailsScreen', {
+        operationOrderId: item.id,
+      });
+    },
+    [navigation],
+  );
 
-  const handleViewAll = () => {
-    navigation.navigate('ManufacturingOrderOperationListScreen', {
-      manufOrder: manufOrder,
-    });
-  };
-
-  const handleShowLine = item => {
-    navigation.navigate('OperationOrderDetailsScreen', {
-      operationOrderId: item.id,
-    });
-  };
-
-  const handleShowConsumedProduct = () => {
-    navigation.navigate('ConsumedProductListScreen', {
-      manufOrder: manufOrder,
-    });
-  };
-
-  const handleShowProducedProduct = () => {
-    navigation.navigate('ProducedProductListScreen', {
-      manufOrder: manufOrder,
-    });
-  };
+  const handleStart = useCallback(() => {
+    if (hazardPhraseEnabled) setAlertVisible(true);
+  }, [hazardPhraseEnabled]);
 
   return (
-    <Screen removeSpaceOnTop={true} fixedItems={<ManufacturingOrderButtons />}>
+    <Screen
+      removeSpaceOnTop={true}
+      fixedItems={<ManufacturingOrderButtons onStart={handleStart} />}>
       <HeaderContainer
         fixedItems={
           <ManufacturingOrderHeader
@@ -143,16 +131,9 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           code={product?.code}
           name={product?.name}
         />
-        <ManufacturingOrderSaleOrderSetView
-          onPressSaleOrder={handleViewSaleOrderRefs}
-        />
-        <ManufacturingOrderProductionOrderSetView
-          onPressViewProduction={handleViewProductionOrderRefs}
-        />
-        <ManufacturingOrderHalfLabelCardList
-          onPressConsumedProduct={handleShowConsumedProduct}
-          onPressProducedProduct={handleShowProducedProduct}
-        />
+        <ManufacturingOrderSaleOrderSetView />
+        <ManufacturingOrderProductionOrderSetView />
+        <ManufacturingOrderHalfLabelCardList />
         {operationOrderList != null && operationOrderList?.length > 0 && (
           <ViewAllContainer
             onViewPress={handleViewAll}
@@ -173,6 +154,11 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
         )}
         <ManufacturingOrderNotesCardList manufOrder={manufOrder} />
       </KeyboardAvoidingScrollView>
+      <HazardPhraseAlert
+        isVisible={alertVisible}
+        data={hazardPhraseSet}
+        handleClose={() => setAlertVisible(false)}
+      />
     </Screen>
   );
 };
