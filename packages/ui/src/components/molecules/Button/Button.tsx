@@ -36,6 +36,7 @@ export interface ButtonProps {
   onPress?: () => void;
   disabled?: boolean;
   onDisabledPress?: () => void;
+  numberOfLines?: number;
 }
 
 const Button = ({
@@ -51,6 +52,7 @@ const Button = ({
   onPress = () => {},
   disabled = false,
   onDisabledPress = null,
+  numberOfLines = 2,
 }: ButtonProps) => {
   const Colors = useThemeColor();
 
@@ -95,12 +97,14 @@ const Button = ({
           name={iconName}
           size={iconSize}
           color={buttonColor.foreground}
-          style={[styles.icon, styleIcon]}
+          style={styleIcon}
         />
       )}
       {!!title && (
         <Text
           style={[styles.text, styleTxt]}
+          numberOfLines={numberOfLines}
+          adjustsFontSizeToFit
           fontSize={17}
           textColor={buttonColor.foreground}>
           {title}
@@ -116,14 +120,13 @@ const getStyles = (color: Color, width: DimensionValue) =>
       backgroundColor: color.background_light,
       borderColor: color.background,
       width: width,
+      gap: 10,
     },
     text: {
       fontWeight: 'bold',
       textAlign: 'center',
-      marginHorizontal: 5,
-    },
-    icon: {
-      marginHorizontal: 5,
+      textAlignVertical: 'center',
+      flexShrink: 1,
     },
   });
 

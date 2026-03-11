@@ -1,0 +1,5 @@
+{
+  "title": "Button: improve style to avoid overlap issue with icon",
+  "type": "fix",
+  "packages": "ui"
+}
