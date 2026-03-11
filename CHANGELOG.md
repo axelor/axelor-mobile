@@ -3,6 +3,37 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.16] (2026-03-11)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Date helpers: add default value for locale on getFromNowDate function to avoid undefined issue
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add numberOfLines prop to control text line wrapping
+
+#### Fixes
+
+- Button: improve style to avoid overlap issue with icon
+
+### @axelor/aos-mobile-message
+
+#### Fixes
+
+- MailMessage: avoid undefined issue if the body doesn't contain any tracks or tags
+- MailMessage: check model & modelId before fetching subscribers and unread messages
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Details screens: avoid stale data and infinite loading on request failure
+
 ## [8.4.15] (2026-03-03)
 
 ### @axelor/aos-mobile-core
@@ -555,6 +586,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.16]: https://github.com/axelor/axelor-mobile/compare/8.4.15...8.4.16
 [8.4.15]: https://github.com/axelor/axelor-mobile/compare/8.4.14...8.4.15
 [8.4.14]: https://github.com/axelor/axelor-mobile/compare/8.4.13...8.4.14
 [8.4.13]: https://github.com/axelor/axelor-mobile/compare/8.4.12...8.4.13
