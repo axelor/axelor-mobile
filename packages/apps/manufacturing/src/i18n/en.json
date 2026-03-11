@@ -77,5 +77,6 @@
   "Manufacturing_SliceAction_FetchConsumedProductWithId": "fetch consumed product with id",
   "Manufacturing_SliceAction_FetchProducedProductWithId": "fetch produced product with id",
   "Manufacturing_SliceAction_FetchProdProductWithId": "fetch prod product with id",
+  "Manufacturing_SliceAction_FetchHazardPhrases": "fetch hazard phrases",
   "Manufacturing_SliceAction_FetchManufacturingQtyIndicator": "fetch data of manufacturing qty indicator"
 }

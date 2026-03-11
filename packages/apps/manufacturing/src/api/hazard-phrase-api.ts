@@ -16,7 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './fieldParser';
-export * from './grouping';
-export * from './maintenance';
-export * from './translation';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+export async function fetchProdProcessLineHazardPhrases({manufOrderId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.ProdProcessLine',
+    domain:
+      'EXISTS (SELECT 1 FROM OperationOrder oo WHERE oo.prodProcessLine = self AND oo.manufOrder.id = :manufOrderId) AND self.hazardPhraseSet IS NOT EMPTY',
+    domainContext: {manufOrderId},
+    fieldKey: 'manufacturing_prodProcessLine',
+    subArrayFields: true,
+    numberElementsByPage: null,
+    page: 0,
+    provider: 'model',
+  });
+}

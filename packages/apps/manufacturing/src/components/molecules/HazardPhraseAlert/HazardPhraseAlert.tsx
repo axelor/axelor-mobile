@@ -17,13 +17,19 @@
  */
 
 import React from 'react';
-import {Alert} from '@axelor/aos-mobile-ui';
+import {ScrollView} from 'react-native';
+import {Alert, checkNullString, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {HazardPhraseList} from '../../atoms';
 
+interface HazardPhraseGroup {
+  name?: string;
+  hazardPhraseSet: any[];
+}
+
 interface HazardPhraseAlertProps {
   isVisible?: boolean;
-  data: any[];
+  data: HazardPhraseGroup[];
   handleClose: () => void;
 }
 
@@ -40,7 +46,16 @@ const HazardPhraseAlert = ({
       title={I18n.t('Manufacturing_Caution')}
       confirmButtonConfig={{title: I18n.t('Base_OK'), onPress: handleClose}}
       translator={I18n.t}>
-      <HazardPhraseList data={data} />
+      <ScrollView>
+        {data?.map(({name, hazardPhraseSet}, index) => (
+          <React.Fragment key={index}>
+            {!checkNullString(name) && (
+              <Text writingType="important">{name}</Text>
+            )}
+            <HazardPhraseList data={hazardPhraseSet} scrollEnabled={false} />
+          </React.Fragment>
+        ))}
+      </ScrollView>
     </Alert>
   );
 };
