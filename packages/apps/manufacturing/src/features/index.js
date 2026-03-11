@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {hazardPhraseReducer as hazardPhrase} from './hazardPhraseSlice';
 export {machinesReducer as machines} from './machinesSlice';
 export {manufacturingOrderReducer as manufacturingOrder} from './manufacturingOrderSlice';
 export {operationOrderReducer as operationOrder} from './operationOrderSlice';

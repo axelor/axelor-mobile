@@ -25,6 +25,7 @@ interface UnorderedListProps {
   numberOfItems?: number;
   renderItem: (item: any) => any;
   style?: any;
+  scrollEnabled?: boolean;
 }
 
 function UnorderedList({
@@ -32,6 +33,7 @@ function UnorderedList({
   numberOfItems,
   renderItem,
   style,
+  scrollEnabled,
 }: UnorderedListProps) {
   const renderData = useMemo(() => {
     if (!numberOfItems || data.length === 0) {
@@ -51,6 +53,7 @@ function UnorderedList({
   return (
     <FlatList
       nestedScrollEnabled
+      scrollEnabled={scrollEnabled}
       testID="unorderedListFlatList"
       data={renderData}
       style={[styles.container, style]}

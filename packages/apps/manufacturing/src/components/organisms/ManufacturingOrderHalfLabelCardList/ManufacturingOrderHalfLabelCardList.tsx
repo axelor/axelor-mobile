@@ -16,33 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {HalfLabelCard} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
+import {HalfLabelCard} from '@axelor/aos-mobile-ui';
+import {
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 
-interface ManufacturingOrderHalfLabelCardListProps {
-  onPressConsumedProduct: () => void;
-  onPressProducedProduct: () => void;
-}
-
-const ManufacturingOrderHalfLabelCardList = ({
-  onPressConsumedProduct,
-  onPressProducedProduct,
-}: ManufacturingOrderHalfLabelCardListProps) => {
+const ManufacturingOrderHalfLabelCardList = () => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
+
+  const {manufOrder} = useSelector(state => state.manufacturingOrder);
+
+  const handleShowConsumedProduct = useCallback(() => {
+    navigation.navigate('ConsumedProductListScreen', {manufOrder});
+  }, [manufOrder, navigation]);
+
+  const handleShowProducedProduct = useCallback(() => {
+    navigation.navigate('ProducedProductListScreen', {manufOrder});
+  }, [manufOrder, navigation]);
 
   return (
     <View style={styles.cardsContainer}>
       <HalfLabelCard
         iconName="dolly"
         title={I18n.t('Manufacturing_ConsumedProduct')}
-        onPress={onPressConsumedProduct}
+        onPress={handleShowConsumedProduct}
       />
       <HalfLabelCard
         iconName="gear-fill"
         title={I18n.t('Manufacturing_ProducedProduct')}
-        onPress={onPressProducedProduct}
+        onPress={handleShowProducedProduct}
       />
     </View>
   );

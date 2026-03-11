@@ -27,7 +27,13 @@ import {
 } from '@axelor/aos-mobile-core';
 import {updateStatusOfManufOrder} from '../../../features/manufacturingOrderSlice';
 
-const ManufacturingOrderButtons = ({}) => {
+interface ManufacturingOrderButtonsProps {
+  onStart?: () => void;
+}
+
+const ManufacturingOrderButtons = ({
+  onStart,
+}: ManufacturingOrderButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -39,9 +45,9 @@ const ManufacturingOrderButtons = ({}) => {
   const {manufOrder} = useSelector(state => state.manufacturingOrder);
 
   const handleUpdateStatus = useCallback(
-    targetStatus => {
+    (targetStatus: number) => {
       dispatch(
-        updateStatusOfManufOrder({
+        (updateStatusOfManufOrder as any)({
           manufOrderId: manufOrder.id,
           manufOrderVersion: manufOrder.version,
           targetStatus,
@@ -51,15 +57,18 @@ const ManufacturingOrderButtons = ({}) => {
     [dispatch, manufOrder],
   );
 
-  if (readonly) {
-    return null;
-  }
+  const handleStart = useCallback(() => {
+    handleUpdateStatus(ManufOrder?.statusSelect.InProgress);
+    onStart?.();
+  }, [ManufOrder?.statusSelect.InProgress, handleUpdateStatus, onStart]);
+
+  if (readonly) return null;
 
   if (manufOrder.statusSelect === ManufOrder?.statusSelect.Planned) {
     return (
       <Button
         title={I18n.t('Base_Start')}
-        onPress={() => handleUpdateStatus(ManufOrder?.statusSelect.InProgress)}
+        onPress={handleStart}
         iconName="play-fill"
       />
     );
@@ -87,7 +96,7 @@ const ManufacturingOrderButtons = ({}) => {
     return (
       <Button
         title={I18n.t('Base_Continue')}
-        onPress={() => handleUpdateStatus(ManufOrder?.statusSelect.InProgress)}
+        onPress={handleStart}
         iconName="skip-end-fill"
       />
     );

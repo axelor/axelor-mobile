@@ -1,0 +1,6 @@
+{
+  "title": "Manufacturing order: gives certain components more functionnal autonomy",
+  "type": "refactor",
+  "packages": "manufacturing",
+  "description": "ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and ManufacturingOrderProductionOrderSetView no longer receive navigation callbacks as props. They now handle their own navigation and state internally via useNavigation and useSelector, reducing coupling with ManufacturingOrderDetailsScreen."
+}

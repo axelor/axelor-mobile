@@ -140,6 +140,16 @@ export const manufacturing_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     trackingNumber: schemaContructor.string(),
   }),
+  manufacturing_prodProcessLine: schemaContructor.object({
+    name: schemaContructor.string(),
+    hazardPhraseSet: schemaContructor.array().of(
+      schemaContructor.object({
+        phraseCode: schemaContructor.string(),
+        phrase: schemaContructor.string(),
+        clpDesignation: schemaContructor.string(),
+      }),
+    ),
+  }),
   manufacturing_stockMoveStatus: schemaContructor.object({
     stockMove: schemaContructor.subObject('statusSelect'),
   }),
