@@ -36,6 +36,7 @@ interface SearchProps {
   companyFieldName?: string;
   companySetFieldName?: string;
   filter?: Filter;
+  subArrayFields?: boolean;
 }
 
 interface HierarchicalSearchProps extends SearchProps {
@@ -81,6 +82,7 @@ class RequestBuilder {
     companyFieldName,
     companySetFieldName,
     filter,
+    subArrayFields,
   }: SearchProps): Promise<any> => {
     if (model == null || fieldKey == null) {
       return null;
@@ -140,7 +142,7 @@ class RequestBuilder {
 
     const fields = Array.isArray(fieldKey)
       ? fieldKey
-      : getObjectFields(fieldKey);
+      : getObjectFields(fieldKey, subArrayFields);
 
     if (provider === 'axios') {
       axiosApiProvider.post({

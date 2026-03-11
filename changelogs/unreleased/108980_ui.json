@@ -1,0 +1,5 @@
+{
+  "title": "ViewAllContainer: make children prop optional",
+  "type": "refactor",
+  "packages": "ui"
+}

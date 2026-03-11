@@ -26,7 +26,7 @@ interface ViewAllContainerProps {
   title?: string;
   data?: any[];
   disabled?: boolean;
-  children: any;
+  children?: any;
   isHeaderExist?: boolean;
   onNewIcon?: () => void;
   onViewPress: () => void;
