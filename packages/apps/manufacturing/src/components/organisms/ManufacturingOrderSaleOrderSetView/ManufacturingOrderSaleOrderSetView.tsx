@@ -16,25 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
+import {View, StyleSheet} from 'react-native';
 import {
   useThemeColor,
   ViewAllContainer,
   Text,
   Badge,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {View, StyleSheet} from 'react-native';
+import {
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 
-interface Props {
-  onPressSaleOrder: () => void;
-}
-
-const ManufacturingOrderSaleOrderSetView = ({onPressSaleOrder}: Props) => {
+const ManufacturingOrderSaleOrderSetView = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
-  const {manufOrder} = useSelector((state: any) => state.manufacturingOrder);
+  const {manufOrder} = useSelector(state => state.manufacturingOrder);
+
+  const handleViewSaleOrderRefs = useCallback(() => {
+    navigation.navigate('ManufacturingOrderListSaleOrderScreen', {manufOrder});
+  }, [manufOrder, navigation]);
 
   if (
     !Array.isArray(manufOrder.saleOrderSet) ||
@@ -45,14 +50,14 @@ const ManufacturingOrderSaleOrderSetView = ({onPressSaleOrder}: Props) => {
 
   return (
     <ViewAllContainer
-      onViewPress={onPressSaleOrder}
+      onViewPress={handleViewSaleOrderRefs}
       disabled={manufOrder.saleOrderSet.length < 3}
       translator={I18n.t}>
       <View style={styles.orderTitle}>
         <Text>{I18n.t('Manufacturing_RefClient')}</Text>
       </View>
       <View style={styles.orderSetContainer}>
-        {manufOrder.saleOrderSet.slice(0, 3).map(item => (
+        {manufOrder.saleOrderSet.slice(0, 3).map((item: any) => (
           <Badge
             style={styles.orderBadge}
             title={item.fullName}

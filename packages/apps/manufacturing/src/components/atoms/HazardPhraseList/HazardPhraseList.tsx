@@ -22,9 +22,10 @@ import {checkNullString, Text, UnorderedList} from '@axelor/aos-mobile-ui';
 
 interface HazardPhraseListProps {
   data: any[];
+  scrollEnabled?: boolean;
 }
 
-const HazardPhraseList = ({data}: HazardPhraseListProps) => {
+const HazardPhraseList = ({data, scrollEnabled}: HazardPhraseListProps) => {
   const renderItem = useCallback(({item}: any) => {
     if (!item) return null;
 
@@ -39,7 +40,12 @@ const HazardPhraseList = ({data}: HazardPhraseListProps) => {
   }, []);
 
   return (
-    <UnorderedList data={data} renderItem={renderItem} style={styles.list} />
+    <UnorderedList
+      data={data}
+      renderItem={renderItem}
+      style={styles.list}
+      scrollEnabled={scrollEnabled}
+    />
   );
 };
 
