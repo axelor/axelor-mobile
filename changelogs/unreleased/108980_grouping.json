@@ -1,0 +1,5 @@
+{
+  "title": "Grouping middleware: automatically merge duplicated records from flattened API responses",
+  "type": "feat",
+  "packages": "core"
+}

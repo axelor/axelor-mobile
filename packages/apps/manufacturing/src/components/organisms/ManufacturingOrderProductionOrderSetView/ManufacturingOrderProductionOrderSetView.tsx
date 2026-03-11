@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
   useThemeColor,
@@ -24,12 +24,18 @@ import {
   Text,
   Badge,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {fetchLinkedManufOrders} from '../../../features/manufacturingOrderSlice';
 
-const ManufacturingOrderProductionOrderSetView = ({onPressViewProduction}) => {
+const ManufacturingOrderProductionOrderSetView = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {manufOrder, linkedManufOrders} = useSelector(
@@ -40,13 +46,19 @@ const ManufacturingOrderProductionOrderSetView = ({onPressViewProduction}) => {
   useEffect(() => {
     if (manufOrder != null) {
       dispatch(
-        fetchLinkedManufOrders({
+        (fetchLinkedManufOrders as any)({
           productionOrderList: manufOrder.productionOrderSet,
           companyId: user.activeCompany?.id,
         }),
       );
     }
   }, [dispatch, manufOrder, user.activeCompany?.id]);
+
+  const handleViewProductionOrderRefs = useCallback(() => {
+    navigation.navigate('ManufacturingOrderListProductionOrderScreen', {
+      manufOrder,
+    });
+  }, [manufOrder, navigation]);
 
   if (
     !Array.isArray(manufOrder.productionOrderSet) ||
@@ -59,7 +71,7 @@ const ManufacturingOrderProductionOrderSetView = ({onPressViewProduction}) => {
 
   return (
     <ViewAllContainer
-      onViewPress={onPressViewProduction}
+      onViewPress={handleViewProductionOrderRefs}
       disabled={linkedManufOrders.length === 0}
       translator={I18n.t}>
       <View style={styles.orderTitle}>
