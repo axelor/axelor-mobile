@@ -3,6 +3,24 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.21] (2026-03-11)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add numberOfLines prop to control text line wrapping
+
+#### Fixes
+
+- Button: improve style to avoid overlap issue with icon
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Details screens: avoid stale data and infinite loading on request failure
+
 ## [8.3.20] (2026-03-03)
 
 ### @axelor/aos-mobile-core
@@ -639,6 +657,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.21]: https://github.com/axelor/axelor-mobile/compare/8.3.20...8.3.21
 [8.3.20]: https://github.com/axelor/axelor-mobile/compare/8.3.19...8.3.20
 [8.3.19]: https://github.com/axelor/axelor-mobile/compare/8.3.18...8.3.19
 [8.3.18]: https://github.com/axelor/axelor-mobile/compare/8.3.17...8.3.18
