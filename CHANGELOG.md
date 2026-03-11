@@ -3,6 +3,37 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.9] (2026-03-11)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Date helpers: add default value for locale on getFromNowDate function to avoid undefined issue
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add numberOfLines prop to control text line wrapping
+
+#### Fixes
+
+- Button: improve style to avoid overlap issue with icon
+
+### @axelor/aos-mobile-message
+
+#### Fixes
+
+- MailMessage: avoid undefined issue if the body doesn't contain any tracks or tags
+- MailMessage: check model & modelId before fetching subscribers and unread messages
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Details screens: avoid stale data and infinite loading on request failure
+
 ## [8.5.8] (2026-03-03)
 
 ### @axelor/aos-mobile-core
@@ -294,6 +325,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.9]: https://github.com/axelor/axelor-mobile/compare/8.5.8...8.5.9
 [8.5.8]: https://github.com/axelor/axelor-mobile/compare/8.5.7...8.5.8
 [8.5.7]: https://github.com/axelor/axelor-mobile/compare/8.5.6...8.5.7
 [8.5.6]: https://github.com/axelor/axelor-mobile/compare/8.5.5...8.5.6
