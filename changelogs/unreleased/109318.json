@@ -1,5 +1,0 @@
-{
-  "title": "Button: add numberOfLines prop to control text line wrapping",
-  "type": "feat",
-  "packages": "ui"
-}

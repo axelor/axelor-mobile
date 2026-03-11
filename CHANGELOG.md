@@ -3,6 +3,37 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.4] (2026-03-11)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Date helpers: add default value for locale on getFromNowDate function to avoid undefined issue
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add numberOfLines prop to control text line wrapping
+
+#### Fixes
+
+- Button: improve style to avoid overlap issue with icon
+
+### @axelor/aos-mobile-message
+
+#### Fixes
+
+- MailMessage: avoid undefined issue if the body doesn't contain any tracks or tags
+- MailMessage: check model & modelId before fetching subscribers and unread messages
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Details screens: avoid stale data and infinite loading on request failure
+
 ## [9.0.3] (2026-03-03)
 
 ### @axelor/aos-mobile-core
@@ -60,6 +91,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.4]: https://github.com/axelor/axelor-mobile/compare/9.0.3...9.0.4
 [9.0.3]: https://github.com/axelor/axelor-mobile/compare/9.0.2...9.0.3
 [9.0.2]: https://github.com/axelor/axelor-mobile/compare/9.0.1...9.0.2
 [9.0.1]: https://github.com/axelor/axelor-mobile/compare/9.0.0...9.0.1

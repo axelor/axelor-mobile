@@ -1,5 +1,0 @@
-{
-  "title": "Date helpers: add default value for locale on getFromNowDate function to avoid undefined issue",
-  "type": "fix",
-  "packages": "core"
-}
