@@ -20,6 +20,8 @@ export const getDurationUnit = (
   durationUnit: string,
   I18n: {t: (key: string) => string},
 ): string => {
+  if (durationUnit == null) return null;
+
   const durationUnitCapitalized =
     durationUnit.charAt(0).toUpperCase() + durationUnit.slice(1);
 
