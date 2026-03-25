@@ -1,0 +1,5 @@
+{
+  "title": "Unit helper: avoid crash when duration unit is null",
+  "type": "fix",
+  "packages": "hr"
+}
