@@ -1,5 +1,0 @@
-{
-  "title": "Managed employees: add hook to fetch values when using total",
-  "type": "refactor",
-  "packages": "hr"
-}

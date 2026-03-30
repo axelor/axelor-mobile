@@ -3,6 +3,18 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.5] (2026-03-30)
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Managed employees: add hook to fetch values when using total
+
+#### Fixes
+
+- Unit helper: avoid crash when duration unit is null
+
 ## [9.0.4] (2026-03-11)
 
 ### @axelor/aos-mobile-core
@@ -91,6 +103,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.5]: https://github.com/axelor/axelor-mobile/compare/9.0.4...9.0.5
 [9.0.4]: https://github.com/axelor/axelor-mobile/compare/9.0.3...9.0.4
 [9.0.3]: https://github.com/axelor/axelor-mobile/compare/9.0.2...9.0.3
 [9.0.2]: https://github.com/axelor/axelor-mobile/compare/9.0.1...9.0.2
