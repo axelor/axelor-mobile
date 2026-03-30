@@ -138,6 +138,7 @@ export const HrModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
+export * from './hooks';
 export * from './screens/expense';
 export * from './screens/timesheet';
 export * from './screens/leaveRequests';

@@ -32,6 +32,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchLeaveToValidate} from '../../../features/leaveSlice';
+import {useManagedEmployees} from '../../../hooks';
 import {Leave} from '../../../types';
 import {LeaveWaitingValidationSearchBar} from '../../templates';
 
@@ -51,9 +52,9 @@ const LeaveFilters = ({
   const dispatch = useDispatch();
   const {LeaveRequest} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
+  const {managedEmployeeTotal} = useManagedEmployees();
 
   const {user} = useSelector(state => state.user);
-  const {managedEmployeeTotal} = useSelector(state => state.employee);
   const {totalNumberLeaveToValidate} = useSelector(state => state.hr_leave);
 
   useEffect(() => {
