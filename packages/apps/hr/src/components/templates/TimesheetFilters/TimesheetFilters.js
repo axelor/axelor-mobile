@@ -35,6 +35,7 @@ import {
 import TimesheetWaitingValidationSearchBar from '../TimesheetWaitingValidationSearchBar/TimesheetWaitingValidationSearchBar';
 import {fetchTimesheetToValidate} from '../../../features/timesheetSlice';
 import {Timesheet as TimesheetType} from '../../../types';
+import {useManagedEmployees} from '../../../hooks';
 
 const TimesheetFilters = ({
   mode,
@@ -46,13 +47,13 @@ const TimesheetFilters = ({
   const dispatch = useDispatch();
   const {Timesheet} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
+  const {managedEmployeeTotal} = useManagedEmployees();
 
   const {totalNumberTimesheetToValidate} = useSelector(
     state => state.timesheet,
   );
   const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
-  const {managedEmployeeTotal} = useSelector(state => state.employee);
 
   const timesheetStatusListItems = useMemo(() => {
     let result = getSelectionItems(Timesheet?.statusSelect);

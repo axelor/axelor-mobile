@@ -42,8 +42,8 @@ import {
   sendExpense,
   validateExpense,
 } from '../../features/expenseSlice';
-import {searchManagedEmployee} from '../../features/employeeSlice';
 import {Expense as ExpenseType} from '../../types';
+import {useManagedEmployees} from '../../hooks';
 
 const ExpenseListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -52,6 +52,7 @@ const ExpenseListScreen = ({navigation}) => {
   const {Expense} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
   const {activeFilter} = useActiveFilter();
+  const {managedEmployeeTotal} = useManagedEmployees();
 
   const {user} = useSelector(state => state.user);
   const {
@@ -65,7 +66,6 @@ const ExpenseListScreen = ({navigation}) => {
     expenseToValidateList,
     totalNumberExpenseToValidate,
   } = useSelector(state => state.expense);
-  const {managedEmployeeTotal} = useSelector(state => state.employee);
 
   const [mode, setMode] = useState(ExpenseType.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -76,7 +76,6 @@ const ExpenseListScreen = ({navigation}) => {
   );
 
   useEffect(() => {
-    dispatch(searchManagedEmployee({userId: user.id}));
     dispatch(searchExpenseToValidate({page: 0, user: user}));
   }, [dispatch, user]);
 
