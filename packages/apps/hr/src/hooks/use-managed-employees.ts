@@ -16,5 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './use-managed-employees';
-export * from './use-total-currency';
+import {useEffect, useMemo} from 'react';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {searchManagedEmployee} from '../features/employeeSlice';
+
+export const useManagedEmployees = (): {managedEmployeeTotal: number} => {
+  const dispatch = useDispatch();
+
+  const {user} = useSelector(state => state.user);
+  const {managedEmployeeTotal} = useSelector(state => state.employee);
+
+  useEffect(() => {
+    dispatch((searchManagedEmployee as any)({userId: user.id}));
+  }, [dispatch, user]);
+
+  return useMemo(() => ({managedEmployeeTotal}), [managedEmployeeTotal]);
+};
