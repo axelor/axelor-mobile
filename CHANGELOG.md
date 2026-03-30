@@ -3,6 +3,18 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.17] (2026-03-30)
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Managed employees: add hook to fetch values when using total
+
+#### Fixes
+
+- Unit helper: avoid crash when duration unit is null
+
 ## [8.4.16] (2026-03-11)
 
 ### @axelor/aos-mobile-core
@@ -586,6 +598,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.17]: https://github.com/axelor/axelor-mobile/compare/8.4.16...8.4.17
 [8.4.16]: https://github.com/axelor/axelor-mobile/compare/8.4.15...8.4.16
 [8.4.15]: https://github.com/axelor/axelor-mobile/compare/8.4.14...8.4.15
 [8.4.14]: https://github.com/axelor/axelor-mobile/compare/8.4.13...8.4.14
