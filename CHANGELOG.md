@@ -3,6 +3,18 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.22] (2026-03-30)
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Managed employees: add hook to fetch values when using total
+
+#### Fixes
+
+- Unit helper: avoid crash when duration unit is null
+
 ## [8.3.21] (2026-03-11)
 
 ### @axelor/aos-mobile-ui
@@ -657,6 +669,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.22]: https://github.com/axelor/axelor-mobile/compare/8.3.21...8.3.22
 [8.3.21]: https://github.com/axelor/axelor-mobile/compare/8.3.20...8.3.21
 [8.3.20]: https://github.com/axelor/axelor-mobile/compare/8.3.19...8.3.20
 [8.3.19]: https://github.com/axelor/axelor-mobile/compare/8.3.18...8.3.19
