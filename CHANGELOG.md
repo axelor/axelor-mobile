@@ -3,6 +3,18 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.10] (2026-03-30)
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Managed employees: add hook to fetch values when using total
+
+#### Fixes
+
+- Unit helper: avoid crash when duration unit is null
+
 ## [8.5.9] (2026-03-11)
 
 ### @axelor/aos-mobile-core
@@ -325,6 +337,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.10]: https://github.com/axelor/axelor-mobile/compare/8.5.9...8.5.10
 [8.5.9]: https://github.com/axelor/axelor-mobile/compare/8.5.8...8.5.9
 [8.5.8]: https://github.com/axelor/axelor-mobile/compare/8.5.7...8.5.8
 [8.5.7]: https://github.com/axelor/axelor-mobile/compare/8.5.6...8.5.7
