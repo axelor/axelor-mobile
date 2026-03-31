@@ -105,7 +105,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         ),
         employeeId: user?.employee?.id,
         currencyId: state.currency?.id,
-        justificationMetaFileId:
+        justificationFileId:
           mode === ExpenseLineType.modes.general
             ? state.justificationMetaFile?.id
             : null,
