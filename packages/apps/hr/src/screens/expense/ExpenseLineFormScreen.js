@@ -115,7 +115,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         totalTax: _expenseLine.totalTax,
         currencyId: _expenseLine.currency?.id,
         comments: _expenseLine.comments,
-        justificationMetaFileId:
+        justificationFileId:
           mode === ExpenseLineType.modes.general
             ? _expenseLine.justificationMetaFile?.id
             : null,
