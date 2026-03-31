@@ -3,6 +3,14 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.11] (2026-03-31)
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- ExpenseLine: resolve update issue with justification file
+
 ## [8.5.10] (2026-03-30)
 
 ### @axelor/aos-mobile-hr
@@ -337,6 +345,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.11]: https://github.com/axelor/axelor-mobile/compare/8.5.10...8.5.11
 [8.5.10]: https://github.com/axelor/axelor-mobile/compare/8.5.9...8.5.10
 [8.5.9]: https://github.com/axelor/axelor-mobile/compare/8.5.8...8.5.9
 [8.5.8]: https://github.com/axelor/axelor-mobile/compare/8.5.7...8.5.8
