@@ -3,6 +3,14 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.30] (2026-03-31)
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- ExpenseLine: resolve update issue with justification file
+
 ## [8.2.29] (2026-03-30)
 
 ### @axelor/aos-mobile-hr
@@ -973,6 +981,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.30]: https://github.com/axelor/axelor-mobile/compare/8.2.29...8.2.30
 [8.2.29]: https://github.com/axelor/axelor-mobile/compare/8.2.28...8.2.29
 [8.2.28]: https://github.com/axelor/axelor-mobile/compare/8.2.27...8.2.28
 [8.2.27]: https://github.com/axelor/axelor-mobile/compare/8.2.26...8.2.27
