@@ -3,6 +3,14 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.6] (2026-03-31)
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- ExpenseLine: resolve update issue with justification file
+
 ## [9.0.5] (2026-03-30)
 
 ### @axelor/aos-mobile-hr
@@ -103,6 +111,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.6]: https://github.com/axelor/axelor-mobile/compare/9.0.5...9.0.6
 [9.0.5]: https://github.com/axelor/axelor-mobile/compare/9.0.4...9.0.5
 [9.0.4]: https://github.com/axelor/axelor-mobile/compare/9.0.3...9.0.4
 [9.0.3]: https://github.com/axelor/axelor-mobile/compare/9.0.2...9.0.3
