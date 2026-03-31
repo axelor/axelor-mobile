@@ -3,6 +3,14 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.23] (2026-03-31)
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- ExpenseLine: resolve update issue with justification file
+
 ## [8.3.22] (2026-03-30)
 
 ### @axelor/aos-mobile-hr
@@ -669,6 +677,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.23]: https://github.com/axelor/axelor-mobile/compare/8.3.22...8.3.23
 [8.3.22]: https://github.com/axelor/axelor-mobile/compare/8.3.21...8.3.22
 [8.3.21]: https://github.com/axelor/axelor-mobile/compare/8.3.20...8.3.21
 [8.3.20]: https://github.com/axelor/axelor-mobile/compare/8.3.19...8.3.20
