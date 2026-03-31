@@ -3,6 +3,14 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.18] (2026-03-31)
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- ExpenseLine: resolve update issue with justification file
+
 ## [8.4.17] (2026-03-30)
 
 ### @axelor/aos-mobile-hr
@@ -598,6 +606,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.18]: https://github.com/axelor/axelor-mobile/compare/8.4.17...8.4.18
 [8.4.17]: https://github.com/axelor/axelor-mobile/compare/8.4.16...8.4.17
 [8.4.16]: https://github.com/axelor/axelor-mobile/compare/8.4.15...8.4.16
 [8.4.15]: https://github.com/axelor/axelor-mobile/compare/8.4.14...8.4.15
