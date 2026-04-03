@@ -60,8 +60,6 @@ const useFilterGenericAction = () => {
 
   const {userId} = useSelector(state => state.auth);
 
-  const [alertVisible, setAlertVisible] = useState(false);
-
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
       'core_modelFilters',
@@ -120,11 +118,10 @@ const useFilterGenericAction = () => {
         return {
           ..._defaultAction,
           hideIf: savedFilters?.length === 0 && userFilters?.length === 0,
-          onPress: () => setAlertVisible(true),
-          customComponent: (
+          onPress: () => {},
+          popupComponent: props => (
             <PopupFilters
-              visible={alertVisible}
-              onClose={() => setAlertVisible(false)}
+              {...props}
               savedFilters={savedFilters}
               userFilters={userFilters}
               model={model}
@@ -133,7 +130,7 @@ const useFilterGenericAction = () => {
         };
       },
     );
-  }, [I18n, alertVisible, userId]);
+  }, [I18n, userId]);
 };
 
 const useJsonFieldsGenericAction = (isConnected: boolean) => {
