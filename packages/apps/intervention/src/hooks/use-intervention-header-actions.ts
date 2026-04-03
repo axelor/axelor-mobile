@@ -85,7 +85,10 @@ const useInterventionListAction = () => {
     headerActionsProvider.registerModel('intervention_intervention_list', {
       model: 'com.axelor.apps.intervention.db.Intervention',
       options: {
-        core_modelFilters: {name: 'act:intervention.root.interventions'},
+        core_modelFilters: {
+          name: 'act:intervention.root.interventions',
+          actionViewName: 'intervention.root.interventions',
+        },
       },
     });
   }, []);
