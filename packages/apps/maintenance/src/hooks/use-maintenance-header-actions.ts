@@ -43,6 +43,7 @@ const useMaintenanceRequestListActions = () => {
       options: {
         core_modelFilters: {
           name: 'act:maintenance.root.current.maintenance.requests',
+          actionViewName: 'maintenance.root.current.maintenance.requests',
         },
       },
       actions: [
