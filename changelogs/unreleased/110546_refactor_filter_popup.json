@@ -1,5 +1,0 @@
-{
-  "title": "Filter popup: simplify integration with header action system",
-  "type": "refactor",
-  "packages": "core"
-}
