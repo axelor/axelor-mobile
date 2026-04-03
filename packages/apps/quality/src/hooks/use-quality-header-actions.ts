@@ -46,7 +46,10 @@ const useQualityImprovementListActions = () => {
     headerActionsProvider.registerModel('quality_qualityImprovement_list', {
       model: 'com.axelor.apps.quality.db.QualityImprovement',
       options: {
-        core_modelFilters: {name: 'act:quality.improvements'},
+        core_modelFilters: {
+          name: 'act:quality.improvements',
+          actionViewName: 'quality.improvements',
+        },
       },
       actions: [
         {
@@ -70,7 +73,10 @@ const useControlEntryListActions = () => {
     headerActionsProvider.registerModel('quality_controlEntry_list', {
       model: 'com.axelor.apps.quality.db.ControlEntry',
       options: {
-        core_modelFilters: {name: 'act:quality.control.entries.view'},
+        core_modelFilters: {
+          name: 'act:quality.control.entries.view',
+          actionViewName: 'quality.control.entries.view',
+        },
       },
     });
   }, []);
