@@ -218,8 +218,6 @@ const usePrintingGenericAction = (isConnected: boolean) => {
   const I18n = useTranslator();
   const online = useOnline();
 
-  const [alertVisible, setAlertVisible] = useState(false);
-
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
       'core_modelPrinting',
@@ -248,11 +246,10 @@ const usePrintingGenericAction = (isConnected: boolean) => {
             (templateSet == null && fileName == null) ||
             !online.isEnabled ||
             !isConnected,
-          onPress: () => setAlertVisible(true),
-          customComponent: (
+          onPress: () => {},
+          popupComponent: props => (
             <PopupPrintTemplate
-              visible={alertVisible}
-              onClose={() => setAlertVisible(false)}
+              {...props}
               model={model}
               modelId={modelId}
               templateSet={templateSet}
@@ -262,5 +259,5 @@ const usePrintingGenericAction = (isConnected: boolean) => {
         };
       },
     );
-  }, [I18n, alertVisible, isConnected, online.isEnabled]);
+  }, [I18n, isConnected, online.isEnabled]);
 };
