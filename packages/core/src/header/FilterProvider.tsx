@@ -25,6 +25,7 @@ export interface Filter {
   name: string;
   type?: string;
   domain?: string;
+  context?: any;
   filterCustom?: string;
 }
 
