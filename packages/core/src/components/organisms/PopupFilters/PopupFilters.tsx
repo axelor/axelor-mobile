@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Alert, Icon, RadioSelect, ScrollView} from '@axelor/aos-mobile-ui';
+import {Alert, RadioSelect, ScrollView} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {filterProvider, useActiveFilter} from '../../../header/FilterProvider';
 
@@ -84,20 +84,17 @@ const PopupFilters = ({
   };
 
   return (
-    <>
-      <Icon name="filter" />
-      <Alert
-        visible={visible}
-        title={I18n.t('Base_SelectFilter')}
-        cancelButtonConfig={{onPress: onClose}}
-        confirmButtonConfig={{onPress: handleConfirm}}
-        translator={I18n.t}>
-        <ScrollView style={styles.scrollview}>
-          {renderRadioSelect(savedFilters, 'Base_Filters')}
-          {renderRadioSelect(userFilters, 'Base_MyFilters')}
-        </ScrollView>
-      </Alert>
-    </>
+    <Alert
+      visible={visible}
+      title={I18n.t('Base_SelectFilter')}
+      cancelButtonConfig={{onPress: onClose}}
+      confirmButtonConfig={{onPress: handleConfirm}}
+      translator={I18n.t}>
+      <ScrollView style={styles.scrollview}>
+        {renderRadioSelect(savedFilters, 'Base_Filters')}
+        {renderRadioSelect(userFilters, 'Base_MyFilters')}
+      </ScrollView>
+    </Alert>
   );
 };
 

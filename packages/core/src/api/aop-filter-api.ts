@@ -57,10 +57,7 @@ export async function fetchDefaultFilters({
   return axiosApiProvider.post({
     url: `/ws/meta/view`,
     data: {
-      data: {
-        type: 'search-filters',
-        ...(options != null && options),
-      },
+      data: {type: 'search-filters', name: options?.name},
       model: modelName,
     },
   });
@@ -72,5 +69,16 @@ export async function fetchMetaFilters({page = 0, filterName, userId}) {
     criteria: createMetaFiltersCriteria({filterName, userId}),
     fieldKey: 'core_metaFilter',
     page,
+  });
+}
+
+export async function fetchViewContext({
+  actionViewName,
+}: {
+  actionViewName: string;
+}) {
+  return axiosApiProvider.post({
+    url: `/ws/action/${actionViewName}`,
+    data: {model: 'com.axelor.meta.db.MetaAction'},
   });
 }

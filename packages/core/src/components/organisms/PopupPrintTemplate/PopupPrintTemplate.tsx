@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert, Icon} from '@axelor/aos-mobile-ui';
+import {Alert} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {useSelector} from '../../../redux/hooks';
 import {fetchFileToPrint} from '../../../api/print-template-api';
@@ -98,20 +98,17 @@ const PopupPrintTemplate = ({
   }, [selectedTemplate, modelId, model, handleCancel, handleShowFile]);
 
   return (
-    <>
-      <Icon name="printer-fill" />
-      <Alert
-        visible={showPopup}
-        cancelButtonConfig={{onPress: onClose}}
-        confirmButtonConfig={{onPress: openFile}}
-        translator={I18n.t}>
-        <PrintTemplateSearchBar
-          idList={templateSet}
-          defaultValue={selectedTemplate}
-          onChange={setSelectedTemplate}
-        />
-      </Alert>
-    </>
+    <Alert
+      visible={showPopup}
+      cancelButtonConfig={{onPress: onClose}}
+      confirmButtonConfig={{onPress: openFile}}
+      translator={I18n.t}>
+      <PrintTemplateSearchBar
+        idList={templateSet}
+        defaultValue={selectedTemplate}
+        onChange={setSelectedTemplate}
+      />
+    </Alert>
   );
 };
 

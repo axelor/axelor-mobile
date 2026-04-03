@@ -59,6 +59,10 @@ export interface ActionType {
   onPress: () => void;
   showInHeader?: boolean;
   customComponent?: ReactElement<any>;
+  popupComponent?: (props: {
+    visible: boolean;
+    onClose: () => void;
+  }) => ReactElement;
 }
 
 export interface HeaderBandItem {

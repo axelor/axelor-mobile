@@ -1,0 +1,5 @@
+{
+  "title": "Filters: add support for web view context when loading saved filters",
+  "type": "feat",
+  "packages": "core"
+}

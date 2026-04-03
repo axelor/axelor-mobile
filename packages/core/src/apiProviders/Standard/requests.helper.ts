@@ -346,7 +346,7 @@ export function getFilterDomains(
         title: filter.title,
       },
     ],
-    domainContext: {_model: model},
+    domainContext: {_model: model, ...(filter.context ?? {})},
   };
 }
 

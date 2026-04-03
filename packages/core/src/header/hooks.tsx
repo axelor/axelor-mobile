@@ -28,6 +28,7 @@ import {
   fetchActionPrint,
   fetchDefaultFilters,
   fetchMetaFilters,
+  fetchViewContext,
 } from '../api';
 import {PopupFilters, PopupPrintTemplate} from '../components';
 import {headerActionsProvider} from './HeaderActionsProvider';
@@ -59,8 +60,6 @@ const useFilterGenericAction = () => {
 
   const {userId} = useSelector(state => state.auth);
 
-  const [alertVisible, setAlertVisible] = useState(false);
-
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
       'core_modelFilters',
@@ -89,6 +88,16 @@ const useFilterGenericAction = () => {
             }));
             const filterName = options?.name ?? res?.view?.name;
             let _userFilters = [];
+            let _viewContext: any;
+
+            if (options?.actionViewName) {
+              _viewContext = await fetchViewContext({
+                actionViewName: options?.actionViewName,
+              })
+                .then(_cRes => _cRes?.data?.data?.[0] ?? {})
+                .then(_cRes => _cRes?.view?.context)
+                .catch(() => undefined);
+            }
 
             if (filterName) {
               _userFilters = await fetchMetaFilters({filterName, userId})
@@ -96,18 +105,23 @@ const useFilterGenericAction = () => {
                 .catch(() => []);
             }
 
-            return {savedFilters: _filters, userFilters: _userFilters};
+            return {
+              savedFilters: _filters.map((_f: any) => ({
+                ..._f,
+                context: _viewContext,
+              })),
+              userFilters: _userFilters,
+            };
           })
           .catch(() => ({savedFilters: [], userFilters: []}));
 
         return {
           ..._defaultAction,
           hideIf: savedFilters?.length === 0 && userFilters?.length === 0,
-          onPress: () => setAlertVisible(true),
-          customComponent: (
+          onPress: () => {},
+          popupComponent: props => (
             <PopupFilters
-              visible={alertVisible}
-              onClose={() => setAlertVisible(false)}
+              {...props}
               savedFilters={savedFilters}
               userFilters={userFilters}
               model={model}
@@ -116,7 +130,7 @@ const useFilterGenericAction = () => {
         };
       },
     );
-  }, [I18n, alertVisible, userId]);
+  }, [I18n, userId]);
 };
 
 const useJsonFieldsGenericAction = (isConnected: boolean) => {
@@ -204,8 +218,6 @@ const usePrintingGenericAction = (isConnected: boolean) => {
   const I18n = useTranslator();
   const online = useOnline();
 
-  const [alertVisible, setAlertVisible] = useState(false);
-
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
       'core_modelPrinting',
@@ -234,11 +246,10 @@ const usePrintingGenericAction = (isConnected: boolean) => {
             (templateSet == null && fileName == null) ||
             !online.isEnabled ||
             !isConnected,
-          onPress: () => setAlertVisible(true),
-          customComponent: (
+          onPress: () => {},
+          popupComponent: props => (
             <PopupPrintTemplate
-              visible={alertVisible}
-              onClose={() => setAlertVisible(false)}
+              {...props}
               model={model}
               modelId={modelId}
               templateSet={templateSet}
@@ -248,5 +259,5 @@ const usePrintingGenericAction = (isConnected: boolean) => {
         };
       },
     );
-  }, [I18n, alertVisible, isConnected, online.isEnabled]);
+  }, [I18n, isConnected, online.isEnabled]);
 };
