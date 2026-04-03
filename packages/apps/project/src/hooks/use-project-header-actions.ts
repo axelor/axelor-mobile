@@ -39,7 +39,10 @@ const useProjectListScreenActions = () => {
     headerActionsProvider.registerModel('project_project_list', {
       model: 'com.axelor.apps.project.db.Project',
       options: {
-        core_modelFilters: {name: 'project-project-filters'},
+        core_modelFilters: {
+          name: 'project-project-filters',
+          actionViewName: 'project.all',
+        },
       },
     });
   }, []);
@@ -93,6 +96,7 @@ const useProjectTaskListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('project_projectTask_list', {
       model: 'com.axelor.apps.project.db.ProjectTask',
+      options: {core_modelFilters: {actionViewName: 'project.task.all'}},
     });
   }, []);
 };
