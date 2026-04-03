@@ -29,6 +29,9 @@ const usePurchaseRequestListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('purchase_purchaseRequest_list', {
       model: 'com.axelor.apps.purchase.db.PurchaseRequest',
+      options: {
+        core_modelFilters: {actionViewName: 'sc.root.purchase.request.all'},
+      },
     });
   }, []);
 };
