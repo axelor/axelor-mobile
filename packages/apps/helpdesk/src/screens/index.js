@@ -24,7 +24,7 @@ import TicketFormScreen from './TicketFormScreen';
 export default {
   MyTicketListScreen: {
     title: 'Helpdesk_myTickets',
-    actionID: 'helpdesk_ticket_list',
+    actionID: 'helpdesk_myTicket_list',
     component: MyTicketListScreen,
     options: {
       shadedHeader: false,
@@ -33,7 +33,7 @@ export default {
   },
   MyTeamTicketListScreen: {
     title: 'Helpdesk_myTeamTickets',
-    actionID: 'helpdesk_ticket_list',
+    actionID: 'helpdesk_myTeamTicket_list',
     component: MyTeamTicketListScreen,
     options: {
       shadedHeader: false,
