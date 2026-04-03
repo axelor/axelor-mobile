@@ -55,7 +55,10 @@ const useCustomerDeliveryListActions = () => {
     headerActionsProvider.registerModel('stock_customerDelivery_list', {
       model: 'com.axelor.apps.stock.db.StockMove',
       options: {
-        core_modelFilters: {name: 'customer-deliveries-filters'},
+        core_modelFilters: {
+          name: 'customer-deliveries-filters',
+          actionViewName: 'stock.root.custdeliveries',
+        },
       },
     });
   }, []);
@@ -153,7 +156,10 @@ const useInternalMoveListActions = () => {
     headerActionsProvider.registerModel('stock_internalMove_list', {
       model: 'com.axelor.apps.stock.db.StockMove',
       options: {
-        core_modelFilters: {name: 'internal-stock-move-filters'},
+        core_modelFilters: {
+          name: 'internal-stock-move-filters',
+          actionViewName: 'stock.root.internal',
+        },
       },
       actions: [
         {
@@ -187,6 +193,9 @@ const useInventoryListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('stock_inventory_list', {
       model: 'com.axelor.apps.stock.db.Inventory',
+      options: {
+        core_modelFilters: {actionViewName: 'stock.root.inventories.draft'},
+      },
     });
   }, []);
 };
@@ -229,6 +238,7 @@ const useProductListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('stock_product_list', {
       model: 'com.axelor.apps.base.db.Product',
+      options: {core_modelFilters: {actionViewName: 'stock.root.products'}},
     });
   }, []);
 };
@@ -267,7 +277,10 @@ const useStockCorrectionListActions = () => {
     headerActionsProvider.registerModel('stock_stockCorrection_list', {
       model: 'com.axelor.apps.stock.db.StockCorrection',
       options: {
-        core_modelFilters: {name: 'act:stock.root.stock.correction'},
+        core_modelFilters: {
+          name: 'act:stock.root.stock.correction',
+          actionViewName: 'stock.root.stock.correction',
+        },
       },
       actions: [
         {
@@ -313,7 +326,10 @@ const useSupplierArrivalListActions = () => {
     headerActionsProvider.registerModel('stock_supplierArrival_list', {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       options: {
-        core_modelFilters: {name: 'supplier-arrivals-filters'},
+        core_modelFilters: {
+          name: 'supplier-arrivals-filters',
+          actionViewName: 'stock.root.suparrivals',
+        },
       },
     });
   }, []);
