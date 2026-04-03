@@ -42,6 +42,7 @@ const useCatalogListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('crm_catalog_list', {
       model: 'com.axelor.apps.crm.db.Catalog',
+      options: {core_modelFilters: {actionViewName: 'crm.root.catalogs'}},
       actions: [
         {
           key: 'newCatalog',
@@ -63,7 +64,10 @@ const useClientListActions = () => {
     headerActionsProvider.registerModel('crm_client_list', {
       model: 'com.axelor.apps.base.db.Partner',
       options: {
-        core_modelFilters: {name: 'partner-filters'},
+        core_modelFilters: {
+          name: 'partner-filters',
+          actionViewName: 'crm.root.customers',
+        },
       },
     });
   }, []);
@@ -123,7 +127,10 @@ const useContactListActions = () => {
     headerActionsProvider.registerModel('crm_contact_list', {
       model: 'com.axelor.apps.base.db.Partner',
       options: {
-        core_modelFilters: {name: 'contact-filters'},
+        core_modelFilters: {
+          name: 'contact-filters',
+          actionViewName: 'crm.root.contacts',
+        },
       },
     });
   }, []);
@@ -190,6 +197,7 @@ const useLeadListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('crm_lead_list', {
       model: 'com.axelor.apps.crm.db.Lead',
+      options: {core_modelFilters: {actionViewName: 'crm.opened.lead'}},
       actions: [
         {
           key: 'newLead',
@@ -263,6 +271,7 @@ const useOpportunityListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('crm_opportunity_list', {
       model: 'com.axelor.apps.crm.db.Opportunity',
+      options: {core_modelFilters: {actionViewName: 'crm.opened.opportunity'}},
       actions: [
         {
           key: 'newOpportunity',
@@ -295,7 +304,10 @@ const useProspectListActions = () => {
     headerActionsProvider.registerModel('crm_prospect_list', {
       model: 'com.axelor.apps.base.db.Partner',
       options: {
-        core_modelFilters: {name: 'partner-filters'},
+        core_modelFilters: {
+          name: 'partner-filters',
+          actionViewName: 'crm.opened.prospects',
+        },
       },
     });
   }, []);
@@ -355,6 +367,7 @@ const useTourListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('crm_tour_list', {
       model: 'com.axelor.apps.crm.db.Tour',
+      options: {core_modelFilters: {actionViewName: 'crm.root.tour'}},
     });
   }, []);
 };
