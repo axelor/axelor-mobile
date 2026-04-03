@@ -46,6 +46,7 @@ const useProductListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('sale_product_list', {
       model: 'com.axelor.apps.base.db.Product',
+      options: {core_modelFilters: {actionViewName: 'sc.root.sale.products'}},
     });
   }, []);
 };
@@ -119,7 +120,12 @@ const useClientListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('sale_client_list', {
       model: 'com.axelor.apps.base.db.Partner',
-      options: {core_modelFilters: {name: 'partner-filters'}},
+      options: {
+        core_modelFilters: {
+          name: 'partner-filters',
+          actionViewName: 'sc.root.sale.customers',
+        },
+      },
       actions: [
         {
           key: 'client-creationForm',
@@ -259,7 +265,10 @@ const useSaleOrdersActions = () => {
     headerActionsProvider.registerModel('sale_saleOrder_list', {
       model: 'com.axelor.apps.sale.db.SaleOrder',
       options: {
-        core_modelFilters: {name: 'sale-order-filters'},
+        core_modelFilters: {
+          name: 'sale-order-filters',
+          actionViewName: 'sc.root.sale.orders',
+        },
       },
     });
   }, []);
@@ -277,7 +286,10 @@ const useSaleQuotationsActions = () => {
     headerActionsProvider.registerModel('sale_saleQuotation_list', {
       model: 'com.axelor.apps.sale.db.SaleOrder',
       options: {
-        core_modelFilters: {name: 'sale-order-filters'},
+        core_modelFilters: {
+          name: 'sale-order-filters',
+          actionViewName: 'sc.root.sale.quotations',
+        },
       },
       actions: [
         {
