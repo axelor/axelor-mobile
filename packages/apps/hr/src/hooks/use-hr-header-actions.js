@@ -54,6 +54,7 @@ const useExpenseListAction = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('hr_expenses_list', {
       model: 'com.axelor.apps.hr.db.Expense',
+      options: {core_modelFilters: {actionViewName: 'expense.all'}},
       actions: [
         {
           key: 'newExpense',
@@ -120,7 +121,10 @@ const useTimerListAction = () => {
     headerActionsProvider.registerModel('hr_timers_list', {
       model: 'com.axelor.apps.hr.db.TSTimer',
       options: {
-        core_modelFilters: {name: 'act:action.timesheet.view.multiple.timer'},
+        core_modelFilters: {
+          name: 'act:action.timesheet.view.multiple.timer',
+          actionViewName: 'action.timesheet.view.multiple.timer',
+        },
       },
       actions: [
         {
@@ -189,6 +193,7 @@ const useLeaveListAction = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('hr_leave_list', {
       model: 'com.axelor.apps.hr.db.LeaveRequest',
+      options: {core_modelFilters: {actionViewName: 'leave.all'}},
     });
   }, []);
 };
