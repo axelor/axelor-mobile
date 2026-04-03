@@ -3,6 +3,92 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.19] (2026-04-03)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Filters: add support for web view context when loading saved filters
+
+#### Changes
+
+- Filter popup: simplify integration with header action system
+- Print popup: simplify integration with header action system
+
+#### Fixes
+
+- Header actions: fix multiple popups opening simultaneously when navigating between screens
+
+<details>
+When several screens had a filter or print action enabled, navigating between them caused all popups to open at once when pressing the action on any screen. Popup visibility is now managed per screen.
+</details>
+
+
+### @axelor/aos-mobile-purchase
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-project
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-helpdesk
+
+#### Changes
+
+- Ticket list screens: split header action key into helpdesk_myTicket_list and helpdesk_myTeamTicket_list
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Filters: add the correct web view context on all list screens
+
 ## [8.4.18] (2026-03-31)
 
 ### @axelor/aos-mobile-hr
@@ -606,6 +692,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.19]: https://github.com/axelor/axelor-mobile/compare/8.4.18...8.4.19
 [8.4.18]: https://github.com/axelor/axelor-mobile/compare/8.4.17...8.4.18
 [8.4.17]: https://github.com/axelor/axelor-mobile/compare/8.4.16...8.4.17
 [8.4.16]: https://github.com/axelor/axelor-mobile/compare/8.4.15...8.4.16

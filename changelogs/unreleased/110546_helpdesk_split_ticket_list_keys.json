@@ -1,5 +1,0 @@
-{
-  "title": "Ticket list screens: split header action key into helpdesk_myTicket_list and helpdesk_myTeamTicket_list",
-  "type": "refactor",
-  "packages": "helpdesk"
-}
