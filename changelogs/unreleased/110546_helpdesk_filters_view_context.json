@@ -1,0 +1,5 @@
+{
+  "title": "Filters: add the correct web view context on all list screens",
+  "type": "fix",
+  "packages": "helpdesk"
+}

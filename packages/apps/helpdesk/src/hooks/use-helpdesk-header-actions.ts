@@ -30,15 +30,28 @@ const useHeldpeskTicketDetailsActions = () => {
   }, [ticket]);
 };
 
-const useHelpdeskTicketListActions = () => {
+const useHelpdeskMyTicketListActions = () => {
   useEffect(() => {
-    headerActionsProvider.registerModel('helpdesk_ticket_list', {
+    headerActionsProvider.registerModel('helpdesk_myTicket_list', {
       model: 'com.axelor.apps.helpdesk.db.Ticket',
+      options: {core_modelFilters: {actionViewName: 'helpdesk.my.ticket.all'}},
+    });
+  }, []);
+};
+
+const useHelpdeskMyTeamTicketListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('helpdesk_myTeamTicket_list', {
+      model: 'com.axelor.apps.helpdesk.db.Ticket',
+      options: {
+        core_modelFilters: {actionViewName: 'helpdesk.my.team.ticket.all'},
+      },
     });
   }, []);
 };
 
 export const useHelpdeskHeaders = () => {
-  useHelpdeskTicketListActions();
+  useHelpdeskMyTicketListActions();
+  useHelpdeskMyTeamTicketListActions();
   useHeldpeskTicketDetailsActions();
 };
