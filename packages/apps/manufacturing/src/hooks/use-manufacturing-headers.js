@@ -39,6 +39,9 @@ const useManufacturingOrderListActions = () => {
       'manufacturing_manufacturingOrder_list',
       {
         model: 'com.axelor.apps.production.db.ManufOrder',
+        options: {
+          core_modelFilters: {actionViewName: 'manufacturing.root.manuf.order'},
+        },
       },
     );
   }, []);
@@ -89,6 +92,11 @@ const useOperationOrderListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('manufacturing_operationOrder_list', {
       model: 'com.axelor.apps.production.db.OperationOrder',
+      options: {
+        core_modelFilters: {
+          actionViewName: 'manufacturing.root.operation.order',
+        },
+      },
     });
   }, []);
 };
