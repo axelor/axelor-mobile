@@ -28,6 +28,7 @@ import {
   fetchActionPrint,
   fetchDefaultFilters,
   fetchMetaFilters,
+  fetchViewContext,
 } from '../api';
 import {PopupFilters, PopupPrintTemplate} from '../components';
 import {headerActionsProvider} from './HeaderActionsProvider';
@@ -89,6 +90,16 @@ const useFilterGenericAction = () => {
             }));
             const filterName = options?.name ?? res?.view?.name;
             let _userFilters = [];
+            let _viewContext: any;
+
+            if (options?.actionViewName) {
+              _viewContext = await fetchViewContext({
+                actionViewName: options?.actionViewName,
+              })
+                .then(_cRes => _cRes?.data?.data?.[0] ?? {})
+                .then(_cRes => _cRes?.view?.context)
+                .catch(() => undefined);
+            }
 
             if (filterName) {
               _userFilters = await fetchMetaFilters({filterName, userId})
@@ -96,7 +107,13 @@ const useFilterGenericAction = () => {
                 .catch(() => []);
             }
 
-            return {savedFilters: _filters, userFilters: _userFilters};
+            return {
+              savedFilters: _filters.map((_f: any) => ({
+                ..._f,
+                context: _viewContext,
+              })),
+              userFilters: _userFilters,
+            };
           })
           .catch(() => ({savedFilters: [], userFilters: []}));
 
