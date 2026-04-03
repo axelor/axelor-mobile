@@ -17,7 +17,11 @@
  */
 
 export {fetchAnomalies} from './anomaly-api';
-export {fetchDefaultFilters, fetchMetaFilters} from './aop-filter-api';
+export {
+  fetchDefaultFilters,
+  fetchMetaFilters,
+  fetchViewContext,
+} from './aop-filter-api';
 export {getAppConfig} from './app-config-api';
 export {getAllCurrencies} from './currency-api';
 export {

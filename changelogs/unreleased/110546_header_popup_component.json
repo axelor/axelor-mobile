@@ -1,0 +1,6 @@
+{
+  "title": "Header actions: fix multiple popups opening simultaneously when navigating between screens",
+  "type": "fix",
+  "packages": "core",
+  "description": "When several screens had a filter or print action enabled, navigating between them caused all popups to open at once when pressing the action on any screen. Popup visibility is now managed per screen."
+}
