@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {ActionType, GenericHeaderActions} from '../../../header';
@@ -53,6 +53,7 @@ const HeaderOptionMenu = ({
   );
 
   const [visibleGenericActions, setVisibleGenericActions] = useState([]);
+  const [activePopupKey, setActivePopupKey] = useState<string>(null);
 
   useEffect(() => {
     const getVisibleGenericActions = async () => {
@@ -73,11 +74,22 @@ const HeaderOptionMenu = ({
     getVisibleGenericActions();
   }, [genericActions, mobileSettings?.apps, model, modelId, options]);
 
-  const allActions = useMemo(
+  const allActions: ActionType[] = useMemo(
     () =>
       [...actions, ...visibleGenericActions]
         .filter(_action => !_action.hideIf)
-        .sort((a, b) => a.order - b.order),
+        .sort((a, b) => a.order - b.order)
+        .map(_a =>
+          _a.popupComponent
+            ? {
+                ..._a,
+                onPress: () => {
+                  _a.onPress?.();
+                  setActivePopupKey(_a.key);
+                },
+              }
+            : _a,
+        ),
     [actions, visibleGenericActions],
   );
 
@@ -129,6 +141,19 @@ const HeaderOptionMenu = ({
     [menuActions],
   );
 
+  const renderPopups = useCallback(() => {
+    return allActions.map(({key, popupComponent}) =>
+      popupComponent ? (
+        <React.Fragment key={key}>
+          {popupComponent({
+            visible: key === activePopupKey,
+            onClose: () => setActivePopupKey(null),
+          })}
+        </React.Fragment>
+      ) : null,
+    );
+  }, [activePopupKey, allActions]);
+
   if (allActions.length === 0) {
     return null;
   }
@@ -137,6 +162,7 @@ const HeaderOptionMenu = ({
     return (
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
+        {renderPopups()}
       </View>
     );
   }
@@ -145,6 +171,7 @@ const HeaderOptionMenu = ({
     <View style={styles.container}>
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
+      {renderPopups()}
     </View>
   );
 };
