@@ -103,6 +103,9 @@ export interface Panel {
   colSpan?: number;
   direction?: 'row' | 'column';
   parent?: string;
+  readonly?: boolean;
+  readonlyIf?: (values?: States) => boolean;
+  hideIf?: (values?: States) => boolean;
 }
 
 export interface JSONObject<Type> {
