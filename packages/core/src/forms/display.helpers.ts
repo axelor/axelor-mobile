@@ -161,6 +161,8 @@ export const getPanels = (config: Form): DisplayPanel[] => {
       ..._panel,
       key: panelKey,
       order: _panel.order != null ? _panel.order : index * 10,
+      hideIf: _panel.hideIf != null ? _panel.hideIf : () => false,
+      readonlyIf: _panel.readonlyIf != null ? _panel.readonlyIf : () => false,
     }))
     .sort((a, b) => a.order - b.order);
 };
