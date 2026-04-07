@@ -273,7 +273,17 @@ const FormView = ({
     );
   };
 
-  const renderItem = (item: DisplayPanel | DisplayField) => {
+  const isGlobalReadonly = useMemo(
+    () =>
+      isReadonly ||
+      (config.readonlyIf?.({objectState: object, storeState}) ?? false),
+    [config, isReadonly, object, storeState],
+  );
+
+  const renderItem = (
+    item: DisplayPanel | DisplayField,
+    parentReadonly: boolean = false,
+  ) => {
     if (isField(item)) {
       return (
         <FieldComponent
@@ -282,11 +292,7 @@ const FormView = ({
           _field={item as DisplayField}
           object={object}
           modelName={config.modelName}
-          globalReadonly={() =>
-            isReadonly ||
-            (config.readonlyIf &&
-              config.readonlyIf({objectState: object, storeState}))
-          }
+          parentReadonly={parentReadonly}
           formContent={getConfigItems(config)}
         />
       );
@@ -298,6 +304,8 @@ const FormView = ({
         renderItem={renderItem}
         formContent={getConfigItems(config)}
         _panel={item as DisplayPanel}
+        object={object}
+        parentReadonly={parentReadonly}
       />
     );
   };
@@ -345,7 +353,7 @@ const FormView = ({
           />
         )}
         <View style={[styles.container, style, getZIndexStyle(5)]}>
-          {formContent.map(renderItem)}
+          {formContent.map(_i => renderItem(_i, isGlobalReadonly))}
         </View>
       </KeyboardAvoidingScrollView>
       <FloatingTools

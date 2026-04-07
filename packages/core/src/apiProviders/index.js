@@ -22,6 +22,7 @@ export * from './Standard';
 export * from './middlewares';
 export {apiProviderConfig, ApiProviderConfig} from './config';
 export {
+  generateFetchRecordCases,
   generateInifiniteScrollCases,
   getApiResponseData,
   getFirstData,
