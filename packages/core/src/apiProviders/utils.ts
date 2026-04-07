@@ -21,7 +21,7 @@ import {traceError} from '../api/traceback-api';
 import {i18nProvider} from '../i18n';
 import {ActionReducerMapBuilder} from '@reduxjs/toolkit';
 import {apiProviderConfig} from './config';
-import {showToastMessage} from '../utils';
+import {showToastMessage, isEmpty} from '../utils';
 import {requestBuilder} from './Standard/requests.helper';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
@@ -296,5 +296,51 @@ export const generateInifiniteScrollCases = (
       options?.manageTotal,
       options?.parseFunction,
     );
+  });
+};
+
+type FetchRecordStateKeys = {
+  loading: string;
+  record: string;
+};
+
+export const generateFetchRecordCases = (
+  builder: ActionReducerMapBuilder<any>,
+  actionCreator: any,
+  keys: FetchRecordStateKeys,
+  options?: {
+    parseFunction?: (data: any) => any;
+    keyExtractor?: (action: any) => string;
+    keyStateContainer?: string;
+  },
+) => {
+  const getTargetState = (state: any, action: any) => {
+    if (!options?.keyExtractor || !options?.keyStateContainer) return state;
+    const key = options.keyExtractor(action);
+    if (!state[options.keyStateContainer][key]) {
+      state[options.keyStateContainer][key] = {
+        [keys.loading]: false,
+        [keys.record]: null,
+      };
+    }
+    return state[options.keyStateContainer][key];
+  };
+
+  builder.addCase(actionCreator.pending, (state, action) => {
+    getTargetState(state, action)[keys.loading] = true;
+  });
+
+  builder.addCase(actionCreator.rejected, (state, action) => {
+    getTargetState(state, action)[keys.loading] = false;
+  });
+
+  builder.addCase(actionCreator.fulfilled, (state, action) => {
+    const _parseFunction = options?.parseFunction ?? (_d => _d);
+    const _result = action.payload;
+    const targetState = getTargetState(state, action);
+    targetState[keys.loading] = false;
+    targetState[keys.record] = isEmpty(_result)
+      ? null
+      : _parseFunction(_result);
   });
 };
