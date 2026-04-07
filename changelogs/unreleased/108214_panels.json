@@ -1,0 +1,5 @@
+{
+  "title": "Panels: add dynamic hide and readonly management",
+  "type": "feat",
+  "packages": "core"
+}
