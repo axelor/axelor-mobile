@@ -1,0 +1,5 @@
+{
+  "title": "Slice helpers: add key-based sub-state support to generateInifiniteScrollCases",
+  "type": "feat",
+  "packages": "core"
+}

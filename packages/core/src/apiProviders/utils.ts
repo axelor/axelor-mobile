@@ -263,11 +263,27 @@ export const generateInifiniteScrollCases = (
   options?: {
     manageTotal?: boolean;
     parseFunction?: (data: any[]) => any[];
+    keyExtractor?: (action: any) => string;
+    keyStateContainer?: string;
   },
 ) => {
+  const getTargetState = (state: any, action: any) => {
+    if (!options?.keyExtractor || !options?.keyStateContainer) return state;
+    const key = options.keyExtractor(action);
+    if (!state[options.keyStateContainer][key]) {
+      state[options.keyStateContainer][key] = {
+        [keys.loading]: false,
+        [keys.moreLoading]: false,
+        [keys.isListEnd]: false,
+        [keys.list]: [],
+      };
+    }
+    return state[options.keyStateContainer][key];
+  };
+
   builder.addCase(actionCreator.pending, (state, action) => {
     state = manageInfiteScrollState(
-      state,
+      getTargetState(state, action),
       action,
       'pending',
       keys,
@@ -278,7 +294,7 @@ export const generateInifiniteScrollCases = (
 
   builder.addCase(actionCreator.fulfilled, (state, action) => {
     state = manageInfiteScrollState(
-      state,
+      getTargetState(state, action),
       action,
       'fulfilled',
       keys,
@@ -289,7 +305,7 @@ export const generateInifiniteScrollCases = (
 
   builder.addCase(actionCreator.rejected, (state, action) => {
     state = manageInfiteScrollState(
-      state,
+      getTargetState(state, action),
       action,
       'rejected',
       keys,
