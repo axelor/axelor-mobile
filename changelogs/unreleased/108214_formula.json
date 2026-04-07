@@ -1,0 +1,5 @@
+{
+  "title": "Formula helpers: fix null/undefined object state handling in formula evaluation",
+  "type": "fix",
+  "packages": "core"
+}
