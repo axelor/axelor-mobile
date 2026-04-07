@@ -53,14 +53,12 @@ export const mapStudioFieldsWithFormula = (
 };
 
 export const createFormulaFunction = (formula: string) => {
-  return ({objectState}) => {
-    if (checkNullString(formula)) {
-      return false;
-    }
+  if (checkNullString(formula)) return undefined;
 
+  return ({objectState}: any) => {
     let expr = `${formula}`;
 
-    sortFieldsByLength(Object.keys(objectState)).forEach(_key => {
+    sortFieldsByLength(Object.keys(objectState ?? {})).forEach(_key => {
       if (expr.includes(_key)) {
         expr = manageDottedFields(expr, _key, objectState[_key]);
       }
@@ -139,6 +137,12 @@ const manageDottedFields = (formula: string, startKey: string, object: any) => {
         fetchJsonField(object, getStringWithoutFirstSeparator(fieldToReplace)),
       ),
     );
+  }
+
+  if (object == null) {
+    const escapedKey = startKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pathRegex = new RegExp(`${escapedKey}(\\??\\.\\w+)*`, 'g');
+    return formula.replace(pathRegex, String(manageFieldValue(object)));
   }
 
   return formula.replaceAll(startKey, manageFieldValue(object));
