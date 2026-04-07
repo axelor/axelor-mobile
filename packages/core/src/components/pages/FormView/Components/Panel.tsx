@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactNode, useMemo} from 'react';
+import React, {ReactNode, useCallback, useMemo} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {DropdownCard, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
+import {useSelector} from '../../../../redux/hooks';
 import {useTranslator} from '../../../../i18n';
 import {
   DEFAULT_COLSPAN,
@@ -29,17 +30,44 @@ import {
 } from '../../../../forms';
 
 interface PanelProps {
-  renderItem: (item: DisplayPanel | DisplayField) => ReactNode;
+  renderItem: (
+    item: DisplayPanel | DisplayField,
+    readonly?: boolean,
+  ) => ReactNode;
   formContent: (DisplayPanel | DisplayField)[];
   _panel: DisplayPanel;
+  object: any;
+  parentReadonly?: boolean;
 }
 
-const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
+const Panel = ({
+  renderItem,
+  formContent,
+  _panel,
+  object,
+  parentReadonly = false,
+}: PanelProps) => {
   const I18n = useTranslator();
 
-  const zIndex: number = useMemo(() => {
-    return getZIndex(formContent, _panel.key);
-  }, [_panel.key, formContent]);
+  const storeState = useSelector(state => state);
+
+  const isHidden = useMemo(
+    () => _panel.hideIf({objectState: object, storeState}),
+    [_panel, object, storeState],
+  );
+
+  const isReadonly = useMemo(
+    () =>
+      parentReadonly ||
+      _panel.readonly ||
+      _panel.readonlyIf({objectState: object, storeState}),
+    [_panel, object, parentReadonly, storeState],
+  );
+
+  const zIndex: number = useMemo(
+    () => getZIndex(formContent, _panel.key),
+    [_panel.key, formContent],
+  );
 
   const panelStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
@@ -59,6 +87,12 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
     [_panel],
   );
 
+  const renderContent = useCallback(() => {
+    return _panel.content?.map(_i => renderItem(_i, isReadonly));
+  }, [_panel.content, isReadonly, renderItem]);
+
+  if (isHidden) return null;
+
   if (!Array.isArray(_panel.content) || _panel.content.length === 0) {
     return <View key={_panel.key} style={panelStyle} />;
   }
@@ -72,12 +106,10 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
         <View
           style={[
             styles.content,
-            {
-              flexDirection: panelStyle.flexDirection,
-            },
+            {flexDirection: panelStyle.flexDirection},
             getZIndexStyle(zIndex + 1),
           ]}>
-          {_panel.content.map(renderItem)}
+          {renderContent()}
         </View>
       </DropdownCard>
     );
@@ -93,12 +125,10 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
         <View
           style={[
             styles.content,
-            {
-              flexDirection: panelStyle.flexDirection,
-            },
+            {flexDirection: panelStyle.flexDirection},
             getZIndexStyle(zIndex + 1),
           ]}>
-          {_panel.content.map(renderItem)}
+          {renderContent()}
         </View>
       </View>
     );
@@ -106,7 +136,7 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
 
   return (
     <View key={_panel.key} style={[panelStyle, getZIndexStyle(zIndex)]}>
-      {_panel.content.map(renderItem)}
+      {renderContent()}
     </View>
   );
 };
