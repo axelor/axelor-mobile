@@ -32,7 +32,6 @@ import {
 import {
   DisplayField,
   DisplayPanel,
-  States,
   getKeyboardType,
   getWidget,
   getZIndex,
@@ -50,7 +49,7 @@ interface FieldProps {
   handleFieldChange: (newValue: any, fieldName: string) => void;
   _field: DisplayField;
   object: any;
-  globalReadonly?: (values?: States) => boolean;
+  parentReadonly?: boolean;
   formContent: (DisplayPanel | DisplayField)[];
   modelName: string;
 }
@@ -59,7 +58,7 @@ const Field = ({
   handleFieldChange,
   _field,
   object,
-  globalReadonly = () => false,
+  parentReadonly = false,
   formContent,
   modelName,
 }: FieldProps) => {
@@ -101,27 +100,25 @@ const Field = ({
     [_field.key, handleFieldChange, handleValidate],
   );
 
-  const isHidden = useMemo(() => {
-    return (
-      hidden || _field.hideIf({objectState: object, storeState: storeState})
-    );
-  }, [_field, hidden, object, storeState]);
+  const isHidden = useMemo(
+    () => hidden || _field.hideIf({objectState: object, storeState}),
+    [_field, hidden, object, storeState],
+  );
 
-  const isRequired = useMemo(() => {
-    return (
-      _field.required ||
-      _field.requiredIf({objectState: object, storeState: storeState})
-    );
-  }, [_field, object, storeState]);
+  const isRequired = useMemo(
+    () =>
+      _field.required || _field.requiredIf({objectState: object, storeState}),
+    [_field, object, storeState],
+  );
 
-  const isReadonly = useMemo(() => {
-    return (
+  const isReadonly = useMemo(
+    () =>
       readonly ||
-      globalReadonly({objectState: object, storeState: storeState}) ||
+      parentReadonly ||
       _field.readonly ||
-      _field.readonlyIf({objectState: object, storeState: storeState})
-    );
-  }, [_field, globalReadonly, object, readonly, storeState]);
+      _field.readonlyIf({objectState: object, storeState}),
+    [_field, object, parentReadonly, readonly, storeState],
+  );
 
   const fieldStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
