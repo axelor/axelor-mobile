@@ -50,6 +50,7 @@ export {
   fetchActiveIntervention,
   fetchIntervention,
   fetchInterventionById,
+  fetchPlannedIntervention,
   linkEquipment,
   searchHistoryInterventionByEquipment,
   unlinkEquipment,
