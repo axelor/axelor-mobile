@@ -159,8 +159,8 @@ const initialState = {
   loadingActiveIntervention: false,
   activeIntervention: {},
 
-  loadingPlannedInterventionList: false,
-  plannedInterventionList: [],
+  loadingPlanning: false,
+  planningList: [],
 };
 
 const interventionSlice = createSlice({
@@ -183,19 +183,18 @@ const interventionSlice = createSlice({
         list: 'interventionHistoryList',
       },
     );
+    generateInifiniteScrollCases(builder, fetchPlannedIntervention, {
+      loading: 'loadingPlanning',
+      moreLoading: 'moreLoadingPlanning',
+      isListEnd: 'isListEndPlanning',
+      list: 'planningList',
+    });
     builder.addCase(fetchInterventionById.pending, state => {
       state.loadingIntervention = true;
     });
     builder.addCase(fetchInterventionById.fulfilled, (state, action) => {
       state.loadingIntervention = false;
       state.intervention = action.payload;
-    });
-    builder.addCase(fetchPlannedIntervention.pending, state => {
-      state.loadingPlannedInterventionList = true;
-    });
-    builder.addCase(fetchPlannedIntervention.fulfilled, (state, action) => {
-      state.loadingPlannedInterventionList = false;
-      state.plannedInterventionList = action.payload;
     });
     builder.addCase(fetchActiveIntervention.pending, state => {
       state.loadingActiveIntervention = true;

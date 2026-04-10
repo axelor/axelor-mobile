@@ -33,7 +33,7 @@ import {
 function InterventionPlanningScreen({navigation}: any) {
   const dispatch = useDispatch();
 
-  const {plannedInterventionList, loadingPlannedInterventionList} = useSelector(
+  const {planningList, loadingPlanning} = useSelector(
     state => state.intervention_intervention,
   );
   const {user} = useSelector(state => state.user);
@@ -42,28 +42,25 @@ function InterventionPlanningScreen({navigation}: any) {
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
   const filteredList = useMemo(() => {
-    if (plannedInterventionList == null || plannedInterventionList.length === 0)
-      return [];
+    if (planningList == null || planningList.length === 0) return [];
 
-    return filterChip(
-      plannedInterventionList,
-      selectedStatus,
-      'statusSelect',
-    ).map((_i: any) => ({
-      id: _i.id,
-      startDate: _i.planifStartDateTime,
-      endDate: _i.planifEndDateTime,
-      data: {
+    return filterChip(planningList, selectedStatus, 'statusSelect').map(
+      (_i: any) => ({
         id: _i.id,
-        sequence: _i.sequence,
-        deliveredPartner: _i.deliveredPartner?.fullName,
-        interventionType: _i.interventionType?.name,
-        assignedTo: _i.assignedTo?.fullName,
-        statusSelect: _i.statusSelect,
-        userId: _i.assignedTo?.id,
-      },
-    }));
-  }, [plannedInterventionList, selectedStatus]);
+        startDate: _i.planifStartDateTime,
+        endDate: _i.planifEndDateTime,
+        data: {
+          id: _i.id,
+          sequence: _i.sequence,
+          deliveredPartner: _i.deliveredPartner?.fullName,
+          interventionType: _i.interventionType?.name,
+          assignedTo: _i.assignedTo?.fullName,
+          statusSelect: _i.statusSelect,
+          userId: _i.assignedTo?.id,
+        },
+      }),
+    );
+  }, [planningList, selectedStatus]);
 
   const fetchItemsByMonth = useCallback(
     ({date, isAssigned}: any) => {
@@ -139,7 +136,7 @@ function InterventionPlanningScreen({navigation}: any) {
         }
       />
       <PlanningView
-        loading={loadingPlannedInterventionList}
+        loading={loadingPlanning}
         itemList={filteredList}
         renderItem={renderItem}
         renderFullDayItem={renderFullDayItem}
