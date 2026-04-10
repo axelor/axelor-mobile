@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   createMaintenanceRequest as _createMaintenanceRequest,
+  fetchPlannedMaintenanceRequests as _fetchPlannedMaintenanceRequests,
   searchMaintenanceRequests as _searchMaintenanceRequests,
 } from '../api/maintenance-request-api';
 
@@ -33,6 +34,19 @@ export const searchMaintenanceRequests = createAsyncThunk(
       fetchFunction: _searchMaintenanceRequests,
       data,
       action: 'Maintenance_SliceAction_SearchMaintenanceRequests',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchPlannedMaintenanceRequests = createAsyncThunk(
+  'maintenance_maintenanceRequest/fetchPlannedMaintenanceRequests',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchPlannedMaintenanceRequests,
+      data,
+      action: 'Maintenance_SliceAction_FetchPlannedMaintenanceRequests',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -57,6 +71,9 @@ const initialState = {
   moreLoadingMaintenanceRequest: false,
   isListEndMaintenanceRequest: false,
   maintenanceRequestList: [],
+
+  loadingPlanning: false,
+  planningList: [],
 };
 
 const maintenanceRequestSlice = createSlice({
@@ -69,6 +86,12 @@ const maintenanceRequestSlice = createSlice({
       moreLoading: 'moreLoadingMaintenanceRequest',
       isListEnd: 'isListEndMaintenanceRequest',
       list: 'maintenanceRequestList',
+    });
+    generateInifiniteScrollCases(builder, fetchPlannedMaintenanceRequests, {
+      loading: 'loadingPlanning',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'planningList',
     });
   },
 });
