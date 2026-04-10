@@ -19,5 +19,6 @@
 export {searchEquipementMaintenance} from './equipementMaintenanceSlice';
 export {
   createMaintenanceRequest,
+  fetchPlannedMaintenanceRequests,
   searchMaintenanceRequests,
 } from './maintenanceRequestSlice';
