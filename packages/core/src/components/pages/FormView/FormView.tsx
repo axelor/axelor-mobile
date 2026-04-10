@@ -121,7 +121,7 @@ const FormView = ({
   }, [dispatch]);
 
   useEffect(() => {
-    setObject(_current => {
+    setObject((_current: any) => {
       if (isEmpty(record)) {
         const _default = defaultValue ?? creationDefaultValue ?? {};
         if (_default == null || areObjectsEquals(_current, _default)) {
@@ -139,27 +139,29 @@ const FormView = ({
     });
   }, [creationDefaultValue, defaultValue, isCreation, record]);
 
-  const handleFieldChange = (newValue: any, fieldName: string) => {
-    setObject(_current => {
-      if (_current?.[fieldName] === newValue) {
+  const handleFieldChange = (newValue: any, fieldName?: string) => {
+    setObject((_current: any) => {
+      if (fieldName != null && _current?.[fieldName] === newValue) {
         return _current;
       }
 
-      const updatedObject = _current != null ? {..._current} : {};
+      const _value = fieldName != null ? {[fieldName]: newValue} : newValue;
 
-      updatedObject[fieldName] = newValue;
+      let updatedObject = {...(_current ?? {}), ...(_value ?? {})};
 
-      getFields(config)
-        .filter(_field => _field.dependsOn != null)
-        .filter(_field => Object.keys(_field.dependsOn).includes(fieldName))
-        .forEach(_field => {
-          updatedObject[_field.key] = _field.dependsOn[fieldName]({
-            newValue,
-            storeState,
-            objectState: updatedObject,
-            dispatch,
+      Object.entries(_value).forEach(([_f, _v]) => {
+        getFields(config)
+          .filter(_field => _field.dependsOn != null)
+          .filter(_field => Object.keys(_field.dependsOn!).includes(_f))
+          .forEach(_field => {
+            updatedObject[_field.key] = _field.dependsOn![_f]({
+              newValue: _v,
+              storeState,
+              objectState: updatedObject,
+              dispatch,
+            });
           });
-        });
+      });
 
       return updatedObject;
     });
