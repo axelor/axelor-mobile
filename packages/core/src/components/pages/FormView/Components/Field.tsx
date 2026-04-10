@@ -46,7 +46,7 @@ import {CustomPasswordInput} from '../Custom';
 import {useFieldPermitted} from '../../../../permissions';
 
 interface FieldProps {
-  handleFieldChange: (newValue: any, fieldName: string) => void;
+  handleFieldChange: (newValue: any, fieldName?: string) => void;
   _field: DisplayField;
   object: any;
   parentReadonly?: boolean;
@@ -92,10 +92,9 @@ const Field = ({
   );
 
   const handleChange = useCallback(
-    (_value: any) => {
-      handleValidate(_value);
-
-      handleFieldChange(_value, _field.key);
+    (_value: any, isMassChange: boolean = false) => {
+      if (!isMassChange) handleValidate(_value);
+      handleFieldChange(_value, isMassChange ? undefined : _field.key);
     },
     [_field.key, handleFieldChange, handleValidate],
   );
@@ -131,7 +130,7 @@ const Field = ({
   const getComponent = () => {
     switch (getWidget(_field)) {
       case 'custom':
-        return _field.customComponent({
+        return _field.customComponent?.({
           style: fieldStyle,
           title: I18n.t(_field.titleKey),
           defaultValue: value,

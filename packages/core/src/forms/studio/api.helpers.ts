@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../../apiProviders';
+import {axiosApiProvider, getActionApi} from '../../apiProviders';
 
 const createJsonFieldsOfModelCriteria = (modelName: string, type?: string) => {
   const criteria = [
@@ -269,15 +269,51 @@ export async function executeButtonAction(
   actions: string,
   model: string,
   object: any,
-) {
-  return axiosApiProvider.post({
-    url: 'ws/action',
-    data: {
-      action: actions,
-      data: {
-        context: {...object},
+): Promise<any> {
+  const items: any[] = await getActionApi()
+    .send({
+      method: 'post',
+      url: 'ws/action',
+      body: {
+        action: actions,
+        data: {context: {_model: model, ...object}},
+        model,
       },
-      model,
-    },
-  });
+      description: 'send studio action',
+    })
+    .then(res => res?.data?.data ?? [])
+    .catch(() => []);
+
+  let currentObject = {...object};
+
+  for (const item of items) {
+    if (item.values != null) {
+      currentObject = {...currentObject, ...item.values};
+    }
+
+    if (item.save === true) {
+      const saved = await getActionApi()
+        .send({
+          method: 'post',
+          url: `ws/rest/${model}`,
+          body: {data: currentObject},
+          description: `save ${model}`,
+          matchers: {
+            modelName: model,
+            id: currentObject.id ?? Date.now(),
+            fields: {},
+          },
+        })
+        .then(res => res?.data?.data?.[0])
+        .catch(() => null);
+
+      if (saved != null) {
+        currentObject = {...currentObject, ...saved};
+      }
+
+      return currentObject;
+    }
+  }
+
+  return currentObject;
 }
