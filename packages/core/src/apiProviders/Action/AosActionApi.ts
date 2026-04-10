@@ -38,7 +38,7 @@ export class AosActionApi implements ActionApi {
     });
   }
 
-  send(request: ActionRequest): Promise<void> {
+  send(request: ActionRequest): Promise<any> {
     return axios[request.method](request.url, request.body);
   }
 

@@ -23,7 +23,7 @@ export type ActionRequest = {
   method: Method;
   body: any;
   description: string;
-  matchers: MatcherConfig;
+  matchers?: MatcherConfig;
 };
 
 export type MatcherConfig = {
