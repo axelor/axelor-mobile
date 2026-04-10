@@ -25,6 +25,7 @@ import {
   fetchActiveIntervention as _fetchActiveIntervention,
   fetchIntervention as _fetchIntervention,
   fetchInterventionById as _fetchInterventionById,
+  fetchPlannedIntervention as _fetchPlannedIntervention,
   linkEquipment as _linkEquipment,
   searchHistoryInterventionByEquipment as _searchHistoryInterventionByEquipment,
   unlinkEquipment as _unlinkEquipment,
@@ -64,6 +65,19 @@ export const searchHistoryInterventionByEquipment = createAsyncThunk(
       fetchFunction: _searchHistoryInterventionByEquipment,
       data,
       action: 'Intervention_SliceAction_SearchHistoryInterventionByEquipment',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchPlannedIntervention = createAsyncThunk(
+  'intervention_intervention/fetchPlannedIntervention',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchPlannedIntervention,
+      data,
+      action: 'Intervention_SliceAction_FetchPlannedIntervention',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -144,6 +158,9 @@ const initialState = {
 
   loadingActiveIntervention: false,
   activeIntervention: {},
+
+  loadingPlannedInterventionList: false,
+  plannedInterventionList: [],
 };
 
 const interventionSlice = createSlice({
@@ -172,6 +189,13 @@ const interventionSlice = createSlice({
     builder.addCase(fetchInterventionById.fulfilled, (state, action) => {
       state.loadingIntervention = false;
       state.intervention = action.payload;
+    });
+    builder.addCase(fetchPlannedIntervention.pending, state => {
+      state.loadingPlannedInterventionList = true;
+    });
+    builder.addCase(fetchPlannedIntervention.fulfilled, (state, action) => {
+      state.loadingPlannedInterventionList = false;
+      state.plannedInterventionList = action.payload;
     });
     builder.addCase(fetchActiveIntervention.pending, state => {
       state.loadingActiveIntervention = true;

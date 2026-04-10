@@ -54,6 +54,11 @@ export const InterventionModule: Module = {
       icon: 'calendar-check',
       screen: 'ActiveInterventionScreen',
     },
+    intervention_menu_interventionPlanning: {
+      title: 'Intervention_Planning',
+      icon: 'calendar2-week',
+      screen: 'InterventionPlanningScreen',
+    },
     intervention_menu_dayInterventions: {
       title: 'Intervention_DayInterventions',
       icon: 'calendar-event',
