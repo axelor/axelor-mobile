@@ -35,7 +35,7 @@ export interface customComponentOptions {
   style?: any;
   title?: string;
   defaultValue?: any;
-  onChange: (value?: any) => void;
+  onChange: (value?: any, isMassChange?: boolean) => void;
   objectState?: any;
   required?: boolean;
   readonly?: boolean;

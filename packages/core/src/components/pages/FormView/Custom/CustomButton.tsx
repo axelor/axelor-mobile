@@ -25,12 +25,27 @@ interface props extends customComponentOptions {
   item: any;
 }
 
-const CustomButton = ({item, style, title, readonly, objectState}: props) => {
+const CustomButton = ({
+  item,
+  style,
+  title,
+  readonly,
+  objectState,
+  onChange,
+}: props) => {
   const Colors = useThemeColor();
 
-  const handlePress = useCallback(() => {
-    executeButtonAction(item.onClick, item.uniqueModel, objectState);
-  }, [item, objectState]);
+  const handlePress = useCallback(async () => {
+    const result = await executeButtonAction(
+      item.onClick,
+      item.uniqueModel,
+      objectState,
+    );
+
+    if (result != null) {
+      onChange(result, true);
+    }
+  }, [item, objectState, onChange]);
 
   return (
     <Button
