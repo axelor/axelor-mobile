@@ -72,7 +72,7 @@ export const getAttrsValue = (object: Object, fieldType?: string) => {
   return result;
 };
 
-export const createFormulaFunction = (formula: string) => {
+export const createFormulaFunction = (formula: string | undefined) => {
   if (checkNullString(formula)) return undefined;
 
   return ({objectState}: any) => {
@@ -224,7 +224,7 @@ const findField = (string: string, object: Object) => {
 
 export const combinedFormula = (
   separator: string,
-  ...allFormula: string[]
+  ...allFormula: (string | undefined)[]
 ): string => {
   let expr = '';
 
@@ -237,7 +237,9 @@ export const combinedFormula = (
   return expr;
 };
 
-export const reverseFormula = (formula: string): string => {
+export const reverseFormula = (
+  formula: string | undefined,
+): string | undefined => {
   if (checkNullString(formula)) {
     return undefined;
   }
