@@ -80,11 +80,12 @@ function ProjectTaskPlanningScreen() {
           date,
           isAssigned,
           userId: user.id,
+          companyId: user.activeCompany?.id,
           projectId: selectedProject?.id,
         }),
       );
     },
-    [dispatch, selectedProject?.id, user.id],
+    [dispatch, selectedProject?.id, user.activeCompany?.id, user.id],
   );
 
   const renderItem = useCallback(({id, data: task}: any) => {
