@@ -17,4 +17,5 @@
  */
 
 export {default as EquipementMaintenanceSearchBar} from './EquipementMaintenanceSearchBar/EquipementMaintenanceSearchBar';
+export {default as MaintenancePlanningFilters} from './MaintenancePlanningFilters/MaintenancePlanningFilters';
 export {default as MaintenanceRequestFilters} from './MaintenanceRequestFilters/MaintenanceRequestFilters';

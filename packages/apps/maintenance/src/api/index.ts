@@ -19,5 +19,6 @@
 export {searchEquipementMaintenance as searchEquipementMaintenanceApi} from './equipement-maintenance-api';
 export {
   createMaintenanceRequest as createMaintenanceRequestApi,
+  fetchPlannedMaintenanceRequests as fetchPlannedMaintenanceRequestsApi,
   searchMaintenanceRequests as searchMaintenanceRequestsApi,
 } from './maintenance-request-api';
