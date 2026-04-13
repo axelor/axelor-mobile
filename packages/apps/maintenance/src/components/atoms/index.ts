@@ -18,3 +18,4 @@
 
 export {default as EquipementMaintenanceCard} from './EquipementMaintenanceCard/EquipementMaintenanceCard';
 export {default as MaintenanceRequestCard} from './MaintenanceRequestCard/MaintenanceRequestCard';
+export {default as PlanningMaintenanceRequestCard} from './PlanningMaintenanceRequestCard/PlanningMaintenanceRequestCard';
