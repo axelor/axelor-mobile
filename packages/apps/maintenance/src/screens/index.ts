@@ -18,6 +18,7 @@
 
 import MaintenanceRequestListScreen from './MaintenanceRequestListScreen';
 import MaintenanceRequestFormScreen from './MaintenanceRequestFormScreen';
+import MaintenancePlanningScreen from './MaintenancePlanningScreen';
 
 export default {
   MaintenanceRequestListScreen: {
@@ -32,7 +33,15 @@ export default {
     component: MaintenanceRequestFormScreen,
     isUsableOnShortcut: true,
   },
+  MaintenancePlanningScreen: {
+    title: 'Maintenance_MachinesUnavailable',
+    component: MaintenancePlanningScreen,
+    actionID: 'maintenance_maintenanceRequest_planning',
+    options: {shadedHeader: false},
+    isUsableOnShortcut: true,
+  },
 };
 
 export {MaintenanceRequestListScreen};
 export {MaintenanceRequestFormScreen};
+export {MaintenancePlanningScreen};

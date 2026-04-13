@@ -20,6 +20,8 @@ import {
   createStandardSearch,
   Criteria,
   getActionApi,
+  getNextMonth,
+  getPreviousMonth,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -102,6 +104,85 @@ export async function searchMaintenanceRequests({
     sortKey: 'maintenance_maintenanceRequest',
     page,
     filter: filterDomain,
+    provider: 'model',
+  });
+}
+
+const createPlannedMaintenanceRequestCriteria = (
+  date: Date | undefined,
+  isAssigned: boolean,
+  userId: number | undefined,
+  machineId: number | undefined,
+): Criteria[] => {
+  const criteria: Criteria[] = [];
+
+  if (date != null) {
+    const startDate = getPreviousMonth(date, 2).toISOString();
+    const endDate = getNextMonth(date, 2).toISOString();
+
+    criteria.push({
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {fieldName: 'requestDate', operator: '>=', value: startDate},
+            {fieldName: 'requestDate', operator: '<=', value: endDate},
+          ],
+        },
+        {
+          operator: 'and',
+          criteria: [
+            {fieldName: 'expectedDate', operator: '>=', value: startDate},
+            {fieldName: 'requestDate', operator: '<=', value: endDate},
+          ],
+        },
+      ],
+    });
+  }
+
+  if (isAssigned && userId != null) {
+    criteria.push({
+      fieldName: 'requestBy.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (machineId != null) {
+    criteria.push({
+      fieldName: 'machine.id',
+      operator: '=',
+      value: machineId,
+    });
+  }
+
+  return criteria;
+};
+
+export async function fetchPlannedMaintenanceRequests({
+  date,
+  isAssigned,
+  userId,
+  machineId,
+}: {
+  date: Date;
+  isAssigned: boolean;
+  userId: number;
+  machineId?: number;
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.maintenance.db.MaintenanceRequest',
+    criteria: createPlannedMaintenanceRequestCriteria(
+      date,
+      isAssigned,
+      userId,
+      machineId,
+    ),
+    fieldKey: 'maintenance_maintenanceRequest',
+    sortKey: 'maintenance_maintenanceRequest',
+    numberElementsByPage: undefined,
+    page: 0,
     provider: 'model',
   });
 }

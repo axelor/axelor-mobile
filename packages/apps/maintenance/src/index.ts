@@ -44,6 +44,11 @@ export const MaintenanceModule: Module = {
     fr: frTranslations,
   },
   menus: {
+    maintenance_menu_maintenanceRequestPlanning: {
+      title: 'Maintenance_MachinesUnavailable',
+      icon: 'calendar2-week',
+      screen: 'MaintenancePlanningScreen',
+    },
     maintenance_menu_maintenanceRequests: {
       title: 'Maintenance_MaintenanceRequests',
       icon: 'clipboard-x',
