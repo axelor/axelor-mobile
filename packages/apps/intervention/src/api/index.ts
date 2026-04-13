@@ -40,6 +40,7 @@ export {
   fetchActiveIntervention as fetchActiveInterventionApi,
   fetchIntervention as fetchInterventionApi,
   fetchInterventionById as fetchInterventionByIdApi,
+  fetchPlannedIntervention as fetchPlannedInterventionApi,
   linkEquipment as linkEquipmentApi,
   searchHistoryInterventionByEquipment as searchHistoryInterventionByEquipmentApi,
   unlinkEquipment as unlinkEquipmentApi,
