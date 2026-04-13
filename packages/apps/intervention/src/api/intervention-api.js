@@ -21,7 +21,9 @@ import {
   createStandardSearch,
   getActionApi,
   getEndOfDay,
+  getNextMonth,
   getNowDateZonesISOString,
+  getPreviousMonth,
   getSearchCriterias,
   getStartOfDay,
   getTypes,
@@ -89,7 +91,7 @@ const createInterventionCriteria = (
   return criteria;
 };
 
-const createInterventionHistoryCriteria = (statusList, equipmentId) => {
+const createInterventionHistoryCriteria = statusList => {
   const criteria = [];
 
   if (Array.isArray(statusList) && statusList.length > 0) {
@@ -134,6 +136,98 @@ export async function fetchIntervention({
   });
 }
 
+const createPlannedInterventionCriteria = (
+  date,
+  isAssigned,
+  userId,
+  deliveredPartnerId,
+) => {
+  const criteria = [];
+
+  if (date != null) {
+    const startDate = getPreviousMonth(date, 2).toISOString();
+    const endDate = getNextMonth(date, 2).toISOString();
+
+    criteria.push({
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'planifStartDateTime',
+              operator: '>=',
+              value: startDate,
+            },
+            {
+              fieldName: 'planifStartDateTime',
+              operator: '<=',
+              value: endDate,
+            },
+          ],
+        },
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'planifEndDateTime',
+              operator: '>=',
+              value: startDate,
+            },
+            {
+              fieldName: 'planifStartDateTime',
+              operator: '<=',
+              value: endDate,
+            },
+          ],
+        },
+      ],
+    });
+  }
+
+  if (isAssigned && userId) {
+    criteria.push({
+      fieldName: 'assignedTo.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (deliveredPartnerId != null) {
+    criteria.push({
+      fieldName: 'deliveredPartner.id',
+      operator: '=',
+      value: deliveredPartnerId,
+    });
+  }
+
+  return criteria;
+};
+
+export async function fetchPlannedIntervention({
+  date,
+  isAssigned,
+  userId,
+  deliveredPartnerId,
+  companyId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Intervention',
+    companyId,
+    criteria: createPlannedInterventionCriteria(
+      date,
+      isAssigned,
+      userId,
+      deliveredPartnerId,
+    ),
+    fieldKey: 'intervention_intervention',
+    sortKey: 'intervention_intervention',
+    numberElementsByPage: null,
+    page: 0,
+    provider: 'model',
+  });
+}
+
 export async function fetchInterventionById({interventionId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.intervention.db.Intervention',
@@ -152,7 +246,7 @@ export async function searchHistoryInterventionByEquipment({
   return createStandardSearch({
     companyId,
     model: 'com.axelor.apps.intervention.db.Intervention',
-    criteria: createInterventionHistoryCriteria(statusList, equipmentId),
+    criteria: createInterventionHistoryCriteria(statusList),
     domain: ':equipment MEMBER OF self.equipmentSet',
     domainContext: {
       equipment: {
