@@ -96,17 +96,22 @@ export const useMassScanner = ({
     ],
   );
 
+  const processScanRef = useRef(processScan);
+  processScanRef.current = processScan;
+
   useEffect(() => {
     if (scannedValue) {
-      processScan(scannedValue, () => dispatch(clearScan()));
+      processScanRef.current(scannedValue, () => dispatch(clearScan()));
     }
-  }, [dispatch, processScan, scannedValue]);
+  }, [dispatch, scannedValue]);
 
   useEffect(() => {
     if (scannedBarcode?.value) {
-      processScan(scannedBarcode.value, () => dispatch(clearBarcode()));
+      processScanRef.current(scannedBarcode.value, () =>
+        dispatch(clearBarcode()),
+      );
     }
-  }, [dispatch, processScan, scannedBarcode?.value]);
+  }, [dispatch, scannedBarcode?.value]);
 
   return useMemo(
     () => ({disableScan, enableScan, isEnabled}),
