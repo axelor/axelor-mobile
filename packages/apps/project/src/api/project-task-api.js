@@ -21,6 +21,8 @@ import {
   createStandardSearch,
   formatRequestBody,
   getActionApi,
+  getNextMonth,
+  getPreviousMonth,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -404,6 +406,80 @@ export async function searchSprint({
     fieldKey: 'project_projectSprint',
     sortKey: 'project_projectSprint',
     page,
+    provider: 'model',
+  });
+}
+
+const createPlannedProjectTaskCriteria = (date, isAssigned, userId, projectId) => {
+  const ProjectTask = getTypes().ProjectTask;
+  const criteria = [
+    {
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: ProjectTask?.typeSelect.Task,
+    },
+  ];
+
+  if (date != null) {
+    const startDate = getPreviousMonth(date, 2).toISOString();
+    const endDate = getNextMonth(date, 2).toISOString();
+
+    criteria.push({
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {fieldName: 'taskDate', operator: '>=', value: startDate},
+            {fieldName: 'taskDate', operator: '<=', value: endDate},
+          ],
+        },
+        {
+          operator: 'and',
+          criteria: [
+            {fieldName: 'taskEndDate', operator: '>=', value: startDate},
+            {fieldName: 'taskDate', operator: '<=', value: endDate},
+          ],
+        },
+      ],
+    });
+  }
+
+  if (isAssigned && userId != null) {
+    criteria.push({
+      fieldName: 'assignedTo.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (projectId != null) {
+    criteria.push({
+      fieldName: 'project.id',
+      operator: '=',
+      value: projectId,
+    });
+  }
+
+  return criteria;
+};
+
+export async function fetchPlannedProjectTasks({
+  date,
+  isAssigned,
+  userId,
+  projectId,
+  companyId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTask',
+    companyId,
+    companyFieldName: 'project.company',
+    criteria: createPlannedProjectTaskCriteria(date, isAssigned, userId, projectId),
+    fieldKey: 'project_projectTask',
+    sortKey: 'project_projectTask',
+    numberElementsByPage: null,
+    page: 0,
     provider: 'model',
   });
 }

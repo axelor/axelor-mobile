@@ -89,5 +89,7 @@
   "Project_SliceAction_SearchParentCheckListItems": "search parent check list items",
   "Project_SliceAction_UpdateCheckListItem": "update check list item",
   "Project_SliceAction_DeleteCheckListItem": "delete check list item",
-  "Project_SliceAction_CreateCheckListItem": "create check list item"
+  "Project_SliceAction_CreateCheckListItem": "create check list item",
+  "Project_TaskPlanning": "Task planning",
+  "Project_SliceAction_FetchPlannedProjectTasks": "fetch planned project tasks"
 }

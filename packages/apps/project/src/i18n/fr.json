@@ -89,5 +89,7 @@
   "Project_SliceAction_SearchParentCheckListItems": "recherche sur les éléments parent de la checklist",
   "Project_SliceAction_UpdateCheckListItem": "mise à jour d'un élément de la check list",
   "Project_SliceAction_DeleteCheckListItem": "suppression d'un élément de la check list",
-  "Project_SliceAction_CreateCheckListItem": "création d'un élément de la check list"
+  "Project_SliceAction_CreateCheckListItem": "création d'un élément de la check list",
+  "Project_TaskPlanning": "Planification des tâches",
+  "Project_SliceAction_FetchPlannedProjectTasks": "récupération des tâches planifiées"
 }
