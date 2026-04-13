@@ -29,6 +29,7 @@ export const intervention_modelAPI: ObjectFields = {
     ),
     sequence: schemaContructor.string(),
     planifStartDateTime: schemaContructor.string(),
+    planifEndDateTime: schemaContructor.string(),
     startDateTime: schemaContructor.string(),
     totalDuration: schemaContructor.number(),
     lastStartDateTime: schemaContructor.string(),
