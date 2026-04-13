@@ -17,8 +17,8 @@
  */
 
 export {default as CustomSection} from './CustomSection/CustomSection';
-export {default as ProjectPlanningFilters} from './ProjectPlanningFilters/ProjectPlanningFilters';
 export {default as LogTimeButton} from './LogTimeButton/LogTimeButton';
 export {default as ProjectDropdownCards} from './ProjectDropdownCards/ProjectDropdownCards';
+export {default as ProjectPlanningFilters} from './ProjectPlanningFilters/ProjectPlanningFilters';
 export {default as ProjectTaskDropdownCards} from './ProjectTaskDropdownCards/ProjectTaskDropdownCards';
 export {default as TimeSpentGridView} from './TimeSpentGridView/TimeSpentGridView';

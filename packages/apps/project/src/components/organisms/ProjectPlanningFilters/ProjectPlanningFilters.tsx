@@ -16,19 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useSelector, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {ChipSelect} from '@axelor/aos-mobile-ui';
 import {ProjectSearchBar} from '../../templates';
 
 interface ProjectPlanningFiltersProps {
   selectedProject?: any;
   onChangeProject: (value: any) => void;
+  selectedStatus: any[];
+  onChangeStatus: (value: any[]) => void;
 }
 
 const ProjectPlanningFilters = ({
   selectedProject,
   onChangeProject,
+  selectedStatus,
+  onChangeStatus,
 }: ProjectPlanningFiltersProps) => {
+  const {getCustomSelectionItems} = useTypeHelpers();
+
+  const {projectTaskStatusList} = useSelector(
+    state => state.project_projectTask,
+  );
+
+  const statusChipItems = useMemo(
+    () =>
+      getCustomSelectionItems(projectTaskStatusList, 'name', selectedStatus),
+    [getCustomSelectionItems, projectTaskStatusList, selectedStatus],
+  );
+
   return (
     <View style={styles.container}>
       <ProjectSearchBar
@@ -36,6 +54,12 @@ const ProjectPlanningFilters = ({
         defaultValue={selectedProject}
         onChange={onChangeProject}
         showTitle={false}
+      />
+      <ChipSelect
+        mode="multi"
+        chipNumberOfLines={1}
+        onChangeValue={onChangeStatus}
+        selectionItems={statusChipItems}
       />
     </View>
   );

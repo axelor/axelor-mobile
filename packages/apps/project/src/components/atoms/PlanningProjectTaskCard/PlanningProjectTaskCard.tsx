@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useTypeHelpers, useSelector} from '@axelor/aos-mobile-core';
-import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
 
 interface PlanningProjectTaskCardProps {
   style?: any;
@@ -27,6 +27,8 @@ interface PlanningProjectTaskCardProps {
   projectName?: string;
   assignedTo?: string;
   status?: any;
+  progress?: number;
+  priority?: any;
 }
 
 const PlanningProjectTaskCard = ({
@@ -35,11 +37,13 @@ const PlanningProjectTaskCard = ({
   projectName,
   assignedTo,
   status,
+  progress,
+  priority,
 }: PlanningProjectTaskCardProps) => {
   const {getItemColorFromIndex} = useTypeHelpers();
 
-  const {projectTaskStatusList} = useSelector(
-    (state: any) => state.project_projectTask,
+  const {projectTaskStatusList, projectPriorityList} = useSelector(
+    state => state.project_projectTask,
   );
 
   const borderStyle = useMemo(() => {
@@ -71,6 +75,27 @@ const PlanningProjectTaskCard = ({
           },
         ],
       }}
+      upperBadges={{
+        fixedOnRightSide: true,
+        items: [
+          {
+            showIf: priority != null,
+            displayText: priority?.name,
+            color: getItemColorFromIndex(projectPriorityList, priority),
+          },
+          {
+            customComponent: (progress != null ? (
+              <ProgressBar
+                style={styles.progressBar}
+                value={progress}
+                showPercent={false}
+                height={15}
+                styleTxt={styles.textProgressBar}
+              />
+            ) : null) as any,
+          },
+        ],
+      }}
     />
   );
 };
@@ -88,6 +113,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 1,
     marginVertical: 2,
+  },
+  progressBar: {
+    marginVertical: 5,
+    width: '30%',
+  },
+  textProgressBar: {
+    display: 'none',
   },
 });
 

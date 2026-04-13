@@ -16,10 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {PlanningView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {fetchPlannedProjectTasks} from '../../features/projectTaskSlice';
+import {
+  fetchPlannedProjectTasks,
+  fetchProjectTaskStatus,
+} from '../../features/projectTaskSlice';
 import {
   PlanningProjectTaskCard,
   ProjectPlanningFilters,
@@ -34,13 +37,25 @@ function ProjectTaskPlanningScreen() {
   );
 
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+
+  useEffect(() => {
+    dispatch((fetchProjectTaskStatus as any)({}));
+  }, [dispatch]);
 
   const filteredList = useMemo(() => {
     if (planningList == null || planningList.length === 0) return [];
     const withTime = (date: string, time: string): string =>
       date.includes('T') ? date : `${date}T${time}`;
 
-    return planningList
+    const statusFiltered =
+      selectedStatus.length === 0
+        ? planningList
+        : planningList.filter((_t: any) =>
+            selectedStatus.some((s: any) => s.key === _t.status?.id),
+          );
+
+    return statusFiltered
       .filter((_t: any) => _t.taskDate != null)
       .map((_t: any) => ({
         id: _t.id,
@@ -52,9 +67,11 @@ function ProjectTaskPlanningScreen() {
           projectName: _t.project?.name,
           assignedTo: _t.assignedTo?.fullName,
           status: _t.status,
+          progress: _t.progress,
+          priority: _t.priority,
         },
       }));
-  }, [planningList]);
+  }, [planningList, selectedStatus]);
 
   const fetchItemsByMonth = useCallback(
     ({date, isAssigned}: any) => {
@@ -80,6 +97,8 @@ function ProjectTaskPlanningScreen() {
         projectName={task.projectName}
         assignedTo={task.assignedTo}
         status={task.status}
+        progress={task.progress}
+        priority={task.priority}
       />
     );
   }, []);
@@ -92,6 +111,7 @@ function ProjectTaskPlanningScreen() {
         key={id}
         name={task.name}
         projectName={task.projectName}
+        status={task.status}
       />
     );
   }, []);
@@ -104,6 +124,8 @@ function ProjectTaskPlanningScreen() {
           <ProjectPlanningFilters
             selectedProject={selectedProject}
             onChangeProject={setSelectedProject}
+            selectedStatus={selectedStatus}
+            onChangeStatus={setSelectedStatus}
           />
         }
       />

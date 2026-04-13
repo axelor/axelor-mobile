@@ -410,7 +410,12 @@ export async function searchSprint({
   });
 }
 
-const createPlannedProjectTaskCriteria = (date, isAssigned, userId, projectId) => {
+const createPlannedProjectTaskCriteria = (
+  date,
+  isAssigned,
+  userId,
+  projectId,
+) => {
   const ProjectTask = getTypes().ProjectTask;
   const criteria = [
     {
@@ -475,7 +480,12 @@ export async function fetchPlannedProjectTasks({
     model: 'com.axelor.apps.project.db.ProjectTask',
     companyId,
     companyFieldName: 'project.company',
-    criteria: createPlannedProjectTaskCriteria(date, isAssigned, userId, projectId),
+    criteria: createPlannedProjectTaskCriteria(
+      date,
+      isAssigned,
+      userId,
+      projectId,
+    ),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',
     numberElementsByPage: null,
