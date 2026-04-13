@@ -18,11 +18,12 @@
 
 import ActiveInterventionScreen from './ActiveInterventionScreen';
 import DayInterventionsScreen from './DayInterventionsScreen';
-import PlannedInterventionsScreen from './PlannedInterventionsScreen';
-import InterventionsHistoryScreen from './InterventionsHistoryScreen';
 import InterventionDetailsScreen from './InterventionDetailsScreen';
 import InterventionNoteFormScreen from './InterventionNoteFormScreen';
+import InterventionPlanningScreen from './InterventionPlanningScreen';
 import InterventionQuestionFormScreen from './InterventionQuestionFormScreen';
+import InterventionsHistoryScreen from './InterventionsHistoryScreen';
+import PlannedInterventionsScreen from './PlannedInterventionsScreen';
 
 export default {
   ActiveInterventionScreen: {
@@ -61,6 +62,15 @@ export default {
     isUsableOnShortcut: true,
     actionID: 'intervention_intervention_list',
   },
+  InterventionPlanningScreen: {
+    title: 'Intervention_Planning',
+    component: InterventionPlanningScreen,
+    options: {
+      shadedHeader: false,
+    },
+    isUsableOnShortcut: true,
+    actionID: 'intervention_intervention_planning',
+  },
   InterventionDetailsScreen: {
     title: 'Intervention_Intervention',
     component: InterventionDetailsScreen,
@@ -87,8 +97,9 @@ export default {
 
 export {ActiveInterventionScreen};
 export {DayInterventionsScreen};
-export {PlannedInterventionsScreen};
-export {InterventionsHistoryScreen};
 export {InterventionDetailsScreen};
 export {InterventionNoteFormScreen};
+export {InterventionPlanningScreen};
 export {InterventionQuestionFormScreen};
+export {InterventionsHistoryScreen};
+export {PlannedInterventionsScreen};
