@@ -44,7 +44,7 @@ import {fetchMissingDuration} from '../../api/leave-api';
 
 const CompleteRequestScreen = ({}) => {
   const I18n = useTranslator();
-  const {LeaveReason} = useTypes();
+  const {LeaveReason, LeaveRequest} = useTypes();
   const {getItemTitle} = useTypeHelpers();
   const dispatch = useDispatch();
   const {canCreate} = usePermitted({
@@ -52,26 +52,33 @@ const CompleteRequestScreen = ({}) => {
   });
 
   const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(null);
-  const [startOn, setStartOn] = useState(null);
-  const [endOn, setEndOn] = useState(null);
-  const [lines, setLines] = useState([]);
-  const [newLine, setNewLine] = useState(null);
+  const [toDate, setToDate] = useState<Date | null>();
+  const [startOn, setStartOn] = useState<number>(
+    LeaveRequest?.startOnSelect?.Morning,
+  );
+  const [endOn, setEndOn] = useState<number>(
+    LeaveRequest?.endOnSelect?.Afternoon,
+  );
+  const [lines, setLines] = useState<any[]>([]);
+  const [newLine, setNewLine] = useState<any>(null);
   const [leaveQty, setLeaveQty] = useState(0);
-  const [comment, setComment] = useState(null);
+  const [comment, setComment] = useState<string | null>(null);
   const [missingQty, setMissingQty] = useState(0);
 
-  const resetDefaultStates = () => {
+  const resetDefaultStates = useCallback(() => {
     setFromDate(new Date());
     setToDate(null);
-    setStartOn(null);
-    setEndOn(null);
+    setStartOn(LeaveRequest?.startOnSelect?.Morning);
+    setEndOn(LeaveRequest?.endOnSelect?.Afternoon);
     setLines([]);
     setNewLine(null);
     setLeaveQty(0);
     setComment(null);
     setMissingQty(0);
-  };
+  }, [
+    LeaveRequest?.endOnSelect?.Afternoon,
+    LeaveRequest?.startOnSelect?.Morning,
+  ]);
 
   const handleReset = useCallback(() => {
     setNewLine(null);
@@ -106,7 +113,7 @@ const CompleteRequestScreen = ({}) => {
     handleReset();
   };
 
-  const handleEditLine = useCallback(line => {
+  const handleEditLine = useCallback((line: any) => {
     setNewLine(line);
     setLeaveQty(line.qty);
     setComment(line.comment);
@@ -173,7 +180,7 @@ const CompleteRequestScreen = ({}) => {
         style={styles.container}>
         <PeriodInput
           startDateConfig={{date: fromDate, onDateChange: setFromDate}}
-          endDateConfig={{date: toDate, onDateChange: setToDate}}
+          endDateConfig={{date: toDate as any, onDateChange: setToDate}}
         />
         <LeaveStartEndOn
           startOn={startOn}
@@ -220,13 +227,13 @@ const CompleteRequestScreen = ({}) => {
             setLeaveQty={setLeaveQty}
             cancelLeave={handleReset}
             newLine={newLine}
-            toDate={toDate}
+            toDate={toDate as any}
           />
         )}
         {newLine && (
           <FormInput
             title={I18n.t('Hr_Comments')}
-            defaultValue={comment}
+            defaultValue={comment as any}
             onChange={setComment}
             multiline
             adjustHeightWithLines
