@@ -3,6 +3,22 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.20] (2026-04-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Formula helpers: fix null/undefined object state handling in formula evaluation
+- Action api provider: improve types
+- Mass scanner: resolve refresh issue which was evaluating the scan value twice on Zebra
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Leave requests: add default values for startOn and endOn select on creation assistant
+
 ## [8.4.19] (2026-04-03)
 
 ### @axelor/aos-mobile-core
@@ -692,6 +708,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.20]: https://github.com/axelor/axelor-mobile/compare/8.4.19...8.4.20
 [8.4.19]: https://github.com/axelor/axelor-mobile/compare/8.4.18...8.4.19
 [8.4.18]: https://github.com/axelor/axelor-mobile/compare/8.4.17...8.4.18
 [8.4.17]: https://github.com/axelor/axelor-mobile/compare/8.4.16...8.4.17
