@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchStockMove as _searchStockMove} from '../api/stock-move-api';
+import {
+  fetchPlannedStockMoves as _fetchPlannedStockMoves,
+  searchStockMove as _searchStockMove,
+} from '../api/stock-move-api';
 
 export const searchStockMove = createAsyncThunk(
   'stock_stockMove/searchStockMove',
@@ -36,11 +39,29 @@ export const searchStockMove = createAsyncThunk(
   },
 );
 
+export const fetchPlannedStockMoves = createAsyncThunk(
+  'stock_stockMove/fetchPlannedStockMoves',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchPlannedStockMoves,
+      data,
+      action: 'Stock_SliceAction_FetchPlannedStockMoves',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingStockMoves: false,
   moreLoadingStockMove: false,
   isListEndStockMove: false,
   stockMoveList: [],
+
+  loadingPlanning: false,
+  moreLoadingPlanning: false,
+  isListEndPlanning: false,
+  planningList: [],
 };
 
 const stockMoveSlice = createSlice({
@@ -52,6 +73,12 @@ const stockMoveSlice = createSlice({
       moreLoading: 'moreLoadingStockMove',
       isListEnd: 'isListEndStockMove',
       list: 'stockMoveList',
+    });
+    generateInifiniteScrollCases(builder, fetchPlannedStockMoves, {
+      loading: 'loadingPlanning',
+      moreLoading: 'moreLoadingPlanning',
+      isListEnd: 'isListEndPlanning',
+      list: 'planningList',
     });
   },
 });
