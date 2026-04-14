@@ -1,5 +1,0 @@
-{
-  "title": "Leave requests: add default values for startOn and endOn select on creation assistant",
-  "type": "fix",
-  "packages": "hr"
-}

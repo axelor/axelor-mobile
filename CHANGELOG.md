@@ -3,6 +3,22 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.13] (2026-04-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Formula helpers: fix null/undefined object state handling in formula evaluation
+- Action api provider: improve types
+- Mass scanner: resolve refresh issue which was evaluating the scan value twice on Zebra
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Leave requests: add default values for startOn and endOn select on creation assistant
+
 ## [8.5.12] (2026-04-03)
 
 ### @axelor/aos-mobile-core
@@ -437,6 +453,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.13]: https://github.com/axelor/axelor-mobile/compare/8.5.12...8.5.13
 [8.5.12]: https://github.com/axelor/axelor-mobile/compare/8.5.11...8.5.12
 [8.5.11]: https://github.com/axelor/axelor-mobile/compare/8.5.10...8.5.11
 [8.5.10]: https://github.com/axelor/axelor-mobile/compare/8.5.9...8.5.10
