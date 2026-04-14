@@ -59,6 +59,11 @@ export const ProjectModule: Module = {
       icon: 'card-list',
       screen: 'TaskListScreen',
     },
+    project_menu_tasksPlanning: {
+      title: 'Project_TaskPlanning',
+      icon: 'calendar2-week',
+      screen: 'ProjectTaskPlanningScreen',
+    },
   },
   screens: Screens,
   reducers: {
