@@ -20,6 +20,7 @@ export {default as CheckListItemCard} from './CheckListItemCard/CheckListItemCar
 export {default as DatesDisplay} from './DatesDisplay/DatesDisplay';
 export {default as ParentCheckListItemCard} from './ParentCheckListItemCard/ParentCheckListItemCard';
 export {default as PartnerCard} from './PartnerCard/PartnerCard';
+export {default as PlanningProjectTaskCard} from './PlanningProjectTaskCard/PlanningProjectTaskCard';
 export {default as ProjectCard} from './ProjectCard/ProjectCard';
 export {default as ProjectSimpleCard} from './ProjectSimpleCard/ProjectSimpleCard';
 export {default as TaskCard} from './TaskCard/TaskCard';
