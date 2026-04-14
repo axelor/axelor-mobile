@@ -1,5 +1,0 @@
-{
-  "title": "Mass scanner: resolve refresh issue which was evaluating the scan value twice on Zebra",
-  "type": "fix",
-  "packages": "core"
-}

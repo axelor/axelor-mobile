@@ -1,5 +1,0 @@
-{
-  "title": "Action api provider: improve types",
-  "type": "fix",
-  "packages": "core"
-}

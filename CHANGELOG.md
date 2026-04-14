@@ -3,6 +3,22 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.8] (2026-04-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Formula helpers: fix null/undefined object state handling in formula evaluation
+- Action api provider: improve types
+- Mass scanner: resolve refresh issue which was evaluating the scan value twice on Zebra
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Leave requests: add default values for startOn and endOn select on creation assistant
+
 ## [9.0.7] (2026-04-03)
 
 ### @axelor/aos-mobile-core
@@ -203,6 +219,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.8]: https://github.com/axelor/axelor-mobile/compare/9.0.7...9.0.8
 [9.0.7]: https://github.com/axelor/axelor-mobile/compare/9.0.6...9.0.7
 [9.0.6]: https://github.com/axelor/axelor-mobile/compare/9.0.5...9.0.6
 [9.0.5]: https://github.com/axelor/axelor-mobile/compare/9.0.4...9.0.5
