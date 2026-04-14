@@ -16,9 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CarrierCard} from './CarrierCard/CarrierCard';
-export {default as FreightCarrierContent} from './FreightCarrierContent/FreightCarrierContent';
-export {default as LogisticalFormDropdownGeneralView} from './LogisticalFormDropdownGeneralView/LogisticalFormDropdownGeneralView';
-export {default as OrderQtyIndicatorCard} from './OrderQtyIndicatorCard/OrderQtyIndicatorCard';
-export {default as PlanningStockMoveCard} from './PlanningStockMoveCard/PlanningStockMoveCard';
-export {default as StockQtyIndicatorCard} from './StockQtyIndicatorCard/StockQtyIndicatorCard';
+import StockMovePlanningScreen from './StockMovePlanningScreen';
+
+export default {
+  StockMovePlanningScreen: {
+    title: 'Stock_StockMovePlanning',
+    component: StockMovePlanningScreen,
+    actionID: 'stock_stockMove_planning',
+    options: {shadedHeader: false},
+    isUsableOnShortcut: true,
+  },
+};
+
+export {StockMovePlanningScreen};

@@ -19,6 +19,8 @@
 import {
   createStandardSearch,
   Criteria,
+  getNextMonth,
+  getPreviousMonth,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -144,6 +146,157 @@ const createSearchCriteria = ({
 
   return criteria;
 };
+
+const createTechnicalMoveExclusionCriteria = (): Criteria[] => {
+  const {StockLocation, StockMove} = getTypes();
+
+  return [
+    {
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'typeSelect',
+              operator: '=',
+              value: StockMove?.typeSelect.internal,
+            },
+            {
+              fieldName: 'fromStockLocation.typeSelect',
+              operator: 'in',
+              value: [
+                StockLocation?.typeSelect.internal,
+                StockLocation?.typeSelect.external,
+              ],
+            },
+            {
+              fieldName: 'toStockLocation.typeSelect',
+              operator: 'in',
+              value: [
+                StockLocation?.typeSelect.internal,
+                StockLocation?.typeSelect.external,
+              ],
+            },
+          ],
+        },
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'typeSelect',
+              operator: '!=',
+              value: StockMove?.typeSelect.internal,
+            },
+            {fieldName: 'isReversion', operator: '=', value: false},
+          ],
+        },
+      ],
+    },
+  ];
+};
+
+const createPlannedStockMoveCriteria = (
+  date: Date | undefined,
+  typeSelect: number | undefined,
+  fromStockLocationId: number | undefined,
+  toStockLocationId: number | undefined,
+  partnerId: number | undefined,
+): Criteria[] => {
+  const criteria: Criteria[] = createTechnicalMoveExclusionCriteria();
+
+  if (date != null) {
+    const startDate = getPreviousMonth(date, 2).toISOString();
+    const endDate = getNextMonth(date, 2).toISOString();
+
+    criteria.push({
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {fieldName: 'estimatedDate', operator: '>=', value: startDate},
+            {fieldName: 'estimatedDate', operator: '<=', value: endDate},
+          ],
+        },
+        {
+          operator: 'and',
+          criteria: [
+            {fieldName: 'realDate', operator: '>=', value: startDate},
+            {fieldName: 'realDate', operator: '<=', value: endDate},
+          ],
+        },
+      ],
+    });
+  }
+
+  if (typeSelect != null) {
+    criteria.push({
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: typeSelect,
+    });
+  }
+
+  if (fromStockLocationId != null) {
+    criteria.push({
+      fieldName: 'fromStockLocation.id',
+      operator: '=',
+      value: fromStockLocationId,
+    });
+  }
+
+  if (toStockLocationId != null) {
+    criteria.push({
+      fieldName: 'toStockLocation.id',
+      operator: '=',
+      value: toStockLocationId,
+    });
+  }
+
+  if (partnerId != null) {
+    criteria.push({
+      fieldName: 'partner.id',
+      operator: '=',
+      value: partnerId,
+    });
+  }
+
+  return criteria;
+};
+
+export async function fetchPlannedStockMoves({
+  date,
+  companyId,
+  typeSelect,
+  fromStockLocationId,
+  toStockLocationId,
+  partnerId,
+}: {
+  date: Date;
+  companyId?: number;
+  typeSelect?: number;
+  fromStockLocationId?: number;
+  toStockLocationId?: number;
+  partnerId?: number;
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockMove',
+    companyId,
+    criteria: createPlannedStockMoveCriteria(
+      date,
+      typeSelect,
+      fromStockLocationId,
+      toStockLocationId,
+      partnerId,
+    ),
+    fieldKey: 'stock_stockMove',
+    sortKey: 'stock_stockMove',
+    numberElementsByPage: undefined,
+    page: 0,
+    provider: 'model',
+  });
+}
 
 export async function searchStockMove({
   page = 0,
