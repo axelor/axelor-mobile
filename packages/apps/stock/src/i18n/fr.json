@@ -3,6 +3,8 @@
   "Stock_StockLocation": "Emplacement de stock",
   "Stock_OriginalStockLocation": "Emplacement de stock inital",
   "Stock_DestinationStockLocation": "Emplacement de stock final",
+  "Stock_Source": "Source",
+  "Stock_Destination": "Destination",
   "Stock_Product": "Produit",
   "Stock_NewStockCorrection": "Nouvelle correction de stock",
   "Stock_StockCorrection": "Correction de stock",
@@ -212,6 +214,8 @@
   "Stock_NoInformationAvailable": "Aucune information disponible",
   "Stock_ScanCarrierTracking": "Scanner la référence d'expédition",
   "Stock_ValidateContinue": "Valider & continuer",
+  "Stock_MoveType": "Type de mouvement",
+  "Stock_StockMovePlanning": "Planning des mouvements",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "récupération des lignes de livraison client",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "récupération de la ligne de livraison client",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "mise à jour de la ligne de livraison client",
@@ -296,5 +300,6 @@
   "Stock_SliceAction_DeletePackaging": "suppression d'un emballage",
   "Stock_SliceAction_CreatePackagingLine": "création d'une ligne d'emballage",
   "Stock_SliceAction_UpdatePackagingLine": "mise à jour d'une ligne d'emballage",
-  "Stock_SliceAction_DeletePackagingLine": "suppression d'une ligne d'emballage"
+  "Stock_SliceAction_DeletePackagingLine": "suppression d'une ligne d'emballage",
+  "Stock_SliceAction_FetchPlannedStockMoves": "récupération des mouvements de stock planifiés"
 }

@@ -3,6 +3,8 @@
   "Stock_StockLocation": "Stock location",
   "Stock_OriginalStockLocation": "Original stock location",
   "Stock_DestinationStockLocation": "Destination stock location",
+  "Stock_Source": "Origin",
+  "Stock_Destination": "Destination",
   "Stock_Product": "Product",
   "Stock_NewStockCorrection": "New stock correction",
   "Stock_StockCorrection": "Stock correction",
@@ -212,6 +214,8 @@
   "Stock_NoInformationAvailable": "No information available",
   "Stock_ScanCarrierTracking": "Scan carrier tracking number",
   "Stock_ValidateContinue": "Validate & continue",
+  "Stock_MoveType": "Move type",
+  "Stock_StockMovePlanning": "Stock move planning",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "fetch customer delivery lines",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "fetch customer delivery line",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "update customer delivery line",
@@ -296,5 +300,6 @@
   "Stock_SliceAction_DeletePackaging": "delete packaging",
   "Stock_SliceAction_CreatePackagingLine": "create packaging line",
   "Stock_SliceAction_UpdatePackagingLine": "update packaging line",
-  "Stock_SliceAction_DeletePackagingLine": "delete packaging line"
+  "Stock_SliceAction_DeletePackagingLine": "delete packaging line",
+  "Stock_SliceAction_FetchPlannedStockMoves": "fetch planned stock moves"
 }

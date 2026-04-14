@@ -17,14 +17,7 @@
  */
 
 import {Module} from '@axelor/aos-mobile-core';
-import AuthScreens from './screens/auth';
-import CustomerDeliveryScreens from './screens/customerDeliveries';
-import InternalMovesScreens from './screens/internalMoves';
-import InventoriesScreens from './screens/inventories';
-import ProductsScreens from './screens/products';
-import StockCorrectionScreens from './screens/stockCorrections';
-import SupplierArrivalsScreens from './screens/supplierArrivals';
-import LogisticalFormScreens from './screens/logisticalForms';
+import StockScreens from './screens';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as stockReducers from './features';
@@ -82,17 +75,13 @@ export const StockModule: Module = {
       icon: 'house-check',
       screen: 'InventoryListScreen',
     },
+    stock_menu_stockMovePlanning: {
+      title: 'Stock_StockMovePlanning',
+      icon: 'calendar2-week',
+      screen: 'StockMovePlanningScreen',
+    },
   },
-  screens: {
-    ...AuthScreens,
-    ...CustomerDeliveryScreens,
-    ...LogisticalFormScreens,
-    ...InternalMovesScreens,
-    ...InventoriesScreens,
-    ...ProductsScreens,
-    ...StockCorrectionScreens,
-    ...SupplierArrivalsScreens,
-  },
+  screens: StockScreens,
   translations: {
     en: enTranslations,
     fr: frTranslations,
@@ -116,13 +105,6 @@ export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './hooks';
 export * from './providers';
-export * from './screens/auth';
-export * from './screens/customerDeliveries';
-export * from './screens/internalMoves';
-export * from './screens/inventories';
-export * from './screens/logisticalForms';
-export * from './screens/products';
-export * from './screens/stockCorrections';
-export * from './screens/supplierArrivals';
+export * from './screens';
 export * from './types';
 export * from './utils';

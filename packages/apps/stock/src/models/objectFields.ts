@@ -367,6 +367,14 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_stockMove: schemaContructor.object({
     stockMoveSeq: schemaContructor.string(),
+    statusSelect: schemaContructor.number(),
+    typeSelect: schemaContructor.number(),
+    estimatedDate: schemaContructor.string(),
+    realDate: schemaContructor.string(),
+    partner: schemaContructor.subObject('fullName'),
+    fromStockLocation: schemaContructor.subObject('name'),
+    toStockLocation: schemaContructor.subObject('name'),
+    company: schemaContructor.subObject('name'),
   }),
   stock_stockMoveLine: schemaContructor.object({
     trackingNumber: schemaContructor.subObject().concat(
