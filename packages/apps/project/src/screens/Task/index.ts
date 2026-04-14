@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import ProjectTaskPlanningScreen from './ProjectTaskPlanningScreen';
 import TaskDetailsScreen from './TaskDetailsScreen';
 import TaskFormScreen from './TaskFormScreen';
 import TaskListScreen from './TaskListScreen';
@@ -37,8 +38,16 @@ export const TaskScreens = {
     title: 'Project_Task',
     component: TaskFormScreen,
   },
+  ProjectTaskPlanningScreen: {
+    title: 'Project_TaskPlanning',
+    component: ProjectTaskPlanningScreen,
+    actionID: 'project_projectTask_planning',
+    options: {shadedHeader: false},
+    isUsableOnShortcut: true,
+  },
 };
 
 export {TaskListScreen};
 export {TaskDetailsScreen};
 export {TaskFormScreen};
+export {ProjectTaskPlanningScreen};

@@ -30,6 +30,7 @@ export {
   searchSubProject as searchSubProjectApi,
 } from './project-api';
 export {
+  fetchPlannedProjectTasks as fetchPlannedProjectTasksApi,
   fetchProjectPriority as fetchProjectPriorityApi,
   fetchProjectTaskById as fetchProjectTaskByIdApi,
   fetchProjectTaskCategory as fetchProjectTaskCategoryApi,

@@ -23,6 +23,7 @@ import {
   updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
+  fetchPlannedProjectTasks as _fetchPlannedProjectTasks,
   fetchProjectPriority as _fetchProjectPriority,
   fetchProjectTaskById as _fetchProjectTaskById,
   fetchProjectTaskCategory as _fetchProjectTaskCategory,
@@ -219,6 +220,19 @@ export const searchProjectTaskLink = createAsyncThunk(
   },
 );
 
+export const fetchPlannedProjectTasks = createAsyncThunk(
+  'project_projectTask/fetchPlannedProjectTasks',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchPlannedProjectTasks,
+      data,
+      action: 'Project_SliceAction_FetchPlannedProjectTasks',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 export const searchSprint = createAsyncThunk(
   'project_projectTask/searchSprint',
   async function (data, {getState}) {
@@ -281,6 +295,11 @@ const initialState = {
   moreLoadingSprint: false,
   isListEndSprint: false,
   sprintList: [],
+
+  loadingPlanning: false,
+  moreLoadingPlanning: false,
+  isListEndPlanning: false,
+  planningList: [],
 };
 
 const projectTaskSlice = createSlice({
@@ -335,6 +354,12 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoadingSprint',
       isListEnd: 'isListEndSprint',
       list: 'sprintList',
+    });
+    generateInifiniteScrollCases(builder, fetchPlannedProjectTasks, {
+      loading: 'loadingPlanning',
+      moreLoading: 'moreLoadingPlanning',
+      isListEnd: 'isListEndPlanning',
+      list: 'planningList',
     });
     builder.addCase(fetchProjectTaskStatus.fulfilled, (state, action) => {
       state.projectTaskStatusList = action.payload;
