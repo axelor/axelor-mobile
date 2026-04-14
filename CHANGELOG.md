@@ -3,6 +3,21 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.24] (2026-04-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Formula helpers: fix null/undefined object state handling in formula evaluation
+- Action api provider: improve types
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Leave requests: add default values for startOn and endOn select on creation assistant
+
 ## [8.3.23] (2026-03-31)
 
 ### @axelor/aos-mobile-hr
@@ -677,6 +692,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.24]: https://github.com/axelor/axelor-mobile/compare/8.3.23...8.3.24
 [8.3.23]: https://github.com/axelor/axelor-mobile/compare/8.3.22...8.3.23
 [8.3.22]: https://github.com/axelor/axelor-mobile/compare/8.3.21...8.3.22
 [8.3.21]: https://github.com/axelor/axelor-mobile/compare/8.3.20...8.3.21
