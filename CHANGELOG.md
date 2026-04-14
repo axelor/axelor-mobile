@@ -3,6 +3,15 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.43] (2026-04-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Formula helpers: fix null/undefined object state handling in formula evaluation
+- Action api provider: improve types
+
 ## [7.2.42] (2026-02-04)
 
 ### @axelor/aos-mobile-ui
@@ -1075,6 +1084,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.43]: https://github.com/axelor/axelor-mobile/compare/7.2.42...7.2.43
 [7.2.42]: https://github.com/axelor/axelor-mobile/compare/7.2.41...7.2.42
 [7.2.41]: https://github.com/axelor/axelor-mobile/compare/7.2.40...7.2.41
 [7.2.40]: https://github.com/axelor/axelor-mobile/compare/7.2.39...7.2.40
