@@ -90,7 +90,11 @@ export function mapEntryToItem(
 }
 
 function mapItemToEntry(item: AgendaItem): AgendaEntry {
-  return {name: '' + item?.id, height: 80, day: (item?.date).toString()};
+  return {
+    name: '' + item?.id,
+    height: 80,
+    day: new Date(item?.date).toISOString(),
+  };
 }
 
 function mapItemListToEntryList(items: AgendaItem[]): AgendaEntry[] {
@@ -171,7 +175,7 @@ export function createAgendaSchedule(
   agendaItems.forEach((item: AgendaEntry) => {
     const itemDate = formatDate(new Date(item.day));
     return (agendaSchedule[itemDate] = [
-      ...agendaSchedule[itemDate],
+      ...(agendaSchedule[itemDate] ?? []),
       item,
     ]).sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
   });
@@ -219,6 +223,10 @@ const createAgendaItem = (
   const _endDate = isMidnightDate(event.endDate)
     ? decreaseDate(new Date(event.endDate), 1)
     : new Date(event.endDate);
+
+  if (_endDate < _startDate) {
+    return [];
+  }
 
   if (sameDate(_startDate, _endDate)) {
     return [
