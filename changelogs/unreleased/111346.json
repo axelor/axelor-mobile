@@ -1,0 +1,5 @@
+{
+  "title": "Route switcher: compute Traceback route only once user is connected to avoid stale config",
+  "type": "fix",
+  "packages": "core"
+}
