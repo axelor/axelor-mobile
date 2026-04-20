@@ -28,6 +28,7 @@ import {
   BlockInteractionMessage,
 } from '@axelor/aos-mobile-ui';
 import {ErrorBoundary} from '@axelor/aos-mobile-error';
+import {useSelector} from '../redux/hooks';
 import RootNavigator from './RootNavigator';
 import {Module} from './Module';
 import Translator from '../i18n/component/Translator';
@@ -62,6 +63,8 @@ const ContextedApplication = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  const {logged} = useSelector((state: any) => state.auth);
+
   const [, setRefresh] = useState(false);
   const [tracebackRoute, setTracebackRoute] = useState('');
 
@@ -93,8 +96,10 @@ const ContextedApplication = ({
   }, []);
 
   useEffect(() => {
-    RouterProvider.get('TraceBack').then(setTracebackRoute);
-  }, []);
+    if (logged) {
+      RouterProvider.get('TraceBack').then(setTracebackRoute);
+    }
+  }, [logged]);
 
   const getActiveUserId = useCallback(
     () => getActiveUserInfo().then(({userId}) => userId),
