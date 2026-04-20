@@ -34,7 +34,7 @@ import {
 } from '../components';
 import {RouterProvider} from '../config';
 import {proxy, releaseConfig, versionCheckConfig} from './types';
-import {useDispatch} from '../redux/hooks';
+import {useDispatch, useSelector} from '../redux/hooks';
 import {setAppVersion} from '../features/authSlice';
 import {Module} from './modules';
 import {resetConfigs} from '../features/appConfigSlice';
@@ -64,6 +64,8 @@ const ContextedApplication = ({
 }: ContextedApplicationProps) => {
   const dispatch = useDispatch();
 
+  const {logged} = useSelector(state => state.auth);
+
   const [, setRefresh] = useState(false);
   const [tracebackRoute, setTracebackRoute] = useState('');
 
@@ -72,8 +74,10 @@ const ContextedApplication = ({
   }, []);
 
   useEffect(() => {
-    RouterProvider.get('TraceBack').then(setTracebackRoute);
-  }, []);
+    if (logged) {
+      RouterProvider.get('TraceBack').then(setTracebackRoute);
+    }
+  }, [logged]);
 
   useEffect(() => {
     dispatch(setAppVersion({appVersion: version}));
