@@ -18,7 +18,7 @@
 
 import {useMemo} from 'react';
 import {useSelector} from '@axelor/aos-mobile-core';
-import {useLinesWithRacks} from './line-with-rack';
+import {useLinesWithRacks} from './use-line-with-rack';
 
 export const useSupplierLinesWithRacks = supplierArrival => {
   const {supplierArrivalLineList, totalNumberLines} = useSelector(
