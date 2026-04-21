@@ -1,0 +1,6 @@
+{
+  "title": "Rack management: reduce server load when loading stock move line lists",
+  "type": "refactor",
+  "packages": "stock",
+  "description": "Stock move line lists (customer deliveries, supplier arrivals, internal moves) now fetch rack information for all lines in a single request instead of one request per line. Only the rack field is retrieved, reducing both the number of requests and the size of each response."
+}

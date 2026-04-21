@@ -44,7 +44,7 @@ import {
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
-import {useProductByCompany} from '../../hooks';
+import {useLineWithRack, useProductByCompany} from '../../hooks';
 
 const fromScanKey = 'from-stock-location_internal-move-line-update';
 const toScanKey = 'to-stock-location_internal-move-line-update';
@@ -66,6 +66,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   );
 
   const product = useProductByCompany(internalMoveLine?.product?.id);
+
+  const locker = useLineWithRack(
+    internalMove?.fromStockLocation?.id,
+    internalMoveLine,
+  );
 
   const [fromStockLocation, setFromStockLocation] = useState(
     internalMoveLine?.fromStockLocation,
@@ -215,6 +220,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
               ? null
               : internalMoveLine.trackingNumber?.trackingNumberSeq
           }
+          locker={locker}
           onPress={handleShowProduct}
         />
         <InternalMoveLineTrackingNumberSelect
