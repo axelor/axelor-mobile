@@ -3,6 +3,30 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.9] (2026-04-22)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PlanningView: ingore events when dates are inconsistent (start date after end date)
+- Route switcher: compute Traceback route only once user is connected to avoid stale config
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Rack management: reduce server load when loading stock move line lists
+
+<details>
+Stock move line lists (customer deliveries, supplier arrivals, internal moves) now fetch rack information for all lines in a single request instead of one request per line. Only the rack field is retrieved, reducing both the number of requests and the size of each response.
+</details>
+
+
+#### Fixes
+
+- Rack management: display locker information on stock move line detail screens
+
 ## [9.0.8] (2026-04-14)
 
 ### @axelor/aos-mobile-core
@@ -219,6 +243,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.9]: https://github.com/axelor/axelor-mobile/compare/9.0.8...9.0.9
 [9.0.8]: https://github.com/axelor/axelor-mobile/compare/9.0.7...9.0.8
 [9.0.7]: https://github.com/axelor/axelor-mobile/compare/9.0.6...9.0.7
 [9.0.6]: https://github.com/axelor/axelor-mobile/compare/9.0.5...9.0.6
