@@ -3,6 +3,15 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.44] (2026-04-22)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PlanningView: ingore events when dates are inconsistent (start date after end date)
+- Route switcher: compute Traceback route only once user is connected to avoid stale config
+
 ## [7.2.43] (2026-04-14)
 
 ### @axelor/aos-mobile-core
@@ -1084,6 +1093,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.44]: https://github.com/axelor/axelor-mobile/compare/7.2.43...7.2.44
 [7.2.43]: https://github.com/axelor/axelor-mobile/compare/7.2.42...7.2.43
 [7.2.42]: https://github.com/axelor/axelor-mobile/compare/7.2.41...7.2.42
 [7.2.41]: https://github.com/axelor/axelor-mobile/compare/7.2.40...7.2.41
