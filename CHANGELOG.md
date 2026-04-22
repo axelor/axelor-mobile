@@ -3,6 +3,30 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.21] (2026-04-22)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PlanningView: ingore events when dates are inconsistent (start date after end date)
+- Route switcher: compute Traceback route only once user is connected to avoid stale config
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Rack management: reduce server load when loading stock move line lists
+
+<details>
+Stock move line lists (customer deliveries, supplier arrivals, internal moves) now fetch rack information for all lines in a single request instead of one request per line. Only the rack field is retrieved, reducing both the number of requests and the size of each response.
+</details>
+
+
+#### Fixes
+
+- Rack management: display locker information on stock move line detail screens
+
 ## [8.4.20] (2026-04-14)
 
 ### @axelor/aos-mobile-core
@@ -708,6 +732,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.21]: https://github.com/axelor/axelor-mobile/compare/8.4.20...8.4.21
 [8.4.20]: https://github.com/axelor/axelor-mobile/compare/8.4.19...8.4.20
 [8.4.19]: https://github.com/axelor/axelor-mobile/compare/8.4.18...8.4.19
 [8.4.18]: https://github.com/axelor/axelor-mobile/compare/8.4.17...8.4.18
