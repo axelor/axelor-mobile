@@ -1,5 +1,0 @@
-{
-  "title": "Rack management: display locker information on stock move line detail screens",
-  "type": "fix",
-  "packages": "stock"
-}

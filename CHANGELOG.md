@@ -3,6 +3,30 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.14] (2026-04-22)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PlanningView: ingore events when dates are inconsistent (start date after end date)
+- Route switcher: compute Traceback route only once user is connected to avoid stale config
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Rack management: reduce server load when loading stock move line lists
+
+<details>
+Stock move line lists (customer deliveries, supplier arrivals, internal moves) now fetch rack information for all lines in a single request instead of one request per line. Only the rack field is retrieved, reducing both the number of requests and the size of each response.
+</details>
+
+
+#### Fixes
+
+- Rack management: display locker information on stock move line detail screens
+
 ## [8.5.13] (2026-04-14)
 
 ### @axelor/aos-mobile-core
@@ -453,6 +477,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.14]: https://github.com/axelor/axelor-mobile/compare/8.5.13...8.5.14
 [8.5.13]: https://github.com/axelor/axelor-mobile/compare/8.5.12...8.5.13
 [8.5.12]: https://github.com/axelor/axelor-mobile/compare/8.5.11...8.5.12
 [8.5.11]: https://github.com/axelor/axelor-mobile/compare/8.5.10...8.5.11
