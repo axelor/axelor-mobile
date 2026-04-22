@@ -19,6 +19,7 @@
 export {useCustomerLinesWithRacks} from './customer-delivery-lines';
 export {useInternalLinesWithRacks} from './internal-move-lines';
 export {useStockLinesCheckQty} from './stock-move-lines';
+export {useLineWithRack, useLinesWithRacks} from './use-line-with-rack';
 export {
   useLineHandler,
   useProductByCompany,

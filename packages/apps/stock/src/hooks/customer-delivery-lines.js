@@ -16,43 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect, useMemo} from 'react';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {getRacks} from '../features/racksListSlice';
+import {useMemo} from 'react';
+import {useSelector} from '@axelor/aos-mobile-core';
+import {useLinesWithRacks} from './use-line-with-rack';
 
 export const useCustomerLinesWithRacks = customerDelivery => {
-  const dispatch = useDispatch();
-
-  const {loadingRacks, racksList} = useSelector(state => state.rack);
   const {customerDeliveryLineList, totalNumberLines} = useSelector(
     state => state.customerDeliveryLine,
   );
 
-  useEffect(() => {
-    dispatch(
-      getRacks({
-        stockId: customerDelivery?.fromStockLocation?.id,
-        LineList: customerDeliveryLineList,
-      }),
-    );
-  }, [dispatch, customerDelivery, customerDeliveryLineList]);
-
-  const updatedList = useMemo(() => {
-    return customerDeliveryLineList?.map((item, index) => {
-      const locker = !loadingRacks && (racksList?.[index]?.[0]?.rack ?? '');
-
-      return {
-        ...item,
-        locker,
-      };
-    });
-  }, [loadingRacks, racksList, customerDeliveryLineList]);
+  const {lineList} = useLinesWithRacks(
+    customerDelivery?.fromStockLocation?.id,
+    customerDeliveryLineList,
+  );
 
   return useMemo(
-    () => ({
-      customerDeliveryLineList: updatedList,
-      totalNumberLines: totalNumberLines,
-    }),
-    [totalNumberLines, updatedList],
+    () => ({customerDeliveryLineList: lineList, totalNumberLines}),
+    [lineList, totalNumberLines],
   );
 };

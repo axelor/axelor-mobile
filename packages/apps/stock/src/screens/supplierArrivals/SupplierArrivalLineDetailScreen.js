@@ -47,7 +47,7 @@ import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
 import {updateStockMoveLineTrackingNumber} from '../../features/trackingNumberSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
-import {useProductByCompany} from '../../hooks';
+import {useLineWithRack, useProductByCompany} from '../../hooks';
 
 const stockLocationScanKey = 'to-stock-location_supplier-arrival-line-update';
 
@@ -76,6 +76,11 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   const product = useProductByCompany(
     supplierArrivalLine?.product?.id ?? productId,
+  );
+
+  const locker = useLineWithRack(
+    supplierArrival?.toStockLocation?.id,
+    supplierArrivalLine,
   );
 
   const trackingNumber = useMemo(
@@ -225,6 +230,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           code={product?.code}
           name={product?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
+          locker={locker}
         />
         {trackingNumber != null && (
           <SupplierArrivalOriginInput

@@ -41,7 +41,7 @@ import {
 } from '../../components';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
-import {useProductByCompany} from '../../hooks';
+import {useLineWithRack, useProductByCompany} from '../../hooks';
 
 const stockLocationScanKey =
   'from-stock-location_customer-delivery-line-update';
@@ -70,6 +70,11 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
 
   const product = useProductByCompany(
     productId ?? customerDeliveryLine?.product?.id,
+  );
+
+  const locker = useLineWithRack(
+    customerDelivery?.fromStockLocation?.id,
+    customerDeliveryLine,
   );
 
   const [fromStockLocation, setFromStockLocation] = useState();
@@ -179,7 +184,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           code={product?.code}
           name={product?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
-          locker={customerDeliveryLine?.locker}
+          locker={locker}
         />
         <CustomerDeliveryLineTrackingNumberSelect
           product={product}
