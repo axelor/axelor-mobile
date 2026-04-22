@@ -3,6 +3,15 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.25] (2026-04-22)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PlanningView: ingore events when dates are inconsistent (start date after end date)
+- Route switcher: compute Traceback route only once user is connected to avoid stale config
+
 ## [8.3.24] (2026-04-14)
 
 ### @axelor/aos-mobile-core
@@ -692,6 +701,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.25]: https://github.com/axelor/axelor-mobile/compare/8.3.24...8.3.25
 [8.3.24]: https://github.com/axelor/axelor-mobile/compare/8.3.23...8.3.24
 [8.3.23]: https://github.com/axelor/axelor-mobile/compare/8.3.22...8.3.23
 [8.3.22]: https://github.com/axelor/axelor-mobile/compare/8.3.21...8.3.22

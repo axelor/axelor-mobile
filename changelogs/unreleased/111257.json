@@ -1,5 +1,0 @@
-{
-  "title": "PlanningView: ingore events when dates are inconsistent (start date after end date)",
-  "type": "fix",
-  "packages": "core"
-}
