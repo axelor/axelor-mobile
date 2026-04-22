@@ -3,6 +3,15 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.27] (2026-04-22)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PlanningView: ingore events when dates are inconsistent (start date after end date)
+- Route switcher: compute Traceback route only once user is connected to avoid stale config
+
 ## [7.1.26] (2026-02-04)
 
 ### @axelor/aos-mobile-ui
@@ -735,6 +744,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.27]: https://github.com/axelor/axelor-mobile/compare/7.1.26...7.1.27
 [7.1.26]: https://github.com/axelor/axelor-mobile/compare/7.1.25...7.1.26
 [7.1.25]: https://github.com/axelor/axelor-mobile/compare/7.1.24...7.1.25
 [7.1.24]: https://github.com/axelor/axelor-mobile/compare/7.1.23...7.1.24
