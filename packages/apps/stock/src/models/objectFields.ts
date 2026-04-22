@@ -72,7 +72,6 @@ export const stock_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
-    locker: schemaContructor.string(),
     name: schemaContructor.string(),
     productName: schemaContructor.string(),
     'saleOrderLine.pickingOrderInfo': schemaContructor.string(),
@@ -251,6 +250,10 @@ export const stock_modelAPI: ObjectFields = {
     futureQty: schemaContructor.number(),
     reservedQty: schemaContructor.number(),
   }),
+  stock_stockLocationLineRack: schemaContructor.object({
+    product: schemaContructor.subObject('id'),
+    rack: schemaContructor.string(),
+  }),
   stock_availableProducts: schemaContructor.object({
     currentQty: schemaContructor.number(),
     product: schemaContructor.subObject().concat(
@@ -293,7 +296,6 @@ export const stock_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
-    locker: schemaContructor.string(),
     name: schemaContructor.string(),
     conformitySelect: schemaContructor.number(),
     productName: schemaContructor.string(),

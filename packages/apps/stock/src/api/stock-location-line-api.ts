@@ -54,6 +54,26 @@ const createSearchCriteria = ({productId, stockLocationId}) => {
   return criterias;
 };
 
+export async function searchStockLocationLineRacks({
+  stockId,
+  productIds,
+}: {
+  stockId: number;
+  productIds: number[];
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockLocationLine',
+    criteria: [
+      {fieldName: 'product.id', operator: 'in', value: productIds},
+      {fieldName: 'stockLocation.id', operator: '=', value: stockId},
+    ],
+    fieldKey: 'stock_stockLocationLineRack',
+    page: 0,
+    numberElementsByPage: null,
+    provider: 'model',
+  });
+}
+
 export async function searchStockLocationLine({
   stockId,
   productId,
