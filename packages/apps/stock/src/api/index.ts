@@ -110,6 +110,7 @@ export {searchStockMove as searchStockMoveApi} from './stock-move-api';
 export {
   searchAvailableProducts as searchAvailableProductsApi,
   searchStockLocationLine as searchStockLocationLineApi,
+  searchStockLocationLineRacks as searchStockLocationLineRacksApi,
 } from './stock-location-line-api';
 export {
   checkQuantity as checkQuantityApi,

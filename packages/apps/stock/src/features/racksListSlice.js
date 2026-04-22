@@ -18,41 +18,44 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchStockLocationLine} from '../api/stock-location-line-api';
+import {searchStockLocationLineRacks} from '../api/stock-location-line-api';
 
 export const getRacks = createAsyncThunk(
   'Utils/racks',
   async function (data, {getState}) {
-    let promises = [];
-    data.LineList.forEach(line => {
-      promises.push(fetchData(data.stockId, line, {getState}));
+    const productIds = [
+      ...new Set(
+        data.LineList.filter(line => line.product?.id != null).map(
+          line => line.product.id,
+        ),
+      ),
+    ];
+
+    if (productIds.length === 0) {
+      return {};
+    }
+
+    const results = await handlerApiCall({
+      fetchFunction: searchStockLocationLineRacks,
+      data: {stockId: data.stockId, productIds},
+      action: 'Stock_SliceAction_FetchRacks',
+      getState,
+      responseOptions: {isArrayResponse: true},
     });
-    return Promise.all(promises).then(resultes => {
-      return resultes;
+
+    const racksMap = {};
+    results?.forEach(line => {
+      if (line.product?.id != null) {
+        racksMap[line.product.id] = line.rack ?? '';
+      }
     });
+    return racksMap;
   },
 );
 
-var getRack = async (stockId, productId, {getState}) => {
-  return handlerApiCall({
-    fetchFunction: searchStockLocationLine,
-    data: {
-      stockId: stockId,
-      productId: productId,
-    },
-    action: 'Stock_SliceAction_FetchRacks',
-    getState,
-    responseOptions: {isArrayResponse: true},
-  });
-};
-
-async function fetchData(stockId, line, {getState}) {
-  return await getRack(stockId, line.product.id, {getState});
-}
-
 const initialState = {
   loadingRacks: false,
-  racksList: [],
+  racksMap: {},
 };
 
 const rackSlice = createSlice({
@@ -64,7 +67,7 @@ const rackSlice = createSlice({
     });
     builder.addCase(getRacks.fulfilled, (state, action) => {
       state.loadingRacks = false;
-      state.racksList = action.payload;
+      state.racksMap = action.payload;
     });
     builder.addCase(getRacks.rejected, state => {
       state.loadingRacks = false;
