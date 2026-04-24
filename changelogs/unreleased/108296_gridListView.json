@@ -1,0 +1,5 @@
+{
+  "title": "GridListView: add new redux-connected grid list view template",
+  "type": "feat",
+  "packages": "core"
+}
