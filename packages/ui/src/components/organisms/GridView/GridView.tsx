@@ -25,13 +25,14 @@ import {
   View,
 } from 'react-native';
 import {checkNullString} from '../../../utils';
-import {Card, Text} from '../../atoms';
+import {Card, Icon, Text} from '../../atoms';
 import CellView from './CellView';
 
 export interface Column {
   key: string;
   title: string;
   width?: number;
+  sortable?: boolean;
   getValue?: (row: any) => any;
   renderCell?: (row: any) => React.ReactElement | null;
 }
@@ -49,6 +50,10 @@ const GridView = ({
   transparent = false,
   translator = t => t,
   onRowPress,
+  sortable = false,
+  sortField,
+  sortOrder,
+  onSortChange,
 }: {
   styleContainer?: any;
   style?: any;
@@ -58,6 +63,10 @@ const GridView = ({
   transparent?: boolean;
   translator?: (value: string) => string;
   onRowPress?: (row: any) => void;
+  sortable?: boolean;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+  onSortChange?: (field: string) => void;
 }) => {
   const columnWidth = useMemo(() => {
     if (!Array.isArray(columns) || columns.length === 0) {
@@ -89,18 +98,30 @@ const GridView = ({
             showRight={idx < self.length - 1}
             showBottom={true}
             width={_c.width ?? columnWidth}>
-            <Text
-              writingType="title"
-              fontSize={14}
-              numberOfLines={1}
-              style={styles.cellTitle}>
-              {_c.title}
-            </Text>
+            <TouchableOpacity
+              style={styles.sortableHeader}
+              activeOpacity={0.9}
+              disabled={!sortable || _c.sortable === false}
+              onPress={() => onSortChange?.(_c.key)}>
+              <Text
+                writingType="title"
+                fontSize={14}
+                numberOfLines={1}
+                style={styles.cellTitle}>
+                {_c.title}
+              </Text>
+              {sortField === _c.key && (
+                <Icon
+                  name={sortOrder === 'asc' ? 'arrow-up' : 'arrow-down'}
+                  size={12}
+                />
+              )}
+            </TouchableOpacity>
           </CellView>
         ))}
       </View>
     );
-  }, [columnWidth, columns]);
+  }, [columnWidth, columns, onSortChange, sortField, sortOrder, sortable]);
 
   const renderRow = useCallback(
     (row: any, rowIdx: number, dataArray: any[]) => {
@@ -190,8 +211,15 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: ROW_MIN_HEIGHT,
   },
+  sortableHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  },
   cellTitle: {
     textAlign: 'center',
+    flexShrink: 1,
   },
   noDataText: {
     textAlign: 'center',

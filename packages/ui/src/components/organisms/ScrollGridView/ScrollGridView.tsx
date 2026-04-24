@@ -31,26 +31,29 @@ const LOADING_DELAY_MS = 1500;
 
 interface ScrollGridViewProps {
   style?: any;
-  loadingList: boolean;
   columns: Column[];
-  data: any[];
-  fetchData: (page: number) => void;
+  loadingList: boolean;
   moreLoading: boolean;
   isListEnd: boolean;
+  data: any[];
+  fetchData: (page: number) => void;
   translator?: (key: string) => string;
   onRowPress?: (row: any) => void;
+  sortable?: boolean;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+  onSortChange?: (field: string) => void;
 }
 
 const ScrollGridView = ({
   style,
   loadingList,
-  columns,
-  data,
-  fetchData,
   moreLoading,
   isListEnd,
+  data,
+  fetchData,
   translator = t => t,
-  onRowPress,
+  ...props
 }: ScrollGridViewProps) => {
   const [, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -136,11 +139,10 @@ const ScrollGridView = ({
       }>
       <GridView
         styleContainer={styles.gridContainer}
-        columns={columns}
         data={data}
         transparent
-        onRowPress={onRowPress}
         translator={translator}
+        {...props}
       />
       <View style={styles.footer}>
         {moreLoading && <ActivityIndicator size="large" color="black" />}

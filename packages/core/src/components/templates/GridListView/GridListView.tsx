@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {GridViewColumn, ScrollGridView} from '@axelor/aos-mobile-ui';
 import {useDispatch} from '../../../redux/hooks';
 import {useIsFocused} from '../../../hooks';
 import {useTranslator} from '../../../i18n';
+
+type SortConfig = {field: string; order: 'asc' | 'desc'} | undefined;
 
 interface GridListViewProps {
   style?: any;
@@ -32,6 +34,8 @@ interface GridListViewProps {
   sliceFunction: any;
   sliceFunctionData?: Object;
   onRowPress?: (row: any) => void;
+  sortable?: boolean;
+  defaultSort?: SortConfig;
 }
 
 const GridListView = ({
@@ -44,16 +48,28 @@ const GridListView = ({
   sliceFunction,
   sliceFunctionData,
   onRowPress,
+  sortable = false,
+  defaultSort,
 }: GridListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
+  const [sortState, setSortState] = useState<SortConfig>(defaultSort);
+
   const fetchListAPI = useCallback(
     (page = 0) => {
-      dispatch(sliceFunction({...(sliceFunctionData ?? {}), page}));
+      dispatch(
+        sliceFunction({
+          ...(sliceFunctionData ?? {}),
+          page,
+          sortFields: sortState
+            ? [`${sortState.order === 'desc' ? '-' : ''}${sortState.field}`]
+            : [],
+        }),
+      );
     },
-    [dispatch, sliceFunction, sliceFunctionData],
+    [dispatch, sliceFunction, sliceFunctionData, sortState],
   );
 
   useEffect(() => {
@@ -61,6 +77,14 @@ const GridListView = ({
       fetchListAPI(0);
     }
   }, [fetchListAPI, isFocused]);
+
+  const handleSortChange = useCallback((field: string) => {
+    setSortState(prev => {
+      if (prev?.field !== field) return {field, order: 'asc'};
+      if (prev.order === 'asc') return {field, order: 'desc'};
+      return undefined;
+    });
+  }, []);
 
   return (
     <ScrollGridView
@@ -73,6 +97,10 @@ const GridListView = ({
       isListEnd={isListEnd}
       translator={I18n.t}
       onRowPress={onRowPress}
+      sortable={sortable}
+      sortField={sortState?.field}
+      sortOrder={sortState?.order}
+      onSortChange={handleSortChange}
     />
   );
 };
