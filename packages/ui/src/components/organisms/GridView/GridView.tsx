@@ -17,7 +17,13 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {checkNullString} from '../../../utils';
 import {Card, Text} from '../../atoms';
 import CellView from './CellView';
@@ -38,12 +44,14 @@ const GridView = ({
   columns,
   data,
   translator = t => t,
+  onRowPress,
 }: {
   style?: any;
   title?: string;
   columns: Column[];
   data: any[];
   translator?: (value: string) => string;
+  onRowPress?: (row: any) => void;
 }) => {
   const columnWidth = useMemo(() => {
     if (!Array.isArray(columns) || columns.length === 0) {
@@ -83,12 +91,15 @@ const GridView = ({
   }, [columnWidth, columns]);
 
   const renderRow = useCallback(
-    (row, rowIdx, dataArray) => {
+    (row: any, rowIdx: number, dataArray: any[]) => {
       return (
-        <View
+        <TouchableOpacity
           key={rowIdx}
           style={styles.rowContainer}
-          testID="gridViewRowContainer">
+          testID="gridViewRowContainer"
+          activeOpacity={0.9}
+          disabled={!onRowPress}
+          onPress={() => onRowPress?.(row)}>
           {columns.map((_c, idx, self) => (
             <CellView
               key={`${_c.key} - ${rowIdx}`}
@@ -98,10 +109,10 @@ const GridView = ({
               <Text>{_c?.getValue?.(row) ?? row?.[_c.key] ?? ''}</Text>
             </CellView>
           ))}
-        </View>
+        </TouchableOpacity>
       );
     },
-    [columnWidth, columns],
+    [columnWidth, columns, onRowPress],
   );
 
   if (!Array.isArray(columns) || columns.length === 0) {
