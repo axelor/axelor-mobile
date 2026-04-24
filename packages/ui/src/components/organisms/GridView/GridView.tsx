@@ -41,17 +41,21 @@ const CARD_PADDING = '2.5%';
 const ROW_MIN_HEIGHT = 44;
 
 const GridView = ({
+  styleContainer,
   style,
   title,
   columns,
   data,
+  transparent = false,
   translator = t => t,
   onRowPress,
 }: {
+  styleContainer?: any;
   style?: any;
   title?: string;
   columns: Column[];
   data: any[];
+  transparent?: boolean;
   translator?: (value: string) => string;
   onRowPress?: (row: any) => void;
 }) => {
@@ -68,11 +72,13 @@ const GridView = ({
 
     if (flexCount === 0) return COLUMN_DEFAULT_WIDTH;
 
-    const usableWidth = Dimensions.get('window').width * 0.85;
+    const usableWidth = transparent
+      ? Dimensions.get('window').width
+      : Dimensions.get('window').width * 0.85;
     const width = (usableWidth - fixedTotal) / flexCount;
 
     return width < COLUMN_DEFAULT_WIDTH ? COLUMN_DEFAULT_WIDTH : width;
-  }, [columns]);
+  }, [columns, transparent]);
 
   const renderHeader = useCallback(() => {
     return (
@@ -127,14 +133,19 @@ const GridView = ({
     [columnWidth, columns, onRowPress],
   );
 
+  const WrapperComponent = useMemo(
+    () => (transparent ? View : Card),
+    [transparent],
+  );
+
   if (!Array.isArray(columns) || columns.length === 0) {
     return null;
   }
 
   return (
-    <View style={styles.container} testID="gridViewContainer">
+    <View style={[styles.container, styleContainer]} testID="gridViewContainer">
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      <Card style={[styles.cardContainer, style]}>
+      <WrapperComponent style={[!transparent && styles.cardContainer, style]}>
         <ScrollView horizontal contentContainerStyle={styles.scrollView}>
           <View>
             {renderHeader()}
@@ -150,7 +161,7 @@ const GridView = ({
             )}
           </View>
         </ScrollView>
-      </Card>
+      </WrapperComponent>
     </View>
   );
 };
