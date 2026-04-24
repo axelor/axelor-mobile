@@ -22,7 +22,7 @@ import {checkNullString} from '../../../utils';
 import {Card, Text} from '../../atoms';
 import CellView from './CellView';
 
-interface Column {
+export interface Column {
   key: string;
   title: string;
   width?: number;
