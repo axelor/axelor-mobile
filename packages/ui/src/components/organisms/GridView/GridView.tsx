@@ -50,7 +50,16 @@ const GridView = ({
       return COLUMN_DEFAULT_WIDTH;
     }
 
-    const width = (Dimensions.get('window').width * 0.85) / columns.length;
+    const fixedTotal = columns.reduce(
+      (sum, c) => sum + (c.width != null ? c.width : 0),
+      0,
+    );
+    const flexCount = columns.filter(c => c.width == null).length;
+
+    if (flexCount === 0) return COLUMN_DEFAULT_WIDTH;
+
+    const usableWidth = Dimensions.get('window').width * 0.85;
+    const width = (usableWidth - fixedTotal) / flexCount;
 
     return width < COLUMN_DEFAULT_WIDTH ? COLUMN_DEFAULT_WIDTH : width;
   }, [columns]);
