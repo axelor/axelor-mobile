@@ -36,6 +36,7 @@ interface GridListViewProps {
   onRowPress?: (row: any) => void;
   sortable?: boolean;
   defaultSort?: SortConfig;
+  stickyHeader?: boolean;
 }
 
 const GridListView = ({
@@ -50,6 +51,7 @@ const GridListView = ({
   onRowPress,
   sortable = false,
   defaultSort,
+  stickyHeader = false,
 }: GridListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -101,6 +103,7 @@ const GridListView = ({
       sortField={sortState?.field}
       sortOrder={sortState?.order}
       onSortChange={handleSortChange}
+      stickyHeader={stickyHeader}
     />
   );
 };

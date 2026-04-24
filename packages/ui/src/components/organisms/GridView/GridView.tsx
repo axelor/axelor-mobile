@@ -17,29 +17,15 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {checkNullString} from '../../../utils';
-import {Card, Icon, Text} from '../../atoms';
+import {Card, Text} from '../../atoms';
 import CellView from './CellView';
+import GridHeader from './GridHeader';
+import {computeColumnWidth} from './display.helpers';
+import {Column, ROW_MIN_HEIGHT} from './type';
 
-export interface Column {
-  key: string;
-  title: string;
-  width?: number;
-  sortable?: boolean;
-  getValue?: (row: any) => any;
-  renderCell?: (row: any) => React.ReactElement | null;
-}
-
-const COLUMN_DEFAULT_WIDTH = 70;
 const CARD_PADDING = '2.5%';
-const ROW_MIN_HEIGHT = 44;
 
 const GridView = ({
   styleContainer,
@@ -54,6 +40,8 @@ const GridView = ({
   sortField,
   sortOrder,
   onSortChange,
+  hideHeader = false,
+  onHorizontalScroll,
 }: {
   styleContainer?: any;
   style?: any;
@@ -67,61 +55,13 @@ const GridView = ({
   sortField?: string;
   sortOrder?: 'asc' | 'desc';
   onSortChange?: (field: string) => void;
+  hideHeader?: boolean;
+  onHorizontalScroll?: (x: number) => void;
 }) => {
-  const columnWidth = useMemo(() => {
-    if (!Array.isArray(columns) || columns.length === 0) {
-      return COLUMN_DEFAULT_WIDTH;
-    }
-
-    const fixedTotal = columns.reduce(
-      (sum, c) => sum + (c.width != null ? c.width : 0),
-      0,
-    );
-    const flexCount = columns.filter(c => c.width == null).length;
-
-    if (flexCount === 0) return COLUMN_DEFAULT_WIDTH;
-
-    const usableWidth = transparent
-      ? Dimensions.get('window').width
-      : Dimensions.get('window').width * 0.85;
-    const width = (usableWidth - fixedTotal) / flexCount;
-
-    return width < COLUMN_DEFAULT_WIDTH ? COLUMN_DEFAULT_WIDTH : width;
-  }, [columns, transparent]);
-
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.rowContainer} testID="gridViewHeaderContainer">
-        {columns.map((_c, idx, self) => (
-          <CellView
-            key={_c.key}
-            showRight={idx < self.length - 1}
-            showBottom={true}
-            width={_c.width ?? columnWidth}>
-            <TouchableOpacity
-              style={styles.sortableHeader}
-              activeOpacity={0.9}
-              disabled={!sortable || _c.sortable === false}
-              onPress={() => onSortChange?.(_c.key)}>
-              <Text
-                writingType="title"
-                fontSize={14}
-                numberOfLines={1}
-                style={styles.cellTitle}>
-                {_c.title}
-              </Text>
-              {sortField === _c.key && (
-                <Icon
-                  name={sortOrder === 'asc' ? 'arrow-up' : 'arrow-down'}
-                  size={12}
-                />
-              )}
-            </TouchableOpacity>
-          </CellView>
-        ))}
-      </View>
-    );
-  }, [columnWidth, columns, onSortChange, sortField, sortOrder, sortable]);
+  const columnWidth = useMemo(
+    () => computeColumnWidth(columns, transparent),
+    [columns, transparent],
+  );
 
   const renderRow = useCallback(
     (row: any, rowIdx: number, dataArray: any[]) => {
@@ -167,9 +107,27 @@ const GridView = ({
     <View style={[styles.container, styleContainer]} testID="gridViewContainer">
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <WrapperComponent style={[!transparent && styles.cardContainer, style]}>
-        <ScrollView horizontal contentContainerStyle={styles.scrollView}>
+        <ScrollView
+          horizontal
+          contentContainerStyle={styles.scrollView}
+          onScroll={
+            onHorizontalScroll
+              ? ({nativeEvent}) =>
+                  onHorizontalScroll(nativeEvent.contentOffset.x)
+              : undefined
+          }
+          scrollEventThrottle={onHorizontalScroll ? 16 : undefined}>
           <View>
-            {renderHeader()}
+            {!hideHeader && (
+              <GridHeader
+                columns={columns}
+                sortable={sortable}
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSortChange={onSortChange}
+                transparent={transparent}
+              />
+            )}
             {!Array.isArray(data) || data.length === 0 ? (
               <Text
                 writingType="details"
@@ -210,16 +168,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     minHeight: ROW_MIN_HEIGHT,
-  },
-  sortableHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 4,
-  },
-  cellTitle: {
-    textAlign: 'center',
-    flexShrink: 1,
   },
   noDataText: {
     textAlign: 'center',

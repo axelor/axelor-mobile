@@ -1,0 +1,5 @@
+{
+  "title": "GridView: add option to hide the header row",
+  "type": "feat",
+  "packages": "ui"
+}

@@ -16,22 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
+  Animated,
   RefreshControl,
   ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
-import GridView, {Column} from '../GridView/GridView';
 import {Text} from '../../atoms';
+import {GridViewColumn, GridHeader, GridView} from '../GridView';
 
 const LOADING_DELAY_MS = 1500;
 
 interface ScrollGridViewProps {
   style?: any;
-  columns: Column[];
+  columns: GridViewColumn[];
   loadingList: boolean;
   moreLoading: boolean;
   isListEnd: boolean;
@@ -43,6 +44,7 @@ interface ScrollGridViewProps {
   sortField?: string;
   sortOrder?: 'asc' | 'desc';
   onSortChange?: (field: string) => void;
+  stickyHeader?: boolean;
 }
 
 const ScrollGridView = ({
@@ -53,12 +55,16 @@ const ScrollGridView = ({
   data,
   fetchData,
   translator = t => t,
+  stickyHeader = false,
   ...props
 }: ScrollGridViewProps) => {
   const [, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const [layoutHeight, setLayoutHeight] = useState(0);
+
+  const scrollXAnim = useRef(new Animated.Value(0)).current;
+  const headerTranslateX = useRef(Animated.multiply(scrollXAnim, -1)).current;
 
   const initialize = useCallback(() => {
     setPage(0);
@@ -122,43 +128,68 @@ const ScrollGridView = ({
     [handleMoreData],
   );
 
+  const syncHeaderScroll = useCallback(
+    (x: number) => scrollXAnim.setValue(x),
+    [scrollXAnim],
+  );
+
   if (isLoading) {
     return <ActivityIndicator style={styles.loader} />;
   }
 
   return (
-    <ScrollView
-      style={style}
-      contentContainerStyle={styles.scrollContent}
-      onScroll={handleScroll}
-      scrollEventThrottle={400}
-      onContentSizeChange={(_, h) => setContentHeight(h)}
-      onLayout={e => setLayoutHeight(e.nativeEvent.layout.height)}
-      refreshControl={
-        <RefreshControl refreshing={false} onRefresh={initialize} />
-      }>
-      <GridView
-        styleContainer={styles.gridContainer}
-        data={data}
-        transparent
-        translator={translator}
-        {...props}
-      />
-      <View style={styles.footer}>
-        {moreLoading && <ActivityIndicator size="large" color="black" />}
-        {isListEnd && (
-          <Text writingType="details" fontSize={14}>
-            {data?.length === 0
-              ? translator('Base_NoData')
-              : translator('Base_NoMoreItems')}
-          </Text>
-        )}
-      </View>
-    </ScrollView>
+    <View style={[styles.container, style]}>
+      {stickyHeader && (
+        <View style={styles.stickyHeaderWrapper}>
+          <Animated.View style={{transform: [{translateX: headerTranslateX}]}}>
+            <GridHeader {...props} transparent />
+          </Animated.View>
+        </View>
+      )}
+      <ScrollView
+        style={styles.scrollFlex}
+        contentContainerStyle={styles.scrollContent}
+        onScroll={handleScroll}
+        scrollEventThrottle={400}
+        onContentSizeChange={(_, h) => setContentHeight(h)}
+        onLayout={e => setLayoutHeight(e.nativeEvent.layout.height)}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={initialize} />
+        }>
+        <GridView
+          styleContainer={styles.gridContainer}
+          data={data}
+          transparent
+          translator={translator}
+          hideHeader={stickyHeader}
+          onHorizontalScroll={stickyHeader ? syncHeaderScroll : undefined}
+          {...props}
+        />
+        <View style={styles.footer}>
+          {moreLoading && <ActivityIndicator size="large" color="black" />}
+          {isListEnd && (
+            <Text writingType="details" fontSize={14}>
+              {data?.length === 0
+                ? translator('Base_NoData')
+                : translator('Base_NoMoreItems')}
+            </Text>
+          )}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollFlex: {
+    flex: 1,
+  },
+  stickyHeaderWrapper: {
+    overflow: 'hidden',
+  },
   scrollContent: {
     flexGrow: 1,
   },
