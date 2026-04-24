@@ -33,10 +33,12 @@ export interface Column {
   title: string;
   width?: number;
   getValue?: (row: any) => any;
+  renderCell?: (row: any) => React.ReactElement | null;
 }
 
 const COLUMN_DEFAULT_WIDTH = 70;
 const CARD_PADDING = '2.5%';
+const ROW_MIN_HEIGHT = 44;
 
 const GridView = ({
   style,
@@ -81,7 +83,11 @@ const GridView = ({
             showRight={idx < self.length - 1}
             showBottom={true}
             width={_c.width ?? columnWidth}>
-            <Text writingType="title" fontSize={16} style={styles.cellTitle}>
+            <Text
+              writingType="title"
+              fontSize={14}
+              numberOfLines={1}
+              style={styles.cellTitle}>
               {_c.title}
             </Text>
           </CellView>
@@ -106,7 +112,13 @@ const GridView = ({
               showRight={idx < self.length - 1}
               showBottom={rowIdx < dataArray.length - 1}
               width={_c.width ?? columnWidth}>
-              <Text>{_c?.getValue?.(row) ?? row?.[_c.key] ?? ''}</Text>
+              {_c.renderCell ? (
+                _c.renderCell(row)
+              ) : (
+                <Text numberOfLines={1}>
+                  {_c?.getValue?.(row) ?? row?.[_c.key] ?? ''}
+                </Text>
+              )}
             </CellView>
           ))}
         </TouchableOpacity>
@@ -165,6 +177,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     width: '100%',
+    minHeight: ROW_MIN_HEIGHT,
   },
   cellTitle: {
     textAlign: 'center',

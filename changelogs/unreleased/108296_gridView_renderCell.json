@@ -1,0 +1,5 @@
+{
+  "title": "GridView: add custom cell renderer support on columns",
+  "type": "feat",
+  "packages": "ui"
+}
