@@ -27,6 +27,7 @@ import {
 } from 'react-native';
 import {Text} from '../../atoms';
 import {GridViewColumn, GridHeader, GridView} from '../GridView';
+import {useGridSelection} from './useGridSelection';
 
 const LOADING_DELAY_MS = 1500;
 
@@ -45,6 +46,8 @@ interface ScrollGridViewProps {
   sortOrder?: 'asc' | 'desc';
   onSortChange?: (field: string) => void;
   stickyHeader?: boolean;
+  mode?: 'simple' | 'checkbox';
+  onSelectionChange?: (items: any[]) => void;
 }
 
 const ScrollGridView = ({
@@ -56,6 +59,9 @@ const ScrollGridView = ({
   fetchData,
   translator = t => t,
   stickyHeader = false,
+  columns,
+  mode = 'simple',
+  onSelectionChange,
   ...props
 }: ScrollGridViewProps) => {
   const [, setPage] = useState(0);
@@ -65,6 +71,8 @@ const ScrollGridView = ({
 
   const scrollXAnim = useRef(new Animated.Value(0)).current;
   const headerTranslateX = useRef(Animated.multiply(scrollXAnim, -1)).current;
+
+  const resolvedColumns = useGridSelection(columns, data, mode, onSelectionChange);
 
   const initialize = useCallback(() => {
     setPage(0);
@@ -142,7 +150,7 @@ const ScrollGridView = ({
       {stickyHeader && (
         <View style={styles.stickyHeaderWrapper}>
           <Animated.View style={{transform: [{translateX: headerTranslateX}]}}>
-            <GridHeader {...props} transparent />
+            <GridHeader columns={resolvedColumns} transparent {...props} />
           </Animated.View>
         </View>
       )}
@@ -158,6 +166,7 @@ const ScrollGridView = ({
         }>
         <GridView
           styleContainer={styles.gridContainer}
+          columns={resolvedColumns}
           data={data}
           transparent
           translator={translator}

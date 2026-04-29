@@ -5,6 +5,7 @@ export interface Column {
   sortable?: boolean;
   getValue?: (row: any) => any;
   renderCell?: (row: any) => React.ReactElement | null;
+  renderHeader?: () => React.ReactElement | null;
 }
 
 export const ROW_MIN_HEIGHT = 44;

@@ -53,6 +53,8 @@ interface GridListViewProps {
   displaySearchBar?: boolean;
   searchPlaceholder?: string;
   scanKeySearch?: string;
+  mode?: 'simple' | 'checkbox';
+  onSelectionChange?: (items: any[]) => void;
 }
 
 const GridListView = ({
@@ -77,6 +79,8 @@ const GridListView = ({
   displaySearchBar = false,
   searchPlaceholder,
   scanKeySearch,
+  mode = 'simple',
+  onSelectionChange,
 }: GridListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -185,12 +189,14 @@ const GridListView = ({
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
-        onRowPress={onRowPress}
+        onRowPress={mode === 'simple' ? onRowPress : undefined}
         sortable={sortable}
         sortField={sortState?.field}
         sortOrder={sortState?.order}
         onSortChange={handleSortChange}
         stickyHeader={stickyHeader}
+        mode={mode}
+        onSelectionChange={onSelectionChange}
       />
     </View>
   );

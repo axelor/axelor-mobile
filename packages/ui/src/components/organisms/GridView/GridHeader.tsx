@@ -51,25 +51,29 @@ const GridHeader = ({
           showRight={idx < self.length - 1}
           showBottom
           width={_c.width ?? columnWidth}>
-          <TouchableOpacity
-            style={styles.sortableHeader}
-            activeOpacity={0.9}
-            disabled={!sortable || _c.sortable === false}
-            onPress={() => onSortChange?.(_c.key)}>
-            <Text
-              writingType="title"
-              fontSize={14}
-              numberOfLines={1}
-              style={styles.cellTitle}>
-              {_c.title}
-            </Text>
-            {sortField === _c.key && (
-              <Icon
-                name={sortOrder === 'asc' ? 'arrow-up' : 'arrow-down'}
-                size={12}
-              />
-            )}
-          </TouchableOpacity>
+          {_c.renderHeader ? (
+            _c.renderHeader()
+          ) : (
+            <TouchableOpacity
+              style={styles.sortableHeader}
+              activeOpacity={0.9}
+              disabled={!sortable || _c.sortable === false}
+              onPress={() => onSortChange?.(_c.key)}>
+              <Text
+                writingType="title"
+                fontSize={14}
+                numberOfLines={1}
+                style={styles.cellTitle}>
+                {_c.title}
+              </Text>
+              {sortField === _c.key && (
+                <Icon
+                  name={sortOrder === 'asc' ? 'arrow-up' : 'arrow-down'}
+                  size={12}
+                />
+              )}
+            </TouchableOpacity>
+          )}
         </CellView>
       ))}
     </View>
