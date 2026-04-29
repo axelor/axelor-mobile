@@ -33,7 +33,9 @@ const CellView = ({showRight = false, showBottom = false, width, ...props}) => {
   );
 
   const borderStyles = useMemo(() => {
-    const result: StyleProp<ViewStyle>[] = [{width, padding: 5}];
+    const result: StyleProp<ViewStyle>[] = [
+      {width, padding: 5, justifyContent: 'center', alignItems: 'center'},
+    ];
 
     if (showRight) {
       result.push(getBorderStyle('Right'));

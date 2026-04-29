@@ -29,7 +29,7 @@ export {default as DropdownCardSwitch} from './DropdownCardSwitch/DropdownCardSw
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
 export {default as DurationInput} from './DurationInput/DurationInput';
 export {default as FloatingButton} from './FloatingButton/FloatingButton';
-export {default as GridView} from './GridView/GridView';
+export * from './GridView';
 export {default as GroupByScrollList} from './GroupByScrollList/GroupByScrollList';
 export {default as HeaderContainer} from './HeaderContainer/HeaderContainer';
 export {default as ImageBubble} from './ImageBubble/ImageBubble';
@@ -39,6 +39,7 @@ export {default as MultiValuePicker} from './MultiValuePicker/MultiValuePicker';
 export {default as Picker} from './Picker/Picker';
 export {default as ProgressBar} from './ProgressBar/ProgressBar';
 export {default as QuantityCard} from './QuantityCard/QuantityCard';
+export {default as ScrollGridView} from './ScrollGridView/ScrollGridView';
 export {ActionType, ScrollList, TopActions} from './ScrollList';
 export {default as SearchBar} from './SearchBar/SearchBar';
 export {default as SingleSelectScrollList} from './SingleSelectScrollList/SingleSelectScrollList';
