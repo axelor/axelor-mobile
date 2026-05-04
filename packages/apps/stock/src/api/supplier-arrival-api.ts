@@ -19,20 +19,22 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  Criteria,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
 
 const createSearchCriteria = (
-  searchValue,
-  toStockLocationId,
-  partnerId,
-  statusList,
+  searchValue: string | undefined,
+  toStockLocationId: number | undefined,
+  partnerId: number | undefined,
+  statusList: any[] | undefined,
 ) => {
   const StockMove = getTypes().StockMove;
 
-  const criteria = [
+  const criteria: Criteria[] = [
     {
       fieldName: 'isReversion',
       operator: '=',
@@ -44,7 +46,7 @@ const createSearchCriteria = (
       value: StockMove?.typeSelect.incoming,
     },
     {
-      operator: 'OR',
+      operator: 'or',
       criteria: [
         {
           fieldName: 'statusSelect',
@@ -58,7 +60,7 @@ const createSearchCriteria = (
         },
       ],
     },
-    getSearchCriterias('stock_supplierArrival', searchValue),
+    getSearchCriterias('stock_supplierArrival', searchValue as any),
   ];
 
   if (toStockLocationId != null) {
@@ -99,6 +101,14 @@ export async function searchSupplierArrivalFilter({
   companyId,
   page = 0,
   filterDomain,
+}: {
+  searchValue?: string;
+  toStockLocationId?: number;
+  partnerId?: number;
+  statusList?: any[];
+  companyId: number;
+  page?: number;
+  filterDomain?: any;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMove',
@@ -117,7 +127,11 @@ export async function searchSupplierArrivalFilter({
   });
 }
 
-export async function fetchSupplierArrival({supplierArrivalId}) {
+export async function fetchSupplierArrival({
+  supplierArrivalId,
+}: {
+  supplierArrivalId: number;
+}) {
   return createStandardFetch({
     model: 'com.axelor.apps.stock.db.StockMove',
     id: supplierArrivalId,
@@ -137,7 +151,7 @@ export async function addLineStockMove({
   version,
   toStockLocationId,
   description,
-}) {
+}: any) {
   const StockMove = getTypes().StockMove;
 
   return getActionApi().send({
@@ -172,13 +186,38 @@ export async function addLineStockMove({
   });
 }
 
-export async function realizeSockMove({stockMoveId, version}) {
+export async function updateSupplierShipmentDetails(body: {
+  id: number;
+  version: number;
+  supplierShipmentRef: string;
+  supplierShipmentDate: string;
+}) {
+  const {formattedData, matchers} = formatRequestBody(body, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockMove',
+    method: 'post',
+    body: {data: formattedData},
+    description: 'update supplier arrival shipment details',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMove',
+      id: body.id,
+      fields: matchers,
+    },
+  });
+}
+
+export async function realizeSockMove({
+  stockMoveId,
+  version,
+}: {
+  stockMoveId: number;
+  version: number;
+}) {
   return getActionApi().send({
     url: `/ws/aos/stock-move/realize/${stockMoveId}`,
     method: 'put',
-    body: {
-      version,
-    },
+    body: {version},
     description: 'realize sipplier arrival',
   });
 }

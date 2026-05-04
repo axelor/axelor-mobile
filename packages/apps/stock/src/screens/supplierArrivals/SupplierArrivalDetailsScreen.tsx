@@ -32,10 +32,11 @@ import {
   SupplierArrivalButtons,
   SupplierArrivalMovementIndicationCard,
   SupplierArrivalSearchLineContainer,
+  SupplierArrivalShipmentDropdownCard,
 } from '../../components';
 import {fetchSupplierArrival} from '../../features/supplierArrivalSlice';
 
-const SupplierArrivalDetailsScreen = ({route}) => {
+const SupplierArrivalDetailsScreen = ({route}: any) => {
   const supplierArrivalId = route.params.supplierArrivalId;
   const dispatch = useDispatch();
   useContextRegister({
@@ -70,6 +71,9 @@ const SupplierArrivalDetailsScreen = ({route}) => {
       />
       <KeyboardAvoidingScrollView
         refresh={{loading, fetcher: getSupplierArrival}}>
+        <SupplierArrivalShipmentDropdownCard
+          supplierArrival={supplierArrival}
+        />
         <SupplierArrivalMovementIndicationCard
           supplierArrival={supplierArrival}
         />

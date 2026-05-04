@@ -37,7 +37,7 @@ interface StockMoveHeaderProps {
   lineRef?: string;
   status: number;
   date: string;
-  availability: number;
+  availability?: number;
   stockMoveLineId?: number;
 }
 
@@ -55,7 +55,7 @@ const StockMoveHeader = ({
   const {getItemColor, getItemTitle} = useTypeHelpers();
   const formatNumber = useDigitFormat();
 
-  const checkQtyObject = useStockLinesCheckQty(stockMoveLineId);
+  const checkQtyObject: any = useStockLinesCheckQty(stockMoveLineId);
 
   return (
     <View style={styles.container}>

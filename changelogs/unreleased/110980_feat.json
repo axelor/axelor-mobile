@@ -1,0 +1,6 @@
+{
+  "title": "Supplier arrival: add supplier shipment details editing from the details screen",
+  "type": "feat",
+  "packages": "stock",
+  "description": "A pencil button is now visible in the supplier arrival header next to the shipment reference, allowing users to fill in or update the supplier shipment reference (with barcode scan support) and supplier shipment date at any time before realizing the move."
+}
