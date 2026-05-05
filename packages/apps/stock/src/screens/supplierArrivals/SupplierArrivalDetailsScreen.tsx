@@ -71,10 +71,10 @@ const SupplierArrivalDetailsScreen = ({route}: any) => {
       />
       <KeyboardAvoidingScrollView
         refresh={{loading, fetcher: getSupplierArrival}}>
-        <SupplierArrivalShipmentDropdownCard
+        <SupplierArrivalMovementIndicationCard
           supplierArrival={supplierArrival}
         />
-        <SupplierArrivalMovementIndicationCard
+        <SupplierArrivalShipmentDropdownCard
           supplierArrival={supplierArrival}
         />
         <SupplierArrivalSearchLineContainer />
