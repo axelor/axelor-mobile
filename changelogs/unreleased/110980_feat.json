@@ -1,6 +1,0 @@
-{
-  "title": "Supplier arrival: add supplier shipment details section on the details screen",
-  "type": "feat",
-  "packages": "stock",
-  "description": "A collapsible 'Shipment details' section is now visible on the supplier arrival details screen, showing the supplier shipment reference and date. An edit button inside this section allows users to fill in or update these fields (with barcode scan support for the reference) at any time before realizing the move."
-}

@@ -3,6 +3,28 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.15] (2026-05-05)
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Supplier arrival: add supplier shipment details section on the details screen
+
+<details>
+A collapsible 'Shipment details' section is now visible on the supplier arrival details screen, showing the supplier shipment reference and date. An edit button inside this section allows users to fill in or update these fields (with barcode scan support for the reference) at any time before realizing the move.
+</details>
+
+
+#### Fixes
+
+- Supplier arrival: block realization when required shipment details are missing
+
+<details>
+When the AppStock configuration 'isRequiredShipmentSupplierDetails' is enabled, attempting to realize a supplier arrival with a missing shipment reference or date no longer results in a server error. A popup is now displayed to let the user fill in the missing information before proceeding with the realization.
+</details>
+
+
 ## [8.5.14] (2026-04-22)
 
 ### @axelor/aos-mobile-core
@@ -477,6 +499,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.15]: https://github.com/axelor/axelor-mobile/compare/8.5.14...8.5.15
 [8.5.14]: https://github.com/axelor/axelor-mobile/compare/8.5.13...8.5.14
 [8.5.13]: https://github.com/axelor/axelor-mobile/compare/8.5.12...8.5.13
 [8.5.12]: https://github.com/axelor/axelor-mobile/compare/8.5.11...8.5.12
