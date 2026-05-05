@@ -3,6 +3,28 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.10] (2026-05-05)
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Supplier arrival: add supplier shipment details section on the details screen
+
+<details>
+A collapsible 'Shipment details' section is now visible on the supplier arrival details screen, showing the supplier shipment reference and date. An edit button inside this section allows users to fill in or update these fields (with barcode scan support for the reference) at any time before realizing the move.
+</details>
+
+
+#### Fixes
+
+- Supplier arrival: block realization when required shipment details are missing
+
+<details>
+When the AppStock configuration 'isRequiredShipmentSupplierDetails' is enabled, attempting to realize a supplier arrival with a missing shipment reference or date no longer results in a server error. A popup is now displayed to let the user fill in the missing information before proceeding with the realization.
+</details>
+
+
 ## [9.0.9] (2026-04-22)
 
 ### @axelor/aos-mobile-core
@@ -243,6 +265,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.10]: https://github.com/axelor/axelor-mobile/compare/9.0.9...9.0.10
 [9.0.9]: https://github.com/axelor/axelor-mobile/compare/9.0.8...9.0.9
 [9.0.8]: https://github.com/axelor/axelor-mobile/compare/9.0.7...9.0.8
 [9.0.7]: https://github.com/axelor/axelor-mobile/compare/9.0.6...9.0.7
