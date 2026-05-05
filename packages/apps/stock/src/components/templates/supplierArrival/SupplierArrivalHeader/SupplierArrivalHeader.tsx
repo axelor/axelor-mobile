@@ -19,10 +19,10 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {LabelText} from '@axelor/aos-mobile-ui';
-import StockMove from '../../../../types/stock-move';
+import {StockMove} from '../../../../types';
 import {StockMoveHeader} from '../../../organisms';
 
-const SupplierArrivalHeader = ({supplierArrival}) => {
+const SupplierArrivalHeader = ({supplierArrival}: {supplierArrival: any}) => {
   return (
     <View>
       <StockMoveHeader
@@ -44,12 +44,6 @@ const SupplierArrivalHeader = ({supplierArrival}) => {
         />
         {supplierArrival.origin == null ? null : (
           <LabelText iconName="tag-fill" title={supplierArrival.origin} />
-        )}
-        {supplierArrival.supplierShipmentRef == null ? null : (
-          <LabelText
-            iconName="user-tag"
-            title={supplierArrival.supplierShipmentRef}
-          />
         )}
       </View>
     </View>

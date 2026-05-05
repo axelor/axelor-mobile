@@ -1,0 +1,6 @@
+{
+  "title": "Supplier arrival: block realization when required shipment details are missing",
+  "type": "fix",
+  "packages": "stock",
+  "description": "When the AppStock configuration 'isRequiredShipmentSupplierDetails' is enabled, attempting to realize a supplier arrival with a missing shipment reference or date no longer results in a server error. A popup is now displayed to let the user fill in the missing information before proceeding with the realization."
+}
