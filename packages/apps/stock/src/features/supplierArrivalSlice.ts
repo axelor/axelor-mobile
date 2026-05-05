@@ -26,11 +26,12 @@ import {
   addLineStockMove,
   realizeSockMove,
   searchSupplierArrivalFilter,
+  updateSupplierShipmentDetails,
 } from '../api/supplier-arrival-api';
 
 export const searchSupplierArrivals = createAsyncThunk(
   'supplierArrivals/searchSupplierArrivals',
-  async function (data, {getState}) {
+  async function (data: any = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: searchSupplierArrivalFilter,
       data,
@@ -43,7 +44,7 @@ export const searchSupplierArrivals = createAsyncThunk(
 
 export const fetchSupplierArrival = createAsyncThunk(
   'supplierArrivals/fetchSupplierArrival',
-  async function (data, {getState}) {
+  async function (data: any = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchSupplierArrival,
       data,
@@ -56,7 +57,7 @@ export const fetchSupplierArrival = createAsyncThunk(
 
 export const addNewLine = createAsyncThunk(
   'supplierArrivals/addNewLine',
-  async function (data, {getState}) {
+  async function (data: any = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: addLineStockMove,
       data,
@@ -69,7 +70,7 @@ export const addNewLine = createAsyncThunk(
 
 export const realizeSupplierArrival = createAsyncThunk(
   'supplierArrivals/realizeSupplierArrival',
-  async function (data, {getState}) {
+  async function (data: any = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: realizeSockMove,
       data,
@@ -77,6 +78,41 @@ export const realizeSupplierArrival = createAsyncThunk(
       getState,
       responseOptions: {showToast: true},
     });
+  },
+);
+
+export const updateSupplierArrivalShipmentDetails = createAsyncThunk(
+  'supplierArrivals/updateSupplierArrivalShipmentDetails',
+  async function (data: any = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: updateSupplierShipmentDetails,
+      data,
+      action: 'Stock_SliceAction_UpdateSupplierArrivalShipmentDetails',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(() => {
+      dispatch(fetchSupplierArrival({supplierArrivalId: data.id}));
+    });
+  },
+);
+
+export const updateAndRealizeSupplierArrival = createAsyncThunk(
+  'supplierArrivals/updateAndRealizeSupplierArrival',
+  async function (data: any = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: updateSupplierShipmentDetails,
+      data,
+      action: 'Stock_SliceAction_UpdateSupplierArrivalShipmentDetails',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res =>
+      dispatch(
+        realizeSupplierArrival({
+          stockMoveId: data.id,
+          version: res?.version ?? data.version,
+        }),
+      ),
+    );
   },
 );
 
@@ -93,6 +129,7 @@ const initialState = {
 const supplierArrivalSlice = createSlice({
   name: 'supplierArrivals',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchSupplierArrivals, {
       loading: 'loadingList',

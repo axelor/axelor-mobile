@@ -27,5 +27,7 @@ export {default as SupplierArrivalLineQuantityCard} from './SupplierArrivalLineQ
 export {default as SupplierArrivalMovementIndicationCard} from './SupplierArrivalMovementIndicationCard/SupplierArrivalMovementIndicationCard';
 export {default as SupplierArrivalOriginInput} from './SupplierArrivalOriginInput/SupplierArrivalOriginInput';
 export {default as SupplierArrivalSearchLineContainer} from './SupplierArrivalSearchLineContainer/SupplierArrivalSearchLineContainer';
+export {default as SupplierArrivalShipmentDetailsPopup} from './SupplierArrivalShipmentDetailsPopup/SupplierArrivalShipmentDetailsPopup';
+export {default as SupplierArrivalShipmentDropdownCard} from './SupplierArrivalShipmentDropdownCard/SupplierArrivalShipmentDropdownCard';
 export {default as SupplierArrivalTrackingNumberSelect} from './SupplierArrivalTrackingNumberSelect/SupplierArrivalTrackingNumberSelect';
 export {default as SupplierProductInfo} from './SupplierProductInfo/SupplierProductInfo';
