@@ -3,6 +3,28 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.22] (2026-05-05)
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Supplier arrival: add supplier shipment details section on the details screen
+
+<details>
+A collapsible 'Shipment details' section is now visible on the supplier arrival details screen, showing the supplier shipment reference and date. An edit button inside this section allows users to fill in or update these fields (with barcode scan support for the reference) at any time before realizing the move.
+</details>
+
+
+#### Fixes
+
+- Supplier arrival: block realization when required shipment details are missing
+
+<details>
+When the AppStock configuration 'isRequiredShipmentSupplierDetails' is enabled, attempting to realize a supplier arrival with a missing shipment reference or date no longer results in a server error. A popup is now displayed to let the user fill in the missing information before proceeding with the realization.
+</details>
+
+
 ## [8.4.21] (2026-04-22)
 
 ### @axelor/aos-mobile-core
@@ -732,6 +754,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.22]: https://github.com/axelor/axelor-mobile/compare/8.4.21...8.4.22
 [8.4.21]: https://github.com/axelor/axelor-mobile/compare/8.4.20...8.4.21
 [8.4.20]: https://github.com/axelor/axelor-mobile/compare/8.4.19...8.4.20
 [8.4.19]: https://github.com/axelor/axelor-mobile/compare/8.4.18...8.4.19
