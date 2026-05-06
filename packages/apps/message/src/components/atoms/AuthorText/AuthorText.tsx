@@ -18,8 +18,13 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {getFromNowDate, useSelector} from '@axelor/aos-mobile-core';
+import {
+  getFromNowDate,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
+import {translateMailMessageText} from '../../../utils';
 
 interface AuthorTextProps {
   author: string;
@@ -29,13 +34,14 @@ interface AuthorTextProps {
 
 const AuthorText = ({author, eventText, eventTime}: AuthorTextProps) => {
   const {user} = useSelector(state => state.user);
+  const I18n = useTranslator();
 
   return (
     <Text style={styles.author} fontSize={12}>
       <Text writingType="important" fontSize={12}>
         {author}{' '}
       </Text>
-      {eventText}
+      {translateMailMessageText(eventText, I18n)}
       {' - '}
       <Text writingType="details" fontSize={12}>
         {getFromNowDate(eventTime, user?.localization?.language?.code)}

@@ -16,6 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './date';
-export * from './mail-message-translation';
-export * from './mailMessagesGenericAction';
+import {TranslatorProps} from '@axelor/aos-mobile-core';
+
+const toTranslationKey = (text: string): string =>
+  'Message_' +
+  text
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('');
+
+export const translateMailMessageText = (
+  text: string,
+  I18n: TranslatorProps,
+): string => {
+  if (!text) return text;
+  const key = toTranslationKey(text);
+  const translated = I18n.t(key);
+  return translated === key ? text : translated;
+};

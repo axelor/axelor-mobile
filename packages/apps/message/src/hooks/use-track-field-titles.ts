@@ -16,6 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './date';
-export * from './mail-message-translation';
-export * from './mailMessagesGenericAction';
+import {useEffect, useState} from 'react';
+import {FieldMeta, fetchModelFieldsMeta} from '../api/meta-fields-api';
+
+export function useTrackFieldTitles(
+  modelName?: string,
+): Record<string, FieldMeta> {
+  const [fieldMeta, setFieldMeta] = useState<Record<string, FieldMeta>>({});
+
+  useEffect(() => {
+    if (!modelName) return;
+
+    let cancelled = false;
+    fetchModelFieldsMeta(modelName)
+      .then(meta => {
+        if (!cancelled) {
+          setFieldMeta(meta);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, [modelName]);
+
+  return fieldMeta;
+}
