@@ -18,7 +18,11 @@
 
 import {Criteria, Domain, getModelApi} from '../Model';
 import {axiosApiProvider} from './AxiosProvider';
-import {getObjectFields, getSortFields} from './ObjectFieldsProvider';
+import {
+  getObjectFields,
+  getObjectFieldsForSearch,
+  getSortFields,
+} from './ObjectFieldsProvider';
 import {Filter} from '../../header/FilterProvider';
 
 interface SearchProps {
@@ -36,6 +40,7 @@ interface SearchProps {
   companyFieldName?: string;
   companySetFieldName?: string;
   filter?: Filter;
+  includeNestedArrayFields?: boolean;
 }
 
 interface HierarchicalSearchProps extends SearchProps {
@@ -81,6 +86,7 @@ class RequestBuilder {
     companyFieldName,
     companySetFieldName,
     filter,
+    includeNestedArrayFields = false,
   }: SearchProps): Promise<any> => {
     if (model == null || fieldKey == null) {
       return null;
@@ -138,12 +144,16 @@ class RequestBuilder {
       };
     }
 
+    const fields = includeNestedArrayFields
+      ? getObjectFields(fieldKey)
+      : getObjectFieldsForSearch(fieldKey);
+
     if (provider === 'axios') {
       axiosApiProvider.post({
         url: `/ws/rest/${model}/search`,
         data: {
           data: data,
-          fields: getObjectFields(fieldKey),
+          fields,
           sortBy: sortKey ? getSortFields(sortKey) : ['id'],
           limit: limit,
           offset: limit * page,
@@ -156,7 +166,7 @@ class RequestBuilder {
       modelName: model,
       query: {
         data: data,
-        fields: getObjectFields(fieldKey),
+        fields,
         sortBy: sortKey ? getSortFields(sortKey) : ['id'],
         limit: limit,
         offset: limit * page,

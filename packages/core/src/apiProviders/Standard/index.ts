@@ -19,6 +19,7 @@
 export {ApiProvider, axiosApiProvider} from './AxiosProvider';
 export {
   getObjectFields,
+  getObjectFieldsForSearch,
   getSearchCriterias,
   getSortFields,
   objectFieldsProvider,

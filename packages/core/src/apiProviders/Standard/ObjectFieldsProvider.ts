@@ -58,15 +58,41 @@ class ObjectFieldsProvider {
     return [];
   }
 
-  private handleSchemaField(schema: any): string[] {
+  getObjectFieldsForSearch(objectKey: string): string[] {
+    const objectSchema: any = this.getObjectSchema(objectKey);
+
+    if (objectSchema != null) {
+      return this.handleSchemaField(objectSchema, false, true);
+    }
+
+    return [];
+  }
+
+  private handleSchemaField(
+    schema: any,
+    isNested = false,
+    excludeNestedArrays = false,
+  ): string[] {
     const fields = schema.fields;
     const result: string[] = [];
 
     for (const fieldName of schema._nodes) {
+      if (
+        isNested &&
+        excludeNestedArrays &&
+        fields[fieldName].type === 'array'
+      ) {
+        continue;
+      }
+
       result.push(fieldName);
 
       if (fields[fieldName].type === 'object') {
-        this.handleSchemaField(fields[fieldName]).forEach(_field => {
+        this.handleSchemaField(
+          fields[fieldName],
+          true,
+          excludeNestedArrays,
+        ).forEach(_field => {
           if (
             _field === 'id' ||
             _field === '$version' ||
@@ -124,6 +150,10 @@ export const objectFieldsProvider = new ObjectFieldsProvider();
 
 export function getObjectFields(objectKey: string): string[] {
   return objectFieldsProvider.getObjectFields(objectKey);
+}
+
+export function getObjectFieldsForSearch(objectKey: string): string[] {
+  return objectFieldsProvider.getObjectFieldsForSearch(objectKey);
 }
 
 export function getSortFields(objectKey: string): string[] {
