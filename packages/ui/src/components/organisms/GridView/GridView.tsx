@@ -17,82 +17,105 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {checkNullString} from '../../../utils';
 import {Card, Text} from '../../atoms';
 import CellView from './CellView';
+import GridHeader from './GridHeader';
+import {computeColumnWidth, computeColumnScale} from './display.helpers';
+import {Column, ROW_MIN_HEIGHT} from './type';
 
-interface Column {
-  key: string;
-  title: string;
-  width?: number;
-  getValue?: (row: any) => any;
-}
-
-const COLUMN_DEFAULT_WIDTH = 70;
 const CARD_PADDING = '2.5%';
 
 const GridView = ({
+  styleContainer,
   style,
   title,
   columns,
   data,
+  transparent = false,
   translator = t => t,
+  onRowPress,
+  sortable = false,
+  sortField,
+  sortOrder,
+  onSortChange,
+  hideHeader = false,
+  onHorizontalScroll,
+  containerWidth,
 }: {
+  styleContainer?: any;
   style?: any;
   title?: string;
   columns: Column[];
   data: any[];
+  transparent?: boolean;
   translator?: (value: string) => string;
+  onRowPress?: (row: any) => void;
+  sortable?: boolean;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+  onSortChange?: (field: string) => void;
+  hideHeader?: boolean;
+  onHorizontalScroll?: (x: number) => void;
+  containerWidth?: number;
 }) => {
-  const columnWidth = useMemo(() => {
-    if (!Array.isArray(columns) || columns.length === 0) {
-      return COLUMN_DEFAULT_WIDTH;
-    }
+  const columnWidth = useMemo(
+    () => computeColumnWidth(columns, transparent, containerWidth),
+    [columns, containerWidth, transparent],
+  );
 
-    const width = (Dimensions.get('window').width * 0.85) / columns.length;
+  const scale = useMemo(
+    () =>
+      containerWidth != null
+        ? computeColumnScale(columns, transparent, containerWidth)
+        : 1,
+    [columns, containerWidth, transparent],
+  );
 
-    return width < COLUMN_DEFAULT_WIDTH ? COLUMN_DEFAULT_WIDTH : width;
-  }, [columns]);
-
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.rowContainer} testID="gridViewHeaderContainer">
-        {columns.map((_c, idx, self) => (
-          <CellView
-            key={_c.key}
-            showRight={idx < self.length - 1}
-            showBottom={true}
-            width={_c.width ?? columnWidth}>
-            <Text writingType="title" fontSize={16} style={styles.cellTitle}>
-              {_c.title}
-            </Text>
-          </CellView>
-        ))}
-      </View>
-    );
-  }, [columnWidth, columns]);
+  const totalColumnWidth = useMemo(
+    () =>
+      columns.reduce(
+        (sum, c) => sum + Math.round((c.width ?? columnWidth) * scale),
+        0,
+      ),
+    [columnWidth, columns, scale],
+  );
 
   const renderRow = useCallback(
-    (row, rowIdx, dataArray) => {
+    (row: any, rowIdx: number, dataArray: any[]) => {
       return (
-        <View
+        <TouchableOpacity
           key={rowIdx}
           style={styles.rowContainer}
-          testID="gridViewRowContainer">
+          testID="gridViewRowContainer"
+          activeOpacity={0.9}
+          disabled={!onRowPress}
+          onPress={() => onRowPress?.(row)}>
           {columns.map((_c, idx, self) => (
             <CellView
               key={`${_c.key} - ${rowIdx}`}
               showRight={idx < self.length - 1}
               showBottom={rowIdx < dataArray.length - 1}
-              width={_c.width ?? columnWidth}>
-              <Text>{_c?.getValue?.(row) ?? row?.[_c.key] ?? ''}</Text>
+              width={Math.round((_c.width ?? columnWidth) * scale)}>
+              {_c.renderCell ? (
+                _c.renderCell(row)
+              ) : (
+                <Text numberOfLines={1}>
+                  {_c?.getValue?.(row) ?? row?.[_c.key] ?? ''}
+                </Text>
+              )}
             </CellView>
           ))}
-        </View>
+        </TouchableOpacity>
       );
     },
-    [columnWidth, columns],
+    [columnWidth, columns, onRowPress, scale],
+  );
+
+  const WrapperComponent = useMemo(
+    () => (transparent ? View : Card),
+    [transparent],
   );
 
   if (!Array.isArray(columns) || columns.length === 0) {
@@ -100,25 +123,46 @@ const GridView = ({
   }
 
   return (
-    <View style={styles.container} testID="gridViewContainer">
+    <View style={[styles.container, styleContainer]} testID="gridViewContainer">
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      <Card style={[styles.cardContainer, style]}>
-        <ScrollView horizontal contentContainerStyle={styles.scrollView}>
+      <WrapperComponent style={[!transparent && styles.cardContainer, style]}>
+        <ScrollView
+          horizontal
+          contentContainerStyle={styles.scrollView}
+          onScroll={
+            onHorizontalScroll
+              ? ({nativeEvent}) =>
+                  onHorizontalScroll(nativeEvent.contentOffset.x)
+              : undefined
+          }
+          scrollEventThrottle={onHorizontalScroll ? 16 : undefined}>
           <View>
-            {renderHeader()}
+            {!hideHeader && (
+              <GridHeader
+                columns={columns}
+                sortable={sortable}
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSortChange={onSortChange}
+                transparent={transparent}
+                containerWidth={containerWidth}
+              />
+            )}
             {!Array.isArray(data) || data.length === 0 ? (
-              <Text
-                writingType="details"
-                fontSize={14}
-                style={styles.noDataText}>
-                {translator('Base_NoData')}
-              </Text>
+              <View style={{width: totalColumnWidth}}>
+                <Text
+                  writingType="details"
+                  fontSize={14}
+                  style={styles.noDataText}>
+                  {translator('Base_NoData')}
+                </Text>
+              </View>
             ) : (
               data.map(renderRow)
             )}
           </View>
         </ScrollView>
-      </Card>
+      </WrapperComponent>
     </View>
   );
 };
@@ -144,10 +188,7 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    width: '100%',
-  },
-  cellTitle: {
-    textAlign: 'center',
+    minHeight: ROW_MIN_HEIGHT,
   },
   noDataText: {
     textAlign: 'center',
