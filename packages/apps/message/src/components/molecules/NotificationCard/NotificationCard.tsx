@@ -26,8 +26,11 @@ import {
   UnorderedList,
   Badge,
 } from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {MessageFlags, TrackItem} from '../../atoms';
 import {MailMessageNotificationType} from '../../../types';
+import {useTrackFieldTitles} from '../../../hooks';
+import {translateMailMessageText} from '../../../utils';
 
 const MAX_TRACK_ITEMS = 5;
 
@@ -62,7 +65,9 @@ const NotificationCard = ({
   isInbox,
 }: NotificationCardProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const [moreItems, setMoreItems] = useState(false);
+  const fieldMeta = useTrackFieldTitles(relatedModel);
 
   const displayFlags = useMemo(
     () => relatedModel != null && relatedId != null && flags != null,
@@ -81,7 +86,7 @@ const NotificationCard = ({
             iconName="info-circle-fill"
             size={18}
             title={relatedName}
-            value={subject}
+            value={translateMailMessageText(subject, I18n)}
             style={styles.flexOne}
             textStyle={styles.flexOne}
             textSize={16}
@@ -103,8 +108,8 @@ const NotificationCard = ({
           {displayFlags && (
             <MessageFlags
               flags={flags}
-              model={relatedModel}
-              modelId={relatedId}
+              model={relatedModel!}
+              modelId={relatedId!}
               isInbox={isInbox}
             />
           )}
@@ -114,17 +119,27 @@ const NotificationCard = ({
             <UnorderedList
               data={tracks}
               numberOfItems={
-                !moreItems && tracks.length > MAX_TRACK_ITEMS && MAX_TRACK_ITEMS
+                !moreItems && tracks.length > MAX_TRACK_ITEMS
+                  ? MAX_TRACK_ITEMS
+                  : undefined
               }
-              renderItem={({item}) => (
-                <TrackItem
-                  title={item.title}
-                  oldDisplayValue={item.oldDisplayValue}
-                  oldValue={item.oldValue}
-                  displayValue={item.displayValue}
-                  value={item.value}
-                />
-              )}
+              renderItem={({item}) => {
+                const meta = fieldMeta[item.name];
+                return (
+                  <TrackItem
+                    title={meta?.title ?? item.title}
+                    oldDisplayValue={
+                      meta?.selectionTitles?.[item.oldValue] ??
+                      item.oldDisplayValue
+                    }
+                    oldValue={item.oldValue}
+                    displayValue={
+                      meta?.selectionTitles?.[item.value] ?? item.displayValue
+                    }
+                    value={item.value}
+                  />
+                );
+              }}
             />
             {tracks.length > MAX_TRACK_ITEMS && (
               <Icon

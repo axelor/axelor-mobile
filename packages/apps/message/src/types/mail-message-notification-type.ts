@@ -46,7 +46,7 @@ class MailMessageNotificationType {
         console.warn(
           `Style provided with value ${style} is not supported by Mail Message Tag`,
         );
-        return null;
+        return undefined;
     }
   };
 }
