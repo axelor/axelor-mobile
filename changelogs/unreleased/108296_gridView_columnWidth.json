@@ -1,0 +1,5 @@
+{
+  "title": "GridView: improve dynamic width calculation",
+  "type": "feat",
+  "packages": "ui"
+}

@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon} from '../../atoms';
 import {useThemeColor} from '../../../theme';
 
@@ -26,8 +26,9 @@ interface CardIconButtonProps {
   iconName: string;
   iconColor: string;
   disabled?: boolean;
-  onPress: (any) => void;
-  onLongPress?: (any) => void;
+  onPress: () => void;
+  onLongPress?: () => void;
+  displayCard?: boolean;
 }
 
 const CardIconButton = ({
@@ -35,8 +36,9 @@ const CardIconButton = ({
   iconName,
   iconColor,
   disabled = false,
-  onPress = () => {},
-  onLongPress = () => {},
+  onPress,
+  onLongPress,
+  displayCard = false,
 }: CardIconButtonProps) => {
   const Colors = useThemeColor();
 
@@ -44,6 +46,8 @@ const CardIconButton = ({
     () => (disabled ? Colors.secondaryColor.background : iconColor),
     [Colors.secondaryColor, disabled, iconColor],
   );
+
+  const Wrapper = displayCard ? Card : View;
 
   return (
     <TouchableOpacity
@@ -53,9 +57,9 @@ const CardIconButton = ({
       onPress={onPress}
       activeOpacity={0.9}
       testID="cardIconButtonContainer">
-      <Card style={styles.cardContainer}>
+      <Wrapper style={displayCard ? styles.cardContainer : undefined}>
         <Icon size={20} name={iconName} color={_iconColor} />
-      </Card>
+      </Wrapper>
     </TouchableOpacity>
   );
 };

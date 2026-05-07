@@ -30,6 +30,7 @@ interface InfoButtonProps {
   disabled?: boolean;
   onPress: () => void;
   space?: number;
+  displayCard?: boolean;
 }
 
 const InfoButton = ({
@@ -40,8 +41,9 @@ const InfoButton = ({
   indication,
   position = 'left',
   disabled = false,
-  onPress = () => {},
+  onPress,
   space = Dimensions.get('window').width * 0.15,
+  displayCard = false,
 }: InfoButtonProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -58,6 +60,7 @@ const InfoButton = ({
         iconName={iconName}
         iconColor={iconColor}
         disabled={disabled}
+        displayCard={displayCard}
         onPress={() => {
           onPress();
           setIsVisible(false);
