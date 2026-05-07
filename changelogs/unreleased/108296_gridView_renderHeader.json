@@ -1,0 +1,5 @@
+{
+  "title": "GridView: add custom header renderer support on columns",
+  "type": "feat",
+  "packages": "ui"
+}

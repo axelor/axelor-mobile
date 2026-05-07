@@ -18,6 +18,7 @@
 
 export {default as DoubleScannerSearchBar} from './DoubleScannerSearchBar/DoubleScannerSearchBar';
 export {default as GlobalToolBox} from './GlobalToolBox/GlobalToolBox';
+export {default as GridListView} from './GridListView/GridListView';
 export {default as PeriodInput} from './PeriodInput/PeriodInput';
 export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
 export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
