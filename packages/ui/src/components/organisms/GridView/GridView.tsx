@@ -22,7 +22,7 @@ import {checkNullString} from '../../../utils';
 import {Card, Text} from '../../atoms';
 import CellView from './CellView';
 import GridHeader from './GridHeader';
-import {computeColumnWidth} from './display.helpers';
+import {computeColumnWidth, computeColumnScale} from './display.helpers';
 import {Column, ROW_MIN_HEIGHT} from './type';
 
 const CARD_PADDING = '2.5%';
@@ -42,6 +42,7 @@ const GridView = ({
   onSortChange,
   hideHeader = false,
   onHorizontalScroll,
+  containerWidth,
 }: {
   styleContainer?: any;
   style?: any;
@@ -57,10 +58,28 @@ const GridView = ({
   onSortChange?: (field: string) => void;
   hideHeader?: boolean;
   onHorizontalScroll?: (x: number) => void;
+  containerWidth?: number;
 }) => {
   const columnWidth = useMemo(
-    () => computeColumnWidth(columns, transparent),
-    [columns, transparent],
+    () => computeColumnWidth(columns, transparent, containerWidth),
+    [columns, containerWidth, transparent],
+  );
+
+  const scale = useMemo(
+    () =>
+      containerWidth != null
+        ? computeColumnScale(columns, transparent, containerWidth)
+        : 1,
+    [columns, containerWidth, transparent],
+  );
+
+  const totalColumnWidth = useMemo(
+    () =>
+      columns.reduce(
+        (sum, c) => sum + Math.round((c.width ?? columnWidth) * scale),
+        0,
+      ),
+    [columnWidth, columns, scale],
   );
 
   const renderRow = useCallback(
@@ -78,7 +97,7 @@ const GridView = ({
               key={`${_c.key} - ${rowIdx}`}
               showRight={idx < self.length - 1}
               showBottom={rowIdx < dataArray.length - 1}
-              width={_c.width ?? columnWidth}>
+              width={Math.round((_c.width ?? columnWidth) * scale)}>
               {_c.renderCell ? (
                 _c.renderCell(row)
               ) : (
@@ -91,7 +110,7 @@ const GridView = ({
         </TouchableOpacity>
       );
     },
-    [columnWidth, columns, onRowPress],
+    [columnWidth, columns, onRowPress, scale],
   );
 
   const WrapperComponent = useMemo(
@@ -126,15 +145,18 @@ const GridView = ({
                 sortOrder={sortOrder}
                 onSortChange={onSortChange}
                 transparent={transparent}
+                containerWidth={containerWidth}
               />
             )}
             {!Array.isArray(data) || data.length === 0 ? (
-              <Text
-                writingType="details"
-                fontSize={14}
-                style={styles.noDataText}>
-                {translator('Base_NoData')}
-              </Text>
+              <View style={{width: totalColumnWidth}}>
+                <Text
+                  writingType="details"
+                  fontSize={14}
+                  style={styles.noDataText}>
+                  {translator('Base_NoData')}
+                </Text>
+              </View>
             ) : (
               data.map(renderRow)
             )}
@@ -166,7 +188,6 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    width: '100%',
     minHeight: ROW_MIN_HEIGHT,
   },
   noDataText: {

@@ -21,7 +21,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon, Text} from '../../atoms';
 import CellView from './CellView';
 import {Column, ROW_MIN_HEIGHT} from './type';
-import {computeColumnWidth} from './display.helpers';
+import {computeColumnWidth, computeColumnScale} from './display.helpers';
 
 const GridHeader = ({
   columns,
@@ -30,6 +30,7 @@ const GridHeader = ({
   sortOrder,
   onSortChange,
   transparent = false,
+  containerWidth,
 }: {
   columns: Column[];
   sortable?: boolean;
@@ -37,10 +38,19 @@ const GridHeader = ({
   sortOrder?: 'asc' | 'desc';
   onSortChange?: (field: string) => void;
   transparent?: boolean;
+  containerWidth?: number;
 }) => {
   const columnWidth = useMemo(
-    () => computeColumnWidth(columns, transparent),
-    [columns, transparent],
+    () => computeColumnWidth(columns, transparent, containerWidth),
+    [columns, containerWidth, transparent],
+  );
+
+  const scale = useMemo(
+    () =>
+      containerWidth != null
+        ? computeColumnScale(columns, transparent, containerWidth)
+        : 1,
+    [columns, containerWidth, transparent],
   );
 
   return (
@@ -50,7 +60,7 @@ const GridHeader = ({
           key={_c.key}
           showRight={idx < self.length - 1}
           showBottom
-          width={_c.width ?? columnWidth}>
+          width={Math.round((_c.width ?? columnWidth) * scale)}>
           {_c.renderHeader ? (
             _c.renderHeader()
           ) : (

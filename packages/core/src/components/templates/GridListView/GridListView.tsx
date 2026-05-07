@@ -55,6 +55,7 @@ interface GridListViewProps {
   scanKeySearch?: string;
   mode?: 'simple' | 'checkbox';
   onSelectionChange?: (items: any[]) => void;
+  gridContainerWidth?: number;
 }
 
 const GridListView = ({
@@ -81,6 +82,7 @@ const GridListView = ({
   scanKeySearch,
   mode = 'simple',
   onSelectionChange,
+  gridContainerWidth,
 }: GridListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -197,6 +199,7 @@ const GridListView = ({
         stickyHeader={stickyHeader}
         mode={mode}
         onSelectionChange={onSelectionChange}
+        gridContainerWidth={gridContainerWidth}
       />
     </View>
   );

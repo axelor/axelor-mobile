@@ -48,6 +48,7 @@ interface ScrollGridViewProps {
   stickyHeader?: boolean;
   mode?: 'simple' | 'checkbox';
   onSelectionChange?: (items: any[]) => void;
+  gridContainerWidth?: number;
 }
 
 const ScrollGridView = ({
@@ -62,6 +63,7 @@ const ScrollGridView = ({
   columns,
   mode = 'simple',
   onSelectionChange,
+  gridContainerWidth,
   ...props
 }: ScrollGridViewProps) => {
   const [, setPage] = useState(0);
@@ -72,7 +74,12 @@ const ScrollGridView = ({
   const scrollXAnim = useRef(new Animated.Value(0)).current;
   const headerTranslateX = useRef(Animated.multiply(scrollXAnim, -1)).current;
 
-  const resolvedColumns = useGridSelection(columns, data, mode, onSelectionChange);
+  const resolvedColumns = useGridSelection(
+    columns,
+    data,
+    mode,
+    onSelectionChange,
+  );
 
   const initialize = useCallback(() => {
     setPage(0);
@@ -146,11 +153,21 @@ const ScrollGridView = ({
   }
 
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[
+        styles.container,
+        style,
+        gridContainerWidth != null && {width: gridContainerWidth},
+      ]}>
       {stickyHeader && (
         <View style={styles.stickyHeaderWrapper}>
           <Animated.View style={{transform: [{translateX: headerTranslateX}]}}>
-            <GridHeader columns={resolvedColumns} transparent {...props} />
+            <GridHeader
+              columns={resolvedColumns}
+              transparent
+              containerWidth={gridContainerWidth}
+              {...props}
+            />
           </Animated.View>
         </View>
       )}
@@ -172,15 +189,14 @@ const ScrollGridView = ({
           translator={translator}
           hideHeader={stickyHeader}
           onHorizontalScroll={stickyHeader ? syncHeaderScroll : undefined}
+          containerWidth={gridContainerWidth}
           {...props}
         />
         <View style={styles.footer}>
           {moreLoading && <ActivityIndicator size="large" color="black" />}
-          {isListEnd && (
+          {isListEnd && data?.length > 0 && (
             <Text writingType="details" fontSize={14}>
-              {data?.length === 0
-                ? translator('Base_NoData')
-                : translator('Base_NoMoreItems')}
+              {translator('Base_NoMoreItems')}
             </Text>
           )}
         </View>
