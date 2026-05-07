@@ -1,0 +1,5 @@
+{
+  "title": "IconButton: add possibility to use component without the card wrapper",
+  "type": "feat",
+  "packages": "ui"
+}

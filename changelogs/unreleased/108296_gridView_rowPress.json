@@ -1,0 +1,5 @@
+{
+  "title": "GridView: add row press support",
+  "type": "feat",
+  "packages": "ui"
+}

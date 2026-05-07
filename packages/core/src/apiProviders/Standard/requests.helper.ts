@@ -31,7 +31,7 @@ interface SearchProps {
   domain?: string;
   domainContext?: any;
   fieldKey: string[] | string;
-  sortKey?: string;
+  sortKey?: string[] | string;
   page: number;
   numberElementsByPage?: number;
   provider?: 'axios' | 'model';
@@ -150,13 +150,17 @@ class RequestBuilder {
         ? getObjectFields(fieldKey)
         : getObjectFieldsForSearch(fieldKey);
 
+    const sortFields = Array.isArray(sortKey)
+      ? sortKey
+      : (getSortFields(sortKey ?? '') ?? ['id']);
+
     if (provider === 'axios') {
       axiosApiProvider.post({
         url: `/ws/rest/${model}/search`,
         data: {
           data: data,
           fields,
-          sortBy: sortKey ? getSortFields(sortKey) : ['id'],
+          sortBy: sortFields,
           limit: limit,
           offset: limit * page,
           translate: true,
@@ -169,7 +173,7 @@ class RequestBuilder {
       query: {
         data: data,
         fields,
-        sortBy: sortKey ? getSortFields(sortKey) : ['id'],
+        sortBy: sortFields,
         limit: limit,
         offset: limit * page,
       },

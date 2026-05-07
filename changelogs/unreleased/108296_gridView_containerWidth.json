@@ -1,0 +1,5 @@
+{
+  "title": "GridView: add containerWidth prop to support rendering in non-fullscreen containers",
+  "type": "feat",
+  "packages": "ui"
+}
