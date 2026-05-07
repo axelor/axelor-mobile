@@ -29,3 +29,4 @@ export {
   subscribeRequest as subscribeRequestApi,
   unsubscribeRequest as unsubscribeRequestApi,
 } from './mail-message-api';
+export {fetchModelFieldsMeta, type FieldMeta} from './meta-fields-api';

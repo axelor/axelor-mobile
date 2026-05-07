@@ -17,3 +17,4 @@
  */
 
 export {useIsSubscribed} from './use-is-subscribed';
+export {useTrackFieldTitles} from './use-track-field-titles';
