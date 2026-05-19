@@ -278,7 +278,7 @@ const FormView = ({
   const isGlobalReadonly = useMemo(
     () =>
       isReadonly ||
-      (config.readonlyIf?.({objectState: object, storeState}) ?? false),
+      (config?.readonlyIf?.({objectState: object, storeState}) ?? false),
     [config, isReadonly, object, storeState],
   );
 
