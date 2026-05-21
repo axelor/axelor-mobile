@@ -17,6 +17,7 @@
  */
 
 export {default as DefaultCheckbox} from './DefaultCheckbox';
+export {default as MfaCodeInput} from './MfaCodeInput';
 export {default as PasswordInput} from './PasswordInput';
 export {default as SessionInputs} from './SessionInputs';
 export {default as SessionNameInput} from './SessionNameInput';

@@ -21,3 +21,4 @@ export {Session, URL_STORAGE_KEY} from './type';
 export {sessionStorage} from './SessionStorage';
 export {getStorageUrl, saveUrlInStorage} from './utils';
 export * from './components';
+export * from './mfa';

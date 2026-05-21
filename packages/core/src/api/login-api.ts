@@ -17,69 +17,31 @@
  */
 
 import axios from 'axios';
-import {
-  fieldsParserMiddleware,
-  provider,
-  translationMiddleware,
-  maintenanceMiddleware,
-} from '../apiProviders';
+import type {LoginResult} from '../sessions';
+import {initAxiosWithHeaders} from './axios-init';
 
 const LOGIN_PATH = 'callback';
-const SESSION_REGEX = /JSESSIONID=([^;]*);/g;
 
-const getJsessionId = (cookie: string) => {
-  return cookie?.match(SESSION_REGEX)?.[0];
-};
-
-export function ejectAxios({
-  requestInterceptorId,
-  responseInterceptorId,
-}: {
-  requestInterceptorId: number;
-  responseInterceptorId: number;
-}) {
-  axios.interceptors.request.eject(requestInterceptorId);
-  axios.interceptors.request.eject(responseInterceptorId);
-}
-
-export function initAxiosWithHeaders(res: any, url: string) {
-  const token = res.headers['x-csrf-token'];
-  const jsessionId = getJsessionId(res.headers['set-cookie']?.[0]);
-
-  if (token == null) {
-    throw new Error('X-CSRF-Token is not exposed in remote header');
-  }
-
-  const requestInterceptorId = axios.interceptors.request.use(config => {
-    config.baseURL = url;
-    config.headers['x-csrf-token'] = token;
-
-    return config;
-  });
-
-  const responseInterceptorId = axios.interceptors.response.use(
-    _response => fieldsParserMiddleware(translationMiddleware(_response)),
-    _error => maintenanceMiddleware(_error),
-  );
-
-  provider.getModelApi()?.init();
-
-  return {token, jsessionId, requestInterceptorId, responseInterceptorId};
-}
+const isMfaRouteResponse = (data: any): boolean => data?.route?.path === '/mfa';
 
 export async function loginApi(
   url: string,
   username: string,
   password: string,
-): Promise<{
-  token: string;
-  jsessionId: string;
-  requestInterceptorId: number;
-  responseInterceptorId: number;
-}> {
-  return axios
-    .post(`${url}${LOGIN_PATH}`, {username, password})
-    .then(res => initAxiosWithHeaders(res, url));
+): Promise<LoginResult> {
+  const res = await axios.post(`${url}${LOGIN_PATH}`, {username, password});
+
+  if (isMfaRouteResponse(res.data)) {
+    const state = res.data?.route?.state ?? {};
+    return {
+      kind: 'mfa',
+      methods: Array.isArray(state.methods) ? state.methods : [],
+      username: state.username ?? username,
+      emailRetryAfter: state.emailRetryAfter,
+    };
+  }
+
+  return {kind: 'session', ...initAxiosWithHeaders(res, url)};
 }
 
 export async function logoutApi() {
