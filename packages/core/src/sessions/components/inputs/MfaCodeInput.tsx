@@ -60,6 +60,7 @@ const MfaCodeInput = ({
       leftIconsList={[
         <Icon name="shield-lock-fill" size={17} style={styles.icon} />,
       ]}
+      onEndFocus={() => {}}
     />
   );
 };
