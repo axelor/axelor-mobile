@@ -16,7 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as MfaVerificationPopup} from './MfaVerificationPopup';
-export {default as PopupCreateSession} from './PopupCreateSession';
-export {default as PopupEditSession} from './PopupEditSession';
-export {default as PopupSession} from './PopupSession';
+import {MfaEmailErrorCode, MfaVerifyErrorCode} from './type';
+
+export class MfaVerifyError extends Error {
+  code: MfaVerifyErrorCode;
+
+  constructor(code: MfaVerifyErrorCode, message?: string) {
+    super(message ?? code);
+    this.code = code;
+  }
+}
+
+export class MfaEmailError extends Error {
+  code: MfaEmailErrorCode;
+  emailRetryAfter?: string;
+  serverMessage?: string;
+
+  constructor(
+    code: MfaEmailErrorCode,
+    {
+      emailRetryAfter,
+      serverMessage,
+    }: {emailRetryAfter?: string; serverMessage?: string} = {},
+  ) {
+    super(serverMessage ?? code);
+    this.code = code;
+    this.emailRetryAfter = emailRetryAfter;
+    this.serverMessage = serverMessage;
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "title": "Authentication: add MFA support (TOTP and email)",
+  "type": "feat",
+  "packages": "core"
+}

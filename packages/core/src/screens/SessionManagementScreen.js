@@ -22,6 +22,7 @@ import {useDispatch} from 'react-redux';
 import {Text, Screen} from '@axelor/aos-mobile-ui';
 import {
   LogoImage,
+  MfaVerificationPopup,
   PopupCreateSession,
   PopupSession,
   SessionListCard,
@@ -136,6 +137,7 @@ const SessionManagementScreen = ({route}) => {
           }}
           modeDebug={modeDebug}
         />
+        <MfaVerificationPopup />
       </KeyboardAvoidingView>
     </Screen>
   );

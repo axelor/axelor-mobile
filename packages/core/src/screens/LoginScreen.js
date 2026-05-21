@@ -27,6 +27,7 @@ import {
   getStorageUrl,
   ErrorText,
   LogoImage,
+  MfaVerificationPopup,
   SessionInputs,
 } from '../sessions';
 
@@ -148,6 +149,7 @@ const LoginScreen = ({route}) => {
           </View>
         </View>
       </KeyboardAvoidingScrollView>
+      <MfaVerificationPopup />
     </Screen>
   );
 };

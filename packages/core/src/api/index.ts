@@ -23,14 +23,9 @@ export {
   fetchViewContext,
 } from './aop-filter-api';
 export {getAppConfig} from './app-config-api';
+export {ejectAxios, initAxiosWithHeaders} from './axios-init';
 export {getAllCurrencies} from './currency-api';
-export {
-  ejectAxios,
-  getActiveUserInfo,
-  initAxiosWithHeaders,
-  loginApi,
-  logoutApi,
-} from './login-api';
+export {getActiveUserInfo, loginApi, logoutApi} from './login-api';
 export {getAllMetaModules} from './meta-module-api';
 export {
   deleteMetaFile,
