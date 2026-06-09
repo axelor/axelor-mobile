@@ -47,7 +47,7 @@ const CustomSearchBarAux = ({
   showTitle = true,
   oneFilter = true,
 }: props) => {
-  const [searchFields, setSearchFields] = useState<string[]>(['name']);
+  const [searchFields, setSearchFields] = useState<string[] | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [moreLoading, setMoreLoading] = useState<boolean>(false);
   const [isListEnd, setIsListEnd] = useState<boolean>(false);
@@ -57,8 +57,8 @@ const CustomSearchBarAux = ({
     fetchModelFields({modelName: item.targetModel}).then(setSearchFields);
   }, [item]);
 
-  const searchClientAndProspectAPI = useCallback(
-    ({page = 0, searchValue}) => {
+  const searchDataAPI = useCallback(
+    ({page = 0, searchValue}: {page: number; searchValue?: string}) => {
       if (page == null || page === 0) {
         setLoading(true);
       } else {
@@ -99,14 +99,18 @@ const CustomSearchBarAux = ({
   return (
     <AutoCompleteSearch
       style={style}
-      title={showTitle && title}
+      title={showTitle ? title : undefined}
       objectList={data}
       value={defaultValue}
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchClientAndProspectAPI}
-      displayValue={_item => _item[searchFields[0]]}
+      fetchData={searchDataAPI}
+      displayValue={(_item: any) =>
+        Array.isArray(searchFields) && searchFields.length > 0
+          ? _item[searchFields[0]]
+          : (_item.fullName ?? _item.name)
+      }
       placeholder={title}
       showDetailsPopup={true}
       loadingList={loading}
