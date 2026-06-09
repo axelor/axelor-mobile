@@ -25,6 +25,7 @@ import {checkNullString, testUrl} from '../utils';
 import {modulesProvider} from '../app';
 import {webSocketProvider} from '../websocket';
 import {resetConfigs} from './appConfigSlice';
+import {userProvider} from '../config';
 
 async function finalizeLogin(
   {token, jsessionId, requestInterceptorId, responseInterceptorId},
@@ -129,6 +130,7 @@ export const logout = createAsyncThunk(
     ejectAxios({requestInterceptorId, responseInterceptorId});
 
     webSocketProvider.closeWebSocket();
+    userProvider.clear();
 
     return;
   },

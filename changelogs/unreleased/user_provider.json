@@ -1,0 +1,6 @@
+{
+  "title": "User: expose the active user and active company through a user provider accessible outside React components",
+  "type": "feat",
+  "packages": "core",
+  "description": "A userProvider singleton now keeps the active user in sync with the user store and exposes getUser() and getActiveCompany(), allowing access to the connected user and active company from non-React code. It is populated when the active user is fetched and cleared on logout."
+}
