@@ -31,7 +31,7 @@ interface ImageProps {
   imageSize?: StyleProp<ImageStyle>;
   generalStyle?: StyleProp<ImageStyle>;
   resizeMode: ImageResizeMode;
-  source: ImageSourcePropType;
+  source: ImageSourcePropType | undefined;
   defaultIconSize?: number;
 }
 
