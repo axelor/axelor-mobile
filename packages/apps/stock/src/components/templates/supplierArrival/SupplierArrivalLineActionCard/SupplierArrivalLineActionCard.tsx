@@ -82,6 +82,7 @@ const SupplierArrivalLineActionCard = ({
       ]}>
       <SupplierArrivalLineCard
         style={styleCard}
+        supplierArrivalStatus={supplierArrival.statusSelect}
         productName={supplierArrivalLine.product?.fullName}
         stockLocationName={supplierArrivalLine.toStockLocation?.name}
         deliveredQty={deliveredQty}
@@ -89,6 +90,7 @@ const SupplierArrivalLineActionCard = ({
         trackingNumber={supplierArrivalLine.trackingNumber}
         locker={supplierArrivalLine.locker}
         totalNetMass={supplierArrivalLine.totalNetMass}
+        isRealQtyModifiedByUser={supplierArrivalLine.isRealQtyModifiedByUser}
         onPress={() => handleShowLine(supplierArrivalLine)}
       />
     </ActionCard>

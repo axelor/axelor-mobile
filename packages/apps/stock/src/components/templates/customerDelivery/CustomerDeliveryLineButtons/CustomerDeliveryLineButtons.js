@@ -62,9 +62,7 @@ const CustomerDeliveryLineButtons = ({
         fromStockLocationId: fromStockLocation?.id,
         description,
       }),
-    );
-
-    navigateBackToDetails();
+    ).then(() => navigateBackToDetails());
   }, [
     customerDeliveryLine,
     dispatch,

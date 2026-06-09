@@ -26,9 +26,11 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {useMassIndicatorChecker} from '../../../../providers';
+import {StockMoveLine} from '../../../../types';
 
 interface SupplierArrivalLineCardProps {
   style?: any;
+  supplierArrivalStatus: number;
   productName: string;
   stockLocationName: string;
   askedQty: number;
@@ -36,11 +38,13 @@ interface SupplierArrivalLineCardProps {
   locker?: string;
   trackingNumber?: {trackingNumberSeq: string};
   totalNetMass?: string;
+  isRealQtyModifiedByUser?: boolean;
   onPress: () => void;
 }
 
 const SupplierArrivalLineCard = ({
   style,
+  supplierArrivalStatus,
   productName,
   stockLocationName,
   askedQty,
@@ -48,6 +52,7 @@ const SupplierArrivalLineCard = ({
   locker,
   trackingNumber,
   totalNetMass,
+  isRealQtyModifiedByUser,
   onPress,
 }: SupplierArrivalLineCardProps) => {
   const Colors = useThemeColor();
@@ -57,21 +62,28 @@ const SupplierArrivalLineCard = ({
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
 
-  const borderColor = useMemo(() => {
-    if (deliveredQty === 0 || deliveredQty == null) {
-      return Colors.secondaryColor.background;
-    }
+  const borderColor = useMemo(
+    () =>
+      StockMoveLine.getStockMoveLineStatusColor(
+        StockMoveLine.getStockMoveLineStatus(
+          {isRealQtyModifiedByUser, realQty: deliveredQty, qty: askedQty},
+          {statusSelect: supplierArrivalStatus},
+        ),
+        Colors,
+      ),
+    [
+      Colors,
+      askedQty,
+      deliveredQty,
+      isRealQtyModifiedByUser,
+      supplierArrivalStatus,
+    ],
+  );
 
-    if (deliveredQty < askedQty) {
-      return Colors.cautionColor.background;
-    }
-
-    return Colors.successColor.background;
-  }, [Colors, askedQty, deliveredQty]);
-
-  const borderStyle = useMemo(() => {
-    return getStyles(borderColor)?.border;
-  }, [borderColor]);
+  const borderStyle = useMemo(
+    () => getStyles(borderColor?.background)?.border,
+    [borderColor],
+  );
 
   const massIndicator = useMemo(
     () => getMassIndicator(totalNetMass),
@@ -128,7 +140,7 @@ const SupplierArrivalLineCard = ({
   );
 };
 
-const getStyles = (color: string) =>
+const getStyles = (color: string | undefined) =>
   StyleSheet.create({
     border: {
       borderWidth: 1.5,

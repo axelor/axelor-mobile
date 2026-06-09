@@ -54,15 +54,15 @@ const InternalMoveLineButtons = ({
         toStockLocationId:
           toStockLocation?.id ?? internalMove.toStockLocation?.id,
       }),
-    );
-
-    if (isScreenMounted('InternalMoveLineListScreen')) {
-      navigation.popTo('InternalMoveLineListScreen', {internalMove});
-    } else {
-      navigation.popTo('InternalMoveDetailsGeneralScreen', {
-        internalMoveId: internalMove.id,
-      });
-    }
+    ).then(() => {
+      if (isScreenMounted('InternalMoveLineListScreen')) {
+        navigation.popTo('InternalMoveLineListScreen', {internalMove});
+      } else {
+        navigation.popTo('InternalMoveDetailsGeneralScreen', {
+          internalMoveId: internalMove.id,
+        });
+      }
+    });
   };
 
   if (!visible) {
