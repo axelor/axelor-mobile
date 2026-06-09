@@ -80,9 +80,7 @@ const SupplierArrivalLineButtons = ({
         toStockLocationId: toStockLocation?.id,
         description: description,
       }),
-    );
-
-    navigateBackToDetails();
+    ).then(() => navigateBackToDetails());
   }, [
     conformity,
     description,

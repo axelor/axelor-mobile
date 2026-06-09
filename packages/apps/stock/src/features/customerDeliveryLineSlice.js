@@ -45,19 +45,13 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
 
 export const updateCustomerDeliveryLine = createAsyncThunk(
   'customerDeliveryLine/updateCustomerDeliveryLine',
-  async function (data, {getState, dispatch}) {
+  async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: updateLine,
       data,
       action: 'Stock_SliceAction_UpdateCustomerDeliveryLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(() => {
-      dispatch(
-        fetchCustomerDeliveryLine({
-          customerDeliveryLineId: data?.stockMoveLineId,
-        }),
-      );
     });
   },
 );

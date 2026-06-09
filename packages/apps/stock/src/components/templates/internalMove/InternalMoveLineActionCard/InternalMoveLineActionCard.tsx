@@ -81,6 +81,7 @@ const InternalMoveLineActionCard = ({
         }
         totalNetMass={internalMoveLine.totalNetMass}
         stockMoveLineId={internalMoveLine.id}
+        isRealQtyModifiedByUser={internalMoveLine.isRealQtyModifiedByUser}
         onPress={onPress}
       />
     </ActionCard>

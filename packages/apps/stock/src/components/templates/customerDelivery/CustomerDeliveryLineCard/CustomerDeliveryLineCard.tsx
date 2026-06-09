@@ -32,9 +32,11 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useStockLinesCheckQty} from '../../../../hooks';
 import {useMassIndicatorChecker} from '../../../../providers';
+import {StockMoveLine} from '../../../../types';
 
 interface CustomerDeliveryLineCardProps {
   style?: any;
+  customerDeliveryStatus: number;
   productName: string;
   stockLocationName: string;
   askedQty: number;
@@ -45,11 +47,13 @@ interface CustomerDeliveryLineCardProps {
   trackingNumber?: {trackingNumberSeq: string};
   totalNetMass?: string;
   saleOrderLine?: any;
+  isRealQtyModifiedByUser?: boolean;
   onPress: () => void;
 }
 
 const CustomerDeliveryLineCard = ({
   style,
+  customerDeliveryStatus,
   productName,
   stockLocationName,
   askedQty,
@@ -60,6 +64,7 @@ const CustomerDeliveryLineCard = ({
   trackingNumber,
   totalNetMass,
   saleOrderLine,
+  isRealQtyModifiedByUser,
   onPress,
 }: CustomerDeliveryLineCardProps) => {
   const Colors = useThemeColor();
@@ -73,21 +78,28 @@ const CustomerDeliveryLineCard = ({
 
   const checkQtyObject = useStockLinesCheckQty(stockMoveLineId);
 
-  const borderColor = useMemo(() => {
-    if (pickedQty === 0 || pickedQty == null) {
-      return Colors.secondaryColor.background;
-    }
+  const borderColor = useMemo(
+    () =>
+      StockMoveLine.getStockMoveLineStatusColor(
+        StockMoveLine.getStockMoveLineStatus(
+          {isRealQtyModifiedByUser, realQty: pickedQty, qty: askedQty},
+          {statusSelect: customerDeliveryStatus},
+        ),
+        Colors,
+      ),
+    [
+      Colors,
+      askedQty,
+      customerDeliveryStatus,
+      isRealQtyModifiedByUser,
+      pickedQty,
+    ],
+  );
 
-    if (pickedQty < askedQty) {
-      return Colors.cautionColor.background;
-    }
-
-    return Colors.successColor.background;
-  }, [Colors, askedQty, pickedQty]);
-
-  const styles = useMemo(() => {
-    return getStyles(borderColor);
-  }, [borderColor]);
+  const styles = useMemo(
+    () => getStyles(borderColor?.background),
+    [borderColor],
+  );
 
   const massIndicator = useMemo(
     () => getMassIndicator(totalNetMass),
@@ -169,7 +181,7 @@ const CustomerDeliveryLineCard = ({
   );
 };
 
-const getStyles = (color: string) =>
+const getStyles = (color: string | undefined) =>
   StyleSheet.create({
     container: {
       borderWidth: 1.5,

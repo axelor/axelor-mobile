@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ThemeColors} from '@axelor/aos-mobile-ui';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 import {getTypes, TranslatorProps} from '@axelor/aos-mobile-core';
 
 class StockMoveLine {
   static status = {
-    Done: 'done',
-    PartiallyDone: 'partially_done',
     NotDone: 'not_done',
+    PartiallyDone: 'partially_done',
+    Done: 'done',
   };
 
-  static hideLineQty = (line, stockMove) => {
+  static hideLineQty = (line: any, stockMove: any) => {
     const StockMove = getTypes().StockMove;
 
     return (
@@ -54,27 +54,31 @@ class StockMoveLine {
     return this.status.Done;
   };
 
+  static getStockMoveLineStatusColor = (
+    status: string,
+    Colors: ThemeColors,
+  ): Color | undefined => {
+    switch (status) {
+      case this.status.NotDone:
+        return Colors.secondaryColor;
+      case this.status.PartiallyDone:
+        return Colors.cautionColor;
+      case this.status.Done:
+        return Colors.successColor;
+      default:
+        return undefined;
+    }
+  };
+
   static getStockMoveLineStatusItems = (
     I18n: TranslatorProps,
     Colors: ThemeColors,
   ) => {
-    return [
-      {
-        title: I18n.t('Stock_NotDone'),
-        color: Colors.secondaryColor,
-        key: this.status.NotDone,
-      },
-      {
-        title: I18n.t('Stock_PartiallyDone'),
-        color: Colors.cautionColor,
-        key: this.status.PartiallyDone,
-      },
-      {
-        title: I18n.t('Stock_Done'),
-        color: Colors.successColor,
-        key: this.status.Done,
-      },
-    ];
+    return Object.entries(this.status).map(([key, value]) => ({
+      title: I18n.t(`Stock_${key}`),
+      color: this.getStockMoveLineStatusColor(value, Colors),
+      key: value,
+    }));
   };
 }
 
