@@ -114,6 +114,7 @@ const CustomerDeliveryLineActionCard = ({
       ]}>
       <CustomerDeliveryLineCard
         style={styleCard}
+        customerDeliveryStatus={customerDelivery.statusSelect}
         productName={customerDeliveryLine.product?.fullName}
         stockLocationName={customerDeliveryLine.fromStockLocation?.name}
         askedQty={customerDeliveryLine.qty}
@@ -124,6 +125,7 @@ const CustomerDeliveryLineActionCard = ({
         trackingNumber={customerDeliveryLine.trackingNumber}
         totalNetMass={customerDeliveryLine.totalNetMass}
         saleOrderLine={customerDeliveryLine.saleOrderLine}
+        isRealQtyModifiedByUser={customerDeliveryLine.isRealQtyModifiedByUser}
         onPress={() => handleShowLine(customerDeliveryLine)}
       />
     </ActionCard>

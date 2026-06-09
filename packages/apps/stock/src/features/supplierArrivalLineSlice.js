@@ -51,12 +51,6 @@ export const updateSupplierArrivalLine = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateSupplierArrivalLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(() => {
-      dispatch(
-        fetchSupplierArrivalLine({
-          supplierArrivalLineId: data?.stockMoveLineId,
-        }),
-      );
     });
   },
 );

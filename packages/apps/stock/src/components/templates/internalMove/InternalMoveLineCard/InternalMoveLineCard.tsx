@@ -34,6 +34,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {useStockLinesCheckQty} from '../../../../hooks';
 import {useMassIndicatorChecker} from '../../../../providers';
+import {StockMoveLine} from '../../../../types';
 
 interface InternalMoveLineCardProps {
   style?: any;
@@ -48,6 +49,7 @@ interface InternalMoveLineCardProps {
   expectedQty: number;
   movedQty: number;
   totalNetMass?: string;
+  isRealQtyModifiedByUser?: boolean;
   onPress: () => void;
 }
 
@@ -64,6 +66,7 @@ const InternalMoveLineCard = ({
   expectedQty,
   movedQty,
   totalNetMass,
+  isRealQtyModifiedByUser,
   onPress,
 }: InternalMoveLineCardProps) => {
   const Colors = useThemeColor();
@@ -77,20 +80,26 @@ const InternalMoveLineCard = ({
 
   const checkQtyObject = useStockLinesCheckQty(stockMoveLineId);
 
-  const borderColor = useMemo(() => {
-    if (movedQty === 0 || movedQty == null) {
-      return Colors.secondaryColor.background;
-    }
-
-    if (movedQty < expectedQty) {
-      return Colors.cautionColor.background;
-    }
-
-    return Colors.successColor.background;
-  }, [Colors, expectedQty, movedQty]);
+  const borderColor = useMemo(
+    () =>
+      StockMoveLine.getStockMoveLineStatusColor(
+        StockMoveLine.getStockMoveLineStatus(
+          {isRealQtyModifiedByUser, realQty: movedQty, qty: expectedQty},
+          {statusSelect: internalMoveStatus},
+        ),
+        Colors,
+      ),
+    [
+      Colors,
+      expectedQty,
+      internalMoveStatus,
+      isRealQtyModifiedByUser,
+      movedQty,
+    ],
+  );
 
   const borderStyle = useMemo(() => {
-    return getStyles(borderColor)?.border;
+    return getStyles(borderColor?.background)?.border;
   }, [borderColor]);
 
   const massIndicator = useMemo(
@@ -168,7 +177,7 @@ const InternalMoveLineCard = ({
   );
 };
 
-const getStyles = (color: string) =>
+const getStyles = (color: string | undefined) =>
   StyleSheet.create({
     border: {
       borderWidth: 1.5,

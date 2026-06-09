@@ -44,17 +44,13 @@ export const fetchInternalMoveLines = createAsyncThunk(
 
 export const updateInternalMoveLine = createAsyncThunk(
   'internalMoveLine/updateInternalMoveLine',
-  async function (data, {getState, dispatch}) {
+  async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _updateInternalMoveLine,
       data,
       action: 'Stock_SliceAction_UpdateInternalMoveLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(() => {
-      dispatch(
-        fetchInternalMoveLine({internalMoveLineId: data?.stockMoveLineId}),
-      );
     });
   },
 );
