@@ -1,0 +1,6 @@
+{
+  "title": "Documents: allow injecting additional actions into the document action sheet from outside",
+  "type": "feat",
+  "packages": "dms",
+  "description": "DocumentActionCard now accepts an additionnalActions prop, letting parent screens add their own actions to the document action sheet. Each action can define an order to control its position among the default actions and a closeAfter flag to keep the sheet open after the action is triggered."
+}
