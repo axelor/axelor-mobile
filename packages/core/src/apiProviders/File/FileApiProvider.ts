@@ -16,18 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './Action';
-export * from './File';
-export * from './Model';
-export * from './Standard';
-export * from './middlewares';
-export {apiProviderConfig, ApiProviderConfig} from './config';
-export {
-  generateFetchRecordCases,
-  generateInifiniteScrollCases,
-  getApiResponseData,
-  getFirstData,
-  handlerApiCall,
-  handlerError,
-  manageInfiteScrollState,
-} from './utils';
+export interface FileRef {
+  id: number;
+  fileName: string;
+  isMetaFile?: boolean;
+}
+
+export interface LocalFile {
+  path: string;
+  fileName: string;
+  mimeType?: string;
+}
+
+export interface FileApiCredentials {
+  baseUrl: string;
+  token: string;
+  jsessionId?: string;
+}
+
+export interface FileInitData extends FileApiCredentials {
+  userId: number;
+}
+
+export interface FileApi {
+  init(data: FileInitData): void;
+  reset(ref?: FileRef): void;
+  isAvailable(): Promise<boolean>;
+  getDisplayUri(ref: FileRef): Promise<string | null>;
+  getLocalCopy(ref: FileRef): Promise<LocalFile | null>;
+  openInExternalApp(ref: FileRef): Promise<void>;
+  saveToDevice(ref: FileRef): Promise<boolean>;
+}

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   ImageResizeMode,
   ImageStyle,
@@ -24,9 +24,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Image} from '@axelor/aos-mobile-ui';
-import {useSelector} from 'react-redux';
-import {openFileInExternalApp} from '../../../tools/FileViewer';
-import useTranslator from '../../../i18n/hooks/use-translator';
+import {useFileApi} from '../../../apiProviders';
+import {useMetafileUri} from '../../../utils';
 
 interface MetaFileProps {
   id: number;
@@ -50,16 +49,15 @@ const AOSImage = ({
   defaultIconSize = 60,
   enableImageViewer = false,
 }: AOSImageProps) => {
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
-  const I18n = useTranslator();
+  const fileApi = useFileApi();
+  const formatMetaFileUri = useMetafileUri();
 
-  const handleShowFile = async () => {
-    await openFileInExternalApp(
-      {fileName: metaFile?.fileName, id: metaFile?.id, isMetaFile: true},
-      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
-      I18n,
-    );
-  };
+  const handleShowFile = useCallback(async () => {
+    await fileApi.openInExternalApp({
+      id: metaFile?.id,
+      fileName: metaFile?.fileName,
+    });
+  }, [fileApi, metaFile?.fileName, metaFile?.id]);
 
   return (
     <TouchableOpacity
@@ -71,9 +69,7 @@ const AOSImage = ({
         imageSize={imageSize}
         generalStyle={generalStyle}
         resizeMode={resizeMode}
-        source={{
-          uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${metaFile?.id}/content/download`,
-        }}
+        source={formatMetaFileUri(metaFile?.id)}
         defaultIconSize={defaultIconSize}
       />
     </TouchableOpacity>

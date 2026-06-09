@@ -18,8 +18,8 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {
-  downloadFileOnPhone,
   useDispatch,
+  useFileApi,
   useNavigation,
   usePermitted,
   useSelector,
@@ -55,6 +55,7 @@ const DocumentActionCard = ({
 }: DocumentActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const fileApi = useFileApi();
   const navigation = useNavigation();
   const {readonly, canDelete} = usePermitted({
     modelName: 'com.axelor.dms.db.DMSFile',
@@ -63,20 +64,18 @@ const DocumentActionCard = ({
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
-  const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
 
   const isFavorite = useMemo(
-    () => user?.favouriteFileSet.some(({id}) => id === document.id),
+    () => user?.favouriteFileSet.some(({id}: any) => id === document.id),
     [document.id, user?.favouriteFileSet],
   );
 
   const handleDownloadFile = useCallback(async () => {
-    await downloadFileOnPhone(
-      {fileName: document.fileName, id: document.id, isMetaFile: false},
-      {baseUrl, token, jsessionId},
-      I18n,
-    );
-  }, [I18n, baseUrl, document, jsessionId, token]);
+    await fileApi.saveToDevice({
+      id: document.metaFile?.id,
+      fileName: document.metaFile?.fileName,
+    });
+  }, [fileApi, document]);
 
   return (
     <ActionCard

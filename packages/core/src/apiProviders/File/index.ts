@@ -16,18 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './Action';
-export * from './File';
-export * from './Model';
-export * from './Standard';
-export * from './middlewares';
-export {apiProviderConfig, ApiProviderConfig} from './config';
-export {
-  generateFetchRecordCases,
-  generateInifiniteScrollCases,
-  getApiResponseData,
-  getFirstData,
-  handlerApiCall,
-  handlerError,
-  manageInfiteScrollState,
-} from './utils';
+export * from './AopFileApi';
+export * from './FileApiProvider';
+export * from './GatewayFileApi';
+export * from './Provider';
+export * from './utils';
