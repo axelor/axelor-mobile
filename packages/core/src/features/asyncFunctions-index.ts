@@ -47,6 +47,7 @@ export {fetchMetaModules} from './metaModuleSlice';
 export {
   enable as enableOnline,
   disable as disableOnline,
+  setConnected,
   useEffectOnline,
   useOnline,
 } from './onlineSlice';
