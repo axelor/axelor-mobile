@@ -20,6 +20,7 @@ import RNFS from 'react-native-fs';
 import {sanitizeFileName} from '../../utils';
 import {getNetInfo} from '../../api/net-info-utils';
 import {
+  BinaryImageRef,
   FileApi,
   FileApiCredentials,
   FileRef,
@@ -27,6 +28,7 @@ import {
   LocalFile,
 } from './FileApiProvider';
 import {
+  binaryImageUrl,
   buildCookie,
   downloadUrlToPath,
   metaFileContentUrl,
@@ -59,6 +61,11 @@ export class AopFileApi implements FileApi {
   async getDisplayUri(ref: FileRef): Promise<string | null> {
     if (this.credentials?.baseUrl == null) return null;
     return metaFileContentUrl(this.credentials.baseUrl, ref);
+  }
+
+  async getBinaryImageUri(ref: BinaryImageRef): Promise<string | null> {
+    if (this.credentials?.baseUrl == null) return null;
+    return binaryImageUrl(this.credentials.baseUrl, ref);
   }
 
   async getLocalCopy(ref: FileRef): Promise<LocalFile | null> {

@@ -23,7 +23,7 @@ import Share from 'react-native-share';
 import FileViewer from 'react-native-file-viewer';
 import {i18nProvider} from '../../i18n';
 import {sanitizeFileName, showToastMessage} from '../../utils';
-import {FileApiCredentials, FileRef} from './FileApiProvider';
+import {BinaryImageRef, FileApiCredentials, FileRef} from './FileApiProvider';
 
 export type Translate = (key: string) => string;
 
@@ -45,6 +45,14 @@ export function metaFileDownloadUrl(baseUrl: string, ref: FileRef): string {
   return ref.isMetaFile === false
     ? `${baseUrl}ws/dms/download/${ref.id}`
     : `${baseUrl}ws/rest/${META_FILE_MODEL}/${ref.id}/content/download`;
+}
+
+export function binaryImageUrl(baseUrl: string, ref: BinaryImageRef): string {
+  const versionParams =
+    ref.version != null
+      ? `v=${ref.version}&parentId=${ref.id}&parentModel=${ref.model}&`
+      : '';
+  return `${baseUrl}ws/rest/${ref.model}/${ref.id}/${ref.field}/download?${versionParams}image=true`;
 }
 
 function getFileExtension(fileName: string): string | undefined {

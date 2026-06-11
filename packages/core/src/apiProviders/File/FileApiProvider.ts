@@ -22,6 +22,13 @@ export interface FileRef {
   isMetaFile?: boolean;
 }
 
+export interface BinaryImageRef {
+  model: string;
+  id: number;
+  version: number;
+  field: string;
+}
+
 export interface LocalFile {
   path: string;
   fileName: string;
@@ -43,6 +50,7 @@ export interface FileApi {
   reset(ref?: FileRef): void;
   isAvailable(): Promise<boolean>;
   getDisplayUri(ref: FileRef): Promise<string | null>;
+  getBinaryImageUri(ref: BinaryImageRef): Promise<string | null>;
   getLocalCopy(ref: FileRef): Promise<LocalFile | null>;
   openInExternalApp(ref: FileRef): Promise<void>;
   saveToDevice(ref: FileRef): Promise<boolean>;

@@ -16,7 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FileApi, FileInitData, FileRef, LocalFile} from './FileApiProvider';
+import {
+  BinaryImageRef,
+  FileApi,
+  FileInitData,
+  FileRef,
+  LocalFile,
+} from './FileApiProvider';
 
 async function getAvailableFileApi(fileApis: FileApi[]): Promise<FileApi> {
   for (const _fileApi of fileApis) {
@@ -49,6 +55,11 @@ export class GatewayFileApi implements FileApi {
   async getDisplayUri(ref: FileRef): Promise<string | null> {
     const _fileApi = await getAvailableFileApi(this.fileApis);
     return _fileApi.getDisplayUri(ref);
+  }
+
+  async getBinaryImageUri(ref: BinaryImageRef): Promise<string | null> {
+    const _fileApi = await getAvailableFileApi(this.fileApis);
+    return _fileApi.getBinaryImageUri(ref);
   }
 
   async getLocalCopy(ref: FileRef): Promise<LocalFile | null> {
