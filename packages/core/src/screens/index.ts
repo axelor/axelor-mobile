@@ -16,11 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Screen} from '../app';
 import BarcodeDisplayScreen from './BarcodeDisplayScreen';
 import JsonFieldScreen from './JsonFieldScreen';
 import ProcessListScreen from './ProcessListScreen';
+import ERPAccessScreen from './ERPAccessScreen';
 
-export default {
+type JSONScreens = {[key: string]: Screen};
+
+const baseScreens: JSONScreens = {
   BarcodeDisplayScreen: {
     title: 'Base_Barcode',
     component: BarcodeDisplayScreen,
@@ -44,6 +48,13 @@ export default {
       shadedHeader: false,
     },
   },
+  ERPAccessScreen: {
+    title: 'Base_ERPAccesss',
+    component: ERPAccessScreen,
+    options: {shadedHeader: true},
+    isUsableOnShortcut: true,
+  },
 };
 
+export default baseScreens;
 export {default as ErrorScreen} from './ErrorScreen';

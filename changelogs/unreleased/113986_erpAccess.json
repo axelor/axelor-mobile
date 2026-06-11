@@ -1,0 +1,5 @@
+{
+  "title": "Menus: add ERP access entry to open the web ERP from the mobile application",
+  "type": "feat",
+  "packages": "core"
+}

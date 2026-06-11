@@ -26,6 +26,7 @@ export interface Module {
     upToVersion?: version;
   };
   disabled?: boolean;
+  quickNavigation?: boolean;
   menus?: {
     [menuKey: string]: Menu;
   };
@@ -60,6 +61,7 @@ A module therefore has :
 - a subtitle (_subtitle_) to be displayed to the user under the module button in the drawer to aid comprehension. The display of these subtitles can be configured in the _Application_ component using the _showModulesSubtitle._ attribute.
 - an icon name (_icon_) to be displayed on the module button in the drawer. Please note that this icon must belong to the [Bootstrap database](https://icons.getbootstrap.com/).
 - web instance compatibility information (_compatibilityAOS_). It's possible to overload this information from another module by indicating different versions of the same web module name. A version must be a string composed of three numbers. The web module version is automatically retrieved from the server information.
+- a quick navigation option (_quickNavigation_) to define whether selecting the module in the drawer should navigate directly to its first accessible menu instead of displaying the inner menu list. When enabled, the inner menu is never shown. This configuration is set to false by default.
 - a set of menus (_menus_) to be displayed in the drawer.
 - a set of screens belonging to the module (_screens_).
 - a set of translations for the module (_translations_). Translations must be supplied in key-value format for each supported language.
