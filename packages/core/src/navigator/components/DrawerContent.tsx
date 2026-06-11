@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useRef, useMemo, useEffect, useCallback} from 'react';
+import React, {useRef, useMemo, useEffect, useCallback, useState} from 'react';
 import {StyleSheet, View, Animated, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
@@ -31,6 +31,7 @@ import {MenuWithSubMenus, Module} from '../../app';
 import {useActiveModule} from '../providers';
 import {
   DrawerState,
+  getModuleOfMenu,
   moduleHasMenus,
   NavigationObject,
   numberOfModules,
@@ -43,7 +44,7 @@ interface DrawerContentProps {
   state: DrawerState;
   modules: Module[];
   navigation: NavigationObject;
-  onModuleClick: (name: string) => void;
+  onModuleClick: (name?: string) => void;
   onRefresh: () => void;
   versionCheckConfig: any;
 }
@@ -68,7 +69,7 @@ const DrawerContent = ({
           ?.flatMap(_module => {
             const result = [];
 
-            for (const [key, menu] of Object.entries(_module.menus)) {
+            for (const [key, menu] of Object.entries(_module.menus ?? {})) {
               result.push(key);
 
               if (hasSubMenus(menu)) {
@@ -80,7 +81,7 @@ const DrawerContent = ({
 
             return result;
           })
-          .map(_key => _state.routes.find(_item => _item.name === _key)),
+          .map(_key => _state.routes.find(_item => _item.name === _key)) as any,
       }),
     );
   }, [modules, navigation]);
@@ -88,10 +89,11 @@ const DrawerContent = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useActiveModule();
+  const [innerMenuDisabled, setInnerMenuDisabled] = useState<boolean>(false);
 
   const innerMenuIsVisible = useMemo(
-    () => activeModule.name !== authModule.name,
-    [activeModule],
+    () => !innerMenuDisabled && activeModule.name !== authModule.name,
+    [activeModule.name, innerMenuDisabled],
   );
 
   const drawerModules = useMemo(
@@ -105,6 +107,16 @@ const DrawerContent = ({
   const externalMenuIsVisible = useMemo(
     () => numberOfModules(drawerModules) > 1,
     [drawerModules],
+  );
+
+  const navigatedModule = useMemo(
+    () => getModuleOfMenu(modules, state.routes?.[state.index]?.name),
+    [modules, state.routes, state.index],
+  );
+
+  const showRestoreNavigatedModule = useMemo(
+    () => externalMenuIsVisible && navigatedModule != null,
+    [externalMenuIsVisible, navigatedModule],
   );
 
   const toggleSecondaryMenu = useCallback(() => {
@@ -133,6 +145,7 @@ const DrawerContent = ({
   );
 
   const handleModuleClick = (_module: Module) => {
+    setInnerMenuDisabled(false);
     onModuleClick(_module.name);
 
     const defaultMenuKey = getDefaultMenuKey(_module);
@@ -150,7 +163,7 @@ const DrawerContent = ({
 
     const focused =
       state.routes.indexOf(route) === state.index &&
-      Object.keys(activeModule.menus).includes(route.name);
+      Object.keys(activeModule.menus ?? {}).includes(route.name);
 
     const event: any = navigation.emit({
       type: 'drawerItemPress' as never,
@@ -198,7 +211,7 @@ const DrawerContent = ({
               <View style={styles.globalContainer} key={_module.name}>
                 <MenuIconButton
                   style={styles.menuItemContainer}
-                  icon={_module.icon}
+                  icon={_module.icon ?? ''}
                   subtitle={_module.subtitle}
                   disabled={_module.disabled}
                   isActive={_module.name === activeModule?.name}
@@ -240,8 +253,15 @@ const DrawerContent = ({
                 : () => onModuleClick(drawerModules[0]?.name)
             }
             compatibility={
-              externalMenuIsVisible ? null : drawerModules[0].compatibilityAOS
+              externalMenuIsVisible
+                ? undefined
+                : drawerModules[0].compatibilityAOS
             }
+            showClose={showRestoreNavigatedModule}
+            onClose={() => {
+              setInnerMenuDisabled(true);
+              onModuleClick(navigatedModule?.name);
+            }}
           />
         </Animated.View>
       </View>

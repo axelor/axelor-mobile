@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Text, WarningCard} from '@axelor/aos-mobile-ui';
+import {Icon, Text, useThemeColor, WarningCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {Compatibility, Module} from '../../../app';
 import {
@@ -35,7 +35,9 @@ interface MenuProps {
   authMenu?: React.ReactNode;
   activeModule: Module;
   onItemClick: () => void;
-  compatibility: Compatibility;
+  compatibility?: Compatibility;
+  showClose?: boolean;
+  onClose?: () => void;
 }
 
 const Menu = ({
@@ -45,8 +47,11 @@ const Menu = ({
   activeModule,
   onItemClick,
   compatibility,
+  showClose = false,
+  onClose,
 }: MenuProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const title = useMemo(
     () => getMenuTitle(activeModule, I18n),
@@ -65,6 +70,15 @@ const Menu = ({
         showsVerticalScrollIndicator={false}>
         <View style={styles.menuTitleContainer}>
           <Text style={styles.menuTitle}>{title}</Text>
+          {showClose && (
+            <Icon
+              name="x-lg"
+              size={20}
+              color={Colors.secondaryColor_dark.background}
+              touchable
+              onPress={onClose}
+            />
+          )}
         </View>
         {compatibilityError && (
           <WarningCard
@@ -95,10 +109,14 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   menuTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 16,
     marginBottom: 8,
   },
   menuTitle: {
+    flexShrink: 1,
     fontSize: 21,
     fontWeight: 'bold',
   },
