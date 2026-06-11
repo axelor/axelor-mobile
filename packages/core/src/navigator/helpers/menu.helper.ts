@@ -33,11 +33,11 @@ import {moduleHasMenus} from './module.helper';
 export function findIndexAndRouteOfMenu(
   routes: Route[],
   menuName: string,
-): {route: Route; index: number} {
+): {route?: Route; index?: number} {
   const index = routes.findIndex(_route => _route.name === menuName);
 
   if (index === -1) {
-    return {route: null, index: null};
+    return {};
   }
 
   return {route: routes[index], index: index};
@@ -58,24 +58,24 @@ function isModuleNotFound(compatibility: Compatibility) {
 }
 
 function isVersionTooLow(compatibility: Compatibility) {
-  const moduleVersion = formatVersionString(compatibility.moduleVersion);
+  const moduleVersion = formatVersionString(compatibility.moduleVersion)!;
 
   return (
     !checkNullString(compatibility.downToVersion) &&
-    moduleVersion < formatVersionString(compatibility.downToVersion)
+    moduleVersion < formatVersionString(compatibility.downToVersion)!
   );
 }
 
 function isVersionTooHigh(compatibility: Compatibility) {
-  const moduleVersion = formatVersionString(compatibility.moduleVersion);
+  const moduleVersion = formatVersionString(compatibility.moduleVersion)!;
 
   return (
     !checkNullString(compatibility.upToVersion) &&
-    moduleVersion >= formatVersionString(compatibility.upToVersion)
+    moduleVersion >= formatVersionString(compatibility.upToVersion)!
   );
 }
 
-export function isMenuIncompatible(compatibility: Compatibility) {
+export function isMenuIncompatible(compatibility?: Compatibility) {
   if (compatibility == null) {
     return false;
   }
@@ -88,7 +88,7 @@ export function isMenuIncompatible(compatibility: Compatibility) {
 }
 
 export function getCompatibilityError(
-  compatibility: Compatibility,
+  compatibility: Compatibility | undefined,
   I18n: TranslatorProps,
   showDetails: boolean = true,
 ) {
@@ -130,7 +130,7 @@ export function getCompatibilityError(
 
 export function formatMenus(module: Module) {
   return Object.fromEntries(
-    Object.entries(module.menus).map(([key, menu], idx) => {
+    Object.entries(module.menus ?? {}).map(([key, menu], idx) => {
       return [
         key,
         {...menu, order: menu.order ?? idx * 10, parent: module.name},
@@ -151,13 +151,11 @@ export function resolveSubMenus(subMenus: {[key: string]: SubMenu}) {
   return Object.entries(subMenus)
     .map(([key, content]) => ({...content, key}))
     .map((item, index) => {
-      if (item?.order != null) {
-        return item;
-      }
+      if (item?.order != null) return item;
 
       return {...item, order: index * 10};
     })
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => a.order! - b.order!);
 }
 
 export function manageSubMenusOverriding(modules: Module[]) {
@@ -177,9 +175,11 @@ export function manageSubMenusOverriding(modules: Module[]) {
         if (hasSubMenus(menu)) {
           const _menu = menu as MenuWithSubMenus;
           _menu.subMenus = Object.entries(_menu.subMenus).reduce(
-            (acc, [subMenuKey, subMenu]) => {
+            (acc: any, [subMenuKey, subMenu]) => {
               if ('parent' in subMenu) {
-                const parentMenu = allMenus[subMenu.parent] as MenuWithSubMenus;
+                const parentMenu = allMenus[
+                  subMenu.parent!
+                ] as MenuWithSubMenus;
 
                 if (parentMenu) {
                   if (!parentMenu.subMenus) {
@@ -216,7 +216,7 @@ function cleanEmptyMenusAndSubMenus(modules: Module[]) {
     const {menus} = module;
 
     if (moduleHasMenus(module)) {
-      const cleanedMenus = Object.entries(menus).map(([key, menu]) => {
+      const cleanedMenus = Object.entries(menus ?? {}).map(([key, menu]) => {
         const {subMenus, ...restMenusAttrs} = menu as MenuWithSubMenus;
 
         if (hasSubMenus(menu) && Object.keys(subMenus).length === 0) {
@@ -235,12 +235,34 @@ function cleanEmptyMenusAndSubMenus(modules: Module[]) {
   return cleanedModules;
 }
 
+export function getModuleOfMenu(
+  modules: Module[],
+  menuKey: string,
+): Module | undefined {
+  if (menuKey == null || !Array.isArray(modules)) {
+    return undefined;
+  }
+
+  return modules.filter(moduleHasMenus).find(_module =>
+    Object.entries(_module.menus ?? {}).some(([key, menu]) => {
+      if (key === menuKey) {
+        return true;
+      }
+
+      return (
+        hasSubMenus(menu) &&
+        Object.keys((menu as MenuWithSubMenus).subMenus).includes(menuKey)
+      );
+    }),
+  );
+}
+
 export function getDefaultMenuKey(module: Module) {
   if (!moduleHasMenus(module)) {
     return null;
   }
 
-  const defaultMenuEntry = Object.entries(module.menus)
+  const defaultMenuEntry = Object.entries(module.menus ?? {})
     .map(([key, menu]) => ({...menu, key}))
     .filter((menu: any) => !isMenuIncompatible(menu.compatibilityAOS))
     .find((menu: any) => menu.isDefault === true);

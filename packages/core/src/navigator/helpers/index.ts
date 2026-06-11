@@ -31,6 +31,7 @@ export {
   getCompatibilityError,
   getDefaultMenuKey,
   getMenuTitle,
+  getModuleOfMenu,
   hasSubMenus,
   isMenuIncompatible,
   manageSubMenusOverriding,

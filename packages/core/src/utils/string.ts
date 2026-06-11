@@ -16,22 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function splitInTwo(value: String, spacer = '.'): Array<String> {
-  if (value == null) {
-    return null;
-  }
+export function splitInTwo(
+  value: String,
+  spacer = '.',
+): Array<String> | undefined {
+  if (value == null) return undefined;
   return value.toString().split(spacer);
 }
 
 export function isHtml(value: string): boolean {
   const regex = /<\/?[a-z][\s\S]*>/i;
-  if (value == null) {
-    return null;
-  }
+  if (value == null) return false;
   return regex.test(value);
 }
 
-export function stringNoAccent(message) {
+export function stringNoAccent(message?: string) {
   if (message == null) {
     return '';
   } else {
@@ -45,7 +44,7 @@ export function stringNoAccent(message) {
   }
 }
 
-export function checkNullString(message) {
+export function checkNullString(message: any) {
   if (typeof message !== 'string') {
     return true;
   } else {
@@ -54,9 +53,9 @@ export function checkNullString(message) {
   }
 }
 
-export function formatVersionString(version: string): number {
+export function formatVersionString(version?: string): number | undefined {
   if (typeof version !== 'string') {
-    return null;
+    return undefined;
   }
 
   const vparts = version.split('.');
