@@ -18,71 +18,36 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  useDispatch,
-  useFileApi,
-  useNavigation,
-  usePermitted,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {
-  ActionCardType,
-  ActionSheet,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  addToFavorites,
-  deleteDocument,
-  deleteFavoriteDocument,
-  removeFromFavorites,
-} from '../../../features/documentSlice';
+import {useFileApi, useTranslator} from '@axelor/aos-mobile-core';
+import {ActionCardType, ActionSheet} from '@axelor/aos-mobile-ui';
+import {useDocumentActions} from '../../../providers';
 import {DocumentCard} from '../../atoms';
 
 interface Action extends ActionCardType {
-  order?: number;
+  key?: string;
   closeAfter?: boolean;
 }
 
 interface DocumentActionCardProps {
   document: any;
   handleRefresh?: () => void;
-  disableFavorites?: boolean;
-  disableDownload?: boolean;
-  disableEdit?: boolean;
-  disabledDelete?: boolean;
   customOnPress?: () => void;
-  additionnalActions?: Action[];
+  disableActions?: boolean;
+  disabledActionKeys?: string[];
 }
 
 const DocumentActionCard = ({
   document,
   handleRefresh,
-  disableFavorites = false,
-  disableDownload = false,
-  disableEdit = false,
-  disabledDelete = false,
   customOnPress,
-  additionnalActions,
+  disableActions = false,
+  disabledActionKeys,
 }: DocumentActionCardProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const fileApi = useFileApi();
-  const navigation = useNavigation();
-  const {readonly, canDelete} = usePermitted({
-    modelName: 'com.axelor.dms.db.DMSFile',
-  });
-  const dispatch: any = useDispatch();
+  const {getLeafActions} = useDocumentActions();
 
   const [isActionsVisible, setIsActionsVisible] = useState(false);
-
-  const {mobileSettings} = useSelector(state => state.appConfig);
-  const {user} = useSelector(state => state.user);
-
-  const isFavorite = useMemo(
-    () => user?.favouriteFileSet.some(({id}: any) => id === document.id),
-    [document.id, user?.favouriteFileSet],
-  );
 
   const handleOpenFile = useCallback(async () => {
     await fileApi.openInExternalApp({
@@ -91,100 +56,34 @@ const DocumentActionCard = ({
     });
   }, [fileApi, document]);
 
-  const handleDownloadFile = useCallback(async () => {
-    await fileApi.saveToDevice({
-      id: document.metaFile?.id,
-      fileName: document.metaFile?.fileName,
-    });
-  }, [fileApi, document]);
+  const actionList = useMemo<Action[]>(() => {
+    const providerActions: Action[] = disableActions
+      ? []
+      : (getLeafActions(document, {handleRefresh})?.filter(
+          _action =>
+            _action.key == null || !disabledActionKeys?.includes(_action.key),
+        ) ?? []);
 
-  const actionList = useMemo(
-    () => [
+    return [
       {
         iconName: 'eye-fill',
         helper: I18n.t('Dms_Open'),
         onPress: handleOpenFile,
       },
-      {
-        iconName: isFavorite ? 'star-fill' : 'star',
-        iconColor: Colors.progressColor.background,
-        helper: I18n.t('Dms_AddToFavorites'),
-        onPress: () =>
-          dispatch(
-            ((isFavorite ? removeFromFavorites : addToFavorites) as any)({
-              documentId: document.id,
-              userId: user?.id,
-            }),
-          ),
-        hidden:
-          disableFavorites || !mobileSettings?.isFavoritesManagementEnabled,
-        disabled: readonly,
-        closeAfter: false,
-      },
-      {
-        iconName: 'download',
-        helper: I18n.t('Dms_Download'),
-        onPress: handleDownloadFile,
-        hidden: disableDownload || !mobileSettings?.isDownloadAllowed,
-      },
-      {
-        iconName: 'pencil-fill',
-        helper: I18n.t('Dms_Rename'),
-        onPress: () =>
-          navigation.navigate('DocumentFormScreen', {
-            document,
-          }),
-        hidden: disableEdit || !mobileSettings?.isRenamingAllowed || readonly,
-      },
-      {
-        iconName: 'trash-fill',
-        iconColor: Colors.errorColor.background,
-        helper: I18n.t('Dms_Delete'),
-        onPress: () =>
-          dispatch(
-            ((isFavorite ? deleteFavoriteDocument : deleteDocument) as any)({
-              documentId: document.id,
-              userId: user?.id,
-            }),
-          ).then(() => handleRefresh?.()),
-        hidden:
-          disabledDelete ||
-          !canDelete ||
-          !mobileSettings?.isFileDeletionAllowed,
-      },
-      ...(additionnalActions ?? []),
-    ],
-    [
-      I18n,
-      handleOpenFile,
-      isFavorite,
-      Colors,
-      disableFavorites,
-      mobileSettings?.isFavoritesManagementEnabled,
-      mobileSettings?.isDownloadAllowed,
-      mobileSettings?.isRenamingAllowed,
-      mobileSettings?.isFileDeletionAllowed,
-      readonly,
-      handleDownloadFile,
-      disableDownload,
-      disableEdit,
-      disabledDelete,
-      canDelete,
-      additionnalActions,
-      dispatch,
-      document,
-      user?.id,
-      navigation,
-      handleRefresh,
-    ],
-  );
+      ...providerActions,
+    ];
+  }, [
+    I18n,
+    handleOpenFile,
+    disableActions,
+    disabledActionKeys,
+    getLeafActions,
+    document,
+    handleRefresh,
+  ]);
 
   const visibleActions = useMemo(
-    () =>
-      actionList
-        .map((_i, idx) => ({..._i, order: _i.order ?? idx * 10}))
-        .sort((a, b) => a.order - b.order)
-        .filter(action => !action.hidden),
+    () => actionList.filter(action => !action.hidden),
     [actionList],
   );
 

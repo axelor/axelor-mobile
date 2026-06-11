@@ -25,9 +25,11 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {getAction} from '../utils';
+import {useDmsDocumentActions} from './use-dms-document-actions';
 
 export const useDMSHeaders = () => {
   useAttachedFilesGenericAction();
+  useDmsDocumentActions();
 };
 
 const useAttachedFilesGenericAction = () => {
