@@ -16,7 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './defaults';
-export * from './hooks';
-export * from './types';
-export * from './ModuleProvider';
+import {Module} from './types';
+
+export const erpAccressModule: Module = {
+  name: 'app-erp-access',
+  title: 'Base_ERPAccesss',
+  subtitle: 'Base_ERPAccesss',
+  icon: 'box-arrow-up-right',
+  quickNavigation: true,
+  menus: {
+    core_menu_erpAccess: {
+      title: 'Base_ERPAccesss',
+      icon: 'box-arrow-up-right',
+      screen: 'ERPAccessScreen',
+      isDefault: true,
+    },
+  },
+};

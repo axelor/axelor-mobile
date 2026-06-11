@@ -133,6 +133,12 @@ export interface Module {
   /** Detail compatibility with the web version */
   compatibilityAOS?: Compatibility;
   disabled?: boolean;
+  /**
+   * Defines if a selection of the module inside the drawer should
+   * navigate to the first accessible menu. In that case, the inner menu
+   * is never shown. By default, this configuration is set as false.
+   */
+  quickNavigation?: boolean;
   menus?: {
     [menuKey: string]: Menu;
   };

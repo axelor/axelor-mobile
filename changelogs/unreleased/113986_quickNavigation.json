@@ -1,0 +1,5 @@
+{
+  "title": "Module: add quick navigation option to skip inner menu and open the first accessible menu directly",
+  "type": "feat",
+  "packages": "core"
+}
