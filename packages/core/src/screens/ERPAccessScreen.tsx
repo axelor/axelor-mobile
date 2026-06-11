@@ -16,7 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './defaults';
-export * from './hooks';
-export * from './types';
-export * from './ModuleProvider';
+import React from 'react';
+import {WebView} from '../components';
+import {useSelector} from '../redux/hooks';
+
+const ERPAccessScreen = () => {
+  const {baseUrl} = useSelector(state => state.auth);
+
+  return <WebView baseUrl={baseUrl} path="" />;
+};
+
+export default ERPAccessScreen;

@@ -235,6 +235,7 @@
   "Base_StepOfStep": "{{activeStep}} of {{numberOfSteps}}",
   "Base_ReloadApp": "Reload the app",
   "Base_ServerMaintenance": "The ERP server is currently undergoing maintenance. Please try again later.",
+  "Base_ERPAccesss": "ERP access",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
   "Base_SliceAction_GetStudioApp": "fetch studio apps",

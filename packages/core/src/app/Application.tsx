@@ -23,7 +23,7 @@ import {
   Writing,
   WritingStyles,
 } from '@axelor/aos-mobile-ui';
-import {Module, modulesProvider} from './modules';
+import {erpAccressModule, Module, modulesProvider} from './modules';
 import ContextsProvider from './ContextsProvider';
 import ContextedApplication from './ContextedApplication';
 import {authModule} from '../auth';
@@ -79,29 +79,33 @@ const Application = ({
   configuration,
   customLoginPage,
 }: ApplicationProps) => {
-  const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
+  const modules: Module[] = useRef([
+    authModule,
+    erpAccressModule,
+    ...modulesProvided,
+  ]).current;
 
   RouterProvider.init({
     retrocompatibility: configuration?.retrocompatibilityAOS6,
     routesDefinition: configuration?.additionalRoutes,
-  });
+  } as any);
 
   ApiProviderConfig.allowConnectionBlock =
-    configuration.allowInternetConnectionBlock;
+    configuration?.allowInternetConnectionBlock as any;
 
   useEffect(() => {
     modulesProvider.init(
       modules,
       modules
         .filter(_module => _module.moduleRegister)
-        .flatMap(_module => _module.moduleRegister),
+        .flatMap(_module => _module.moduleRegister) as any,
     );
   }, [modules]);
 
   useEffect(() => {
     sessionStorage.init(
-      configuration?.isDemoSession,
-      configuration?.demoSession,
+      configuration?.isDemoSession as any,
+      configuration?.demoSession as any,
     );
   }, [configuration?.demoSession, configuration?.isDemoSession]);
 
@@ -113,9 +117,9 @@ const Application = ({
       themes={themes}
       defaultWritingTheme={defaultWritingTheme}
       writingThemes={writingThemes}
-      defaultLanguage={configuration?.defaultLanguage}
-      defaultRequestLimit={configuration?.defaultRequestLimit}
-      enableWebSocket={configuration?.enableWebSocket}
+      defaultLanguage={configuration?.defaultLanguage as any}
+      defaultRequestLimit={configuration?.defaultRequestLimit as any}
+      enableWebSocket={configuration?.enableWebSocket as any}
       themeColorsConfig={configuration?.themeColorsConfig}
       writingStylesConfig={configuration?.writingStylesConfig}
       showModulesSubtitle={
@@ -125,13 +129,15 @@ const Application = ({
         modules={modules}
         mainMenu={mainMenu}
         version={version}
-        configuration={{
-          testInstanceConfig: configuration?.testInstanceConfig,
-          releaseInstanceConfig: configuration?.releaseInstanceConfig,
-          enableConnectionSessions: configuration?.enableConnectionSessions,
-          logoFile: configuration?.logoFile,
-          versionCheckConfig: configuration?.versionCheckConfig,
-        }}
+        configuration={
+          {
+            testInstanceConfig: configuration?.testInstanceConfig,
+            releaseInstanceConfig: configuration?.releaseInstanceConfig,
+            enableConnectionSessions: configuration?.enableConnectionSessions,
+            logoFile: configuration?.logoFile,
+            versionCheckConfig: configuration?.versionCheckConfig,
+          } as any
+        }
         customLoginPage={customLoginPage}
       />
     </ContextsProvider>

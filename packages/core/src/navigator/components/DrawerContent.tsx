@@ -145,7 +145,7 @@ const DrawerContent = ({
   );
 
   const handleModuleClick = (_module: Module) => {
-    setInnerMenuDisabled(false);
+    setInnerMenuDisabled(_module.quickNavigation ?? false);
     onModuleClick(_module.name);
 
     const defaultMenuKey = getDefaultMenuKey(_module);
