@@ -235,6 +235,28 @@ function cleanEmptyMenusAndSubMenus(modules: Module[]) {
   return cleanedModules;
 }
 
+export function getModuleOfMenu(
+  modules: Module[],
+  menuKey: string,
+): Module | undefined {
+  if (menuKey == null || !Array.isArray(modules)) {
+    return undefined;
+  }
+
+  return modules.filter(moduleHasMenus).find(_module =>
+    Object.entries(_module.menus ?? {}).some(([key, menu]) => {
+      if (key === menuKey) {
+        return true;
+      }
+
+      return (
+        hasSubMenus(menu) &&
+        Object.keys((menu as MenuWithSubMenus).subMenus).includes(menuKey)
+      );
+    }),
+  );
+}
+
 export function getDefaultMenuKey(module: Module) {
   if (!moduleHasMenus(module)) {
     return null;

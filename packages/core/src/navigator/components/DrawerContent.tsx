@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useRef, useMemo, useEffect, useCallback} from 'react';
+import React, {useRef, useMemo, useEffect, useCallback, useState} from 'react';
 import {StyleSheet, View, Animated, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
@@ -31,6 +31,7 @@ import {MenuWithSubMenus, Module} from '../../app';
 import {useActiveModule} from '../providers';
 import {
   DrawerState,
+  getModuleOfMenu,
   moduleHasMenus,
   NavigationObject,
   numberOfModules,
@@ -88,10 +89,11 @@ const DrawerContent = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useActiveModule();
+  const [innerMenuDisabled, setInnerMenuDisabled] = useState<boolean>(false);
 
   const innerMenuIsVisible = useMemo(
-    () => activeModule.name !== authModule.name,
-    [activeModule],
+    () => !innerMenuDisabled && activeModule.name !== authModule.name,
+    [activeModule.name, innerMenuDisabled],
   );
 
   const drawerModules = useMemo(
@@ -105,6 +107,16 @@ const DrawerContent = ({
   const externalMenuIsVisible = useMemo(
     () => numberOfModules(drawerModules) > 1,
     [drawerModules],
+  );
+
+  const navigatedModule = useMemo(
+    () => getModuleOfMenu(modules, state.routes?.[state.index]?.name),
+    [modules, state.routes, state.index],
+  );
+
+  const showRestoreNavigatedModule = useMemo(
+    () => externalMenuIsVisible && navigatedModule != null,
+    [externalMenuIsVisible, navigatedModule],
   );
 
   const toggleSecondaryMenu = useCallback(() => {
@@ -133,6 +145,7 @@ const DrawerContent = ({
   );
 
   const handleModuleClick = (_module: Module) => {
+    setInnerMenuDisabled(false);
     onModuleClick(_module.name);
 
     const defaultMenuKey = getDefaultMenuKey(_module);
@@ -244,6 +257,11 @@ const DrawerContent = ({
                 ? undefined
                 : drawerModules[0].compatibilityAOS
             }
+            showClose={showRestoreNavigatedModule}
+            onClose={() => {
+              setInnerMenuDisabled(true);
+              onModuleClick(navigatedModule?.name);
+            }}
           />
         </Animated.View>
       </View>
