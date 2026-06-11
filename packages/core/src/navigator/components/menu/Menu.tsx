@@ -35,7 +35,7 @@ interface MenuProps {
   authMenu?: React.ReactNode;
   activeModule: Module;
   onItemClick: () => void;
-  compatibility: Compatibility;
+  compatibility?: Compatibility;
 }
 
 const Menu = ({
