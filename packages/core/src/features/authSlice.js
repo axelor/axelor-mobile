@@ -19,12 +19,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getActiveUserInfo, loginApi, logoutApi} from '../api/login-api';
 import {ejectAxios} from '../api/axios-init';
-import {apiProviderConfig} from '../apiProviders/config';
+import {apiProviderConfig, getFileApi} from '../apiProviders';
 import {MfaVerifyErrorCode, saveUrlInStorage, verifyMfaApi} from '../sessions';
 import {checkNullString, testUrl} from '../utils';
 import {modulesProvider} from '../app';
 import {webSocketProvider} from '../websocket';
 import {resetConfigs} from './appConfigSlice';
+import {userProvider} from '../config';
 
 async function finalizeLogin(
   {token, jsessionId, requestInterceptorId, responseInterceptorId},
@@ -44,6 +45,7 @@ async function finalizeLogin(
     token,
     jsessionId,
   });
+  getFileApi()?.init({baseUrl: url, token, jsessionId, userId});
 
   dispatch(resetConfigs());
 
@@ -128,7 +130,9 @@ export const logout = createAsyncThunk(
     const {requestInterceptorId, responseInterceptorId} = getState()?.auth;
     ejectAxios({requestInterceptorId, responseInterceptorId});
 
+    getFileApi()?.reset();
     webSocketProvider.closeWebSocket();
+    userProvider.clear();
 
     return;
   },

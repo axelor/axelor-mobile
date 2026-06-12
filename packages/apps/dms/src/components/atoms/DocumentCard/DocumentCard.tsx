@@ -20,8 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   formatDateTime,
-  openFileInExternalApp,
-  useSelector,
+  useFileApi,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {LabelText, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -36,8 +35,7 @@ interface DocumentCardProps {
 const DocumentCard = ({style, document, customOnPress}: DocumentCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
+  const fileApi = useFileApi();
 
   const fileColor = useMemo(
     () => File.getFileColor(document.metaFile?.fileName, Colors).background,
@@ -53,15 +51,10 @@ const DocumentCard = ({style, document, customOnPress}: DocumentCardProps) => {
   );
 
   const handleOpenFile = async () => {
-    await openFileInExternalApp(
-      {
-        fileName: document.metaFile?.fileName,
-        id: document.metaFile?.id,
-        isMetaFile: true,
-      },
-      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
-      I18n,
-    );
+    await fileApi.openInExternalApp({
+      id: document.metaFile?.id,
+      fileName: document.metaFile?.fileName,
+    });
   };
 
   return (

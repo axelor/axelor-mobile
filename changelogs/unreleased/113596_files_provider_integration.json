@@ -1,0 +1,6 @@
+{
+  "title": "Files: open, download and preview files through the file provider in existing components",
+  "type": "refactor",
+  "packages": "core",
+  "description": "openFileInExternalApp and downloadFileOnPhone now take a simple file reference {id, fileName} and no longer require auth credentials, delegating to the shared file utils. Components displaying or downloading files (documents, images, attachments, upload input...) have been migrated to use fileApi.openInExternalApp / fileApi.saveToDevice, and image URIs are now resolved through the file provider."
+}

@@ -20,10 +20,8 @@ import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {Icon, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
-  openFileInExternalApp,
   useBinaryImageUri,
-  useSelector,
-  useTranslator,
+  useFileApi,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 
@@ -49,11 +47,9 @@ const CatalogCard = ({
   allCatalogType,
   pdfFile,
 }: PartnerCardProps) => {
-  const I18n = useTranslator();
+  const fileApi = useFileApi();
   const formatBinaryFile = useBinaryImageUri();
   const {getItemColorFromIndex} = useTypeHelpers();
-
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const badgeColor = useMemo(
     () => getItemColorFromIndex(allCatalogType, catalogueType),
@@ -61,11 +57,10 @@ const CatalogCard = ({
   );
 
   const handleShowFile = async () => {
-    await openFileInExternalApp(
-      {fileName: pdfFile?.fileName, id: pdfFile?.id, isMetaFile: true},
-      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
-      I18n,
-    );
+    await fileApi.openInExternalApp({
+      id: pdfFile?.id,
+      fileName: pdfFile?.fileName,
+    });
   };
 
   return (

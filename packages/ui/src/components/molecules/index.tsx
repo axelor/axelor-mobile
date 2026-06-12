@@ -19,6 +19,7 @@
 export {default as Alert} from './Alert/Alert';
 export {default as Badge} from './Badge/Badge';
 export {default as BlockInteractionMessage} from './BlockInteractionMessage/BlockInteractionMessage';
+export {default as BottomSheet} from './BottomSheet/BottomSheet';
 export {default as Breadcrumb} from './Breadcrumb/Breadcrumb';
 export {default as Button} from './Button/Button';
 export {default as CardIconButton} from './CardIconButton/CardIconButton';

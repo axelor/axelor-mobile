@@ -21,21 +21,16 @@ import {
   headerActionsProvider,
   SearchTreeView,
   useNavigation,
-  useDispatch,
   useSelector,
   useTranslator,
   usePermitted,
 } from '@axelor/aos-mobile-core';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {
-  addToFavorites,
-  removeFromFavorites,
-  searchDocument,
-  searchDirectory,
-} from '../../../features/documentSlice';
+import {searchDocument, searchDirectory} from '../../../features/documentSlice';
 import {searchDocumentApi} from '../../../api';
 import {AuthorFilter, DirectoryCard} from '../../atoms';
 import {DocumentActionCard} from '../../molecules';
+import {useDocumentActions} from '../../../providers';
 import {File} from '../../../types';
 
 interface DocumentListProps {
@@ -54,14 +49,12 @@ const DocumentList = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
-  const {canCreate, readonly} = usePermitted({
-    modelName: 'com.axelor.dms.db.DMSFile',
-  });
-  const dispatch = useDispatch();
+  const {getBranchActions} = useDocumentActions();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.dms.db.DMSFile'});
 
-  const [author, setAuthor] = useState(null);
-  const [selectedExtensions, setSelectedExtensions] = useState([]);
-  const [parentList, setParentList] = useState([]);
+  const [author, setAuthor] = useState<any>(null);
+  const [selectedExtensions, setSelectedExtensions] = useState<any[]>([]);
+  const [parentList, setParentList] = useState<any[]>([]);
 
   const {
     loadingDocument,
@@ -69,14 +62,10 @@ const DocumentList = ({
     isListEndDocument,
     documentList,
     directoryList,
-  } = useSelector((state: any) => state.dms_document);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
-  const {user} = useSelector(state => state.user);
+  } = useSelector(state => state.dms_document);
 
   const sliceParentFunctionData = useMemo(
-    () => ({
-      authorId: author?.id,
-    }),
+    () => ({authorId: author?.id}),
     [author?.id],
   );
 
@@ -136,53 +125,14 @@ const DocumentList = ({
         isHideableParentSearch={false}
         parentFieldName="parent"
         renderBranch={({item}) => <DirectoryCard directory={item} />}
-        getBranchActions={branch => {
-          if (hideActions) {
-            return null;
-          }
-
-          const isFavorite = user?.favouriteFolderSet.some(
-            ({id}) => id === branch.item.id,
-          );
-
-          const sliceFunction = isFavorite
-            ? removeFromFavorites
-            : addToFavorites;
-
-          return [
-            {
-              iconName: isFavorite ? 'star-fill' : 'star',
-              iconColor: Colors.progressColor.background,
-              helper: I18n.t('Dms_AddToFavorites'),
-              onPress: () =>
-                dispatch(
-                  (sliceFunction as any)({
-                    documentId: branch.item.id,
-                    userId: user?.id,
-                  }),
-                ),
-              hidden: !mobileSettings?.isFavoritesManagementEnabled,
-              disabled: readonly,
-            },
-            {
-              iconName: 'pencil-fill',
-              helper: I18n.t('Dms_Rename'),
-              onPress: () =>
-                navigation.navigate('DocumentFormScreen', {
-                  document: branch.item,
-                }),
-              hidden: !mobileSettings?.isRenamingAllowed || readonly,
-            },
-          ];
-        }}
+        getBranchActions={branch =>
+          hideActions ? [] : getBranchActions(branch)
+        }
         renderLeaf={({item}) => (
           <DocumentActionCard
             document={item}
             handleRefresh={() => setSelectedExtensions(current => [...current])}
-            disableFavorites={hideActions}
-            disableDownload={hideActions}
-            disableEdit={hideActions}
-            disabledDelete={hideActions}
+            disableActions={hideActions}
             customOnPress={
               customOnPress ? () => customOnPress(item) : undefined
             }

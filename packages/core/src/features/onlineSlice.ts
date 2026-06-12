@@ -23,10 +23,12 @@ import {AopModelApi, AosActionApi} from '../apiProviders';
 
 export interface OnlineState {
   isEnabled: boolean;
+  isConnected: boolean;
 }
 
 const initialState: OnlineState = {
   isEnabled: true,
+  isConnected: true,
 };
 
 export const onlineSlice = createSlice({
@@ -39,10 +41,13 @@ export const onlineSlice = createSlice({
     disable: state => {
       state.isEnabled = false;
     },
+    setConnected: (state, action) => {
+      state.isConnected = action.payload;
+    },
   },
 });
 
-export const {disable, enable} = onlineSlice.actions;
+export const {disable, enable, setConnected} = onlineSlice.actions;
 export const onlineReducer = onlineSlice.reducer;
 
 const selectOnline = (state: any) => state.online;

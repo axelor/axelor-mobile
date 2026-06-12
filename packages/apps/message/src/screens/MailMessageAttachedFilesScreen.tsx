@@ -21,16 +21,18 @@ import {
   useSelector,
   SearchListView,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {DocumentActionCard, File, searchDocument} from '@axelor/aos-mobile-dms';
 
-const MailMessageAttachedFilesScreen = ({route}) => {
+const MailMessageAttachedFilesScreen = ({route}: any) => {
   const {files} = route?.params;
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const {DMSFile} = useTypes();
 
-  const [selectedExtensions, setSelectedExtensions] = useState([]);
+  const [selectedExtensions, setSelectedExtensions] = useState<any[]>([]);
 
   const {
     loadingDocuments,
@@ -67,7 +69,13 @@ const MailMessageAttachedFilesScreen = ({route}) => {
           />
         }
         renderListItem={({item}) => (
-          <DocumentActionCard document={item} disableEdit disabledDelete />
+          <DocumentActionCard
+            document={item}
+            disabledActionKeys={[
+              DMSFile?.actionKey?.Rename,
+              DMSFile?.actionKey?.Delete,
+            ]}
+          />
         )}
         expandableFilter={false}
       />

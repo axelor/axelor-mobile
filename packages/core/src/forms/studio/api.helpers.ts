@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, getActionApi} from '../../apiProviders';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  getActionApi,
+  getModelApi,
+} from '../../apiProviders';
 
 const createJsonFieldsOfModelCriteria = (modelName: string, type?: string) => {
   const criteria = [
@@ -140,7 +145,7 @@ export async function updateJsonFieldsObject({
 export async function fetchData({
   modelName,
   domain,
-  searchValue = null,
+  searchValue,
   page = 0,
   criteria = [],
   searchFields,
@@ -152,40 +157,29 @@ export async function fetchData({
   criteria?: any[];
   searchFields?: string[];
 }) {
-  if (modelName == null) {
-    return null;
-  }
+  if (modelName == null) return null;
 
   let combinedCriteria = [...criteria];
 
-  if (searchValue != null) {
-    const searchCriteria = searchFields.map(_field => ({
-      fieldName: _field,
-      operator: 'like',
-      value: searchValue,
-    }));
-
+  if (searchValue != null && searchFields != null) {
     combinedCriteria.push({
-      criteria: searchCriteria,
       operator: 'or',
+      criteria: searchFields.map(_field => ({
+        fieldName: _field,
+        operator: 'like',
+        value: searchValue,
+      })),
     });
   }
 
-  return axiosApiProvider
-    .post({
-      url: `ws/rest/${modelName}/search`,
-      data: {
-        data: {
-          _domain: domain,
-          criteria: combinedCriteria,
-        },
-        fields: searchFields,
-        limit: 10,
-        offset: 10 * page,
-        translate: true,
-      },
-    })
-    .then(res => res?.data?.data);
+  return createStandardSearch({
+    model: modelName,
+    criteria: combinedCriteria,
+    domain,
+    page,
+    fieldKey: searchFields ?? '',
+    provider: 'model',
+  }).then(res => res?.data?.data);
 }
 
 export async function fetchMetaConfig({
@@ -193,25 +187,17 @@ export async function fetchMetaConfig({
 }: {
   modelName: string;
 }): Promise<any> {
-  if (modelName == null) {
-    return null;
-  }
+  if (modelName == null) return undefined;
 
-  return axiosApiProvider
-    .get({
-      url: `ws/meta/fields/${modelName}`,
-    })
-    .catch(console.warn);
+  return getModelApi().getFields({modelName}).catch(console.warn);
 }
 
 export async function fetchModelFields({
   modelName,
 }: {
   modelName: string;
-}): Promise<string[]> {
-  if (modelName == null) {
-    return null;
-  }
+}): Promise<string[] | undefined> {
+  if (modelName == null) return undefined;
 
   return fetchMetaConfig({modelName})
     .then(res => res?.data?.data)
@@ -240,7 +226,7 @@ export async function fetchSelectionOptions({
   modelName: string;
   attrsPanelName: string;
   fieldName: string;
-}): Promise<SelectionItem[]> {
+}): Promise<SelectionItem[] | null> {
   if (modelName == null) {
     return null;
   }

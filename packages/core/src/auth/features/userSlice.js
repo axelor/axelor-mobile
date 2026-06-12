@@ -19,6 +19,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '../../apiProviders/utils';
 import {getLoggedUser, postUser} from '../api/user-api';
+import {userProvider} from '../../config';
 
 export const fetchActiveUser = createAsyncThunk(
   'user/fetchActiveUser',
@@ -35,22 +36,14 @@ export const fetchActiveUser = createAsyncThunk(
 
 export const updateActiveUser = createAsyncThunk(
   'user/updateActiveUser',
-  async function (user, {getState}) {
+  async function (user, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: postUser,
       data: user,
       action: 'Auth_SliceAction_UpdateActiveUser',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() =>
-      handlerApiCall({
-        fetchFunction: getLoggedUser,
-        data: user.id,
-        action: 'Auth_SliceAction_FetchActiveUser',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      }),
-    );
+    }).then(() => dispatch(fetchActiveUser(user.id)));
   },
 );
 
@@ -81,14 +74,12 @@ const userSlice = createSlice({
       state.user = action.payload ?? {};
       state.isUser = action.payload != null;
       state.canModifyCompany = action.payload?.companySet?.length > 1;
+
+      userProvider.setUser(action.payload ?? {});
     });
-    builder.addCase(fetchActiveUser.rejected, (state, action) => {
+    builder.addCase(fetchActiveUser.rejected, state => {
       state.loadingUser = false;
       state.isUser = false;
-    });
-    builder.addCase(updateActiveUser.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.canModifyCompany = action.payload?.companySet?.length > 1;
     });
   },
 });

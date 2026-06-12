@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useSelector} from '../redux/hooks';
 import {useTranslator} from '../i18n';
 import {useOnline} from '../features/onlineSlice';
@@ -24,7 +24,6 @@ import {useNavigation} from '../hooks/use-navigation';
 import {fetchJsonFieldsOfModel} from '../forms';
 import {
   fetchModel,
-  getNetInfo,
   fetchActionPrint,
   fetchDefaultFilters,
   fetchMetaFilters,
@@ -34,20 +33,7 @@ import {PopupFilters, PopupPrintTemplate} from '../components';
 import {headerActionsProvider} from './HeaderActionsProvider';
 
 export const useBasicActions = () => {
-  const connectionInterval = useRef<number>(null);
-
-  const [isConnected, setIsConnected] = useState(true);
-
-  const checkInternetConnection = useCallback(async () => {
-    const {isConnected: _isConnected} = await getNetInfo();
-    setIsConnected(_isConnected);
-  }, []);
-
-  useEffect(() => {
-    connectionInterval.current = setInterval(checkInternetConnection, 5000);
-
-    return () => clearInterval(connectionInterval.current);
-  }, [checkInternetConnection]);
+  const {isConnected} = useOnline();
 
   useFilterGenericAction();
   useBarcodeGenericAction();

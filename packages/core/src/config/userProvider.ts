@@ -16,8 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {dms_formsRegister} from './forms';
-export {dms_modelAPI} from './objectFields';
-export {dms_searchFields} from './searchFields';
-export {dms_sortFields} from './sortFields';
-export {dms_typeObjects} from './typeObjects';
+class UserProvider {
+  private user: any = null;
+
+  setUser(user: any): void {
+    this.user = user ?? null;
+  }
+
+  clear(): void {
+    this.user = null;
+  }
+
+  getUser(): any {
+    return this.user;
+  }
+
+  getActiveCompany(): any {
+    return this.user?.activeCompany ?? null;
+  }
+}
+
+export const userProvider = new UserProvider();

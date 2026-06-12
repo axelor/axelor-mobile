@@ -20,8 +20,8 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {ActionCard, Checkbox, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  openFileInExternalApp,
   useDispatch,
+  useFileApi,
   usePermitted,
   useSelector,
   useTranslator,
@@ -45,6 +45,7 @@ const ExpenseLineDetailCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const fileApi = useFileApi();
   const {readonly, canDelete} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.ExpenseLine',
   });
@@ -52,7 +53,6 @@ const ExpenseLineDetailCard = ({
   const {getItemTitle} = useTypeHelpers();
 
   const {userId} = useSelector((state: any) => state.auth);
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [cardHeight, setCardHeight] = useState<number>();
 
@@ -96,15 +96,10 @@ const ExpenseLineDetailCard = ({
   }, [dispatch, expense?.id, item.id, userId]);
 
   const handleShowFile = async () => {
-    await openFileInExternalApp(
-      {
-        fileName: item.justificationMetaFile?.fileName,
-        id: item.justificationMetaFile?.id,
-        isMetaFile: true,
-      },
-      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
-      I18n,
-    );
+    await fileApi.openInExternalApp({
+      id: item.justificationMetaFile?.id,
+      fileName: item.justificationMetaFile?.fileName,
+    });
   };
 
   return (

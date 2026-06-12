@@ -17,6 +17,7 @@
  */
 
 export * from './Action';
+export * from './File';
 export * from './Model';
 export * from './Standard';
 export * from './middlewares';
