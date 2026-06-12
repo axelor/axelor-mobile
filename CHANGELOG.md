@@ -3,6 +3,26 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.16] (2026-06-12)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Drawer: add possibility to close inner menu
+
+### @axelor/aos-mobile-message
+
+#### Fixes
+
+- MailMessage: translate track field titles, selection values and event texts
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock move lines: align card border color with list filter status colors
+
 ## [8.5.15] (2026-05-05)
 
 ### @axelor/aos-mobile-stock
@@ -499,6 +519,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.16]: https://github.com/axelor/axelor-mobile/compare/8.5.15...8.5.16
 [8.5.15]: https://github.com/axelor/axelor-mobile/compare/8.5.14...8.5.15
 [8.5.14]: https://github.com/axelor/axelor-mobile/compare/8.5.13...8.5.14
 [8.5.13]: https://github.com/axelor/axelor-mobile/compare/8.5.12...8.5.13

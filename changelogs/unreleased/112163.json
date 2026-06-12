@@ -1,5 +1,0 @@
-{
-  "title": "MailMessage: translate track field titles, selection values and event texts",
-  "type": "fix",
-  "packages": "message"
-}
