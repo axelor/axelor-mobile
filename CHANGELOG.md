@@ -3,6 +3,36 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.11] (2026-06-12)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Authentication: add MFA support (TOTP and email)
+
+#### Fixes
+
+- Drawer: add possibility to close inner menu
+- Search requests: exclude nested array fields from field list
+
+<details>
+Array fields declared inside a sub-object schema (e.g. task.project.projectTaskCategorySet) were included in the fields list sent to search endpoints. The backend does not support fetching nested collection fields through a search request, which can cause errors or unexpected empty results. Those fields are now automatically excluded from search requests while still being requested on fetch requests. Developers who relied on the previous behaviour can opt back in by passing includeNestedArrayFields: true to createStandardSearch.
+</details>
+
+
+### @axelor/aos-mobile-message
+
+#### Fixes
+
+- MailMessage: translate track field titles, selection values and event texts
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock move lines: align card border color with list filter status colors
+
 ## [9.0.10] (2026-05-05)
 
 ### @axelor/aos-mobile-stock
@@ -265,6 +295,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.11]: https://github.com/axelor/axelor-mobile/compare/9.0.10...9.0.11
 [9.0.10]: https://github.com/axelor/axelor-mobile/compare/9.0.9...9.0.10
 [9.0.9]: https://github.com/axelor/axelor-mobile/compare/9.0.8...9.0.9
 [9.0.8]: https://github.com/axelor/axelor-mobile/compare/9.0.7...9.0.8

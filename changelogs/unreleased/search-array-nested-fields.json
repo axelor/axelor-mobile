@@ -1,6 +1,0 @@
-{
-  "title": "Search requests: exclude nested array fields from field list",
-  "type": "fix",
-  "packages": "core",
-  "description": "Array fields declared inside a sub-object schema (e.g. task.project.projectTaskCategorySet) were included in the fields list sent to search endpoints. The backend does not support fetching nested collection fields through a search request, which can cause errors or unexpected empty results. Those fields are now automatically excluded from search requests while still being requested on fetch requests. Developers who relied on the previous behaviour can opt back in by passing includeNestedArrayFields: true to createStandardSearch."
-}
