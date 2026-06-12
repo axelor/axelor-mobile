@@ -16,8 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {dms_formsRegister} from './forms';
-export {dms_modelAPI} from './objectFields';
-export {dms_searchFields} from './searchFields';
-export {dms_sortFields} from './sortFields';
-export {dms_typeObjects} from './typeObjects';
+import {useMemo} from 'react';
+import {AopFileApi} from './AopFileApi';
+import {FileApi} from './FileApiProvider';
+
+class FileProvider {
+  constructor(private fileApi: FileApi) {
+    this.fileApi = fileApi;
+  }
+
+  setFileApi(newFileApi: FileApi) {
+    this.fileApi = newFileApi;
+  }
+
+  getFileApi(): FileApi {
+    return this.fileApi;
+  }
+}
+
+export function useFileApi(): FileApi {
+  return useMemo(() => fileProvider.getFileApi(), []);
+}
+
+export function getFileApi(): FileApi {
+  return fileProvider.getFileApi();
+}
+
+export function registerFileApi(fileApi: FileApi) {
+  fileProvider.setFileApi(fileApi);
+}
+
+export const fileProvider = new FileProvider(new AopFileApi());

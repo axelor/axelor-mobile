@@ -16,8 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {dms_formsRegister} from './forms';
-export {dms_modelAPI} from './objectFields';
-export {dms_searchFields} from './searchFields';
-export {dms_sortFields} from './sortFields';
-export {dms_typeObjects} from './typeObjects';
+import {ModuleSelections} from '@axelor/aos-mobile-core';
+
+export const dms_typeObjects: ModuleSelections = [
+  {
+    modelName: 'com.axelor.dms.db.DMSFile',
+    fields: {
+      actionKey: {
+        content: [
+          {key: 'Open', value: 'open', title: ''},
+          {key: 'Favorite', value: 'favorite', title: ''},
+          {key: 'Download', value: 'download', title: ''},
+          {key: 'Rename', value: 'rename', title: ''},
+          {key: 'Delete', value: 'delete', title: ''},
+        ],
+      },
+    },
+  },
+];

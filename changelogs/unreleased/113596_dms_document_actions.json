@@ -1,0 +1,6 @@
+{
+  "title": "Documents: pressing a document now opens an action sheet (open, add to favorites, download, rename, delete)",
+  "type": "feat",
+  "packages": "dms",
+  "description": "The document card no longer relies on swipe actions: pressing a document opens a contextual action sheet listing the available actions, including a new \"Open\" action to view the file directly. When a single action is available it is triggered immediately."
+}

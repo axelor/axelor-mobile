@@ -20,6 +20,7 @@ export {
   default as ActionCard,
   Action as ActionCardType,
 } from './ActionCard/ActionCard';
+export {default as ActionSheet} from './ActionSheet/ActionSheet';
 export {default as AutoCompleteSearch} from './AutoCompleteSearch/AutoCompleteSearch';
 export {default as CheckboxScrollList} from './CheckboxScrollList/CheckboxScrollList';
 export {default as ChipSelect} from './ChipSelect/ChipSelect';

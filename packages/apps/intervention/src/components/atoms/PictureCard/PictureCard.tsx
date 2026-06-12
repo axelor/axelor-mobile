@@ -24,12 +24,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  AOSImage,
-  openFileInExternalApp,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {AOSImage, useFileApi} from '@axelor/aos-mobile-core';
 import {CircleButton, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const IMAGE_HEIGHT = Dimensions.get('window').width * 0.45;
@@ -50,9 +45,7 @@ const PictureCard = ({
   onSelectImage,
 }: PictureCardProps) => {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
-
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
+  const fileApi = useFileApi();
 
   const shakeAnimation = useRef(new Animated.Value(0)).current;
 
@@ -80,11 +73,7 @@ const PictureCard = ({
   };
 
   const handleShowFile = async () => {
-    await openFileInExternalApp(
-      {fileName: item?.fileName, id: item?.id, isMetaFile: true},
-      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
-      I18n,
-    );
+    await fileApi.openInExternalApp({id: item?.id, fileName: item?.fileName});
   };
 
   return (

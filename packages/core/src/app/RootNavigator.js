@@ -23,6 +23,7 @@ import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {default as CoreNavigator} from '../navigator/Navigator';
 import {getNetInfo, getTokenInfo} from '../api/net-info-utils';
 import {useHeaderRegisters} from '../hooks/use-header-registers';
+import {setConnected, useOnline} from '../features/onlineSlice';
 import LoginScreen from '../screens/LoginScreen';
 import SessionManagementScreen from '../screens/SessionManagementScreen';
 import {useHeaderBand} from '../header';
@@ -53,6 +54,7 @@ const RootNavigator = ({
   const {updateConfigFromStorage} = useConfigUpdater();
 
   const {logged} = useSelector(state => state.auth);
+  const {isConnected} = useOnline();
 
   const modulesHeaderRegisters = useMemo(() => {
     return modules
@@ -74,8 +76,11 @@ const RootNavigator = ({
   );
 
   const checkInternetConnection = useCallback(async () => {
-    const {isConnected} = await getNetInfo();
+    const {isConnected: _isConnected} = await getNetInfo();
+    dispatch(setConnected(_isConnected));
+  }, [dispatch]);
 
+  useEffect(() => {
     registerHeaderBand({
       key: 'noInternetConnection',
       text: I18n.t('Base_NoConnection'),
@@ -83,7 +88,7 @@ const RootNavigator = ({
       order: 15,
       showIf: !isConnected,
     });
-  }, [Colors, I18n, registerHeaderBand]);
+  }, [Colors, I18n, registerHeaderBand, isConnected]);
 
   useEffect(() => {
     connectionInterval.current = setInterval(checkInternetConnection, 5000);

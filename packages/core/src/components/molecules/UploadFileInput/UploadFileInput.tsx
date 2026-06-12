@@ -28,8 +28,9 @@ import {
   Icon,
 } from '@axelor/aos-mobile-ui';
 import {deleteMetaFile, uploadBase64} from '../../../api/metafile-api';
+import {useFileApi} from '../../../apiProviders';
 import {useTranslator} from '../../../i18n';
-import {handleDocumentSelection, openFileInExternalApp} from '../../../tools';
+import {handleDocumentSelection} from '../../../tools';
 import {checkNullString, useMetafileUri} from '../../../utils';
 import {
   useCameraValueByKey,
@@ -97,6 +98,7 @@ const UploadFileInput = ({
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const fileApi = useFileApi();
   const formatMetafileURI = useMetafileUri();
   const dispatch = useDispatch();
 
@@ -224,15 +226,10 @@ const UploadFileInput = ({
   };
 
   const handleFileView = async () => {
-    await openFileInExternalApp(
-      {
-        fileName: selectedFile?.fileName,
-        id: selectedFile?.id,
-        isMetaFile: true,
-      },
-      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
-      I18n,
-    );
+    await fileApi.openInExternalApp({
+      id: selectedFile?.id,
+      fileName: selectedFile?.fileName,
+    });
   };
 
   useEffect(() => {

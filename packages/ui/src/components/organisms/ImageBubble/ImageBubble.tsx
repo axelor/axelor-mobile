@@ -92,7 +92,7 @@ function getComponentPosition(index, imageSize): ViewStyle {
 interface ImageBubbleProps {
   style?: any;
   listComponent?: any;
-  source: ImageSourcePropType;
+  source: ImageSourcePropType | undefined;
   imageSize?: number;
   defaultIconSize?: number;
 }

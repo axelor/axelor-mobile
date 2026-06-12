@@ -16,122 +16,111 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {
-  downloadFileOnPhone,
-  useDispatch,
-  useNavigation,
-  usePermitted,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {
-  addToFavorites,
-  deleteDocument,
-  deleteFavoriteDocument,
-  removeFromFavorites,
-} from '../../../features/documentSlice';
+import React, {useCallback, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {useFileApi, useTranslator} from '@axelor/aos-mobile-core';
+import {ActionCardType, ActionSheet} from '@axelor/aos-mobile-ui';
+import {useDocumentActions} from '../../../providers';
 import {DocumentCard} from '../../atoms';
+
+interface Action extends ActionCardType {
+  key?: string;
+  closeAfter?: boolean;
+}
 
 interface DocumentActionCardProps {
   document: any;
   handleRefresh?: () => void;
-  disableFavorites?: boolean;
-  disableDownload?: boolean;
-  disableEdit?: boolean;
-  disabledDelete?: boolean;
   customOnPress?: () => void;
+  disableActions?: boolean;
+  disabledActionKeys?: string[];
 }
 
 const DocumentActionCard = ({
   document,
   handleRefresh,
-  disableFavorites = false,
-  disableDownload = false,
-  disableEdit = false,
-  disabledDelete = false,
   customOnPress,
+  disableActions = false,
+  disabledActionKeys,
 }: DocumentActionCardProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
-  const navigation = useNavigation();
-  const {readonly, canDelete} = usePermitted({
-    modelName: 'com.axelor.dms.db.DMSFile',
-  });
-  const dispatch: any = useDispatch();
+  const fileApi = useFileApi();
+  const {getLeafActions} = useDocumentActions();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
-  const {user} = useSelector(state => state.user);
-  const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
+  const [isActionsVisible, setIsActionsVisible] = useState(false);
 
-  const isFavorite = useMemo(
-    () => user?.favouriteFileSet.some(({id}) => id === document.id),
-    [document.id, user?.favouriteFileSet],
+  const handleOpenFile = useCallback(async () => {
+    await fileApi.openInExternalApp({
+      id: document.metaFile?.id,
+      fileName: document.metaFile?.fileName,
+    });
+  }, [fileApi, document]);
+
+  const actionList = useMemo<Action[]>(() => {
+    const providerActions: Action[] = disableActions
+      ? []
+      : (getLeafActions(document, {handleRefresh})?.filter(
+          _action =>
+            _action.key == null || !disabledActionKeys?.includes(_action.key),
+        ) ?? []);
+
+    return [
+      {
+        iconName: 'eye-fill',
+        helper: I18n.t('Dms_Open'),
+        onPress: handleOpenFile,
+      },
+      ...providerActions,
+    ];
+  }, [
+    I18n,
+    handleOpenFile,
+    disableActions,
+    disabledActionKeys,
+    getLeafActions,
+    document,
+    handleRefresh,
+  ]);
+
+  const visibleActions = useMemo(
+    () => actionList.filter(action => !action.hidden),
+    [actionList],
   );
 
-  const handleDownloadFile = useCallback(async () => {
-    await downloadFileOnPhone(
-      {fileName: document.fileName, id: document.id, isMetaFile: false},
-      {baseUrl, token, jsessionId},
-      I18n,
-    );
-  }, [I18n, baseUrl, document, jsessionId, token]);
+  const handleCardPress = useCallback(() => {
+    if (customOnPress != null) {
+      customOnPress?.();
+    } else if (visibleActions.length > 1) {
+      setIsActionsVisible(true);
+    } else {
+      visibleActions[0]?.onPress();
+    }
+  }, [customOnPress, visibleActions]);
 
   return (
-    <ActionCard
-      actionList={[
-        {
-          iconName: isFavorite ? 'star-fill' : 'star',
-          iconColor: Colors.progressColor.background,
-          helper: I18n.t('Dms_AddToFavorites'),
-          onPress: () =>
-            dispatch(
-              ((isFavorite ? removeFromFavorites : addToFavorites) as any)({
-                documentId: document.id,
-                userId: user?.id,
-              }),
-            ),
-          hidden:
-            disableFavorites || !mobileSettings?.isFavoritesManagementEnabled,
-          disabled: readonly,
-        },
-        {
-          iconName: 'download',
-          helper: I18n.t('Dms_Download'),
-          onPress: handleDownloadFile,
-          hidden: disableDownload || !mobileSettings?.isDownloadAllowed,
-        },
-        {
-          iconName: 'pencil-fill',
-          helper: I18n.t('Dms_Rename'),
-          onPress: () =>
-            navigation.navigate('DocumentFormScreen', {
-              document,
-            }),
-          hidden: disableEdit || !mobileSettings?.isRenamingAllowed || readonly,
-        },
-        {
-          iconName: 'trash-fill',
-          iconColor: Colors.errorColor.background,
-          helper: I18n.t('Dms_Delete'),
-          onPress: () =>
-            dispatch(
-              ((isFavorite ? deleteFavoriteDocument : deleteDocument) as any)({
-                documentId: document.id,
-                userId: user?.id,
-              }),
-            ).then(() => handleRefresh?.()),
-          hidden:
-            disabledDelete ||
-            !canDelete ||
-            !mobileSettings?.isFileDeletionAllowed,
-        },
-      ]}
-      translator={I18n.t}>
-      <DocumentCard document={document} customOnPress={customOnPress} />
-    </ActionCard>
+    <>
+      <DocumentCard
+        style={styles.container}
+        document={document}
+        customOnPress={handleCardPress}
+      />
+      <ActionSheet
+        visible={isActionsVisible}
+        title={document.fileName}
+        actionList={visibleActions}
+        onClose={() => setIsActionsVisible(false)}
+      />
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '95%',
+    alignSelf: 'center',
+    marginVertical: 2,
+  },
+});
 
 export default DocumentActionCard;

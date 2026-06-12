@@ -18,11 +18,7 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  openFileInExternalApp,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useFileApi} from '@axelor/aos-mobile-core';
 import {Icon, Text} from '@axelor/aos-mobile-ui';
 
 interface FileListProps {
@@ -36,23 +32,15 @@ const FileList = ({
   readonly = false,
   handleRemoveFile,
 }: FileListProps) => {
-  const I18n = useTranslator();
-
-  const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
+  const fileApi = useFileApi();
 
   const openFile = useCallback(
-    (file: any) => {
-      return openFileInExternalApp(
-        {
-          fileName: file?.fileName,
-          id: file?.id,
-          isMetaFile: true,
-        },
-        {baseUrl, token, jsessionId},
-        I18n,
-      );
-    },
-    [I18n, baseUrl, jsessionId, token],
+    (file: any) =>
+      fileApi.openInExternalApp({
+        id: file?.id,
+        fileName: file?.fileName,
+      }),
+    [fileApi],
   );
 
   const renderFile = useCallback(

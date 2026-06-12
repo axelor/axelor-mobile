@@ -18,10 +18,9 @@
 
 import React from 'react';
 import {
-  openFileInExternalApp,
   useDispatch,
+  useFileApi,
   useNavigation,
-  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -54,20 +53,14 @@ const NoteDetailCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const fileApi = useFileApi();
   const navigation = useNavigation();
 
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
-
   const handleOpenFile = async () => {
-    await openFileInExternalApp(
-      {
-        fileName: note.metaFile?.fileName,
-        id: note.metaFile?.id,
-        isMetaFile: true,
-      },
-      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
-      I18n,
-    );
+    await fileApi.openInExternalApp({
+      id: note.metaFile?.id,
+      fileName: note.metaFile?.fileName,
+    });
   };
 
   return (

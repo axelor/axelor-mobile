@@ -1,0 +1,6 @@
+{
+  "title": "Documents: let other modules contribute their own actions to the document action sheet",
+  "type": "feat",
+  "packages": "dms",
+  "description": "Document actions (favorites, download, rename, delete...) are now exposed through a shared document actions provider, so any module can register its own actions for files and folders instead of passing them as a prop. The document card can disable all its actions at once or hide specific ones by key."
+}

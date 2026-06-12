@@ -26,6 +26,7 @@ import {
   dms_modelAPI,
   dms_searchFields,
   dms_sortFields,
+  dms_typeObjects,
 } from './models';
 import {useDMSHeaders} from './hooks/use-dms-header-actions';
 import {createMenusScreen} from './utils';
@@ -53,10 +54,11 @@ export const DmsModule: Module = {
     ...dmsReducers,
   },
   models: {
-    objectFields: {...dms_modelAPI},
-    searchFields: {...dms_searchFields},
-    sortFields: {...dms_sortFields},
-    formsRegister: {...dms_formsRegister},
+    objectFields: dms_modelAPI,
+    searchFields: dms_searchFields,
+    sortFields: dms_sortFields,
+    typeObjects: dms_typeObjects,
+    formsRegister: dms_formsRegister,
     headerRegisters: useDMSHeaders,
   },
   moduleRegister: async (userId: number) => {
@@ -80,6 +82,7 @@ export const DmsModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
+export * from './providers';
 export * from './screens';
 export * from './types';
 export * from './utils';
