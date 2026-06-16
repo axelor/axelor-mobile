@@ -31,7 +31,7 @@ export const useScanActivator = (
   isMassScan: boolean = false,
 ) => {
   const {enable: enableScanner, disable: disableScanner} =
-    useScannerDeviceActivator(scanKeySearch);
+    useScannerDeviceActivator(scanKeySearch, isMassScan);
   const {
     enable: enableCamera,
     enableMassCamera,
@@ -76,12 +76,15 @@ export const useScanActivator = (
   );
 };
 
-export const useScannerDeviceActivator = (scanKeySearch: string) => {
+export const useScannerDeviceActivator = (
+  scanKeySearch: string,
+  isMassScan: boolean = false,
+) => {
   const dispatch = useDispatch();
 
   const enable = useCallback(() => {
-    dispatch(enableScan(scanKeySearch));
-  }, [dispatch, scanKeySearch]);
+    dispatch(enableScan({scanKey: scanKeySearch, isMassScan}));
+  }, [dispatch, scanKeySearch, isMassScan]);
 
   const disable = useCallback(() => {
     dispatch(disableScan());
