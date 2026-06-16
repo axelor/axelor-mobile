@@ -171,7 +171,12 @@ export const hr_modelAPI: ObjectFields = {
       }),
     ),
     company: schemaContructor.subObject('name'),
-    employee: schemaContructor.subObject('name'),
+    employee: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        managerUser: schemaContructor.subObject('name'),
+      }),
+    ),
     groundForRefusal: schemaContructor.string(),
     startOnSelect: schemaContructor.number(),
     endOnSelect: schemaContructor.number(),
