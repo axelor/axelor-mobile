@@ -30,52 +30,53 @@ import {displayLine} from '../../utils/displayers';
 import {useInternalLinesWithRacks, useLineHandler} from '../../hooks';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
+const massScanKey = 'internal-move-line_mass-scan';
 
-const InternalMoveLineListScreen = ({route}) => {
-  const internalMove = route.params.internalMove;
+const InternalMoveLineListScreen = ({route}: any) => {
+  const {internalMove} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {showLine} = useLineHandler();
 
-  const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
+  const {internalMoveLineList, totalNumberLines} =
+    useInternalLinesWithRacks(internalMove);
   const {loadingIMLinesList, moreLoading, isListEnd} = useSelector(
     state => state.internalMoveLine,
   );
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [refreshKey, setRefreshKey] = useState<number>(0);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification: boolean | undefined = undefined) => {
       showLine({
         move: internalMove,
         line: item,
         skipVerification,
-        type: LineVerification.type.internal,
+        type: LineVerification.type.internal as any,
       });
     },
     [internalMove, showLine],
   );
 
-  const handleLineSearch = item => {
+  const handleLineSearch = (item: any) => {
     handleShowLine(item, true);
   };
 
   const sliceFunctionData = useMemo(
     () => ({
       internalMoveId: internalMove.id,
+      refreshKey,
     }),
-    [internalMove.id],
+    [internalMove.id, refreshKey],
   );
 
   const filterOnStatus = useCallback(
-    list => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      }
+    (list: any[]) => {
+      if (!Array.isArray(list) || list.length === 0) return [];
 
-      if (!Array.isArray(selectedStatus) || selectedStatus.length === 0) {
+      if (!Array.isArray(selectedStatus) || selectedStatus.length === 0)
         return list;
-      }
 
       return list.filter(item => {
         return selectedStatus.find(
@@ -120,16 +121,23 @@ const InternalMoveLineListScreen = ({route}) => {
                 : null
             }
             availability={internalMove.availableStatusSelect}
+            showMassScanner
+            massScanData={{
+              scanKey: massScanKey,
+              stockMoveId: internalMove.id,
+              totalLines: totalNumberLines,
+              handleShowLine: handleShowLine,
+              onRefresh: () => setRefreshKey(_current => _current + 1),
+            }}
           />
         }
         chipComponent={
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
-              I18n,
-              Colors,
-            )}
+            selectionItems={
+              StockMoveLine.getStockMoveLineStatusItems(I18n, Colors) as any
+            }
           />
         }
         renderListItem={({item}) => (

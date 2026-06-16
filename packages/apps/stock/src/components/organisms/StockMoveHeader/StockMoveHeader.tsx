@@ -31,6 +31,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {useStockLinesCheckQty} from '../../../hooks';
+import {StockMovePickingWidget} from '../../organisms';
 
 interface StockMoveHeaderProps {
   reference: string;
@@ -39,6 +40,14 @@ interface StockMoveHeaderProps {
   date: string;
   availability?: number;
   stockMoveLineId?: number;
+  showMassScanner?: boolean;
+  massScanData?: {
+    scanKey: string;
+    stockMoveId: number;
+    totalLines: number;
+    onRefresh?: () => void;
+    handleShowLine?: (line: any) => void;
+  };
 }
 
 const StockMoveHeader = ({
@@ -48,6 +57,8 @@ const StockMoveHeader = ({
   date,
   availability,
   stockMoveLineId,
+  showMassScanner = false,
+  massScanData,
 }: StockMoveHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -58,51 +69,56 @@ const StockMoveHeader = ({
   const checkQtyObject: any = useStockLinesCheckQty(stockMoveLineId);
 
   return (
-    <View style={styles.container}>
-      <View>
-        {lineRef != null && (
-          <Text style={styles.text_important}>{lineRef}</Text>
-        )}
-        {reference != null && (
-          <Text
-            style={
-              lineRef != null ? styles.text_secondary : styles.text_important
-            }>
-            {reference}
-          </Text>
-        )}
-        {date != null && (
-          <Text style={styles.text_secondary}>
-            {formatDate(date, I18n.t('Base_DateFormat'))}
-          </Text>
-        )}
-      </View>
-      <View style={styles.badgesContainer}>
-        <Badge
-          color={getItemColor(StockMove?.statusSelect, status)}
-          title={getItemTitle(StockMove?.statusSelect, status)}
-        />
-        <View style={styles.rowContainer}>
-          {Number(checkQtyObject?.missingQty ?? 0) !== 0 && (
-            <Badge
-              color={Colors.errorColor}
-              title={formatNumber(checkQtyObject?.missingQty)}
-            />
+    <View>
+      <View style={styles.container}>
+        <View>
+          {lineRef != null && (
+            <Text style={styles.text_important}>{lineRef}</Text>
           )}
-          {availability != null && availability > 0 && (
-            <Badge
-              color={getItemColor(
-                StockMove?.availableStatusSelect,
-                availability,
-              )}
-              title={
-                checkQtyObject?.availability ??
-                getItemTitle(StockMove?.availableStatusSelect, availability)
-              }
-            />
+          {reference != null && (
+            <Text
+              style={
+                lineRef != null ? styles.text_secondary : styles.text_important
+              }>
+              {reference}
+            </Text>
+          )}
+          {date != null && (
+            <Text style={styles.text_secondary}>
+              {formatDate(date, I18n.t('Base_DateFormat'))}
+            </Text>
           )}
         </View>
+        <View style={styles.badgesContainer}>
+          <Badge
+            color={getItemColor(StockMove?.statusSelect, status)}
+            title={getItemTitle(StockMove?.statusSelect, status)}
+          />
+          <View style={styles.rowContainer}>
+            {Number(checkQtyObject?.missingQty ?? 0) !== 0 && (
+              <Badge
+                color={Colors.errorColor}
+                title={formatNumber(checkQtyObject?.missingQty)}
+              />
+            )}
+            {availability != null && availability > 0 && (
+              <Badge
+                color={getItemColor(
+                  StockMove?.availableStatusSelect,
+                  availability,
+                )}
+                title={
+                  checkQtyObject?.availability ??
+                  getItemTitle(StockMove?.availableStatusSelect, availability)
+                }
+              />
+            )}
+          </View>
+        </View>
       </View>
+      {showMassScanner && massScanData != null && (
+        <StockMovePickingWidget {...massScanData} stockMoveStatus={status} />
+      )}
     </View>
   );
 };

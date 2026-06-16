@@ -28,6 +28,7 @@ import {
   useScannerSelector,
 } from '../features/scannerSlice';
 import {useScanActivator} from './use-scan-activator';
+import {useIsFocused} from './use-navigation';
 
 interface UseMassScannerParams {
   scanKey: string;
@@ -50,6 +51,7 @@ export const useMassScanner = ({
   const isProcessingRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const {isEnabled: isScanEnabled, scanKey: activeScanKey} =
     useScannerSelector();
@@ -100,18 +102,18 @@ export const useMassScanner = ({
   processScanRef.current = processScan;
 
   useEffect(() => {
-    if (scannedValue) {
+    if (isFocused && scannedValue) {
       processScanRef.current(scannedValue, () => dispatch(clearScan()));
     }
-  }, [dispatch, scannedValue]);
+  }, [dispatch, isFocused, scannedValue]);
 
   useEffect(() => {
-    if (scannedBarcode?.value) {
+    if (isFocused && scannedBarcode?.value) {
       processScanRef.current(scannedBarcode.value, () =>
         dispatch(clearBarcode()),
       );
     }
-  }, [dispatch, scannedBarcode?.value]);
+  }, [dispatch, isFocused, scannedBarcode?.value]);
 
   return useMemo(
     () => ({disableScan, enableScan, isEnabled}),

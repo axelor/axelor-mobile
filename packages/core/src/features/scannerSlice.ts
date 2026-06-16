@@ -24,6 +24,7 @@ interface ScannerSliceState {
   isEnabled: boolean;
   scanKey: string | null;
   scannedValue: string | null;
+  isMassScan: boolean;
 }
 
 const scannerSlice = createSlice({
@@ -32,12 +33,19 @@ const scannerSlice = createSlice({
     isEnabled: false,
     scanKey: null,
     scannedValue: null,
+    isMassScan: false,
   },
   reducers: {
     enableScan(state, action) {
+      const {scanKey, isMassScan} =
+        typeof action.payload === 'string'
+          ? {scanKey: action.payload, isMassScan: false}
+          : action.payload;
+
       state.isEnabled = true;
-      state.scanKey = action.payload;
+      state.scanKey = scanKey;
       state.scannedValue = null;
+      state.isMassScan = isMassScan ?? false;
     },
     scanValue(state, action) {
       state.scannedValue = action.payload;
@@ -46,6 +54,7 @@ const scannerSlice = createSlice({
       state.isEnabled = false;
       state.scanKey = null;
       state.scannedValue = null;
+      state.isMassScan = false;
     },
     clearScan(state) {
       state.scannedValue = null;
@@ -56,7 +65,7 @@ const scannerSlice = createSlice({
 export const {enableScan, scanValue, disableScan, clearScan} =
   scannerSlice.actions;
 
-const selectScanner = state => state.scanner;
+const selectScanner = (state: any) => state.scanner;
 
 export const useScannerSelector: () => ScannerSliceState = () =>
   useSelector(selectScanner);
