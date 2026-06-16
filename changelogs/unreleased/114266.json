@@ -1,0 +1,5 @@
+{
+  "title": "Leave requests: resolve display issue on manager buttons",
+  "type": "fix",
+  "packages": "hr"
+}
