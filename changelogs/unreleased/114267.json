@@ -1,0 +1,5 @@
+{
+  "title": "Stock move lines: add possibility to enable the mass scanner from the complete list view",
+  "type": "feat",
+  "packages": "stock"
+}

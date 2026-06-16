@@ -37,46 +37,49 @@ import {useCustomerLinesWithRacks, useLineHandler} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
+const massScanKey = 'customer-delivery-line_mass-scan';
 
-const CustomerDeliveryLineListScreen = ({route}) => {
-  const customerDelivery = route.params.customerDelivery;
+const CustomerDeliveryLineListScreen = ({route}: any) => {
+  const {customerDelivery} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {showLine} = useLineHandler();
 
-  const {customerDeliveryLineList} =
+  const {customerDeliveryLineList, totalNumberLines} =
     useCustomerLinesWithRacks(customerDelivery);
   const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(
     state => state.customerDeliveryLine,
   );
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [refreshKey, setRefreshKey] = useState<number>(0);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification: boolean | undefined = undefined) => {
       showLine({
         move: customerDelivery,
         line: item,
         skipVerification,
-        type: LineVerification.type.outgoing,
+        type: LineVerification.type.outgoing as any,
       });
     },
     [customerDelivery, showLine],
   );
 
-  const handleLineSearch = item => {
+  const handleLineSearch = (item: any) => {
     handleShowLine(item, true);
   };
 
   const sliceFunctionData = useMemo(
     () => ({
       customerDeliveryId: customerDelivery.id,
+      refreshKey,
     }),
-    [customerDelivery.id],
+    [customerDelivery.id, refreshKey],
   );
 
   const filterOnStatus = useCallback(
-    list => {
+    (list: any[]) => {
       if (!Array.isArray(list) || list.length === 0) {
         return [];
       }
@@ -128,16 +131,23 @@ const CustomerDeliveryLineListScreen = ({route}) => {
                 : null
             }
             availability={customerDelivery.availableStatusSelect}
+            showMassScanner
+            massScanData={{
+              scanKey: massScanKey,
+              stockMoveId: customerDelivery.id,
+              totalLines: totalNumberLines,
+              handleShowLine: handleShowLine,
+              onRefresh: () => setRefreshKey(_current => _current + 1),
+            }}
           />
         }
         chipComponent={
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
-              I18n,
-              Colors,
-            )}
+            selectionItems={
+              StockMoveLine.getStockMoveLineStatusItems(I18n, Colors) as any
+            }
           />
         }
         renderListItem={({item}) => (
