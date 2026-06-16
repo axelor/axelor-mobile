@@ -3,6 +3,27 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.12] (2026-06-16)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Mass scanner: process the scan only on the focused screen so the action runs once when a scan key is shared
+- ScannerAutocompleteSearch: prevent the search bar from automatically stealing the scan key from an active mass scanner
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Leave requests: resolve display issue on manager buttons
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Stock move lines: add possibility to enable the mass scanner from the complete list view
+
 ## [9.0.11] (2026-06-12)
 
 ### @axelor/aos-mobile-core
@@ -295,6 +316,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.12]: https://github.com/axelor/axelor-mobile/compare/9.0.11...9.0.12
 [9.0.11]: https://github.com/axelor/axelor-mobile/compare/9.0.10...9.0.11
 [9.0.10]: https://github.com/axelor/axelor-mobile/compare/9.0.9...9.0.10
 [9.0.9]: https://github.com/axelor/axelor-mobile/compare/9.0.8...9.0.9
