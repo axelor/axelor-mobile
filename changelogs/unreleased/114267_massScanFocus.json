@@ -1,5 +1,0 @@
-{
-  "title": "Mass scanner: process the scan only on the focused screen so the action runs once when a scan key is shared",
-  "type": "fix",
-  "packages": "core"
-}
