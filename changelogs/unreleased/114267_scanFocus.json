@@ -1,0 +1,5 @@
+{
+  "title": "ScannerAutocompleteSearch: prevent the search bar from automatically stealing the scan key from an active mass scanner",
+  "type": "fix",
+  "packages": "core"
+}

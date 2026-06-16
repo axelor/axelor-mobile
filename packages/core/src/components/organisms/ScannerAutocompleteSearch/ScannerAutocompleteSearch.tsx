@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {AutoCompleteSearch, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   clearScan,
@@ -93,11 +93,11 @@ const ScannerAutocompleteSearch = ({
   const dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState(value);
-  const {isEnabled, scanKey} = useScannerSelector();
-  const scannedValue = useScannedValueByKey(scanKeySearch);
-  const scanData = useCameraScannerValueByKey(scanKeySearch);
-  const {enable: onScanPress} = useScanActivator(scanKeySearch);
-  const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch);
+  const {isEnabled, scanKey, isMassScan} = useScannerSelector();
+  const scannedValue = useScannedValueByKey(scanKeySearch!);
+  const scanData = useCameraScannerValueByKey(scanKeySearch!);
+  const {enable: onScanPress} = useScanActivator(scanKeySearch!);
+  const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch!);
 
   useEffect(() => {
     if (scannedValue) {
@@ -111,18 +111,26 @@ const ScannerAutocompleteSearch = ({
 
   const Colors = useThemeColor();
 
+  const massScannerHoldsAnotherKey = useMemo(
+    () => isEnabled && isMassScan && scanKey !== scanKeySearch,
+    [isEnabled, isMassScan, scanKey, scanKeySearch],
+  );
+
   useEffect(() => {
-    if (isFocus && isFocused) {
+    // Auto-activate the search scanner on focus, but never steal the scan key
+    // from an active mass scanner. Stealing from another search bar is kept.
+
+    if (isFocus && isFocused && !massScannerHoldsAnotherKey) {
       enableScanner();
     }
-  }, [enableScanner, isFocus, isFocused]);
+  }, [enableScanner, isFocus, isFocused, massScannerHoldsAnotherKey]);
 
   useEffect(() => {
     setSearchValue(value);
   }, [value]);
 
   const handleChangeValue = useCallback(
-    _value => {
+    (_value: any) => {
       setSearchValue(_value);
       onChangeValue?.(_value);
     },
