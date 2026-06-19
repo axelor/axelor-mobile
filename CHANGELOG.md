@@ -3,6 +3,14 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.24] (2026-06-19)
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock move lines: resolve rack value flickering when displaying lines
+
 ## [8.4.23] (2026-06-16)
 
 ### @axelor/aos-mobile-core
@@ -775,6 +783,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.24]: https://github.com/axelor/axelor-mobile/compare/8.4.23...8.4.24
 [8.4.23]: https://github.com/axelor/axelor-mobile/compare/8.4.22...8.4.23
 [8.4.22]: https://github.com/axelor/axelor-mobile/compare/8.4.21...8.4.22
 [8.4.21]: https://github.com/axelor/axelor-mobile/compare/8.4.20...8.4.21
