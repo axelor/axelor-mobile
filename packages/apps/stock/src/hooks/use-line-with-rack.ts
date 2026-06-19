@@ -23,7 +23,7 @@ import {getRacks} from '../features/racksListSlice';
 export const useLinesWithRacks = (stockLocationId: number, lineSet: any[]) => {
   const dispatch = useDispatch();
 
-  const {loadingRacks, racksMap} = useSelector(state => state.rack);
+  const {racksMap} = useSelector(state => state.rack);
 
   useEffect(() => {
     dispatch((getRacks as any)({stockId: stockLocationId, LineList: lineSet}));
@@ -33,17 +33,17 @@ export const useLinesWithRacks = (stockLocationId: number, lineSet: any[]) => {
     () => ({
       lineList: lineSet?.map(item => ({
         ...item,
-        locker: !loadingRacks && (racksMap?.[item.product?.id] ?? ''),
+        locker: racksMap?.[stockLocationId]?.[item.product?.id] ?? '',
       })),
     }),
-    [lineSet, loadingRacks, racksMap],
+    [lineSet, racksMap, stockLocationId],
   );
 };
 
 export const useLineWithRack = (stockLocationId: number, line: any) => {
   const dispatch = useDispatch();
 
-  const {loadingRacks, racksMap} = useSelector(state => state.rack);
+  const {racksMap} = useSelector(state => state.rack);
 
   useEffect(() => {
     if (line?.product?.id != null && stockLocationId != null) {
@@ -52,7 +52,7 @@ export const useLineWithRack = (stockLocationId: number, line: any) => {
   }, [dispatch, stockLocationId, line]);
 
   return useMemo(
-    () => !loadingRacks && (racksMap?.[line?.product?.id] ?? ''),
-    [line?.product?.id, loadingRacks, racksMap],
+    () => racksMap?.[stockLocationId]?.[line?.product?.id] ?? '',
+    [stockLocationId, line?.product?.id, racksMap],
   );
 };

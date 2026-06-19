@@ -22,52 +22,61 @@ import {searchStockLocationLineRacks} from '../api/stock-location-line-api';
 
 export const getRacks = createAsyncThunk(
   'Utils/racks',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
+    const stockId = data.stockId;
     const productIds = [
       ...new Set(
-        data.LineList.filter(line => line.product?.id != null).map(
-          line => line.product.id,
+        data.LineList.filter((line: any) => line.product?.id != null).map(
+          (line: any) => line.product.id,
         ),
       ),
     ];
 
-    if (productIds.length === 0) {
-      return {};
-    }
+    if (stockId == null || productIds.length === 0) return null;
 
     const results = await handlerApiCall({
       fetchFunction: searchStockLocationLineRacks,
-      data: {stockId: data.stockId, productIds},
+      data: {stockId, productIds},
       action: 'Stock_SliceAction_FetchRacks',
       getState,
       responseOptions: {isArrayResponse: true},
     });
 
-    const racksMap = {};
-    results?.forEach(line => {
+    const racksMap: any = {};
+
+    results?.forEach((line: any) => {
       if (line.product?.id != null) {
         racksMap[line.product.id] = line.rack ?? '';
       }
     });
-    return racksMap;
+
+    return {stockId, racksMap};
   },
 );
 
 const initialState = {
   loadingRacks: false,
-  racksMap: {},
+  racksMap: {} as {[stockId: string]: {[productId: string]: string}},
 };
 
 const rackSlice = createSlice({
   name: 'rack',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(getRacks.pending, state => {
       state.loadingRacks = true;
     });
     builder.addCase(getRacks.fulfilled, (state, action) => {
       state.loadingRacks = false;
-      state.racksMap = action.payload;
+      if (action.payload?.stockId != null) {
+        const {stockId, racksMap} = action.payload;
+
+        state.racksMap = {
+          ...(state.racksMap ?? {}),
+          [stockId]: {...(state.racksMap?.[stockId] ?? {}), ...racksMap},
+        };
+      }
     });
     builder.addCase(getRacks.rejected, state => {
       state.loadingRacks = false;
