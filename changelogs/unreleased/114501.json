@@ -1,5 +1,0 @@
-{
-  "title": "Stock move lines: resolve rack value flickering when displaying lines",
-  "type": "fix",
-  "packages": "stock"
-}
