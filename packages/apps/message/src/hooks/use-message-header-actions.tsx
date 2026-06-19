@@ -25,7 +25,7 @@ import {
   useTranslator,
   useWebSocket,
 } from '@axelor/aos-mobile-core';
-import {DoubleIcon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getAction} from '../utils';
 import {
   clearModelData,
@@ -138,7 +138,7 @@ const useUserProfileActions = () => {
         {
           key: 'inbox',
           order: 15,
-          iconName: 'chat-dots',
+          iconName: 'chat-left-fill',
           indicator: numberUnreadMessages,
           title: I18n.t('Message_Inbox'),
           hideIf: !mobileSettings?.isInboxAccessEnabled,
@@ -168,17 +168,15 @@ const useInboxActions = () => {
         {
           key: 'inboxImportant',
           order: 10,
-          iconName: null,
+          iconName: '',
+
           customComponent: (
-            <DoubleIcon
-              topIconConfig={{
-                name:
-                  inboxFolder === InboxFolder.Important ? 'star-fill' : 'star',
-                size: 15,
-                color: Colors.primaryColor.background,
-              }}
-              topIconPosition={{bottom: -7, right: -7}}
-              bottomIconConfig={{name: 'eye'}}
+            <Icon
+              name={
+                inboxFolder === InboxFolder.Important ? 'star-fill' : 'star'
+              }
+              color={Colors.primaryColor.background}
+              size={18}
             />
           ),
           title: I18n.t('Message_ImportantMessages'),
@@ -196,19 +194,14 @@ const useInboxActions = () => {
         {
           key: 'inboxArchive',
           order: 20,
-          iconName: null,
+          iconName: '',
           customComponent: (
-            <DoubleIcon
-              topIconConfig={{
-                name:
-                  inboxFolder === InboxFolder.Archive
-                    ? 'archive-fill'
-                    : 'archive',
-                size: 15,
-                color: Colors.primaryColor.background,
-              }}
-              topIconPosition={{bottom: -7, right: -7}}
-              bottomIconConfig={{name: 'eye'}}
+            <Icon
+              name={
+                inboxFolder === InboxFolder.Archive ? 'archive-fill' : 'archive'
+              }
+              color={Colors.primaryColor.background}
+              size={18}
             />
           ),
           title: I18n.t('Message_ArchivedMessages'),

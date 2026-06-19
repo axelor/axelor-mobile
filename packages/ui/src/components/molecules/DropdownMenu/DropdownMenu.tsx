@@ -25,10 +25,16 @@ import {Card, Icon} from '../../atoms';
 interface DropdownMenuProps {
   style?: any;
   styleMenu?: any;
+  triggerStyle?: any;
   children: any;
 }
 
-const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
+const DropdownMenu = ({
+  style,
+  styleMenu,
+  triggerStyle,
+  children,
+}: DropdownMenuProps) => {
   const [visible, setVisible] = useState(false);
   const Colors = useThemeColor();
 
@@ -45,11 +51,11 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
   return (
     <View style={style} ref={wrapperRef} testID="dropdownMenuContainer">
       <TouchableOpacity
-        style={styles.action}
+        style={[styles.action, triggerStyle]}
         onPress={() => setVisible(!visible)}
         testID="dropdownMenuTouchable">
         <Icon
-          name="three-dots-vertical"
+          name="three-dots"
           color={Colors.primaryColor.background}
           size={22}
         />
@@ -69,18 +75,17 @@ const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     menuContainer: {
       width: 255,
-      top: 30,
-      right: -12,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      paddingVertical: 5,
+      top: 45,
+      right: 12,
+      borderRadius: 12,
+      paddingHorizontal: 15,
+      paddingVertical: 10,
       position: 'absolute',
       elevation: 6,
-      shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
     },
-    action: {padding: 5, paddingLeft: 15},
+    action: {padding: 5},
   });
 
 export default DropdownMenu;

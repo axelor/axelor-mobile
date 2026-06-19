@@ -18,7 +18,12 @@
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, Platform, StyleSheet, View} from 'react-native';
-import {Text, useConfig, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Text,
+  ThemeColors,
+  useConfig,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {
   HeaderBandHelper,
@@ -114,17 +119,16 @@ const Header = ({
   );
 };
 
-const getHeaderStyles = Colors =>
+const getHeaderStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     headerTitle: {
       color: Colors.text,
-      marginLeft: -14,
     },
     header: {
       position: 'absolute',
       top: 0,
       left: Platform.OS === 'ios' ? -Dimensions.get('window').width * 0.5 : -15,
-      backgroundColor: Colors.backgroundColor,
+      backgroundColor: Colors.screenBackgroundColor,
       height: '100%',
       width: Dimensions.get('window').width,
       flexDirection: 'row',

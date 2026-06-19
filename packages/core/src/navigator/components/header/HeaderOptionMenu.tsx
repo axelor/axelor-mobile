@@ -18,7 +18,11 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {ActionType, GenericHeaderActions} from '../../../header';
 import {useSelector} from '../../../redux/hooks';
 import HeaderOptionMenuItem from './HeaderOptionMenuItem';
@@ -40,7 +44,18 @@ const HeaderOptionMenu = ({
   genericActions = {},
   options,
 }: HeaderOptionMenuProps) => {
+  const Colors = useThemeColor();
   const {mobileSettings} = useSelector(state => state.appConfig);
+
+  const dropdownTriggerStyle = useMemo(
+    () => ({
+      padding: 9,
+      paddingLeft: 9,
+      borderRadius: 10,
+      backgroundColor: Colors.backgroundColor,
+    }),
+    [Colors],
+  );
 
   const collapseMenuItems = useMemo(
     () => Dimensions.get('window').width <= SMALLEST_WINDOW_WIDTH,
@@ -53,7 +68,7 @@ const HeaderOptionMenu = ({
   );
 
   const [visibleGenericActions, setVisibleGenericActions] = useState([]);
-  const [activePopupKey, setActivePopupKey] = useState<string>(null);
+  const [activePopupKey, setActivePopupKey] = useState<string | null>(null);
 
   useEffect(() => {
     const getVisibleGenericActions = async () => {
@@ -161,7 +176,11 @@ const HeaderOptionMenu = ({
   if (collapseMenuItems) {
     return (
       <View style={styles.container}>
-        <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
+        <DropdownMenu
+          style={styles.dropdownWrapper}
+          triggerStyle={dropdownTriggerStyle}>
+          {[...HeaderItemList, ...MenuItemList]}
+        </DropdownMenu>
         {renderPopups()}
       </View>
     );
@@ -170,7 +189,13 @@ const HeaderOptionMenu = ({
   return (
     <View style={styles.container}>
       {HeaderItemList}
-      {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
+      {menuActions.length !== 0 && (
+        <DropdownMenu
+          style={styles.dropdownWrapper}
+          triggerStyle={dropdownTriggerStyle}>
+          {MenuItemList}
+        </DropdownMenu>
+      )}
       {renderPopups()}
     </View>
   );
@@ -182,6 +207,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 15,
+  },
+  dropdownWrapper: {
+    marginLeft: 8,
   },
 });
 

@@ -18,7 +18,12 @@
 
 import React, {ReactElement, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Badge, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Badge,
+  Icon,
+  type ThemeColors,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 
 interface HeaderOptionMenuItemProps {
   icon: string;
@@ -52,8 +57,10 @@ const HeaderOptionMenuItem = ({
       return Colors.secondaryColor.background;
     }
 
-    return Colors.secondaryColor_dark.background;
+    return Colors.primaryColor.background;
   }, [Colors, color, disableIf]);
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   if (hideIf) {
     return null;
@@ -68,16 +75,16 @@ const HeaderOptionMenuItem = ({
       {customComponent != null ? (
         React.cloneElement(customComponent)
       ) : (
-        <Icon name={icon} color={_color} size={22} />
+        <Icon name={icon} color={_color} size={18} />
       )}
       {indicator > 0 && (
         <Badge
           style={styles.badge}
           txtStyle={styles.badgeText}
           color={{
-            background_light: Colors.backgroundColor,
-            foreground: Colors.text,
-            background: Colors.primaryColor.background,
+            background_light: Colors.errorColor.background,
+            foreground: Colors.backgroundColor,
+            background: Colors.errorColor.background,
           }}
           title={indicator}
         />
@@ -86,24 +93,28 @@ const HeaderOptionMenuItem = ({
   );
 };
 
-const styles = StyleSheet.create({
-  badge: {
-    width: BADGE_SIZE,
-    height: BADGE_SIZE,
-    borderRadius: Math.ceil(BADGE_SIZE / 2),
-    position: 'absolute',
-    top: -4,
-    right: -8,
-    zIndex: 10,
-  },
-  badgeText: {
-    fontSize: Math.ceil(BADGE_SIZE / 2),
-  },
-  container: {
-    marginRight: 5,
-    marginLeft: 15,
-    flexDirection: 'row',
-  },
-});
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    badge: {
+      width: BADGE_SIZE,
+      height: BADGE_SIZE,
+      borderRadius: Math.ceil(BADGE_SIZE / 2),
+      position: 'absolute',
+      top: -6,
+      right: -4,
+      zIndex: 10,
+    },
+    badgeText: {
+      fontSize: Math.ceil(BADGE_SIZE / 1.8),
+      fontWeight: 600,
+    },
+    container: {
+      marginLeft: 8,
+      padding: 10,
+      borderRadius: 10,
+      backgroundColor: Colors.backgroundColor,
+      flexDirection: 'row',
+    },
+  });
 
 export default HeaderOptionMenuItem;
