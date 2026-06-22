@@ -21,6 +21,8 @@ import {Models, ObjectFields, SearchFields, SortFields} from '../../app';
 import {CriteriaField, CriteriaGroup} from '../Model';
 import {checkNullString} from '../../utils/string';
 
+const BASIC_FIELDS = ['id', 'version', '$version'];
+
 class ObjectFieldsProvider {
   private objectFields: ObjectFields;
   private searchFields: SearchFields;
@@ -77,33 +79,36 @@ class ObjectFieldsProvider {
     const result: string[] = [];
 
     for (const fieldName of schema._nodes) {
-      if (
-        isNested &&
-        excludeNestedArrays &&
-        fields[fieldName].type === 'array'
-      ) {
-        continue;
-      }
-
-      result.push(fieldName);
-
       if (fields[fieldName].type === 'object') {
         this.handleSchemaField(
           fields[fieldName],
           true,
           excludeNestedArrays,
         ).forEach(_field => {
-          if (
-            _field === 'id' ||
-            _field === '$version' ||
-            _field === 'version'
-          ) {
-            return;
-          }
-
+          if (BASIC_FIELDS.includes(_field)) return;
           result.push(`${fieldName}.${_field}`);
         });
       }
+
+      if (fields[fieldName].type === 'array') {
+        if (isNested && excludeNestedArrays) {
+          continue;
+        } else {
+          const subSchema: any = fields[fieldName].innerType;
+
+          if (
+            subSchema?._nodes?.find((_i: any) => !BASIC_FIELDS.includes(_i)) !=
+            null
+          ) {
+            this.handleSchemaField(subSchema).forEach(_field => {
+              if (BASIC_FIELDS.includes(_field)) return;
+              result.push(`${fieldName}.${_field}`);
+            });
+          }
+        }
+      }
+
+      result.push(fieldName);
     }
 
     return result.filter((item, index, self) => self.indexOf(item) === index);
