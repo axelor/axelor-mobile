@@ -20,6 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
+import {addOpacityToHex} from '../../../utils';
 
 interface BadgeProps {
   style?: any;
@@ -33,7 +34,7 @@ const Badge = ({
   style,
   txtStyle,
   title,
-  color = null,
+  color,
   numberOfLines = 1,
 }: BadgeProps) => {
   const Colors = useThemeColor();
@@ -45,28 +46,32 @@ const Badge = ({
   return (
     <View style={[badgeStyle.container, style]} testID="bagdeContainer">
       <Text
-        style={txtStyle}
+        style={[badgeStyle.text, txtStyle]}
         numberOfLines={numberOfLines}
-        textColor={color?.foreground}
-        fontSize={14}>
+        textColor={(color || Colors.primaryColor)?.background}
+        fontSize={12}>
         {title}
       </Text>
     </View>
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: Color) =>
   StyleSheet.create({
     container: {
-      backgroundColor: color?.background_light,
-      borderColor: color?.background,
-      borderWidth: 2,
-      borderRadius: 7,
+      backgroundColor: addOpacityToHex(color?.background, 0.3),
+      borderWidth: 0,
+      borderRadius: 20,
       margin: '1%',
-      width: 87,
-      height: 22,
+      paddingHorizontal: 18,
+      paddingVertical: 5,
+      alignSelf: 'flex-start',
+      flexShrink: 0,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    text: {
+      fontWeight: 'bold',
     },
   });
 
