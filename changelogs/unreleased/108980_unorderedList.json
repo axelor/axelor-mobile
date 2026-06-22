@@ -1,5 +1,0 @@
-{
-  "title": "UnorderedList: add scrollEnabled prop to control scroll behavior",
-  "type": "refactor",
-  "packages": "ui"
-}

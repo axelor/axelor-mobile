@@ -1,6 +1,0 @@
-{
-  "title": "Custom form views: resolve relational search fields from the model and avoid failures when none are defined",
-  "type": "fix",
-  "packages": "core",
-  "description": "Custom form view search bars now build their request through the standard search builder and only filter on search fields when they are actually defined, instead of assuming a hardcoded 'name' field. When no search field is returned for the target model, the displayed value falls back to fullName or name, preventing empty or broken search results."
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Maintenance requests: add planning view with machine unavailability",
-  "type": "feat",
-  "packages": "maintenance"
-}

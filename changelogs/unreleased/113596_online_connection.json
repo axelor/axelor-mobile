@@ -1,6 +1,0 @@
-{
-  "title": "Connection: centralize the network connection state so the whole application shares a single source of truth",
-  "type": "refactor",
-  "packages": "core",
-  "description": "The internet connection status is now stored once and shared across the application instead of being checked independently in several places. This keeps the \"No connection\" banner and connection-dependent features in sync and prepares the ground for offline handling."
-}

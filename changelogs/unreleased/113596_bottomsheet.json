@@ -1,5 +1,0 @@
-{
-  "title": "BottomSheet: add a new bottom sheet component with drag-to-dismiss and animated backdrop",
-  "type": "feat",
-  "packages": "ui"
-}

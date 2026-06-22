@@ -1,5 +1,0 @@
-{
-  "title": "Alternatives barcodes: remove double search bars in favor of simpler search param",
-  "type": "refactor",
-  "packages": ["stock", "sale"]
-}

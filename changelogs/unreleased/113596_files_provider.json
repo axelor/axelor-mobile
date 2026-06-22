@@ -1,6 +1,0 @@
-{
-  "title": "Files: add a configurable file provider to centralize file opening, download and preview",
-  "type": "feat",
-  "packages": "core",
-  "description": "File actions can now go through a single file provider obtained with getFileApi()/useFileApi() instead of building meta-file URLs and passing connection data manually. A default online provider (AopFileApi) is registered out of the box, and a GatewayFileApi allows chaining several providers with automatic fallback to the first available one, laying the groundwork for offline file handling (new AppMobileOffline app config)."
-}

@@ -1,5 +1,0 @@
-{
-  "title": "FormView: add possibility to modify multiple values at once with onChange on custom components",
-  "type": "feat",
-  "packages": "core"
-}

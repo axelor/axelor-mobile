@@ -1,5 +1,0 @@
-{
-  "title": "Custom components: add more props on custom SearchBar & Picker components",
-  "type": "feat",
-  "packages": "core"
-}

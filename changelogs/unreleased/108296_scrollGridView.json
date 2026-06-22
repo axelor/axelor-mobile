@@ -1,5 +1,0 @@
-{
-  "title": "ScrollGridView: add new paginated grid view component",
-  "type": "feat",
-  "packages": "ui"
-}

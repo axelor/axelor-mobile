@@ -1,5 +1,0 @@
-{
-  "title": "Standard requests: add support for array sortKey in search helper",
-  "type": "feat",
-  "packages": "core"
-}

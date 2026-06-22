@@ -1,5 +1,0 @@
-{
-  "title": "ActionSheet: add a new component to present a list of actions inside a bottom sheet",
-  "type": "feat",
-  "packages": "ui"
-}

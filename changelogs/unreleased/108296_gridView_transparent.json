@@ -1,5 +1,0 @@
-{
-  "title": "GridView: add transparent mode to render without card wrapper",
-  "type": "feat",
-  "packages": "ui"
-}

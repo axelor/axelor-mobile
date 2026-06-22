@@ -1,5 +1,0 @@
-{
-  "title": "GridView: export Column type as GridViewColumn",
-  "type": "feat",
-  "packages": "ui"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Studio buttons: improve management of action call and manage state refresh",
-  "type": "feat",
-  "packages": "core"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "ModelApi: add getFields method to retrieve model field definitions",
-  "type": "feat",
-  "packages": "core"
-}

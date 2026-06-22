@@ -1,5 +1,0 @@
-{
-  "title": "Slice helpers: add helper to generate fetch record cases",
-  "type": "feat",
-  "packages": "core"
-}

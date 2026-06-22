@@ -1,5 +1,0 @@
-{
-  "title": "IconInput: improve props management by adding optionnals",
-  "type": "fix",
-  "packages": "ui"
-}

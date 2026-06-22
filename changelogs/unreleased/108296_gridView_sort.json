@@ -1,5 +1,0 @@
-{
-  "title": "GridView: add sortable column header support",
-  "type": "feat",
-  "packages": "ui"
-}
