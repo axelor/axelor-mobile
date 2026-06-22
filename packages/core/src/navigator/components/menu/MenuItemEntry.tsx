@@ -18,7 +18,14 @@
 
 import React, {useMemo} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Icon, Text, WarningCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Icon,
+  Text,
+  ThemeColors,
+  WarningCard,
+  addOpacityToHex,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {Compatibility} from '../../../app';
 import {useTranslator} from '../../../i18n';
 import {getCompatibilityError, isMenuIncompatible} from '../../helpers';
@@ -46,10 +53,12 @@ const MenuItemEntry = ({
   disabled = false,
   isDropdown = false,
   dropdown = false,
-  iconSize = 24,
+  iconSize = 20,
 }: MenuItemEntryProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const compatibilityError = useMemo(
     () => isMenuIncompatible(compatibility),
@@ -61,56 +70,51 @@ const MenuItemEntry = ({
     [compatibilityError, disabled],
   );
 
+  const highlighted = useMemo(() => isActive || dropdown, [dropdown, isActive]);
+
+  const iconColor = useMemo(() => {
+    if (menuDisabled) {
+      return Colors.secondaryColor.background_light;
+    }
+
+    return Colors.primaryColor.background;
+  }, [Colors, menuDisabled]);
+
   return (
     <TouchableOpacity onPress={onPress} disabled={menuDisabled}>
-      <View style={styles.container}>
+      <View style={[styles.row, highlighted && styles.rowHighlighted, style]}>
         <View
-          style={[
-            styles.menuItemActive,
-            {
-              backgroundColor:
-                !dropdown && isActive
-                  ? Colors.primaryColor.background
-                  : Colors.backgroundColor,
-            },
-          ]}
-        />
-        <View style={[styles.menuItemContainer, style]}>
+          style={[styles.iconTile, highlighted && styles.iconTileHighlighted]}>
           <Icon
-            style={styles.menuItemIcon}
             name={icon}
             size={iconSize}
-            color={
-              menuDisabled
-                ? Colors.secondaryColor.background_light
-                : Colors.secondaryColor_dark.background
-            }
+            color={iconColor}
             visible={icon != null}
           />
-          <View style={styles.menuItemTextContainer}>
-            <Text
-              style={styles.menuItemTitle}
-              textColor={
-                menuDisabled
-                  ? Colors.secondaryColor.background_light
-                  : Colors.text
-              }>
-              {title}
-            </Text>
-          </View>
-          <Icon
-            name={dropdown ? 'chevron-up' : 'chevron-down'}
-            color={Colors.secondaryColor_dark.background}
-            style={styles.dropdownIcon}
-            visible={isDropdown && !compatibilityError}
-          />
-          <Icon
-            name="exclamation-triangle-fill"
-            color={Colors.errorColor.background}
-            style={styles.dropdownIcon}
-            visible={compatibilityError}
-          />
         </View>
+        <View style={styles.menuItemTextContainer}>
+          <Text
+            style={styles.menuItemTitle}
+            textColor={
+              menuDisabled
+                ? Colors.secondaryColor.background_light
+                : Colors.text
+            }>
+            {title}
+          </Text>
+        </View>
+        <Icon
+          name={dropdown ? 'chevron-down' : 'chevron-up'}
+          color={Colors.primaryColor.background}
+          style={styles.dropdownIcon}
+          visible={isDropdown && !compatibilityError}
+        />
+        <Icon
+          name="exclamation-triangle-fill"
+          color={Colors.errorColor.background}
+          style={styles.dropdownIcon}
+          visible={compatibilityError}
+        />
       </View>
       {compatibilityError && (
         <WarningCard
@@ -122,43 +126,56 @@ const MenuItemEntry = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-  },
-  menuItemContainer: {
-    flexDirection: 'row',
-    width: '100%',
-  },
-  menuItemActive: {
-    width: 7,
-    height: 32,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-  },
-  menuItemIcon: {
-    marginLeft: 12,
-    marginRight: 18,
-  },
-  menuItemTextContainer: {
-    flex: 1,
-    alignSelf: 'center',
-    paddingRight: 16,
-  },
-  menuItemTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  dropdownIcon: {
-    marginHorizontal: 5,
-    marginRight: 20,
-  },
-  compatibilityError: {
-    marginVertical: 0,
-    marginHorizontal: 7,
-    width: '95%',
-  },
-});
+const ICON_TILE_SIZE = 40;
+const TILE_RADIUS = 12;
+
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginHorizontal: 12,
+      marginVertical: 4,
+      paddingVertical: 6,
+      paddingHorizontal: 8,
+      borderRadius: TILE_RADIUS,
+      overflow: 'hidden',
+    },
+    rowHighlighted: {
+      backgroundColor: addOpacityToHex(Colors.primaryColor.background, 0.2),
+    },
+    iconTile: {
+      width: ICON_TILE_SIZE,
+      height: ICON_TILE_SIZE,
+      borderRadius: TILE_RADIUS,
+      marginRight: 14,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: addOpacityToHex(Colors.primaryColor.background, 0.15),
+    },
+    iconTileHighlighted: {
+      backgroundColor: Colors.backgroundColor,
+      borderWidth: 1,
+      borderColor: Colors.primaryColor.background,
+    },
+    menuItemTextContainer: {
+      flex: 1,
+      alignSelf: 'center',
+      paddingRight: 8,
+    },
+    menuItemTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    dropdownIcon: {
+      marginHorizontal: 5,
+      marginRight: 12,
+    },
+    compatibilityError: {
+      marginVertical: 0,
+      marginHorizontal: 7,
+      width: '95%',
+    },
+  });
 
 export default MenuItemEntry;

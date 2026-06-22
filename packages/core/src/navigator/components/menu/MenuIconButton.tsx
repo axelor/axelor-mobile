@@ -32,7 +32,7 @@ import {getCompatibilityError, isMenuIncompatible} from '../../helpers';
 
 const WIDTH = 54;
 const HEIGHT = 54;
-const DEFAULT_RADIUS = 8;
+const DEFAULT_RADIUS = 10;
 const ROUNDED_RADIUS = WIDTH / 2;
 
 interface MenuIconButtonProps {
@@ -60,19 +60,26 @@ const MenuIconButton = ({
   const I18n = useTranslator();
   const {showSubtitles} = useConfig();
 
-  const _color = useMemo(
-    () =>
-      disabled
-        ? Colors.secondaryColor.background_light
-        : isActive
-          ? Colors.primaryColor.background_light
-          : Colors.backgroundColor,
-    [Colors, disabled, isActive],
+  const filled = useMemo(() => rounded || isActive, [isActive, rounded]);
+
+  const tileColor = useMemo(
+    () => (filled ? Colors.primaryColor.background : Colors.backgroundColor),
+    [Colors, filled],
   );
 
+  const iconColor = useMemo(() => {
+    if (filled) {
+      return Colors.backgroundColor;
+    }
+
+    return disabled
+      ? Colors.secondaryColor.background
+      : Colors.secondaryColor_dark.background;
+  }, [Colors, disabled, filled]);
+
   const styles = useMemo(
-    () => getStyles(Colors, rounded, _color),
-    [Colors, _color, rounded],
+    () => getStyles(Colors, tileColor, isActive, rounded),
+    [Colors, isActive, rounded, tileColor],
   );
 
   const compatibilityError = useMemo(
@@ -85,54 +92,64 @@ const MenuIconButton = ({
       onPress={onPress}
       disabled={disabled || compatibilityError}
       activeOpacity={0.95}>
-      <View style={[styles.container, style]}>
-        <Icon
-          size={32}
-          name={icon}
-          color={
-            disabled
-              ? Colors.secondaryColor.background
-              : Colors.secondaryColor_dark.background
-          }
-        />
-        {compatibilityError && (
-          <InfoBubble
-            style={styles.infoBubble}
-            usePopup={true}
-            iconName="exclamation-triangle-fill"
-            badgeColor={Colors.errorColor}
-            textIndicationStyle={styles.textIndicationStyle}
-            indication={getCompatibilityError(compatibility, I18n)}
-          />
-        )}
+      <View style={[styles.iconWrapper, style]}>
+        <View style={styles.tile}>
+          <Icon size={22} name={icon} color={iconColor} />
+          {compatibilityError && (
+            <InfoBubble
+              style={styles.infoBubble}
+              usePopup={true}
+              iconName="exclamation-triangle-fill"
+              badgeColor={Colors.errorColor}
+              textIndicationStyle={styles.textIndicationStyle}
+              indication={getCompatibilityError(compatibility, I18n)!}
+            />
+          )}
+        </View>
       </View>
       {showSubtitles && (
-        <Text style={styles.moduleSubtitle} numberOfLines={1}>
-          {I18n.t(subtitle)}
+        <Text
+          style={styles.moduleSubtitle}
+          textColor={isActive ? Colors.primaryColor.background : undefined}
+          numberOfLines={1}>
+          {I18n.t(subtitle ?? '')}
         </Text>
       )}
     </TouchableOpacity>
   );
 };
 
-const getStyles = (Colors: ThemeColors, rounded: boolean, _color: string) =>
+const getStyles = (
+  Colors: ThemeColors,
+  tileColor: string,
+  isActive: boolean,
+  rounded: boolean,
+) =>
   StyleSheet.create({
-    container: {
+    iconWrapper: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 10,
+    },
+    tile: {
       width: WIDTH,
       height: HEIGHT,
       borderRadius: rounded ? ROUNDED_RADIUS : DEFAULT_RADIUS,
       flexDirection: 'row',
       justifyContent: 'center',
-      elevation: 2,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      backgroundColor: _color,
-      shadowOffset: {width: 0, height: 0},
-      zIndex: 10,
+      alignItems: 'center',
+      backgroundColor: tileColor,
+      elevation: isActive ? 8 : 2,
+      shadowColor: isActive
+        ? Colors.primaryColor.background
+        : Colors.secondaryColor.background,
+      shadowOpacity: isActive ? 0.6 : 0.15,
+      shadowRadius: isActive ? 12 : 3,
+      shadowOffset: {width: 0, height: isActive ? 6 : 1},
     },
     moduleSubtitle: {
       fontSize: 10,
-      maxWidth: 54,
+      maxWidth: WIDTH + 6,
       alignSelf: 'center',
     },
     infoBubble: {

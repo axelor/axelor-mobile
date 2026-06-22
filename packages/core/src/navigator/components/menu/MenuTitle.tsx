@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
   bold: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
   },
 });

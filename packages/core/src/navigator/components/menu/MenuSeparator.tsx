@@ -18,27 +18,22 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {HorizontalRule, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {HorizontalRule, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface MenuSeparatorProps {
   title: string;
-  iconSize?: number;
 }
 
-const MenuSeparator = ({title, iconSize = 15}: MenuSeparatorProps) => {
+const MenuSeparator = ({title}: MenuSeparatorProps) => {
   const Colors = useThemeColor();
 
   return (
     <View style={styles.container}>
-      <View style={styles.menuItemContainer}>
-        <Icon
-          style={styles.menuItemIcon}
-          name="chevron-right"
-          size={iconSize}
-          color={Colors.secondaryColor.background}
-        />
-        <Text>{title}</Text>
-      </View>
+      <Text
+        style={styles.title}
+        textColor={Colors.secondaryColor_dark.background_light}>
+        {title?.toUpperCase()}
+      </Text>
       <HorizontalRule style={styles.borderSeparator} />
     </View>
   );
@@ -46,24 +41,20 @@ const MenuSeparator = ({title, iconSize = 15}: MenuSeparatorProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    paddingVertical: 8,
-  },
-  menuItemContainer: {
     flexDirection: 'row',
-    width: '100%',
-    alignSelf: 'center',
-    paddingRight: 16,
-    marginLeft: '5%',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 4,
   },
-  menuItemIcon: {
-    marginRight: 5,
+  title: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    marginRight: 8,
   },
   borderSeparator: {
-    width: '60%',
-    borderBottomWidth: 1.5,
-    marginTop: 10,
-    alignSelf: 'center',
+    flex: 1,
   },
 });
 

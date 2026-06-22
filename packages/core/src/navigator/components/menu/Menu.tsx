@@ -17,8 +17,16 @@
  */
 
 import React, {useMemo} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
-import {Icon, Text, useThemeColor, WarningCard} from '@axelor/aos-mobile-ui';
+import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  addOpacityToHex,
+  HorizontalRule,
+  Icon,
+  Text,
+  ThemeColors,
+  useThemeColor,
+  WarningCard,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {Compatibility, Module} from '../../../app';
 import {
@@ -53,6 +61,8 @@ const Menu = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   const title = useMemo(
     () => getMenuTitle(activeModule, I18n),
     [I18n, activeModule],
@@ -71,15 +81,19 @@ const Menu = ({
         <View style={styles.menuTitleContainer}>
           <Text style={styles.menuTitle}>{title}</Text>
           {showClose && (
-            <Icon
-              name="x-lg"
-              size={20}
-              color={Colors.secondaryColor_dark.background}
-              touchable
+            <TouchableOpacity
+              style={styles.closeButton}
               onPress={onClose}
-            />
+              activeOpacity={0.7}>
+              <Icon
+                name="x-lg"
+                size={18}
+                color={Colors.secondaryColor_dark.background}
+              />
+            </TouchableOpacity>
           )}
         </View>
+        <HorizontalRule style={styles.titleSeparator} />
         {compatibilityError && (
           <WarningCard
             errorMessage={getCompatibilityError(compatibility, I18n)}
@@ -98,32 +112,48 @@ const Menu = ({
   );
 };
 
-const styles = StyleSheet.create({
-  menuContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-  },
-  moduleMenuContainer: {
-    flexDirection: 'column',
-    paddingVertical: 8,
-  },
-  menuTitleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    marginBottom: 8,
-  },
-  menuTitle: {
-    flexShrink: 1,
-    fontSize: 21,
-    fontWeight: 'bold',
-  },
-  authMenuIcon: {
-    marginBottom: 12,
-    marginLeft: 12,
-  },
-});
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    menuContainer: {
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      height: '100%',
+    },
+    moduleMenuContainer: {
+      flexDirection: 'column',
+      paddingVertical: 8,
+    },
+    menuTitleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      marginBottom: 12,
+    },
+    menuTitle: {
+      flexShrink: 1,
+      fontSize: 22,
+      fontWeight: 'bold',
+    },
+    closeButton: {
+      width: 36,
+      height: 36,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: addOpacityToHex(
+        Colors.secondaryColor.background_light,
+        0.6,
+      ),
+    },
+    titleSeparator: {
+      marginHorizontal: 16,
+      marginBottom: 8,
+    },
+    authMenuIcon: {
+      marginBottom: 12,
+      marginLeft: 12,
+    },
+  });
 
 export default Menu;
