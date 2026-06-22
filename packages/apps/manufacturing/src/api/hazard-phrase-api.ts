@@ -16,9 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {createStandardSearch, Criteria} from '@axelor/aos-mobile-core';
 
-export async function fetchProdProcessLineHazardPhrases({manufOrderId}) {
+const createHzardPhraseCriteria = (idSet: number[]): Criteria[] => {
+  return [{fieldName: 'id', operator: 'in', value: idSet}];
+};
+
+export async function fetchProdProcessLineHazardPhrases({
+  manufOrderId,
+}: {
+  manufOrderId: number;
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ProdProcessLine',
     domain:
@@ -26,7 +34,22 @@ export async function fetchProdProcessLineHazardPhrases({manufOrderId}) {
     domainContext: {manufOrderId},
     fieldKey: 'manufacturing_prodProcessLine',
     includeNestedArrayFields: true,
-    numberElementsByPage: null,
+    numberElementsByPage: null as any,
+    page: 0,
+    provider: 'model',
+  });
+}
+
+export async function fetchHazardPhrases({
+  hazardPhraseIds,
+}: {
+  hazardPhraseIds: number[];
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.HazardPhrase',
+    criteria: createHzardPhraseCriteria(hazardPhraseIds),
+    fieldKey: 'manufacturing_hazardPhrase',
+    numberElementsByPage: null as any,
     page: 0,
     provider: 'model',
   });

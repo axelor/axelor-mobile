@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './hazard-phrase-api';
+export {
+  fetchProdProcessLineHazardPhrases as fetchProdProcessLineHazardPhrasesApi,
+  fetchHazardPhrases as fetchHazardPhrasesApi,
+} from './hazard-phrase-api';
 export * from './machine-api';
 export * from './manufacturing-order-api';
 export * from './operation-order-api';

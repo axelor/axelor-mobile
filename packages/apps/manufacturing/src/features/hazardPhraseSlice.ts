@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {fetchProdProcessLineHazardPhrases} from '../api/hazard-phrase-api';
+import {
+  fetchProdProcessLineHazardPhrases,
+  fetchHazardPhrases as fetchHazardPhrasesApi,
+} from '../api/hazard-phrase-api';
 
 export const fetchHazardPhrases = createAsyncThunk(
   'HazardPhrase/fetchHazardPhrases',
@@ -32,7 +35,21 @@ export const fetchHazardPhrases = createAsyncThunk(
       action: 'Manufacturing_SliceAction_FetchHazardPhrases',
       getState,
       responseOptions: {isArrayResponse: true},
-    });
+    }).then(res =>
+      Promise.all(
+        res.map(async (_prodLine: any) => {
+          const set = await fetchHazardPhrasesApi({
+            hazardPhraseIds: _prodLine?.hazardPhraseSet?.map(
+              (_i: any) => _i.id,
+            ),
+          })
+            .then(_res => _res?.data?.data)
+            .catch(() => []);
+
+          return {..._prodLine, hazardPhraseSet: set};
+        }),
+      ),
+    );
   },
 );
 

@@ -153,4 +153,9 @@ export const manufacturing_modelAPI: ObjectFields = {
   manufacturing_stockMoveStatus: schemaContructor.object({
     stockMove: schemaContructor.subObject('statusSelect'),
   }),
+  manufacturing_hazardPhrase: schemaContructor.object({
+    phraseCode: schemaContructor.string(),
+    phrase: schemaContructor.string(),
+    clpDesignation: schemaContructor.string(),
+  }),
 };
