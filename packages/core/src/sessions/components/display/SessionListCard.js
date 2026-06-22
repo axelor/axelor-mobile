@@ -17,9 +17,10 @@
  */
 
 import React, {useMemo} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {useThemeColor, Icon} from '@axelor/aos-mobile-ui';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useThemeColor, Icon, Text} from '@axelor/aos-mobile-ui';
 import {SessionCard} from '../../components';
+import {useTranslator} from '../../../i18n';
 
 const SessionListCard = ({
   logoFile,
@@ -32,6 +33,7 @@ const SessionListCard = ({
   handleRemoveSession = null,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const sessions = useMemo(() => sessionList, [sessionList]);
 
@@ -39,13 +41,20 @@ const SessionListCard = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.iconContainer}>
-        <Icon
-          name="plus-lg"
-          style={styles.iconPlus}
-          touchable={true}
+      <View style={styles.addContainer}>
+        <TouchableOpacity
+          style={styles.addButton}
           onPress={openCreation}
-        />
+          activeOpacity={0.8}>
+          <Icon
+            name="plus-lg"
+            size={18}
+            color={Colors.secondaryColor_dark.background_light}
+          />
+          <Text writingType="important" style={styles.addLabel}>
+            {I18n.t('Base_Add')}
+          </Text>
+        </TouchableOpacity>
       </View>
       {!Array.isArray(sessions) || sessions?.length === 0 ? null : (
         <ScrollView>
@@ -73,17 +82,24 @@ const getStyles = Colors =>
       width: '100%',
       height: '65%',
     },
-    iconContainer: {
+    addContainer: {
       alignSelf: 'flex-end',
       marginRight: '5%',
+      marginBottom: 8,
     },
-    iconPlus: {
-      width: 30,
-      height: 30,
-      borderRadius: 10,
-      backgroundColor: Colors.secondaryColor_dark.foreground,
+    addButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 12,
+      backgroundColor: Colors.backgroundColor,
       borderWidth: 1,
-      borderColor: Colors.primaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
+    },
+    addLabel: {
+      marginLeft: 8,
+      color: Colors.secondaryColor_dark.background_light,
     },
   });
 

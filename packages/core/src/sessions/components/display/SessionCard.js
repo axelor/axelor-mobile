@@ -102,11 +102,7 @@ const SessionCard = ({
               styles.action,
               {borderColor: color, backgroundColor: Colors.backgroundColor},
             ]}>
-            <Icon
-              name={iconName}
-              color={Colors.secondaryColor_dark.background}
-              size={18}
-            />
+            <Icon name={iconName} color={color} size={18} />
           </View>
         </RectButton>
       </Animated.View>
@@ -168,19 +164,34 @@ const SessionCard = ({
                 {
                   borderColor: session?.isDefault
                     ? Colors.primaryColor.background
-                    : Colors.secondaryColor_dark.background,
+                    : Colors.secondaryColor.background_light,
                 },
               ]}>
-              <View style={styles.imageContainer}>
+              <View
+                style={[
+                  styles.logoTile,
+                  {borderColor: Colors.secondaryColor.background_light},
+                ]}>
                 <LogoImage logoFile={logoFile} url={session.url} />
               </View>
               <View style={styles.textContainer}>
                 <Text writingType="title" fontSize={18}>
                   {session.name}
                 </Text>
-                <Text
-                  writingType="details"
-                  numberOfLines={1}>{`Url: ${session.url}`}</Text>
+                <View style={styles.urlRow}>
+                  <Icon
+                    name="link-45deg"
+                    size={16}
+                    color={Colors.secondaryColor_dark.background}
+                  />
+                  <Text
+                    style={styles.urlText}
+                    writingType="details"
+                    numberOfLines={1}
+                    textColor={Colors.secondaryColor_dark.background_light}>
+                    {session.url}
+                  </Text>
+                </View>
               </View>
             </Card>
           </Animated.View>
@@ -198,39 +209,55 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 4,
+    marginVertical: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
     width: '90%',
-    height: 100,
+    minHeight: 88,
     borderWidth: 1,
+    borderRadius: 16,
   },
-  imageContainer: {
-    width: '20%',
-    height: 100,
+  logoTile: {
+    width: 56,
+    height: 56,
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 6,
+    overflow: 'hidden',
   },
   textContainer: {
     flexDirection: 'column',
-    width: '70%',
-    marginLeft: 20,
+    flex: 1,
+    marginLeft: 16,
+  },
+  urlRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  urlText: {
+    flex: 1,
+    marginLeft: 4,
   },
   actionsContainer: {
-    width: 50,
-    marginLeft: -15,
+    marginLeft: -8,
     marginRight: 20,
-    marginVertical: 2,
-    flexDirection: 'column',
+    marginVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   actionView: {
-    flex: 1,
+    height: '100%',
+    justifyContent: 'center',
   },
   action: {
-    width: '100%',
-    height: '90%',
+    width: 56,
+    height: 56,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderRadius: 10,
-    marginVertical: 2,
+    borderWidth: 1.5,
+    borderRadius: 16,
     marginHorizontal: 4,
   },
 });
