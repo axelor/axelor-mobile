@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   DrawerActions,
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
-import {Icon, ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Card, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface HeaderButtonProps {
   isRoot?: boolean;
@@ -32,8 +32,6 @@ interface HeaderButtonProps {
 const HeaderButton = ({isRoot = false}: HeaderButtonProps) => {
   const navigation = useNavigation();
   const Colors = useThemeColor();
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const handlePress = useCallback(
     () =>
@@ -44,30 +42,26 @@ const HeaderButton = ({isRoot = false}: HeaderButtonProps) => {
   );
 
   return (
-    <TouchableOpacity
-      style={styles.icon}
-      onPress={handlePress}
-      activeOpacity={0.7}>
-      <Icon
-        name={isRoot ? 'list' : 'chevron-left'}
-        color={Colors.primaryColor.background}
-        size={22}
-      />
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
+      <Card style={styles.container}>
+        <Icon
+          name={isRoot ? 'list' : 'chevron-left'}
+          color={Colors.primaryColor.background}
+          size={18}
+        />
+      </Card>
     </TouchableOpacity>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    icon: {
-      marginLeft: 8,
-      marginRight: 8,
-      padding: 8,
-      borderRadius: 12,
-      backgroundColor: `${Colors.backgroundColor}CC`,
-      borderWidth: 0.5,
-      borderColor: `${Colors.secondaryColor_dark.background}26`,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 8,
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+});
 
 export default HeaderButton;

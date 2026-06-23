@@ -17,10 +17,10 @@
  */
 
 import React, {ReactElement, useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ThemeColors, useThemeColor} from '../../../theme';
-import {Icon, Text} from '../../atoms';
-import {Badge} from '../../molecules';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Color, useThemeColor} from '../../../theme';
+import {Text} from '../../atoms';
+import {Badge, IconTile} from '../../molecules';
 
 interface DropdownMenuItemProps {
   style?: any;
@@ -33,7 +33,7 @@ interface DropdownMenuItemProps {
   hideIf?: boolean;
   disableIf?: boolean;
   customComponent?: ReactElement<any>;
-  onPress: (any) => void;
+  onPress: () => void;
 }
 
 const BADGE_SIZE = 16;
@@ -41,7 +41,7 @@ const BADGE_SIZE = 16;
 const DropdownMenuItem = ({
   style,
   styleText,
-  numberOfLines = null,
+  numberOfLines,
   icon = 'paperclip',
   color,
   placeholder,
@@ -53,23 +53,20 @@ const DropdownMenuItem = ({
 }: DropdownMenuItemProps) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const _color: Color = useMemo(() => {
+    if (color != null)
+      return {
+        background: color,
+        background_light: color,
+        foreground: Colors.text,
+      };
 
-  const _color = useMemo(() => {
-    if (color != null) {
-      return color;
-    }
+    if (disableIf) return Colors.secondaryColor;
 
-    if (disableIf) {
-      return Colors.secondaryColor.background;
-    }
-
-    return Colors.primaryColor.background;
+    return Colors.primaryColor;
   }, [Colors, color, disableIf]);
 
-  if (hideIf) {
-    return null;
-  }
+  if (hideIf) return null;
 
   return (
     <TouchableOpacity
@@ -77,70 +74,53 @@ const DropdownMenuItem = ({
       style={[styles.menuItem, style]}
       disabled={disableIf}
       testID="dropdownMenuItemTouchable">
-      <View style={styles.iconContainer}>
-        {React.isValidElement(customComponent) ? (
-          <View style={styles.customComponentWrapper}>
-            {customComponent}
-          </View>
-        ) : (
-          <Icon name={icon} color={_color} size={18} />
-        )}
+      <IconTile
+        style={styles.iconContainer}
+        icon={React.isValidElement(customComponent) ? undefined : icon}
+        iconSize={18}
+        color={_color}
+        padding={10}
+        borderRadius={10}>
+        {customComponent}
         {indicator > 0 && (
           <Badge
             style={styles.badge}
             txtStyle={styles.badgeText}
-            color={{
-              background_light: Colors.primaryColor.background,
-              foreground: Colors.backgroundColor,
-              background: Colors.primaryColor.background,
-            }}
+            color={Colors.errorColor}
             title={indicator}
           />
         )}
-      </View>
-      <Text style={[styles.text, styleText]} numberOfLines={numberOfLines}>
+      </IconTile>
+      <Text style={styleText} fontSize={16} numberOfLines={numberOfLines}>
         {placeholder}
       </Text>
     </TouchableOpacity>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    badge: {
-      width: BADGE_SIZE,
-      height: BADGE_SIZE,
-      borderRadius: BADGE_SIZE / 2,
-      position: 'absolute',
-      top: -4,
-      right: -4,
-      zIndex: 10,
-    },
-    badgeText: {
-      fontSize: Math.ceil(BADGE_SIZE / 1.5),
-      fontWeight: 500,
-      includeFontPadding: false,
-      textAlignVertical: 'center',
-    },
-    menuItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginVertical: 5,
-      padding: 5,
-    },
-    text: {fontSize: 16, fontWeight: 500},
-    iconContainer: {
-      marginRight: 10,
-      padding: 10,
-      borderRadius: 10,
-      backgroundColor: `${Colors.primaryColor.background}24`,
-    },
-    customComponentWrapper: {
-      width: 18,
-      height: 18,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
+const styles = StyleSheet.create({
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 5,
+  },
+  iconContainer: {
+    marginRight: 10,
+  },
+  badge: {
+    width: BADGE_SIZE,
+    height: BADGE_SIZE,
+    borderRadius: Math.ceil(BADGE_SIZE / 2),
+    position: 'absolute',
+    top: -6,
+    right: -6,
+    zIndex: 10,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+  },
+  badgeText: {
+    fontSize: Math.ceil(BADGE_SIZE / 1.8),
+  },
+});
 
 export default DropdownMenuItem;

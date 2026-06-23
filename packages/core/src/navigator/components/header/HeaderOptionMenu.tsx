@@ -18,11 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Card, DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {ActionType, GenericHeaderActions} from '../../../header';
 import {useSelector} from '../../../redux/hooks';
 import HeaderOptionMenuItem from './HeaderOptionMenuItem';
@@ -44,18 +40,7 @@ const HeaderOptionMenu = ({
   genericActions = {},
   options,
 }: HeaderOptionMenuProps) => {
-  const Colors = useThemeColor();
   const {mobileSettings} = useSelector(state => state.appConfig);
-
-  const dropdownTriggerStyle = useMemo(
-    () => ({
-      padding: 9,
-      paddingLeft: 9,
-      borderRadius: 10,
-      backgroundColor: Colors.backgroundColor,
-    }),
-    [Colors],
-  );
 
   const collapseMenuItems = useMemo(
     () => Dimensions.get('window').width <= SMALLEST_WINDOW_WIDTH,
@@ -67,7 +52,7 @@ const HeaderOptionMenu = ({
     [collapseMenuItems],
   );
 
-  const [visibleGenericActions, setVisibleGenericActions] = useState([]);
+  const [visibleGenericActions, setVisibleGenericActions] = useState<any[]>([]);
   const [activePopupKey, setActivePopupKey] = useState<string | null>(null);
 
   useEffect(() => {
@@ -80,7 +65,7 @@ const HeaderOptionMenu = ({
               modelId,
               options: options?.[key],
               config: mobileSettings?.apps,
-            }),
+            } as any),
         ),
       );
       setVisibleGenericActions(_genericActions ?? []);
@@ -127,10 +112,10 @@ const HeaderOptionMenu = ({
         <MenuItem
           key={_action.key + index}
           icon={_action.iconName}
-          color={_action.iconColor}
+          color={_action.iconColor!}
           indicator={_action.indicator}
           placeholder={_action.title}
-          hideIf={_action.hideIf}
+          hideIf={_action.hideIf!}
           disableIf={_action.disableIf}
           onPress={_action.onPress}
           customComponent={_action.customComponent}
@@ -156,6 +141,13 @@ const HeaderOptionMenu = ({
     [menuActions],
   );
 
+  const renderIconWrapper = useCallback(
+    (icon: React.ReactElement) => (
+      <Card style={styles.dropdownTrigger}>{icon}</Card>
+    ),
+    [],
+  );
+
   const renderPopups = useCallback(() => {
     return allActions.map(({key, popupComponent}) =>
       popupComponent ? (
@@ -176,9 +168,7 @@ const HeaderOptionMenu = ({
   if (collapseMenuItems) {
     return (
       <View style={styles.container}>
-        <DropdownMenu
-          style={styles.dropdownWrapper}
-          triggerStyle={dropdownTriggerStyle}>
+        <DropdownMenu iconWrapper={renderIconWrapper}>
           {[...HeaderItemList, ...MenuItemList]}
         </DropdownMenu>
         {renderPopups()}
@@ -190,9 +180,7 @@ const HeaderOptionMenu = ({
     <View style={styles.container}>
       {HeaderItemList}
       {menuActions.length !== 0 && (
-        <DropdownMenu
-          style={styles.dropdownWrapper}
-          triggerStyle={dropdownTriggerStyle}>
+        <DropdownMenu iconWrapper={renderIconWrapper}>
           {MenuItemList}
         </DropdownMenu>
       )}
@@ -208,8 +196,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 15,
   },
-  dropdownWrapper: {
+  dropdownTrigger: {
     marginLeft: 8,
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
   },
 });
 
