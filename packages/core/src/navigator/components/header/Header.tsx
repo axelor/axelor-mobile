@@ -42,15 +42,9 @@ interface HeaderProps {
   mainScreen?: boolean;
   title: string;
   actionID?: string;
-  shadedHeader?: boolean;
 }
 
-const Header = ({
-  mainScreen = false,
-  title,
-  actionID,
-  shadedHeader = true,
-}: HeaderProps) => {
+const Header = ({mainScreen = false, title, actionID}: HeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   let timeOutRequestCall = useRef<number>(null);
@@ -97,7 +91,7 @@ const Header = ({
         const {height} = event.nativeEvent.layout;
         setContainerHeight(height);
       }}
-      style={[styles.header, shadedHeader ? styles.shadedHeader : null]}>
+      style={styles.header}>
       <View style={styles.options}>
         <HeaderButton isRoot={mainScreen} />
         <View style={styles.titleContainer}>
@@ -135,12 +129,6 @@ const getHeaderStyles = (Colors: ThemeColors) =>
       justifyContent: 'space-between',
       alignItems: 'center',
       alignContent: 'center',
-    },
-    shadedHeader: {
-      elevation: 3,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 2},
     },
     options: {
       flexDirection: 'row',

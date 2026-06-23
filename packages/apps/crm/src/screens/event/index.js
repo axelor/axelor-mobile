@@ -25,18 +25,12 @@ export default {
     title: 'Crm_Events',
     component: EventPlanningScreen,
     actionID: 'crm_event_planning',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   EventDetailsScreen: {
     title: 'Crm_Event',
     component: EventDetailsScreen,
     actionID: 'crm_event_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   EventFormScreen: {
     title: 'Crm_Event',

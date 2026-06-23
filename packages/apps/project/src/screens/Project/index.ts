@@ -24,20 +24,17 @@ export const ProjectScreens = {
   ProjectListScreen: {
     title: 'Project_Projects',
     component: ProjectListScreen,
-    options: {shadedHeader: false},
     actionID: 'project_project_list',
   },
   ActiveProjectScreen: {
     title: 'Project_ActiveProject',
     component: ActiveProjectScreen,
     actionID: 'project_project_details',
-    options: {shadedHeader: false},
   },
   ProjectDetailsScreen: {
     title: 'Project_Projects',
     component: ProjectDetailsScreen,
     actionID: 'project_project_details',
-    options: {shadedHeader: false},
   },
 };
 

@@ -29,9 +29,6 @@ export default {
   SupplierArrivalListScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'stock_supplierArrival_list',
   },
@@ -39,53 +36,32 @@ export default {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalDetailsScreen,
     actionID: 'stock_supplierArrival_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   SupplierArrivalLineDetailScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalLineDetailScreen,
     actionID: 'stock_supplierArrival_lineDetails',
-    options: {
-      shadedHeader: false,
-    },
   },
   SupplierArrivalLineCreationScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalLineCreationScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   SupplierArrivalLineListScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalLineListScreen,
     actionID: 'stock_supplierArrival_lineList',
-    options: {
-      shadedHeader: false,
-    },
   },
   SupplierArrivalSelectProductScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalSelectProductScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   SupplierArrivalSelectTrackingScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalSelectTrackingScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   SupplierArrivalAddTrackingScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalAddTrackingScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

@@ -27,9 +27,6 @@ export default {
   ProductListScreen: {
     title: 'Stock_Product',
     component: ProductListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'stock_product_list',
   },

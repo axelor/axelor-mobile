@@ -26,18 +26,12 @@ export default {
     title: 'Helpdesk_myTickets',
     actionID: 'helpdesk_myTicket_list',
     component: MyTicketListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   MyTeamTicketListScreen: {
     title: 'Helpdesk_myTeamTickets',
     actionID: 'helpdesk_myTeamTicket_list',
     component: MyTeamTicketListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   TicketFormScreen: {
@@ -49,9 +43,6 @@ export default {
     title: 'Helpdesk_Ticket',
     component: TicketDetailsScreen,
     actionID: 'helpdesk_ticket_details',
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

@@ -25,7 +25,6 @@ export default {
     title: 'Maintenance_MaintenanceRequests',
     component: MaintenanceRequestListScreen,
     actionID: 'maintenance_maintenanceRequest_list',
-    options: {shadedHeader: false},
     isUsableOnShortcut: true,
   },
   MaintenanceRequestFormScreen: {
@@ -37,7 +36,6 @@ export default {
     title: 'Maintenance_MachinesUnavailable',
     component: MaintenancePlanningScreen,
     actionID: 'maintenance_maintenanceRequest_planning',
-    options: {shadedHeader: false},
     isUsableOnShortcut: true,
   },
 };
