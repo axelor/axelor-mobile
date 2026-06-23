@@ -25,18 +25,12 @@ export default {
     title: 'Crm_Leads',
     component: LeadListScreen,
     actionID: 'crm_lead_list',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   LeadDetailsScreen: {
     title: 'Crm_Lead',
     component: LeadDetailsScreen,
     actionID: 'crm_lead_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   LeadFormScreen: {
     title: 'Crm_Lead',

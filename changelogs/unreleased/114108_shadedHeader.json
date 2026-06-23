@@ -1,0 +1,5 @@
+{
+  "title": "Screen: remove shaded header option to match new design",
+  "type": "refactor",
+  "packages": "core"
+}

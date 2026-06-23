@@ -25,18 +25,12 @@ export default {
     title: 'Crm_Clients',
     actionID: 'crm_client_list',
     component: ClientsListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   ClientDetailsScreen: {
     title: 'Crm_Clients',
     component: ClientDetailsScreen,
     actionID: 'crm_client_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   ClientFormScreen: {
     title: 'Crm_Clients',

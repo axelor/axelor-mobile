@@ -16,21 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useRef, useState} from 'react';
+import React, {ReactElement, useRef, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useOutsideClickHandler} from '../../../hooks';
-import {ThemeColors, useThemeColor} from '../../../theme';
+import {useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
 
 interface DropdownMenuProps {
   style?: any;
   styleMenu?: any;
+  iconWrapper?: (icon: ReactElement) => ReactElement;
   children: any;
 }
 
-const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
-  const [visible, setVisible] = useState(false);
+const DropdownMenu = ({
+  style,
+  styleMenu,
+  iconWrapper,
+  children,
+}: DropdownMenuProps) => {
   const Colors = useThemeColor();
+
+  const [visible, setVisible] = useState(false);
 
   const wrapperRef = useRef(null);
   const dropdownWrapperRef = useRef(null);
@@ -40,19 +47,21 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
     activationCondition: visible,
   });
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const icon = (
+    <Icon
+      name="three-dots-vertical"
+      color={Colors.primaryColor.background}
+      size={18}
+    />
+  );
 
   return (
     <View style={style} ref={wrapperRef} testID="dropdownMenuContainer">
       <TouchableOpacity
-        style={styles.action}
+        style={iconWrapper == null ? styles.action : undefined}
         onPress={() => setVisible(!visible)}
         testID="dropdownMenuTouchable">
-        <Icon
-          name="three-dots-vertical"
-          color={Colors.primaryColor.background}
-          size={22}
-        />
+        {iconWrapper != null ? iconWrapper(icon) : icon}
       </TouchableOpacity>
       {visible && (
         <Card
@@ -65,22 +74,21 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    menuContainer: {
-      width: 255,
-      top: 30,
-      right: -12,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      position: 'absolute',
-      elevation: 6,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
-    },
-    action: {padding: 5, paddingLeft: 15},
-  });
+const styles = StyleSheet.create({
+  menuContainer: {
+    width: 255,
+    top: 45,
+    right: 0,
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 5,
+    position: 'absolute',
+  },
+  action: {
+    padding: 5,
+    paddingLeft: 15,
+  },
+});
 
 export default DropdownMenu;

@@ -29,55 +29,34 @@ export default {
     title: 'Stock_CustomerDelivery',
     actionID: 'stock_customerDelivery_list',
     component: CustomerDeliveryListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   CustomerDeliveryDetailScreen: {
     title: 'Stock_CustomerDelivery',
     component: CustomerDeliveryDetailScreen,
     actionID: 'stock_customerDelivery_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   CustomerDeliveryLineDetailScreen: {
     title: 'Stock_CustomerDelivery',
     component: CustomerDeliveryLineDetailScreen,
     actionID: 'stock_customerDelivery_lineDetails',
-    options: {
-      shadedHeader: false,
-    },
   },
   CustomerDeliveryLineCreationScreen: {
     title: 'Stock_CustomerDelivery',
     component: CustomerDeliveryLineCreationScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   CustomerDeliveryLineListScreen: {
     title: 'Stock_CustomerDelivery',
     component: CustomerDeliveryLineListScreen,
     actionID: 'stock_customerDelivery_lineList',
-    options: {
-      shadedHeader: false,
-    },
   },
   CustomerDeliverySelectProductScreen: {
     title: 'Stock_CustomerDelivery',
     component: CustomerDeliverySelectProductScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   CustomerDeliverySelectTrackingScreen: {
     title: 'Stock_CustomerDelivery',
     component: CustomerDeliverySelectTrackingScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

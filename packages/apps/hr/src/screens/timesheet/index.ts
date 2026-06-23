@@ -32,9 +32,6 @@ export default {
   TimesheetListScreen: {
     title: 'Hr_Timesheets',
     component: TimesheetListScreen,
-    options: {
-      shadedHeader: false,
-    },
     actionID: 'hr_timesheets_list',
     isUsableOnShortcut: true,
   },
@@ -47,9 +44,6 @@ export default {
     title: 'Hr_Timesheets',
     component: TimesheetDetailsScreen,
     actionID: 'hr_timesheet_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   ActiveTimerFormScreen: {
     title: 'Hr_ActiveTimer',

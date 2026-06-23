@@ -35,17 +35,11 @@ export default {
   MailMessageAttachedFilesScreen: {
     title: 'Dms_AttachedFiles',
     component: MailMessageAttachedFilesScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   MailMessageLinkFilesScreen: {
     title: 'Message_LinkFiles',
     component: MailMessageLinkFilesScreen,
     acionID: 'dms_all_documents',
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

@@ -25,18 +25,12 @@ export default {
     title: 'Crm_Contacts',
     actionID: 'crm_contact_list',
     component: ContactListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   ContactDetailsScreen: {
     title: 'Crm_Contact',
     component: ContactDetailsScreen,
     actionID: 'crm_contact_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   ContactFormScreen: {
     title: 'Crm_Contact',

@@ -29,9 +29,6 @@ export default {
   ManufacturingOrderListScreen: {
     title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderListScreen,
-    options: {
-      shadedHeader: false,
-    },
     actionID: 'manufacturing_manufacturingOrder_list',
     isUsableOnShortcut: true,
   },
@@ -39,30 +36,18 @@ export default {
     title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderDetailsScreen,
     actionID: 'manufacturing_manufacturingOrder_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   ManufacturingOrderListSaleOrderScreen: {
     title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderListSaleOrderScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   ManufacturingOrderOperationListScreen: {
     title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderOperationListScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   ManufacturingOrderListProductionOrderScreen: {
     title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderListProductionOrderScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   ...ConsumedProductScreens,
   ...ProducedProductScreens,

@@ -18,7 +18,7 @@
 
 import React, {ReactElement, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Badge, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Badge, Card, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface HeaderOptionMenuItemProps {
   icon: string;
@@ -55,33 +55,28 @@ const HeaderOptionMenuItem = ({
     return Colors.secondaryColor_dark.background;
   }, [Colors, color, disableIf]);
 
-  if (hideIf) {
-    return null;
-  }
+  if (hideIf) return null;
 
   return (
     <TouchableOpacity
-      style={styles.container}
       onPress={onPress}
       disabled={disableIf}
       activeOpacity={0.7}>
-      {customComponent != null ? (
-        React.cloneElement(customComponent)
-      ) : (
-        <Icon name={icon} color={_color} size={22} />
-      )}
-      {indicator > 0 && (
-        <Badge
-          style={styles.badge}
-          txtStyle={styles.badgeText}
-          color={{
-            background_light: Colors.backgroundColor,
-            foreground: Colors.text,
-            background: Colors.primaryColor.background,
-          }}
-          title={indicator}
-        />
-      )}
+      <Card style={styles.container}>
+        {customComponent != null ? (
+          React.cloneElement(customComponent)
+        ) : (
+          <Icon name={icon} color={_color} size={18} />
+        )}
+        {indicator > 0 && (
+          <Badge
+            style={styles.badge}
+            txtStyle={styles.badgeText}
+            color={Colors.errorColor}
+            title={indicator}
+          />
+        )}
+      </Card>
     </TouchableOpacity>
   );
 };
@@ -92,17 +87,23 @@ const styles = StyleSheet.create({
     height: BADGE_SIZE,
     borderRadius: Math.ceil(BADGE_SIZE / 2),
     position: 'absolute',
-    top: -4,
-    right: -8,
+    top: -6,
+    right: -6,
     zIndex: 10,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
   },
   badgeText: {
-    fontSize: Math.ceil(BADGE_SIZE / 2),
+    fontSize: Math.ceil(BADGE_SIZE / 1.8),
   },
   container: {
-    marginRight: 5,
-    marginLeft: 15,
+    marginLeft: 8,
+    padding: 10,
+    borderRadius: 10,
     flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
   },
 });
 
