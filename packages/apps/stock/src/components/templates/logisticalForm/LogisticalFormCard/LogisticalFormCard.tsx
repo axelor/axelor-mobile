@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 import {
   formatDate,
@@ -49,16 +48,12 @@ const LogisticalFormCard = ({
   const {LogisticalForm} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
+  const cardColor = useMemo(() => {
     if (status == null) {
-      return null;
+      return undefined;
     }
 
-    const color = getItemColor(
-      LogisticalForm?.statusSelect,
-      status,
-    )?.background;
-    return color ? getStyles(color).border : null;
+    return getItemColor(LogisticalForm?.statusSelect, status)?.background;
   }, [LogisticalForm?.statusSelect, getItemColor, status]);
 
   const formattedDate = useMemo(() => {
@@ -70,7 +65,8 @@ const LogisticalFormCard = ({
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={cardColor}
+      style={style}
       lowerTexts={{
         items: [
           {displayText: reference, isTitle: true},
@@ -97,13 +93,5 @@ const LogisticalFormCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 export default LogisticalFormCard;

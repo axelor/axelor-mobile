@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
   formatDateTime,
@@ -61,17 +61,12 @@ const InterventionCard = ({
 
   const {userId} = useSelector((state: any) => state.auth);
 
-  const borderStyle = useMemo(
-    () =>
-      getStyles(
-        getItemColor(Intervention?.statusSelect, statusSelect)?.background,
-      )?.border,
-    [Intervention?.statusSelect, getItemColor, statusSelect],
-  );
-
   return (
     <ObjectCard
-      style={[styles.container, borderStyle, style]}
+      borderLeftColor={
+        getItemColor(Intervention?.statusSelect, statusSelect)?.background
+      }
+      style={[styles.container, style]}
       showArrow={!isCopyCard}
       leftContainerFlex={6}
       onPress={onPress}
@@ -128,14 +123,6 @@ const InterventionCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   container: {

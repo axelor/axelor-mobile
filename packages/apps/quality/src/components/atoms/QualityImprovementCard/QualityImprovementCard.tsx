@@ -55,12 +55,11 @@ const QualityImprovementCard = ({
     [getItemColorFromIndex, qiStatusList, status],
   );
 
-  const styles = useMemo(() => getStyles(borderColor), [borderColor]);
-
   return (
     <ObjectCard
       onPress={onPress}
-      style={[styles.card, status && styles.border, style]}
+      borderLeftColor={status ? borderColor : undefined}
+      style={[styles.card, style]}
       leftContainerFlex={2}
       touchable={!!onPress}
       showArrow={false}
@@ -92,20 +91,15 @@ const QualityImprovementCard = ({
   );
 };
 
-const getStyles = (borderColor: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: borderColor,
-    },
-    card: {
-      marginHorizontal: 2,
-      marginVertical: 2,
-      padding: 0,
-      marginRight: 5,
-      paddingRight: 5,
-      flex: 1,
-    },
-  });
+const styles = StyleSheet.create({
+  card: {
+    marginHorizontal: 2,
+    marginVertical: 2,
+    padding: 0,
+    marginRight: 5,
+    paddingRight: 5,
+    flex: 1,
+  },
+});
 
 export default QualityImprovementCard;

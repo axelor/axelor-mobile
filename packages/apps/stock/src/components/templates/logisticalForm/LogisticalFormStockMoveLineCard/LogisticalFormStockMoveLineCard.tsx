@@ -44,30 +44,23 @@ const LogisticalFormStockMoveLineCard = ({
     [getLineColor, qty, qtyRemainingToPackage],
   );
 
-  const styles = useMemo(
-    () => getStyles(statusColor?.background),
-    [statusColor?.background],
-  );
-
   return (
     <LogisticalFormPackagingLineCard
       style={[styles.border]}
       stockMoveLine={stockMoveLine}
       saleOrderLine={saleOrderLine}
       qty={qtyRemainingToPackage}
+      borderLeftColor={statusColor?.background}
     />
   );
 };
 
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      marginHorizontal: 12,
-      marginRight: 12,
-      marginVertical: 4,
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
+const styles = StyleSheet.create({
+  border: {
+    marginHorizontal: 12,
+    marginRight: 12,
+    marginVertical: 4,
+  },
+});
 
 export default LogisticalFormStockMoveLineCard;

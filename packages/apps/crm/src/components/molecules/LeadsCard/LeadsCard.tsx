@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {StarScore, ObjectCard} from '@axelor/aos-mobile-ui';
 import {useBinaryPictureUri, useTypeHelpers} from '@axelor/aos-mobile-core';
@@ -58,17 +58,13 @@ const LeadsCard = ({
   const formatBinaryFile = useBinaryPictureUri();
   const {getItemColorFromIndex} = useTypeHelpers();
 
-  const borderStyle = useMemo(
-    () =>
-      getStyles(getItemColorFromIndex(allLeadStatus, leadsStatus)?.background)
-        ?.border,
-    [allLeadStatus, getItemColorFromIndex, leadsStatus],
-  );
-
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColorFromIndex(allLeadStatus, leadsStatus)?.background
+      }
+      style={style}
       showArrow={true}
       image={{
         generalStyle: styles.imageSize,
@@ -131,14 +127,6 @@ const LeadsCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   imageSize: {

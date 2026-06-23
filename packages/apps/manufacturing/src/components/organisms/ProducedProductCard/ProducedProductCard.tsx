@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
@@ -44,17 +43,18 @@ const ProducedProductCard = ({
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
 
-  const borderStyles = useMemo(() => {
+  const cardColor = useMemo(() => {
     if (plannedQty > producedQty) {
-      return getStyles(Colors.plannedColor.background)?.border;
+      return Colors.plannedColor.background;
     }
-    return getStyles(Colors.successColor.background)?.border;
+    return Colors.successColor.background;
   }, [Colors, plannedQty, producedQty]);
 
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyles, style]}
+      borderLeftColor={cardColor}
+      style={style}
       upperTexts={{
         items: [
           {isTitle: true, displayText: productName},
@@ -81,10 +81,5 @@ const ProducedProductCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
-  });
 
 export default ProducedProductCard;

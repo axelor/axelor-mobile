@@ -18,7 +18,13 @@
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {AppState, StyleSheet, View} from 'react-native';
-import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  BorderBar,
+  Card,
+  Icon,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {StopwatchType} from '../../../types';
 import {Timer} from '../../external';
@@ -134,11 +140,10 @@ const Stopwatch = ({
     return state;
   }, [state, status, useObjectStatus]);
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      StopwatchType.getStatusBorderColor(stopwatchStatus, Colors),
-    ).border;
-  }, [Colors, stopwatchStatus]);
+  const borderColor = useMemo(
+    () => StopwatchType.getStatusBorderColor(stopwatchStatus, Colors),
+    [Colors, stopwatchStatus],
+  );
 
   const handlePlayBtn = () => {
     setState(StopwatchType.status.InProgress);
@@ -160,75 +165,70 @@ const Stopwatch = ({
   };
 
   return (
-    <Card style={[styles.container, borderStyle, style]}>
-      <View style={styles.row}>
-        <Text style={styles.status}>
-          {StopwatchType.getStatus(stopwatchStatus, I18n)}
-        </Text>
-        <Icon name="stopwatch-fill" size={18} style={styles.icon} />
-      </View>
-      <View style={styles.flexWrapContainer}>
-        <View style={styles.btnContainer}>
-          {stopwatchStatus !== StopwatchType.status.InProgress && (
+    <Card style={[styles.container, style]}>
+      <BorderBar style={styles.border} color={borderColor} />
+      <View style={styles.content}>
+        <View style={styles.row}>
+          <Text style={styles.status}>
+            {StopwatchType.getStatus(stopwatchStatus, I18n)}
+          </Text>
+          <Icon name="stopwatch-fill" size={18} style={styles.icon} />
+        </View>
+        <View style={styles.flexWrapContainer}>
+          <View style={styles.btnContainer}>
+            {stopwatchStatus !== StopwatchType.status.InProgress && (
+              <TimerButton
+                name="play-fill"
+                disabled={
+                  disable ||
+                  disablePlay ||
+                  stopwatchStatus === StopwatchType.status.InProgress ||
+                  stopwatchStatus === StopwatchType.status.Finished
+                }
+                onPress={handlePlayBtn}
+              />
+            )}
+            {stopwatchStatus === StopwatchType.status.InProgress && (
+              <TimerButton
+                name="pause-fill"
+                disabled={disable || disablePause}
+                onPress={handlePauseBtn}
+              />
+            )}
             <TimerButton
-              name="play-fill"
+              name="power"
               disabled={
                 disable ||
-                disablePlay ||
-                stopwatchStatus === StopwatchType.status.InProgress ||
+                disableStop ||
+                stopwatchStatus === StopwatchType.status.Ready ||
                 stopwatchStatus === StopwatchType.status.Finished
               }
-              onPress={handlePlayBtn}
+              onPress={handleStopBtn}
             />
-          )}
-          {stopwatchStatus === StopwatchType.status.InProgress && (
-            <TimerButton
-              name="pause-fill"
-              disabled={disable || disablePause}
-              onPress={handlePauseBtn}
-            />
-          )}
-          <TimerButton
-            name="power"
-            disabled={
-              disable ||
-              disableStop ||
-              stopwatchStatus === StopwatchType.status.Ready ||
-              stopwatchStatus === StopwatchType.status.Finished
-            }
-            onPress={handleStopBtn}
+            {!hideCancel && (
+              <TimerButton
+                name="arrow-counterclockwise"
+                disabled={
+                  disable ||
+                  disableCancel ||
+                  stopwatchStatus === StopwatchType.status.Ready
+                }
+                onPress={handleCancelBtn}
+              />
+            )}
+          </View>
+          <Timer
+            time={time}
+            addCount={timeToAdd => setTime(_current => _current + timeToAdd)}
+            style={styles.timer}
+            isPaused={stopwatchStatus !== StopwatchType.status.InProgress}
+            timerFormat={timerFormat}
           />
-          {!hideCancel && (
-            <TimerButton
-              name="arrow-counterclockwise"
-              disabled={
-                disable ||
-                disableCancel ||
-                stopwatchStatus === StopwatchType.status.Ready
-              }
-              onPress={handleCancelBtn}
-            />
-          )}
         </View>
-        <Timer
-          time={time}
-          addCount={timeToAdd => setTime(_current => _current + timeToAdd)}
-          style={styles.timer}
-          isPaused={stopwatchStatus !== StopwatchType.status.InProgress}
-          timerFormat={timerFormat}
-        />
       </View>
     </Card>
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   btn: {
@@ -241,9 +241,18 @@ const styles = StyleSheet.create({
   },
   container: {
     alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'stretch',
     width: '95%',
     marginHorizontal: 12,
     marginVertical: '30%',
+  },
+  border: {
+    marginVertical: 6,
+    marginRight: 13,
+  },
+  content: {
+    flex: 1,
   },
   flexWrapContainer: {
     flexDirection: 'row',

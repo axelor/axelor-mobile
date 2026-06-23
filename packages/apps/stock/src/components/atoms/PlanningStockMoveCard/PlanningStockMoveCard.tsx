@@ -46,13 +46,6 @@ const PlanningStockMoveCard = ({
   const {StockMove} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(
-    () =>
-      getStyles(getItemColor(StockMove?.statusSelect, statusSelect)?.background)
-        ?.border,
-    [StockMove?.statusSelect, getItemColor, statusSelect],
-  );
-
   const isInternal = useMemo(
     () => typeSelect === StockMove?.typeSelect.internal,
     [StockMove?.typeSelect.internal, typeSelect],
@@ -86,9 +79,12 @@ const PlanningStockMoveCard = ({
 
   return (
     <ObjectCard
-      style={[styles.container, borderStyle, style]}
+      style={[styles.container, style]}
       touchable={true}
       onPress={handlePress}
+      borderLeftColor={
+        getItemColor(StockMove?.statusSelect, statusSelect)?.background
+      }
       upperTexts={{
         items: [
           {displayText: stockMoveSeq, isTitle: true},
@@ -120,14 +116,6 @@ const PlanningStockMoveCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   container: {

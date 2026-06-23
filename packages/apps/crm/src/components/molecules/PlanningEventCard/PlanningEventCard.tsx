@@ -22,6 +22,7 @@ import {ObjectCard} from '@axelor/aos-mobile-ui';
 
 interface PlanningEventCardProps {
   style?: any;
+  borderLeftColor?: string;
   onPress: () => void;
   subject: string;
   id: string | number;
@@ -34,6 +35,7 @@ interface PlanningEventCardProps {
 
 const PlanningEventCard = ({
   style,
+  borderLeftColor,
   onPress,
   subject,
   id,
@@ -50,6 +52,7 @@ const PlanningEventCard = ({
       key={id}
       onPress={onPress}
       style={style}
+      borderLeftColor={borderLeftColor}
       upperTexts={{
         items: [
           {displayText: subject, isTitle: true},

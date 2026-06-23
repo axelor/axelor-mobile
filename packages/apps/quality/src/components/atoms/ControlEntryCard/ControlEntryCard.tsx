@@ -84,15 +84,15 @@ const ControlEntryCard = ({
     };
   }, [ControlEntrySample?.resultSelect, controlEntryId]);
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      getItemColor(ControlEntry?.statusSelect, statusSelect)?.background,
-    )?.border;
-  }, [ControlEntry?.statusSelect, getItemColor, statusSelect]);
+  const borderColor = useMemo(
+    () => getItemColor(ControlEntry?.statusSelect, statusSelect)?.background,
+    [ControlEntry?.statusSelect, getItemColor, statusSelect],
+  );
 
   return (
     <ObjectCard
-      style={[borderStyle, style]}
+      style={ style}
+      borderLeftColor={borderColor}
       onPress={onPress}
       showArrow={false}
       leftContainerFlex={2}
@@ -123,14 +123,6 @@ const ControlEntryCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   badgeContainer: {
