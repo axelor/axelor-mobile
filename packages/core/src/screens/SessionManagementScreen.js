@@ -106,8 +106,10 @@ const SessionManagementScreen = ({route}) => {
             session={session}
           />
           <View style={styles.copyrightContainer}>
-            <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
-            <Text>{`Version ${appVersion}`}</Text>
+            <Text writingType="important" fontSize={12}>
+              {`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}
+            </Text>
+            <Text fontSize={12}>{`Version ${appVersion}`}</Text>
           </View>
         </View>
         <PopupCreateSession
@@ -155,6 +157,7 @@ const styles = StyleSheet.create({
   },
   copyrightContainer: {
     alignItems: 'center',
+    gap: 4,
   },
 });
 
