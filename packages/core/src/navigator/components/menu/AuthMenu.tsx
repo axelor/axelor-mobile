@@ -37,7 +37,7 @@ const AuthMenu = ({isVisible = true, onPress}: AuthMenuProps) => {
   return (
     <MenuIconButton
       key={authModule.title}
-      icon={authModule.icon}
+      icon={authModule.icon!}
       subtitle={authModule.subtitle}
       disabled={authModule.disabled}
       isActive={activeModule?.name === authModule.name}
