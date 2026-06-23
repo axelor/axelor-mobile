@@ -286,7 +286,7 @@ const getStyles = (Colors: ThemeColors) =>
     },
     iconsContainer: {
       justifyContent: 'space-between',
-      marginHorizontal: 16,
+      marginHorizontal: 12,
       zIndex: 3,
     },
     scrollView: {
@@ -294,10 +294,11 @@ const getStyles = (Colors: ThemeColors) =>
     },
     otherIconsContainer: {
       marginVertical: 8,
+      alignSelf: 'flex-start',
     },
     menuItemContainer: {
       height: 60,
-      marginVertical: 8,
+      marginVertical: 2,
       justifyContent: 'center',
       zIndex: 5,
     },

@@ -19,6 +19,7 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
+  Color,
   Icon,
   InfoBubble,
   Text,
@@ -60,26 +61,23 @@ const MenuIconButton = ({
   const I18n = useTranslator();
   const {showSubtitles} = useConfig();
 
-  const filled = useMemo(() => rounded || isActive, [isActive, rounded]);
-
-  const tileColor = useMemo(
-    () => (filled ? Colors.primaryColor.background : Colors.backgroundColor),
-    [Colors, filled],
+  const _color: Color = useMemo(
+    () =>
+      disabled
+        ? Colors.secondaryColor
+        : isActive
+          ? {...Colors.primaryColor, foreground: Colors.backgroundColor}
+          : {
+              background_light: Colors.secondaryColor_dark.background_light,
+              foreground: Colors.secondaryColor_dark.background,
+              background: Colors.backgroundColor,
+            },
+    [Colors, disabled, isActive],
   );
 
-  const iconColor = useMemo(() => {
-    if (filled) {
-      return Colors.backgroundColor;
-    }
-
-    return disabled
-      ? Colors.secondaryColor.background
-      : Colors.secondaryColor_dark.background;
-  }, [Colors, disabled, filled]);
-
   const styles = useMemo(
-    () => getStyles(Colors, tileColor, isActive, rounded),
-    [Colors, isActive, rounded, tileColor],
+    () => getStyles(Colors, rounded, _color),
+    [Colors, _color, rounded],
   );
 
   const compatibilityError = useMemo(
@@ -93,8 +91,8 @@ const MenuIconButton = ({
       disabled={disabled || compatibilityError}
       activeOpacity={0.95}>
       <View style={[styles.iconWrapper, style]}>
-        <View style={styles.tile}>
-          <Icon size={22} name={icon} color={iconColor} />
+        <View style={[styles.tile, isActive ? styles.activeShadow : null]}>
+          <Icon size={22} name={icon} color={_color.foreground} />
           {compatibilityError && (
             <InfoBubble
               style={styles.infoBubble}
@@ -110,6 +108,7 @@ const MenuIconButton = ({
       {showSubtitles && (
         <Text
           style={styles.moduleSubtitle}
+          fontSize={10}
           textColor={isActive ? Colors.primaryColor.background : undefined}
           numberOfLines={1}>
           {I18n.t(subtitle ?? '')}
@@ -119,17 +118,11 @@ const MenuIconButton = ({
   );
 };
 
-const getStyles = (
-  Colors: ThemeColors,
-  tileColor: string,
-  isActive: boolean,
-  rounded: boolean,
-) =>
+const getStyles = (Colors: ThemeColors, rounded: boolean, tileColor: Color) =>
   StyleSheet.create({
     iconWrapper: {
       justifyContent: 'center',
       alignItems: 'center',
-      zIndex: 10,
     },
     tile: {
       width: WIDTH,
@@ -138,18 +131,22 @@ const getStyles = (
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: tileColor,
-      elevation: isActive ? 8 : 2,
-      shadowColor: isActive
-        ? Colors.primaryColor.background
-        : Colors.secondaryColor.background,
-      shadowOpacity: isActive ? 0.6 : 0.15,
-      shadowRadius: isActive ? 12 : 3,
-      shadowOffset: {width: 0, height: isActive ? 6 : 1},
+      backgroundColor: tileColor.background,
+      elevation: 2,
+      shadowOpacity: 0.15,
+      shadowColor: Colors.secondaryColor.background,
+      shadowRadius: 3,
+      shadowOffset: {width: 0, height: 1},
+    },
+    activeShadow: {
+      elevation: 8,
+      shadowColor: Colors.primaryColor.background,
+      shadowOpacity: 0.6,
+      shadowRadius: 12,
+      shadowOffset: {width: 0, height: 6},
     },
     moduleSubtitle: {
-      fontSize: 10,
-      maxWidth: WIDTH + 6,
+      maxWidth: WIDTH,
       alignSelf: 'center',
     },
     infoBubble: {

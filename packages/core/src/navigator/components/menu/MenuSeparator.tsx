@@ -34,7 +34,11 @@ const MenuSeparator = ({title}: MenuSeparatorProps) => {
         textColor={Colors.secondaryColor_dark.background_light}>
         {title?.toUpperCase()}
       </Text>
-      <HorizontalRule style={styles.borderSeparator} />
+      <HorizontalRule
+        style={styles.borderSeparator}
+        color={Colors.secondaryColor.background_light}
+        width={0.5}
+      />
     </View>
   );
 };
@@ -44,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingTop: 8,
     paddingBottom: 4,
   },
   title: {

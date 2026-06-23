@@ -1,5 +1,5 @@
 {
-  "title": "Drawer: refresh the side navigation menu with a cleaner module rail and menu panel",
+  "title": "Drawer: redesign the side navigation menu with a cleaner module rail and menu panel",
   "type": "refactor",
-  "packages": ["@axelor/aos-mobile-core"]
+  "packages": "core"
 }

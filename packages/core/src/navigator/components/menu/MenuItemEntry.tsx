@@ -21,7 +21,6 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   Icon,
   Text,
-  ThemeColors,
   WarningCard,
   addOpacityToHex,
   useThemeColor,
@@ -29,6 +28,7 @@ import {
 import {Compatibility} from '../../../app';
 import {useTranslator} from '../../../i18n';
 import {getCompatibilityError, isMenuIncompatible} from '../../helpers';
+import MenuIconTile from './MenuIconTile';
 
 interface MenuItemEntryProps {
   style?: any;
@@ -58,8 +58,6 @@ const MenuItemEntry = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
   const compatibilityError = useMemo(
     () => isMenuIncompatible(compatibility),
     [compatibility],
@@ -72,39 +70,38 @@ const MenuItemEntry = ({
 
   const highlighted = useMemo(() => isActive || dropdown, [dropdown, isActive]);
 
-  const iconColor = useMemo(() => {
-    if (menuDisabled) {
-      return Colors.secondaryColor.background_light;
-    }
-
-    return Colors.primaryColor.background;
-  }, [Colors, menuDisabled]);
-
   return (
     <TouchableOpacity onPress={onPress} disabled={menuDisabled}>
-      <View style={[styles.row, highlighted && styles.rowHighlighted, style]}>
-        <View
-          style={[styles.iconTile, highlighted && styles.iconTileHighlighted]}>
-          <Icon
-            name={icon}
-            size={iconSize}
-            color={iconColor}
-            visible={icon != null}
-          />
-        </View>
-        <View style={styles.menuItemTextContainer}>
-          <Text
-            style={styles.menuItemTitle}
-            textColor={
-              menuDisabled
-                ? Colors.secondaryColor.background_light
-                : Colors.text
-            }>
-            {title}
-          </Text>
-        </View>
+      <View
+        style={[
+          styles.row,
+          highlighted
+            ? {
+                backgroundColor: addOpacityToHex(
+                  Colors.primaryColor.background,
+                  0.2,
+                ),
+              }
+            : null,
+          style,
+        ]}>
+        <MenuIconTile
+          style={styles.iconTile}
+          icon={icon}
+          iconSize={iconSize}
+          highlighted={highlighted}
+          disabled={menuDisabled}
+        />
+        <Text
+          style={styles.menuItemTitle}
+          fontSize={14}
+          textColor={
+            menuDisabled ? Colors.secondaryColor.background_light : Colors.text
+          }>
+          {title}
+        </Text>
         <Icon
-          name={dropdown ? 'chevron-down' : 'chevron-up'}
+          name={dropdown ? 'chevron-up' : 'chevron-down'}
           color={Colors.primaryColor.background}
           style={styles.dropdownIcon}
           visible={isDropdown && !compatibilityError}
@@ -126,56 +123,36 @@ const MenuItemEntry = ({
   );
 };
 
-const ICON_TILE_SIZE = 40;
 const TILE_RADIUS = 12;
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginHorizontal: 12,
-      marginVertical: 4,
-      paddingVertical: 6,
-      paddingHorizontal: 8,
-      borderRadius: TILE_RADIUS,
-      overflow: 'hidden',
-    },
-    rowHighlighted: {
-      backgroundColor: addOpacityToHex(Colors.primaryColor.background, 0.2),
-    },
-    iconTile: {
-      width: ICON_TILE_SIZE,
-      height: ICON_TILE_SIZE,
-      borderRadius: TILE_RADIUS,
-      marginRight: 14,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: addOpacityToHex(Colors.primaryColor.background, 0.15),
-    },
-    iconTileHighlighted: {
-      backgroundColor: Colors.backgroundColor,
-      borderWidth: 1,
-      borderColor: Colors.primaryColor.background,
-    },
-    menuItemTextContainer: {
-      flex: 1,
-      alignSelf: 'center',
-      paddingRight: 8,
-    },
-    menuItemTitle: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    dropdownIcon: {
-      marginHorizontal: 5,
-      marginRight: 12,
-    },
-    compatibilityError: {
-      marginVertical: 0,
-      marginHorizontal: 7,
-      width: '95%',
-    },
-  });
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    borderRadius: TILE_RADIUS,
+    overflow: 'hidden',
+  },
+  iconTile: {
+    marginRight: 8,
+  },
+  menuItemTitle: {
+    flex: 1,
+    alignSelf: 'center',
+    paddingRight: 8,
+    fontWeight: 'bold',
+  },
+  dropdownIcon: {
+    marginHorizontal: 5,
+    marginRight: 5,
+  },
+  compatibilityError: {
+    marginVertical: 0,
+    marginHorizontal: 7,
+    width: '95%',
+  },
+});
 
 export default MenuItemEntry;
