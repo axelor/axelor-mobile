@@ -19,6 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
+import {addOpacityToHex} from '../../../utils';
 import {Text} from '../../atoms';
 
 interface BadgeProps {
@@ -33,40 +34,45 @@ const Badge = ({
   style,
   txtStyle,
   title,
-  color = null,
+  color,
   numberOfLines = 1,
 }: BadgeProps) => {
   const Colors = useThemeColor();
-  const badgeStyle = useMemo(
-    () => getStyles(color || Colors.primaryColor),
-    [color, Colors],
+
+  const _color = useMemo(
+    () => color || Colors.primaryColor,
+    [Colors.primaryColor, color],
   );
 
+  const styles = useMemo(() => getStyles(_color), [_color]);
+
   return (
-    <View style={[badgeStyle.container, style]} testID="bagdeContainer">
+    <View style={[styles.container, style]} testID="bagdeContainer">
       <Text
-        style={txtStyle}
+        style={[styles.text, txtStyle]}
         numberOfLines={numberOfLines}
-        textColor={color?.foreground}
-        fontSize={14}>
+        textColor={_color.background}
+        fontSize={12}>
         {title}
       </Text>
     </View>
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: Color) =>
   StyleSheet.create({
     container: {
-      backgroundColor: color?.background_light,
-      borderColor: color?.background,
-      borderWidth: 2,
-      borderRadius: 7,
-      margin: '1%',
-      width: 87,
-      height: 22,
+      backgroundColor: addOpacityToHex(color?.background, 0.3),
+      borderRadius: 20,
+      margin: 2,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      flexShrink: 0,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    text: {
+      fontWeight: 'bold',
     },
   });
 
