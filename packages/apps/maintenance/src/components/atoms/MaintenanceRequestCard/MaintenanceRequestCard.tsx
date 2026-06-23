@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
   formatDate,
@@ -51,18 +51,12 @@ const MaintenanceRequestCard = ({
   const {MaintenanceRequest} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const borderStyle = useMemo(
-    () =>
-      getBorderStyles(
-        getItemColor(MaintenanceRequest?.statusSelect, statusSelect)
-          ?.background,
-      )?.border,
-    [MaintenanceRequest?.statusSelect, getItemColor, statusSelect],
-  );
-
   return (
     <ObjectCard
-      style={[styles.card, borderStyle, style]}
+      borderLeftColor={
+        getItemColor(MaintenanceRequest?.statusSelect, statusSelect)?.background
+      }
+      style={[styles.card, style]}
       showArrow={false}
       touchable={false}
       leftContainerFlex={2}
@@ -99,14 +93,6 @@ const MaintenanceRequestCard = ({
     />
   );
 };
-
-const getBorderStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   card: {

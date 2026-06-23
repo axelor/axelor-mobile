@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useTranslator,
@@ -47,21 +47,15 @@ const QuestionCard = ({
   const {InterventionQuestion} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const styles = useMemo(
-    () =>
-      getStyles(
-        getItemColor(InterventionQuestion?.statusSelect, status)?.background,
-      ),
-    [InterventionQuestion?.statusSelect, getItemColor, status],
-  );
-
   if (status === InterventionQuestion?.statusSelect.Hidden) {
     return null;
   }
 
   return (
     <ObjectCard
-      style={styles.border}
+      borderLeftColor={
+        getItemColor(InterventionQuestion?.statusSelect, status)?.background
+      }
       leftContainerFlex={6}
       onPress={() =>
         navigation.navigate('InterventionQuestionFormScreen', {questionId: id})
@@ -101,18 +95,13 @@ const QuestionCard = ({
   );
 };
 
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-    badges: {
-      alignItems: 'flex-end',
-    },
-    details: {
-      fontStyle: 'italic',
-    },
-  });
+const styles = StyleSheet.create({
+  badges: {
+    alignItems: 'flex-end',
+  },
+  details: {
+    fontStyle: 'italic',
+  },
+});
 
 export default QuestionCard;

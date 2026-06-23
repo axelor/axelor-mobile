@@ -58,14 +58,15 @@ const ComplementaryProductCard = ({
   const formatNumber = useDigitFormat();
   const formatPrice = usePriceFormat();
 
-  const styles = useMemo(() => {
+  const cardColor = useMemo(() => {
     const color = optional ? Colors.secondaryColor : Colors.primaryColor;
-    return getStyles(color.background);
+    return color.background;
   }, [Colors, optional]);
 
   return (
     <View style={style}>
       <ObjectCard
+        borderLeftColor={cardColor}
         style={styles.container}
         leftContainerFlex={2}
         showArrow={false}
@@ -110,21 +111,18 @@ const ComplementaryProductCard = ({
   );
 };
 
-const getStyles = color =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      width: '96%',
-      alignSelf: 'center',
-      marginVertical: 3,
-      paddingRight: 5,
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-    imageSize: {
-      height: 50,
-      width: 50,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '96%',
+    alignSelf: 'center',
+    marginVertical: 3,
+    paddingRight: 5,
+  },
+  imageSize: {
+    height: 50,
+    width: 50,
+  },
+});
 
 export default ComplementaryProductCard;

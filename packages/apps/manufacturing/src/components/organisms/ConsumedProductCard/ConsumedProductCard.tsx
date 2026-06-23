@@ -57,17 +57,17 @@ const ConsumedProductCard = ({
 
   const [stockMoveStatus, setStockMoveStatus] = useState(null);
 
-  const borderStyle = useMemo(() => {
+  const cardColor = useMemo(() => {
     if (missingQty > 0) {
-      return getBorderStyles(Colors.errorColor.background)?.border;
+      return Colors.errorColor.background;
     } else if (
       consumedQty == null ||
       consumedQty === 0 ||
       plannedQty > consumedQty
     ) {
-      return getBorderStyles(Colors.plannedColor.background)?.border;
+      return Colors.plannedColor.background;
     } else {
-      return getBorderStyles(Colors.successColor.background)?.border;
+      return Colors.successColor.background;
     }
   }, [Colors, consumedQty, missingQty, plannedQty]);
 
@@ -82,7 +82,8 @@ const ConsumedProductCard = ({
     <View style={style}>
       <ObjectCard
         onPress={onPress}
-        style={borderStyle}
+        borderLeftColor={cardColor}
+        style={styles.card}
         showArrow={false}
         upperTexts={{
           items: [
@@ -149,14 +150,11 @@ const ConsumedProductCard = ({
   );
 };
 
-const getBorderStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-      marginHorizontal: 2,
-      marginVertical: 2,
-    },
-  });
+const styles = StyleSheet.create({
+  card: {
+    marginHorizontal: 2,
+    marginVertical: 2,
+  },
+});
 
 export default ConsumedProductCard;

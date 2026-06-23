@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {checkNullString, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
   formatDateTime,
@@ -73,15 +72,12 @@ const TicketCard = ({
     [allTicketType, getItemColorFromIndex, ticketType],
   );
 
-  const borderStyle = useMemo(
-    () =>
-      getStyles(getItemColor(Ticket?.prioritySelect, prioritySelect))?.border,
-    [getItemColor, Ticket?.prioritySelect, prioritySelect],
-  );
-
   return (
     <ObjectCard
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(Ticket?.prioritySelect, prioritySelect)?.background
+      }
+      style={style}
       onPress={onPress}
       sideBadges={{
         items: [
@@ -140,13 +136,5 @@ const TicketCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color?.background,
-    },
-  });
 
 export default TicketCard;

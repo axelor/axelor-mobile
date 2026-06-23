@@ -63,21 +63,21 @@ const TimeCard = ({
   const {Timer, Timesheet} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const styles = useMemo(() => {
+  const cardColor = useMemo(() => {
     const timeObject = mode === Time.mode.Timer ? Timer : Timesheet;
 
-    return getStyles(
-      getItemColor(timeObject?.statusSelect, statusSelect)?.background,
-      isSmallCard,
-    );
-  }, [Timer, Timesheet, getItemColor, isSmallCard, mode, statusSelect]);
+    return getItemColor(timeObject?.statusSelect, statusSelect)?.background;
+  }, [Timer, Timesheet, getItemColor, mode, statusSelect]);
+
+  const styles = useMemo(() => getStyles(isSmallCard), [isSmallCard]);
 
   return (
     <ObjectCard
       touchable={false}
       showArrow={false}
       leftContainerFlex={1.3}
-      style={[styles.container, isBorderColor && styles.borderColor, style]}
+      borderLeftColor={isBorderColor ? cardColor : undefined}
+      style={[styles.container, style]}
       upperTexts={{
         items: [
           {
@@ -120,17 +120,13 @@ const TimeCard = ({
   );
 };
 
-const getStyles = (color: string, isSmallCard: boolean) =>
+const getStyles = (isSmallCard: boolean) =>
   StyleSheet.create({
     container: {
       minHeight: isSmallCard ? 'auto' : 100,
       justifyContent: 'center',
       marginHorizontal: 1,
       marginVertical: 2,
-    },
-    borderColor: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
     },
     subTitle: {
       fontStyle: 'italic',

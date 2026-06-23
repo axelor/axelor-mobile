@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {StarScore, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
@@ -60,14 +60,6 @@ const PartnerCard = ({
 
   const {crm: crmConfig} = useSelector((state: any) => state.appConfig);
 
-  const borderStyle = useMemo(
-    () =>
-      getStyles(
-        getItemColorFromIndex(allProspectStatus, partnerStatus)?.background,
-      )?.border,
-    [allProspectStatus, getItemColorFromIndex, partnerStatus],
-  );
-
   return (
     <ObjectCard
       onPress={onPress}
@@ -78,10 +70,12 @@ const PartnerCard = ({
         defaultIconSize: 50,
         source: formatMetaFile(partnerPicture?.id),
       }}
-      style={[
-        crmConfig?.crmProcessOnPartner && partnerStatus ? borderStyle : null,
-        style,
-      ]}
+      borderLeftColor={
+        crmConfig?.crmProcessOnPartner && partnerStatus
+          ? getItemColorFromIndex(allProspectStatus, partnerStatus)?.background
+          : null
+      }
+      style={style}
       upperTexts={{
         items: [
           {displayText: partnerFullName, isTitle: true},
@@ -130,14 +124,6 @@ const PartnerCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   imageIcon: {

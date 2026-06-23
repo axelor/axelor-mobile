@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Icon, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {clipboardProvider} from '@axelor/aos-mobile-core';
@@ -37,17 +37,13 @@ const TourLineCard = ({
 }: TourLineCardProps) => {
   const Colors = useThemeColor();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(TourLine.getBorderColor(isValidated, Colors)?.background)
-      ?.border;
-  }, [Colors, isValidated]);
-
   return (
     <ObjectCard
       showArrow={false}
       touchable={true}
       onPress={() => clipboardProvider.copyToClipboard(`${name} ${address}`)}
-      style={[styles.objectCard, borderStyle, style]}
+      borderLeftColor={TourLine.getBorderColor(isValidated, Colors)?.background}
+      style={[styles.objectCard, style]}
       upperTexts={{
         items: [
           {displayText: name, isTitle: true, numberOfLines: 1},
@@ -76,14 +72,6 @@ const TourLineCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   objectCard: {

@@ -69,9 +69,9 @@ const PriceListCard = ({
   const formatNumber = useDigitFormat();
   const formatPrice = usePriceFormat();
 
-  const styles = useMemo(() => {
+  const cardColor = useMemo(() => {
     const color = isActive ? Colors.successColor : Colors.warningColor;
-    return getStyles(color.background);
+    return color.background;
   }, [isActive, Colors]);
 
   const hidePeriod = useMemo(
@@ -117,6 +117,7 @@ const PriceListCard = ({
   return (
     <View style={style}>
       <ObjectCard
+        borderLeftColor={cardColor}
         style={styles.container}
         leftContainerFlex={2}
         touchable={false}
@@ -174,26 +175,23 @@ const PriceListCard = ({
   );
 };
 
-const getStyles = color =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      width: '96%',
-      alignSelf: 'center',
-      marginVertical: 3,
-      paddingRight: 5,
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-    sideContainer: {
-      height: null,
-      alignItems: 'flex-end',
-      justifyContent: 'space-between',
-    },
-    badge: {
-      width: null,
-      paddingHorizontal: 5,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '96%',
+    alignSelf: 'center',
+    marginVertical: 3,
+    paddingRight: 5,
+  },
+  sideContainer: {
+    height: null,
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  },
+  badge: {
+    width: null,
+    paddingHorizontal: 5,
+  },
+});
 
 export default PriceListCard;

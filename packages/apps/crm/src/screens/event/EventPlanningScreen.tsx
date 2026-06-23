@@ -70,11 +70,8 @@ function EventPlanningScreen({navigation}) {
         subject: event.subject,
         contactPartner: event.contactPartner?.fullName,
         location: event.location,
-        border: {
-          borderLeftWidth: 7,
-          borderLeftColor: getItemColor(Event?.typeSelect, event.typeSelect)
-            ?.background,
-        },
+        borderColor: getItemColor(Event?.typeSelect, event.typeSelect)
+          ?.background,
         partner: event.partner?.fullName,
         eventLead: event.eventLead?.fullName,
         partnerTypeSelect: event.partner?.partnerTypeSelect,
@@ -109,7 +106,7 @@ function EventPlanningScreen({navigation}) {
 
       return (
         <PlanningEventCard
-          style={event.border}
+          borderLeftColor={event.borderColor}
           onPress={() => navigateToEvent(event.id)}
           id={id}
           subject={event.subject}
@@ -130,7 +127,7 @@ function EventPlanningScreen({navigation}) {
 
       return (
         <PlanningEventCard
-          style={event.border}
+          borderLeftColor={event.borderColor}
           onPress={() => navigateToEvent(event.id)}
           id={id}
           subject={event.subject}

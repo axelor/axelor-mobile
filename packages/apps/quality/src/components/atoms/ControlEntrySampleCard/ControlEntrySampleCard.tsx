@@ -43,12 +43,9 @@ const ControlEntrySampleCard = ({
 
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
-  const borderStyle = useMemo(
+  const borderColor = useMemo(
     () =>
-      getStyles(
-        getItemColor(ControlEntrySample?.resultSelect, resultSelect)
-          ?.background,
-      )?.border,
+      getItemColor(ControlEntrySample?.resultSelect, resultSelect)?.background,
     [ControlEntrySample?.resultSelect, getItemColor, resultSelect],
   );
 
@@ -85,7 +82,8 @@ const ControlEntrySampleCard = ({
 
   return (
     <ObjectCard
-      style={[borderStyle, style]}
+      style={ style}
+      borderLeftColor={borderColor}
       onPress={onPress}
       showArrow={false}
       leftContainerFlex={4}
@@ -107,14 +105,6 @@ const ControlEntrySampleCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   textProgressBar: {
