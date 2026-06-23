@@ -1,8 +1,5 @@
 {
   "title": "Header: redesign navigation bar with themed action buttons and improved dropdown menu",
   "type": "feat",
-  "packages": [
-    "@axelor/aos-mobile-core"
-  ],
-  "description": "Visual redesign of the app header navigation bar. The back/menu button now has a themed rounded container. Header action icons display with a consistent rounded background. The three-dots overflow menu trigger is styled to match the action buttons. The dropdown menu has improved corner radius, padding, and positioning. Dropdown items now show a tinted icon background. Badge text centering on Android is fixed. Inbox Important and Archive toggle actions are simplified to single icons."
+  "packages": "core"
 }
