@@ -26,7 +26,13 @@ import {
 } from 'react-native';
 import {GestureHandlerRootView, RectButton} from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import {useThemeColor, Card, Text, Icon} from '@axelor/aos-mobile-ui';
+import {
+  useThemeColor,
+  Card,
+  Text,
+  Icon,
+  LabelText,
+} from '@axelor/aos-mobile-ui';
 import LogoImage from './LogoImage';
 import {sessionStorage} from '../..';
 
@@ -102,11 +108,7 @@ const SessionCard = ({
               styles.action,
               {borderColor: color, backgroundColor: Colors.backgroundColor},
             ]}>
-            <Icon
-              name={iconName}
-              color={Colors.secondaryColor_dark.background}
-              size={18}
-            />
+            <Icon name={iconName} color={color} size={18} />
           </View>
         </RectButton>
       </Animated.View>
@@ -124,7 +126,7 @@ const SessionCard = ({
         {renderActionButton(
           trans,
           'pencil-fill',
-          Colors.infoColor.background,
+          Colors.primaryColor.background,
           handleEdition,
         )}
         {renderActionButton(
@@ -162,25 +164,33 @@ const SessionCard = ({
                 ],
               },
             ]}>
-            <Card
-              style={[
-                styles.cardContainer,
-                {
-                  borderColor: session?.isDefault
-                    ? Colors.primaryColor.background
-                    : Colors.secondaryColor_dark.background,
-                },
-              ]}>
-              <View style={styles.imageContainer}>
+            <Card style={styles.cardContainer}>
+              {session?.isDefault && (
+                <View
+                  style={[
+                    styles.activeSession,
+                    {backgroundColor: Colors.primaryColor.background},
+                  ]}
+                />
+              )}
+              <View
+                style={[
+                  styles.logoTile,
+                  {borderColor: Colors.secondaryColor.background_light},
+                ]}>
                 <LogoImage logoFile={logoFile} url={session.url} />
               </View>
               <View style={styles.textContainer}>
-                <Text writingType="title" fontSize={18}>
+                <Text writingType="title" fontSize={16}>
                   {session.name}
                 </Text>
-                <Text
-                  writingType="details"
-                  numberOfLines={1}>{`Url: ${session.url}`}</Text>
+                <LabelText
+                  iconName="link-45deg"
+                  title={session.url}
+                  onlyOneLine
+                  size={14}
+                  textSize={14}
+                />
               </View>
             </Card>
           </Animated.View>
@@ -199,38 +209,50 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 4,
+    paddingVertical: 16,
+    paddingHorizontal: 10,
     width: '90%',
-    height: 100,
-    borderWidth: 1,
+    minHeight: 88,
+    borderRadius: 16,
   },
-  imageContainer: {
-    width: '20%',
-    height: 100,
+  activeSession: {
+    borderRadius: 20,
+    height: '100%',
+    width: 4,
+    marginRight: 10,
+  },
+  logoTile: {
+    width: 60,
+    height: 60,
+    borderRadius: 12,
+    borderWidth: 0.5,
+    padding: 6,
+    overflow: 'hidden',
   },
   textContainer: {
     flexDirection: 'column',
-    width: '70%',
-    marginLeft: 20,
+    flex: 1,
+    marginLeft: 10,
   },
   actionsContainer: {
-    width: 50,
-    marginLeft: -15,
+    marginLeft: -8,
     marginRight: 20,
-    marginVertical: 2,
-    flexDirection: 'column',
+    marginVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   actionView: {
-    flex: 1,
+    height: '100%',
+    justifyContent: 'center',
   },
   action: {
-    width: '100%',
-    height: '90%',
+    width: 56,
+    height: 56,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderRadius: 10,
-    marginVertical: 2,
+    borderWidth: 1,
+    borderRadius: 16,
     marginHorizontal: 4,
   },
 });

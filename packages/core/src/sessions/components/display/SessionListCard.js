@@ -17,8 +17,9 @@
  */
 
 import React, {useMemo} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {useThemeColor, Icon} from '@axelor/aos-mobile-ui';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useThemeColor, Icon, Text, Card} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
 import {SessionCard} from '../../components';
 
 const SessionListCard = ({
@@ -32,21 +33,30 @@ const SessionListCard = ({
   handleRemoveSession = null,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const sessions = useMemo(() => sessionList, [sessionList]);
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
   return (
     <View style={styles.container}>
-      <View style={styles.iconContainer}>
-        <Icon
-          name="plus-lg"
-          style={styles.iconPlus}
-          touchable={true}
+      <Card style={styles.addContainer}>
+        <TouchableOpacity
+          style={styles.addButton}
           onPress={openCreation}
-        />
-      </View>
+          activeOpacity={0.9}>
+          <Icon
+            name="plus-lg"
+            size={16}
+            color={Colors.secondaryColor_dark.background_light}
+          />
+          <Text
+            writingType="important"
+            fontSize={16}
+            textColor={Colors.secondaryColor_dark.background_light}>
+            {I18n.t('Base_Add')}
+          </Text>
+        </TouchableOpacity>
+      </Card>
       {!Array.isArray(sessions) || sessions?.length === 0 ? null : (
         <ScrollView>
           {sessions.map(_session => (
@@ -67,24 +77,25 @@ const SessionListCard = ({
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      width: '100%',
-      height: '65%',
-    },
-    iconContainer: {
-      alignSelf: 'flex-end',
-      marginRight: '5%',
-    },
-    iconPlus: {
-      width: 30,
-      height: 30,
-      borderRadius: 10,
-      backgroundColor: Colors.secondaryColor_dark.foreground,
-      borderWidth: 1,
-      borderColor: Colors.primaryColor.background,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '65%',
+  },
+  addContainer: {
+    alignSelf: 'flex-end',
+    marginRight: '5%',
+    marginBottom: 8,
+    paddingHorizontal: 12,
+    paddingRight: 12,
+    paddingVertical: 10,
+    borderRadius: 12,
+  },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+});
 
 export default SessionListCard;
