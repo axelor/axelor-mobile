@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {formatDateTime, useTranslator} from '@axelor/aos-mobile-core';
-import {Card, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {BorderBar, Card, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const DURATION_NEARLY_EXPIRED_IN_HOURS = 24 * 7;
 
@@ -43,7 +43,7 @@ const GtCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const borderStyle = useMemo(() => {
+  const borderColor = useMemo(() => {
     let color = Colors.successColor;
 
     if (maxDate == null) {
@@ -68,11 +68,12 @@ const GtCard = ({
       }
     }
 
-    return getStyles(color.background)?.border;
+    return color.background;
   }, [Colors, gtStatus, interventionStatus, maxDate, plannedGt, realGt]);
 
   return (
-    <Card style={[styles.container, borderStyle]}>
+    <Card style={styles.container}>
+      <BorderBar style={styles.border} color={borderColor} />
       <Text writingType="title">{I18n.t(titleKey)}</Text>
       <Text style={styles.date}>
         {maxDate ? formatDateTime(maxDate, I18n.t('Base_DateTimeFormat')) : '-'}
@@ -81,19 +82,17 @@ const GtCard = ({
   );
 };
 
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
-
 const styles = StyleSheet.create({
   container: {
     width: '90%',
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 5,
+  },
+  border: {
+    alignSelf: 'stretch',
+    marginVertical: 6,
+    marginRight: 13,
   },
   date: {
     marginLeft: 20,

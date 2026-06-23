@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
@@ -43,19 +43,14 @@ const PlanningInterventionCard = ({
   const {Intervention} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(
-    () =>
-      getStyles(
-        getItemColor(Intervention?.statusSelect, statusSelect)?.background,
-      )?.border,
-    [Intervention?.statusSelect, getItemColor, statusSelect],
-  );
-
   return (
     <ObjectCard
-      style={[styles.container, borderStyle, style]}
+      style={[styles.container, style]}
       onPress={onPress}
       showArrow={false}
+      borderLeftColor={
+        getItemColor(Intervention?.statusSelect, statusSelect)?.background
+      }
       upperTexts={{
         items: [
           {displayText: sequence, isTitle: true},
@@ -79,14 +74,6 @@ const PlanningInterventionCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   container: {

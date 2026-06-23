@@ -47,11 +47,6 @@ const InventoryCard = ({
   const {Inventory} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(getItemColor(Inventory?.statusSelect, status)?.background)
-      ?.border;
-  }, [Inventory?.statusSelect, getItemColor, status]);
-
   const _formatDate = useMemo(() => {
     if (date == null) {
       return null;
@@ -77,7 +72,10 @@ const InventoryCard = ({
     <ObjectCard
       onPress={onPress}
       showArrow={true}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(Inventory?.statusSelect, status)?.background
+      }
+      style={style}
       lowerTexts={{
         items: [
           {displayText: reference, isTitle: true},
@@ -98,14 +96,6 @@ const InventoryCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   noBold: {

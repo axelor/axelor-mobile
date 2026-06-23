@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
 import {
@@ -54,17 +54,12 @@ const TimesheetCard = ({
   const {Timesheet} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const styles = useMemo(
-    () =>
-      getStyles(
-        getItemColor(Timesheet?.statusSelect, statusSelect)?.background,
-      ),
-    [Timesheet?.statusSelect, getItemColor, statusSelect],
-  );
-
   return (
     <ObjectCard
-      style={[styles.container, styles.borderColor, style]}
+      borderLeftColor={
+        getItemColor(Timesheet?.statusSelect, statusSelect)?.background
+      }
+      style={[styles.container, style]}
       leftContainerFlex={2}
       onPress={onPress}
       upperTexts={{
@@ -110,27 +105,22 @@ const TimesheetCard = ({
   );
 };
 
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    container: {
-      marginHorizontal: 1,
-      marginVertical: 1,
-    },
-    borderColor: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-    datesInterval: {
-      marginBottom: 15,
-    },
-    iconText: {
-      fontSize: 15,
-      fontWeight: null,
-    },
-    textUnit: {
-      alignSelf: 'flex-end',
-      lineHeight: 25,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 1,
+    marginVertical: 1,
+  },
+  datesInterval: {
+    marginBottom: 15,
+  },
+  iconText: {
+    fontSize: 15,
+    fontWeight: null,
+  },
+  textUnit: {
+    alignSelf: 'flex-end',
+    lineHeight: 25,
+  },
+});
 
 export default TimesheetCard;

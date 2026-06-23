@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Icon,
@@ -64,19 +64,15 @@ const TaskCard = ({
     (state: any) => state.project_projectTask,
   );
 
-  const borderStyle = useMemo(() => {
-    return (
-      status != null &&
-      getStyles(
-        getItemColorFromIndex(projectTaskStatusList, status)?.background,
-      )?.border
-    );
-  }, [status, getItemColorFromIndex, projectTaskStatusList]);
-
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, styles.card, style]}
+      borderLeftColor={
+        status != null
+          ? getItemColorFromIndex(projectTaskStatusList, status)?.background
+          : undefined
+      }
+      style={[styles.card, style]}
       iconLeftMargin={30}
       leftContainerFlex={2}
       showArrow={showArrow}
@@ -128,14 +124,6 @@ const TaskCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   card: {

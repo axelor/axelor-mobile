@@ -58,21 +58,17 @@ const ProjectCard = ({
   const {user} = useSelector(state => state.user);
   const {projectStatusList} = useSelector(state => state.project_project);
 
-  const borderStyle = useMemo(() => {
-    return (
-      projectStatus != null &&
-      getStyles(
-        getItemColorFromIndex(projectStatusList, projectStatus)?.background,
-      )?.border
-    );
-  }, [getItemColorFromIndex, projectStatus, projectStatusList]);
-
   const isCustomerLinked = useMemo(() => customer?.id != null, [customer]);
 
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        projectStatus != null
+          ? getItemColorFromIndex(projectStatusList, projectStatus)?.background
+          : undefined
+      }
+      style={style}
       showArrow={!isCopyCard}
       leftContainerFlex={9}
       image={
@@ -135,14 +131,6 @@ const ProjectCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   imageSize: {

@@ -49,11 +49,6 @@ const SupplierArrivalCard = ({
   const {StockMove} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(getItemColor(StockMove?.statusSelect, status)?.background)
-      ?.border;
-  }, [StockMove?.statusSelect, getItemColor, status]);
-
   const _formatDate = useMemo(() => {
     if (date == null) {
       return null;
@@ -70,7 +65,10 @@ const SupplierArrivalCard = ({
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(StockMove?.statusSelect, status)?.background
+      }
+      style={style}
       showArrow={true}
       lowerTexts={{
         items: [
@@ -97,14 +95,6 @@ const SupplierArrivalCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   noBold: {

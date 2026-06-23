@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {checkNullString, ObjectCard, Text} from '@axelor/aos-mobile-ui';
 import {
@@ -57,12 +57,6 @@ const LiteExpenseCard = ({
     {inTaxTotal, companyInTaxTotal, currency},
   );
 
-  const borderStyle = useMemo(() => {
-    return getBorderStyle(
-      getItemColor(Expense?.statusSelect, statusSelect)?.background,
-    ).border;
-  }, [Expense?.statusSelect, getItemColor, statusSelect]);
-
   const renderTotal = useCallback(
     (
       config: {inTaxTotal: string; currency: string},
@@ -80,7 +74,10 @@ const LiteExpenseCard = ({
   return (
     <ObjectCard
       onPress={onPress}
-      style={[styles.container, borderStyle]}
+      borderLeftColor={
+        getItemColor(Expense?.statusSelect, statusSelect)?.background
+      }
+      style={styles.container}
       leftContainerFlex={2}
       iconLeftMargin={10}
       upperTexts={{
@@ -126,14 +123,6 @@ const LiteExpenseCard = ({
     />
   );
 };
-
-const getBorderStyle = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   container: {

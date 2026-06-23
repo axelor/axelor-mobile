@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -48,16 +48,13 @@ const OperationOrderCard = ({
   const {OperationOrder} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      getItemColor(OperationOrder?.statusSelect, status)?.background,
-    )?.border;
-  }, [OperationOrder?.statusSelect, getItemColor, status]);
-
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(OperationOrder?.statusSelect, status)?.background
+      }
+      style={style}
       sideBadges={{
         items: [
           {
@@ -81,11 +78,6 @@ const OperationOrderCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
-  });
 
 const styles = StyleSheet.create({
   badge: {

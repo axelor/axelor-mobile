@@ -18,6 +18,7 @@
 
 export {default as BlockInteractionScreen} from './BlockInteractionScreen/BlockInteractionScreen';
 export {default as BootstrapIcon} from './BootstrapIcon/BootstrapIcon';
+export {default as BorderBar} from './BorderBar/BorderBar';
 export {default as Card} from './Card/Card';
 export {default as DottedLine} from './DottedLine/DottedLine';
 export {default as HorizontalRule} from './HorizontalRule/HorizontalRule';

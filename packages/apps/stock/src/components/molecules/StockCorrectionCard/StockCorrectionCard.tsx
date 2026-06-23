@@ -47,12 +47,6 @@ const StockCorrectionCard = ({
   const {StockCorrection} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      getItemColor(StockCorrection?.statusSelect, status)?.background,
-    )?.border;
-  }, [StockCorrection?.statusSelect, getItemColor, status]);
-
   const _formatDate = useMemo(() => {
     if (date == null) {
       return null;
@@ -70,7 +64,10 @@ const StockCorrectionCard = ({
     <ObjectCard
       onPress={onPress}
       showArrow={true}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(StockCorrection?.statusSelect, status)?.background
+      }
+      style={style}
       lowerTexts={{
         items: [
           {displayText: productFullname, isTitle: true},
@@ -90,14 +87,6 @@ const StockCorrectionCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   creationDate: {

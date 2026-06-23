@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
@@ -58,11 +57,6 @@ const ManufacturingOrderCard = ({
   const {ManufOrder} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(getItemColor(ManufOrder?.statusSelect, status)?.background)
-      ?.border;
-  }, [ManufOrder?.statusSelect, getItemColor, status]);
-
   const isPriorityValid = useMemo(
     () =>
       priority != null &&
@@ -83,7 +77,10 @@ const ManufacturingOrderCard = ({
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(ManufOrder?.statusSelect, status)?.background
+      }
+      style={style}
       sideBadges={{
         items: [
           isPriorityValid && {
@@ -132,10 +129,5 @@ const ManufacturingOrderCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
-  });
 
 export default ManufacturingOrderCard;

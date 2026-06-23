@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   capitalizeFirstLetter,
@@ -67,8 +67,6 @@ const ExpenseLineCard = ({
 
   const {user} = useSelector((state: any) => state.user);
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
   return (
     <TouchableOpacity
       onLongPress={onLongPress}
@@ -81,6 +79,7 @@ const ExpenseLineCard = ({
       <ObjectCard
         touchable={false}
         showArrow={false}
+        borderLeftColor={Colors.secondaryColor.background}
         style={styles.border}
         leftContainerFlex={2}
         upperTexts={{
@@ -158,47 +157,44 @@ const ExpenseLineCard = ({
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    title: {
-      marginBottom: 5,
-    },
-    cityContainer: {
-      flexDirection: 'row',
-    },
-    arrowIcon: {
-      marginHorizontal: 3,
-    },
-    italic: {
-      fontStyle: 'italic',
-      marginTop: 2,
-    },
-    details: {
-      fontSize: 16,
-    },
-    texts: {
-      justifyContent: 'center',
-      minHeight: 100,
-    },
-    badges: {
-      alignItems: 'flex-end',
-    },
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: Colors.secondaryColor.background,
-      marginHorizontal: 2,
-      marginVertical: 2,
-      paddingRight: 5,
-    },
-    anoBubble: {
-      position: 'absolute',
-      right: 0,
-      bottom: 0,
-    },
-    anoBubbleText: {
-      width: Dimensions.get('window').width * 0.7,
-      bottom: 0,
-    },
-  });
+const styles = StyleSheet.create({
+  title: {
+    marginBottom: 5,
+  },
+  cityContainer: {
+    flexDirection: 'row',
+  },
+  arrowIcon: {
+    marginHorizontal: 3,
+  },
+  italic: {
+    fontStyle: 'italic',
+    marginTop: 2,
+  },
+  details: {
+    fontSize: 16,
+  },
+  texts: {
+    justifyContent: 'center',
+    minHeight: 100,
+  },
+  badges: {
+    alignItems: 'flex-end',
+  },
+  border: {
+    marginHorizontal: 2,
+    marginVertical: 2,
+    paddingRight: 5,
+  },
+  anoBubble: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+  },
+  anoBubbleText: {
+    width: Dimensions.get('window').width * 0.7,
+    bottom: 0,
+  },
+});
 
 export default ExpenseLineCard;
