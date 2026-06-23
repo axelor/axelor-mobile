@@ -17,15 +17,11 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  Icon,
-  ThemeColors,
-  addOpacityToHex,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {IconTile, addOpacityToHex, useThemeColor} from '@axelor/aos-mobile-ui';
 
 type MenuIconTileVariant = 'primary' | 'neutral';
+
+const TILE_SIZE = 40;
 
 interface MenuIconTileProps {
   style?: any;
@@ -50,10 +46,15 @@ const MenuIconTile = ({
 }: MenuIconTileProps) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(
-    () => getStyles(Colors, size, variant, highlighted),
-    [Colors, size, variant, highlighted],
-  );
+  const backgroundColor = useMemo(() => {
+    if (variant === 'neutral') {
+      return addOpacityToHex(Colors.secondaryColor.background_light, 0.6);
+    }
+
+    return highlighted
+      ? Colors.backgroundColor
+      : addOpacityToHex(Colors.primaryColor.background, 0.15);
+  }, [Colors, variant, highlighted]);
 
   const iconColor = useMemo(() => {
     if (disabled) {
@@ -65,52 +66,26 @@ const MenuIconTile = ({
       : Colors.secondaryColor_dark.background;
   }, [Colors, disabled, variant]);
 
-  const Container: any = onPress ? TouchableOpacity : View;
+  const borderStyle = useMemo(
+    () =>
+      variant === 'primary' && highlighted
+        ? {borderWidth: 1, borderColor: Colors.primaryColor.background}
+        : null,
+    [Colors, variant, highlighted],
+  );
 
   return (
-    <Container
-      style={[styles.tile, style]}
+    <IconTile
+      style={[borderStyle, style]}
+      icon={icon}
+      iconSize={iconSize}
+      size={size}
+      backgroundColor={backgroundColor}
+      iconColor={iconColor}
+      disabled={disabled}
       onPress={onPress}
-      disabled={disabled}>
-      <Icon
-        name={icon}
-        size={iconSize}
-        color={iconColor}
-        visible={icon != null}
-      />
-    </Container>
+    />
   );
-};
-
-const TILE_SIZE = 40;
-const TILE_RADIUS = 12;
-
-const getStyles = (
-  Colors: ThemeColors,
-  size: number,
-  variant: MenuIconTileVariant,
-  highlighted: boolean,
-) => {
-  const backgroundColor =
-    variant === 'primary'
-      ? highlighted
-        ? Colors.backgroundColor
-        : addOpacityToHex(Colors.primaryColor.background, 0.15)
-      : addOpacityToHex(Colors.secondaryColor.background_light, 0.6);
-
-  return StyleSheet.create({
-    tile: {
-      width: size,
-      height: size,
-      borderRadius: TILE_RADIUS,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor,
-      ...(variant === 'primary' && highlighted
-        ? {borderWidth: 1, borderColor: Colors.primaryColor.background}
-        : {}),
-    },
-  });
 };
 
 export default MenuIconTile;

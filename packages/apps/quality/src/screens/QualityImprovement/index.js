@@ -23,9 +23,6 @@ export default {
   QualityImprovementListScreen: {
     title: 'Quality_QualityImprovements',
     component: QualityImprovementListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'quality_qualityImprovement_list',
   },
@@ -33,9 +30,6 @@ export default {
     title: 'Quality_QualityImprovements',
     component: QualityImprovementFormScreen,
     isUsableOnShortcut: true,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

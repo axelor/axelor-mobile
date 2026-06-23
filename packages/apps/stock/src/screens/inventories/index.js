@@ -28,9 +28,6 @@ export default {
   InventoryListScreen: {
     title: 'Stock_Inventory',
     component: InventoryListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'stock_inventory_list',
   },
@@ -38,46 +35,28 @@ export default {
     title: 'Stock_Inventory',
     component: InventoryPlannedDetailsScreen,
     actionID: 'stock_inventory_plannedDetails',
-    options: {
-      shadedHeader: false,
-    },
   },
   InventoryStartedDetailsScreen: {
     title: 'Stock_Inventory',
     component: InventoryStartedDetailsScreen,
     actionID: 'stock_inventory_startedDetails',
-    options: {
-      shadedHeader: false,
-    },
   },
   InventoryLineDetailsScreen: {
     title: 'Stock_Inventory',
     component: InventoryLineDetailsScreen,
     actionID: 'stock_inventory_lineDetails',
-    options: {
-      shadedHeader: false,
-    },
   },
   InventoryLineListScreen: {
     title: 'Stock_Inventory',
     component: InventoryLineListScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   InventorySelectProductScreen: {
     title: 'Stock_Inventory',
     component: InventorySelectProductScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   InventorySelectTrackingScreen: {
     title: 'Stock_Inventory',
     component: InventorySelectTrackingScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

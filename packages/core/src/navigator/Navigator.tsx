@@ -164,16 +164,12 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
           },
         }}>
         {Object.entries(modulesScreens).map(
-          ([
-            key,
-            {component, title, actionID, options = {shadedHeader: true}},
-          ]) => {
+          ([key, {component, title, actionID}]) => {
             const renderTitle = () => (
               <Header
                 mainScreen={initialRouteName === key}
                 title={title}
                 actionID={actionID}
-                shadedHeader={options?.shadedHeader}
               />
             );
             return (
@@ -184,9 +180,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
                 options={{
                   headerStyle: {
                     elevation: 0,
-                    ...(Platform.OS === 'ios' && !options?.shadedHeader
-                      ? {shadowOpacity: 0}
-                      : {}),
+                    ...(Platform.OS === 'ios' ? {shadowOpacity: 0} : {}),
                   },
                   headerLeft: () => null,
                   headerRight: () => null,

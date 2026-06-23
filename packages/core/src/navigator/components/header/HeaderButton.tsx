@@ -17,13 +17,13 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   DrawerActions,
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
-import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Card, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface HeaderButtonProps {
   isRoot?: boolean;
@@ -42,21 +42,25 @@ const HeaderButton = ({isRoot = false}: HeaderButtonProps) => {
   );
 
   return (
-    <Icon
-      style={styles.icon}
-      name={isRoot ? 'list' : 'chevron-left'}
-      size={26}
-      color={Colors.primaryColor.background}
-      touchable
-      onPress={handlePress}
-    />
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
+      <Card style={styles.container}>
+        <Icon
+          name={isRoot ? 'list' : 'chevron-left'}
+          color={Colors.primaryColor.background}
+          size={18}
+        />
+      </Card>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  icon: {
-    paddingLeft: 14,
-    paddingRight: 28,
+  container: {
+    marginHorizontal: 8,
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
+    borderRadius: 10,
   },
 });
 

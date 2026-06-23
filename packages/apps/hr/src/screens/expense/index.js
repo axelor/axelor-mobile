@@ -31,18 +31,12 @@ export default {
   ExpenseListScreen: {
     title: 'Hr_Expenses',
     component: ExpenseListScreen,
-    options: {
-      shadedHeader: false,
-    },
     actionID: 'hr_expenses_list',
     isUsableOnShortcut: true,
   },
   ExpenseDetailsScreen: {
     title: 'Hr_Expenses',
     component: ExpenseDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
     actionID: 'hr_expense_details',
   },
   ExpenseLineFormScreen: {

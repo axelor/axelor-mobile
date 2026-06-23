@@ -25,9 +25,6 @@ export default {
     title: 'Sale_Cart',
     actionID: 'sale_active_cart',
     component: ActiveCartScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   CartLineDetailsScreen: {
@@ -39,9 +36,6 @@ export default {
     title: 'Sale_Catalog',
     component: CatalogScreen,
     actionID: 'sale_product_list',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
 };

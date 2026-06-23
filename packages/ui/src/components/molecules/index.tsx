@@ -41,6 +41,7 @@ export {default as FromTo} from './FromTo/FromTo';
 export {default as HalfLabelCard} from './HalfLabelCard/HalfLabelCard';
 export {default as HorizontalRuleText} from './HorizontalRuleText/HorizontalRuleText';
 export {default as IconInput} from './IconInput/IconInput';
+export {default as IconTile} from './IconTile/IconTile';
 export {default as Image} from './Image/Image';
 export {default as Increment} from './Increment/Increment';
 export {default as Label} from './Label/Label';

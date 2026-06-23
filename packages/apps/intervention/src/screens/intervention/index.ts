@@ -30,44 +30,29 @@ export default {
     title: 'Intervention_Intervention',
     component: ActiveInterventionScreen,
     actionID: 'intervention_active_intervention',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   DayInterventionsScreen: {
     title: 'Intervention_Interventions',
     component: DayInterventionsScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'intervention_intervention_list',
   },
   PlannedInterventionsScreen: {
     title: 'Intervention_Interventions',
     component: PlannedInterventionsScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'intervention_intervention_list',
   },
   InterventionsHistoryScreen: {
     title: 'Intervention_Interventions',
     component: InterventionsHistoryScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'intervention_intervention_list',
   },
   InterventionPlanningScreen: {
     title: 'Intervention_Planning',
     component: InterventionPlanningScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'intervention_intervention_planning',
   },
@@ -75,23 +60,14 @@ export default {
     title: 'Intervention_Intervention',
     component: InterventionDetailsScreen,
     actionID: 'intervention_intervention_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   InterventionNoteFormScreen: {
     title: 'Intervention_Note',
     component: InterventionNoteFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   InterventionQuestionFormScreen: {
     title: 'Intervention_Survey',
     component: InterventionQuestionFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

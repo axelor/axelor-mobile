@@ -25,18 +25,12 @@ export default {
     title: 'Stock_StockCorrection',
     component: StockCorrectionListScreen,
     actionID: 'stock_stockCorrection_list',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   StockCorrectionDetailsScreen: {
     title: 'Stock_StockCorrection',
     component: StockCorrectionDetailsScreen,
     actionID: 'stock_stockCorrection_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   StockCorrectionCreationScreen: {
     title: 'Stock_StockCorrection',

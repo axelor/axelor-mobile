@@ -18,7 +18,12 @@
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, Platform, StyleSheet, View} from 'react-native';
-import {Text, useConfig, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Text,
+  ThemeColors,
+  useConfig,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {
   HeaderBandHelper,
@@ -37,15 +42,9 @@ interface HeaderProps {
   mainScreen?: boolean;
   title: string;
   actionID?: string;
-  shadedHeader?: boolean;
 }
 
-const Header = ({
-  mainScreen = false,
-  title,
-  actionID,
-  shadedHeader = true,
-}: HeaderProps) => {
+const Header = ({mainScreen = false, title, actionID}: HeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   let timeOutRequestCall = useRef<number>(null);
@@ -92,7 +91,7 @@ const Header = ({
         const {height} = event.nativeEvent.layout;
         setContainerHeight(height);
       }}
-      style={[styles.header, shadedHeader ? styles.shadedHeader : null]}>
+      style={styles.header}>
       <View style={styles.options}>
         <HeaderButton isRoot={mainScreen} />
         <View style={styles.titleContainer}>
@@ -114,29 +113,22 @@ const Header = ({
   );
 };
 
-const getHeaderStyles = Colors =>
+const getHeaderStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     headerTitle: {
       color: Colors.text,
-      marginLeft: -14,
     },
     header: {
       position: 'absolute',
       top: 0,
       left: Platform.OS === 'ios' ? -Dimensions.get('window').width * 0.5 : -15,
-      backgroundColor: Colors.backgroundColor,
+      backgroundColor: Colors.screenBackgroundColor,
       height: '100%',
       width: Dimensions.get('window').width,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       alignContent: 'center',
-    },
-    shadedHeader: {
-      elevation: 3,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 2},
     },
     options: {
       flexDirection: 'row',
