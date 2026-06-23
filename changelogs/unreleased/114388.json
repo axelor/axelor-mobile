@@ -1,0 +1,5 @@
+{
+  "title": "HeaderContainer: redesign the filter header as a floating inset card with a circular expand button",
+  "type": "refactor",
+  "packages": "ui"
+}
