@@ -26,7 +26,13 @@ import {
 } from 'react-native';
 import {GestureHandlerRootView, RectButton} from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import {useThemeColor, Card, Text, Icon} from '@axelor/aos-mobile-ui';
+import {
+  useThemeColor,
+  Card,
+  Text,
+  Icon,
+  LabelText,
+} from '@axelor/aos-mobile-ui';
 import LogoImage from './LogoImage';
 import {sessionStorage} from '../..';
 
@@ -120,7 +126,7 @@ const SessionCard = ({
         {renderActionButton(
           trans,
           'pencil-fill',
-          Colors.infoColor.background,
+          Colors.primaryColor.background,
           handleEdition,
         )}
         {renderActionButton(
@@ -158,15 +164,15 @@ const SessionCard = ({
                 ],
               },
             ]}>
-            <Card
-              style={[
-                styles.cardContainer,
-                {
-                  borderColor: session?.isDefault
-                    ? Colors.primaryColor.background
-                    : Colors.secondaryColor.background_light,
-                },
-              ]}>
+            <Card style={styles.cardContainer}>
+              {session?.isDefault && (
+                <View
+                  style={[
+                    styles.activeSession,
+                    {backgroundColor: Colors.primaryColor.background},
+                  ]}
+                />
+              )}
               <View
                 style={[
                   styles.logoTile,
@@ -175,23 +181,16 @@ const SessionCard = ({
                 <LogoImage logoFile={logoFile} url={session.url} />
               </View>
               <View style={styles.textContainer}>
-                <Text writingType="title" fontSize={18}>
+                <Text writingType="title" fontSize={16}>
                   {session.name}
                 </Text>
-                <View style={styles.urlRow}>
-                  <Icon
-                    name="link-45deg"
-                    size={16}
-                    color={Colors.secondaryColor_dark.background}
-                  />
-                  <Text
-                    style={styles.urlText}
-                    writingType="details"
-                    numberOfLines={1}
-                    textColor={Colors.secondaryColor_dark.background_light}>
-                    {session.url}
-                  </Text>
-                </View>
+                <LabelText
+                  iconName="link-45deg"
+                  title={session.url}
+                  onlyOneLine
+                  size={14}
+                  textSize={14}
+                />
               </View>
             </Card>
           </Animated.View>
@@ -209,35 +208,31 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 8,
+    marginVertical: 4,
     paddingVertical: 16,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     width: '90%',
     minHeight: 88,
-    borderWidth: 1,
     borderRadius: 16,
   },
+  activeSession: {
+    borderRadius: 20,
+    height: '100%',
+    width: 4,
+    marginRight: 10,
+  },
   logoTile: {
-    width: 56,
-    height: 56,
+    width: 60,
+    height: 60,
     borderRadius: 12,
-    borderWidth: 1,
+    borderWidth: 0.5,
     padding: 6,
     overflow: 'hidden',
   },
   textContainer: {
     flexDirection: 'column',
     flex: 1,
-    marginLeft: 16,
-  },
-  urlRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 2,
-  },
-  urlText: {
-    flex: 1,
-    marginLeft: 4,
+    marginLeft: 10,
   },
   actionsContainer: {
     marginLeft: -8,
@@ -256,7 +251,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderRadius: 16,
     marginHorizontal: 4,
   },

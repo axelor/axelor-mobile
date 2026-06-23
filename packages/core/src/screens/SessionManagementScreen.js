@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {Text, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Text, Screen} from '@axelor/aos-mobile-ui';
 import {
   LogoImage,
   MfaVerificationPopup,
@@ -37,7 +37,6 @@ const SessionManagementScreen = ({route}) => {
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const logoFile = route?.params?.logoFile;
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
 
   const modeDebug = useMemo(() => __DEV__, []);
 
@@ -107,18 +106,10 @@ const SessionManagementScreen = ({route}) => {
             session={session}
           />
           <View style={styles.copyrightContainer}>
-            <Text
-              writingType="important"
-              fontSize={14}
-              textColor={Colors.secondaryColor_dark.background}>
+            <Text writingType="important" fontSize={12}>
               {`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}
             </Text>
-            <Text
-              fontSize={13}
-              style={styles.versionText}
-              textColor={Colors.secondaryColor.background}>
-              {`Version ${appVersion}`}
-            </Text>
+            <Text fontSize={12}>{`Version ${appVersion}`}</Text>
           </View>
         </View>
         <PopupCreateSession
@@ -166,9 +157,7 @@ const styles = StyleSheet.create({
   },
   copyrightContainer: {
     alignItems: 'center',
-  },
-  versionText: {
-    marginTop: 4,
+    gap: 4,
   },
 });
 

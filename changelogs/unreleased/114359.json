@@ -1,5 +1,5 @@
 {
-  "title": "Session screen: refresh the connection selection screen with rounded session cards, a labelled add button and a cleaner footer",
+  "title": "Session screen: redesign the connection selection screen with rounded session cards, a labelled add button and a cleaner footer",
   "type": "refactor",
-  "packages": ["@axelor/aos-mobile-core"]
+  "packages": "core"
 }
