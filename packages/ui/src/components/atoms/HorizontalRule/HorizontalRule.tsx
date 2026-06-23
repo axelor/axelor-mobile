@@ -22,23 +22,26 @@ import {useThemeColor} from '../../../theme';
 
 interface HorizontalRuleProps {
   style?: any;
+  color?: string;
+  width?: number;
 }
 
-const HorizontalRule = ({style}: HorizontalRuleProps) => {
+const HorizontalRule = ({style, color, width}: HorizontalRuleProps) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
+  const styles = useMemo(
+    () => getStyles(color ?? Colors.secondaryColor.background, width),
+    [Colors.secondaryColor.background, color, width],
+  );
 
   return <View testID="horizontalRule" style={[styles.line, style]} />;
 };
 
-const getStyles = Colors =>
+const getStyles = (_color: string, width?: number) =>
   StyleSheet.create({
     line: {
-      borderBottomColor: Colors.secondaryColor.background,
-      borderBottomWidth: 1,
+      borderBottomColor: _color,
+      borderBottomWidth: width ?? 1,
     },
   });
 

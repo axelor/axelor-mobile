@@ -63,7 +63,6 @@ const MenuTitle = ({module, onPress}: MenuTitleProps) => {
 const styles = StyleSheet.create({
   menuItemContainer: {
     width: Dimensions.get('window').width * 0.6,
-    height: 60,
     marginVertical: 8,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
   bold: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
   },
 });

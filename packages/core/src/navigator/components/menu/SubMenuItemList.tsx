@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
-import {View} from 'react-native';
-import {animationUtil} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {animationUtil, ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {MenuWithSubMenus} from '../../../app';
 import {DrawerState, getMenuTitle, resolveSubMenus, Route} from '../../helpers';
@@ -41,6 +41,9 @@ const SubMenuItemList = ({
   disabled = false,
 }: SubMenuItemListProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const [dropdown, setDropdown] = useState(false);
 
@@ -63,26 +66,46 @@ const SubMenuItemList = ({
         dropdown={dropdown}
       />
       {dropdown && (
-        <View>
-          {_subMenus.map((subMenu, i) => {
-            const subRoute = subRoutes[i];
+        <View style={styles.subMenuList}>
+          <View style={styles.connector} />
+          <View style={styles.subMenuItems}>
+            {_subMenus.map((subMenu, i) => {
+              const subRoute = subRoutes[i];
 
-            const index = state.routes.findIndex(_r => _r.key === subRoute.key);
-            const focused = index === state.index;
+              const index = state.routes.findIndex(
+                _r => _r.key === subRoute.key,
+              );
+              const focused = index === state.index;
 
-            return (
-              <SubMenuItem
-                key={subRoute.key}
-                subMenu={subMenu}
-                onPress={() => onPress(subRoute)}
-                isActive={focused}
-              />
-            );
-          })}
+              return (
+                <SubMenuItem
+                  key={subRoute.key}
+                  subMenu={subMenu}
+                  onPress={() => onPress(subRoute)}
+                  isActive={focused}
+                />
+              );
+            })}
+          </View>
         </View>
       )}
     </View>
   );
 };
+
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    subMenuList: {
+      flexDirection: 'row',
+    },
+    connector: {
+      width: 1,
+      marginLeft: 36,
+      backgroundColor: Colors.secondaryColor.background,
+    },
+    subMenuItems: {
+      flex: 1,
+    },
+  });
 
 export default SubMenuItemList;
