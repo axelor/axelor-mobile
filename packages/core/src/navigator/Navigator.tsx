@@ -232,7 +232,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
           headerShown: false,
           drawerStyle: {
             backgroundColor: Colors.backgroundColor,
-            width: windowWidth * (isLargeScreen ? 0.5 : 0.8),
+            width: windowWidth * (isLargeScreen ? 0.5 : 0.85),
           },
         }}
         drawerContent={renderDrawer}>

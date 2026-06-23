@@ -19,6 +19,7 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
+  Color,
   Icon,
   InfoBubble,
   Text,
@@ -32,7 +33,7 @@ import {getCompatibilityError, isMenuIncompatible} from '../../helpers';
 
 const WIDTH = 54;
 const HEIGHT = 54;
-const DEFAULT_RADIUS = 8;
+const DEFAULT_RADIUS = 10;
 const ROUNDED_RADIUS = WIDTH / 2;
 
 interface MenuIconButtonProps {
@@ -60,13 +61,17 @@ const MenuIconButton = ({
   const I18n = useTranslator();
   const {showSubtitles} = useConfig();
 
-  const _color = useMemo(
+  const _color: Color = useMemo(
     () =>
       disabled
-        ? Colors.secondaryColor.background_light
+        ? Colors.secondaryColor
         : isActive
-          ? Colors.primaryColor.background_light
-          : Colors.backgroundColor,
+          ? {...Colors.primaryColor, foreground: Colors.backgroundColor}
+          : {
+              background_light: Colors.secondaryColor_dark.background_light,
+              foreground: Colors.secondaryColor_dark.background,
+              background: Colors.backgroundColor,
+            },
     [Colors, disabled, isActive],
   );
 
@@ -85,54 +90,63 @@ const MenuIconButton = ({
       onPress={onPress}
       disabled={disabled || compatibilityError}
       activeOpacity={0.95}>
-      <View style={[styles.container, style]}>
-        <Icon
-          size={32}
-          name={icon}
-          color={
-            disabled
-              ? Colors.secondaryColor.background
-              : Colors.secondaryColor_dark.background
-          }
-        />
-        {compatibilityError && (
-          <InfoBubble
-            style={styles.infoBubble}
-            usePopup={true}
-            iconName="exclamation-triangle-fill"
-            badgeColor={Colors.errorColor}
-            textIndicationStyle={styles.textIndicationStyle}
-            indication={getCompatibilityError(compatibility, I18n)}
-          />
-        )}
+      <View style={[styles.iconWrapper, style]}>
+        <View style={[styles.tile, isActive ? styles.activeShadow : null]}>
+          <Icon size={22} name={icon} color={_color.foreground} />
+          {compatibilityError && (
+            <InfoBubble
+              style={styles.infoBubble}
+              usePopup={true}
+              iconName="exclamation-triangle-fill"
+              badgeColor={Colors.errorColor}
+              textIndicationStyle={styles.textIndicationStyle}
+              indication={getCompatibilityError(compatibility, I18n)!}
+            />
+          )}
+        </View>
       </View>
       {showSubtitles && (
-        <Text style={styles.moduleSubtitle} numberOfLines={1}>
-          {I18n.t(subtitle)}
+        <Text
+          style={styles.moduleSubtitle}
+          fontSize={10}
+          textColor={isActive ? Colors.primaryColor.background : undefined}
+          numberOfLines={1}>
+          {I18n.t(subtitle ?? '')}
         </Text>
       )}
     </TouchableOpacity>
   );
 };
 
-const getStyles = (Colors: ThemeColors, rounded: boolean, _color: string) =>
+const getStyles = (Colors: ThemeColors, rounded: boolean, tileColor: Color) =>
   StyleSheet.create({
-    container: {
+    iconWrapper: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    tile: {
       width: WIDTH,
       height: HEIGHT,
       borderRadius: rounded ? ROUNDED_RADIUS : DEFAULT_RADIUS,
       flexDirection: 'row',
       justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: tileColor.background,
       elevation: 2,
-      shadowOpacity: 0.5,
+      shadowOpacity: 0.15,
       shadowColor: Colors.secondaryColor.background,
-      backgroundColor: _color,
-      shadowOffset: {width: 0, height: 0},
-      zIndex: 10,
+      shadowRadius: 3,
+      shadowOffset: {width: 0, height: 1},
+    },
+    activeShadow: {
+      elevation: 8,
+      shadowColor: Colors.primaryColor.background,
+      shadowOpacity: 0.6,
+      shadowRadius: 12,
+      shadowOffset: {width: 0, height: 6},
     },
     moduleSubtitle: {
-      fontSize: 10,
-      maxWidth: 54,
+      maxWidth: WIDTH,
       alignSelf: 'center',
     },
     infoBubble: {
