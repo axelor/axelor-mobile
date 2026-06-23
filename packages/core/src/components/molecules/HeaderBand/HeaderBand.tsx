@@ -25,7 +25,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {Color, useThemeColor} from '@axelor/aos-mobile-ui';
+import {addOpacityToHex, Color, useThemeColor} from '@axelor/aos-mobile-ui';
 import {HeaderBandHelper} from '../../../header';
 
 const DELAY_BEFORE_ANIMATION = 3000;
@@ -102,7 +102,7 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
 const getStyles = (color: Color) =>
   StyleSheet.create({
     container: {
-      backgroundColor: color.background_light,
+      backgroundColor: addOpacityToHex(color.background, 0.3),
       justifyContent: 'center',
       alignItems: 'center',
       height: HeaderBandHelper.bandHeight,
@@ -111,7 +111,8 @@ const getStyles = (color: Color) =>
       textAlign: 'center',
       fontSize: 12,
       paddingVertical: 3,
-      color: color.foreground,
+      color: color.background,
+      fontWeight: 'bold',
     },
   });
 
