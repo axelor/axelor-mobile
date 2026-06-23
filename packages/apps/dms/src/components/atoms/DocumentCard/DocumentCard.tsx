@@ -44,10 +44,7 @@ const DocumentCard = ({style, document, customOnPress}: DocumentCardProps) => {
 
   const addedOn = useMemo(
     () =>
-      `${I18n.t('Base_AddedOn')} ${formatDateTime(
-        document.createdOn,
-        I18n.t('Base_DateTimeFormat'),
-      )}`,
+      `${I18n.t('Base_AddedOn')} ${formatDateTime(document.createdOn, I18n.t('Base_DateTimeFormat'))}`,
     [I18n, document.createdOn],
   );
 
