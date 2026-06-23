@@ -61,13 +61,13 @@ const HeaderContainer = ({
 
   return (
     <View style={[styles.container, style]} testID="headerContainerWrapper">
-      <View pointerEvents="none" style={styles.topMask} />
       {expandableFilter && isVisible && topChildren}
       {fixedItems}
       {expandableFilter && isVisible && children}
       {chipComponent}
       {expandableFilter && (
         <TouchableOpacity
+          style={styles.arrowTouchable}
           onPress={handleExpandPress}
           testID="headerContainerExpandableIcon">
           <View style={styles.arrowContainer}>
@@ -94,23 +94,31 @@ const getStyles = (Colors: ThemeColors) =>
       shadowOpacity: 0.12,
       shadowRadius: 6,
       shadowOffset: {width: 0, height: 4},
-      paddingBottom: 5,
-      borderBottomEndRadius: 10,
-      borderBottomStartRadius: 10,
+      marginTop: 8,
+      marginHorizontal: 16,
+      marginBottom: 24,
+      paddingTop: 12,
+      paddingBottom: 12,
+      borderRadius: 24,
       zIndex: 10,
     },
-    topMask: {
+    arrowTouchable: {
       position: 'absolute',
-      top: -10,
-      left: 0,
-      right: 0,
-      height: 12,
-      backgroundColor: Colors.backgroundColor,
+      bottom: -14,
+      alignSelf: 'center',
     },
     arrowContainer: {
-      alignSelf: 'center',
+      width: 60,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: Colors.backgroundColor,
       justifyContent: 'center',
       alignItems: 'center',
+      elevation: 4,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      shadowOffset: {width: 0, height: 2},
     },
   });
 
