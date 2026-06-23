@@ -63,9 +63,6 @@ export const createMenusScreen = ({
       screens[screenKey] = {
         title: 'Dms_AllDocuments',
         component: createAllDocumentsScreenComponent(folder),
-        options: {
-          shadedHeader: false,
-        },
       };
 
       const menuKey = `dms_menu_documents${folder.id}`;

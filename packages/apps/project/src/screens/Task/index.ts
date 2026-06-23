@@ -25,14 +25,12 @@ export const TaskScreens = {
   TaskListScreen: {
     title: 'Project_Tasks',
     component: TaskListScreen,
-    options: {shadedHeader: false},
     actionID: 'project_projectTask_list',
   },
   TaskDetailsScreen: {
     title: 'Project_Task',
     component: TaskDetailsScreen,
     actionID: 'project_projectTask_details',
-    options: {shadedHeader: false},
   },
   TaskFormScreen: {
     title: 'Project_Task',
@@ -42,7 +40,6 @@ export const TaskScreens = {
     title: 'Project_TaskPlanning',
     component: ProjectTaskPlanningScreen,
     actionID: 'project_projectTask_planning',
-    options: {shadedHeader: false},
     isUsableOnShortcut: true,
   },
 };

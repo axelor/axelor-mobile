@@ -24,9 +24,6 @@ export default {
     title: 'Crm_Catalogs',
     component: CatalogListScreen,
     actionID: 'crm_catalog_list',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   CatalogFormScreen: {

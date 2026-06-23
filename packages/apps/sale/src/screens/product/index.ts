@@ -26,9 +26,6 @@ export default {
   ProductSaleListScreen: {
     title: 'Sale_ProductsServices',
     component: ProductSaleListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'sale_product_list',
   },
@@ -36,30 +33,18 @@ export default {
     title: 'Sale_ProductService',
     component: ProductSaleDetailsScreen,
     actionID: 'sale_product_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   ComplementaryProductsScreen: {
     title: 'Sale_ComplementaryProducts',
     component: ComplementaryProductsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   ProductSalePriceListsScreen: {
     title: 'Sale_ProductPriceLists',
     component: ProductSalePriceListsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   VariantProductsScreen: {
     title: 'Sale_Variants',
     component: VariantProductsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

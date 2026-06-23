@@ -26,18 +26,12 @@ export default {
     title: 'Stock_LogisticalForm',
     component: LogisticalFormListScreen,
     actionID: 'stock_logisticalForm_list',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   LogisticalFormDetailsScreen: {
     title: 'Stock_LogisticalForm',
     component: LogisticalFormDetailsScreen,
     actionID: 'stock_logisticalForm_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   LogisticalFormFormScreen: {
     title: 'Stock_LogisticalForm',

@@ -26,9 +26,6 @@ export default {
   CustomerParkScreen: {
     title: 'Intervention_CustomerPark',
     component: CustomerParkScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   EquipmentFormView: {
@@ -39,23 +36,14 @@ export default {
   EquipmentLineListScreen: {
     title: 'Intervention_EquipmentLine',
     component: EquipmentLineListScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   EquipmentPictureScreen: {
     title: 'Intervention_Equipment',
     component: EquipmentPictureScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   EquipmentInterventionListScreen: {
     title: 'Intervention_Equipment',
     component: EquipmentInterventionListScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

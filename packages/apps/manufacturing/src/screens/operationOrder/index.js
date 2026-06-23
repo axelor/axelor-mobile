@@ -25,9 +25,6 @@ export default {
   OperationOrderListScreen: {
     title: 'Manufacturing_OperationOrder',
     component: OperationOrderListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'manufacturing_operationOrder_list',
   },
@@ -35,23 +32,14 @@ export default {
     title: 'Manufacturing_OperationOrder',
     component: OperationOrderDetailsScreen,
     actionID: 'manufacturing_operationOrder_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   ProductionFileScreen: {
     title: 'Manufacturing_ProductionFile',
     component: ProductionFileScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   OperationOrderPlanningScreen: {
     title: 'Manufacturing_OperationOrder',
     component: OperationOrderPlanningScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
 };

@@ -29,29 +29,19 @@ const baseScreens: JSONScreens = {
     title: 'Base_Barcode',
     component: BarcodeDisplayScreen,
     actionID: 'core_barcode_details',
-    options: {
-      shadedHeader: true,
-    },
   },
   JsonFieldScreen: {
     title: 'Base_MetaJsonFields',
     component: JsonFieldScreen,
     actionID: 'core_metaJsonFields_details',
-    options: {
-      shadedHeader: true,
-    },
   },
   ProcessListScreen: {
     title: 'Base_Loader_ProcessList',
     component: ProcessListScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   ERPAccessScreen: {
     title: 'Base_ERPAccesss',
     component: ERPAccessScreen,
-    options: {shadedHeader: true},
     isUsableOnShortcut: true,
   },
 };

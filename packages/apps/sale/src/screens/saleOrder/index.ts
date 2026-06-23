@@ -28,43 +28,28 @@ export default {
     title: 'Sale_SaleQuotations',
     actionID: 'sale_saleQuotation_list',
     component: SaleQuotationsScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   SaleOrdersScreen: {
     title: 'Sale_SaleOrders',
     actionID: 'sale_saleOrder_list',
     component: SaleOrdersScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   SaleOrderDetailsScreen: {
     title: 'Sale_SaleQuotation',
     actionID: 'sale_saleOrder_details',
     component: SaleOrderDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   SaleOrderLineListScreen: {
     title: 'Sale_SaleQuotation',
     actionID: 'sale_saleOrder_details',
     component: SaleOrderLineListScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   SaleOrderLineDetailsScreen: {
     title: 'Sale_SaleQuotation',
     actionID: 'sale_saleOrderLine_details',
     component: SaleOrderLineDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   SaleQuotationCreationScreen: {
     title: 'Sale_SaleQuotation',

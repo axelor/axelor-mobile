@@ -26,18 +26,12 @@ export default {
     title: 'Hr_Leaves',
     actionID: 'hr_leave_list',
     component: LeaveListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   LeaveDetailsScreen: {
     title: 'Hr_LeaveRequest',
     component: LeaveDetailsScreen,
     actionID: 'hr_leave_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   CompleteRequestScreen: {
     title: 'Hr_CompleteRequest',

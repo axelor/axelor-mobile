@@ -26,30 +26,18 @@ export default {
     title: 'Manufacturing_ManufacturingOrder',
     component: ProducedProductListScreen,
     actionID: 'manufacturing_producedProduct_list',
-    options: {
-      shadedHeader: false,
-    },
   },
   ProducedProductDetailsScreen: {
     title: 'Manufacturing_ProducedProduct',
     component: ProducedProductDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   ProducedProductSelectProductScreen: {
     title: 'Manufacturing_ProducedProduct',
     component: ProducedProductSelectProductScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   ProducedProductSelectTrackingScreen: {
     title: 'Manufacturing_ProducedProduct',
     component: ProducedProductSelectTrackingScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

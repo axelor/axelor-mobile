@@ -57,15 +57,10 @@ export interface RootMenuWithScreen extends MenuWithScreen {
 
 export type Menu = MenuWithSubMenus | RootMenuWithScreen | MenuSeparator;
 
-interface ScreenOptions {
-  shadedHeader: boolean;
-}
-
 export interface Screen {
   component: React.FC<any>;
   title: string;
   actionID?: string;
-  options?: ScreenOptions;
   isUsableOnShortcut?: boolean;
 }
 

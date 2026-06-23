@@ -26,17 +26,11 @@ export default {
     title: 'Dms_AllDocuments',
     component: AllDocumentsScreen,
     actionID: 'dms_all_documents',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   FavoriteDocuments: {
     title: 'Dms_MyFavoriteDocuments',
     component: MyFavoriteDocumentsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   DocumentFormScreen: {
     title: 'Dms_Document',
@@ -47,9 +41,6 @@ export default {
     title: 'Dms_AttachedFiles',
     actionID: 'dms_attachedFiles_tree',
     component: AttachedFilesScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

@@ -26,9 +26,6 @@ export default {
   RequestListScreen: {
     title: 'Purchase_InternalRequests',
     component: RequestListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'purchase_purchaseRequest_list',
   },
@@ -36,23 +33,14 @@ export default {
     title: 'Purchase_InternalRequest',
     actionID: 'purchase_purchaseRequest_details',
     component: RequestDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   RequestLineListScreen: {
     title: 'Purchase_InternalRequest',
     component: RequestLineListScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   RequestCreationScreen: {
     title: 'Purchase_CreateRequest',
     component: RequestCreationScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   RequestLineFormScreen: {

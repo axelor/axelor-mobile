@@ -23,7 +23,6 @@ export default {
     title: 'Stock_StockMovePlanning',
     component: StockMovePlanningScreen,
     actionID: 'stock_stockMove_planning',
-    options: {shadedHeader: false},
     isUsableOnShortcut: true,
   },
 };
