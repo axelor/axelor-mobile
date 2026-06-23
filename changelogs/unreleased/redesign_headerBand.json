@@ -1,0 +1,5 @@
+{
+  "title": "HeaderBand: restyle as a filled band with bold colored label",
+  "type": "refactor",
+  "packages": "core"
+}
