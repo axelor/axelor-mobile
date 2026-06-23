@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {
   AnomalyBubble,
@@ -59,16 +59,11 @@ const LeaveCard = ({
   const {LeaveReason, LeaveRequest} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const styles = useMemo(
-    () =>
-      getStyles(
-        getItemColor(LeaveRequest?.statusSelect, statusSelect)?.background,
-      ),
-    [LeaveRequest?.statusSelect, getItemColor, statusSelect],
-  );
-
   return (
     <ObjectCard
+      borderLeftColor={
+        getItemColor(LeaveRequest?.statusSelect, statusSelect)?.background
+      }
       style={[styles.container, style]}
       onPress={onPress}
       upperTexts={{
@@ -121,28 +116,25 @@ const LeaveCard = ({
   );
 };
 
-const getStyles = color =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-      paddingRight: 10,
-      marginHorizontal: 1,
-      marginVertical: 2,
-    },
-    textUnit: {
-      alignSelf: 'flex-end',
-    },
-    anoBubble: {
-      position: 'absolute',
-      right: 0,
-      bottom: 0,
-    },
-    anoBubbleText: {
-      width: Dimensions.get('window').width * 0.6,
-      bottom: 0,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingRight: 10,
+    marginHorizontal: 1,
+    marginVertical: 2,
+  },
+  textUnit: {
+    alignSelf: 'flex-end',
+  },
+  anoBubble: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+  },
+  anoBubbleText: {
+    width: Dimensions.get('window').width * 0.6,
+    bottom: 0,
+  },
+});
 
 export default LeaveCard;

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
@@ -63,12 +63,6 @@ const OperationOrderDetailsCard = ({
   const {OperationOrder} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      getItemColor(OperationOrder?.statusSelect, status)?.background,
-    )?.border;
-  }, [OperationOrder?.statusSelect, getItemColor, status]);
-
   const [startDate, endDate] = OperationOrderType.getDates(
     status,
     plannedStartDate,
@@ -81,7 +75,10 @@ const OperationOrderDetailsCard = ({
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(OperationOrder?.statusSelect, status)?.background
+      }
+      style={style}
       upperTexts={{
         items: [
           {isTitle: true, displayText: manufOrder},
@@ -128,11 +125,6 @@ const OperationOrderDetailsCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
-  });
 
 const styles = StyleSheet.create({
   badge: {

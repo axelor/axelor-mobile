@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import React from 'react';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 import {useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 
@@ -41,16 +40,13 @@ const RequestCard = ({
   const {PurchaseRequest} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      getItemColor(PurchaseRequest?.statusSelect, statusSelect)?.background,
-    )?.border;
-  }, [PurchaseRequest?.statusSelect, getItemColor, statusSelect]);
-
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(PurchaseRequest?.statusSelect, statusSelect)?.background
+      }
+      style={style}
       upperTexts={{
         items: [
           {
@@ -72,10 +68,5 @@ const RequestCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
-  });
 
 export default RequestCard;

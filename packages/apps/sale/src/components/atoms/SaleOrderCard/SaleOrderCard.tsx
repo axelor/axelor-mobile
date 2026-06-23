@@ -79,11 +79,8 @@ const SaleOrderCard = ({
   const {base: baseConfig} = useSelector((state: any) => state.appConfig);
   const {companyList} = useSelector((state: any) => state.company);
 
-  const styles = useMemo(
-    () =>
-      getStyles(
-        getItemColor(SaleOrder?.statusSelect, statusSelect)?.background,
-      ),
+  const cardColor = useMemo(
+    () => getItemColor(SaleOrder?.statusSelect, statusSelect)?.background,
     [getItemColor, SaleOrder?.statusSelect, statusSelect],
   );
 
@@ -134,6 +131,7 @@ const SaleOrderCard = ({
   return (
     <View style={style}>
       <ObjectCard
+        borderLeftColor={cardColor}
         style={styles.container}
         leftContainerFlex={2}
         iconLeftMargin={5}
@@ -224,21 +222,18 @@ const SaleOrderCard = ({
   );
 };
 
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      width: '96%',
-      alignSelf: 'center',
-      marginVertical: 3,
-      paddingRight: 5,
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-    stateBadge: {
-      marginTop: 5,
-      marginHorizontal: 2,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '96%',
+    alignSelf: 'center',
+    marginVertical: 3,
+    paddingRight: 5,
+  },
+  stateBadge: {
+    marginTop: 5,
+    marginHorizontal: 2,
+  },
+});
 
 export default SaleOrderCard;

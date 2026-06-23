@@ -80,7 +80,7 @@ const AvailableStockIndicatorCard = ({
     };
   }, [activeCompany, companyId, product, stockLocation]);
 
-  const borderStyle = useMemo(() => {
+  const cardColor = useMemo(() => {
     const _color =
       availableStock == null
         ? Colors.secondaryColor
@@ -88,7 +88,7 @@ const AvailableStockIndicatorCard = ({
           ? Colors.successColor
           : Colors.errorColor;
 
-    return getStyles(_color.background).container;
+    return _color.background;
   }, [Colors, availableStock]);
 
   const formatQty = useCallback(
@@ -106,7 +106,7 @@ const AvailableStockIndicatorCard = ({
     <ObjectCard
       touchable={false}
       showArrow={false}
-      style={borderStyle}
+      borderLeftColor={cardColor}
       lowerTexts={{
         items: [
           {
@@ -145,14 +145,6 @@ const AvailableStockIndicatorCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    container: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   title: {
