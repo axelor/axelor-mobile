@@ -18,7 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Icon, Text, useThemeColor, WarningCard} from '@axelor/aos-mobile-ui';
+import {
+  HorizontalRule,
+  Text,
+  useThemeColor,
+  WarningCard,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {Compatibility, Module} from '../../../app';
 import {
@@ -28,6 +33,7 @@ import {
   isMenuIncompatible,
 } from '../../helpers';
 import MenuItemList from './MenuItemList';
+import MenuIconTile from './MenuIconTile';
 
 interface MenuProps {
   state: DrawerState;
@@ -71,15 +77,20 @@ const Menu = ({
         <View style={styles.menuTitleContainer}>
           <Text style={styles.menuTitle}>{title}</Text>
           {showClose && (
-            <Icon
-              name="x-lg"
-              size={20}
-              color={Colors.secondaryColor_dark.background}
-              touchable
+            <MenuIconTile
+              icon="x-lg"
+              iconSize={18}
+              size={36}
+              variant="neutral"
               onPress={onClose}
             />
           )}
         </View>
+        <HorizontalRule
+          style={styles.titleSeparator}
+          color={Colors.secondaryColor.background_light}
+          width={0.5}
+        />
         {compatibilityError && (
           <WarningCard
             errorMessage={getCompatibilityError(compatibility, I18n)}
@@ -113,12 +124,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   menuTitle: {
     flexShrink: 1,
-    fontSize: 21,
+    fontSize: 22,
     fontWeight: 'bold',
+  },
+  titleSeparator: {
+    marginHorizontal: 16,
+    marginBottom: 8,
   },
   authMenuIcon: {
     marginBottom: 12,
