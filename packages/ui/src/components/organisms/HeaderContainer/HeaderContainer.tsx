@@ -69,6 +69,7 @@ const HeaderContainer = ({
         <TouchableOpacity
           style={styles.arrowTouchable}
           onPress={handleExpandPress}
+          activeOpacity={0.9}
           testID="headerContainerExpandableIcon">
           <View style={styles.arrowContainer}>
             <Icon
