@@ -18,7 +18,7 @@
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, ProgressBar, Text} from '@axelor/aos-mobile-ui';
+import {BorderBar, Card, ProgressBar, Text} from '@axelor/aos-mobile-ui';
 import {
   DateDisplay,
   useTranslator,
@@ -84,49 +84,52 @@ const ControlEntryCard = ({
     };
   }, [ControlEntrySample?.resultSelect, controlEntryId]);
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      getItemColor(ControlEntry?.statusSelect, statusSelect)?.background,
-    )?.border;
-  }, [ControlEntry?.statusSelect, getItemColor, statusSelect]);
+  const borderColor = useMemo(
+    () => getItemColor(ControlEntry?.statusSelect, statusSelect)?.background,
+    [ControlEntry?.statusSelect, getItemColor, statusSelect],
+  );
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.childrenContainer}>
-          <Text writingType="title">{name}</Text>
-          <DateDisplay date={entryDateTime} />
-        </View>
-        <View style={styles.childrenContainer}>
-          <Text>{`${I18n.t('Quality_SampleCount')} : ${sampleCount}`}</Text>
-          <ProgressBar
-            style={styles.progressBar}
-            value={numberSampleFilled}
-            showPercent={false}
-            height={15}
-            styleTxt={styles.textProgressBar}
-          />
+      <Card style={[styles.container, style]}>
+        <BorderBar style={styles.border} color={borderColor} />
+        <View style={styles.content}>
+          <View style={styles.childrenContainer}>
+            <Text writingType="title">{name}</Text>
+            <DateDisplay date={entryDateTime} />
+          </View>
+          <View style={styles.childrenContainer}>
+            <Text>{`${I18n.t('Quality_SampleCount')} : ${sampleCount}`}</Text>
+            <ProgressBar
+              style={styles.progressBar}
+              value={numberSampleFilled}
+              showPercent={false}
+              height={15}
+              styleTxt={styles.textProgressBar}
+            />
+          </View>
         </View>
       </Card>
     </TouchableOpacity>
   );
 };
 
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
-
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
     marginHorizontal: 12,
     marginVertical: 4,
     paddingHorizontal: 15,
     paddingRight: 15,
     paddingVertical: 10,
+  },
+  border: {
+    marginVertical: 6,
+    marginRight: 13,
+  },
+  content: {
+    flex: 1,
   },
   childrenContainer: {
     flexDirection: 'row',

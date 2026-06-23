@@ -1,0 +1,5 @@
+{
+  "title": "ObjectCard: redesign cards with rounder corners and a rounded left accent bar",
+  "type": "refactor",
+  "packages": "ui"
+}

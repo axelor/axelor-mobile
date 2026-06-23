@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
@@ -41,16 +41,13 @@ const EquipmentCard = ({
   const {Equipment} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      getItemColor(Equipment?.serviceSelect, inService)?.background,
-    )?.border;
-  }, [Equipment?.serviceSelect, getItemColor, inService]);
-
   return (
     <ObjectCard
       showArrow={false}
-      style={[styles.objectCard, borderStyle, style]}
+      borderLeftColor={
+        getItemColor(Equipment?.serviceSelect, inService)?.background
+      }
+      style={[styles.objectCard, style]}
       upperTexts={{
         items: [
           {displayText: sequence, isTitle: true, numberOfLines: 1},
@@ -72,14 +69,6 @@ const EquipmentCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   objectCard: {

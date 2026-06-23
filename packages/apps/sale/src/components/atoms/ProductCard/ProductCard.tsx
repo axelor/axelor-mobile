@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ObjectCard,
@@ -59,16 +59,12 @@ const ProductCard = ({
   const formatMetaFile = useMetafileUri();
   const priceFormat = usePriceFormat();
 
-  const borderStyle = useMemo(() => {
-    if (isConfigurator) {
-      return getStyles(Colors.progressColor.background)?.border;
-    }
-    return null;
-  }, [Colors.progressColor.background, isConfigurator]);
-
   return (
     <ObjectCard
-      style={[borderStyle, style]}
+      borderLeftColor={
+        isConfigurator ? Colors.progressColor.background : undefined
+      }
+      style={style}
       onPress={onPress}
       touchable={!!onPress}
       showArrow={!!onPress}
@@ -118,14 +114,6 @@ const ProductCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   imageSize: {

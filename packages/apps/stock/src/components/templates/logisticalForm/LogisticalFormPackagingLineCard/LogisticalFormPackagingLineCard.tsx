@@ -27,6 +27,7 @@ interface LogisticalFormPackagingLineCardProps {
   stockMoveLine: any;
   saleOrderLine: any;
   qty: number;
+  borderLeftColor?: string;
 }
 
 const LogisticalFormPackagingLineCard = ({
@@ -34,6 +35,7 @@ const LogisticalFormPackagingLineCard = ({
   stockMoveLine,
   saleOrderLine: _saleOrderLine,
   qty,
+  borderLeftColor,
 }: LogisticalFormPackagingLineCardProps) => {
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
@@ -67,6 +69,7 @@ const LogisticalFormPackagingLineCard = ({
     <ObjectCard
       showArrow={false}
       touchable={false}
+      borderLeftColor={borderLeftColor}
       style={[styles.container, style]}
       image={{
         generalStyle: styles.imageSize,

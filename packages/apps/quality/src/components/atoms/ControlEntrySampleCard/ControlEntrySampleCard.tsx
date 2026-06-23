@@ -17,9 +17,9 @@
  */
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
-import {Card, ProgressBar, Text} from '@axelor/aos-mobile-ui';
+import {BorderBar, Card, ProgressBar, Text} from '@axelor/aos-mobile-ui';
 import {searchControlEntrySampleLineApi} from '../../../api';
 
 interface ControlEntrySampleCardProps {
@@ -43,12 +43,9 @@ const ControlEntrySampleCard = ({
 
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
-  const borderStyle = useMemo(
+  const borderColor = useMemo(
     () =>
-      getStyles(
-        getItemColor(ControlEntrySample?.resultSelect, resultSelect)
-          ?.background,
-      )?.border,
+      getItemColor(ControlEntrySample?.resultSelect, resultSelect)?.background,
     [ControlEntrySample?.resultSelect, getItemColor, resultSelect],
   );
 
@@ -85,27 +82,22 @@ const ControlEntrySampleCard = ({
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <Text>{samplefullName}</Text>
-        <ProgressBar
-          style={styles.progressBar}
-          value={numberSampleFilled}
-          showPercent={false}
-          height={15}
-          styleTxt={styles.textProgressBar}
-        />
+      <Card style={[styles.container, style]}>
+        <BorderBar style={styles.border} color={borderColor} />
+        <View style={styles.content}>
+          <Text>{samplefullName}</Text>
+          <ProgressBar
+            style={styles.progressBar}
+            value={numberSampleFilled}
+            showPercent={false}
+            height={15}
+            styleTxt={styles.textProgressBar}
+          />
+        </View>
       </Card>
     </TouchableOpacity>
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   container: {
@@ -114,8 +106,17 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingVertical: 10,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'stretch',
     marginVertical: 5,
+  },
+  border: {
+    marginVertical: 6,
+    marginRight: 13,
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   progressBar: {

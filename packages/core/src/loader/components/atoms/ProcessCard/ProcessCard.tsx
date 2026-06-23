@@ -51,8 +51,8 @@ const ProcessCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const styles = useMemo(
-    () => getStyles(getProcessStatusColor(status, Colors)?.background),
+  const cardColor = useMemo(
+    () => getProcessStatusColor(status, Colors)?.background,
     [Colors, status],
   );
 
@@ -76,6 +76,7 @@ const ProcessCard = ({
 
   return (
     <ObjectCard
+      borderLeftColor={cardColor}
       style={[styles.card, style]}
       showArrow={isTouchable}
       touchable={isTouchable}
@@ -106,14 +107,11 @@ const ProcessCard = ({
   );
 };
 
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    card: {
-      marginHorizontal: 12,
-      marginVertical: 4,
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
+const styles = StyleSheet.create({
+  card: {
+    marginHorizontal: 12,
+    marginVertical: 4,
+  },
+});
 
 export default ProcessCard;

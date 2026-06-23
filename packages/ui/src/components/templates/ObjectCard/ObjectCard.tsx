@@ -28,7 +28,7 @@ import {
 } from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
 import {checkNullString} from '../../../utils';
-import {Card, Icon, Text} from '../../atoms';
+import {BorderBar, Card, Icon, Text} from '../../atoms';
 import {Badge, Image, LabelText} from '../../molecules';
 
 const filterList = (list: any[]): any[] => {
@@ -82,6 +82,7 @@ export interface ImageElement {
 
 interface ObjectCardProps {
   style?: any;
+  borderLeftColor?: string;
   leftContainerFlex?: number;
   iconLeftMargin?: number;
   touchable?: boolean;
@@ -114,6 +115,7 @@ interface ObjectCardProps {
 
 const ObjectCard = ({
   style,
+  borderLeftColor,
   leftContainerFlex = 3,
   iconLeftMargin = 20,
   touchable = true,
@@ -226,7 +228,7 @@ const ObjectCard = ({
         key={`${item.displayText} - ${item.order}`}
         style={item.style}
         color={item.color}
-        title={item.displayText}
+        title={item.displayText!}
       />
     );
   }, []);
@@ -238,71 +240,80 @@ const ObjectCard = ({
       testID="objectCardTouchable"
       disabled={!touchable}>
       <Card style={[styles.container, style]}>
-        {upperBadges != null && (
-          <View
-            style={[
-              styles.horizontalBadgesContainer,
-              upperBadges.fixedOnRightSide
-                ? styles.badgesFixedOnRightSide
-                : null,
-              upperBadges.style,
-            ]}>
-            {initBadgeItems(upperBadges.items).map(renderBadgeElement)}
-          </View>
+        {borderLeftColor != null && (
+          <BorderBar
+            testID="objectCardLeftBar"
+            style={styles.leftBar}
+            color={borderLeftColor}
+          />
         )}
-        <View style={styles.content}>
-          <View
-            style={[styles.descriptionContainer, {flex: leftContainerFlex}]}>
-            <View style={styles.row}>
-              {image != null ? (
-                <Image
-                  generalStyle={[styles.imageStyle, image.generalStyle]}
-                  imageSize={[styles.imageSize, image.imageSize]}
-                  resizeMode={image.resizeMode ?? 'contain'}
-                  source={image.source}
-                  defaultIconSize={image.defaultIconSize ?? 50}
-                />
-              ) : null}
-              {upperTexts != null && (
-                <View style={[styles.textContainer, upperTexts.style]}>
-                  {initTextItems(upperTexts.items).map(renderTextElement)}
-                </View>
-              )}
-            </View>
-            <View style={styles.row}>
-              {lowerTexts != null && (
-                <View style={[styles.textContainer, lowerTexts.style]}>
-                  {initTextItems(lowerTexts.items).map(renderTextElement)}
-                </View>
-              )}
-            </View>
-          </View>
-          {sideBadges != null && (
-            <View style={[styles.verticalBadgesContainer, sideBadges.style]}>
-              {initBadgeItems(sideBadges.items).map(renderBadgeElement)}
+        <View style={styles.mainColumn}>
+          {upperBadges != null && (
+            <View
+              style={[
+                styles.horizontalBadgesContainer,
+                upperBadges.fixedOnRightSide
+                  ? styles.badgesFixedOnRightSide
+                  : null,
+                upperBadges.style,
+              ]}>
+              {initBadgeItems(upperBadges.items).map(renderBadgeElement)}
             </View>
           )}
-          {showArrow && (
-            <Icon
-              name="chevron-right"
-              color={Colors.secondaryColor.background_light}
-              size={20}
-              style={{marginLeft: iconLeftMargin}}
-            />
+          <View style={styles.content}>
+            <View
+              style={[styles.descriptionContainer, {flex: leftContainerFlex}]}>
+              <View style={styles.row}>
+                {image != null ? (
+                  <Image
+                    generalStyle={[styles.imageStyle, image.generalStyle]}
+                    imageSize={[styles.imageSize, image.imageSize]}
+                    resizeMode={image.resizeMode ?? 'contain'}
+                    source={image.source}
+                    defaultIconSize={image.defaultIconSize ?? 50}
+                  />
+                ) : null}
+                {upperTexts != null && (
+                  <View style={[styles.textContainer, upperTexts.style]}>
+                    {initTextItems(upperTexts.items).map(renderTextElement)}
+                  </View>
+                )}
+              </View>
+              <View style={styles.row}>
+                {lowerTexts != null && (
+                  <View style={[styles.textContainer, lowerTexts.style]}>
+                    {initTextItems(lowerTexts.items).map(renderTextElement)}
+                  </View>
+                )}
+              </View>
+            </View>
+            {sideBadges != null && (
+              <View style={[styles.verticalBadgesContainer, sideBadges.style]}>
+                {initBadgeItems(sideBadges.items).map(renderBadgeElement)}
+              </View>
+            )}
+            {showArrow && (
+              <Icon
+                name="chevron-right"
+                color={Colors.secondaryColor.background_light}
+                size={20}
+                style={{marginLeft: iconLeftMargin}}
+              />
+            )}
+          </View>
+          {lowerBadges != null && (
+            <View
+              style={[
+                styles.horizontalBadgesContainer,
+                lowerBadges.fixedOnRightSide
+                  ? styles.badgesFixedOnRightSide
+                  : null,
+                lowerBadges.style,
+              ]}>
+              {initBadgeItems(lowerBadges.items).map(renderBadgeElement)}
+            </View>
           )}
         </View>
-        {lowerBadges != null && (
-          <View
-            style={[
-              styles.horizontalBadgesContainer,
-              lowerBadges.fixedOnRightSide
-                ? styles.badgesFixedOnRightSide
-                : null,
-              lowerBadges.style,
-            ]}>
-            {initBadgeItems(lowerBadges.items).map(renderBadgeElement)}
-          </View>
-        )}
       </Card>
     </TouchableOpacity>
   );
@@ -310,14 +321,24 @@ const ObjectCard = ({
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    marginHorizontal: 12,
+    marginVertical: 4,
+    paddingVertical: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderRadius: 20,
+  },
+  mainColumn: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginHorizontal: 12,
-    marginVertical: 4,
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 10,
+  },
+  leftBar: {
+    marginVertical: 6,
+    marginRight: 13,
   },
   horizontalBadgesContainer: {
     flexDirection: 'row',

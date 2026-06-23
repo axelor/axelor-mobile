@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import React from 'react';
 import {
   ObjectCard,
   TextUnit,
@@ -47,12 +46,6 @@ const RequestLineCard = ({
   const navigation = useNavigation();
   const Colors = useThemeColor();
 
-  const borderStyle = useMemo(() => {
-    if (newProduct) {
-      return getStyles(Colors.plannedColor.background)?.border;
-    }
-  }, [Colors.plannedColor.background, newProduct]);
-
   return (
     <ObjectCard
       onPress={() => {
@@ -60,7 +53,8 @@ const RequestLineCard = ({
           purchaseRequestLineId: id,
         });
       }}
-      style={[borderStyle, style]}
+      borderLeftColor={newProduct ? Colors.plannedColor.background : undefined}
+      style={style}
       leftContainerFlex={3}
       iconLeftMargin={5}
       upperTexts={{
@@ -78,10 +72,5 @@ const RequestLineCard = ({
     />
   );
 };
-
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
-  });
 
 export default RequestLineCard;

@@ -42,8 +42,6 @@ const DocumentCard = ({style, document, customOnPress}: DocumentCardProps) => {
     [Colors, document.metaFile?.fileName],
   );
 
-  const styles = useMemo(() => getStyles(fileColor), [fileColor]);
-
   const addedOn = useMemo(
     () =>
       `${I18n.t('Base_AddedOn')} ${formatDateTime(document.createdOn, I18n.t('Base_DateTimeFormat'))}`,
@@ -59,6 +57,7 @@ const DocumentCard = ({style, document, customOnPress}: DocumentCardProps) => {
 
   return (
     <ObjectCard
+      borderLeftColor={fileColor}
       style={[styles.card, style]}
       showArrow={false}
       onPress={customOnPress ?? handleOpenFile}
@@ -90,15 +89,12 @@ const DocumentCard = ({style, document, customOnPress}: DocumentCardProps) => {
   );
 };
 
-const getStyles = (borderColor: string) =>
-  StyleSheet.create({
-    card: {
-      marginVertical: 2,
-      marginHorizontal: 0,
-      marginRight: 2,
-      borderLeftWidth: 7,
-      borderLeftColor: borderColor,
-    },
-  });
+const styles = StyleSheet.create({
+  card: {
+    marginVertical: 2,
+    marginHorizontal: 0,
+    marginRight: 2,
+  },
+});
 
 export default DocumentCard;

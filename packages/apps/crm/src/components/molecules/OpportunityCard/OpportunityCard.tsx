@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {StarScore, formatNumber, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
   formatDate,
@@ -61,19 +60,14 @@ const OpportunityCard = ({
     [expectedCloseDate, I18n],
   );
 
-  const borderStyle = useMemo(
-    () =>
-      getStyles(
-        getItemColorFromIndex(allOpportunityStatus, opportunityStatus)
-          ?.background,
-      )?.border,
-    [allOpportunityStatus, getItemColorFromIndex, opportunityStatus],
-  );
-
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColorFromIndex(allOpportunityStatus, opportunityStatus)
+          ?.background
+      }
+      style={style}
       sideBadges={{
         items: [
           {
@@ -107,13 +101,5 @@ const OpportunityCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 export default OpportunityCard;

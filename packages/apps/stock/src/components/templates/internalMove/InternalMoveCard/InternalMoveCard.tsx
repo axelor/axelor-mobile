@@ -53,11 +53,6 @@ const InternalMoveCard = ({
   const {StockMove} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(getItemColor(StockMove?.statusSelect, status)?.background)
-      ?.border;
-  }, [StockMove?.statusSelect, getItemColor, status]);
-
   const _formatDate = useMemo(() => {
     if (date == null) {
       return null;
@@ -79,7 +74,10 @@ const InternalMoveCard = ({
     <ObjectCard
       onPress={onPress}
       showArrow={true}
-      style={[borderStyle, style]}
+      borderLeftColor={
+        getItemColor(StockMove?.statusSelect, status)?.background
+      }
+      style={style}
       lowerTexts={{
         items: [
           {displayText: name, isTitle: true},
@@ -122,14 +120,6 @@ const InternalMoveCard = ({
     />
   );
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
 
 const styles = StyleSheet.create({
   noBold: {
