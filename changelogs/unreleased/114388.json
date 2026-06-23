@@ -1,6 +1,5 @@
 {
   "title": "HeaderContainer: redesign the filter header as a floating inset card with a circular expand button",
   "type": "refactor",
-  "packages": ["@axelor/aos-mobile-ui"],
-  "description": "The filter header now appears as a rounded card detached from the screen edges with a soft shadow, and its expand/collapse chevron sits in a circular button floating over the card's bottom edge."
+  "packages": "ui"
 }
