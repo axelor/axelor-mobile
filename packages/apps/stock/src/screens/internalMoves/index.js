@@ -29,18 +29,12 @@ export default {
     title: 'Stock_InternalMove',
     component: InternalMoveListScreen,
     actionID: 'stock_internalMove_list',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   InternalMoveDetailsGeneralScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveDetailsGeneralScreen,
     actionID: 'stock_internalMove_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   InternalMoveCreationScreen: {
     title: 'Stock_InternalMove',
@@ -51,30 +45,18 @@ export default {
     actionID: 'stock_internalMove_lineDetails',
     title: 'Stock_InternalMove',
     component: InternalMoveLineDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   InternalMoveLineListScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveLineListScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   InternalMoveSelectProductScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveSelectProductScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   InternalMoveSelectTrackingScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveSelectTrackingScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

@@ -25,18 +25,12 @@ export default {
     title: 'Crm_Opportunities',
     component: OpportunityListScreen,
     actionID: 'crm_opportunity_list',
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   OpportunityDetailsScreen: {
     title: 'Crm_Opportunity',
     component: OpportunityDetailsScreen,
     actionID: 'crm_opportunity_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   OpportunityFormScreen: {
     title: 'Crm_Opportunity',

@@ -24,9 +24,6 @@ export default {
   ClientSaleListScreen: {
     title: 'Sale_Clients',
     component: ClientSaleListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'sale_client_list',
   },
@@ -34,9 +31,6 @@ export default {
     title: 'Sale_Client',
     actionID: 'sale_client_details',
     component: ClientSaleDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   ClientSaleFormScreen: {
     title: 'Sale_Client',

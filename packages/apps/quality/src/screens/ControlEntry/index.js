@@ -24,9 +24,6 @@ export default {
   ControlEntryListScreen: {
     title: 'Quality_ControlEntries',
     component: ControlEntryListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
     actionID: 'quality_controlEntry_list',
   },
@@ -34,16 +31,10 @@ export default {
     title: 'Quality_ControlEntry',
     component: ControlEntryDetailsScreen,
     actionID: 'quality_controlEntry_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   ControlEntryFormScreen: {
     title: 'Quality_ControlEntry',
     component: ControlEntryFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 

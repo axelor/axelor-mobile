@@ -25,18 +25,12 @@ export default {
     title: 'Crm_Prospect',
     actionID: 'crm_prospect_list',
     component: ProspectsListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   ProspectDetailsScreen: {
     title: 'Crm_Prospect',
     component: ProspectDetailsScreen,
     actionID: 'crm_prospect_details',
-    options: {
-      shadedHeader: false,
-    },
   },
   ProspectFormScreen: {
     title: 'Crm_Prospect',

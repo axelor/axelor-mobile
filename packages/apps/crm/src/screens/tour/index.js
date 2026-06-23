@@ -24,18 +24,12 @@ export default {
     title: 'Crm_Tours',
     actionID: 'crm_tour_list',
     component: TourListScreen,
-    options: {
-      shadedHeader: false,
-    },
     isUsableOnShortcut: true,
   },
   TourDetailsScreen: {
     title: 'Crm_Tours',
     component: TourDetailsScreen,
     actionID: 'crm_tour_details',
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 
