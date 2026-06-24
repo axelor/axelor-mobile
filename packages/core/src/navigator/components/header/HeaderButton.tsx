@@ -42,7 +42,7 @@ const HeaderButton = ({isRoot = false}: HeaderButtonProps) => {
   );
 
   return (
-    <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
       <Card style={styles.container}>
         <Icon
           name={isRoot ? 'list' : 'chevron-left'}

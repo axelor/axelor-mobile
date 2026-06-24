@@ -32,7 +32,7 @@ function throwError(action: string) {
   throw new Error(`Theme provider should be mounted to ${action}`);
 }
 
-const DEFAULT_THEME = purpleTheme;
+const DEFAULT_THEME = lightTheme;
 const COLORBLIND_THEME = colorBlindTheme;
 
 interface ThemeContextState {

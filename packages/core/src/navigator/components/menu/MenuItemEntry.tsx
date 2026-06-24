@@ -18,13 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {
-  Icon,
-  Text,
-  WarningCard,
-  addOpacityToHex,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Icon, Text, WarningCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Compatibility} from '../../../app';
 import {useTranslator} from '../../../i18n';
 import {getCompatibilityError, isMenuIncompatible} from '../../helpers';
@@ -71,17 +65,15 @@ const MenuItemEntry = ({
   const highlighted = useMemo(() => isActive || dropdown, [dropdown, isActive]);
 
   return (
-    <TouchableOpacity onPress={onPress} disabled={menuDisabled}>
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={menuDisabled}
+      activeOpacity={0.9}>
       <View
         style={[
           styles.row,
           highlighted
-            ? {
-                backgroundColor: addOpacityToHex(
-                  Colors.primaryColor.background,
-                  0.2,
-                ),
-              }
+            ? {backgroundColor: Colors.primaryColor.background_light}
             : null,
           style,
         ]}>
