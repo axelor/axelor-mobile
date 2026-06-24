@@ -23,9 +23,9 @@ import {
   Text,
   getCommonStyles,
   useThemeColor,
-  ThemeColors,
   Image,
   Icon,
+  VerticalRule,
 } from '@axelor/aos-mobile-ui';
 import {deleteMetaFile, uploadBase64} from '../../../api/metafile-api';
 import {useFileApi} from '../../../apiProviders';
@@ -40,9 +40,9 @@ import {
 } from '../../../features/cameraSlice';
 
 const DEFAULT_MAX_FILE_SIZE = 5000000;
-const BUTTON_SIZE = 20;
+const BUTTON_SIZE = 14;
 
-const isMetaFile = file => {
+const isMetaFile = (file: any) => {
   return (
     file != null &&
     typeof file === 'object' &&
@@ -61,6 +61,8 @@ const formatFileSize = (size: number): string => {
       return (_size / Math.pow(1000, i - 1)).toFixed(2) + ' ' + labels[i - 1];
     }
   }
+
+  return `0 ${labels[0]}`;
 };
 
 interface UploadFileInputProps {
@@ -130,10 +132,8 @@ const UploadFileInput = ({
     return documentTypesAllowed !== 'pdf';
   }, [canTakePicture, documentTypesAllowed]);
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
     [Colors, _required],
   );
 
@@ -265,17 +265,11 @@ const UploadFileInput = ({
     [selectedFile, readonly],
   );
 
-
   return (
     <View style={[styles.container, style]}>
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <View
-        style={[
-          commonStyles.filter,
-          commonStyles.filterSize,
-          commonStyles.filterAlign,
-          styles.content,
-        ]}>
+        style={[commonStyles.filter, commonStyles.filterAlign, styles.content]}>
         {canDisplayPreview ? (
           <Image
             imageSize={styles.imageSize}
@@ -285,72 +279,71 @@ const UploadFileInput = ({
                 ? formatMetafileURI(selectedFile?.id)
                 : {uri: selectedFile?.base64}
             }
-            defaultIconSize={60}
+            defaultIconSize={50}
           />
         ) : null}
         <Text
-          style={selectedFile ? styles.value : styles.placeholder}
-          numberOfLines={1}>
+          style={styles.flex}
+          numberOfLines={1}
+          textColor={selectedFile ? Colors.text : Colors.placeholderTextColor}>
           {selectedFile
             ? selectedFile.name || selectedFile.fileName
             : I18n.t('Base_ChooseFile')}
         </Text>
-        <View style={styles.buttons}>
-          {[
-            canDelete && (
-              <Icon
-                key="delete"
-                name="x-lg"
-                size={BUTTON_SIZE}
-                color={Colors.primaryColor.background}
-                touchable={true}
-                onPress={handleFileDelete}
-                style={styles.action}
-              />
-            ),
-            canView && (
-              <Icon
-                key="view"
-                name="arrows-angle-expand"
-                size={BUTTON_SIZE}
-                color={Colors.primaryColor.background}
-                touchable={true}
-                onPress={handleFileView}
-                style={styles.action}
-              />
-            ),
-            canCamera && (
-              <Icon
-                key="camera"
-                name="camera-fill"
-                size={BUTTON_SIZE}
-                color={Colors.primaryColor.background}
-                touchable={true}
-                onPress={handleCamera}
-                style={styles.action}
-              />
-            ),
-            canUpload && (
-              <Icon
-                key="upload"
-                name="upload"
-                size={BUTTON_SIZE}
-                color={Colors.primaryColor.background}
-                touchable={true}
-                onPress={() => handleDocumentSelection(handleDocumentPick)}
-                style={styles.action}
-              />
-            ),
-          ]
-            .filter(Boolean)
-            .reduce((acc: React.ReactNode[], icon, index) => {
-              if (index > 0) {
-                acc.push(<View key={`divider-${index}`} style={styles.divider} />);
-              }
-              acc.push(icon);
-              return acc;
-            }, [])}
-        </View>
+        {[
+          canDelete ? (
+            <Icon
+              key="delete"
+              name="x-lg"
+              size={BUTTON_SIZE}
+              color={Colors.primaryColor.background}
+              touchable
+              onPress={handleFileDelete}
+            />
+          ) : null,
+          canView ? (
+            <Icon
+              key="view"
+              name="arrows-angle-expand"
+              size={BUTTON_SIZE}
+              color={Colors.primaryColor.background}
+              touchable
+              onPress={handleFileView}
+            />
+          ) : null,
+          canCamera ? (
+            <Icon
+              key="camera"
+              name="camera-fill"
+              size={BUTTON_SIZE}
+              color={Colors.primaryColor.background}
+              touchable
+              onPress={handleCamera}
+            />
+          ) : null,
+          canUpload ? (
+            <Icon
+              key="upload"
+              name="upload"
+              size={BUTTON_SIZE}
+              color={Colors.primaryColor.background}
+              touchable
+              onPress={() => handleDocumentSelection(handleDocumentPick)}
+            />
+          ) : null,
+        ]
+          .filter(_i => _i != null)
+          .map((iconComponent, index) => (
+            <React.Fragment key={index}>
+              {index > 0 && (
+                <VerticalRule
+                  style={styles.divider}
+                  color={Colors.secondaryColor.background_light}
+                />
+              )}
+              {React.cloneElement(iconComponent, {key: index})}
+            </React.Fragment>
+          ))}
       </View>
       {sizeError && (
         <Text textColor={Colors.errorColor.background} style={styles.error}>
@@ -363,60 +356,37 @@ const UploadFileInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      alignSelf: 'center',
-    },
-    content: {
-      width: '100%',
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-    },
-    title: {
-      marginLeft: 10,
-      fontSize: 13,
-      fontWeight: '800',
-      color: Colors.secondaryColor_dark.background,
-    },
-    placeholder: {
-      flex: 1,
-      fontSize: 15,
-      fontWeight: '600',
-      color: Colors.secondaryColor_dark.background,
-    },
-    value: {
-      flex: 1,
-      fontSize: 15,
-      fontWeight: '700',
-      color: Colors.text,
-    },
-    divider: {
-      width: 1,
-      height: 28,
-      backgroundColor: Colors.secondaryColor.background_light,
-      marginHorizontal: 8,
-    },
-    buttons: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-    action: {
-      marginHorizontal: 4,
-      color: Colors.primaryColor.background,
-    },
-    imageSize: {
-      height: 60,
-      width: 60,
-    },
-    error: {
-      marginLeft: 5,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  title: {
+    marginLeft: 10,
+  },
+  content: {
+    width: '100%',
+    height: undefined,
+    minHeight: 40,
+    marginHorizontal: 0,
+    marginRight: 0,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  imageSize: {
+    height: 50,
+    width: 50,
+  },
+  flex: {
+    flex: 1,
+  },
+  divider: {
+    height: '60%',
+    marginHorizontal: 10,
+  },
+  error: {
+    marginLeft: 5,
+  },
+});
 
 export default UploadFileInput;
