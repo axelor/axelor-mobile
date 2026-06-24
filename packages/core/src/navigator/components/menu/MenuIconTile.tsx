@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {IconTile, addOpacityToHex, useThemeColor} from '@axelor/aos-mobile-ui';
+import {IconTile, useThemeColor} from '@axelor/aos-mobile-ui';
 
 type MenuIconTileVariant = 'primary' | 'neutral';
 
@@ -48,12 +48,12 @@ const MenuIconTile = ({
 
   const backgroundColor = useMemo(() => {
     if (variant === 'neutral') {
-      return addOpacityToHex(Colors.secondaryColor.background_light, 0.6);
+      return Colors.secondaryColor.background_light;
     }
 
     return highlighted
       ? Colors.backgroundColor
-      : addOpacityToHex(Colors.primaryColor.background, 0.15);
+      : Colors.primaryColor.background_light;
   }, [Colors, variant, highlighted]);
 
   const iconColor = useMemo(() => {

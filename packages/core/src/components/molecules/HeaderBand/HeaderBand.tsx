@@ -25,7 +25,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {addOpacityToHex, Color, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Color, useThemeColor} from '@axelor/aos-mobile-ui';
 import {HeaderBandHelper} from '../../../header';
 
 const DELAY_BEFORE_ANIMATION = 3000;
@@ -53,7 +53,7 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
       nativeEvent: {
         layout: {width},
       },
-    }) => setTextWidth(width),
+    }: any) => setTextWidth(width),
     [],
   );
 
@@ -73,9 +73,7 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
     }
   }, [textScrollX, textWidth]);
 
-  if (!showIf) {
-    return null;
-  }
+  if (!showIf) return null;
 
   return (
     <View style={styles.container}>
@@ -86,12 +84,7 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
         showsHorizontalScrollIndicator={false}>
         <Animated.Text
           onLayout={onTextLayout}
-          style={[
-            styles.text,
-            {
-              transform: [{translateX: textScrollX}],
-            },
-          ]}>
+          style={[styles.text, {transform: [{translateX: textScrollX}]}]}>
           {text}
         </Animated.Text>
       </ScrollView>
@@ -102,7 +95,7 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
 const getStyles = (color: Color) =>
   StyleSheet.create({
     container: {
-      backgroundColor: addOpacityToHex(color.background, 0.3),
+      backgroundColor: color.background_light,
       justifyContent: 'center',
       alignItems: 'center',
       height: HeaderBandHelper.bandHeight,
