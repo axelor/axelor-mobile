@@ -18,7 +18,7 @@
 
 import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {ThemeColors, useThemeColor} from '../../../theme';
+import {useThemeColor} from '../../../theme';
 import {checkNullString, getCommonStyles, getFromList} from '../../../utils';
 import {useOutsideClickHandler} from '../../../hooks';
 import {Icon, Text} from '../../atoms';
@@ -32,7 +32,7 @@ interface PickerProps {
   styleTxt?: any;
   title?: string;
   placeholder?: string;
-  onValueChange: (any) => void;
+  onValueChange: (_v?: any) => void;
   defaultValue?: string | number;
   listItems: any[];
   displayValue?: (item: any) => string;
@@ -129,7 +129,7 @@ const Picker = ({
         : visibleListLength * ITEM_HEIGHT + 5;
     }
 
-    return null;
+    return undefined;
   }, [emptyValue, isScrollViewContainer, listItems, isOpen]);
 
   const _required = useMemo(
@@ -138,23 +138,16 @@ const Picker = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
   const _displayValue = useCallback(
-    item => {
-      if (item == null) {
-        return '';
-      }
-
-      if (displayValue) {
-        return displayValue(item);
-      } else if (labelField) {
-        return item[labelField];
-      } else {
-        return item[valueField];
-      }
+    (item: any) => {
+      if (item == null) return '';
+      if (displayValue) return displayValue(item);
+      if (labelField) return item[labelField];
+      return item[valueField];
     },
     [displayValue, labelField, valueField],
   );
@@ -167,12 +160,11 @@ const Picker = ({
   }, [_displayValue, placeholder, selectedItem]);
 
   const styles = useMemo(
-    () =>
-      getStyles(Colors, _required, marginBottom, isOpen, displayPlaceholder),
-    [Colors, _required, marginBottom, isOpen, displayPlaceholder],
+    () => getStyles(isOpen, marginBottom),
+    [marginBottom, isOpen],
   );
 
-  if (readonly) {
+  if (readonly)
     return (
       <FormInput
         style={[styles.container, style]}
@@ -181,7 +173,6 @@ const Picker = ({
         readOnly
       />
     );
-  }
 
   return (
     <View
@@ -196,7 +187,7 @@ const Picker = ({
         <Text style={[styles.title, styleTxt]}>{title}</Text>
       )}
       <RightIconButton
-        numberOfLines={multiLineLabels ? null : 1}
+        numberOfLines={multiLineLabels ? undefined : 1}
         onPress={togglePicker}
         icon={
           <Icon
@@ -205,16 +196,18 @@ const Picker = ({
           />
         }
         title={displayPlaceholder ? placeholder : _displayValue(selectedItem)}
-        styleText={styles.textPicker}
+        titleColor={
+          displayPlaceholder ? Colors.placeholderTextColor : Colors.text
+        }
+        styleText={styles.text}
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           commonStyles.filterAlign,
-          isFocused && commonStyles.inputFocused,
-          styles.content,
+          styles.rightIconButton,
           multiLineLabels && styles.adjustableHeight,
           pickerStyle,
         ]}
+        showWrapper={false}
       />
       {isOpen && (
         <SelectionContainer
@@ -236,13 +229,7 @@ const Picker = ({
   );
 };
 
-const getStyles = (
-  Colors: ThemeColors,
-  _required: boolean,
-  marginBottom: number,
-  isOpen: boolean,
-  displayPlaceholder: boolean,
-) =>
+const getStyles = (isOpen: boolean, marginBottom?: number) =>
   StyleSheet.create({
     container: {
       width: '90%',
@@ -252,22 +239,22 @@ const getStyles = (
     containerZIndex: {
       zIndex: isOpen ? 100 : 0,
     },
-    content: {
+    rightIconButton: {
       width: '100%',
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
+      height: undefined,
       minHeight: 40,
+      marginHorizontal: 0,
+      marginRight: 0,
+      paddingLeft: 10,
+      paddingRight: 10,
     },
     adjustableHeight: {
       height: undefined,
       paddingVertical: 10,
     },
-    textPicker: {
-      color: displayPlaceholder ? Colors.placeholderTextColor : Colors.text,
-      fontSize: displayPlaceholder ? 15 : 16,
+    text: {
+      flex: 1,
+      textAlign: 'left',
     },
     title: {
       marginLeft: 10,

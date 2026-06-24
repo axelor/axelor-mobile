@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Color, ThemeColors, useThemeColor} from '../../../theme';
-import {Card, Icon, Text} from '../../atoms';
+import {Color, useThemeColor} from '../../../theme';
+import {Icon, Text} from '../../atoms';
 
 interface Item {
   color: Color;
@@ -39,102 +39,87 @@ interface MultiValuePickerButtonProps {
 const MultiValuePickerButton = ({
   style,
   placeholder,
-  onPress = () => {},
+  onPress,
   listItem,
-  onPressItem = () => {},
+  onPressItem,
   readonly = false,
 }: MultiValuePickerButtonProps) => {
   const Colors = useThemeColor();
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.9}
+      style={style}
       testID="multiValuePickerButtonTouchable">
-      <Card style={[styles.container, style]}>
-        <View style={styles.listItemContainer}>
-          {listItem && listItem.length > 0
-            ? listItem.map((item, index) => (
+      <View style={styles.listItemContainer}>
+        {listItem?.length > 0
+          ? listItem.map((item, index) => {
+              const _color = item.color ?? Colors.primaryColor;
+
+              return (
                 <TouchableOpacity
-                  onPress={() => onPressItem(item)}
+                  onPress={() => onPressItem?.(item)}
                   disabled={readonly}
                   key={index}
-                  style={[styles.cardItem, getItemColor(item.color)]}
+                  style={[
+                    styles.cardItem,
+                    {backgroundColor: _color.background_light},
+                  ]}
                   activeOpacity={0.9}
                   testID="multiValuePickerBadgeTouchable">
                   <Text
                     style={styles.text}
-                    fontSize={14}
                     numberOfLines={1}
-                    textColor={
-                      item.color.foreground || Colors.primaryColor.foreground
-                    }>
+                    textColor={_color.foreground}>
                     {item.title}
                   </Text>
                   {!readonly && (
-                    <Icon name="x-lg" color={item.color.foreground} size={14} />
+                    <Icon name="x-lg" color={_color.foreground} size={14} />
                   )}
                 </TouchableOpacity>
-              ))
-            : placeholder && (
-                <Text
-                  textColor={Colors.placeholderTextColor}
-                  style={styles.placeHolder}
-                  numberOfLines={1}>
-                  {placeholder}
-                </Text>
-              )}
-        </View>
-        <Icon
-          name="chevron-down"
-          color={Colors.secondaryColor_dark.background}
-        />
-      </Card>
+              );
+            })
+          : placeholder && (
+              <Text
+                textColor={Colors.placeholderTextColor}
+                style={styles.placeHolder}
+                numberOfLines={1}>
+                {placeholder}
+              </Text>
+            )}
+      </View>
+      <Icon
+        name="chevron-down"
+        color={Colors.secondaryColor_dark.background}
+        size={14}
+      />
     </TouchableOpacity>
   );
 };
 
-const getItemColor = (color: Color) => ({
-  backgroundColor: color.background_light,
-  borderColor: color.background,
+const styles = StyleSheet.create({
+  text: {
+    textAlign: 'center',
+    marginRight: 5,
+    maxWidth: 100,
+  },
+  placeHolder: {
+    paddingLeft: 4,
+  },
+  listItemContainer: {
+    flexDirection: 'row',
+    overflow: 'hidden',
+    width: '90%',
+  },
+  cardItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 14,
+    marginLeft: 5,
+    paddingHorizontal: 7,
+    height: 22,
+  },
 });
-
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    container: {
-      paddingLeft: 10,
-      paddingRight: 15,
-    },
-    text: {
-      textAlign: 'center',
-      marginRight: 5,
-      maxWidth: 100,
-    },
-    placeHolder: {
-      paddingLeft: 4,
-      fontSize: 15,
-    },
-    listItemContainer: {
-      flexDirection: 'row',
-      marginLeft: -5,
-      overflow: 'hidden',
-      width: '90%',
-    },
-    cardItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderWidth: 2,
-      borderRadius: 14,
-      elevation: 3,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
-      marginLeft: 5,
-      paddingHorizontal: 7,
-      height: 22,
-    },
-  });
 
 export default MultiValuePickerButton;

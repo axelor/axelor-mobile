@@ -1,5 +1,5 @@
 {
-  "title": "redesign the input form fields, increment buttons, date fields input",
+  "title": "Inputs: restyle generic input components with new design",
   "type": "refactor",
-  "packages": "ui"
+  "packages": ["ui", "core"]
 }

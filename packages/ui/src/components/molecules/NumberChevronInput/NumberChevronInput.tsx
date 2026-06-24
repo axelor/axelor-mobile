@@ -18,20 +18,33 @@
 
 import React, {Ref, useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
-import {useThemeColor, ThemeColors} from '../../../theme';
+import {useThemeColor} from '../../../theme';
 import {getCommonStyles} from '../../../utils';
 import {Icon, Input} from '../../atoms';
+
+type SetterFunction<T> = (value: T | ((_current: T) => T)) => void;
+
+interface ChevronButtonProps {
+  isIncreasing?: boolean;
+  inputValue: number;
+  setInputValue: SetterFunction<number>;
+  stepSize: number;
+  minValue?: number;
+  maxValue?: number;
+  onValueChange?: (value: number, inputChangeType: number) => void;
+  readonly?: boolean;
+}
 
 const ChevronButton = ({
   isIncreasing,
   inputValue,
   setInputValue,
   stepSize,
-  readonly,
   maxValue,
   minValue,
   onValueChange,
-}) => {
+  readonly,
+}: ChevronButtonProps) => {
   const Colors = useThemeColor();
 
   const canIncreaseValue = useMemo(
@@ -54,21 +67,23 @@ const ChevronButton = ({
         newValue = maxValue;
       }
 
-      onValueChange(newValue, INPUT_CHANGE_TYPE.button);
+      onValueChange?.(newValue, INPUT_CHANGE_TYPE.button);
       return newValue;
     });
   };
 
-  const iconName = isIncreasing ? 'chevron-up' : 'chevron-down';
-  const canChangeValue = isIncreasing ? canIncreaseValue : canDecreaseValue;
+  const canChangeValue = useMemo(
+    () => (isIncreasing ? canIncreaseValue : canDecreaseValue),
+    [canDecreaseValue, canIncreaseValue, isIncreasing],
+  );
 
   return (
     <Icon
-      name={iconName}
+      name={isIncreasing ? 'chevron-up' : 'chevron-down'}
       color={
         canChangeValue
           ? Colors.secondaryColor_dark.background
-          : Colors.secondaryColor.background
+          : Colors.secondaryColor.background_light
       }
       touchable={canChangeValue}
       onPress={changeValue}
@@ -102,8 +117,8 @@ const NumberChevronInput = ({
   stepSize = 1,
   minValue = 0,
   maxValue = 9,
-  onValueChange = () => {},
-  onEndFocus = () => {},
+  onValueChange,
+  onEndFocus,
   required = false,
   readonly = false,
 }: NumberChevronInputProps) => {
@@ -118,17 +133,12 @@ const NumberChevronInput = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
-  );
-
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
   const handleChange = useCallback(
-    (value: string) => {
+    (value: string = '0') => {
       let writtenNumber = null;
       let mode = INPUT_CHANGE_TYPE.keyboard;
 
@@ -160,12 +170,12 @@ const NumberChevronInput = ({
   }, [defaultValue, handleChange]);
 
   const handleInputChange = useCallback(
-    (value: string) => {
+    (value?: string) => {
       if (!Number.isNaN(Number(value))) {
         const {newValue, mode} = handleChange(value);
 
         setInputValue(newValue);
-        onValueChange(newValue, mode);
+        onValueChange?.(newValue, mode);
       }
     },
     [handleChange, onValueChange],
@@ -180,7 +190,7 @@ const NumberChevronInput = ({
 
   const handleEndFocus = useCallback(() => {
     setIsFocused(false);
-    onEndFocus();
+    onEndFocus?.();
   }, [onEndFocus]);
 
   return (
@@ -200,10 +210,8 @@ const NumberChevronInput = ({
       <View
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           commonStyles.filterAlign,
           styles.inputContainer,
-          isFocused && commonStyles.inputFocused,
         ]}>
         <Input
           style={styles.input}
@@ -230,24 +238,19 @@ const NumberChevronInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean) =>
-  StyleSheet.create({
-    container: {
-      width: '17%',
-      flexDirection: 'column',
-    },
-    inputContainer: {
-      width: '100%',
-      marginHorizontal: 0,
-      borderWidth: 1,
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-    },
-    input: {
-      width: '100%',
-      textAlign: 'center',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '17%',
+    flexDirection: 'column',
+  },
+  inputContainer: {
+    width: '100%',
+    marginHorizontal: 0,
+  },
+  input: {
+    width: '100%',
+    textAlign: 'center',
+  },
+});
 
 export default NumberChevronInput;

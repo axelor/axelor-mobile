@@ -18,10 +18,10 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
-import {useThemeColor, ThemeColors} from '../../../theme';
+import {useThemeColor} from '../../../theme';
+import {getCommonStyles} from '../../../utils';
 import {Text} from '../../atoms';
 import {Increment} from '../../molecules';
-import {getCommonStyles} from '../../../utils/commons-styles';
 
 interface FormIncrementInputProps {
   style?: any;
@@ -46,14 +46,14 @@ const FormIncrementInput = ({
   title,
   readOnly = false,
   required = false,
-  defaultValue = null,
+  defaultValue,
   decimalSpacer,
   thousandSpacer,
   onChange,
   defaultFormatting = true,
   stepSize = 1,
   minValue = 0,
-  maxValue = null,
+  maxValue,
   isBigButton = false,
   keyboardType,
   scale,
@@ -68,13 +68,8 @@ const FormIncrementInput = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
-  );
-
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
   const handleFocus = useCallback(() => setIsFocused(true), []);
@@ -85,13 +80,7 @@ const FormIncrementInput = ({
       <Text style={styles.title}>{title}</Text>
       <View
         testID="formIncrementInnerContainer"
-        style={[
-          commonStyles.filter,
-          commonStyles.filterSize,
-          commonStyles.filterAlign,
-          styles.content,
-          isFocused && commonStyles.inputFocused,
-        ]}>
+        style={[commonStyles.filter, commonStyles.filterAlign, styles.content]}>
         <Increment
           value={defaultValue}
           onValueChange={onChange}
@@ -115,30 +104,25 @@ const FormIncrementInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, required: boolean) =>
-  StyleSheet.create({
-    container: {
-      width: '100%',
-    },
-    title: {
-      marginLeft: 10,
-    },
-    increment: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '100%',
-    },
-    content: {
-      width: '100%',
-      borderColor: required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-    },
-    containerInput: {
-      fontSize: 15,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
+  title: {
+    marginLeft: 10,
+  },
+  increment: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  content: {
+    width: '100%',
+    marginHorizontal: 0,
+  },
+  containerInput: {
+    fontSize: 15,
+  },
+});
 
 export default FormIncrementInput;

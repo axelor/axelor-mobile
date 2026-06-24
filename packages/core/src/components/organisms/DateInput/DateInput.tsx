@@ -233,7 +233,8 @@ const DateInput = ({
             ? DateInputUtils.formatDate(mode, selectedDate, I18n)
             : DateInputUtils.getDateInputPlaceholder(mode)
         }
-        styleText={selectedDate ? styles.valueText : styles.placeholderText}
+        titleColor={!selectedDate ? Colors.placeholderTextColor : Colors.text}
+        styleText={styles.text}
         style={[
           commonStyles.filter,
           commonStyles.filterAlign,
@@ -324,11 +325,7 @@ const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
       marginLeft: 5,
       backgroundColor: Colors.errorColor.background,
     },
-    valueText: {
-      flex: 1,
-      textAlign: 'left',
-    },
-    placeholderText: {
+    text: {
       flex: 1,
       textAlign: 'left',
     },
