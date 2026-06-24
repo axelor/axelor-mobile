@@ -32,7 +32,7 @@ export const lightTheme: Theme = {
       background: '#1F9D57',
     },
     secondaryColor: {
-      background_light: '#EDF1EF',
+      background_light: '#DCE4DF',
       foreground: '#FFFFFF',
       background: '#6B7B73',
     },
@@ -67,7 +67,7 @@ export const lightTheme: Theme = {
       background: '#2E78C4',
     },
     defaultColor: {
-      background_light: '#EDF1EF',
+      background_light: '#DCE4DF',
       foreground: '#FFFFFF',
       background: '#6B7B73',
     },
@@ -87,7 +87,7 @@ export const lightTheme: Theme = {
       background: '#9A6A1E',
     },
     inverseColor: {
-      background_light: '#EDF1EF',
+      background_light: '#DCE4DF',
       foreground: '#FFFFFF',
       background: '#6B7B73',
     },
@@ -180,8 +180,8 @@ export const purpleTheme: Theme = {
       background: '#26C6F9',
     },
     ...bootstrapColors,
-    text: '#13211B',
-    placeholderTextColor: '#9AA8A1',
+    text: '#333333',
+    placeholderTextColor: '#C0C0C0',
   },
 };
 

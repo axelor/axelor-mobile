@@ -17,26 +17,33 @@
  */
 
 import {StyleSheet} from 'react-native';
+import {ThemeColors} from '../theme';
 
-export const getCommonStyles = (Colors, _required = false) =>
+export const getCommonStyles = (
+  Colors: ThemeColors,
+  _required: boolean = false,
+  _isFocused: boolean = false,
+) =>
   StyleSheet.create({
     filter: {
+      width: '90%',
       backgroundColor: Colors.screenBackgroundColor,
-      borderRadius: 16,
-      paddingHorizontal: 16,
+      borderColor: _required
+        ? Colors.errorColor.background
+        : _isFocused
+          ? Colors.primaryColor.background
+          : Colors.secondaryColor.background_light,
+      borderWidth: 1,
+      borderRadius: 12,
+      paddingHorizontal: 10,
       paddingVertical: 0,
-      marginVertical: 8,
+      marginVertical: 4,
     },
     filterAlign: {
       marginHorizontal: 18,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-    },
-    filterSize: {
-      width: '90%',
-      height: 52,
-      minHeight: 52,
     },
     button: {
       flexDirection: 'row',
@@ -52,10 +59,6 @@ export const getCommonStyles = (Colors, _required = false) =>
       height: 50,
       minHeight: 40,
     },
-    inputFocused: {
-      borderWidth: 1,
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.primaryColor.background,
-    },
+    filterSize: {},
+    inputFocused: {},
   });

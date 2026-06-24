@@ -17,15 +17,7 @@
  */
 
 import React, {useState, useEffect, useMemo, useCallback} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  Alert,
-  getCommonStyles,
-  Icon,
-  IconInput,
-  ThemeColors,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Alert, Icon, IconInput, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useCameraScannerValueByKey,
   useScanActivator,
@@ -93,9 +85,6 @@ const CarrierTrackingAlert = ({
     onScanPress();
   }, [isZebraDevice, onScanPress, setVisible]);
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
   const handleValidateCarrier = useCallback(() => {
     setVisible(false);
     dispatch(
@@ -125,28 +114,20 @@ const CarrierTrackingAlert = ({
       }}
       translator={I18n.t}>
       <IconInput
-        style={[
-          commonStyles.filter,
-          commonStyles.filterSize,
-          commonStyles.filterAlign,
-          styles.content,
-        ]}
         value={carrierTrackingNumber}
         onChange={setCarrierTrackingNumber}
         onSelection={enableScanner}
         rightIconsList={[
           <Icon
-            style={styles.icon}
             name="arrow-counterclockwise"
-            size={20}
+            size={14}
             visible={carrierTrackingNumber !== defaultValue}
             touchable
             onPress={() => setCarrierTrackingNumber(defaultValue)}
           />,
           <Icon
-            style={styles.icon}
             name="qr-code-scan"
-            size={20}
+            size={14}
             color={
               scannerEnabled && scanKey === trackingScanKey
                 ? Colors.primaryColor.background
@@ -162,17 +143,5 @@ const CarrierTrackingAlert = ({
     </Alert>
   );
 };
-
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    content: {
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 1,
-    },
-    icon: {
-      width: '7%',
-      margin: 3,
-    },
-  });
 
 export default CarrierTrackingAlert;
