@@ -93,7 +93,7 @@ const ProspectsListScreen = ({navigation}) => {
             <MultiValuePicker
               style={styles.headerItem}
               listItems={prospectStatusListItems}
-              title={I18n.t('Base_Status')}
+              placeholder={I18n.t('Base_Status')}
               onValueChange={statusList => setSelectedStatus(statusList)}
             />
           )

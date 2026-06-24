@@ -93,7 +93,7 @@ const CatalogListScreen = ({}) => {
           <MultiValuePicker
             style={styles.headerItem}
             listItems={catalogTypeListItems}
-            title={I18n.t('Base_Status')}
+            placeholder={I18n.t('Base_Status')}
             onValueChange={statusList => setSelectedStatus(statusList)}
           />
         }
