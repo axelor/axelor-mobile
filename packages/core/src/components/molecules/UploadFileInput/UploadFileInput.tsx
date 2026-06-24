@@ -40,7 +40,7 @@ import {
 } from '../../../features/cameraSlice';
 
 const DEFAULT_MAX_FILE_SIZE = 5000000;
-const BUTTON_SIZE = 28;
+const BUTTON_SIZE = 20;
 
 const isMetaFile = file => {
   return (
@@ -251,6 +251,21 @@ const UploadFileInput = ({
     return displayPreview && selectedFile != null;
   }, [displayPreview, selectedFile]);
 
+  const canDelete = useMemo(
+    () => canDeleteFile && selectedFile != null && !readonly,
+    [canDeleteFile, selectedFile, readonly],
+  );
+  const canView = useMemo(() => isMetaFile(selectedFile), [selectedFile]);
+  const canCamera = useMemo(
+    () => selectedFile == null && !readonly && _enablePicture,
+    [selectedFile, readonly, _enablePicture],
+  );
+  const canUpload = useMemo(
+    () => selectedFile == null && !readonly,
+    [selectedFile, readonly],
+  );
+
+
   return (
     <View style={[styles.container, style]}>
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
@@ -273,48 +288,68 @@ const UploadFileInput = ({
             defaultIconSize={60}
           />
         ) : null}
-        <Text style={styles.fileName} numberOfLines={1}>
+        <Text
+          style={selectedFile ? styles.value : styles.placeholder}
+          numberOfLines={1}>
           {selectedFile
             ? selectedFile.name || selectedFile.fileName
             : I18n.t('Base_ChooseFile')}
         </Text>
         <View style={styles.buttons}>
-          {canDeleteFile && selectedFile != null && !readonly && (
-            <Icon
-              name="x-lg"
-              size={BUTTON_SIZE}
-              touchable={true}
-              onPress={handleFileDelete}
-              style={styles.action}
-            />
-          )}
-          {isMetaFile(selectedFile) && (
-            <Icon
-              name="arrows-angle-expand"
-              size={BUTTON_SIZE}
-              touchable={true}
-              onPress={handleFileView}
-              style={styles.action}
-            />
-          )}
-          {selectedFile == null && !readonly && _enablePicture && (
-            <Icon
-              name="camera-fill"
-              size={BUTTON_SIZE}
-              touchable={true}
-              onPress={handleCamera}
-              style={styles.action}
-            />
-          )}
-          {selectedFile == null && !readonly && (
-            <Icon
-              name="upload"
-              size={BUTTON_SIZE}
-              touchable={true}
-              onPress={() => handleDocumentSelection(handleDocumentPick)}
-              style={styles.action}
-            />
-          )}
+          {[
+            canDelete && (
+              <Icon
+                key="delete"
+                name="x-lg"
+                size={BUTTON_SIZE}
+                color={Colors.primaryColor.background}
+                touchable={true}
+                onPress={handleFileDelete}
+                style={styles.action}
+              />
+            ),
+            canView && (
+              <Icon
+                key="view"
+                name="arrows-angle-expand"
+                size={BUTTON_SIZE}
+                color={Colors.primaryColor.background}
+                touchable={true}
+                onPress={handleFileView}
+                style={styles.action}
+              />
+            ),
+            canCamera && (
+              <Icon
+                key="camera"
+                name="camera-fill"
+                size={BUTTON_SIZE}
+                color={Colors.primaryColor.background}
+                touchable={true}
+                onPress={handleCamera}
+                style={styles.action}
+              />
+            ),
+            canUpload && (
+              <Icon
+                key="upload"
+                name="upload"
+                size={BUTTON_SIZE}
+                color={Colors.primaryColor.background}
+                touchable={true}
+                onPress={() => handleDocumentSelection(handleDocumentPick)}
+                style={styles.action}
+              />
+            ),
+          ]
+            .filter(Boolean)
+            .reduce((acc: React.ReactNode[], icon, index) => {
+              if (index > 0) {
+                acc.push(<View key={`divider-${index}`} style={styles.divider} />);
+              }
+              acc.push(icon);
+              return acc;
+            }, [])}
         </View>
       </View>
       {sizeError && (
@@ -341,22 +376,39 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
         : Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
-      height: null,
-      minHeight: 40,
     },
     title: {
       marginLeft: 10,
+      fontSize: 13,
+      fontWeight: '800',
+      color: Colors.secondaryColor_dark.background,
     },
-    fileName: {
-      width: '60%',
+    placeholder: {
+      flex: 1,
+      fontSize: 15,
+      fontWeight: '600',
+      color: Colors.secondaryColor_dark.background,
+    },
+    value: {
+      flex: 1,
+      fontSize: 15,
+      fontWeight: '700',
+      color: Colors.text,
+    },
+    divider: {
+      width: 1,
+      height: 28,
+      backgroundColor: Colors.secondaryColor.background_light,
+      marginHorizontal: 8,
     },
     buttons: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'flex-end',
       alignItems: 'center',
     },
     action: {
       marginHorizontal: 4,
+      color: Colors.primaryColor.background,
     },
     imageSize: {
       height: 60,

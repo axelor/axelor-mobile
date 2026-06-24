@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {Icon} from '../../atoms';
 
@@ -59,18 +59,19 @@ const IncrementButton = ({
   }
 
   return (
-    <Icon
-      name={iconName}
-      size={ICON_SIZE}
-      color={
-        disabled
-          ? Colors.secondaryColor.background
-          : Colors.primaryColor.background
-      }
-      touchable={!disabled}
-      onPress={onPress}
-      style={[styles.container_icon, style]}
-    />
+    <View style={[styles.container_icon]}>
+      <Icon
+        name={iconName}
+        size={ICON_SIZE}
+        color={
+          disabled
+            ? Colors.secondaryColor.background
+            : Colors.primaryColor.background
+        }
+        touchable={!disabled}
+        onPress={onPress}
+      />
+    </View>
   );
 };
 
@@ -78,18 +79,13 @@ const getStyles = (Colors: ThemeColors, buttonSize: number) =>
   StyleSheet.create({
     container_icon: {
       backgroundColor: Colors.backgroundColor,
-      elevation: 3,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
       justifyContent: 'center',
       alignItems: 'center',
       marginHorizontal: 8,
       padding: 2,
       paddingHorizontal: 5,
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 0.5,
-      borderRadius: 10,
+      borderWidth: 0,
+      borderRadius: 12,
       width: buttonSize ?? DEFAULT_BUTTON_SIZE,
       height: buttonSize ?? DEFAULT_BUTTON_SIZE,
     },

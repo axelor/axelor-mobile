@@ -71,7 +71,7 @@ class DateInputUtils {
   };
 
   static getIconName = (mode: string): string => {
-    return mode === this.mode.Time ? 'clock' : 'calendar-week';
+    return mode === this.mode.Time ? 'clock' : 'calendar';
   };
 }
 export default DateInputUtils;

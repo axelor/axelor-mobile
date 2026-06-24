@@ -210,14 +210,19 @@ const DateInput = ({
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
       ]}>
-      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      {!checkNullString(title) && (
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{title}</Text>
+          {required && <View style={styles.requiredDot} />}
+        </View>
+      )}
       <RightIconButton
         onPress={togglePicker}
         icon={
           !readonly && (
             <Icon
               name={DateInputUtils.getIconName(mode)}
-              color={Colors.secondaryColor_dark.background}
+              color={Colors.primaryColor.background}
             />
           )
         }
@@ -226,6 +231,7 @@ const DateInput = ({
             ? DateInputUtils.formatDate(mode, selectedDate, I18n)
             : DateInputUtils.getDateInputPlaceholder(mode)
         }
+        styleText={selectedDate ? styles.valueText : styles.placeholderText}
         style={[
           commonStyles.filter,
           commonStyles.filterSize,
@@ -304,10 +310,37 @@ const getStyles = (
       position: 'absolute',
       height: 240,
       width: '100%',
+      borderRadius: 14,
       zIndex: 110,
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     title: {
       marginLeft: 10,
+      fontSize: 13,
+      fontWeight: '800',
+      color: Colors.secondaryColor_dark.background,
+    },
+    requiredDot: {
+      width: 6,
+      height: 6,
+      borderRadius: 3,
+      marginLeft: 5,
+      backgroundColor: Colors.errorColor.background,
+    },
+    valueText: {
+      flexShrink: 1,
+      fontSize: 16,
+      fontWeight: '700',
+      color: Colors.text,
+    },
+    placeholderText: {
+      flexShrink: 1,
+      fontSize: 15,
+      fontWeight: '600',
+      color: Colors.secondaryColor_dark.background,
     },
   });
 

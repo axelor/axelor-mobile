@@ -21,15 +21,11 @@ import {StyleSheet} from 'react-native';
 export const getCommonStyles = (Colors, _required = false) =>
   StyleSheet.create({
     filter: {
-      backgroundColor: Colors.backgroundColor,
-      borderRadius: 7,
-      elevation: 2,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
-      paddingHorizontal: 12,
+      backgroundColor: Colors.screenBackgroundColor,
+      borderRadius: 16,
+      paddingHorizontal: 16,
       paddingVertical: 0,
-      marginVertical: 3,
+      marginVertical: 8,
     },
     filterAlign: {
       marginHorizontal: 18,
@@ -39,8 +35,8 @@ export const getCommonStyles = (Colors, _required = false) =>
     },
     filterSize: {
       width: '90%',
-      height: 40,
-      minHeight: 40,
+      height: 52,
+      minHeight: 52,
     },
     button: {
       flexDirection: 'row',

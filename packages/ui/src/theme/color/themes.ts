@@ -180,8 +180,8 @@ export const purpleTheme: Theme = {
       background: '#26C6F9',
     },
     ...bootstrapColors,
-    text: '#333333',
-    placeholderTextColor: '#C0C0C0',
+    text: '#13211B',
+    placeholderTextColor: '#9AA8A1',
   },
 };
 
@@ -263,7 +263,7 @@ export const colorBlindTheme: Theme = {
       background: '#36AEE1',
     },
     ...bootstrapColors,
-    text: '#000000',
-    placeholderTextColor: '#C0C0C0',
+    text: '#13211B',
+    placeholderTextColor: '#9AA8A1',
   },
 };
