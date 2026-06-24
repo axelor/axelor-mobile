@@ -24,10 +24,7 @@ import {Icon, Text} from '../../atoms';
 const ItemCard = ({onSelect = () => {}, title, isSelected = false}) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(
-    () => getStyles(Colors, isSelected),
-    [Colors, isSelected],
-  );
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <View>
@@ -38,11 +35,18 @@ const ItemCard = ({onSelect = () => {}, title, isSelected = false}) => {
         <Text style={styles.text} writingType="important" fontSize={16}>
           {title}
         </Text>
-        {isSelected && (
+        {isSelected ? (
           <Icon
             style={styles.icon}
             name="check-lg"
             color={Colors.primaryColor.background}
+          />
+        ) : (
+          <Icon
+            style={styles.icon}
+            name="chevron-right"
+            size={20}
+            color={Colors.secondaryColor.background_light}
           />
         )}
       </TouchableOpacity>
@@ -51,18 +55,19 @@ const ItemCard = ({onSelect = () => {}, title, isSelected = false}) => {
   );
 };
 
-const getStyles = (Colors: ThemeColors, isSelected: boolean) =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     item: {
       minHeight: 40,
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignItems: 'center',
       position: 'relative',
       width: '100%',
     },
     text: {
       alignSelf: 'center',
-      width: isSelected ? '90%' : '100%',
+      width: '90%',
       marginVertical: 7,
       marginLeft: 10,
     },

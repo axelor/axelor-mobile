@@ -89,6 +89,13 @@ const SelectionItem = ({
           {content}
         </Text>
         {itemColor != null && <View style={indicatorStyles.selectedItem} />}
+        {!isPicker && !isMoreResultsItem && (
+          <Icon
+            name="chevron-right"
+            size={20}
+            color={Colors.secondaryColor.background_light}
+          />
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -98,10 +105,10 @@ const getIndicatorColor = (color: string) => {
   return StyleSheet.create({
     selectedItem: {
       backgroundColor: color,
-      width: 7,
-      height: 32,
-      borderTopLeftRadius: 8,
-      borderBottomLeftRadius: 8,
+      width: 5,
+      height: 28,
+      borderRadius: 3,
+      marginRight: 6,
     },
   });
 };
@@ -122,7 +129,7 @@ const getItemStyles = (isPicker: boolean, isMoreResultsItem: boolean) =>
       flex: 1,
     },
     text: {
-      width: isPicker ? '85%' : isMoreResultsItem ? null : '100%',
+      width: isPicker ? '85%' : isMoreResultsItem ? null : '90%',
       marginVertical: 5,
       marginLeft: isPicker ? 0 : 10,
       fontSize: 16,
@@ -330,13 +337,13 @@ const getStyles = (Colors: ThemeColors, height: number) =>
       top: '94%',
       zIndex: 110,
       backgroundColor: Colors.backgroundColor,
-      borderRadius: 7,
+      borderRadius: 16,
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
       elevation: 2,
-      shadowOpacity: 0.5,
+      shadowOpacity: 0.12,
       shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
+      shadowOffset: {width: 0, height: 4},
     },
     border: {
       borderBottomColor: Colors.secondaryColor.background,
