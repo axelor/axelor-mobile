@@ -17,8 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {addOpacityToHex} from '../../../utils';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
 import {Icon} from '../../atoms';
 
@@ -61,8 +60,8 @@ const IconTile = ({
   );
 
   const _backgroundColor = useMemo(
-    () => backgroundColor ?? addOpacityToHex(_color.background, 0.3),
-    [backgroundColor, _color.background],
+    () => backgroundColor ?? _color.background_light,
+    [backgroundColor, _color.background_light],
   );
 
   const _iconColor = useMemo(
@@ -75,17 +74,16 @@ const IconTile = ({
     [_backgroundColor, size, padding, borderRadius],
   );
 
-  const Container: any = onPress ? TouchableOpacity : View;
-
   return (
-    <Container
+    <TouchableOpacity
       style={[styles.tile, style]}
       testID={testID}
       onPress={onPress}
-      disabled={disabled}>
+      disabled={!onPress || disabled}
+      activeOpacity={0.9}>
       {icon != null && <Icon name={icon} size={iconSize} color={_iconColor} />}
       {children}
-    </Container>
+    </TouchableOpacity>
   );
 };
 
