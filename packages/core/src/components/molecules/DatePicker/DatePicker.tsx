@@ -22,8 +22,8 @@ import {default as NativeDatePicker} from 'react-native-date-picker';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface DatePickerProps {
-  defaultDate: Date;
-  onDateChange: (date: Date) => void;
+  defaultDate?: Date;
+  onDateChange: (date?: Date) => void;
   mode?: 'date' | 'datetime' | 'time';
   pickerWidth?: number;
 }
@@ -32,7 +32,7 @@ const DatePicker = ({
   defaultDate,
   mode,
   onDateChange,
-  pickerWidth = null,
+  pickerWidth,
 }: DatePickerProps) => {
   const Colors = useThemeColor();
 
@@ -40,7 +40,7 @@ const DatePicker = ({
 
   return (
     <NativeDatePicker
-      date={defaultDate}
+      date={defaultDate!}
       onDateChange={onDateChange}
       mode={mode}
       dividerColor={Colors.primaryColor.background}
@@ -50,7 +50,7 @@ const DatePicker = ({
   );
 };
 
-const getStyles = (pickerWidth: number) =>
+const getStyles = (pickerWidth?: number) =>
   StyleSheet.create({
     container: {
       width: pickerWidth,

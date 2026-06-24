@@ -40,10 +40,10 @@ interface DateInputSelectionProps {
   mode: 'date' | 'datetime' | 'time';
   nullable: boolean;
   popup: boolean;
-  currentDate: Date;
-  selectedDate: Date;
-  setSelectedDate: (date: Date) => void;
-  onDateChange: (date: Date) => void;
+  currentDate?: Date;
+  selectedDate?: Date;
+  setSelectedDate: (date?: Date) => void;
+  onDateChange: (date?: Date) => void;
   setPickerIsOpen: (pickerIsOpen: boolean) => void;
 }
 
@@ -79,8 +79,8 @@ const DateInputSelection = ({
   ]);
 
   const onClearDate = useCallback(() => {
-    setSelectedDate(null);
-    onDateChange(null);
+    setSelectedDate();
+    onDateChange();
     setPickerIsOpen(false);
   }, [onDateChange, setPickerIsOpen, setSelectedDate]);
 
@@ -142,7 +142,7 @@ interface DateInputProps {
   mode?: 'date' | 'datetime' | 'time';
   nullable?: boolean;
   popup?: boolean;
-  onDateChange: (date: Date) => void;
+  onDateChange: (date?: Date) => void;
   style?: any;
   readonly?: boolean;
   required?: boolean;
@@ -194,12 +194,12 @@ const DateInput = ({
   };
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, pickerIsOpen),
+    [Colors, _required, pickerIsOpen],
   );
   const styles = useMemo(
-    () => getStyles(Colors, pickerIsOpen, _required),
-    [Colors, pickerIsOpen, _required],
+    () => getStyles(Colors, pickerIsOpen),
+    [Colors, pickerIsOpen],
   );
 
   return (
@@ -218,11 +218,13 @@ const DateInput = ({
       )}
       <RightIconButton
         onPress={togglePicker}
+        showWrapper={false}
         icon={
           !readonly && (
             <Icon
               name={DateInputUtils.getIconName(mode)}
-              color={Colors.primaryColor.background}
+              color={Colors.secondaryColor_dark.background}
+              size={14}
             />
           )
         }
@@ -234,10 +236,8 @@ const DateInput = ({
         styleText={selectedDate ? styles.valueText : styles.placeholderText}
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           commonStyles.filterAlign,
           styles.rightIconButton,
-          pickerIsOpen && commonStyles.inputFocused,
         ]}
       />
       <View style={Platform.OS === 'ios' ? styles.dropdownContainer : null}>
@@ -280,11 +280,7 @@ const DateInput = ({
   );
 };
 
-const getStyles = (
-  Colors: ThemeColors,
-  pickerIsOpen: boolean,
-  required: boolean,
-) =>
+const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
   StyleSheet.create({
     container: {
       width: '100%',
@@ -293,12 +289,13 @@ const getStyles = (
       zIndex: pickerIsOpen ? 100 : 0,
     },
     rightIconButton: {
-      borderColor: required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginLeft: 0,
       width: '100%',
+      height: undefined,
+      minHeight: 40,
+      marginHorizontal: 0,
+      marginRight: 0,
+      paddingLeft: 10,
+      paddingRight: 10,
     },
     dropdownContainer: {
       zIndex: pickerIsOpen ? 105 : 0,
@@ -319,9 +316,6 @@ const getStyles = (
     },
     title: {
       marginLeft: 10,
-      fontSize: 13,
-      fontWeight: '800',
-      color: Colors.secondaryColor_dark.background,
     },
     requiredDot: {
       width: 6,
@@ -331,16 +325,12 @@ const getStyles = (
       backgroundColor: Colors.errorColor.background,
     },
     valueText: {
-      flexShrink: 1,
-      fontSize: 16,
-      fontWeight: '700',
-      color: Colors.text,
+      flex: 1,
+      textAlign: 'left',
     },
     placeholderText: {
-      flexShrink: 1,
-      fontSize: 15,
-      fontWeight: '600',
-      color: Colors.secondaryColor_dark.background,
+      flex: 1,
+      textAlign: 'left',
     },
   });
 
