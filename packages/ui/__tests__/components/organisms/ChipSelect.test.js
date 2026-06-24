@@ -61,15 +61,15 @@ describe('ChipSelect Component', () => {
   }
 
   function checkChipSelected(elt, item, isSelected) {
-    const _viewElt = within(elt).getByTestId('chipContainer');
-    const _textElt = within(_viewElt).getByText(item.title);
+    const _textElt = within(elt).getByText(item.title);
 
-    expect(_viewElt).toBeTruthy();
     expect(_textElt).toBeTruthy();
-    checkChipStyle(_viewElt, _textElt, {
-      ...(item.color ?? Colors.primaryColor),
+    const color = item.color ?? Colors.primaryColor;
+
+    checkChipStyle(elt, _textElt, {
+      ...color,
       ...(isSelected
-        ? {}
+        ? {foreground: color.background}
         : {background_light: Colors.backgroundColor, foreground: Colors.text}),
     });
   }

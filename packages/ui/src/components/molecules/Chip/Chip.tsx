@@ -17,17 +17,17 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {Color, useThemeColor} from '../../../theme';
+import {sliceString} from '../../../utils';
 import {Text} from '../../atoms';
-import {Color, ThemeColors, useThemeColor} from '../../../theme';
-import {sliceString} from '../../../utils/strings';
 
 interface ChipProps {
   selected: boolean;
   title: string;
   onPress: () => void;
   selectedColor?: Color;
-  width?: number;
+  width?: number | null;
   marginHorizontal?: number;
   readonly?: boolean;
   numberOfLines?: number;
@@ -38,7 +38,7 @@ const Chip = ({
   selected,
   title,
   onPress,
-  selectedColor = null,
+  selectedColor,
   width = Dimensions.get('window').width * 0.4,
   marginHorizontal = 12,
   readonly = false,
@@ -48,8 +48,7 @@ const Chip = ({
   const Colors = useThemeColor();
 
   const chipColor = useMemo(() => {
-    let _chipColor: Color =
-      selectedColor == null ? Colors.primaryColor : selectedColor;
+    let _chipColor: Color = selectedColor ?? Colors.primaryColor;
 
     if (!selected) {
       _chipColor = {
@@ -62,50 +61,49 @@ const Chip = ({
     return _chipColor;
   }, [Colors, selected, selectedColor]);
 
-  const styles = useMemo(
-    () => getStyles(chipColor, Colors),
-    [Colors, chipColor],
-  );
+  const styles = useMemo(() => getStyles(chipColor), [chipColor]);
 
   return (
     <TouchableOpacity
-      style={[{width: width, marginHorizontal: marginHorizontal}, style]}
+      style={[
+        styles.container,
+        {width: width, marginHorizontal: marginHorizontal},
+        style,
+      ]}
       disabled={readonly}
       onPress={onPress}
       activeOpacity={0.8}
       testID="chipTouchable">
-      <View style={styles.container} testID="chipContainer">
-        <Text
-          style={styles.text}
-          textColor={selected ? chipColor.foreground : Colors.text}
-          numberOfLines={numberOfLines}
-          fontSize={14}>
-          {sliceString(title, 23)}
-        </Text>
-      </View>
+      <Text
+        style={[styles.text, selected ? styles.bold : null]}
+        textColor={selected ? chipColor.background : Colors.text}
+        numberOfLines={numberOfLines}
+        fontSize={12}>
+        {sliceString(title, 23)}
+      </Text>
     </TouchableOpacity>
   );
 };
 
-const getStyles = (chipColor: Color, Colors: ThemeColors) =>
+const getStyles = (chipColor: Color) =>
   StyleSheet.create({
     container: {
+      flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       paddingVertical: 5,
       paddingHorizontal: 5,
       marginVertical: 2,
-      borderRadius: 20,
-      borderWidth: 2,
+      borderRadius: 8,
+      borderWidth: 1,
       borderColor: chipColor.background,
       backgroundColor: chipColor.background_light,
-      elevation: 3,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
     },
     text: {
       textAlign: 'center',
+    },
+    bold: {
+      fontWeight: 'bold',
     },
   });
 
