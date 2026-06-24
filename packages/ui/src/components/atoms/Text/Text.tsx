@@ -17,14 +17,18 @@
  */
 
 import React, {useMemo} from 'react';
-import {Text as ReactNativeText, TextStyle} from 'react-native';
+import {
+  Text as ReactNativeText,
+  TextLayoutEvent,
+  TextStyle,
+} from 'react-native';
 import {useThemeColor, useWritingType} from '../../../theme';
 
 export interface TextProps {
   style?: any;
   numberOfLines?: number;
   adjustsFontSizeToFit?: boolean;
-  onTextLayout?: (any) => void;
+  onTextLayout?: (event: TextLayoutEvent) => void;
   children: any;
   textColor?: string;
   fontSize?: number;
