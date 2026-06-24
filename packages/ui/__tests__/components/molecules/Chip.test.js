@@ -54,13 +54,16 @@ describe('Chip Component', () => {
   it('should render a touchable chip with label', () => {
     const {getByTestId, getByText, props} = setupChip({selectedColor: null});
 
-    const _viewElt = getByTestId('chipContainer');
+    const _viewElt = getByTestId('chipTouchable');
     const _textElt = getByText(props.title);
 
     expect(_viewElt).toBeTruthy();
     expect(_textElt).toBeTruthy();
 
-    checkChipStyle(_viewElt, _textElt, Colors.primaryColor);
+    checkChipStyle(_viewElt, _textElt, {
+      ...Colors.primaryColor,
+      foreground: Colors.primaryColor.background,
+    });
   });
 
   it('should disable touchable when readonly', () => {
@@ -83,13 +86,17 @@ describe('Chip Component', () => {
   it('should use custom selected color', () => {
     const {getByTestId, getByText, props} = setupChip();
 
-    const _viewElt = getByTestId('chipContainer');
+    const _viewElt = getByTestId('chipTouchable');
     const _textElt = getByText(props.title);
 
     expect(_viewElt).toBeTruthy();
     expect(_textElt).toBeTruthy();
 
-    checkChipStyle(_viewElt, _textElt, props.selectedColor);
+    checkChipStyle(_viewElt, _textElt, {
+      foreground: props.selectedColor.background,
+      background_light: props.selectedColor.background_light,
+      background: props.selectedColor.background,
+    });
   });
 
   it('should use default colors when not selected', () => {
@@ -98,7 +105,7 @@ describe('Chip Component', () => {
       selectedColor: null,
     });
 
-    const _viewElt = getByTestId('chipContainer');
+    const _viewElt = getByTestId('chipTouchable');
     const _textElt = getByText(props.title);
 
     expect(_viewElt).toBeTruthy();
@@ -114,7 +121,7 @@ describe('Chip Component', () => {
   it('should use provided color border when not selected', () => {
     const {getByTestId, getByText, props} = setupChip({selected: false});
 
-    const _viewElt = getByTestId('chipContainer');
+    const _viewElt = getByTestId('chipTouchable');
     const _textElt = getByText(props.title);
 
     expect(_viewElt).toBeTruthy();

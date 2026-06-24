@@ -1,0 +1,5 @@
+{
+  "title": "ChipSelect: redesign chips with uniform height and width based on the available space",
+  "type": "refactor",
+  "packages": "ui"
+}
