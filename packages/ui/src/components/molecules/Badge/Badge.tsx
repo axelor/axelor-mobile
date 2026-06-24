@@ -19,7 +19,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
-import {addOpacityToHex} from '../../../utils';
 import {Text} from '../../atoms';
 
 interface BadgeProps {
@@ -62,7 +61,7 @@ const Badge = ({
 const getStyles = (color: Color) =>
   StyleSheet.create({
     container: {
-      backgroundColor: addOpacityToHex(color?.background, 0.3),
+      backgroundColor: color.background_light,
       borderRadius: 20,
       margin: 2,
       paddingHorizontal: 10,

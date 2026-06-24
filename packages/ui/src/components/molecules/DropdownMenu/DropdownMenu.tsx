@@ -60,7 +60,8 @@ const DropdownMenu = ({
       <TouchableOpacity
         style={iconWrapper == null ? styles.action : undefined}
         onPress={() => setVisible(!visible)}
-        testID="dropdownMenuTouchable">
+        testID="dropdownMenuTouchable"
+        activeOpacity={0.9}>
         {iconWrapper != null ? iconWrapper(icon) : icon}
       </TouchableOpacity>
       {visible && (
