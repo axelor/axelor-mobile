@@ -55,7 +55,7 @@ const HtmlInput = ({
   onBlur,
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
-  const editor = useRef(null);
+  const editor = useRef<any>(null);
   const wrapperRef = useRef(null);
 
   const [editorAttached, setEditorAttached] = useState(false);
@@ -115,7 +115,8 @@ const HtmlInput = ({
             disabled={readonly}
             // eslint-disable-next-line react-native/no-inline-styles
             editorStyle={{
-              backgroundColor: editorBackgroundColor || Colors.backgroundColor,
+              backgroundColor:
+                editorBackgroundColor ?? Colors.screenBackgroundColor,
               color: Colors.text,
               placeholderColor: Colors.placeholderTextColor,
               contentCSSText: 'word-wrap: break-word',

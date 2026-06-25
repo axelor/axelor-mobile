@@ -77,7 +77,7 @@ const EditableHtmlInput = ({
         {!readonly && (
           <Icon
             name={isEditable ? 'pencil-fill' : 'check-lg'}
-            size={15}
+            size={14}
             touchable
             onPress={handleIconPress}
           />
@@ -101,11 +101,10 @@ const styles = StyleSheet.create({
     minHeight: 40,
   },
   htmlInput: {
-    fontSize: 14,
     flex: 1,
   },
   htmlToolBar: {
-    backgroundColor: null,
+    backgroundColor: undefined,
     marginLeft: -5,
   },
 });

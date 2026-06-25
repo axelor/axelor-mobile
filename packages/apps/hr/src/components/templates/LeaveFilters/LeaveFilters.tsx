@@ -88,7 +88,7 @@ const LeaveFilters = ({
           }
           onSwitch={() => {
             onChangeStatus(null);
-            onChangeMode(_mode =>
+            onChangeMode((_mode: number) =>
               _mode === Leave.mode.myLeaves
                 ? Leave.mode.leavesToValidate
                 : Leave.mode.myLeaves,
@@ -99,7 +99,7 @@ const LeaveFilters = ({
       {mode === Leave.mode.myLeaves ? (
         <Picker
           listItems={leaveStatusList}
-          title={I18n.t('Hr_Status')}
+          placeholder={I18n.t('Hr_Status')}
           onValueChange={onChangeStatus}
           labelField="title"
           valueField="key"

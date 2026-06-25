@@ -81,7 +81,7 @@ describe('FormIncrementInput Component', () => {
     act(() => increment.props.onBlur());
 
     expect(getByTestId('formIncrementInnerContainer')).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
     });
   });
 
@@ -100,7 +100,7 @@ describe('FormIncrementInput Component', () => {
     const {getByTestId} = setupFormIncrementInput({required: true});
 
     expect(getByTestId('formIncrementInnerContainer')).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
     });
   });
 

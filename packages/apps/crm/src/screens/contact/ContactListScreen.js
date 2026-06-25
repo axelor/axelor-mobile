@@ -59,7 +59,6 @@ const ContactListScreen = ({navigation}) => {
         searchPlaceholder={I18n.t('Crm_Contacts')}
         topFixedItems={
           <ToggleSwitch
-            style={styles.headerItem}
             leftTitle={I18n.t('Crm_All')}
             rightTitle={I18n.t('Crm_AssignedToMe')}
             onSwitch={() => setAssigned(!assigned)}
@@ -91,9 +90,6 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,
     marginVertical: 4,
-  },
-  headerItem: {
-    alignSelf: 'center',
   },
 });
 

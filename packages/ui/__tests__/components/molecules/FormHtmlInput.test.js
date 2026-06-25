@@ -81,7 +81,7 @@ describe('FormHtmlInput Component', () => {
     act(() => htmlInput.props.onBlur());
 
     expect(getByTestId('formHtmlInputWrapper')).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
     });
   });
 
@@ -100,7 +100,7 @@ describe('FormHtmlInput Component', () => {
     const {getByTestId} = setupFormHtmlInput({required: true});
 
     expect(getByTestId('formHtmlInputWrapper')).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
     });
   });
 

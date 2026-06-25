@@ -18,9 +18,9 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Slider, Text} from '../../atoms';
 import {Color, useThemeColor} from '../../../theme';
 import {getCommonStyles} from '../../../utils';
+import {Slider, Text} from '../../atoms';
 
 interface FormSliderProps {
   style?: any;
@@ -57,21 +57,11 @@ const FormSlider = ({
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
-  const styles = useMemo(
-    () => getStyles(Colors.secondaryColor.background),
-    [Colors],
-  );
-
   return (
     <View testID="formSliderContainer" style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <View
-        style={[
-          commonStyles.filter,
-          commonStyles.filterSize,
-          commonStyles.filterAlign,
-          styles.content,
-        ]}>
+        style={[commonStyles.filter, commonStyles.filterAlign, styles.content]}>
         <Slider
           color={color}
           minValue={minValue}
@@ -90,24 +80,19 @@ const FormSlider = ({
   );
 };
 
-const getStyles = (color: string) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      minHeight: 62,
-      alignSelf: 'center',
-    },
-    title: {
-      marginLeft: 10,
-    },
-    content: {
-      justifyContent: 'space-around',
-      width: '100%',
-      marginHorizontal: 0,
-      paddingHorizontal: 4,
-      borderWidth: 1,
-      borderColor: color,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    minHeight: 62,
+    alignSelf: 'center',
+  },
+  title: {
+    marginLeft: 10,
+  },
+  content: {
+    width: '100%',
+    marginHorizontal: 0,
+  },
+});
 
 export default FormSlider;

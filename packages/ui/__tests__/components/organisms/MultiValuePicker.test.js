@@ -77,7 +77,6 @@ describe('MultiValuePicker Component', () => {
       expect(within(_badgeElts.at(idx)).getByText(_i.title)).toBeTruthy();
       expect(_badgeElts.at(idx)).toHaveStyle({
         backgroundColor: _i.color.background_light,
-        borderColor: _i.color.background,
       });
     });
   });
@@ -130,11 +129,9 @@ describe('MultiValuePicker Component', () => {
   it('should apply required styling when props is true', () => {
     const {getByTestId} = setupMultiValuePicker({required: true});
 
-    expect(
-      within(getByTestId('multiValuePickerButtonTouchable')).getByTestId(
-        'cardContainer',
-      ),
-    ).toHaveStyle({borderColor: Colors.errorColor.background});
+    expect(getByTestId('multiValuePickerButtonTouchable')).toHaveStyle({
+      borderColor: Colors.errorColor.background,
+    });
   });
 
   it('should apply custom style to container when provided', () => {
@@ -148,11 +145,9 @@ describe('MultiValuePicker Component', () => {
       pickerStyle: {width: 200},
     });
 
-    expect(
-      within(getByTestId('multiValuePickerButtonTouchable')).getByTestId(
-        'cardContainer',
-      ),
-    ).toHaveStyle(props.pickerStyle);
+    expect(getByTestId('multiValuePickerButtonTouchable')).toHaveStyle(
+      props.pickerStyle,
+    );
   });
 
   it('should apply custom style to title when provided', () => {

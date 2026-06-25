@@ -91,7 +91,7 @@ const ControlEntryCard = ({
 
   return (
     <ObjectCard
-      style={ style}
+      style={style}
       borderLeftColor={borderColor}
       onPress={onPress}
       showArrow={false}

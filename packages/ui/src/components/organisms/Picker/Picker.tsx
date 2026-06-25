@@ -18,7 +18,7 @@
 
 import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {ThemeColors, useThemeColor} from '../../../theme';
+import {useThemeColor} from '../../../theme';
 import {checkNullString, getCommonStyles, getFromList} from '../../../utils';
 import {useOutsideClickHandler} from '../../../hooks';
 import {Icon, Text} from '../../atoms';
@@ -141,8 +141,8 @@ const Picker = ({
         : visibleListLength * ITEM_HEIGHT + 5;
     }
 
-    return null;
-  }, [emptyValue, isScrollViewContainer, listItems, isOpen, popup]);
+    return undefined;
+  }, [isScrollViewContainer, isOpen, popup, listItems, emptyValue]);
 
   const _required = useMemo(
     () => required && selectedItem == null,
@@ -150,21 +150,16 @@ const Picker = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
   const _displayValue = useCallback(
     (item: any) => {
       if (item == null) return '';
-
-      if (displayValue) {
-        return displayValue(item);
-      } else if (labelField) {
-        return item[labelField];
-      } else {
-        return item[valueField];
-      }
+      if (displayValue) return displayValue(item);
+      if (labelField) return item[labelField];
+      return item[valueField];
     },
     [displayValue, labelField, valueField],
   );
@@ -177,12 +172,11 @@ const Picker = ({
   }, [_displayValue, placeholder, selectedItem]);
 
   const styles = useMemo(
-    () =>
-      getStyles(Colors, _required, marginBottom, isOpen, displayPlaceholder),
-    [Colors, _required, marginBottom, isOpen, displayPlaceholder],
+    () => getStyles(isOpen, marginBottom),
+    [marginBottom, isOpen],
   );
 
-  if (readonly) {
+  if (readonly)
     return (
       <FormInput
         style={[styles.container, style]}
@@ -191,7 +185,6 @@ const Picker = ({
         readOnly
       />
     );
-  }
 
   const renderSelection = () => (
     <SelectionContainer
@@ -232,16 +225,18 @@ const Picker = ({
           />
         }
         title={displayPlaceholder ? placeholder : _displayValue(selectedItem)}
-        styleText={styles.textPicker}
+        titleColor={
+          displayPlaceholder ? Colors.placeholderTextColor : Colors.text
+        }
+        styleText={styles.text}
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           commonStyles.filterAlign,
-          isFocused && commonStyles.inputFocused,
-          styles.content,
+          styles.rightIconButton,
           multiLineLabels && styles.adjustableHeight,
           pickerStyle,
         ]}
+        showWrapper={false}
       />
       {popup ? (
         <Alert
@@ -258,13 +253,7 @@ const Picker = ({
   );
 };
 
-const getStyles = (
-  Colors: ThemeColors,
-  _required: boolean,
-  marginBottom: number | null,
-  isOpen: boolean,
-  displayPlaceholder: boolean,
-) =>
+const getStyles = (isOpen: boolean, marginBottom?: number) =>
   StyleSheet.create({
     container: {
       width: '90%',
@@ -274,21 +263,22 @@ const getStyles = (
     containerZIndex: {
       zIndex: isOpen ? 100 : 0,
     },
-    content: {
+    rightIconButton: {
       width: '100%',
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
+      height: undefined,
       minHeight: 40,
+      marginHorizontal: 0,
+      marginRight: 0,
+      paddingLeft: 10,
+      paddingRight: 10,
     },
     adjustableHeight: {
       height: undefined,
       paddingVertical: 10,
     },
-    textPicker: {
-      color: displayPlaceholder ? Colors.placeholderTextColor : Colors.text,
+    text: {
+      flex: 1,
+      textAlign: 'left',
     },
     title: {
       marginLeft: 10,

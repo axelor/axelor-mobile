@@ -16,15 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useEffect, useMemo, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   checkNullString,
-  getCommonStyles,
   Icon,
   IconInput,
   Text,
-  ThemeColors,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -44,7 +42,7 @@ const InputBarCodeCard = ({
   defaultValue,
   readonly = false,
   required = false,
-  onChange = () => {},
+  onChange,
   scanKeySearch,
 }: {
   style?: any;
@@ -53,7 +51,7 @@ const InputBarCodeCard = ({
   defaultValue?: string;
   readonly?: boolean;
   required?: boolean;
-  onChange: (value: string) => void;
+  onChange: (_v?: string) => void;
   scanKeySearch: string;
 }) => {
   const Colors = useThemeColor();
@@ -67,9 +65,9 @@ const InputBarCodeCard = ({
   const [inputData, setInputData] = useState(defaultValue);
 
   const handleValueChange = useCallback(
-    (_v: string) => {
+    (_v?: string) => {
       setInputData(_v);
-      onChange(_v);
+      onChange?.(_v);
     },
     [onChange],
   );
@@ -82,21 +80,6 @@ const InputBarCodeCard = ({
     }
   }, [handleValueChange, scanData, scannedValue]);
 
-  const _required = useMemo(
-    () => required && (inputData == null || inputData === ''),
-    [required, inputData],
-  );
-
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
-    [Colors, _required],
-  );
-
-  const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
-  );
-
   useEffect(() => {
     setInputData(defaultValue);
   }, [defaultValue]);
@@ -105,38 +88,30 @@ const InputBarCodeCard = ({
     <View style={[styles.container, style]}>
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <IconInput
-        style={[
-          commonStyles.filter,
-          commonStyles.filterSize,
-          commonStyles.filterAlign,
-          styles.content,
-        ]}
+        style={styles.content}
         placeholder={placeholder}
         value={inputData}
         onChange={handleValueChange}
         readOnly={readonly}
         required={required}
         onSelection={enableScanner}
-        onEndFocus={() => {}}
         rightIconsList={[
           <Icon
             name="arrow-counterclockwise"
-            size={20}
+            size={14}
             visible={inputData !== defaultValue}
             touchable={!readonly}
-            style={styles.icon}
             onPress={() => handleValueChange(defaultValue)}
           />,
           <Icon
             name="qr-code-scan"
-            size={20}
+            size={14}
             color={
               !readonly && scannerEnabled && scanKey === scanKeySearch
                 ? Colors.primaryColor.background
                 : Colors.secondaryColor_dark.background
             }
             touchable={!readonly}
-            style={styles.icon}
             onPress={onScanPress}
           />,
         ]}
@@ -146,29 +121,18 @@ const InputBarCodeCard = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, required: boolean) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      minHeight: 62,
-      alignSelf: 'center',
-    },
-    content: {
-      width: '100%',
-      borderColor: required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-      minHeight: 40,
-    },
-    title: {
-      marginLeft: 10,
-    },
-    icon: {
-      width: '7%',
-      margin: 3,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  title: {
+    marginLeft: 10,
+  },
+  content: {
+    width: '100%',
+    marginHorizontal: 0,
+  },
+});
 
 export default InputBarCodeCard;

@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactElement, useMemo, useState} from 'react';
+import React, {ReactElement, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ThemeColors, useThemeColor} from '../../../theme';
-import {Text} from '../../atoms';
+import {useThemeColor} from '../../../theme';
 import {getCommonStyles} from '../../../utils';
+import {Text} from '../../atoms';
 
 interface ToggleSwitchProps {
   styleContainer?: any;
@@ -39,79 +39,99 @@ const ToggleSwitch = ({
   leftElement,
   rightTitle,
   rigthElement,
-  onSwitch = () => {},
+  onSwitch,
 }: ToggleSwitchProps) => {
   const Colors = useThemeColor();
 
   const [active, setActive] = useState(true);
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
-  const onLeftPress = () => {
+  const onLeftPress = useCallback(() => {
     setActive(true);
-    onSwitch();
-  };
+    onSwitch?.();
+  }, [onSwitch]);
 
-  const onRightPress = () => {
+  const onRightPress = useCallback(() => {
     setActive(false);
-    onSwitch();
-  };
+    onSwitch?.();
+  }, [onSwitch]);
+
+  const renderSide = useCallback(
+    (
+      isActive: boolean,
+      onPress: () => void,
+      testId: string,
+      title: string,
+      component?: ReactElement | React.JSX.Element,
+    ) => {
+      return (
+        <TouchableOpacity
+          style={[
+            styles.toggle,
+            isActive && {
+              backgroundColor: Colors.primaryColor.background_light,
+            },
+            styleToogle,
+          ]}
+          disabled={isActive}
+          onPress={onPress}
+          testID={testId}>
+          <Text
+            style={isActive ? styles.boldText : undefined}
+            textColor={isActive ? Colors.primaryColor.background : undefined}>
+            {title}
+          </Text>
+          {component != null && React.cloneElement(component)}
+        </TouchableOpacity>
+      );
+    },
+    [Colors, styleToogle],
+  );
 
   return (
     <View
       style={[
         commonStyles.filter,
-        commonStyles.filterSize,
+        commonStyles.filterAlign,
         styles.container,
         styleContainer,
       ]}
       testID="toggleSwitchContainer">
-      <TouchableOpacity
-        style={[styles.toggle, active && styles.active, styleToogle]}
-        disabled={active}
-        onPress={onLeftPress}
-        testID="toggleSwitchLeftButton">
-        <Text>{leftTitle}</Text>
-        {leftElement != null && React.cloneElement(leftElement)}
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.toggle, !active && styles.active, styleToogle]}
-        disabled={!active}
-        onPress={onRightPress}
-        testID="toggleSwitchRightButton">
-        <Text>{rightTitle}</Text>
-        {rigthElement != null && React.cloneElement(rigthElement)}
-      </TouchableOpacity>
+      {renderSide(
+        active,
+        onLeftPress,
+        'toggleSwitchLeftButton',
+        leftTitle,
+        leftElement,
+      )}
+      {renderSide(
+        !active,
+        onRightPress,
+        'toggleSwitchRightButton',
+        rightTitle,
+        rigthElement,
+      )}
     </View>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    container: {
-      borderColor: Colors.secondaryColor.background_light,
-      borderWidth: 2,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-      margin: 5,
-      padding: 2,
-    },
-    toggle: {
-      width: '54%',
-      height: 40,
-      borderRadius: 7,
-      padding: 5,
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-    active: {
-      backgroundColor: Colors.primaryColor.background_light,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    paddingHorizontal: 0,
+  },
+  toggle: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+    padding: 10,
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+});
 
 export default ToggleSwitch;

@@ -16,22 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  checkNullString,
-  getCommonStyles,
-  Icon,
-  IconInput,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React from 'react';
+import {Icon, IconInput} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {MfaMethod, getMfaPlaceholderKey} from '../../mfa';
 
 interface MfaCodeInputProps {
   style?: any;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (_v?: string) => void;
   selectedMethod?: MfaMethod;
 }
 
@@ -41,35 +34,19 @@ const MfaCodeInput = ({
   onChange,
   selectedMethod,
 }: MfaCodeInputProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
-
-  const commonStyles = useMemo(
-    () => getCommonStyles(Colors, checkNullString(value)),
-    [Colors, value],
-  );
 
   return (
     <IconInput
-      style={[style, commonStyles.inputFocused]}
+      style={style}
       value={value}
       onChange={onChange}
       placeholder={I18n.t(getMfaPlaceholderKey(selectedMethod))}
       keyboardType="number-pad"
       required
-      leftIconsList={[
-        <Icon name="shield-lock-fill" size={17} style={styles.icon} />,
-      ]}
-      onEndFocus={() => {}}
+      leftIconsList={[<Icon name="shield-lock-fill" size={14} />]}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  icon: {
-    width: '7%',
-    margin: 3,
-  },
-});
 
 export default MfaCodeInput;
