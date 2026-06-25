@@ -26,12 +26,14 @@ import {useOnline} from '../../features/onlineSlice';
 import {formatDateTime} from '../../utils/formatters';
 import {useLoaderListener} from '../../loader';
 import {useThemesRegister} from '../themes';
+import {useSettingsRegister} from '../settings';
 
 export const useAuthHeaders = () => {
   useUserProfileActions();
   useAuthHeaderBands();
   useLoaderHeaderBand();
   useThemesRegister();
+  useSettingsRegister();
 };
 
 const useUserProfileActions = () => {

@@ -1,0 +1,6 @@
+{
+  "title": "Settings: allow modules to register their own preferences (pickers, switches and buttons) on the settings screen",
+  "type": "feat",
+  "packages": "core",
+  "description": "The settings screen now builds its content from registered settings items instead of a fixed layout. Each item can define its type, order and a condition to be displayed, so additional applications can contribute their own preferences without overriding the screen."
+}

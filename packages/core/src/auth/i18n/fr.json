@@ -6,6 +6,7 @@
   "Auth_Dev_Mode": "Environnement de test",
   "Auth_Disconnected": "Utilisateur déconnecté",
   "Auth_LooseConnectionWithServer": "La session avec le serveur a expirée.",
+  "Auth_Preferences": "Préférences",
   "User_User": "Utilisateur",
   "User_VirtualKeyboardVisibility": "Visibilité du clavier virtuel",
   "User_ShowFilter": "Afficher les filtres",
