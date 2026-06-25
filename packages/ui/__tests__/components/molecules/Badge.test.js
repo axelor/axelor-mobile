@@ -52,7 +52,6 @@ describe('Badge Component', () => {
 
     expect(getByTestId('bagdeContainer')).toHaveStyle({
       backgroundColor: Colors.primaryColor.background_light,
-      borderColor: Colors.primaryColor.background,
     });
   });
 
@@ -63,10 +62,9 @@ describe('Badge Component', () => {
 
     expect(getByTestId('bagdeContainer')).toHaveStyle({
       backgroundColor: props.color.background_light,
-      borderColor: props.color.background,
     });
     expect(getByText(props.title)).toHaveStyle({
-      color: props.color.foreground,
+      color: props.color.background,
     });
   });
 

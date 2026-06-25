@@ -48,7 +48,9 @@ const RightIconButton = ({
       onPress={onPress}
       activeOpacity={0.9}
       testID="rightIconButtonContainer">
-      <Container style={[styles.container, style]}>
+      <Container
+        style={[styles.container, style]}
+        testID={showWrapper ? undefined : 'rightIconButtonContent'}>
         <Text
           style={[styles.text, styleText]}
           numberOfLines={numberOfLines}

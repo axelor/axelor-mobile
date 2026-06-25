@@ -24,18 +24,21 @@ interface CardProps {
   style?: any;
   children: any;
   wrapperRef?: RefObject<any>;
+  testID?: string;
 }
 
-const Card = ({style, children, wrapperRef}: CardProps) => {
+const Card = ({
+  style,
+  children,
+  wrapperRef,
+  testID = 'cardContainer',
+}: CardProps) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View
-      ref={wrapperRef}
-      testID="cardContainer"
-      style={[styles.container, style]}>
+    <View ref={wrapperRef} testID={testID} style={[styles.container, style]}>
       {children}
     </View>
   );

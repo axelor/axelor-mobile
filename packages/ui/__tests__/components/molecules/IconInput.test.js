@@ -70,7 +70,7 @@ describe('IconInput Component', () => {
     const _containerElt = getByTestId('iconInputContainer');
 
     expect(_containerElt).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
     });
 
     fireEvent(_inputElt, 'focus');
@@ -84,7 +84,7 @@ describe('IconInput Component', () => {
 
     expect(props.onEndFocus).toHaveBeenCalled();
     expect(_containerElt).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
     });
   });
 
@@ -107,7 +107,7 @@ describe('IconInput Component', () => {
     );
 
     expect(getByTestId('iconInputContainer')).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.errorColor.background,
     });
 
     fireEvent(getByPlaceholderText(props.placeholder), 'focus');

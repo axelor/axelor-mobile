@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {ThemeColors, useThemeColor} from '../../../theme';
+import {getCommonStyles} from '../../../utils';
+import {useThemeColor} from '../../../theme';
 import {Switch, Text} from '../../atoms';
 
 interface SwitchCardProps {
@@ -27,7 +27,7 @@ interface SwitchCardProps {
   title: string;
   defaultValue: boolean;
   readonly?: boolean;
-  onToggle: (any) => void;
+  onToggle: (_v?: boolean) => void;
 }
 
 const SwitchCard = ({
@@ -35,19 +35,17 @@ const SwitchCard = ({
   title,
   defaultValue,
   readonly = false,
-  onToggle = () => {},
+  onToggle,
 }: SwitchCardProps) => {
   const Colors = useThemeColor();
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <View
       style={[
         commonStyles.filter,
         commonStyles.filterAlign,
-        commonStyles.filterSize,
         styles.container,
         style,
       ]}
@@ -65,21 +63,18 @@ const SwitchCard = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-      minHeight: 40,
-    },
-    text: {
-      flex: 3,
-    },
-    switch: {
-      flex: 1,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    marginHorizontal: 0,
+    minHeight: 40,
+  },
+  text: {
+    flex: 3,
+  },
+  switch: {
+    flex: 1,
+  },
+});
 
 export default SwitchCard;

@@ -59,6 +59,4 @@ export const getCommonStyles = (
       height: 50,
       minHeight: 40,
     },
-    filterSize: {},
-    inputFocused: {},
   });

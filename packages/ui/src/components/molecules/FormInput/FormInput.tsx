@@ -68,8 +68,8 @@ const FormInput = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
   const handleSelection = useCallback(() => {
@@ -93,10 +93,8 @@ const FormInput = ({
         testID="formInputInnerContainer"
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           commonStyles.filterAlign,
           styles.content,
-          isFocused && commonStyles.inputFocused,
           adjustHeightWithLines && {height: undefined},
         ]}>
         <Input
@@ -121,7 +119,6 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    borderWidth: 1,
     marginHorizontal: 0,
     minHeight: 40,
   },

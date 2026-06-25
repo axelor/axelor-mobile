@@ -23,7 +23,6 @@ import {
   checkNullString,
   Icon,
   Text,
-  ThemeColors,
   getCommonStyles,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -75,7 +74,7 @@ const SignatureInput = ({
   const ref = useRef<SignatureViewRef>(null);
   const Colors = useThemeColor();
 
-  const {baseUrl, jsessionId, token} = useSelector((state: any) => state.auth);
+  const {baseUrl, jsessionId, token} = useSelector(state => state.auth);
 
   const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
   const [editSignature, setEditSignature] = useState<boolean>(false);
@@ -96,14 +95,11 @@ const SignatureInput = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, unsavedChanges),
+    [Colors, _required, unsavedChanges],
   );
 
-  const styles = useMemo(
-    () => getStyles(Colors, canvaSize, _required),
-    [Colors, canvaSize, _required],
-  );
+  const styles = useMemo(() => getStyles(canvaSize), [canvaSize]);
 
   const handleClose = useCallback(() => {
     popup && setPopupIsOpen(false);
@@ -112,11 +108,11 @@ const SignatureInput = ({
   }, [popup]);
 
   const handleSave = useCallback(() => {
-    ref.current.readSignature();
+    ref?.current?.readSignature();
   }, []);
 
   const handleClear = useCallback(() => {
-    ref.current.clearSignature();
+    ref?.current?.clearSignature();
     setUnsavedChanges(false);
   }, []);
 
@@ -202,9 +198,8 @@ const SignatureInput = ({
       commonStyles.filter,
       commonStyles.filterAlign,
       styles.contentContainer,
-      unsavedChanges ? commonStyles.inputFocused : null,
     ],
-    [commonStyles, styles, unsavedChanges],
+    [commonStyles, styles],
   );
 
   const renderSignatureCanva = () => {
@@ -330,7 +325,7 @@ const SignatureInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
+const getStyles = (canvaSize: any) =>
   StyleSheet.create({
     container: {
       width: '90%',
@@ -340,10 +335,6 @@ const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
       height: null,
       paddingVertical: 5,
       paddingHorizontal: 10,
-      borderColor: required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
       marginHorizontal: 0,
     },
     signatureContainer: {
