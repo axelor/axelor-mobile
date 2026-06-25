@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {fireEvent} from '@testing-library/react-native';
-import {IconTile, Text, addOpacityToHex} from '@axelor/aos-mobile-ui';
+import {IconTile, Text} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('IconTile Component', () => {
@@ -45,7 +45,7 @@ describe('IconTile Component', () => {
     const {getByTestId, props} = setupIconTile();
 
     expect(getByTestId('iconTile')).toHaveStyle({
-      backgroundColor: addOpacityToHex(Colors.primaryColor.background, 0.3),
+      backgroundColor: Colors.primaryColor.background_light,
     });
     expect(getByTestId(`icon-${props.icon}`).props.fill).toBe(
       Colors.primaryColor.background,
@@ -56,7 +56,7 @@ describe('IconTile Component', () => {
     const {getByTestId, props} = setupIconTile({color: Colors.infoColor});
 
     expect(getByTestId('iconTile')).toHaveStyle({
-      backgroundColor: addOpacityToHex(Colors.infoColor.background, 0.3),
+      backgroundColor: Colors.infoColor.background_light,
     });
     expect(getByTestId(`icon-${props.icon}`).props.fill).toBe(
       Colors.infoColor.background,

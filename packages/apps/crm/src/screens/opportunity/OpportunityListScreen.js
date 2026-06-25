@@ -81,7 +81,6 @@ const OpportunityListScreen = ({navigation}) => {
         searchPlaceholder={I18n.t('Crm_Opportunity')}
         topFixedItems={
           <ToggleSwitch
-            style={styles.headerItem}
             leftTitle={I18n.t('Crm_All')}
             rightTitle={I18n.t('Crm_AssignedToMe')}
             onSwitch={() => setAssigned(!assigned)}
@@ -91,7 +90,7 @@ const OpportunityListScreen = ({navigation}) => {
           <MultiValuePicker
             style={styles.headerItem}
             listItems={opportunityStatusListItems}
-            title={I18n.t('Base_Status')}
+            placeholder={I18n.t('Base_Status')}
             onValueChange={statusList => setSelectedStatus(statusList)}
           />
         }

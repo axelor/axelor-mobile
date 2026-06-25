@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Text} from '../../atoms';
 
 interface RightIconProps {
@@ -25,8 +25,10 @@ interface RightIconProps {
   styleText?: any;
   onPress: () => void;
   title?: string;
+  titleColor?: string;
   icon: React.ReactNode;
   numberOfLines?: number;
+  showWrapper?: boolean;
 }
 
 const RightIconButton = ({
@@ -34,20 +36,29 @@ const RightIconButton = ({
   styleText,
   onPress,
   title,
+  titleColor,
   icon,
   numberOfLines = 2,
+  showWrapper = true,
 }: RightIconProps) => {
+  const Container = showWrapper ? Card : View;
+
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.9}
       testID="rightIconButtonContainer">
-      <Card style={[styles.container, style]}>
-        <Text style={[styleText, styles.text]} numberOfLines={numberOfLines}>
+      <Container
+        style={[styles.container, style]}
+        testID={showWrapper ? undefined : 'rightIconButtonContent'}>
+        <Text
+          style={[styles.text, styleText]}
+          numberOfLines={numberOfLines}
+          textColor={titleColor}>
           {title ?? ''}
         </Text>
         {icon}
-      </Card>
+      </Container>
     </TouchableOpacity>
   );
 };

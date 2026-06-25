@@ -16,54 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  getCommonStyles,
-  Icon,
-  IconInput,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import useTranslator from '../../../i18n/hooks/use-translator';
-import {checkNullString} from '../../../utils';
+import React from 'react';
+import {Icon, IconInput} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
+
+interface SessionNameInputProps {
+  style?: any;
+  value?: string;
+  onChange?: (_v?: string) => void;
+  readOnly?: boolean;
+  showRequiredFields?: boolean;
+  hidden?: boolean;
+}
 
 const SessionNameInput = ({
   style,
   value,
   onChange,
-  readOnly,
+  readOnly = false,
   showRequiredFields = false,
   hidden = false,
-}) => {
+}: SessionNameInputProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
 
-  const commonStyles = useMemo(
-    () => getCommonStyles(Colors, checkNullString(value)),
-    [Colors, value],
-  );
-
-  if (hidden) {
-    return null;
-  }
+  if (hidden) return null;
 
   return (
     <IconInput
-      style={[style, showRequiredFields ? commonStyles.inputFocused : null]}
+      style={style}
       value={value}
       onChange={onChange}
       readOnly={readOnly}
+      required={showRequiredFields}
       placeholder={I18n.t('Base_Connection_SessionName')}
-      leftIconsList={[<Icon name="tag-fill" size={17} style={styles.icon} />]}
+      leftIconsList={[<Icon name="tag-fill" size={14} />]}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  icon: {
-    width: '7%',
-    margin: 3,
-  },
-});
 
 export default SessionNameInput;

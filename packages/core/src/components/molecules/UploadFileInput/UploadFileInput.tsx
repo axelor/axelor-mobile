@@ -23,9 +23,9 @@ import {
   Text,
   getCommonStyles,
   useThemeColor,
-  ThemeColors,
   Image,
   Icon,
+  VerticalRule,
 } from '@axelor/aos-mobile-ui';
 import {deleteMetaFile, uploadBase64} from '../../../api/metafile-api';
 import {useFileApi} from '../../../apiProviders';
@@ -40,9 +40,9 @@ import {
 } from '../../../features/cameraSlice';
 
 const DEFAULT_MAX_FILE_SIZE = 5000000;
-const BUTTON_SIZE = 28;
+const BUTTON_SIZE = 14;
 
-const isMetaFile = file => {
+const isMetaFile = (file: any) => {
   return (
     file != null &&
     typeof file === 'object' &&
@@ -61,6 +61,8 @@ const formatFileSize = (size: number): string => {
       return (_size / Math.pow(1000, i - 1)).toFixed(2) + ' ' + labels[i - 1];
     }
   }
+
+  return `0 ${labels[0]}`;
 };
 
 interface UploadFileInputProps {
@@ -130,10 +132,8 @@ const UploadFileInput = ({
     return documentTypesAllowed !== 'pdf';
   }, [canTakePicture, documentTypesAllowed]);
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
     [Colors, _required],
   );
 
@@ -251,16 +251,25 @@ const UploadFileInput = ({
     return displayPreview && selectedFile != null;
   }, [displayPreview, selectedFile]);
 
+  const canDelete = useMemo(
+    () => canDeleteFile && selectedFile != null && !readonly,
+    [canDeleteFile, selectedFile, readonly],
+  );
+  const canView = useMemo(() => isMetaFile(selectedFile), [selectedFile]);
+  const canCamera = useMemo(
+    () => selectedFile == null && !readonly && _enablePicture,
+    [selectedFile, readonly, _enablePicture],
+  );
+  const canUpload = useMemo(
+    () => selectedFile == null && !readonly,
+    [selectedFile, readonly],
+  );
+
   return (
     <View style={[styles.container, style]}>
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <View
-        style={[
-          commonStyles.filter,
-          commonStyles.filterSize,
-          commonStyles.filterAlign,
-          styles.content,
-        ]}>
+        style={[commonStyles.filter, commonStyles.filterAlign, styles.content]}>
         {canDisplayPreview ? (
           <Image
             imageSize={styles.imageSize}
@@ -270,52 +279,71 @@ const UploadFileInput = ({
                 ? formatMetafileURI(selectedFile?.id)
                 : {uri: selectedFile?.base64}
             }
-            defaultIconSize={60}
+            defaultIconSize={50}
           />
         ) : null}
-        <Text style={styles.fileName} numberOfLines={1}>
+        <Text
+          style={styles.flex}
+          numberOfLines={1}
+          textColor={selectedFile ? Colors.text : Colors.placeholderTextColor}>
           {selectedFile
             ? selectedFile.name || selectedFile.fileName
             : I18n.t('Base_ChooseFile')}
         </Text>
-        <View style={styles.buttons}>
-          {canDeleteFile && selectedFile != null && !readonly && (
+        {[
+          canDelete ? (
             <Icon
+              key="delete"
               name="x-lg"
               size={BUTTON_SIZE}
-              touchable={true}
+              color={Colors.primaryColor.background}
+              touchable
               onPress={handleFileDelete}
-              style={styles.action}
             />
-          )}
-          {isMetaFile(selectedFile) && (
+          ) : null,
+          canView ? (
             <Icon
+              key="view"
               name="arrows-angle-expand"
               size={BUTTON_SIZE}
-              touchable={true}
+              color={Colors.primaryColor.background}
+              touchable
               onPress={handleFileView}
-              style={styles.action}
             />
-          )}
-          {selectedFile == null && !readonly && _enablePicture && (
+          ) : null,
+          canCamera ? (
             <Icon
+              key="camera"
               name="camera-fill"
               size={BUTTON_SIZE}
-              touchable={true}
+              color={Colors.primaryColor.background}
+              touchable
               onPress={handleCamera}
-              style={styles.action}
             />
-          )}
-          {selectedFile == null && !readonly && (
+          ) : null,
+          canUpload ? (
             <Icon
+              key="upload"
               name="upload"
               size={BUTTON_SIZE}
-              touchable={true}
+              color={Colors.primaryColor.background}
+              touchable
               onPress={() => handleDocumentSelection(handleDocumentPick)}
-              style={styles.action}
             />
-          )}
-        </View>
+          ) : null,
+        ]
+          .filter(_i => _i != null)
+          .map((iconComponent, index) => (
+            <React.Fragment key={index}>
+              {index > 0 && (
+                <VerticalRule
+                  style={styles.divider}
+                  color={Colors.secondaryColor.background_light}
+                />
+              )}
+              {React.cloneElement(iconComponent, {key: index})}
+            </React.Fragment>
+          ))}
       </View>
       {sizeError && (
         <Text textColor={Colors.errorColor.background} style={styles.error}>
@@ -328,43 +356,37 @@ const UploadFileInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      alignSelf: 'center',
-    },
-    content: {
-      width: '100%',
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-      height: null,
-      minHeight: 40,
-    },
-    title: {
-      marginLeft: 10,
-    },
-    fileName: {
-      width: '60%',
-    },
-    buttons: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-    },
-    action: {
-      marginHorizontal: 4,
-    },
-    imageSize: {
-      height: 60,
-      width: 60,
-    },
-    error: {
-      marginLeft: 5,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  title: {
+    marginLeft: 10,
+  },
+  content: {
+    width: '100%',
+    height: undefined,
+    minHeight: 40,
+    marginHorizontal: 0,
+    marginRight: 0,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  imageSize: {
+    height: 50,
+    width: 50,
+  },
+  flex: {
+    flex: 1,
+  },
+  divider: {
+    height: '60%',
+    marginHorizontal: 10,
+  },
+  error: {
+    marginLeft: 5,
+  },
+});
 
 export default UploadFileInput;

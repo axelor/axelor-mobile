@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {RadioButton, Text} from '../../atoms';
 import {checkNullString} from '../../../utils';
+import {RadioButton, Text} from '../../atoms';
 
 interface RadioItem {
   id: string;
@@ -61,10 +61,13 @@ const RadioSelect = ({
     setSelecteditem(items.find(_i => _i.id === defaultValue));
   }, [defaultValue, items]);
 
-  const onRadioBtnClick = item => {
-    setSelecteditem(item);
-    onChange(item.id);
-  };
+  const onRadioBtnClick = useCallback(
+    (item: any) => {
+      setSelecteditem(item);
+      onChange(item.id);
+    },
+    [onChange],
+  );
 
   return (
     <View testID="radioSelectContainer" style={[styles.container, style]}>
@@ -106,6 +109,7 @@ const styles = StyleSheet.create({
   },
   itemsContainer: {
     width: '100%',
+    gap: 5,
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',

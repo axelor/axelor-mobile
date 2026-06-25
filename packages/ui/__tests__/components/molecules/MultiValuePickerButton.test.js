@@ -56,7 +56,6 @@ describe('MultiValuePickerButton Component', () => {
       expect(within(_elt).getAllByText(_i.title)).toBeTruthy();
       expect(_elt).toHaveStyle({
         backgroundColor: _i.color.background_light,
-        borderColor: _i.color.background,
       });
     });
   });
@@ -110,6 +109,8 @@ describe('MultiValuePickerButton Component', () => {
       style: {backgroundColor: 'red'},
     });
 
-    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
+    expect(getByTestId('multiValuePickerButtonTouchable')).toHaveStyle(
+      props.style,
+    );
   });
 });

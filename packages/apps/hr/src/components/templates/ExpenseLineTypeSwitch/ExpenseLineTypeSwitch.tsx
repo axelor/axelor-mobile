@@ -16,21 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ToggleSwitch, useThemeColor, NumberBubble} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
 interface ExpenseLineTypeSwitchProps {
-  isAddButton?: boolean;
   onChange: (mode: any) => void;
   totalNumberExpenseGeneral: number;
   totalNumberExpenseKilomectric: number;
 }
 
 const ExpenseLineTypeSwitch = ({
-  isAddButton = false,
   onChange,
   totalNumberExpenseGeneral,
   totalNumberExpenseKilomectric,
@@ -38,12 +36,9 @@ const ExpenseLineTypeSwitch = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
-
   return (
     <ToggleSwitch
       styleContainer={styles.toggleContainer}
-      styleToogle={styles.toggle}
       leftTitle={I18n.t('Hr_General')}
       rightTitle={I18n.t('Hr_Kilometric')}
       leftElement={
@@ -63,7 +58,7 @@ const ExpenseLineTypeSwitch = ({
         />
       }
       onSwitch={() => {
-        onChange(_mode => {
+        onChange((_mode: string) => {
           return _mode === ExpenseLine.modes.general
             ? ExpenseLine.modes.kilometric
             : ExpenseLine.modes.general;
@@ -73,21 +68,15 @@ const ExpenseLineTypeSwitch = ({
   );
 };
 
-const getStyles = isAddButton =>
-  StyleSheet.create({
-    toggleContainer: {
-      width: isAddButton ? '88%' : '100%',
-      margin: 0,
-    },
-    toggle: {
-      width: isAddButton ? '55%' : '54%',
-      justifyContent: 'flex-start',
-      paddingLeft: '5%',
-    },
-    indicator: {
-      position: 'absolute',
-      right: '5%',
-    },
-  });
+const styles = StyleSheet.create({
+  toggleContainer: {
+    flex: 1,
+    marginHorizontal: 0,
+  },
+  indicator: {
+    position: 'absolute',
+    right: '5%',
+  },
+});
 
 export default ExpenseLineTypeSwitch;

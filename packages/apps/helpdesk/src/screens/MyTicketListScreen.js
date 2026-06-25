@@ -114,12 +114,12 @@ const MyTicketListScreen = ({navigation}) => {
           <View style={styles.headerContainer}>
             <MultiValuePicker
               listItems={ticketStatusListItems}
-              title={I18n.t('Helpdesk_Status')}
+              placeholder={I18n.t('Helpdesk_Status')}
               onValueChange={statusList => setSelectedStatus(statusList)}
             />
             <MultiValuePicker
               listItems={ticketTypeListItems}
-              title={I18n.t('Helpdesk_Type')}
+              placeholder={I18n.t('Helpdesk_Type')}
               onValueChange={typeList => setSelectedType(typeList)}
             />
           </View>

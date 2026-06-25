@@ -82,7 +82,6 @@ const ProspectsListScreen = ({navigation}) => {
         searchPlaceholder={I18n.t('Crm_Prospects')}
         topFixedItems={
           <ToggleSwitch
-            style={styles.headerItem}
             leftTitle={I18n.t('Crm_All')}
             rightTitle={I18n.t('Crm_AssignedToMe')}
             onSwitch={() => setAssigned(!assigned)}
@@ -91,9 +90,8 @@ const ProspectsListScreen = ({navigation}) => {
         fixedItems={
           crmConfig?.crmProcessOnPartner && (
             <MultiValuePicker
-              style={styles.headerItem}
               listItems={prospectStatusListItems}
-              title={I18n.t('Base_Status')}
+              placeholder={I18n.t('Base_Status')}
               onValueChange={statusList => setSelectedStatus(statusList)}
             />
           )
@@ -126,9 +124,6 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,
     marginVertical: 4,
-  },
-  headerItem: {
-    alignSelf: 'center',
   },
 });
 
