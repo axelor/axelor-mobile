@@ -16,18 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ThemeColors, useThemeColor} from '../../../theme';
-import {Icon, Text} from '../../atoms';
+import {useThemeColor} from '../../../theme';
+import {HorizontalRule, Icon, Text} from '../../atoms';
 
-const ItemCard = ({onSelect = () => {}, title, isSelected = false}) => {
+const ItemCard = ({
+  onSelect,
+  title,
+  isSelected = false,
+}: {
+  onSelect?: () => void;
+  title?: string;
+  isSelected?: boolean;
+}) => {
   const Colors = useThemeColor();
-
-  const styles = useMemo(
-    () => getStyles(Colors, isSelected),
-    [Colors, isSelected],
-  );
 
   return (
     <View>
@@ -35,46 +38,45 @@ const ItemCard = ({onSelect = () => {}, title, isSelected = false}) => {
         activeOpacity={0.9}
         style={styles.item}
         onPress={onSelect}>
-        <Text style={styles.text} writingType="important" fontSize={16}>
-          {title}
+        <Text style={styles.text} writingType="important">
+          {title ?? ''}
         </Text>
-        {isSelected && (
+        {isSelected ? (
+          <Icon name="check-lg" color={Colors.primaryColor.background} />
+        ) : (
           <Icon
-            style={styles.icon}
-            name="check-lg"
-            color={Colors.primaryColor.background}
+            name="chevron-right"
+            size={15}
+            color={Colors.secondaryColor.background_light}
           />
         )}
       </TouchableOpacity>
-      <View style={styles.border} />
+      <HorizontalRule
+        style={styles.border}
+        color={Colors.secondaryColor.background_light}
+        width={0.5}
+      />
     </View>
   );
 };
 
-const getStyles = (Colors: ThemeColors, isSelected: boolean) =>
-  StyleSheet.create({
-    item: {
-      minHeight: 40,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      position: 'relative',
-      width: '100%',
-    },
-    text: {
-      alignSelf: 'center',
-      width: isSelected ? '90%' : '100%',
-      marginVertical: 7,
-      marginLeft: 10,
-    },
-    border: {
-      borderBottomColor: Colors.secondaryColor.background,
-      borderBottomWidth: 1,
-      width: '104%',
-      left: -14,
-    },
-    icon: {
-      marginRight: 10,
-    },
-  });
+const styles = StyleSheet.create({
+  item: {
+    minHeight: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100%',
+    padding: 10,
+    gap: 5,
+  },
+  text: {
+    alignSelf: 'center',
+    flex: 1,
+  },
+  border: {
+    width: '100%',
+  },
+});
 
 export default ItemCard;
