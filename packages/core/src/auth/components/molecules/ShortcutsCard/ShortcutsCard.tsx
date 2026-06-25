@@ -24,7 +24,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Card, Icon, Text} from '@axelor/aos-mobile-ui';
+import {Card, IconTile, Text} from '@axelor/aos-mobile-ui';
 import {useSelector} from '../../../../index';
 import {useNavigation} from '../../../../hooks/use-navigation';
 
@@ -62,7 +62,7 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
           style={styles.shortcut}
           onPress={() => navigation.navigate(item.mobileScreenName)}
           key={item.shortcutId}>
-          <Icon name={item.iconName} size={35} />
+          <IconTile icon={item?.iconName} size={45} />
           <View style={styles.shortcutTextContainer}>
             <Text fontSize={14} numberOfLines={2} style={styles.shortcutText}>
               {item.name}
@@ -120,6 +120,7 @@ const getStyles = (shortCutWidth: number) =>
     },
     shortcutText: {
       textAlign: 'center',
+      fontWeight: 'bold',
     },
   });
 

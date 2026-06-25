@@ -1,0 +1,5 @@
+{
+  "title": "ShortcutsCard: redesign shortcuts card with updated layout and icon tiles",
+  "type": "refactor",
+  "packages": "core"
+}
