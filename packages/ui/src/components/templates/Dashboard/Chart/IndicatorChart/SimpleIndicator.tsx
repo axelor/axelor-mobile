@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, useThemeColor} from '../../../../../theme';
-import {Icon, Text} from '../../../../atoms';
+import {BorderBar, Icon, Text} from '../../../../atoms';
 import {TextUnit} from '../../../../molecules';
 import {checkNullString, hexToRgb} from '../../../../../utils';
 
@@ -57,16 +57,26 @@ const SimpleIndicator = ({
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Icon size={30} name={icon} visible={isIcon} />
-      <View
-        style={[
-          styles.titleContainer,
-          isIcon ? styles.maxWidth : styles.align,
-        ]}>
-        <TextUnit value={value} unit={unit} color={color} />
-        <Text numberOfLines={2} style={!isIcon && styles.textAlign}>
-          {title}
-        </Text>
+      {value > 0 && <BorderBar color={color.background} />}
+      <View style={styles.inner}>
+        <Icon size={30} name={icon!} visible={isIcon} />
+        <View
+          style={[
+            styles.titleContainer,
+            isIcon ? styles.maxWidth : styles.align,
+          ]}>
+          <TextUnit
+            value={value}
+            unit={unit}
+            color={value <= 0 ? Colors.secondaryColor : color}
+          />
+          <Text
+            numberOfLines={2}
+            style={!isIcon && styles.textAlign}
+            textColor={Colors.secondaryColor.background}>
+            {title}
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -74,6 +84,13 @@ const SimpleIndicator = ({
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    paddingVertical: 12,
+    paddingHorizontal: 6,
+  },
+  inner: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
@@ -90,6 +107,7 @@ const styles = StyleSheet.create({
   },
   textAlign: {
     textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 
