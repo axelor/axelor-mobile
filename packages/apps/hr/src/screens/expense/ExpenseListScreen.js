@@ -214,7 +214,7 @@ const ExpenseListScreen = ({navigation}) => {
             {mode === ExpenseType.mode.personnal ? (
               <Picker
                 listItems={expenseStatusListItems}
-                title={I18n.t('Hr_Status')}
+                placeholder={I18n.t('Hr_Status')}
                 onValueChange={setSelectedStatus}
                 labelField="title"
                 valueField="key"

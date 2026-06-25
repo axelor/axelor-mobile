@@ -18,17 +18,15 @@
 
 import React, {Ref, useCallback, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, TextInput, View} from 'react-native';
-import {ThemeColors} from '../../../theme';
-import {getCommonStyles} from '../../../utils/commons-styles';
+import {checkNullString, getCommonStyles} from '../../../utils';
 import {useThemeColor} from '../../../theme';
-import {Input} from '../../atoms';
-import {checkNullString} from '../../../utils/strings';
+import {Input, VerticalRule} from '../../atoms';
 
 interface IconInputProps {
   style?: any;
   inputRef?: Ref<TextInput>;
-  value: string;
-  onChange: (value: any) => void;
+  value?: string;
+  onChange?: (_v?: string) => void;
   placeholder?: string;
   readOnly?: boolean;
   required?: boolean;
@@ -64,7 +62,6 @@ const IconInput = ({
   isScannableInput,
 }: IconInputProps) => {
   const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -74,8 +71,8 @@ const IconInput = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
   const handleSelection = useCallback(() => {
@@ -88,10 +85,18 @@ const IconInput = ({
     onEndFocus?.();
   }, [onEndFocus]);
 
+  const visibleRightIcons = useMemo(
+    () =>
+      rightIconsList.filter(
+        iconComponent => iconComponent?.props?.visible !== false,
+      ),
+    [rightIconsList],
+  );
+
   return (
     <View
       testID="iconInputContainer"
-      style={[styles.container, isFocused && commonStyles.inputFocused, style]}>
+      style={[commonStyles.filter, commonStyles.filterAlign, style]}>
       {leftIconsList.map((iconComponent, index) =>
         React.cloneElement(iconComponent, {key: index}),
       )}
@@ -111,32 +116,29 @@ const IconInput = ({
         isFocus={isFocus}
         isScannableInput={isScannableInput}
       />
-      {rightIconsList.map((iconComponent, index) =>
-        React.cloneElement(iconComponent, {key: index}),
-      )}
+      {visibleRightIcons.map((iconComponent, index) => (
+        <React.Fragment key={index}>
+          {index > 0 && (
+            <VerticalRule
+              style={styles.divider}
+              color={Colors.secondaryColor.background_light}
+            />
+          )}
+          {React.cloneElement(iconComponent, {key: index})}
+        </React.Fragment>
+      ))}
     </View>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    container: {
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 1,
-      borderRadius: 7,
-      backgroundColor: Colors.backgroundColor,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingLeft: 5,
-      paddingRight: 8,
-      marginHorizontal: 20,
-      marginVertical: 6,
-      minHeight: 40,
-    },
-    input: {
-      flex: 1,
-    },
-  });
+const styles = StyleSheet.create({
+  input: {
+    flex: 1,
+  },
+  divider: {
+    height: '60%',
+    marginHorizontal: 10,
+  },
+});
 
 export default IconInput;

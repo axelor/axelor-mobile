@@ -16,36 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  getCommonStyles,
-  Icon,
-  IconInput,
-  LabelText,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import useTranslator from '../../../i18n/hooks/use-translator';
-import {checkNullString} from '../../../utils';
+import {Icon, IconInput, LabelText, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
+
+interface UsernameInputProps {
+  style?: any;
+  value?: string;
+  onChange?: (_v?: string) => void;
+  readOnly?: boolean;
+  showScanIcon?: boolean;
+  scanIconColor?: string;
+  onScanPress?: () => void;
+  onSelection?: () => void;
+  showRequiredFields?: boolean;
+}
 
 const UsernameInput = ({
+  style,
   value,
   onChange,
-  readOnly,
+  readOnly = false,
   showScanIcon = true,
-  onScanPress,
-  onSelection = () => {},
   scanIconColor,
-  style,
+  onScanPress,
+  onSelection,
   showRequiredFields = false,
-}) => {
+}: UsernameInputProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-
-  const commonStyles = useMemo(
-    () => getCommonStyles(Colors, checkNullString(value)),
-    [Colors, value],
-  );
 
   if (readOnly) {
     return (
@@ -53,36 +53,29 @@ const UsernameInput = ({
         iconName="person-fill"
         title={value}
         style={styles.labText}
-        size={20}
+        size={14}
       />
     );
   }
 
   return (
     <IconInput
-      style={[style, showRequiredFields ? commonStyles.inputFocused : null]}
+      style={style}
       value={value}
       onChange={onChange}
       readOnly={readOnly}
-      required={true}
+      required={showRequiredFields}
       onSelection={showScanIcon ? onSelection : () => {}}
       placeholder={I18n.t('Base_Connection_Username')}
-      leftIconsList={[
-        <Icon name="person-fill" size={17} style={styles.icon} />,
-      ]}
+      leftIconsList={[<Icon name="person-fill" size={14} />]}
       rightIconsList={
         showScanIcon
           ? [
               <Icon
                 name="qr-code-scan"
-                size={20}
-                color={
-                  scanIconColor == null
-                    ? Colors.secondaryColor_dark.background
-                    : scanIconColor
-                }
-                touchable={true}
-                style={styles.icon}
+                size={14}
+                color={scanIconColor ?? Colors.secondaryColor_dark.background}
+                touchable
                 onPress={onScanPress}
               />,
             ]
@@ -93,12 +86,7 @@ const UsernameInput = ({
 };
 
 const styles = StyleSheet.create({
-  icon: {
-    width: '7%',
-    margin: 3,
-  },
   labText: {
-    width: '100%',
     marginVertical: 10,
     marginLeft: 5,
   },

@@ -60,7 +60,6 @@ describe('TagList Component', () => {
       const _color = _tag.color ?? props.defaultColor;
 
       expect(_badgeElt).toHaveStyle({
-        borderColor: _color.background,
         backgroundColor: _color.background_light,
       });
       expect(within(_badgeElt).getByText(_tag.title)).toBeTruthy();
@@ -75,7 +74,6 @@ describe('TagList Component', () => {
       const _color = _tag.color ?? Colors.infoColor;
 
       expect(_badgeElt).toHaveStyle({
-        borderColor: _color.background,
         backgroundColor: _color.background_light,
       });
       expect(within(_badgeElt).getByText(_tag.title)).toBeTruthy();

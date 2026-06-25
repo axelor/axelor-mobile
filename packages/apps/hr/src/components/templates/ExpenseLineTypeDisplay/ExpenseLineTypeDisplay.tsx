@@ -24,14 +24,10 @@ import {ExpenseLine} from '../../../types';
 import {ExpenseLineTypeSwitch} from '../../templates';
 
 interface ExpenseLineTypeDisplayProps {
-  isAddButton?: boolean;
   onChange: (mode: any) => void;
 }
 
-const ExpenseLineTypeDisplay = ({
-  isAddButton,
-  onChange,
-}: ExpenseLineTypeDisplayProps) => {
+const ExpenseLineTypeDisplay = ({onChange}: ExpenseLineTypeDisplayProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -84,17 +80,11 @@ const ExpenseLineTypeDisplay = ({
     return (
       <ExpenseLineTypeSwitch
         onChange={onChange}
-        isAddButton={isAddButton}
         totalNumberExpenseGeneral={totalNumberExpenseGeneral}
         totalNumberExpenseKilomectric={totalNumberExpenseKilomectric}
       />
     );
-  }, [
-    isAddButton,
-    onChange,
-    totalNumberExpenseGeneral,
-    totalNumberExpenseKilomectric,
-  ]);
+  }, [onChange, totalNumberExpenseGeneral, totalNumberExpenseKilomectric]);
 
   const renderTitle = useCallback(() => {
     return (

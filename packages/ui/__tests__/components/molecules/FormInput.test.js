@@ -82,7 +82,7 @@ describe('FormInput Component', () => {
     act(() => input.props.onEndFocus());
 
     expect(getByTestId('formInputInnerContainer')).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
     });
     expect(props.onEndFocus).toHaveBeenCalled();
   });
@@ -99,7 +99,7 @@ describe('FormInput Component', () => {
     const {getByTestId} = setupFormInput({required: true});
 
     expect(getByTestId('formInputInnerContainer')).toHaveStyle({
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
     });
   });
 

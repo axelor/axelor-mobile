@@ -32,8 +32,8 @@ import {Keyboard} from '../../../types';
 interface InputProps {
   style?: any;
   inputRef?: Ref<TextInput>;
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange?: (_v?: string) => void;
   placeholder?: string;
   secureTextEntry?: boolean;
   readOnly?: boolean;
@@ -78,7 +78,6 @@ const Input = ({
     return {
       ...writingStyle,
       color: Colors.text,
-      fontSize: 15,
       textAlignVertical: multiline ? 'top' : 'center',
     };
   }, [Colors.text, multiline, writingStyle]);
@@ -99,9 +98,9 @@ const Input = ({
   const onValueChange = useCallback(
     (_value: string) => {
       if (checkNullString(_value)) {
-        onChange(null);
+        onChange?.();
       } else {
-        onChange(_value);
+        onChange?.(_value);
       }
     },
     [onChange],

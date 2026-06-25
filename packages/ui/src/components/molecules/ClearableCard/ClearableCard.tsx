@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
+import {getCommonStyles} from '../../../utils';
 import {useThemeColor} from '../../../theme';
 import {Card, Icon, Text} from '../../atoms';
 
@@ -36,16 +36,11 @@ const ClearableCard = ({
   clearable = true,
 }: ClearableCardPops) => {
   const Colors = useThemeColor();
+
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   return (
-    <Card
-      style={[
-        commonStyles.filter,
-        commonStyles.filterAlign,
-        commonStyles.filterSize,
-        style,
-      ]}>
+    <Card style={[commonStyles.filter, commonStyles.filterAlign, style]}>
       <Text style={styles.text}>{valueTxt}</Text>
       {clearable && (
         <Icon

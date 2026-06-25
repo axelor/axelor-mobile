@@ -39,7 +39,7 @@ interface IncrementProps {
   value: string | undefined;
   decimalSpacer?: string;
   thousandSpacer?: string;
-  onValueChange: (_v?: any) => void;
+  onValueChange: (_v?: string | number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   readonly?: boolean;
@@ -75,7 +75,7 @@ const Increment = ({
   const containerRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
 
-  const [valueQty, setValueQty] = useState<string>(value!);
+  const [valueQty, setValueQty] = useState<any>(value);
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const handleDecimal = useCallback(
@@ -154,14 +154,14 @@ const Increment = ({
 
   const handlePlus = () => {
     const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
-    const newValue: number = parseFloat(unformattedValue) + stepSize;
+    const newValue: number = parseFloat(unformattedValue ?? '0') + stepSize;
 
     handleResult(newValue);
   };
 
   const handleMinus = () => {
     const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
-    const newValue: number = parseFloat(unformattedValue) - stepSize;
+    const newValue: number = parseFloat(unformattedValue ?? '0') - stepSize;
 
     handleResult(newValue);
   };
@@ -184,7 +184,9 @@ const Increment = ({
     setIsFocused(true);
 
     if (defaultFormatting) {
-      setValueQty(current => unformat(current).replace('.', decimalSpacer!));
+      setValueQty((current: any) =>
+        unformat(current).replace('.', decimalSpacer!),
+      );
     }
 
     if (inputRef.current?.setSelection) {
@@ -246,8 +248,6 @@ const getStyles = (Colors: ThemeColors) =>
       gap: 2,
     },
     input: {
-      fontSize: 23,
-      fontWeight: 'bold',
       paddingBottom: 0,
       textAlign: 'center',
     },

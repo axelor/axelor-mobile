@@ -63,10 +63,7 @@ const ExpenseLineSwitchAdd = ({
 
   return (
     <View style={styles.container}>
-      <ExpenseLineTypeDisplay
-        onChange={onChangeSwicth}
-        isAddButton={isAddButton}
-      />
+      <ExpenseLineTypeDisplay onChange={onChangeSwicth} />
       {isAddButton && (
         <CircleButton
           size={38}
@@ -88,10 +85,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 15,
-    justifyContent: 'space-between',
-    marginHorizontal: 24,
-    marginBottom: 10,
+    marginVertical: 2,
+    marginHorizontal: 18,
+    gap: 5,
   },
 });
 
