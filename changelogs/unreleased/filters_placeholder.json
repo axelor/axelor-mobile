@@ -1,0 +1,5 @@
+{
+  "title": "Filters: display the field name as placeholder text inside status pickers instead of a separate title label",
+  "type": "refactor",
+  "packages": ["crm", "hr"]
+}
