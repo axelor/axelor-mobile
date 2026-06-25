@@ -6,6 +6,7 @@
   "Auth_Dev_Mode": "Test environment",
   "Auth_Disconnected": "User disconnected",
   "Auth_LooseConnectionWithServer": "Session with server expired.",
+  "Auth_Preferences": "Preferences",
   "User_User": "User",
   "User_VirtualKeyboardVisibility": "Virtual keyboard visibility",
   "User_ShowFilter": "Show filter",
