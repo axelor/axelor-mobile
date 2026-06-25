@@ -25,7 +25,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {Color} from '../../../theme';
+import {Color, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
 import {CircleButton} from '../../molecules';
 import TopActions from './TopActions';
@@ -80,6 +80,7 @@ const ScrollList = ({
   verticalActions = true,
   onViewableItemsChanged,
 }: ScrollListProps) => {
+  const Colors = useThemeColor();
   const {isScrollEnabled} = useConfig();
 
   const [, setPage] = useState(0);
@@ -142,7 +143,7 @@ const ScrollList = ({
   }, [actionList, verticalActions]);
 
   const _renderItem = useCallback(
-    ({item, index}) => {
+    ({item, index}: any) => {
       return (
         <>
           {index === 0 && renderActions()}
@@ -156,7 +157,7 @@ const ScrollList = ({
   const flatList = useRef<FlatList>(null);
 
   const moveToTop = () => {
-    flatList.current.scrollToIndex({index: 0, animated: true});
+    flatList?.current?.scrollToIndex({index: 0, animated: true});
   };
 
   const translateY = new Animated.Value(0);
@@ -181,7 +182,7 @@ const ScrollList = ({
   };
 
   useEffect(() => {
-    let loadingTimer;
+    let loadingTimer: any;
 
     if (loadingList) {
       loadingTimer = setTimeout(() => {
@@ -200,9 +201,14 @@ const ScrollList = ({
   const renderFooter = useCallback(() => {
     return (
       <View style={[styles.footerText, styleFooter]}>
-        {moreLoading && <ActivityIndicator size="large" color="black" />}
+        {moreLoading && (
+          <ActivityIndicator
+            size="large"
+            color={Colors.primaryColor.background}
+          />
+        )}
         {isListEnd && (
-          <Text>
+          <Text textColor={Colors.secondaryColor.background_light}>
             {data == null || data?.length === 0
               ? translator != null
                 ? translator('Base_NoData')
@@ -214,12 +220,15 @@ const ScrollList = ({
         )}
       </View>
     );
-  }, [data, isListEnd, moreLoading, styleFooter, translator]);
+  }, [Colors, data, isListEnd, moreLoading, styleFooter, translator]);
 
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="black" />
+        <ActivityIndicator
+          size="large"
+          color={Colors.primaryColor.background}
+        />
       </View>
     );
   }
@@ -273,7 +282,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     alignSelf: 'center',
-    marginBottom: 7,
+    marginVertical: 8,
   },
   scrollView: {
     paddingTop: 7,

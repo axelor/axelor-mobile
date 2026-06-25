@@ -18,7 +18,7 @@
 
 import React, {useState, useCallback} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {checkNullString} from '../../../utils/strings';
+import {checkNullString} from '../../../utils';
 import {Alert} from '../../molecules';
 import {AutoCompleteSearch, ScrollList} from '../../organisms';
 import ItemCard from './ItemCard';
@@ -64,13 +64,13 @@ const SearchDetailsPopUp = ({
     ({page = 0, searchValue}: {page?: number; searchValue?: string}) => {
       if (isVisible) {
         setSearchText(searchValue);
-        fetchData({page, searchValue});
+        fetchData?.({page, searchValue});
       }
     },
     [fetchData, isVisible],
   );
 
-  const filterAPI = useCallback(data => fetchAPI(data), [fetchAPI]);
+  const filterAPI = useCallback((data: any) => fetchAPI(data), [fetchAPI]);
 
   const scrollAPI = useCallback((page: number) => fetchAPI({page}), [fetchAPI]);
 
@@ -95,18 +95,18 @@ const SearchDetailsPopUp = ({
         />
         <ScrollList
           style={styles.scroll}
-          loadingList={loadingList}
+          loadingList={loadingList ?? false}
           data={objectList}
           renderItem={({item}) => (
             <ItemCard
-              onSelect={() => onSelect(item)}
-              title={displayValue(item)}
-              isSelected={value === displayValue(item)}
+              onSelect={() => onSelect?.(item)}
+              title={displayValue?.(item)}
+              isSelected={value === displayValue?.(item)}
             />
           )}
           fetchData={scrollAPI}
-          moreLoading={moreLoading}
-          isListEnd={isListEnd}
+          moreLoading={moreLoading ?? false}
+          isListEnd={isListEnd ?? true}
           filter={!checkNullString(searchText)}
           translator={translator}
         />
