@@ -1,5 +1,5 @@
 {
-  "title": "redesign the AutoCompleteSearch & Picker",
+  "title": "AutoCompleteSearch & Picker: restyle the results dropdown with thin dividers, a lighter border and no shadow",
   "type": "refactor",
   "packages": "ui"
 }
