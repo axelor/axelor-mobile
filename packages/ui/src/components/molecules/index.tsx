@@ -38,6 +38,7 @@ export {default as FormIncrementInput} from './FormIncrementInput/FormIncrementI
 export {default as FormInput} from './FormInput/FormInput';
 export {default as FormSlider} from './FormSlider/FormSlider';
 export {default as FromTo} from './FromTo/FromTo';
+export {default as GroupedCard} from './GroupedCard/GroupedCard';
 export {default as HalfLabelCard} from './HalfLabelCard/HalfLabelCard';
 export {default as HorizontalRuleText} from './HorizontalRuleText/HorizontalRuleText';
 export {default as IconInput} from './IconInput/IconInput';

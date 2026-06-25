@@ -28,6 +28,7 @@ interface SwitchCardProps {
   defaultValue: boolean;
   readonly?: boolean;
   onToggle: (_v?: boolean) => void;
+  showWrapper?: boolean;
 }
 
 const SwitchCard = ({
@@ -36,6 +37,7 @@ const SwitchCard = ({
   defaultValue,
   readonly = false,
   onToggle,
+  showWrapper = true,
 }: SwitchCardProps) => {
   const Colors = useThemeColor();
 
@@ -44,7 +46,7 @@ const SwitchCard = ({
   return (
     <View
       style={[
-        commonStyles.filter,
+        showWrapper && commonStyles.filter,
         commonStyles.filterAlign,
         styles.container,
         style,
@@ -54,7 +56,6 @@ const SwitchCard = ({
         {title}
       </Text>
       <Switch
-        style={styles.switch}
         isEnabled={defaultValue}
         readonly={readonly}
         handleToggle={onToggle}
@@ -70,9 +71,6 @@ const styles = StyleSheet.create({
     minHeight: 40,
   },
   text: {
-    flex: 3,
-  },
-  switch: {
     flex: 1,
   },
 });
