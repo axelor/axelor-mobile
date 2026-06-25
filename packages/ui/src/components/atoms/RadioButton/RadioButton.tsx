@@ -18,8 +18,9 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Text} from '../../atoms';
 import {ThemeColors, useThemeColor} from '../../../theme';
+import {getCommonStyles} from '../../../utils';
+import {Text} from '../../atoms';
 
 const DEFAULT_SIZE = 20;
 
@@ -42,18 +43,36 @@ const RadioButton = ({
 
   const styles = useMemo(() => getStyles(Colors, size), [Colors, size]);
 
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, false, selected),
+    [Colors, selected],
+  );
+
   return (
     <TouchableOpacity
       accessibilityRole="button"
       onPress={onPress}
       disabled={readonly}
-      style={[styles.container, selected ? styles.selectedCard : null, style]}>
+      style={[
+        commonStyles.filter,
+        styles.container,
+        selected
+          ? {backgroundColor: Colors.primaryColor.background_light}
+          : null,
+        style,
+      ]}>
       <View style={styles.buttonExt}>
         {selected ? <View testID="radio" style={styles.buttonInt} /> : null}
       </View>
       <Text
-        textColor={readonly ? Colors.secondaryColor.background : Colors.text}
-        style={styles.title}>
+        textColor={
+          selected
+            ? Colors.primaryColor.background
+            : readonly
+              ? Colors.secondaryColor.background
+              : Colors.text
+        }
+        style={selected ? styles.boldText : undefined}>
         {title}
       </Text>
     </TouchableOpacity>
@@ -65,20 +84,10 @@ const getStyles = (Colors: ThemeColors, size: number) =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      margin: 5,
       flex: 1,
       minWidth: 100,
-      padding: 10,
-    },
-    selectedCard: {
-      backgroundColor: Colors.backgroundColor,
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 1,
-      borderRadius: 7,
-      elevation: 2,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
+      paddingHorizontal: 2,
+      paddingVertical: 10,
     },
     buttonExt: {
       alignItems: 'center',
@@ -87,17 +96,18 @@ const getStyles = (Colors: ThemeColors, size: number) =>
       width: size,
       borderRadius: size,
       borderWidth: 1,
-      borderColor: Colors.secondaryColor.background,
+      borderColor: Colors.secondaryColor.background_light,
       backgroundColor: Colors.backgroundColor,
+      marginHorizontal: 5,
     },
     buttonInt: {
-      height: size * 0.7,
-      width: size * 0.7,
-      borderRadius: size * 0.7,
+      height: size * 0.5,
+      width: size * 0.5,
+      borderRadius: size * 0.5,
       backgroundColor: Colors.primaryColor.background,
     },
-    title: {
-      marginLeft: 5,
+    boldText: {
+      fontWeight: 'bold',
     },
   });
 
