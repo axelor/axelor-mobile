@@ -1,0 +1,5 @@
+{
+  "title": "ScrollList: use the theme color for loading indicators and a muted color for the end-of-list message",
+  "type": "refactor",
+  "packages": "ui"
+}

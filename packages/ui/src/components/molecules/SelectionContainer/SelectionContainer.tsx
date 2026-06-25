@@ -19,8 +19,8 @@
 import React, {RefObject, useCallback, useMemo, useState} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
-import {Icon, Text} from '../../atoms';
 import {checkNullString} from '../../../utils';
+import {BorderBar, HorizontalRule, Icon, Text} from '../../atoms';
 
 const MAX_LIST_LENGTH = 5;
 
@@ -54,16 +54,6 @@ const SelectionItem = ({
     [Colors.primaryColor, itemColor],
   );
 
-  const indicatorStyles = useMemo(
-    () => getIndicatorColor(_itemColor.background),
-    [_itemColor],
-  );
-
-  const itemStyles = useMemo(
-    () => getItemStyles(isPicker, isMoreResultsItem),
-    [isMoreResultsItem, isPicker],
-  );
-
   return (
     <TouchableOpacity
       style={[itemStyles.item, style]}
@@ -72,7 +62,6 @@ const SelectionItem = ({
       testID="selectionItemTouchable">
       {isPicker && (
         <Icon
-          style={itemStyles.icon}
           name={isSelectedItem ? 'check-square-fill' : 'square'}
           color={
             readonly
@@ -83,54 +72,59 @@ const SelectionItem = ({
       )}
       <View style={itemStyles.textContainer}>
         <Text
-          style={itemStyles.text}
+          style={[
+            itemStyles.text,
+            isMoreResultsItem ? itemStyles.alignText : undefined,
+          ]}
           numberOfLines={multiLineLabels ? undefined : 1}
-          writingType={isMoreResultsItem ? 'title' : null}>
+          writingType={isMoreResultsItem ? 'title' : undefined}
+          textColor={isMoreResultsItem ? _itemColor.background : undefined}>
           {content}
         </Text>
-        {itemColor != null && <View style={indicatorStyles.selectedItem} />}
+        {itemColor != null && (
+          <BorderBar
+            style={itemStyles.selectedItem}
+            color={_itemColor.background}
+          />
+        )}
+        {!isPicker && !isMoreResultsItem && (
+          <Icon
+            name="chevron-right"
+            size={14}
+            color={Colors.secondaryColor.background_light}
+          />
+        )}
       </View>
     </TouchableOpacity>
   );
 };
 
-const getIndicatorColor = (color: string) => {
-  return StyleSheet.create({
-    selectedItem: {
-      backgroundColor: color,
-      width: 7,
-      height: 32,
-      borderTopLeftRadius: 8,
-      borderBottomLeftRadius: 8,
-    },
-  });
-};
-
-const getItemStyles = (isPicker: boolean, isMoreResultsItem: boolean) =>
-  StyleSheet.create({
-    item: {
-      minHeight: 40,
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '100%',
-      zIndex: 105,
-    },
-    textContainer: {
-      flexDirection: 'row',
-      justifyContent: isMoreResultsItem ? 'center' : 'space-between',
-      alignItems: 'center',
-      flex: 1,
-    },
-    text: {
-      width: isPicker ? '85%' : isMoreResultsItem ? null : '100%',
-      marginVertical: 5,
-      marginLeft: isPicker ? 0 : 10,
-      fontSize: 16,
-    },
-    icon: {
-      margin: 10,
-    },
-  });
+const itemStyles = StyleSheet.create({
+  item: {
+    minHeight: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    zIndex: 105,
+    paddingHorizontal: 10,
+    gap: 10,
+  },
+  textContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flex: 1,
+  },
+  alignText: {
+    textAlign: 'center',
+  },
+  text: {
+    flex: 1,
+  },
+  selectedItem: {
+    height: 25,
+  },
+});
 
 interface SelectionContainerProps {
   style?: any;
@@ -233,31 +227,35 @@ const SelectionContainer = ({
           <View key={'item' + index}>
             <SelectionItem
               key={item[keyField]?.toString()}
-              content={displayValue(item)}
-              onPress={() => handleSelect(item)}
+              content={displayValue?.(item) ?? ''}
+              onPress={() => handleSelect?.(item)}
               itemColor={item?.color}
               isPicker={isPicker}
               isSelectedItem={selectedKeys.includes(item[keyField])}
               readonly={readonly}
               multiLineLabels={multiLineLabels}
             />
-            <View
-              key={'border' + index}
-              style={
-                index + 1 === objectList?.length ||
-                (!isPicker && index + 1 === listLength)
-                  ? null
-                  : styles.border
-              }
-            />
+            {index + 1 === objectList?.length ||
+            (!isPicker && index + 1 === listLength) ? null : (
+              <HorizontalRule
+                key={'border' + index}
+                style={styles.border}
+                color={Colors.secondaryColor.background_light}
+                width={0.5}
+              />
+            )}
           </View>
         ))}
         {isMoreResultsItem && (
           <View>
-            <View style={styles.border} />
+            <HorizontalRule
+              style={styles.border}
+              color={Colors.secondaryColor.background_light}
+              width={0.5}
+            />
             <SelectionItem
               content={moreResultsItemContent}
-              onPress={handleMoreResult}
+              onPress={handleMoreResult!}
               isMoreResultsItem={isMoreResultsItem}
             />
           </View>
@@ -265,19 +263,20 @@ const SelectionContainer = ({
       </>
     );
   }, [
-    displayValue,
-    handleMoreResult,
-    handleSelect,
-    isMoreResultsItem,
-    isPicker,
-    keyField,
-    listLength,
     objectList,
-    multiLineLabels,
-    readonly,
-    selectedKeys,
-    styles.border,
+    isPicker,
+    listLength,
     translator,
+    isMoreResultsItem,
+    styles.border,
+    handleMoreResult,
+    keyField,
+    displayValue,
+    selectedKeys,
+    readonly,
+    multiLineLabels,
+    Colors.secondaryColor.background_light,
+    handleSelect,
   ]);
 
   const renderListItemContainerPicker = useCallback(() => {
@@ -288,7 +287,7 @@ const SelectionContainer = ({
             <SelectionItem
               key={'null'}
               content={''}
-              onPress={() => handleSelect(null)}
+              onPress={() => handleSelect?.(null)}
               readonly={readonly}
             />
             <View style={styles.border} />
@@ -327,20 +326,14 @@ const getStyles = (Colors: ThemeColors, height: number) =>
       height: height,
       width: '100%',
       position: 'absolute',
-      top: '94%',
+      top: '100%',
       zIndex: 110,
       backgroundColor: Colors.backgroundColor,
-      borderRadius: 7,
-      borderColor: Colors.secondaryColor.background,
+      borderRadius: 12,
+      borderColor: Colors.secondaryColor.background_light,
       borderWidth: 1,
-      elevation: 2,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
     },
     border: {
-      borderBottomColor: Colors.secondaryColor.background,
-      borderBottomWidth: 1,
       zIndex: 115,
       width: '100%',
     },
