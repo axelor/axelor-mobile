@@ -1,0 +1,5 @@
+{
+  "title": "GroupedCard: add a new component to group several items into a single card separated by horizontal rules",
+  "type": "feat",
+  "packages": "ui"
+}

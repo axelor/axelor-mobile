@@ -1,0 +1,5 @@
+{
+  "title": "SwitchCard: add a showWrapper option to display the switch without its card background",
+  "type": "feat",
+  "packages": "ui"
+}

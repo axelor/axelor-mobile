@@ -1,0 +1,5 @@
+{
+  "title": "RightIconButton: add a showWrapper option to display the button without its card background",
+  "type": "feat",
+  "packages": "ui"
+}

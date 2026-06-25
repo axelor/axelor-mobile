@@ -42,11 +42,11 @@ export const writingDefaultTheme: Writing = {
   key: 'default',
   name: 'Default',
   style: {
-    defaultSize: 16,
-    title: {fontSize: 18, fontWeight: 'bold', fontStyle: 'normal'},
-    subTitle: {fontSize: 16, fontWeight: 'normal', fontStyle: 'normal'},
-    textImportant: {fontSize: 16, fontWeight: 'bold', fontStyle: 'normal'},
-    textDetails: {fontSize: 16, fontWeight: 'normal', fontStyle: 'italic'},
+    defaultSize: 12,
+    title: {fontSize: 16, fontWeight: 'bold', fontStyle: 'normal'},
+    subTitle: {fontSize: 14, fontWeight: 'normal', fontStyle: 'normal'},
+    textImportant: {fontSize: 14, fontWeight: 'bold', fontStyle: 'normal'},
+    textDetails: {fontSize: 14, fontWeight: 'normal', fontStyle: 'italic'},
   },
 };
 

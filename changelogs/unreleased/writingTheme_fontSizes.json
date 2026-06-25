@@ -1,0 +1,5 @@
+{
+  "title": "Theme: reduce the default text sizes to match the new design scale",
+  "type": "refactor",
+  "packages": "ui"
+}
