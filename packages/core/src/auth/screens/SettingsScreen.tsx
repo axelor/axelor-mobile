@@ -80,7 +80,7 @@ const SettingsScreen = () => {
                   color={Colors.primaryColor.background}
                 />
               }
-              style={styles.settingsButton}
+              style={styles.button}
               onPress={item.onPress}
               showWrapper={false}
             />
@@ -97,6 +97,7 @@ const SettingsScreen = () => {
       <ScrollView>
         <GroupedCard
           title={I18n.t('Auth_Preferences')}
+          style={styles.preferencesCard}
           data={pickerItems}
           renderItem={renderSettingsItem}
         />
@@ -119,6 +120,10 @@ const SettingsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  preferencesCard: {
+    zIndex: 1,
+    elevation: 4,
+  },
   switchCard: {
     alignSelf: 'center',
     borderWidth: 0,
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
     height: undefined,
     minHeight: undefined,
   },
-  settingsButton: {
+  button: {
     alignSelf: 'center',
     height: undefined,
     minHeight: undefined,

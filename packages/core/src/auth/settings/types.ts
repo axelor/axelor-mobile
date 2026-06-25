@@ -43,7 +43,7 @@ export interface PickerSettingsItem extends BaseSettingsItem {
 export interface SwitchSettingsItem extends BaseSettingsItem {
   type: SettingsItemType.switch;
   defaultValue: boolean;
-  onToggle: (state: boolean) => void;
+  onToggle: (state?: boolean) => void;
 }
 
 export interface ButtonSettingsItem extends BaseSettingsItem {

@@ -63,6 +63,7 @@ const GroupedCard = ({
             <HorizontalRule
               style={[styles.rule, ruleStyle]}
               color={Colors.secondaryColor.background_light}
+              width={0.5}
             />
           )}
           <View style={itemStyle} testID="groupedCardItem">
