@@ -40,10 +40,10 @@ interface DateInputSelectionProps {
   mode: 'date' | 'datetime' | 'time';
   nullable: boolean;
   popup: boolean;
-  currentDate: Date;
-  selectedDate: Date;
-  setSelectedDate: (date: Date) => void;
-  onDateChange: (date: Date) => void;
+  currentDate?: Date;
+  selectedDate?: Date;
+  setSelectedDate: (date?: Date) => void;
+  onDateChange: (date?: Date) => void;
   setPickerIsOpen: (pickerIsOpen: boolean) => void;
 }
 
@@ -79,8 +79,8 @@ const DateInputSelection = ({
   ]);
 
   const onClearDate = useCallback(() => {
-    setSelectedDate(null);
-    onDateChange(null);
+    setSelectedDate();
+    onDateChange();
     setPickerIsOpen(false);
   }, [onDateChange, setPickerIsOpen, setSelectedDate]);
 
@@ -142,7 +142,7 @@ interface DateInputProps {
   mode?: 'date' | 'datetime' | 'time';
   nullable?: boolean;
   popup?: boolean;
-  onDateChange: (date: Date) => void;
+  onDateChange: (date?: Date) => void;
   style?: any;
   readonly?: boolean;
   required?: boolean;
@@ -194,12 +194,12 @@ const DateInput = ({
   };
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, pickerIsOpen),
+    [Colors, _required, pickerIsOpen],
   );
   const styles = useMemo(
-    () => getStyles(Colors, pickerIsOpen, _required),
-    [Colors, pickerIsOpen, _required],
+    () => getStyles(Colors, pickerIsOpen),
+    [Colors, pickerIsOpen],
   );
 
   return (
@@ -210,14 +210,21 @@ const DateInput = ({
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
       ]}>
-      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      {!checkNullString(title) && (
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{title}</Text>
+          {required && <View style={styles.requiredDot} />}
+        </View>
+      )}
       <RightIconButton
         onPress={togglePicker}
+        showWrapper={false}
         icon={
           !readonly && (
             <Icon
               name={DateInputUtils.getIconName(mode)}
               color={Colors.secondaryColor_dark.background}
+              size={14}
             />
           )
         }
@@ -226,12 +233,12 @@ const DateInput = ({
             ? DateInputUtils.formatDate(mode, selectedDate, I18n)
             : DateInputUtils.getDateInputPlaceholder(mode)
         }
+        titleColor={!selectedDate ? Colors.placeholderTextColor : Colors.text}
+        styleText={styles.text}
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           commonStyles.filterAlign,
           styles.rightIconButton,
-          pickerIsOpen && commonStyles.inputFocused,
         ]}
       />
       <View style={Platform.OS === 'ios' ? styles.dropdownContainer : null}>
@@ -274,11 +281,7 @@ const DateInput = ({
   );
 };
 
-const getStyles = (
-  Colors: ThemeColors,
-  pickerIsOpen: boolean,
-  required: boolean,
-) =>
+const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
   StyleSheet.create({
     container: {
       width: '100%',
@@ -287,12 +290,13 @@ const getStyles = (
       zIndex: pickerIsOpen ? 100 : 0,
     },
     rightIconButton: {
-      borderColor: required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginLeft: 0,
       width: '100%',
+      height: undefined,
+      minHeight: 40,
+      marginHorizontal: 0,
+      marginRight: 0,
+      paddingLeft: 10,
+      paddingRight: 10,
     },
     dropdownContainer: {
       zIndex: pickerIsOpen ? 105 : 0,
@@ -304,10 +308,26 @@ const getStyles = (
       position: 'absolute',
       height: 240,
       width: '100%',
+      borderRadius: 14,
       zIndex: 110,
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     title: {
       marginLeft: 10,
+    },
+    requiredDot: {
+      width: 6,
+      height: 6,
+      borderRadius: 3,
+      marginLeft: 5,
+      backgroundColor: Colors.errorColor.background,
+    },
+    text: {
+      flex: 1,
+      textAlign: 'left',
     },
   });
 

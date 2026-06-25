@@ -59,7 +59,6 @@ const EditableInput = ({
       style={[
         commonStyles.filter,
         commonStyles.filterAlign,
-        commonStyles.filterSize,
         multiline && {height: undefined},
       ]}>
       <Input

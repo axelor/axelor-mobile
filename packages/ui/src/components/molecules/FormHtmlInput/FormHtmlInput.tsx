@@ -18,10 +18,9 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useThemeColor} from '../../../theme';
+import {checkNullString, getCommonStyles} from '../../../utils';
 import {HtmlInput, Text} from '../../atoms';
-import {ThemeColors, useThemeColor} from '../../../theme';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {checkNullString} from '../../../utils/strings';
 
 interface FormHtmlInputProps {
   title: string;
@@ -31,18 +30,18 @@ interface FormHtmlInputProps {
   hideIfNull?: boolean;
   style?: any;
   required?: boolean;
-  onChange?: (any: any) => void;
+  onChange?: (_v?: string) => void;
 }
 
 const FormHtmlInput = ({
+  style,
   title,
-  placeholder = '',
-  defaultValue = null,
+  placeholder,
+  defaultValue,
   readonly = false,
   hideIfNull = false,
-  style,
   required = false,
-  onChange = () => {},
+  onChange,
 }: FormHtmlInputProps) => {
   const Colors = useThemeColor();
 
@@ -59,30 +58,25 @@ const FormHtmlInput = ({
   }, [defaultValue]);
 
   const onValueChange = useCallback(
-    _value => {
+    (_value?: string) => {
       setValue(_value);
-      onChange(_value);
+      onChange?.(_value);
     },
     [onChange],
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
-    [Colors, _required],
-  );
-
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     setIsFocused(true);
-  };
+  }, []);
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     setIsFocused(false);
-  };
+  }, []);
 
   if (hideIfNull && readonly && checkNullString(defaultValue)) {
     return null;
@@ -93,11 +87,7 @@ const FormHtmlInput = ({
       <Text style={styles.title}>{title}</Text>
       <View
         testID="formHtmlInputWrapper"
-        style={[
-          commonStyles.filter,
-          styles.content,
-          isFocused && commonStyles.inputFocused,
-        ]}>
+        style={[commonStyles.filter, styles.content]}>
         <HtmlInput
           defaultInput={value}
           onChange={onValueChange}
@@ -113,30 +103,25 @@ const FormHtmlInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      alignSelf: 'center',
-    },
-    content: {
-      width: '100%',
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-    },
-    htmlToolBar: {
-      backgroundColor: null,
-      marginLeft: -5,
-    },
-    input: {
-      width: '100%',
-      minHeight: 40,
-    },
-    title: {
-      marginLeft: 10,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  content: {
+    width: '100%',
+  },
+  htmlToolBar: {
+    backgroundColor: undefined,
+    marginLeft: -5,
+  },
+  input: {
+    width: '100%',
+    minHeight: 40,
+  },
+  title: {
+    marginLeft: 10,
+  },
+});
 
 export default FormHtmlInput;

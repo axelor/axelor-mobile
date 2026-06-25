@@ -18,7 +18,7 @@
 
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {Color, ThemeColors, useThemeColor} from '../../../theme';
+import {Color, useThemeColor} from '../../../theme';
 import {checkNullString, getCommonStyles} from '../../../utils';
 import {useOutsideClickHandler} from '../../../hooks';
 import {SelectionContainer, MultiValuePickerButton} from '../../molecules';
@@ -94,7 +94,7 @@ const MultiValuePicker = ({
         newSelectedItemList = [...selectedItemList, itemValue];
       }
       setSelectedItemList(newSelectedItemList);
-      onValueChange(newSelectedItemList);
+      onValueChange?.(newSelectedItemList);
     },
     [onValueChange, selectedItemList],
   );
@@ -106,13 +106,8 @@ const MultiValuePicker = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
-  );
-
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
   return (
@@ -133,9 +128,7 @@ const MultiValuePicker = ({
         placeholder={placeholder}
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           commonStyles.filterAlign,
-          isFocused && commonStyles.inputFocused,
           styles.content,
           pickerStyle,
         ]}
@@ -160,27 +153,25 @@ const MultiValuePicker = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      alignSelf: 'center',
-    },
-    containerZIndex: {
-      zIndex: 100,
-    },
-    title: {
-      marginLeft: 10,
-    },
-    content: {
-      width: '100%',
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-      minHeight: 40,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  containerZIndex: {
+    zIndex: 100,
+  },
+  title: {
+    marginLeft: 10,
+  },
+  content: {
+    width: '100%',
+    marginHorizontal: 0,
+    minHeight: 40,
+    marginRight: 0,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+});
 
 export default MultiValuePicker;

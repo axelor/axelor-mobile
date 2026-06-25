@@ -113,7 +113,7 @@ const TimesheetFilters = ({
         (timesheetConfig?.needValidation ? (
           <Picker
             listItems={timesheetStatusListItems}
-            title={I18n.t('Hr_Status')}
+            placeholder={I18n.t('Hr_Status')}
             onValueChange={onChangeStatus}
             labelField="title"
             valueField="key"

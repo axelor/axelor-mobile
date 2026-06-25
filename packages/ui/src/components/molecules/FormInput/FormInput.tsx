@@ -18,17 +18,17 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
-import {ThemeColors, useThemeColor} from '../../../theme';
+import {useThemeColor} from '../../../theme';
 import {getCommonStyles, checkNullString} from '../../../utils';
 import {Input, Text} from '../../atoms';
 
 interface FormInputProps {
-  title: string;
+  title?: string;
   defaultValue?: string;
   readOnly?: boolean;
   style?: any;
   required?: boolean;
-  onChange?: (any: any) => void;
+  onChange?: (_v?: string) => void;
   onSelection?: () => void;
   onEndFocus?: () => void;
   keyboardType?: KeyboardTypeOptions;
@@ -60,7 +60,7 @@ const FormInput = ({
   );
 
   const onValueChange = useCallback(
-    (_value: string) => {
+    (_value?: string) => {
       setValue(_value);
       onChange?.(_value);
     },
@@ -68,13 +68,8 @@ const FormInput = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
-  );
-
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
-    [Colors, _required],
+    () => getCommonStyles(Colors, _required, isFocused),
+    [Colors, _required, isFocused],
   );
 
   const handleSelection = useCallback(() => {
@@ -98,10 +93,8 @@ const FormInput = ({
         testID="formInputInnerContainer"
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           commonStyles.filterAlign,
           styles.content,
-          isFocused && commonStyles.inputFocused,
           adjustHeightWithLines && {height: undefined},
         ]}>
         <Input
@@ -111,7 +104,6 @@ const FormInput = ({
           onSelection={handleSelection}
           onEndFocus={handleEndFocus}
           keyboardType={keyboardType}
-          numberOfLines={null}
           readOnly={readOnly}
           multiline={multiline}
         />
@@ -120,27 +112,22 @@ const FormInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      minHeight: 62,
-    },
-    content: {
-      width: '100%',
-      borderColor: _required
-        ? Colors.errorColor.background
-        : Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-      minHeight: 40,
-    },
-    input: {
-      width: '100%',
-    },
-    title: {
-      marginLeft: 10,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    minHeight: 62,
+  },
+  content: {
+    width: '100%',
+    marginHorizontal: 0,
+    minHeight: 40,
+  },
+  input: {
+    width: '100%',
+  },
+  title: {
+    marginLeft: 10,
+  },
+});
 
 export default FormInput;

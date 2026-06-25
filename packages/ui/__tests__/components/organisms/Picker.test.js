@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {fireEvent, within} from '@testing-library/react-native';
+import {fireEvent} from '@testing-library/react-native';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors, setup} from '../../tools';
 
@@ -93,11 +93,9 @@ describe('Picker Component', () => {
   it('should apply required styling when props is true', () => {
     const {getByTestId} = setupPicker({required: true});
 
-    expect(
-      within(getByTestId('rightIconButtonContainer')).getByTestId(
-        'cardContainer',
-      ),
-    ).toHaveStyle({borderColor: Colors.errorColor.background});
+    expect(getByTestId('rightIconButtonContent')).toHaveStyle({
+      borderColor: Colors.errorColor.background,
+    });
   });
 
   it('should apply custom style to container when provided', () => {
@@ -109,11 +107,9 @@ describe('Picker Component', () => {
   it('should apply custom style to picker when provided', () => {
     const {getByTestId, props} = setupPicker({pickerStyle: {width: 200}});
 
-    expect(
-      within(getByTestId('rightIconButtonContainer')).getByTestId(
-        'cardContainer',
-      ),
-    ).toHaveStyle(props.pickerStyle);
+    expect(getByTestId('rightIconButtonContent')).toHaveStyle(
+      props.pickerStyle,
+    );
   });
 
   it('should apply custom style to title when provided', () => {
