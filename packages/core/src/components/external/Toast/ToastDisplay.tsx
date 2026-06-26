@@ -17,23 +17,14 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  BaseToast,
-  ErrorToast,
-  ToastConfigParams,
-} from 'react-native-toast-message';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet, View} from 'react-native';
+import {ToastConfigParams} from 'react-native-toast-message';
+import {BorderBar, IconTile, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
-const ToastDisplay = ({type, ...props}: ToastConfigParams<any>) => {
+const ToastDisplay = ({type, text1, text2}: ToastConfigParams<any>) => {
   const Colors = useThemeColor();
 
-  const Component = useMemo(
-    () => (type === 'error' ? ErrorToast : BaseToast),
-    [type],
-  );
-
-  const borderColor = useMemo(() => {
+  const typeColor = useMemo(() => {
     switch (type) {
       case 'error':
         return Colors.errorColor;
@@ -44,42 +35,76 @@ const ToastDisplay = ({type, ...props}: ToastConfigParams<any>) => {
     }
   }, [Colors, type]);
 
+  const iconName = useMemo(() => {
+    switch (type) {
+      case 'error':
+        return 'exclamation-lg';
+      case 'success':
+        return 'check-lg';
+      default:
+        return 'info-lg';
+    }
+  }, [type]);
+
   const styles = useMemo(
-    () => getStyles(borderColor.background, Colors.text),
-    [Colors.text, borderColor],
+    () => getStyles(typeColor.background_light, typeColor.background),
+    [typeColor],
   );
 
   return (
-    <Component
-      {...props}
-      style={styles.toast}
-      contentContainerStyle={styles.toastContent}
-      text1Style={styles.title}
-      text2Style={styles.detail}
-      text2NumberOfLines={3}
-    />
+    <View style={styles.container}>
+      <BorderBar style={styles.border} color={typeColor.background} />
+      <IconTile
+        icon={iconName}
+        iconSize={20}
+        size={40}
+        borderRadius={12}
+        backgroundColor={`${typeColor.background}25`}
+        iconColor={typeColor.background}
+      />
+      <View style={styles.textContainer}>
+        <Text
+          writingType="title"
+          textColor={typeColor.background}
+          numberOfLines={1}>
+          {text1}
+        </Text>
+        {text2 != null && (
+          <Text writingType="subtitle" numberOfLines={3}>
+            {text2}
+          </Text>
+        )}
+      </View>
+    </View>
   );
 };
 
-const getStyles = (borderColor: string, textColor: string) =>
+const getStyles = (backgroundColor: string, borderColor: string) =>
   StyleSheet.create({
-    toast: {
-      borderLeftColor: borderColor,
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
       width: '90%',
-      height: 90,
+      minHeight: 70,
+      borderRadius: 12,
+      backgroundColor,
+      borderWidth: 1,
+      borderColor,
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+      gap: 10,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 4},
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
+      elevation: 5,
     },
-    toastContent: {
-      paddingVertical: 5,
+    border: {
+      alignSelf: 'stretch',
     },
-    title: {
-      fontSize: 18,
-      color: textColor,
+    textContainer: {
       flex: 1,
-    },
-    detail: {
-      fontSize: 16,
-      color: textColor,
-      flex: 3,
+      justifyContent: 'center',
     },
   });
 
