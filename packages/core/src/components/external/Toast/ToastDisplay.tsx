@@ -17,11 +17,24 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ToastConfigParams} from 'react-native-toast-message';
-import {BorderBar, IconTile, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  addOpacityToHex,
+  BorderBar,
+  IconTile,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 
-const ToastDisplay = ({type, text1, text2}: ToastConfigParams<any>) => {
+const ToastDisplay = ({
+  type,
+  text1,
+  text2,
+  text1Style,
+  text2Style,
+  onPress,
+}: ToastConfigParams<any>) => {
   const Colors = useThemeColor();
 
   const typeColor = useMemo(() => {
@@ -52,30 +65,32 @@ const ToastDisplay = ({type, text1, text2}: ToastConfigParams<any>) => {
   );
 
   return (
-    <View style={styles.container}>
-      <BorderBar style={styles.border} color={typeColor.background} />
-      <IconTile
-        icon={iconName}
-        iconSize={20}
-        size={40}
-        borderRadius={12}
-        backgroundColor={`${typeColor.background}25`}
-        iconColor={typeColor.background}
-      />
-      <View style={styles.textContainer}>
-        <Text
-          writingType="title"
-          textColor={typeColor.background}
-          numberOfLines={1}>
-          {text1}
-        </Text>
-        {text2 != null && (
-          <Text writingType="subtitle" numberOfLines={3}>
-            {text2}
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+      <View style={styles.container}>
+        <BorderBar style={styles.border} color={typeColor.background} />
+        <IconTile
+          icon={iconName}
+          iconSize={20}
+          size={40}
+          color={typeColor}
+          backgroundColor={addOpacityToHex(typeColor.background, 0.4)}
+        />
+        <View style={styles.textContainer}>
+          <Text
+            writingType="title"
+            textColor={typeColor.background}
+            numberOfLines={1}
+            style={text1Style}>
+            {text1}
           </Text>
-        )}
+          {text2 != null && (
+            <Text writingType="subtitle" numberOfLines={3} style={text2Style}>
+              {text2}
+            </Text>
+          )}
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -88,15 +103,11 @@ const getStyles = (backgroundColor: string, borderColor: string) =>
       minHeight: 70,
       borderRadius: 12,
       backgroundColor,
-      borderWidth: 1,
+      borderWidth: 0.5,
       borderColor,
       paddingHorizontal: 12,
       paddingVertical: 10,
       gap: 10,
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 4},
-      shadowOpacity: 0.15,
-      shadowRadius: 8,
       elevation: 5,
     },
     border: {
