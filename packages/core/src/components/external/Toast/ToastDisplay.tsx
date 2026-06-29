@@ -17,23 +17,27 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ToastConfigParams} from 'react-native-toast-message';
 import {
-  BaseToast,
-  ErrorToast,
-  ToastConfigParams,
-} from 'react-native-toast-message';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
+  addOpacityToHex,
+  BorderBar,
+  IconTile,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 
-const ToastDisplay = ({type, ...props}: ToastConfigParams<any>) => {
+const ToastDisplay = ({
+  type,
+  text1,
+  text2,
+  text1Style,
+  text2Style,
+  onPress,
+}: ToastConfigParams<any>) => {
   const Colors = useThemeColor();
 
-  const Component = useMemo(
-    () => (type === 'error' ? ErrorToast : BaseToast),
-    [type],
-  );
-
-  const borderColor = useMemo(() => {
+  const typeColor = useMemo(() => {
     switch (type) {
       case 'error':
         return Colors.errorColor;
@@ -44,42 +48,74 @@ const ToastDisplay = ({type, ...props}: ToastConfigParams<any>) => {
     }
   }, [Colors, type]);
 
+  const iconName = useMemo(() => {
+    switch (type) {
+      case 'error':
+        return 'exclamation-lg';
+      case 'success':
+        return 'check-lg';
+      default:
+        return 'info-lg';
+    }
+  }, [type]);
+
   const styles = useMemo(
-    () => getStyles(borderColor.background, Colors.text),
-    [Colors.text, borderColor],
+    () => getStyles(typeColor.background_light, typeColor.background),
+    [typeColor],
   );
 
   return (
-    <Component
-      {...props}
-      style={styles.toast}
-      contentContainerStyle={styles.toastContent}
-      text1Style={styles.title}
-      text2Style={styles.detail}
-      text2NumberOfLines={3}
-    />
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+      <View style={styles.container}>
+        <BorderBar style={styles.border} color={typeColor.background} />
+        <IconTile
+          icon={iconName}
+          iconSize={20}
+          size={40}
+          color={typeColor}
+          backgroundColor={addOpacityToHex(typeColor.background, 0.4)}
+        />
+        <View style={styles.textContainer}>
+          <Text
+            writingType="title"
+            textColor={typeColor.background}
+            numberOfLines={1}
+            style={text1Style}>
+            {text1}
+          </Text>
+          {text2 != null && (
+            <Text writingType="subtitle" numberOfLines={3} style={text2Style}>
+              {text2}
+            </Text>
+          )}
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
-const getStyles = (borderColor: string, textColor: string) =>
+const getStyles = (backgroundColor: string, borderColor: string) =>
   StyleSheet.create({
-    toast: {
-      borderLeftColor: borderColor,
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
       width: '90%',
-      height: 90,
+      minHeight: 70,
+      borderRadius: 12,
+      backgroundColor,
+      borderWidth: 0.5,
+      borderColor,
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+      gap: 10,
+      elevation: 5,
     },
-    toastContent: {
-      paddingVertical: 5,
+    border: {
+      alignSelf: 'stretch',
     },
-    title: {
-      fontSize: 18,
-      color: textColor,
+    textContainer: {
       flex: 1,
-    },
-    detail: {
-      fontSize: 16,
-      color: textColor,
-      flex: 3,
+      justifyContent: 'center',
     },
   });
 
