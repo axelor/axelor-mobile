@@ -52,7 +52,7 @@ const Panel = ({
   const storeState = useSelector(state => state);
 
   const isHidden = useMemo(
-    () => _panel.hideIf({objectState: object, storeState}),
+    () => _panel.hideIf?.({objectState: object, storeState}),
     [_panel, object, storeState],
   );
 
@@ -60,7 +60,7 @@ const Panel = ({
     () =>
       parentReadonly ||
       _panel.readonly ||
-      _panel.readonlyIf({objectState: object, storeState}),
+      _panel.readonlyIf?.({objectState: object, storeState}),
     [_panel, object, parentReadonly, storeState],
   );
 
@@ -74,8 +74,8 @@ const Panel = ({
       alignItems: 'center',
       flexDirection: _panel.direction ?? 'row',
       width: `${
-        _panel.colSpan > 0 && _panel.colSpan < 12
-          ? (Math.min(_panel.colSpan, DEFAULT_COLSPAN) / DEFAULT_COLSPAN) * 100
+        _panel.colSpan! > 0 && _panel.colSpan! < 12
+          ? (Math.min(_panel.colSpan!, DEFAULT_COLSPAN) / DEFAULT_COLSPAN) * 100
           : _panel.parent == null
             ? 100
             : 90
@@ -101,8 +101,8 @@ const Panel = ({
     return (
       <DropdownCard
         key={_panel.key}
-        title={I18n.t(_panel.titleKey)}
-        styleContainer={getZIndexStyle(zIndex)}>
+        title={I18n.t(_panel.titleKey!)}
+        style={getZIndexStyle(zIndex)}>
         <View
           style={[
             styles.content,

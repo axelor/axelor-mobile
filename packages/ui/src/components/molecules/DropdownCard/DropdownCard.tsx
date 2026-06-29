@@ -18,16 +18,14 @@
 
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {animationUtil} from '../../../tools/AnimationUtil';
 import {Color, useThemeColor} from '../../../theme';
+import {animationUtil} from '../../../tools';
 import {Card, HorizontalRule, Icon, Text} from '../../atoms';
-import IconTile from '../IconTile/IconTile';
+import {IconTile} from '../../molecules';
 
 interface DropdownCardProps {
   style?: any;
   styleText?: any;
-  styleContainer?: any;
-  styleCard?: any;
   title: string;
   children: any;
   dropdownIsOpen?: boolean;
@@ -40,8 +38,6 @@ interface DropdownCardProps {
 const DropdownCard = ({
   style,
   styleText,
-  styleContainer,
-  styleCard,
   title,
   dropdownIsOpen = false,
   children,
@@ -50,14 +46,14 @@ const DropdownCard = ({
   iconName,
   iconColor,
 }: DropdownCardProps) => {
-  const [isOpen, setIsOpen] = useState(dropdownIsOpen);
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(), []);
+  const [isOpen, setIsOpen] = useState(dropdownIsOpen);
 
-  const displayCard = useMemo(() => {
-    return onPress ? dropdownIsOpen : isOpen;
-  }, [dropdownIsOpen, isOpen, onPress]);
+  const displayContent = useMemo(
+    () => (onPress ? dropdownIsOpen : isOpen),
+    [dropdownIsOpen, isOpen, onPress],
+  );
 
   const handleCardPress = () => {
     animationUtil.animateNext();
@@ -65,75 +61,68 @@ const DropdownCard = ({
   };
 
   return (
-    <View
-      style={[styles.container, styleContainer]}
-      testID="dropdownCardContainer">
-      <Card style={[styles.card, styleCard]} testID="dropdownCardInner">
-        <TouchableOpacity
-          style={[styles.titleRow, style]}
-          onPress={handleCardPress}
-          disabled={!showIcon}
-          activeOpacity={0.95}
-          testID="dropdownCardTouchable">
-          {iconName && (
-            <IconTile
-              icon={iconName}
-              color={iconColor ?? Colors.primaryColor}
-              style={styles.iconTile}
-            />
-          )}
-          <Text
-            style={[styles.title, styleText]}
-            writingType="title"
-            numberOfLines={1}>
-            {title}
-          </Text>
-          {showIcon && (
-            <Icon
-              name={displayCard ? 'chevron-up' : 'chevron-down'}
-              color={Colors.primaryColor.background}
-            />
-          )}
-        </TouchableOpacity>
-        {displayCard && (
-          <View testID="cardContainer">
-            <HorizontalRule style={styles.separator} />
-            {children}
-          </View>
+    <Card style={[styles.card, style]} testID="dropdownCardContainer">
+      <TouchableOpacity
+        style={[styles.titleRow, style]}
+        onPress={handleCardPress}
+        disabled={!showIcon}
+        activeOpacity={0.95}
+        testID="dropdownCardTouchable">
+        {iconName && (
+          <IconTile icon={iconName} color={iconColor ?? Colors.primaryColor} />
         )}
-      </Card>
-    </View>
+        <Text
+          style={[styles.title, styleText]}
+          writingType="title"
+          numberOfLines={1}>
+          {title}
+        </Text>
+        {showIcon && (
+          <Icon
+            name={displayContent ? 'chevron-up' : 'chevron-down'}
+            color={Colors.primaryColor.background}
+          />
+        )}
+      </TouchableOpacity>
+      {displayContent && (
+        <View testID="cardContainer" style={styles.childrenContainer}>
+          <HorizontalRule
+            style={styles.separator}
+            color={Colors.secondaryColor.background_light}
+          />
+          {children}
+        </View>
+      )}
+    </Card>
   );
 };
 
-const getStyles = () =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '90%',
-      marginBottom: 8,
-    },
-    card: {
-      width: '100%',
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-    },
-    titleRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    iconTile: {
-      marginRight: 12,
-    },
-    title: {
-      flex: 1,
-    },
-    separator: {
-      marginTop: 12,
-      marginBottom: 4,
-    },
-  });
+const styles = StyleSheet.create({
+  card: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+    marginVertical: 4,
+    paddingHorizontal: 16,
+    paddingRight: 16,
+    paddingVertical: 12,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  title: {
+    flex: 1,
+  },
+  childrenContainer: {
+    width: '100%',
+  },
+  separator: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+  },
+});
 
 export default DropdownCard;

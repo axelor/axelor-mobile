@@ -65,7 +65,7 @@ const DropdownCardSwitch = ({
   }, [getDefaultVisibleItemsKeys]);
 
   const handlePress = useCallback(
-    key => {
+    (key: number) => {
       setOpenedCardKeys(current => {
         const _current = [...current];
         const cardKeyIdx = _current.indexOf(key);
@@ -92,7 +92,7 @@ const DropdownCardSwitch = ({
           <DropdownCard
             key={index}
             title={elt.title}
-            styleCard={elt.style}
+            style={elt.style}
             styleText={styleTitle}
             onPress={() => handlePress(elt.key)}
             dropdownIsOpen={openedCardKeys.includes(elt.key)}
