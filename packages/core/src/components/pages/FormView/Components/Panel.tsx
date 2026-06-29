@@ -113,7 +113,7 @@ const Panel = ({
       <DropdownCard
         key={_panel.key}
         title={I18n.t(_panel.titleKey!)}
-        styleContainer={[collapsibleStyle, getZIndexStyle(zIndex)]}>
+        style={[collapsibleStyle, getZIndexStyle(zIndex)]}>
         <View
           style={[styles.content, contentStyle, getZIndexStyle(zIndex + 1)]}>
           {renderContent()}
