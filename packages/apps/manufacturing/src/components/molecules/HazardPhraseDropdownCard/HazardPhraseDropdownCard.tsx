@@ -32,8 +32,7 @@ const HazardPhraseDropdownCard = ({data}: HazardPhraseDropdownCardProps) => {
   return (
     <DropdownCard
       title={I18n.t('Manufacturing_HazardPhrases')}
-      styleContainer={styles.container}
-      styleCard={styles.cardContainer}>
+      style={styles.container}>
       <HazardPhraseList data={data} />
     </DropdownCard>
   );
@@ -43,8 +42,6 @@ const styles = StyleSheet.create({
   container: {
     width: '90%',
     alignSelf: 'center',
-  },
-  cardContainer: {
     maxHeight: Dimensions.get('window').height * 0.35,
   },
 });
