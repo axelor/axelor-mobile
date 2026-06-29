@@ -1,0 +1,5 @@
+{
+    "title": "SimpleIndicator: redesign as a row layout with a colored accent bar and centered value and title",
+    "type": "refactor",
+    "packages": "ui"
+}
