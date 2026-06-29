@@ -1,0 +1,5 @@
+{
+  "title": "Toast: redesign with a custom layout featuring a colored accent bar, a tinted icon tile and per-type icons",
+  "type": "refactor",
+  "packages": "core"
+}
