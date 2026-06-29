@@ -18,6 +18,7 @@
 
 import React, {ReactNode, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {Color} from '../../../theme';
 import {DropdownCard} from '../../molecules';
 
 interface DropdownCardSwitchProps {
@@ -32,6 +33,7 @@ interface DropdownItem {
   childrenComp: ReactNode;
   isDefaultVisible?: boolean;
   iconName?: string;
+  iconColor?: Color;
   style?: any;
 }
 
@@ -63,7 +65,7 @@ const DropdownCardSwitch = ({
   }, [getDefaultVisibleItemsKeys]);
 
   const handlePress = useCallback(
-    key => {
+    (key: number) => {
       setOpenedCardKeys(current => {
         const _current = [...current];
         const cardKeyIdx = _current.indexOf(key);
@@ -90,11 +92,12 @@ const DropdownCardSwitch = ({
           <DropdownCard
             key={index}
             title={elt.title}
-            styleCard={elt.style}
+            style={elt.style}
             styleText={styleTitle}
             onPress={() => handlePress(elt.key)}
             dropdownIsOpen={openedCardKeys.includes(elt.key)}
-            iconName={elt.iconName}>
+            iconName={elt.iconName}
+            iconColor={elt.iconColor}>
             {elt.childrenComp}
           </DropdownCard>
         );
