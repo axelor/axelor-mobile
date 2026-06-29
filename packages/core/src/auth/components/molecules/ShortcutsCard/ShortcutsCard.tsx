@@ -24,12 +24,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Card, Icon, Text} from '@axelor/aos-mobile-ui';
-import {useSelector} from '../../../../index';
-import {useNavigation} from '../../../../hooks/use-navigation';
+import {Card, IconTile, Text} from '@axelor/aos-mobile-ui';
+import {useSelector} from '../../../../redux/hooks';
+import {useNavigation} from '../../../../hooks';
 
 const CARD_PERCENT_WIDTH = 90;
-const CARD_PADDING = 16;
+const CARD_PADDING = 8;
 
 interface ShortcutsCardProps {
   style?: any;
@@ -56,15 +56,16 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
   }, [horizontal]);
 
   const renderShortCut = useCallback(
-    ({item}) => {
+    ({item}: any) => {
       return (
         <TouchableOpacity
           style={styles.shortcut}
           onPress={() => navigation.navigate(item.mobileScreenName)}
-          key={item.shortcutId}>
-          <Icon name={item.iconName} size={35} />
+          key={item.shortcutId}
+          activeOpacity={0.9}>
+          <IconTile icon={item.iconName} size={45} />
           <View style={styles.shortcutTextContainer}>
-            <Text fontSize={14} numberOfLines={2} style={styles.shortcutText}>
+            <Text numberOfLines={2} style={styles.shortcutText}>
               {item.name}
             </Text>
           </View>
@@ -77,9 +78,8 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
   if (
     !Array.isArray(mobileSettings?.mobileShortcutList) ||
     mobileSettings?.mobileShortcutList.length === 0
-  ) {
+  )
     return null;
-  }
 
   return (
     <Card style={[styles.card, style]}>
@@ -90,7 +90,9 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
           horizontal
         />
       ) : (
-        mobileSettings?.mobileShortcutList.map(item => renderShortCut({item}))
+        mobileSettings?.mobileShortcutList.map((item: any) =>
+          renderShortCut({item}),
+        )
       )}
     </Card>
   );
@@ -105,13 +107,13 @@ const getStyles = (shortCutWidth: number) =>
       alignSelf: 'center',
       paddingHorizontal: CARD_PADDING,
       paddingRight: CARD_PADDING,
+      paddingVertical: CARD_PADDING,
       zIndex: 1,
     },
     shortcut: {
       width: shortCutWidth,
-      padding: 5,
+      padding: 2,
       alignItems: 'center',
-      gap: 5,
     },
     shortcutTextContainer: {
       flex: 1,
@@ -120,6 +122,7 @@ const getStyles = (shortCutWidth: number) =>
     },
     shortcutText: {
       textAlign: 'center',
+      fontWeight: 'bold',
     },
   });
 
