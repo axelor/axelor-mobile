@@ -18,45 +18,42 @@
 
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {animationUtil} from '../../../tools/AnimationUtil';
-import {useThemeColor} from '../../../theme';
-import {Card, Icon, Text} from '../../atoms';
-import {getCommonStyles} from '../../../utils';
+import {Color, useThemeColor} from '../../../theme';
+import {animationUtil} from '../../../tools';
+import {Card, HorizontalRule, Icon, Text} from '../../atoms';
+import {IconTile} from '../../molecules';
 
 interface DropdownCardProps {
   style?: any;
   styleText?: any;
-  styleContainer?: any;
-  styleCard?: any;
   title: string;
   children: any;
   dropdownIsOpen?: boolean;
   onPress?: () => void;
   showIcon?: boolean;
   iconName?: string;
+  iconColor?: Color;
 }
 
 const DropdownCard = ({
   style,
   styleText,
-  styleContainer,
-  styleCard,
   title,
   dropdownIsOpen = false,
   children,
   onPress,
   showIcon = true,
   iconName,
+  iconColor,
 }: DropdownCardProps) => {
-  const [isOpen, setIsOpen] = useState(dropdownIsOpen);
   const Colors = useThemeColor();
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const [isOpen, setIsOpen] = useState(dropdownIsOpen);
 
-  const displayCard = useMemo(() => {
-    return onPress ? dropdownIsOpen : isOpen;
-  }, [dropdownIsOpen, isOpen, onPress]);
+  const displayContent = useMemo(
+    () => (onPress ? dropdownIsOpen : isOpen),
+    [dropdownIsOpen, isOpen, onPress],
+  );
 
   const handleCardPress = () => {
     animationUtil.animateNext();
@@ -64,80 +61,68 @@ const DropdownCard = ({
   };
 
   return (
-    <View
-      style={[styles.container, styleContainer]}
-      testID="dropdownCardContainer">
+    <Card style={[styles.card, style]} testID="dropdownCardContainer">
       <TouchableOpacity
-        style={styles.containerContent}
+        style={[styles.titleRow, style]}
         onPress={handleCardPress}
         disabled={!showIcon}
         activeOpacity={0.95}
         testID="dropdownCardTouchable">
-        <View
-          style={[
-            commonStyles.filter,
-            commonStyles.filterAlign,
-            styles.content,
-            style,
-          ]}>
-          <View style={styles.row}>
-            {iconName && <Icon name={iconName} style={styles.iconLeft} />}
-            <Text style={styleText} numberOfLines={1}>
-              {title}
-            </Text>
-          </View>
-          {showIcon && (
-            <Icon
-              name={displayCard ? 'chevron-up' : 'chevron-down'}
-              color={Colors.primaryColor.background}
-            />
-          )}
-        </View>
+        {iconName && (
+          <IconTile icon={iconName} color={iconColor ?? Colors.primaryColor} />
+        )}
+        <Text
+          style={[styles.title, styleText]}
+          writingType="title"
+          numberOfLines={1}>
+          {title}
+        </Text>
+        {showIcon && (
+          <Icon
+            name={displayContent ? 'chevron-up' : 'chevron-down'}
+            color={Colors.primaryColor.background}
+          />
+        )}
       </TouchableOpacity>
-      {displayCard && (
-        <Card style={[styles.containerChildren, styleCard]}>{children}</Card>
+      {displayContent && (
+        <View testID="cardContainer" style={styles.childrenContainer}>
+          <HorizontalRule
+            style={styles.separator}
+            color={Colors.secondaryColor.background_light}
+          />
+          {children}
+        </View>
       )}
-    </View>
+    </Card>
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '90%',
-    },
-    containerContent: {
-      width: '100%',
-      zIndex: 35,
-    },
-    content: {
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-      height: 40,
-    },
-    containerChildren: {
-      backgroundColor: Colors.backgroundColor,
-      width: '98%',
-      paddingTop: 25,
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingBottom: 10,
-      marginTop: -20,
-      borderRadius: 7,
-      borderTopLeftRadius: 0,
-      borderTopRightRadius: 0,
-      zIndex: 30,
-    },
-    row: {
-      flexDirection: 'row',
-    },
-    iconLeft: {
-      marginRight: 10,
-    },
-  });
+const styles = StyleSheet.create({
+  card: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+    marginVertical: 4,
+    paddingHorizontal: 16,
+    paddingRight: 16,
+    paddingVertical: 12,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  title: {
+    flex: 1,
+  },
+  childrenContainer: {
+    width: '100%',
+  },
+  separator: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+  },
+});
 
 export default DropdownCard;
