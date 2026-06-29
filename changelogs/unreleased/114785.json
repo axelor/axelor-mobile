@@ -1,0 +1,5 @@
+{
+  "title": "DropdownCard: redesign component with new card-based layout and IconTile support",
+  "type": "refactor",
+  "packages": "ui"
+}

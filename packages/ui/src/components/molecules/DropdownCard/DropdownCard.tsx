@@ -19,9 +19,9 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {animationUtil} from '../../../tools/AnimationUtil';
-import {useThemeColor} from '../../../theme';
-import {Card, Icon, Text} from '../../atoms';
-import {getCommonStyles} from '../../../utils';
+import {Color, useThemeColor} from '../../../theme';
+import {Card, HorizontalRule, Icon, Text} from '../../atoms';
+import IconTile from '../IconTile/IconTile';
 
 interface DropdownCardProps {
   style?: any;
@@ -34,6 +34,7 @@ interface DropdownCardProps {
   onPress?: () => void;
   showIcon?: boolean;
   iconName?: string;
+  iconColor?: Color;
 }
 
 const DropdownCard = ({
@@ -47,12 +48,12 @@ const DropdownCard = ({
   onPress,
   showIcon = true,
   iconName,
+  iconColor,
 }: DropdownCardProps) => {
   const [isOpen, setIsOpen] = useState(dropdownIsOpen);
   const Colors = useThemeColor();
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(() => getStyles(), []);
 
   const displayCard = useMemo(() => {
     return onPress ? dropdownIsOpen : isOpen;
@@ -67,76 +68,71 @@ const DropdownCard = ({
     <View
       style={[styles.container, styleContainer]}
       testID="dropdownCardContainer">
-      <TouchableOpacity
-        style={styles.containerContent}
-        onPress={handleCardPress}
-        disabled={!showIcon}
-        activeOpacity={0.95}
-        testID="dropdownCardTouchable">
-        <View
-          style={[
-            commonStyles.filter,
-            commonStyles.filterAlign,
-            styles.content,
-            style,
-          ]}>
-          <View style={styles.row}>
-            {iconName && <Icon name={iconName} style={styles.iconLeft} />}
-            <Text style={styleText} numberOfLines={1}>
-              {title}
-            </Text>
-          </View>
+      <Card style={[styles.card, styleCard]} testID="dropdownCardInner">
+        <TouchableOpacity
+          style={[styles.titleRow, style]}
+          onPress={handleCardPress}
+          disabled={!showIcon}
+          activeOpacity={0.95}
+          testID="dropdownCardTouchable">
+          {iconName && (
+            <IconTile
+              icon={iconName}
+              color={iconColor ?? Colors.primaryColor}
+              style={styles.iconTile}
+            />
+          )}
+          <Text
+            style={[styles.title, styleText]}
+            writingType="title"
+            numberOfLines={1}>
+            {title}
+          </Text>
           {showIcon && (
             <Icon
               name={displayCard ? 'chevron-up' : 'chevron-down'}
               color={Colors.primaryColor.background}
             />
           )}
-        </View>
-      </TouchableOpacity>
-      {displayCard && (
-        <Card style={[styles.containerChildren, styleCard]}>{children}</Card>
-      )}
+        </TouchableOpacity>
+        {displayCard && (
+          <View testID="cardContainer">
+            <HorizontalRule style={styles.separator} />
+            {children}
+          </View>
+        )}
+      </Card>
     </View>
   );
 };
 
-const getStyles = Colors =>
+const getStyles = () =>
   StyleSheet.create({
     container: {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       width: '90%',
+      marginBottom: 8,
     },
-    containerContent: {
+    card: {
       width: '100%',
-      zIndex: 35,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
     },
-    content: {
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 1,
-      marginHorizontal: 0,
-      height: 40,
-    },
-    containerChildren: {
-      backgroundColor: Colors.backgroundColor,
-      width: '98%',
-      paddingTop: 25,
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingBottom: 10,
-      marginTop: -20,
-      borderRadius: 7,
-      borderTopLeftRadius: 0,
-      borderTopRightRadius: 0,
-      zIndex: 30,
-    },
-    row: {
+    titleRow: {
       flexDirection: 'row',
+      alignItems: 'center',
     },
-    iconLeft: {
-      marginRight: 10,
+    iconTile: {
+      marginRight: 12,
+    },
+    title: {
+      flex: 1,
+    },
+    separator: {
+      marginTop: 12,
+      marginBottom: 4,
     },
   });
 
