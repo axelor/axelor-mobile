@@ -19,9 +19,9 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, useThemeColor} from '../../../../../theme';
+import {checkNullString, hexToRgb} from '../../../../../utils';
 import {BorderBar, Icon, Text} from '../../../../atoms';
 import {TextUnit} from '../../../../molecules';
-import {checkNullString, hexToRgb} from '../../../../../utils';
 
 interface SimpleIndicatorProps {
   icon?: string;
@@ -43,6 +43,7 @@ const SimpleIndicator = ({
   const Colors = useThemeColor();
 
   const isIcon = useMemo(() => !checkNullString(icon), [icon]);
+
   const color: Color = useMemo(() => {
     if (_color != null) {
       return {
@@ -59,12 +60,8 @@ const SimpleIndicator = ({
     <TouchableOpacity onPress={onPress} style={styles.container}>
       {value > 0 && <BorderBar color={color.background} />}
       <View style={styles.inner}>
-        <Icon size={30} name={icon!} visible={isIcon} />
-        <View
-          style={[
-            styles.titleContainer,
-            isIcon ? styles.maxWidth : styles.align,
-          ]}>
+        <Icon size={20} name={icon!} visible={isIcon} />
+        <View style={styles.titleContainer}>
           <TextUnit
             value={value}
             unit={unit}
@@ -72,7 +69,7 @@ const SimpleIndicator = ({
           />
           <Text
             numberOfLines={2}
-            style={!isIcon && styles.textAlign}
+            style={styles.textAlign}
             textColor={Colors.secondaryColor.background}>
             {title}
           </Text>
@@ -85,27 +82,23 @@ const SimpleIndicator = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'stretch',
-    paddingVertical: 12,
+    paddingVertical: 4,
     paddingHorizontal: 6,
+    paddingRight: 6,
+    gap: 6,
   },
   inner: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    gap: 6,
   },
   titleContainer: {
     flexDirection: 'column',
-    alignSelf: 'center',
-  },
-  align: {
     alignItems: 'center',
-  },
-  maxWidth: {
-    width: '80%',
-    paddingLeft: 5,
+    flex: 1,
   },
   textAlign: {
+    alignSelf: 'stretch',
     textAlign: 'center',
     fontWeight: 'bold',
   },
