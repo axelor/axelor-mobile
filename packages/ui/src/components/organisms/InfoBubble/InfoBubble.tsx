@@ -77,7 +77,7 @@ const getStyles = (badgeColor: Color, size: number) =>
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: badgeColor.background_light,
-      borderWidth: 2,
+      borderWidth: 0.5,
       borderColor: badgeColor.background,
       borderRadius: size,
       width: size,

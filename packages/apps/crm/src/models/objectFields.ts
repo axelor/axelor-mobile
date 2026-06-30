@@ -144,11 +144,21 @@ export const crm_modelAPI: ObjectFields = {
     opportunitySeq: schemaContructor.string(),
     opportunityStatus: schemaContructor.subObject('name'),
     opportunityRating: schemaContructor.number(),
-    partner: schemaContructor.subObject('partnerSeq'),
+    partner: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        isCustomer: schemaContructor.boolean(),
+        isProspect: schemaContructor.boolean(),
+        partnerSeq: schemaContructor.string(),
+        picture: schemaContructor.subObject(),
+        simpleFullName: schemaContructor.string(),
+      }),
+    ),
     amount: schemaContructor.number(),
     currency: schemaContructor.subObject('symbol'),
     recurrentAmount: schemaContructor.number(),
-    user: schemaContructor.subObject('fullName'),
+    user: schemaContructor
+      .subObject('fullName')
+      .concat(schemaContructor.object({name: schemaContructor.string()})),
     contact: schemaContructor.subObject(),
   }),
   crm_opportunityStatus: schemaContructor.object({

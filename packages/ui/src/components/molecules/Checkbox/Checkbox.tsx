@@ -19,8 +19,8 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme';
+import {checkNullString} from '../../../utils';
 import {Icon, Text} from '../../atoms';
-import {checkNullString} from '../../../utils/strings';
 
 interface CheckboxProps {
   style?: any;
@@ -31,14 +31,14 @@ interface CheckboxProps {
   title?: string;
   isDefaultChecked?: boolean;
   isDefaultPartialChecked?: boolean;
-  onChange: (any: any) => void;
+  onChange: (_v: boolean) => void;
 }
 
 const Checkbox = ({
   style,
   styleTxt,
   iconColor,
-  iconSize = 30,
+  iconSize = 15,
   disabled = false,
   title,
   isDefaultChecked = false,
@@ -47,8 +47,8 @@ const Checkbox = ({
 }: CheckboxProps) => {
   const Colors = useThemeColor();
 
-  const [isChecked, setIsChecked] = useState(isDefaultChecked);
-  const [isPartialChecked, setIsPartialChecked] = useState(
+  const [isChecked, setIsChecked] = useState<boolean>(isDefaultChecked);
+  const [isPartialChecked, setIsPartialChecked] = useState<boolean>(
     isDefaultPartialChecked,
   );
 
@@ -63,9 +63,7 @@ const Checkbox = ({
   }, [isChecked, isPartialChecked]);
 
   const _iconColor = useMemo(() => {
-    if (disabled) {
-      return Colors.secondaryColor.background;
-    }
+    if (disabled) return Colors.secondaryColor.background;
 
     return iconColor != null ? iconColor : Colors.primaryColor.background;
   }, [Colors, disabled, iconColor]);
@@ -74,8 +72,6 @@ const Checkbox = ({
     onChange(!isChecked);
     setIsChecked(!isChecked);
   };
-
-  const styles = useMemo(() => getStyles(iconSize), [iconSize]);
 
   useEffect(() => {
     setIsChecked(isDefaultChecked);
@@ -87,45 +83,30 @@ const Checkbox = ({
 
   return (
     <View style={[styles.container, style]} testID="checkboxContainer">
-      <View style={styles.iconContainer}>
-        <Icon
-          name={iconName}
-          color={_iconColor}
-          size={iconSize}
-          touchable={!disabled}
-          onPress={handleToggle}
-        />
-      </View>
+      <Icon
+        name={iconName}
+        color={_iconColor}
+        size={iconSize}
+        touchable={!disabled}
+        onPress={handleToggle}
+      />
       {!checkNullString(title) && (
-        <Text
-          style={[styles.title, styleTxt]}
-          textColor={Colors.text}
-          fontSize={14}>
-          {title}
-        </Text>
+        <Text style={[styles.title, styleTxt]}>{title}</Text>
       )}
     </View>
   );
 };
 
-const getStyles = iconSize =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-    },
-    iconContainer: {
-      width: iconSize,
-      height: iconSize,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 16,
-      marginLeft: 5,
-      fontWeight: '600',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 5,
+  },
+  title: {
+    // fontWeight: '600',
+  },
+});
 
 export default Checkbox;

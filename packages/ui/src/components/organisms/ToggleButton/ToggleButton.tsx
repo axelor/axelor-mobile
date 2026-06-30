@@ -35,7 +35,7 @@ const ToggleButton = ({
   inactiveColor,
   buttonConfig,
   isNeutralBackground = true,
-  onPress = () => {},
+  onPress,
 }: ToggleButtonProps) => {
   const Colors = useThemeColor();
 
@@ -56,7 +56,7 @@ const ToggleButton = ({
   const handlePress = useCallback(() => {
     setIsSelected(current => {
       const newValue = !current;
-      onPress(newValue);
+      onPress?.(newValue);
       return newValue;
     });
   }, [onPress]);

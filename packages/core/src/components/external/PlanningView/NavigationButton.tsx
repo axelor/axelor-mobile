@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {CircleButton} from '@axelor/aos-mobile-ui';
 
 const NavigationButton = ({
@@ -29,26 +28,9 @@ const NavigationButton = ({
   icon: string;
   onPress: () => void;
 }) => {
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
-  return (
-    <CircleButton
-      style={styles.circleButton}
-      iconName={icon}
-      onPress={onPress}
-      size={30}
-    />
-  );
+  return <CircleButton iconName={icon} onPress={onPress} size={30} />;
 };
-
-const styles = StyleSheet.create({
-  circleButton: {
-    marginHorizontal: 5,
-    marginTop: 5,
-    width: 40,
-  },
-});
 
 export default NavigationButton;

@@ -68,7 +68,8 @@ const OpportunityCard = ({
           ?.background
       }
       style={style}
-      sideBadges={{
+      upperBadges={{
+        fixedOnRightSide: true,
         items: [
           {
             customComponent: (
@@ -79,8 +80,8 @@ const OpportunityCard = ({
       }}
       upperTexts={{
         items: [
-          {displayText: reference, isTitle: true},
           {displayText: name, isTitle: true},
+          {displayText: reference},
           {
             indicatorText: I18n.t('Crm_Opportunity_Amount'),
             displayText: `${formatNumber(

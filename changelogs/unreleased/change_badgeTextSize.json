@@ -1,0 +1,5 @@
+{
+  "title": "Badge: allow customizing the text size",
+  "type": "feat",
+  "packages": "ui"
+}

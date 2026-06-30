@@ -16,10 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {StarScore, ObjectCard} from '@axelor/aos-mobile-ui';
+import {StarScore, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useBinaryPictureUri, useTypeHelpers} from '@axelor/aos-mobile-core';
+
+const IMAGE_SIZE = 60;
 
 interface LeadsCardProps {
   style?: any;
@@ -55,8 +57,33 @@ const LeadsCard = ({
   isDoNotSendEmail,
   isDoNotCall,
 }: LeadsCardProps) => {
+  const Colors = useThemeColor();
   const formatBinaryFile = useBinaryPictureUri();
   const {getItemColorFromIndex} = useTypeHelpers();
+
+  const phoneDisplayConfig = useMemo(() => {
+    if (isDoNotCall) {
+      return {
+        color: Colors.red.background,
+        icon: 'telephone-x-fill',
+        style: {color: Colors.red.background},
+      };
+    }
+
+    return {color: undefined, icon: 'telephone-fill', style: undefined};
+  }, [Colors.red.background, isDoNotCall]);
+
+  const emailDisplayConfig = useMemo(() => {
+    if (isDoNotSendEmail) {
+      return {
+        color: Colors.red.background,
+        icon: 'envelope-slash-fill',
+        style: {color: Colors.red.background},
+      };
+    }
+
+    return {color: undefined, icon: 'envelope-fill', style: undefined};
+  }, [Colors.red.background, isDoNotSendEmail]);
 
   return (
     <ObjectCard
@@ -67,10 +94,13 @@ const LeadsCard = ({
       style={style}
       showArrow={true}
       image={{
-        generalStyle: styles.imageSize,
+        generalStyle: [
+          styles.imageStyle,
+          {borderColor: Colors.secondaryColor.background_light},
+        ],
         imageSize: styles.imageSize,
         resizeMode: 'contain',
-        defaultIconSize: 60,
+        defaultIconSize: IMAGE_SIZE,
         source: formatBinaryFile(
           leadsId,
           leadVersion,
@@ -86,41 +116,39 @@ const LeadsCard = ({
             hideIfNull: true,
           },
           {
+            customComponent: (
+              <StarScore score={leadScoring} showMissingStar={true} size={12} />
+            ),
+          },
+        ],
+      }}
+      lowerTexts={{
+        items: [
+          {
             indicatorText: leadsAddress,
             iconName: 'geo-alt-fill',
             hideIfNull: true,
           },
           {
             indicatorText: leadsPhoneNumber,
-            iconName: isDoNotCall ? 'telephone-x-fill' : 'phone-fill',
-            color: isDoNotCall ? 'red' : null,
+            iconName: phoneDisplayConfig.icon,
+            color: phoneDisplayConfig.color,
             hideIfNull: true,
-            style: isDoNotCall ? styles.txtRed : null,
+            style: phoneDisplayConfig.style,
           },
           {
             indicatorText: leadsFixedPhone,
-            iconName: isDoNotCall ? 'telephone-x-fill' : 'telephone-fill',
-            color: isDoNotCall ? 'red' : null,
+            iconName: phoneDisplayConfig.icon,
+            color: phoneDisplayConfig.color,
             hideIfNull: true,
-            style: isDoNotCall ? styles.txtRed : null,
+            style: phoneDisplayConfig.style,
           },
           {
             indicatorText: leadsEmail,
-            iconName: isDoNotSendEmail
-              ? 'envelope-slash-fill'
-              : 'envelope-fill',
-            color: isDoNotSendEmail ? 'red' : null,
+            iconName: emailDisplayConfig.icon,
+            color: emailDisplayConfig.color,
             hideIfNull: true,
-            style: isDoNotSendEmail ? styles.txtRed : null,
-          },
-        ],
-      }}
-      upperBadges={{
-        items: [
-          {
-            customComponent: (
-              <StarScore score={leadScoring} showMissingStar={true} />
-            ),
+            style: emailDisplayConfig.style,
           },
         ],
       }}
@@ -129,12 +157,14 @@ const LeadsCard = ({
 };
 
 const styles = StyleSheet.create({
-  imageSize: {
-    height: 80,
-    width: 80,
+  imageStyle: {
+    borderWidth: 0.5,
+    borderRadius: 10,
+    marginVertical: 3,
   },
-  txtRed: {
-    color: 'red',
+  imageSize: {
+    height: IMAGE_SIZE,
+    width: IMAGE_SIZE,
   },
 });
 

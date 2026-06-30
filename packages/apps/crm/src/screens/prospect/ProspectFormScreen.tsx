@@ -29,7 +29,7 @@ import {
   updateProspect,
 } from '../../features/prospectSlice';
 
-const ProspectFormScreen = ({navigation, route}) => {
+const ProspectFormScreen = ({navigation, route}: any) => {
   const {prospectId} = route?.params ?? {};
   const {Partner} = useTypes();
   const _dispatch = useDispatch();
@@ -56,11 +56,11 @@ const ProspectFormScreen = ({navigation, route}) => {
   );
 
   const handleSaveAPI = useCallback(
-    ({dispatch, objectState}) => {
+    ({dispatch, objectState}: any) => {
       const isCreation = objectState?.id == null;
       const sliceFct: any = isCreation ? createProspect : updateProspect;
 
-      dispatch(sliceFct(objectState)).then(res => {
+      dispatch(sliceFct(objectState)).then((res: any) => {
         const _recordId = res?.payload?.id;
         if (_recordId) {
           navigation.replace('ProspectDetailsScreen', {idProspect: _recordId});

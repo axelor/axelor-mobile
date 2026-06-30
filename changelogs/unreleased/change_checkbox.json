@@ -1,0 +1,5 @@
+{
+  "title": "Checkbox: redesign with a lighter layout and a smaller default icon",
+  "type": "refactor",
+  "packages": "ui"
+}

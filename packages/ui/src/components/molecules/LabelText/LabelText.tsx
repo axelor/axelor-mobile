@@ -41,15 +41,13 @@ const LabelText = ({
   title,
   value,
   size = 12,
-  textSize = 14,
+  textSize = 12,
   color,
-  iconName = null,
+  iconName,
   onlyOneLine = false,
 }: LabelTextProps) => {
   const renderValue = () => {
-    if (checkNullString(value?.toString())) {
-      return null;
-    }
+    if (checkNullString(value?.toString())) return null;
 
     return (
       <Text style={textStyle} writingType="important" fontSize={textSize}>
@@ -69,9 +67,9 @@ const LabelText = ({
         />
       )}
       <Text
-        style={textStyle}
+        style={[styles.text, textStyle]}
         fontSize={textSize}
-        numberOfLines={onlyOneLine ? 1 : null}>
+        numberOfLines={onlyOneLine ? 1 : (null as any)}>
         {!checkNullString(title?.toString()) && `${title} `}
         {renderValue()}
       </Text>
@@ -85,6 +83,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5,
+  },
+  text: {
+    flexShrink: 1,
   },
 });
 

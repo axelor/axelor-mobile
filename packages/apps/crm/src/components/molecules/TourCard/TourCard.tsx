@@ -17,8 +17,8 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, LabelText, Text, ProgressBar} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {ProgressBar, ObjectCard} from '@axelor/aos-mobile-ui';
 import {useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
 import {searchTourLineApi} from '../../../api';
 
@@ -40,7 +40,7 @@ const TourCard = ({style, onPress, tour}: TourCardProps) => {
   useEffect(() => {
     isMounted.current = true;
 
-    searchTourLineApi({tourId: tour?.id, numberElementsByPage: null})
+    searchTourLineApi({tourId: tour?.id, numberElementsByPage: null as any})
       .then(response => {
         if (isMounted.current) {
           if (Array.isArray(response?.data?.data)) {
@@ -69,61 +69,54 @@ const TourCard = ({style, onPress, tour}: TourCardProps) => {
   }, [tour]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, style]}>
-        <View style={styles.childrenContainer}>
-          <Text writingType="title">{tour.name}</Text>
-          <DateDisplay date={tour.date} />
-        </View>
-        <View style={styles.childrenContainer}>
-          <LabelText
-            iconName="person-fill"
-            title={tour.salespersonUser?.fullName}
-            textStyle={styles.fontSize}
-            size={16}
-          />
-          <ProgressBar
-            style={styles.progressBar}
-            value={numberTourLineValidated}
-            total={totalTourLine}
-            showPercent={false}
-            height={15}
-            styleTxt={styles.textProgressBar}
-          />
-        </View>
-        <Text>
-          {I18n.t('Crm_ScheduledVisits', {
-            totalTourLine,
-          })}
-        </Text>
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      style={style}
+      showArrow={false}
+      touchable
+      onPress={onPress}
+      leftContainerFlex={2}
+      upperTexts={{
+        items: [
+          {displayText: tour.name, isTitle: true},
+          {
+            iconName: 'person-fill',
+            displayText: tour.salespersonUser?.fullName,
+          },
+          {
+            displayText: I18n.t('Crm_ScheduledVisits', {totalTourLine}),
+          },
+        ],
+      }}
+      sideBadges={{
+        style: styles.badgeContainer,
+        items: [
+          {
+            customComponent: <DateDisplay date={tour.date} size={15} />,
+          },
+          {
+            customComponent: (
+              <ProgressBar
+                value={numberTourLineValidated}
+                total={totalTourLine}
+                showPercent={false}
+                height={15}
+                styleTxt={styles.textProgressBar}
+              />
+            ),
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 10,
-  },
-  childrenContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-    justifyContent: 'space-between',
-  },
-  progressBar: {
-    borderRadius: 20,
-    width: '40%',
+  badgeContainer: {
+    gap: 4,
+    alignItems: 'flex-end',
   },
   textProgressBar: {
     display: 'none',
-  },
-  fontSize: {
-    fontSize: 16,
   },
 });
 

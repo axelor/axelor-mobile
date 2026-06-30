@@ -150,22 +150,19 @@ const Field = ({
       case 'checkbox':
         return (
           <Checkbox
-            style={[
-              fieldStyle,
-              styles.checkbox,
-              colSpanWidth != null && styles.checkboxColSpan,
-            ]}
+            style={[fieldStyle, colSpanWidth != null && styles.checkboxColSpan]}
             title={I18n.t(_field.titleKey)}
             isDefaultChecked={value}
             onChange={handleChange}
             disabled={isReadonly}
+            iconSize={18}
             {..._field.options}
           />
         );
       case 'star':
         return (
           <StarScore
-            size={25}
+            size={18}
             score={value}
             onPress={handleChange}
             editMode={!isReadonly}
@@ -317,10 +314,6 @@ const Field = ({
 };
 
 const styles = StyleSheet.create({
-  checkbox: {
-    marginVertical: 5,
-    marginLeft: 15,
-  },
   checkboxColSpan: {
     marginLeft: 0,
   },

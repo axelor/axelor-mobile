@@ -18,16 +18,15 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Color, IconTile, useThemeColor} from '@axelor/aos-mobile-ui';
 import {linkingProvider} from '../../../tools';
 
-const splitFullName = _data => {
+const splitFullName = (
+  _data?: string,
+): {firstName: string; lastName: string} => {
   const fullName = _data?.split(' ');
-  if (fullName?.length === 2) {
-    return {firstName: fullName[0], lastName: fullName[1]};
-  } else {
-    return {firstName: fullName, lastName: ''};
-  }
+
+  return {firstName: fullName?.[0] ?? '', lastName: fullName?.[1] ?? ''};
 };
 
 const formatGoogleSearch = ({
@@ -68,9 +67,7 @@ const formatLinkedinSearch = ({
     return `pub/dir/${_names.firstName}/${_names.lastName}`;
   }
 
-  if (company) {
-    return `company/${company}`;
-  }
+  if (company) return `company/${company}`;
 
   return '';
 };
@@ -84,7 +81,7 @@ interface ContactData {
 
 const SocialNetworkLinks = ({
   style,
-  size = 20,
+  size = 15,
   data,
   googleColor,
   hideGoogle = false,
@@ -94,9 +91,9 @@ const SocialNetworkLinks = ({
   style?: any;
   size?: number;
   data: ContactData;
-  googleColor?: string;
+  googleColor?: Color;
   hideGoogle?: boolean;
-  linkedinColor?: string;
+  linkedinColor?: Color;
   hideLinkedin?: boolean;
 }) => {
   const Colors = useThemeColor();
@@ -104,12 +101,11 @@ const SocialNetworkLinks = ({
   return (
     <View style={[styles.container, style]}>
       {!hideGoogle && (
-        <Icon
-          style={styles.icon}
-          name="google"
-          color={googleColor || Colors.primaryColor.background}
-          touchable={true}
-          size={size}
+        <IconTile
+          icon="google"
+          color={googleColor ?? Colors.primaryColor}
+          iconSize={size}
+          size={size * 2}
           onPress={() =>
             linkingProvider.openBrowser(
               `https://www.google.com/search?q=${formatGoogleSearch(
@@ -120,12 +116,11 @@ const SocialNetworkLinks = ({
         />
       )}
       {!hideLinkedin && (
-        <Icon
-          style={styles.icon}
-          name="linkedin"
-          color={linkedinColor || Colors.primaryColor.background}
-          touchable={true}
-          size={size}
+        <IconTile
+          icon="linkedin"
+          color={linkedinColor ?? Colors.primaryColor}
+          iconSize={size}
+          size={size * 2}
           onPress={() =>
             linkingProvider.openBrowser(
               `https://www.linkedin.com/${formatLinkedinSearch(data)}`,
@@ -142,9 +137,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignContent: 'center',
-  },
-  icon: {
-    marginHorizontal: 7,
+    gap: 5,
+    paddingHorizontal: 10,
   },
 });
 

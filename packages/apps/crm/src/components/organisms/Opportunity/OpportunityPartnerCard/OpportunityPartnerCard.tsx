@@ -24,7 +24,7 @@ import {StyleSheet} from 'react-native';
 const OpportunityPartnerCard = ({}) => {
   const navigation = useNavigation();
 
-  const {opportunity} = useSelector((state: any) => state.opportunity);
+  const {opportunity} = useSelector(state => state.opportunity);
 
   const navigateToPartnerDetails = useCallback(() => {
     if (opportunity?.partner?.isProspect) {
@@ -54,7 +54,6 @@ const OpportunityPartnerCard = ({}) => {
 const styles = StyleSheet.create({
   card: {
     width: '90%',
-    marginTop: 10,
     alignSelf: 'center',
   },
 });

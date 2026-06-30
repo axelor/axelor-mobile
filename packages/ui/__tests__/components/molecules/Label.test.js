@@ -18,7 +18,6 @@
 
 import {fireEvent} from '@testing-library/react-native';
 import {Label} from '@axelor/aos-mobile-ui';
-import {hexToRgb} from '../../../lib/utils/commons-utlis';
 import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('Label Component', () => {
@@ -33,8 +32,8 @@ describe('Label Component', () => {
 
   function checkColorStyle(elt, color) {
     expect(elt).toHaveStyle({
-      backgroundColor: `rgba(${hexToRgb(color.background_light)}, 0.4)`,
-      borderColor: color.background_light,
+      backgroundColor: color.background_light,
+      borderColor: color.background,
     });
   }
 

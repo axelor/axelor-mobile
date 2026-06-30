@@ -20,7 +20,6 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
-import {hexToRgb} from '../../../utils/commons-utlis';
 
 type LabelType = 'info' | 'success' | 'danger' | 'error';
 
@@ -31,7 +30,7 @@ type TypeConfig = {
 
 interface LabelProps {
   style?: any;
-  message: string;
+  message?: string;
   type?: LabelType;
   iconName?: string;
   color?: Color;
@@ -52,10 +51,10 @@ const Label = ({
 }: LabelProps) => {
   const Colors = useThemeColor();
 
-  const [isVisible, setIsVisible] = useState(visible);
+  const [isVisible, setIsVisible] = useState<boolean>(visible);
 
-  const typeConfig: TypeConfig = useMemo(() => {
-    let config: TypeConfig = null;
+  const typeConfig = useMemo(() => {
+    let config: TypeConfig | undefined;
 
     switch (type) {
       case 'error':
@@ -77,7 +76,7 @@ const Label = ({
         config = {color: Colors.successColor, iconName: 'check-circle-fill'};
         break;
       default:
-        config = {color: null, iconName: null};
+        config = {color: undefined as any, iconName: undefined as any};
         break;
     }
 
@@ -89,12 +88,10 @@ const Label = ({
       config.iconName = iconName;
     }
 
-    return {...config};
+    return config;
   }, [Colors, color, iconName, type]);
 
-  const styles = useMemo(() => {
-    return getStyles(typeConfig?.color);
-  }, [typeConfig]);
+  const styles = useMemo(() => getStyles(typeConfig?.color), [typeConfig]);
 
   const handleClose = useCallback(() => {
     setIsVisible(false);
@@ -103,17 +100,13 @@ const Label = ({
 
   useEffect(() => {
     setIsVisible(_current => {
-      if (visible == null || _current === visible) {
-        return _current;
-      }
+      if (visible == null || _current === visible) return _current;
 
       return visible;
     });
   }, [visible]);
 
-  if (!isVisible) {
-    return null;
-  }
+  if (!isVisible) return null;
 
   return (
     <View testID="labelContainer" style={[styles.container, style]}>
@@ -131,14 +124,14 @@ const Label = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color?: Color) =>
   StyleSheet.create({
     container: {
       width: '100%',
-      borderColor: color?.background_light,
+      borderColor: color?.background,
       borderWidth: 1,
       borderRadius: 7,
-      backgroundColor: `rgba(${hexToRgb(color?.background_light)}, 0.4)`,
+      backgroundColor: color?.background_light,
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',

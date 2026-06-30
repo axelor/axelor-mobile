@@ -34,18 +34,18 @@ interface StarScoreProps {
   score: number;
   showHalfStar?: boolean;
   showMissingStar?: boolean;
-  onPress?: (any) => void;
+  onPress?: (value: number) => void;
   editMode?: boolean;
 }
 
 const StarScore = ({
   style,
   color,
-  size = 20,
+  size = 15,
   score,
   showHalfStar = false,
   showMissingStar = false,
-  onPress = () => {},
+  onPress,
   editMode = false,
 }: StarScoreProps) => {
   const Colors = useThemeColor();
@@ -57,21 +57,17 @@ const StarScore = ({
   );
 
   const roundNbStar = useCallback(
-    value => {
-      return showHalfStar ? roundHalf(value) : roundInteger(value);
-    },
+    (value: number) => (showHalfStar ? roundHalf(value) : roundInteger(value)),
     [showHalfStar],
   );
 
   const onPressStar = useCallback(
-    newScore => {
-      onPress(newScore === score ? 0 : newScore);
-    },
+    (newScore: number) => onPress?.(newScore === score ? 0 : newScore),
     [onPress, score],
   );
 
   const renderStars = useCallback(
-    nbStar => {
+    (nbStar: number) => {
       const nbStarLimit = nbStar > 5 ? 5 : nbStar < 0 ? 0 : nbStar;
       const nbStarRound = roundNbStar(nbStarLimit);
       let starList: React.ReactNode[] = [];
@@ -137,15 +133,16 @@ const StarScore = ({
   );
 
   return (
-    <View style={[styles.leadScoring, style]} testID="starScoreContainer">
+    <View style={[styles.container, style]} testID="starScoreContainer">
       {starScoring.map(star => star)}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  leadScoring: {
+  container: {
     flexDirection: 'row',
+    gap: 2,
   },
 });
 

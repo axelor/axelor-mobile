@@ -46,13 +46,13 @@ const Button = ({
   color,
   isNeutralBackground = false,
   iconName,
-  iconSize = 25,
+  iconSize = 20,
   rightIconName,
   title,
   style,
   styleIcon,
   styleTxt,
-  onPress = () => {},
+  onPress,
   disabled = false,
   onDisabledPress,
   numberOfLines = 2,
@@ -60,9 +60,7 @@ const Button = ({
   const Colors = useThemeColor();
 
   const buttonColor = useMemo(() => {
-    if (disabled) {
-      return Colors.secondaryColor;
-    }
+    if (disabled) return Colors.secondaryColor;
 
     let _buttonColor: Color = color != null ? color : Colors.primaryColor;
 
@@ -77,17 +75,14 @@ const Button = ({
     return _buttonColor;
   }, [color, Colors, disabled, isNeutralBackground]);
 
-  const styles = useMemo(() => {
-    return getStyles(buttonColor, width);
-  }, [buttonColor, width]);
+  const styles = useMemo(
+    () => getStyles(buttonColor, width),
+    [buttonColor, width],
+  );
 
-  const commonStyles = useMemo(() => {
-    return getCommonStyles(Colors);
-  }, [Colors]);
+  const commonStyles = useMemo(() => getCommonStyles(), []);
 
-  if (!iconName && !title && !rightIconName) {
-    return null;
-  }
+  if (!iconName && !title && !rightIconName) return null;
 
   return (
     <TouchableOpacity

@@ -32,7 +32,7 @@ import {
 import {fetchPlannedEvent} from '../../features/eventSlice';
 import {EventPlanningFilters, PlanningEventCard} from '../../components';
 
-function EventPlanningScreen({navigation}) {
+function EventPlanningScreen({navigation}: any) {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const {Event} = useTypes();
@@ -42,14 +42,14 @@ function EventPlanningScreen({navigation}) {
   const {eventList, loadingEventList} = useSelector(state => state.event);
   const {userId} = useSelector(state => state.auth);
 
-  const [searchValue, setSearchValue] = useState(null);
-  const [selectedTypes, setSelectedTypes] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [planningDate, setPlanningDate] = useState();
-  const [assigned, setAssigned] = useState(true);
+  const [searchValue, setSearchValue] = useState<string | undefined>();
+  const [selectedTypes, setSelectedTypes] = useState<any[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [planningDate, setPlanningDate] = useState<Date>();
+  const [assigned, setAssigned] = useState<boolean>(true);
 
   const filterOnStatus = useCallback(
-    list =>
+    (list: any[]) =>
       filterChip(
         filterChip(list, selectedTypes, 'typeSelect'),
         selectedStatus,
@@ -81,7 +81,7 @@ function EventPlanningScreen({navigation}) {
   }, [Event?.typeSelect, eventList, filterOnStatus, getItemColor]);
 
   const fetchItemsByMonth = useCallback(
-    ({date, isAssigned}) => {
+    ({date, isAssigned}: any) => {
       setPlanningDate(date?.toDateString());
       setAssigned(isAssigned);
       dispatch(
@@ -92,7 +92,7 @@ function EventPlanningScreen({navigation}) {
   );
 
   const navigateToEvent = useCallback(
-    id => {
+    (id: number) => {
       if (id != null) {
         navigation.navigate('EventDetailsScreen', {eventId: id});
       }
@@ -101,7 +101,7 @@ function EventPlanningScreen({navigation}) {
   );
 
   const renderDayEventDetails = useCallback(
-    ({id, data: event}) => {
+    ({id, data: event}: any) => {
       if (event == null) return null;
 
       return (
@@ -122,7 +122,7 @@ function EventPlanningScreen({navigation}) {
   );
 
   const renderDayEvent = useCallback(
-    ({id, data: event}) => {
+    ({id, data: event}: any) => {
       if (event == null) return null;
 
       return (

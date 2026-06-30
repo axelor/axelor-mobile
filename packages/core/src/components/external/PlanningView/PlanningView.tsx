@@ -276,6 +276,9 @@ const getStyles = (manageAssignment: boolean) =>
   StyleSheet.create({
     agendaContainer: {
       height: '100%',
+      borderTopLeftRadius: 12,
+      borderTopRightRadius: 12,
+      paddingTop: 8,
     },
     emptyDate: {
       flex: 1,
@@ -284,13 +287,16 @@ const getStyles = (manageAssignment: boolean) =>
       flexDirection: 'row',
       justifyContent: manageAssignment ? 'space-between' : 'flex-end',
       alignItems: 'center',
+      gap: 10,
+      paddingHorizontal: 10,
     },
     headerButton: {
       flexDirection: 'row',
       alignItems: 'center',
+      gap: 5,
     },
     switchCard: {
-      width: '50%',
+      flex: 1,
       marginLeft: 5,
     },
   });
