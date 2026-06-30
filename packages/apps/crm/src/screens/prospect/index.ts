@@ -35,6 +35,7 @@ export default {
   ProspectFormScreen: {
     title: 'Crm_Prospect',
     component: ProspectFormScreen,
+    isUsableOnShortcut: true,
   },
 };
 

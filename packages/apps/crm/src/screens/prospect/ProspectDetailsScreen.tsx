@@ -36,8 +36,8 @@ import {
 } from '../../components';
 import {fetchProspectById} from '../../features/prospectSlice';
 
-const ProspectDetailsScreen = ({route}) => {
-  const {idProspect} = route.params;
+const ProspectDetailsScreen = ({route}: any) => {
+  const {idProspect} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -45,18 +45,14 @@ const ProspectDetailsScreen = ({route}) => {
   const {loading, prospect} = useSelector(state => state.prospect);
 
   const getProspect = useCallback(() => {
-    dispatch(fetchProspectById({partnerId: idProspect}));
+    dispatch((fetchProspectById as any)({partnerId: idProspect}));
   }, [dispatch, idProspect]);
 
   useEffect(() => {
-    if (isFocused) {
-      getProspect();
-    }
+    if (isFocused) getProspect();
   }, [getProspect, isFocused]);
 
-  if (prospect?.id !== idProspect || !isFocused) {
-    return null;
-  }
+  if (prospect?.id !== idProspect || !isFocused) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>

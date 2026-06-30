@@ -45,9 +45,9 @@ const ProspectHeader = ({}) => {
   const {crm: crmConfig} = useSelector(state => state.appConfig);
 
   const updateScoreProspectAPI = useCallback(
-    newScore => {
+    (newScore: number) => {
       dispatch(
-        updateProspectScore({
+        (updateProspectScore as any)({
           partnerId: prospect.id,
           partnerVersion: prospect.version,
           newScore: newScore,
@@ -58,86 +58,68 @@ const ProspectHeader = ({}) => {
   );
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.headerContainerChildren}>
-        <View style={styles.leftHeader}>
-          <AOSImageBubble metaFileId={prospect?.picture?.id} />
-          <SocialNetworkLinks
-            data={{
-              [prospect.partnerTypeSelect === Partner?.partnerTypeSelect.Company
-                ? 'company'
-                : 'fullName']: prospect?.simpleFullName,
-            }}
-          />
-        </View>
+    <View style={styles.columnWrapper}>
+      <View style={styles.rowWrapper}>
+        <AOSImageBubble metaFileId={prospect?.picture?.id} />
         <View style={styles.headerInfo}>
-          <Text style={styles.textTitle} fontSize={16}>
-            {prospect.simpleFullName}
-          </Text>
+          <Text writingType="title">{prospect.simpleFullName}</Text>
           <StarScore
-            style={styles.leadScoring}
             score={prospect.leadScoringSelect}
             showMissingStar={true}
             onPress={updateScoreProspectAPI}
             editMode={true}
           />
         </View>
+        <View style={styles.columnWrapper}>
+          {!checkNullString(prospect.partnerCategory?.name) && (
+            <Badge
+              color={Colors.progressColor}
+              title={prospect.partnerCategory?.name}
+            />
+          )}
+          {!checkNullString(prospect.industrySector?.name) && (
+            <Badge
+              color={Colors.plannedColor}
+              title={prospect.industrySector?.name}
+            />
+          )}
+          {prospect.partnerStatus && crmConfig?.crmProcessOnPartner && (
+            <Badge
+              color={getItemColorFromIndex(
+                prospectStatusList,
+                prospect.partnerStatus,
+              )}
+              title={prospect.partnerStatus.name}
+            />
+          )}
+        </View>
       </View>
-      <View style={styles.headerBadge}>
-        {!checkNullString(prospect.partnerCategory?.name) && (
-          <Badge
-            color={Colors.progressColor}
-            title={prospect.partnerCategory?.name}
-          />
-        )}
-        {!checkNullString(prospect.industrySector?.name) && (
-          <Badge
-            color={Colors.plannedColor}
-            title={prospect.industrySector?.name}
-          />
-        )}
-        {prospect.partnerStatus && crmConfig?.crmProcessOnPartner && (
-          <Badge
-            color={getItemColorFromIndex(
-              prospectStatusList,
-              prospect.partnerStatus,
-            )}
-            title={prospect.partnerStatus.name}
-          />
-        )}
-      </View>
+      <SocialNetworkLinks
+        data={{
+          [prospect.partnerTypeSelect === Partner?.partnerTypeSelect.Company
+            ? 'company'
+            : 'fullName']: prospect?.simpleFullName,
+        }}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  leftHeader: {
+  columnWrapper: {
     flexDirection: 'column',
-    alignItems: 'center',
+    gap: 2,
   },
-  headerContainerChildren: {
+  rowWrapper: {
     flexDirection: 'row',
-    marginLeft: '5%',
-    alignSelf: 'center',
     alignItems: 'center',
+    paddingHorizontal: 5,
+    gap: 10,
   },
   headerInfo: {
     flexDirection: 'column',
-    marginLeft: '7%',
-  },
-  headerBadge: {
-    flexDirection: 'column',
-  },
-  textTitle: {
-    fontWeight: 'bold',
-  },
-  leadScoring: {
-    marginTop: '10%',
+    flex: 1,
+    gap: 5,
   },
 });
 

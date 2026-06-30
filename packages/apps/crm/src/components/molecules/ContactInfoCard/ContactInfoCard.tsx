@@ -89,7 +89,6 @@ const ContactInfoCard = ({
         onPress={onPress}>
         <View style={styles.rowDirection}>
           <LabelText title={title} iconName={headerIconName} />
-
           {isCreation && (
             <IconTile
               icon="plus-lg"

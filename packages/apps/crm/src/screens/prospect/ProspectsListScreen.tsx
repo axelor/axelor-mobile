@@ -32,7 +32,7 @@ import {
   fetchProspectStatus,
 } from '../../features/prospectSlice';
 
-const ProspectsListScreen = ({navigation}) => {
+const ProspectsListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {getCustomSelectionItems} = useTypeHelpers();
@@ -47,8 +47,8 @@ const ProspectsListScreen = ({navigation}) => {
   } = useSelector(state => state.prospect);
   const {crm: crmConfig} = useSelector(state => state.appConfig);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [assigned, setAssigned] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [assigned, setAssigned] = useState<boolean>(false);
 
   const prospectStatusListItems = useMemo(
     () => getCustomSelectionItems(prospectStatusList, 'name'),
@@ -92,7 +92,7 @@ const ProspectsListScreen = ({navigation}) => {
             <MultiValuePicker
               listItems={prospectStatusListItems}
               placeholder={I18n.t('Base_Status')}
-              onValueChange={statusList => setSelectedStatus(statusList)}
+              onValueChange={setSelectedStatus}
             />
           )
         }
@@ -101,7 +101,7 @@ const ProspectsListScreen = ({navigation}) => {
             style={styles.item}
             partnerFullName={item.simpleFullName}
             partnerReference={item.partnerSeq}
-            partnerScoring={item.leadScoringSelect || 0}
+            partnerScoring={item.leadScoringSelect}
             partnerAddress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
             partnerEmail={item.emailAddress?.address}

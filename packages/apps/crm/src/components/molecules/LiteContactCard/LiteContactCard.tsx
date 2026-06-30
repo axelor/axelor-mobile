@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 
 interface LiteContactCardProps {
@@ -35,6 +36,7 @@ const LiteContactCard = ({
 }: LiteContactCardProps) => {
   return (
     <ObjectCard
+      style={styles.container}
       onPress={onPress}
       upperTexts={{
         items: [
@@ -59,5 +61,12 @@ const LiteContactCard = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 2,
+    marginVertical: 2,
+  },
+});
 
 export default LiteContactCard;

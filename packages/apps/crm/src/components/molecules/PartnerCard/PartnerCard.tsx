@@ -25,6 +25,8 @@ import {
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 
+const IMAGE_SIZE = 50;
+
 interface PartnerCardProps {
   style?: any;
   partnerFullName: string;
@@ -45,7 +47,7 @@ const PartnerCard = ({
   partnerFullName,
   partnerReference,
   partnerCompany,
-  partnerScoring,
+  partnerScoring = 0,
   partnerAddress,
   partnerMobilePhone,
   partnerFixedPhone,
@@ -58,22 +60,21 @@ const PartnerCard = ({
   const formatMetaFile = useMetafileUri();
   const {getItemColorFromIndex} = useTypeHelpers();
 
-  const {crm: crmConfig} = useSelector((state: any) => state.appConfig);
+  const {crm: crmConfig} = useSelector(state => state.appConfig);
 
   return (
     <ObjectCard
       onPress={onPress}
       image={{
-        generalStyle: styles.imageIcon,
         imageSize: styles.imageSize,
         resizeMode: 'contain',
-        defaultIconSize: 50,
+        defaultIconSize: IMAGE_SIZE,
         source: formatMetaFile(partnerPicture?.id),
       }}
       borderLeftColor={
         crmConfig?.crmProcessOnPartner && partnerStatus
           ? getItemColorFromIndex(allProspectStatus, partnerStatus)?.background
-          : null
+          : undefined
       }
       style={style}
       upperTexts={{
@@ -84,16 +85,14 @@ const PartnerCard = ({
             hideIfNull: true,
           },
           {
-            customComponent:
-              partnerScoring != null ? (
-                <StarScore score={partnerScoring} showMissingStar={true} />
-              ) : null,
-            hideIfNull: true,
-          },
-          {
             indicatorText: partnerCompany,
             hideIfNull: true,
             iconName: 'building-fill',
+          },
+          {
+            customComponent: (
+              <StarScore score={partnerScoring} showMissingStar={true} />
+            ),
           },
         ],
       }}
@@ -126,13 +125,9 @@ const PartnerCard = ({
 };
 
 const styles = StyleSheet.create({
-  imageIcon: {
-    height: 50,
-    width: 50,
-  },
   imageSize: {
-    height: 50,
-    width: 50,
+    height: IMAGE_SIZE,
+    width: IMAGE_SIZE,
   },
 });
 
