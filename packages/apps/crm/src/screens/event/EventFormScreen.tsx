@@ -25,14 +25,16 @@ const MODELS = {
   partner: 'com.axelor.apps.base.db.Partner',
 };
 
-const EventFormScreen = ({navigation, route}) => {
-  const event = route?.params?.event;
-  const lead = route?.params?.lead;
-  const prospect = route?.params?.prospect;
-  const client = route?.params?.client;
-  const contact = route?.params?.contact;
-  const tourlineData = route?.params?.tourlineData;
-  const eventPlanningDate = route?.params?.eventPlanningDate;
+const EventFormScreen = ({navigation, route}: any) => {
+  const {
+    event,
+    lead,
+    prospect,
+    client,
+    contact,
+    tourlineData,
+    eventPlanningDate,
+  } = route?.params ?? {};
 
   const {Event} = useTypes();
 
@@ -132,9 +134,9 @@ const EventFormScreen = ({navigation, route}) => {
   );
 
   const createEventAPI = useCallback(
-    (_event, dispatch) => {
+    (_event: any, dispatch: any) => {
       dispatch(
-        createEvent({
+        (createEvent as any)({
           event: {
             ..._event,
             startDateTime: _event.perdiodDateTime.startDateTime.toISOString(),
@@ -150,9 +152,9 @@ const EventFormScreen = ({navigation, route}) => {
   );
 
   const updateEventAPI = useCallback(
-    (_event, dispatch) => {
+    (_event: any, dispatch: any) => {
       dispatch(
-        updateEvent({
+        (updateEvent as any)({
           event: {
             ..._event,
             startDateTime: _event.perdiodDateTime.startDateTime.toISOString(),

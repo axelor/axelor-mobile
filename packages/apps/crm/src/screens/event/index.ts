@@ -35,6 +35,7 @@ export default {
   EventFormScreen: {
     title: 'Crm_Event',
     component: EventFormScreen,
+    isUsableOnShortcut: true,
   },
 };
 

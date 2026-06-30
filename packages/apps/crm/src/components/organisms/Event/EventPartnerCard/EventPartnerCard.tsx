@@ -19,8 +19,8 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useNavigation, useSelector} from '@axelor/aos-mobile-core';
-import {PartnerCard} from '../../../molecules';
 import {fetchPartner} from '../../../../features/partnerSlice';
+import {PartnerCard} from '../../../molecules';
 
 const EventBody = ({}) => {
   const dispatch = useDispatch();
@@ -30,7 +30,9 @@ const EventBody = ({}) => {
   const {partner} = useSelector(state => state.partner);
 
   useEffect(() => {
-    event?.partner && dispatch(fetchPartner({partnerId: event?.partner?.id}));
+    if (event?.partner) {
+      dispatch((fetchPartner as any)({partnerId: event?.partner?.id}));
+    }
   }, [dispatch, event?.partner]);
 
   const handleCardPress = useCallback(() => {
@@ -47,9 +49,7 @@ const EventBody = ({}) => {
     }
   }, [navigation, partner?.id, partner?.isCustomer, partner?.isProspect]);
 
-  if (!event?.partner) {
-    return null;
-  }
+  if (!event?.partner) return null;
 
   return (
     <PartnerCard
@@ -68,8 +68,8 @@ const EventBody = ({}) => {
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 

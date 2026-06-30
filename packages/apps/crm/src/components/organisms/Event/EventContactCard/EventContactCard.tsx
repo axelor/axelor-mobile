@@ -19,8 +19,8 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useNavigation, useSelector} from '@axelor/aos-mobile-core';
-import {LiteContactCard} from '../../../molecules';
 import {getContact} from '../../../../features/contactSlice';
+import {LiteContactCard} from '../../../molecules';
 
 const EventContactCard = ({}) => {
   const dispatch = useDispatch();
@@ -31,19 +31,15 @@ const EventContactCard = ({}) => {
 
   useEffect(() => {
     if (event?.contactPartner) {
-      dispatch(getContact({contactId: event?.contactPartner.id}));
+      dispatch((getContact as any)({contactId: event?.contactPartner.id}));
     }
   }, [dispatch, event?.contactPartner]);
 
   const handleCardPress = useCallback(() => {
-    navigation.navigate('ContactDetailsScreen', {
-      idContact: contact.id,
-    });
+    navigation.navigate('ContactDetailsScreen', {idContact: contact.id});
   }, [contact.id, navigation]);
 
-  if (!event?.contactPartner) {
-    return null;
-  }
+  if (!event?.contactPartner) return null;
 
   return (
     <LiteContactCard
@@ -58,8 +54,8 @@ const EventContactCard = ({}) => {
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 

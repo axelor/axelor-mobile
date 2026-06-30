@@ -31,7 +31,7 @@ const EventLeadCard = ({}) => {
 
   useEffect(() => {
     if (event.eventLead) {
-      dispatch(fetchLeadById({leadId: event.eventLead.id}));
+      dispatch((fetchLeadById as any)({leadId: event.eventLead.id}));
       dispatch(fetchLeadStatus());
     }
   }, [dispatch, event.eventLead]);
@@ -40,9 +40,7 @@ const EventLeadCard = ({}) => {
     navigation.navigate('LeadDetailsScreen', {idLead: lead.id});
   }, [lead, navigation]);
 
-  if (!event.eventLead) {
-    return null;
-  }
+  if (!event.eventLead) return null;
 
   return (
     <LeadsCard
@@ -67,8 +65,8 @@ const EventLeadCard = ({}) => {
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 

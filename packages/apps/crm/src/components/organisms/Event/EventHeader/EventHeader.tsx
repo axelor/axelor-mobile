@@ -18,17 +18,23 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, Badge} from '@axelor/aos-mobile-ui';
-import {useSelector, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {Text, Badge, LabelText, checkNullString} from '@axelor/aos-mobile-ui';
+import {
+  useSelector,
+  useTypes,
+  useTypeHelpers,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 
 const EventHeader = ({}) => {
+  const I18n = useTranslator();
   const {Event} = useTypes();
   const {getItemTitle, getItemColor} = useTypeHelpers();
 
   const {event} = useSelector(state => state.event);
 
   const renderBadge = useCallback(
-    fieldName => {
+    (fieldName: string) => {
       if (event?.[fieldName] != null) {
         return (
           <Badge
@@ -45,24 +51,43 @@ const EventHeader = ({}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text} numberOfLines={5} writingType="title">
-        {event.subject}
-      </Text>
-      <View>
-        {renderBadge('statusSelect')}
-        {renderBadge('typeSelect')}
+      <View style={styles.rowWrapper}>
+        <Text style={styles.text} numberOfLines={5} writingType="title">
+          {event.subject}
+        </Text>
+        <View>
+          {renderBadge('statusSelect')}
+          {renderBadge('typeSelect')}
+        </View>
       </View>
+      {!checkNullString(event.location) && (
+        <LabelText iconName="geo-fill" title={event.location} />
+      )}
+      {event.user != null && (
+        <LabelText
+          title={I18n.t('Crm_AssignedTo')}
+          value={event.user?.fullName}
+        />
+      )}
+      {event.organizer != null && (
+        <LabelText
+          title={I18n.t('Crm_Organisator')}
+          value={event.organizer?.name?.split(' [')[0]}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: 'center',
+    flexDirection: 'column',
+    paddingHorizontal: 16,
+    gap: 2,
+  },
+  rowWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '95%',
+    alignItems: 'flex-start',
     gap: 3,
   },
   text: {

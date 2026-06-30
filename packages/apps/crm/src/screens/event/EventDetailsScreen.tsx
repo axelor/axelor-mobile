@@ -30,42 +30,38 @@ import {
   EventContactCard,
   EventDatesCard,
   EventHeader,
-  EventLabelsCard,
   EventLeadCard,
   EventPartnerCard,
 } from '../../components';
 
-function EventDetailsScreen({route}) {
-  const {eventId} = route.params;
+function EventDetailsScreen({route}: any) {
+  const {eventId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {loadingEvent, event} = useSelector(state => state.event);
 
   const fetchEvent = useCallback(() => {
-    dispatch(fetchEventById({eventId: eventId}));
+    dispatch((fetchEventById as any)({eventId}));
   }, [dispatch, eventId]);
 
   useEffect(() => {
     fetchEvent();
   }, [fetchEvent]);
 
-  if (event?.id !== eventId) {
-    return null;
-  }
+  if (event?.id !== eventId) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<EventHeader />} />
       <ScrollView refresh={{loading: loadingEvent, fetcher: fetchEvent}}>
         <EventDatesCard />
-        <EventLabelsCard />
         <EventLeadCard />
         <EventPartnerCard />
         <EventContactCard />
         <NotesCard title={I18n.t('Crm_Description')} data={event.description} />
-        <EventBottom event={event} />
       </ScrollView>
+      <EventBottom event={event} />
     </Screen>
   );
 }
