@@ -63,7 +63,7 @@ const Checkbox = ({
   }, [isChecked, isPartialChecked]);
 
   const _iconColor = useMemo(() => {
-    if (disabled) Colors.secondaryColor.background;
+    if (disabled) return Colors.secondaryColor.background;
 
     return iconColor != null ? iconColor : Colors.primaryColor.background;
   }, [Colors, disabled, iconColor]);
