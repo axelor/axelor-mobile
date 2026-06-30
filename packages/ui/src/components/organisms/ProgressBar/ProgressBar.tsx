@@ -47,8 +47,8 @@ const ProgressBar = ({
   colorRepartition = {},
   height = 30,
   stripe = true,
-  stripeDuration = 1000,
-  stripeWidth = 40,
+  stripeDuration = 1500,
+  stripeWidth = 15,
 }: ProgressBarProps) => {
   const Colors = useThemeColor();
 
@@ -158,13 +158,14 @@ const ProgressBar = ({
     return (
       <Text
         style={[styles.text, styleTxt]}
+        textColor={Colors.secondaryColor.background}
         onTextLayout={event => {
           setTextWidth(event.nativeEvent.lines?.[0]?.width);
         }}>
         {displayText}
       </Text>
     );
-  }, [displayText, styles, styleTxt]);
+  }, [styles.text, styleTxt, Colors.secondaryColor.background, displayText]);
 
   return (
     <View
@@ -195,9 +196,7 @@ const ProgressBar = ({
         <Animated.View
           style={[
             stripe && percent.progressBar < 100 ? styles.stripe : styles.none,
-            {
-              transform: [{translateX}],
-            },
+            {transform: [{translateX}]},
           ]}
         />
         {!displayTextOutside ? renderPercent() : null}
@@ -209,22 +208,18 @@ const ProgressBar = ({
 const getStyles = (
   Colors: ThemeColors,
   height: number,
-  color,
-  percent,
-  stripeWidth,
-  progressBarWidth,
+  color: Color,
+  percent: number,
+  stripeWidth: any,
+  progressBarWidth: any,
 ) =>
   StyleSheet.create({
     container: {
       width: '100%',
-      height: height + 2,
+      height: height + 1,
       borderRadius: BORDER_RADIUS + 1,
-      elevation: 3,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
       backgroundColor: Colors.backgroundColor,
-      borderWidth: 1,
+      borderWidth: 0.5,
       borderColor: Colors.secondaryColor.background,
       zIndex: 1,
     },
@@ -244,7 +239,7 @@ const getStyles = (
       bottom: 0,
       left: 0,
       width: stripeWidth,
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      backgroundColor: color.background_light,
     },
     text: {
       textAlign: 'center',

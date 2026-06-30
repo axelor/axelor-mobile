@@ -30,7 +30,7 @@ export interface Filter {
 }
 
 class FilterProvider {
-  private activeFilter: Filter = null;
+  private activeFilter: Filter | undefined;
   private listeners: Function[] = [];
 
   register(callback: Function) {
@@ -58,11 +58,11 @@ class FilterProvider {
 export const filterProvider = new FilterProvider();
 
 export const useActiveFilter = () => {
-  const [activeFilter, setActiveFilterState] = useState<Filter | null>(null);
+  const [activeFilter, setActiveFilterState] = useState<Filter | undefined>();
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    const listener = (filter: Filter | null) => {
+    const listener = (filter: Filter | undefined) => {
       if (isFocused) setActiveFilterState(filter);
     };
 

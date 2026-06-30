@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HorizontalRule, Text} from '@axelor/aos-mobile-ui';
+import {HorizontalRule, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {AgendaItem, isStartOfMonth} from './agenda.helpers';
 
 const AgendaItemDisplay = ({
@@ -30,6 +30,8 @@ const AgendaItemDisplay = ({
   agendaItem: AgendaItem;
   renderComponent?: (item: AgendaItem) => any;
 }) => {
+  const Colors = useThemeColor();
+
   const {id, date, startHour, endHour, isFullDayEvent} = useMemo(
     () => agendaItem,
     [agendaItem],
@@ -48,18 +50,17 @@ const AgendaItemDisplay = ({
   return (
     <View>
       {isFirst && !isNewMonth ? (
-        <HorizontalRule style={styles.horizontalRule} />
+        <HorizontalRule
+          style={styles.horizontalRule}
+          color={Colors.secondaryColor.background_light}
+        />
       ) : null}
-      <View style={[styles.itemContainer, isNewMonth && styles.newMonthMargin]}>
+      <View style={styles.itemContainer}>
         <View style={styles.containerTime}>
           {!isFullDayEvent && (
             <>
-              <Text fontSize={14} style={styles.centerText}>
-                {startHour}
-              </Text>
-              <Text fontSize={14} style={styles.centerText}>
-                {endHour}
-              </Text>
+              <Text style={styles.centerText}>{startHour}</Text>
+              <Text style={styles.centerText}>{endHour}</Text>
             </>
           )}
         </View>
@@ -84,14 +85,12 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
-    marginTop: 5,
-  },
-  newMonthMargin: {
-    marginTop: 15,
+    alignItems: 'center',
   },
   containerTime: {
     flexDirection: 'column',
-    width: '15%',
+    gap: 2,
+    width: 40,
   },
   centerText: {
     textAlign: 'center',
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
   renderContainer: {
     alignSelf: 'flex-end',
     marginLeft: 5,
-    width: '80%',
+    flex: 1,
   },
 });
 

@@ -38,21 +38,19 @@ const DropdownEmployeeView = ({contactList}: DropdownEmployeeViewProps) => {
     );
   }
 
-  return contactList.map((contact, index) => {
-    return (
-      <LiteContactCard
-        key={index}
-        contactFullname={contact.simpleFullName}
-        fixedPhoneNumber={contact.fixedPhone}
-        email={contact.emailAddress?.address}
-        onPress={() =>
-          navigation.popTo('ContactDetailsScreen', {
-            idContact: contact.id,
-          })
-        }
-      />
-    );
-  });
+  return contactList.map((contact, index) => (
+    <LiteContactCard
+      key={index}
+      contactFullname={contact.simpleFullName}
+      fixedPhoneNumber={contact.fixedPhone}
+      email={contact.emailAddress?.address}
+      onPress={() =>
+        navigation.popTo('ContactDetailsScreen', {
+          idContact: contact.id,
+        })
+      }
+    />
+  ));
 };
 
 export default DropdownEmployeeView;

@@ -26,7 +26,7 @@ import {
 } from 'react-native';
 import {Image} from '../../molecules';
 
-function getComponentPosition(index, imageSize): ViewStyle {
+function getComponentPosition(index: number, imageSize: number): ViewStyle {
   switch (index) {
     case 0:
       return {
@@ -91,7 +91,7 @@ function getComponentPosition(index, imageSize): ViewStyle {
 
 interface ImageBubbleProps {
   style?: any;
-  listComponent?: any;
+  listComponent?: any[];
   source: ImageSourcePropType | undefined;
   imageSize?: number;
   defaultIconSize?: number;
@@ -115,20 +115,17 @@ const ImageBubble = ({
         source={source}
       />
       <View style={styles.iconListContainer}>
-        {listComponent &&
-          listComponent.map((elt, index) => {
-            return (
-              <View style={getComponentPosition(index, imageSize)} key={index}>
-                {elt}
-              </View>
-            );
-          })}
+        {listComponent?.map((elt, index) => (
+          <View style={getComponentPosition(index, imageSize)} key={index}>
+            {elt}
+          </View>
+        ))}
       </View>
     </View>
   );
 };
 
-const getStyles = imageSize =>
+const getStyles = (imageSize: number) =>
   StyleSheet.create({
     container: {
       alignItems: 'center',

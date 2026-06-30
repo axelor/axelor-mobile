@@ -22,11 +22,14 @@ import {
   Button,
   KeyboardAvoidingScrollView,
   Screen,
+  useThemeColor,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '../../../redux/hooks';
 import {useTranslator} from '../../../i18n';
 import {usePermitted} from '../../../permissions';
+import {areObjectsEquals, isEmpty} from '../../../utils';
+import {clearRecord} from '../../../features/formSlice';
 import {
   Action,
   DisplayField,
@@ -45,8 +48,6 @@ import {
 } from '../../../forms';
 import {Field as FieldComponent, Panel as PanelComponent} from './Components';
 import {ConstraintsValidatorPopup} from './Alerts';
-import {clearRecord} from '../../../features/formSlice';
-import {areObjectsEquals, isEmpty} from '../../../utils';
 import {FloatingTools} from './Buttons';
 
 interface FormProps {
@@ -60,6 +61,7 @@ interface FormProps {
   defaultEditMode?: boolean;
   styleScreen?: any;
   hideButtonBackground?: boolean;
+  hideFormBackground?: boolean;
 }
 
 const FormView = ({
@@ -73,14 +75,16 @@ const FormView = ({
   defaultEditMode = false,
   styleScreen,
   hideButtonBackground = false,
+  hideFormBackground = false,
 }: FormProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {config} = useFormConfig(formKey);
 
-  const storeState = useSelector((state: any) => state);
-  const {record} = useSelector((state: any) => state.form);
+  const storeState = useSelector(state => state);
+  const {record} = useSelector(state => state.form);
   const {canCreate, canDelete, readonly} = usePermitted({
     modelName: config?.modelName,
   });
@@ -105,9 +109,7 @@ const FormView = ({
   );
 
   const isDirty = useMemo(() => {
-    if (isCreation) {
-      return true;
-    }
+    if (isCreation) return true;
 
     return !areObjectsEquals(defaultValue, object);
   }, [defaultValue, isCreation, object]);
@@ -191,7 +193,10 @@ const FormView = ({
     setObject((isCreation ? creationDefaultValue : defaultValue) ?? {});
   }, [creationDefaultValue, defaultValue, isCreation]);
 
-  const handleValidate = (_action, needValidation) => {
+  const handleValidate = (
+    _action: (_v: any) => void,
+    needValidation?: boolean,
+  ) => {
     if (needValidation) {
       return validateSchema(config, object)
         .then(() => {
@@ -350,11 +355,19 @@ const FormView = ({
         style={styles.scroll}>
         {Array.isArray(errors) && (
           <ConstraintsValidatorPopup
-            onContinue={() => setErrors(null)}
+            onContinue={() => setErrors(undefined)}
             errors={errors}
           />
         )}
-        <View style={[styles.container, style, getZIndexStyle(5)]}>
+        <View
+          style={[
+            styles.container,
+            hideFormBackground
+              ? undefined
+              : [styles.wrapper, {backgroundColor: Colors.backgroundColor}],
+            style,
+            getZIndexStyle(5),
+          ]}>
           {formContent.map(_i => renderItem(_i, isGlobalReadonly))}
         </View>
       </KeyboardAvoidingScrollView>
@@ -381,6 +394,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingBottom: 125,
+  },
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginBottom: 125,
   },
 });
 
