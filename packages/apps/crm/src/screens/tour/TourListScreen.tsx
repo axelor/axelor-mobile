@@ -33,7 +33,7 @@ import {
 import {searchTour} from '../../features/tourSlice';
 import {TourCard} from '../../components';
 
-const TourListScreen = ({navigation}) => {
+const TourListScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
@@ -42,13 +42,13 @@ const TourListScreen = ({navigation}) => {
     state => state.tour,
   );
 
-  const [isSalesFilter, setIsSaleFilter] = useState(false);
-  const [dateFilter, setDateFilter] = useState(null);
+  const [isSalesFilter, setIsSaleFilter] = useState<boolean>(true);
+  const [dateFilter, setDateFilter] = useState<Date | undefined>(new Date());
 
   const fetchTourAPI = useCallback(
     (page = 0) => {
       dispatch(
-        searchTour({
+        (searchTour as any)({
           page: page,
           isSalesperson: isSalesFilter,
           userId: userId,
@@ -91,9 +91,7 @@ const TourListScreen = ({navigation}) => {
           <TourCard
             tour={item}
             onPress={() =>
-              navigation.navigate('TourDetailsScreen', {
-                tourId: item.id,
-              })
+              navigation.navigate('TourDetailsScreen', {tourId: item.id})
             }
           />
         )}
@@ -110,15 +108,16 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
+    gap: 5,
   },
   toggleButton: {
     height: 40,
+    borderRadius: 12,
   },
   dateInput: {
-    width: '85%',
+    flex: 1,
   },
 });
 

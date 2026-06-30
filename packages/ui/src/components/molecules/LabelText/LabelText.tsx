@@ -67,7 +67,7 @@ const LabelText = ({
         />
       )}
       <Text
-        style={textStyle}
+        style={[styles.text, textStyle]}
         fontSize={textSize}
         numberOfLines={onlyOneLine ? 1 : (null as any)}>
         {!checkNullString(title?.toString()) && `${title} `}
@@ -83,6 +83,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5,
+  },
+  text: {
+    flexShrink: 1,
   },
 });
 

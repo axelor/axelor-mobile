@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -36,8 +36,8 @@ import {fetchTourById} from '../../features/tourSlice';
 import {searchTourLine} from '../../features/tourLineSlice';
 import {TourLine} from '../../types';
 
-const TourDetailsScreen = ({route}) => {
-  const {tourId} = route.params;
+const TourDetailsScreen = ({route}: any) => {
+  const {tourId} = route?.params ?? {};
 
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -47,16 +47,16 @@ const TourDetailsScreen = ({route}) => {
   const {tourLineList, loadingTourLineList, moreLoading, isListEnd} =
     useSelector(state => state.tourLine);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   useEffect(() => {
-    dispatch(fetchTourById({tourId: tourId}));
+    dispatch((fetchTourById as any)({tourId}));
   }, [dispatch, tourId]);
 
   const fetchTourLineAPI = useCallback(
     (page = 0) => {
       dispatch(
-        searchTourLine({
+        (searchTourLine as any)({
           page: page,
           tourId: tour?.id,
           isValidated: selectedStatus[0]?.key,
@@ -66,14 +66,10 @@ const TourDetailsScreen = ({route}) => {
     [dispatch, selectedStatus, tour],
   );
 
-  if (tour?.id !== tourId) {
-    return null;
-  }
+  if (tour?.id !== tourId) return null;
 
   return (
-    <Screen
-      removeSpaceOnTop={true}
-      fixedItems={<TourValidateButton tourId={tourId} />}>
+    <Screen removeSpaceOnTop={true} fixedItems={<TourValidateButton />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<TourDetailsHeader />}
@@ -81,7 +77,6 @@ const TourDetailsScreen = ({route}) => {
           <View style={styles.chipContainer}>
             <ChipSelect
               style={styles.chipSelect}
-              width={Dimensions.get('window').width * 0.4}
               mode="switch"
               onChangeValue={setSelectedStatus}
               selectionItems={TourLine.getStatusList(Colors, I18n)}
@@ -99,10 +94,10 @@ const TourDetailsScreen = ({route}) => {
         translator={I18n.t}
         renderItem={({item}) => (
           <TourLineActionCard
-            partner={item?.partner}
-            address={item?.address?.fullName}
-            isValidated={item?.isValidated}
-            eventId={item?.event?.id}
+            partner={item.partner}
+            address={item.address?.fullName}
+            isValidated={item.isValidated}
+            eventId={item.event?.id}
             id={item.id}
             version={item.version}
             tourId={tourId}
@@ -117,10 +112,11 @@ const TourDetailsScreen = ({route}) => {
 const styles = StyleSheet.create({
   chipContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
     marginHorizontal: 12,
   },
   chipSelect: {
+    flex: 1,
     marginHorizontal: 0,
   },
 });

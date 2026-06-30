@@ -46,7 +46,7 @@ const DateDisplay = ({
     <View style={styles.container}>
       <Icon
         name="calendar-event"
-        color={Colors.secondaryColor.foreground}
+        color={Colors.secondaryColor.background}
         size={size}
         style={styles.icon}
       />

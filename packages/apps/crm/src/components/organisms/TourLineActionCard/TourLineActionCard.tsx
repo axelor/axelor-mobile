@@ -25,7 +25,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {validateTourLine} from '../../../features/tourLineSlice';
-import TourLineEventPopup from '../TourLineEventPopup/TourLineEventPopup';
+import {TourLineEventPopup} from '../../organisms';
 import {TourLineCard} from '../../molecules';
 
 interface TourLineActionCardProps {
@@ -60,6 +60,7 @@ const TourLineActionCard = ({
     <>
       <ActionCard
         translator={I18n.t}
+        forceActionsDisplay
         actionList={[
           {
             iconName: 'geo-alt-fill',
@@ -106,7 +107,7 @@ const TourLineActionCard = ({
         partner={partner}
         onClose={() => setAddPopupIsVisible(false)}
         tourlineData={{
-          isValidated: selectedStatus,
+          isValidated: selectedStatus ?? false,
           tourLineVersion: version,
           tourId: tourId,
           tourLineId: id,
