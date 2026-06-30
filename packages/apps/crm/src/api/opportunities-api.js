@@ -96,17 +96,6 @@ export async function getOpportunity({opportunityId}) {
     model: 'com.axelor.apps.crm.db.Opportunity',
     id: opportunityId,
     fieldKey: 'crm_opportunity',
-    relatedFields: {
-      currency: ['symbol'],
-      partner: [
-        'isCustomer',
-        'isProspect',
-        'partnerSeq',
-        'picture',
-        'simpleFullName',
-      ],
-      user: ['name'],
-    },
     provider: 'model',
   });
 }

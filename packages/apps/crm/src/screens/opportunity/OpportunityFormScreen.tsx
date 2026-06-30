@@ -23,16 +23,16 @@ import {
   updateOpportunity,
 } from '../../features/opportunitySlice';
 
-const OpportunityFormScreen = ({navigation, route}) => {
-  const {opportunityId: idOpportunity} = route?.params ?? {};
+const OpportunityFormScreen = ({navigation, route}: any) => {
+  const {opportunityId} = route?.params ?? {};
 
   const {opportunity} = useSelector(state => state.opportunity);
   const {user} = useSelector(state => state.user);
 
   const createOpportinityAPI = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
-        createOpportunity({
+        (createOpportunity as any)({
           opportunity: {
             ...objectState,
             user: user,
@@ -54,9 +54,9 @@ const OpportunityFormScreen = ({navigation, route}) => {
   );
 
   const updateOpportunityAPI = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
-        updateOpportunity({
+        (updateOpportunity as any)({
           opportunity: {
             ...objectState,
             name:
@@ -73,8 +73,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
   );
 
   const _defaultValue = useMemo(
-    () => (idOpportunity != null ? {...opportunity} : null),
-    [idOpportunity, opportunity],
+    () => (opportunityId != null ? {...opportunity} : null),
+    [opportunityId, opportunity],
   );
 
   const _creationDefaultValue = useMemo(
@@ -102,7 +102,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
           type: 'create',
           needRequiredFields: true,
           needValidation: true,
-          hideIf: () => idOpportunity != null,
+          hideIf: () => opportunityId != null,
           customAction: ({dispatch, objectState}) =>
             createOpportinityAPI(objectState, dispatch),
         },
@@ -111,7 +111,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
           type: 'update',
           needRequiredFields: true,
           needValidation: true,
-          hideIf: () => idOpportunity == null,
+          hideIf: () => opportunityId == null,
           customAction: ({dispatch, objectState}) =>
             updateOpportunityAPI(objectState, dispatch),
         },

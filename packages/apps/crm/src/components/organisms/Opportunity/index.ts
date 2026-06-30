@@ -16,29 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
-import React from 'react';
-import {EditButton} from '../../../organisms';
-
-const OpportunityBottom = ({opportunityId}) => {
-  const navigation = useNavigation();
-  const {readonly} = usePermitted({
-    modelName: 'com.axelor.apps.crm.db.Opportunity',
-  });
-
-  if (readonly) {
-    return null;
-  }
-
-  return (
-    <EditButton
-      onPress={() =>
-        navigation.navigate('OpportunityFormScreen', {
-          opportunityId: opportunityId,
-        })
-      }
-    />
-  );
-};
-
-export default OpportunityBottom;
+export {default as OpportunityBottom} from './OpportunityBottom/OpportunityBottom';
+export {default as OpportunityDropdownInfo} from './OpportunityDropdownInfo/OpportunityDropdownInfo';
+export {default as OpportunityHeader} from './OpportunityHeader/OpportunityHeader';
+export {default as OpportunityPartnerCard} from './OpportunityPartnerCard/OpportunityPartnerCard';

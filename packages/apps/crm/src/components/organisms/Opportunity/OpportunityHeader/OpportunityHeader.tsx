@@ -35,9 +35,9 @@ const OpportunityHeader = ({}) => {
   );
 
   const updateOpportunityAPI = useCallback(
-    newScore => {
+    (newScore: number) => {
       dispatch(
-        updateOpportunityScore({
+        (updateOpportunityScore as any)({
           opportunityId: opportunity.id,
           opportunityVersion: opportunity.version,
           newScore: newScore,
@@ -48,10 +48,10 @@ const OpportunityHeader = ({}) => {
   );
 
   return (
-    <View style={styles.headerContainer}>
+    <View style={styles.container}>
       <View style={styles.headerInfo}>
-        <Text style={styles.textTitle}>{opportunity.name}</Text>
-        <Text fontSize={16}>{opportunity.opportunitySeq}</Text>
+        <Text writingType="title">{opportunity.name}</Text>
+        <Text>{opportunity.opportunitySeq}</Text>
         <StarScore
           score={opportunity.opportunityRating}
           showMissingStar={true}
@@ -75,18 +75,15 @@ const OpportunityHeader = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  container: {
     flexDirection: 'row',
-    marginHorizontal: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    gap: 10,
   },
   headerInfo: {
     flex: 1,
-    alignItems: 'flex-start',
-    paddingHorizontal: 10,
-  },
-  textTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    gap: 2,
   },
 });
 

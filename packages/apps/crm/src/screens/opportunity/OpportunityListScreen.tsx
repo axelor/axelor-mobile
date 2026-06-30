@@ -32,7 +32,7 @@ import {
   fetchOpportunityStatus,
 } from '../../features/opportunitySlice';
 
-const OpportunityListScreen = ({navigation}) => {
+const OpportunityListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {getCustomSelectionItems} = useTypeHelpers();
@@ -46,8 +46,8 @@ const OpportunityListScreen = ({navigation}) => {
     opportunityStatusList,
   } = useSelector(state => state.opportunity);
 
-  const [assigned, setAssigned] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [assigned, setAssigned] = useState<boolean>(false);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const opportunityStatusListItems = useMemo(
     () => getCustomSelectionItems(opportunityStatusList, 'name'),
@@ -88,10 +88,9 @@ const OpportunityListScreen = ({navigation}) => {
         }
         fixedItems={
           <MultiValuePicker
-            style={styles.headerItem}
             listItems={opportunityStatusListItems}
             placeholder={I18n.t('Base_Status')}
-            onValueChange={statusList => setSelectedStatus(statusList)}
+            onValueChange={setSelectedStatus}
           />
         }
         renderListItem={({item}) => (
@@ -121,9 +120,6 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,
     marginVertical: 4,
-  },
-  headerItem: {
-    alignSelf: 'center',
   },
 });
 

@@ -30,12 +30,11 @@ import {
   OpportunityDropdownInfo,
   OpportunityHeader,
   OpportunityPartnerCard,
-  OpportunityUpdateStatusPicker,
 } from '../../components';
 import {getOpportunity} from '../../features/opportunitySlice';
 
-const OpportunityDetailsScreen = ({route}) => {
-  const {opportunityId} = route.params;
+const OpportunityDetailsScreen = ({route}: any) => {
+  const {opportunityId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -44,20 +43,14 @@ const OpportunityDetailsScreen = ({route}) => {
   );
 
   const getOpportunityAPI = useCallback(() => {
-    dispatch(
-      getOpportunity({
-        opportunityId: opportunityId,
-      }),
-    );
+    dispatch((getOpportunity as any)({opportunityId}));
   }, [dispatch, opportunityId]);
 
   useEffect(() => {
     getOpportunityAPI();
   }, [getOpportunityAPI]);
 
-  if (opportunity?.id !== opportunityId) {
-    return null;
-  }
+  if (opportunity?.id !== opportunityId) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -74,7 +67,6 @@ const OpportunityDetailsScreen = ({route}) => {
           title={I18n.t('Base_Description')}
           data={opportunity.description}
         />
-        <OpportunityUpdateStatusPicker />
       </ScrollView>
       <OpportunityBottom opportunityId={opportunity.id} />
     </Screen>
