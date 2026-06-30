@@ -1,0 +1,5 @@
+{
+  "title": "Label: restyle with a solid colored border and a softer background fill",
+  "type": "refactor",
+  "packages": "ui"
+}

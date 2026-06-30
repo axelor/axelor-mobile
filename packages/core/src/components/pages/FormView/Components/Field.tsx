@@ -100,13 +100,13 @@ const Field = ({
   );
 
   const isHidden = useMemo(
-    () => hidden || _field.hideIf({objectState: object, storeState}),
+    () => hidden || _field.hideIf?.({objectState: object, storeState}),
     [_field, hidden, object, storeState],
   );
 
   const isRequired = useMemo(
     () =>
-      _field.required || _field.requiredIf({objectState: object, storeState}),
+      _field.required || _field.requiredIf?.({objectState: object, storeState}),
     [_field, object, storeState],
   );
 
@@ -115,7 +115,7 @@ const Field = ({
       readonly ||
       parentReadonly ||
       _field.readonly ||
-      _field.readonlyIf({objectState: object, storeState}),
+      _field.readonlyIf?.({objectState: object, storeState}),
     [_field, object, parentReadonly, readonly, storeState],
   );
 
@@ -143,18 +143,19 @@ const Field = ({
       case 'checkbox':
         return (
           <Checkbox
-            style={[fieldStyle, styles.checkbox]}
+            style={fieldStyle}
             title={I18n.t(_field.titleKey)}
             isDefaultChecked={value}
             onChange={handleChange}
             disabled={isReadonly}
+            iconSize={18}
             {..._field.options}
           />
         );
       case 'star':
         return (
           <StarScore
-            size={25}
+            size={18}
             score={value}
             onPress={handleChange}
             editMode={!isReadonly}
@@ -193,7 +194,7 @@ const Field = ({
             style={fieldStyle}
             title={I18n.t(_field.titleKey)}
             mode={_field.type as 'date' | 'datetime' | 'time'}
-            defaultDate={value ? new Date(value) : null}
+            defaultDate={value ? new Date(value) : undefined}
             onDateChange={_date => {
               if (_date) {
                 const isoDate = _date.toISOString();
@@ -306,10 +307,6 @@ const Field = ({
 };
 
 const styles = StyleSheet.create({
-  checkbox: {
-    marginVertical: 5,
-    marginLeft: 15,
-  },
   container: {
     alignSelf: 'center',
     width: '100%',

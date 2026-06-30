@@ -1,0 +1,5 @@
+{
+  "title": "FormView: display the form content on a rounded card background, with an option to hide it",
+  "type": "feat",
+  "packages": "core"
+}

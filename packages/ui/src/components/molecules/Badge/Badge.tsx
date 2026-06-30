@@ -27,6 +27,7 @@ interface BadgeProps {
   title: string | number;
   color?: Color;
   numberOfLines?: number;
+  textSize?: number;
 }
 
 const Badge = ({
@@ -35,6 +36,7 @@ const Badge = ({
   title,
   color,
   numberOfLines = 1,
+  textSize,
 }: BadgeProps) => {
   const Colors = useThemeColor();
 
@@ -51,7 +53,7 @@ const Badge = ({
         style={[styles.text, txtStyle]}
         numberOfLines={numberOfLines}
         textColor={_color.background}
-        fontSize={12}>
+        fontSize={textSize ?? 12}>
         {title}
       </Text>
     </View>

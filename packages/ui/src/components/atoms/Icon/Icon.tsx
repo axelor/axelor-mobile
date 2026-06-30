@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useThemeColor} from '../../../theme';
-import BootstrapIcon from '../BootstrapIcon/BootstrapIcon';
+import {BootstrapIcon} from '../../atoms';
 
 interface IconProps {
   style?: any;
@@ -35,10 +35,10 @@ const Icon = ({
   style,
   name,
   color,
-  size = 18,
+  size = 15,
   touchable = false,
   visible = true,
-  onPress = () => {},
+  onPress,
 }: IconProps) => {
   const Colors = useThemeColor();
 
@@ -47,9 +47,7 @@ const Icon = ({
     [Colors.secondaryColor_dark.background, color],
   );
 
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
   return (
     <TouchableOpacity

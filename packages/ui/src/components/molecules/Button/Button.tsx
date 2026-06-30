@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {DimensionValue, StyleSheet, TouchableOpacity} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
 import {Color, useThemeColor} from '../../../theme';
+import {getCommonStyles} from '../../../utils';
 import {Icon, Text} from '../../atoms';
 
 export interface ButtonProps {
@@ -45,22 +45,20 @@ const Button = ({
   color,
   isNeutralBackground = false,
   iconName,
-  iconSize = 25,
+  iconSize = 20,
   title,
   style,
   styleIcon,
   styleTxt,
-  onPress = () => {},
+  onPress,
   disabled = false,
-  onDisabledPress = null,
+  onDisabledPress,
   numberOfLines = 2,
 }: ButtonProps) => {
   const Colors = useThemeColor();
 
   const buttonColor = useMemo(() => {
-    if (disabled) {
-      return Colors.secondaryColor;
-    }
+    if (disabled) return Colors.secondaryColor;
 
     let _buttonColor: Color = color != null ? color : Colors.primaryColor;
 
@@ -75,17 +73,14 @@ const Button = ({
     return _buttonColor;
   }, [color, Colors, disabled, isNeutralBackground]);
 
-  const styles = useMemo(() => {
-    return getStyles(buttonColor, width);
-  }, [buttonColor, width]);
+  const styles = useMemo(
+    () => getStyles(buttonColor, width),
+    [buttonColor, width],
+  );
 
-  const commonStyles = useMemo(() => {
-    return getCommonStyles(Colors);
-  }, [Colors]);
+  const commonStyles = useMemo(() => getCommonStyles(), []);
 
-  if (!iconName && !title) {
-    return null;
-  }
+  if (!iconName && !title) return null;
 
   return (
     <TouchableOpacity
