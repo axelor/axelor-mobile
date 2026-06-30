@@ -101,7 +101,7 @@ const ProspectsListScreen = ({navigation}: any) => {
             style={styles.item}
             partnerFullName={item.simpleFullName}
             partnerReference={item.partnerSeq}
-            partnerScoring={item.leadScoringSelect}
+            partnerScoring={item.leadScoringSelect ?? 0}
             partnerAddress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
             partnerEmail={item.emailAddress?.address}

@@ -36,8 +36,8 @@ import {
 } from '../../components';
 import {getClientbyId} from '../../features/clientSlice';
 
-const ClientDetailsScreen = ({route}) => {
-  const {idClient} = route.params;
+const ClientDetailsScreen = ({route}: any) => {
+  const {idClient} = route?.params ?? {};
   const I18n = useTranslator();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -45,13 +45,11 @@ const ClientDetailsScreen = ({route}) => {
   const {loadingClient, client} = useSelector(state => state.client);
 
   const getClient = useCallback(() => {
-    dispatch(getClientbyId({clientId: idClient}));
+    dispatch((getClientbyId as any)({clientId: idClient}));
   }, [dispatch, idClient]);
 
   useEffect(() => {
-    if (isFocused) {
-      getClient();
-    }
+    if (isFocused) getClient();
   }, [getClient, isFocused]);
 
   if (client?.id !== idClient || !isFocused) {

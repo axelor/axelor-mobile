@@ -47,7 +47,7 @@ const PartnerCard = ({
   partnerFullName,
   partnerReference,
   partnerCompany,
-  partnerScoring = 0,
+  partnerScoring,
   partnerAddress,
   partnerMobilePhone,
   partnerFixedPhone,
@@ -90,9 +90,11 @@ const PartnerCard = ({
             iconName: 'building-fill',
           },
           {
-            customComponent: (
-              <StarScore score={partnerScoring} showMissingStar={true} />
-            ),
+            customComponent:
+              partnerScoring != null ? (
+                <StarScore score={partnerScoring} showMissingStar={true} />
+              ) : undefined,
+            hideIf: partnerScoring == null,
           },
         ],
       }}

@@ -21,35 +21,30 @@ import {StyleSheet, View} from 'react-native';
 import {useSelector, AOSImageBubble} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 
-const ClientHeader = ({style = null}) => {
+const ClientHeader = ({style}: {style?: any}) => {
   const {client} = useSelector(state => state.client);
 
   return (
-    <View style={[styles.headerContainerChildren, style]}>
+    <View style={[styles.container, style]}>
       <AOSImageBubble metaFileId={client?.picture?.id} />
       <View style={styles.headerInfo}>
-        <Text style={styles.textTitle} fontSize={16}>
-          {client.simpleFullName}
-        </Text>
-        <Text fontSize={14}>{client.partnerSeq}</Text>
+        <Text writingType="important">{client.simpleFullName}</Text>
+        <Text>{client.partnerSeq}</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainerChildren: {
+  container: {
     flexDirection: 'row',
-    marginLeft: '5%',
     alignItems: 'center',
+    paddingHorizontal: 10,
+    gap: 10,
   },
   headerInfo: {
     flexDirection: 'column',
-    marginLeft: '7%',
     flex: 1,
-  },
-  textTitle: {
-    fontWeight: 'bold',
   },
 });
 

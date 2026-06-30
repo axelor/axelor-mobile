@@ -27,7 +27,7 @@ import {
 import {PartnerCard} from '../../components';
 import {fetchClients} from '../../features/clientSlice';
 
-const CLientsListScreen = ({navigation}) => {
+const CLientsListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
@@ -35,7 +35,7 @@ const CLientsListScreen = ({navigation}) => {
     state => state.client,
   );
 
-  const [assigned, setAssigned] = useState(false);
+  const [assigned, setAssigned] = useState<boolean>(false);
 
   const sliceFunctionData = useMemo(
     () => ({

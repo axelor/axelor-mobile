@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {
@@ -33,7 +32,11 @@ import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
 import {fetchPartnerAddresses} from '../../../../features/partnerSlice';
 
-const ClientDropdownCards = ({additionalDropdowns = []}) => {
+const ClientDropdownCards = ({
+  additionalDropdowns = [],
+}: {
+  additionalDropdowns?: any[];
+}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -42,14 +45,15 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
   const {listEventPartner} = useSelector(state => state.event);
 
   const refreshContactInfos = useCallback(() => {
-    dispatch(getClientbyId({clientId: client?.id}));
-    dispatch(fetchPartnerAddresses({partnerId: client?.id}));
+    dispatch((getClientbyId as any)({clientId: client?.id}));
+    dispatch((fetchPartnerAddresses as any)({partnerId: client?.id}));
   }, [client.id, dispatch]);
 
   useEffect(() => {
     if (client.contactPartnerSet?.length > 0) {
-      const idList = client.contactPartnerSet?.map(item => item.id);
-      dispatch(searchContactById(idList));
+      dispatch(
+        searchContactById(client.contactPartnerSet?.map((_i: any) => _i.id)),
+      );
     }
   }, [dispatch, client.contactPartnerSet]);
 
@@ -62,6 +66,8 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
       {
         title: I18n.t('Crm_Contact'),
         key: 1,
+        iconName: 'telephone',
+        isDefaultVisible: true,
         childrenComp: (
           <DropdownContactView
             isMainAddress={true}
@@ -70,12 +76,12 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
             refreshContactInfos={refreshContactInfos}
           />
         ),
-        isDefaultVisible: true,
       },
       {
         title: I18n.t('Crm_Addresses'),
         key: 2,
-        style: styles.zeroPadding,
+        iconName: 'geo-alt',
+        isDefaultVisible: true,
         childrenComp: (
           <DropdownAddressesView
             partnerId={client.id}
@@ -83,11 +89,11 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
             refreshContactInfos={refreshContactInfos}
           />
         ),
-        isDefaultVisible: true,
       },
       {
         title: I18n.t('Crm_GeneralInformation'),
         key: 3,
+        iconName: 'person',
         childrenComp: (
           <DropdownGeneralView
             assignedUser={client.user?.fullName}
@@ -100,27 +106,26 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
       {
         title: I18n.t('Crm_Employees'),
         key: 4,
+        iconName: 'person-vcard',
         childrenComp: <DropdownEmployeeView contactList={listContactById} />,
       },
       {
         title: I18n.t('Crm_Events'),
         key: 5,
+        iconName: 'calendar2-event',
         childrenComp: <DropdownEventView eventList={listEventPartner} />,
       },
       {
         title: I18n.t('Crm_Opportunity'),
         key: 6,
+        iconName: 'search-dollar',
         childrenComp: <DropdownOpportunityView partnerId={client?.id} />,
       },
     ];
 
     if (additionalDropdowns?.length > 0) {
       additionalDropdowns.forEach((dropdown, index) => {
-        _dropdownItems.push({
-          title: dropdown.title,
-          key: 7 + index,
-          childrenComp: dropdown.childrenComp,
-        });
+        _dropdownItems.push({...dropdown, key: 7 + index});
       });
     }
 
@@ -134,28 +139,7 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
     refreshContactInfos,
   ]);
 
-  return (
-    <View style={styles.container}>
-      <DropdownCardSwitch
-        styleTitle={styles.textTitle}
-        dropdownItems={dropdownItems}
-        multiSelection
-      />
-    </View>
-  );
+  return <DropdownCardSwitch dropdownItems={dropdownItems} multiSelection />;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  textTitle: {
-    fontWeight: 'bold',
-  },
-  zeroPadding: {
-    paddingRight: 0,
-    paddingLeft: 0,
-  },
-});
 
 export default ClientDropdownCards;
