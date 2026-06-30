@@ -37,8 +37,8 @@ import {
 } from '../../components';
 import {getContact} from '../../features/contactSlice';
 
-const ContactDetailsScreen = ({route}) => {
-  const {idContact} = route.params;
+const ContactDetailsScreen = ({route}: any) => {
+  const {idContact} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -46,18 +46,14 @@ const ContactDetailsScreen = ({route}) => {
   const {loading, contact} = useSelector(state => state.contact);
 
   const getContactAPI = useCallback(() => {
-    dispatch(getContact({contactId: idContact}));
+    dispatch((getContact as any)({contactId: idContact}));
   }, [dispatch, idContact]);
 
   useEffect(() => {
-    if (isFocused) {
-      getContactAPI();
-    }
+    if (isFocused) getContactAPI();
   }, [getContactAPI, isFocused]);
 
-  if (contact?.id !== idContact || !isFocused) {
-    return null;
-  }
+  if (contact?.id !== idContact || !isFocused) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>

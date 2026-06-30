@@ -27,7 +27,7 @@ import {
 import {fetchContact} from '../../features/contactSlice';
 import {PartnerCard} from '../../components';
 
-const ContactListScreen = ({navigation}) => {
+const ContactListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
@@ -35,7 +35,7 @@ const ContactListScreen = ({navigation}) => {
     state => state.contact,
   );
 
-  const [assigned, setAssigned] = useState(false);
+  const [assigned, setAssigned] = useState<boolean>(false);
 
   const sliceFunctionData = useMemo(
     () => ({

@@ -42,6 +42,7 @@ interface PartnerCardProps {
   allProspectStatus?: any;
   partnerStatus?: any;
 }
+
 const PartnerCard = ({
   style,
   partnerFullName,

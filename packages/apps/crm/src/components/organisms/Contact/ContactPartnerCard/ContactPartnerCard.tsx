@@ -31,7 +31,7 @@ const ContactPartnerCard = ({}) => {
 
   useEffect(() => {
     contact?.mainPartner &&
-      dispatch(fetchPartner({partnerId: contact?.mainPartner?.id}));
+      dispatch((fetchPartner as any)({partnerId: contact?.mainPartner?.id}));
   }, [dispatch, contact?.mainPartner]);
 
   const handleCardPress = useCallback(() => {
@@ -69,8 +69,9 @@ const ContactPartnerCard = ({}) => {
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 20,
-    marginVertical: 7,
+    width: '90%',
+    marginBottom: 8,
+    alignSelf: 'center',
   },
 });
 

@@ -25,12 +25,10 @@ const ContactHeader = ({}) => {
   const {contact} = useSelector(state => state.contact);
 
   return (
-    <View style={styles.headerContainerChildren}>
+    <View style={styles.container}>
       <AOSImageBubble metaFileId={contact?.picture?.id} />
       <View style={styles.headerInfo}>
-        <Text style={styles.textTitle} fontSize={16}>
-          {contact.simpleFullName}
-        </Text>
+        <Text writingType="important">{contact.simpleFullName}</Text>
         <LabelText
           iconName="building-fill"
           title={contact.mainPartner?.fullName}
@@ -47,17 +45,15 @@ const ContactHeader = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  headerContainerChildren: {
+  container: {
     flexDirection: 'row',
-    marginLeft: '5%',
     alignItems: 'center',
+    paddingHorizontal: 20,
+    gap: 10,
   },
   headerInfo: {
     flexDirection: 'column',
-    marginLeft: '7%',
-  },
-  textTitle: {
-    fontWeight: 'bold',
+    flex: 1,
   },
 });
 

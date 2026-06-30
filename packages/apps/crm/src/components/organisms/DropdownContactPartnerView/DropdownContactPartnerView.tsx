@@ -22,18 +22,18 @@ import {useDispatch, useSelector, useNavigation} from '@axelor/aos-mobile-core';
 import {searchLinkedPartnersOfContact} from '../../../features/partnerSlice';
 import {PartnerCard} from '../../molecules';
 
-const DropdownContactPartnerView = ({idContact}) => {
+const DropdownContactPartnerView = ({idContact}: {idContact: number}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const {linkedPartnersOfContact} = useSelector(state => state.partner);
 
   useEffect(() => {
-    dispatch(searchLinkedPartnersOfContact({contactId: idContact}));
+    dispatch((searchLinkedPartnersOfContact as any)({contactId: idContact}));
   }, [dispatch, idContact]);
 
   const handleCardPress = useCallback(
-    item => {
+    (item: any) => {
       if (item?.isCustomer) {
         return navigation.navigate('ClientDetailsScreen', {
           idClient: item.id,
@@ -51,21 +51,19 @@ const DropdownContactPartnerView = ({idContact}) => {
 
   return (
     <View>
-      {linkedPartnersOfContact?.map((item, index) => {
-        return (
-          <PartnerCard
-            key={index}
-            partnerFullName={item.simpleFullName}
-            partnerReference={item.partnerSeq}
-            partnerScoring={item.isProspect ? item?.leadScoringSelect : null}
-            partnerAddress={item.mainAddress?.fullName}
-            partnerFixedPhone={item.fixedPhone}
-            partnerEmail={item.emailAddress?.address}
-            partnerPicture={item.picture}
-            onPress={() => handleCardPress(item)}
-          />
-        );
-      })}
+      {linkedPartnersOfContact?.map((item: any, index: number) => (
+        <PartnerCard
+          key={index}
+          partnerFullName={item.simpleFullName}
+          partnerReference={item.partnerSeq}
+          partnerScoring={item.isProspect ? item?.leadScoringSelect : null}
+          partnerAddress={item.mainAddress?.fullName}
+          partnerFixedPhone={item.fixedPhone}
+          partnerEmail={item.emailAddress?.address}
+          partnerPicture={item.picture}
+          onPress={() => handleCardPress(item)}
+        />
+      ))}
     </View>
   );
 };
