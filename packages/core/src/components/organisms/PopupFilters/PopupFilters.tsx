@@ -62,7 +62,7 @@ const PopupFilters = ({
   const handleFilterSelection = (filterId: string) => {
     setSelectedFilter(prevFilter =>
       prevFilter?.id === filterId
-        ? null
+        ? undefined
         : [...savedFilters, ...userFilters].find(({id}) => id === filterId),
     );
   };
@@ -73,12 +73,13 @@ const PopupFilters = ({
     return (
       <RadioSelect
         style={styles.container}
+        itemStyle={styles.itemsContainer}
+        radioButtonStyle={styles.radioButtonStyle}
         question={I18n.t(titleKey)}
         items={filters}
         onChange={handleFilterSelection}
         defaultValue={selectedFilter?.id}
         direction="column"
-        radioButtonStyle={styles.radioButtonStyle}
       />
     );
   };
@@ -102,8 +103,13 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
   },
+  itemsContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
   radioButtonStyle: {
-    flex: null,
+    width: '100%',
+    flex: undefined,
   },
 });
 

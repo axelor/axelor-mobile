@@ -1,0 +1,5 @@
+{
+  "title": "ProgressBar: flatten the design by removing the shadow and using a thinner border and a slimmer animated stripe",
+  "type": "refactor",
+  "packages": "ui"
+}

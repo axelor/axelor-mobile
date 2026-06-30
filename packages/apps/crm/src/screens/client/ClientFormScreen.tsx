@@ -29,7 +29,7 @@ import {
   updateClient,
 } from '../../features/clientSlice';
 
-const ClientFormScreen = ({navigation, route}) => {
+const ClientFormScreen = ({navigation, route}: any) => {
   const {clientId} = route?.params ?? {};
   const {Partner} = useTypes();
   const _dispatch = useDispatch();
@@ -56,11 +56,11 @@ const ClientFormScreen = ({navigation, route}) => {
   );
 
   const handleSaveAPI = useCallback(
-    ({dispatch, objectState}) => {
+    ({dispatch, objectState}: any) => {
       const isCreation = objectState?.id == null;
       const sliceFct: any = isCreation ? createClient : updateClient;
 
-      dispatch(sliceFct(objectState)).then(res => {
+      dispatch(sliceFct(objectState)).then((res: any) => {
         const _recordId = res?.payload?.id;
         if (_recordId) {
           navigation.replace('ClientDetailsScreen', {idClient: _recordId});

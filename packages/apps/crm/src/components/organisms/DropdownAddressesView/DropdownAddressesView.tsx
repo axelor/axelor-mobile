@@ -54,22 +54,16 @@ const DropdownAddressesView = ({
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {userId} = useSelector(state => state.auth);
   const {partnerAddressList} = useSelector(state => state.partner);
 
   const getState = useCallback(() => ({auth: {userId}}), [userId]);
 
   const addPartnerAddress = useCallback(
-    ({data}) => {
-      const dataApi = {
-        partnerId,
-        partnerVersion,
-        ...data,
-      };
-
+    ({data}: any) => {
       return handlerApiCall({
         fetchFunction: addPartnerAddressApi,
-        data: dataApi,
+        data: {partnerId, partnerVersion, ...data},
         action: 'Crm_ApiAction_AddAddress',
         getState,
         responseOptions: {showToast: true},
@@ -96,7 +90,7 @@ const DropdownAddressesView = ({
   return (
     <>
       <View>
-        {partnerAddressList.map((partnerAddress, index) => (
+        {partnerAddressList?.map((partnerAddress: any, index: number) => (
           <AddressListCard
             partnerId={partnerId}
             partnerVersion={partnerVersion}
@@ -110,11 +104,7 @@ const DropdownAddressesView = ({
           <TouchableOpacity
             style={styles.addButton}
             onPress={() => setIsVisible(true)}>
-            <Icon
-              style={styles.addButtonIcon}
-              name="plus-lg"
-              color={Colors.secondaryColor.background}
-            />
+            <Icon name="plus-lg" color={Colors.secondaryColor.background} />
             <Text textColor={Colors.secondaryColor.background}>
               {I18n.t('Base_Add')}
             </Text>
@@ -138,9 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 5,
-  },
-  addButtonIcon: {
-    marginRight: 5,
+    gap: 5,
   },
 });
 

@@ -26,7 +26,7 @@ import {IconTile} from '../../molecules';
 interface DropdownCardProps {
   style?: any;
   styleText?: any;
-  styleHeader?:any;
+  styleHeader?: any;
   title: string;
   children: any;
   dropdownIsOpen?: boolean;
@@ -123,7 +123,8 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginVertical: 10,
-    marginHorizontal: 20,
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 

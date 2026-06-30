@@ -22,6 +22,7 @@ import {
   Button,
   KeyboardAvoidingScrollView,
   Screen,
+  useThemeColor,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useStoreState} from '../../../redux/hooks';
@@ -61,6 +62,7 @@ interface FormProps {
   defaultEditMode?: boolean;
   styleScreen?: any;
   hideButtonBackground?: boolean;
+  hideFormBackground?: boolean;
 }
 
 const FormView = ({
@@ -74,8 +76,10 @@ const FormView = ({
   defaultEditMode = false,
   styleScreen,
   hideButtonBackground = false,
+  hideFormBackground = false,
 }: FormProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {config} = useFormConfig(formKey);
@@ -394,7 +398,15 @@ const FormView = ({
             errors={errors}
           />
         )}
-        <View style={[styles.container, style, getZIndexStyle(5)]}>
+        <View
+          style={[
+            styles.container,
+            hideFormBackground
+              ? undefined
+              : [styles.wrapper, {backgroundColor: Colors.backgroundColor}],
+            style,
+            getZIndexStyle(5),
+          ]}>
           {formContent.map(_i => renderItem(_i, isGlobalReadonly))}
         </View>
       </KeyboardAvoidingScrollView>
@@ -423,6 +435,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingBottom: 125,
+  },
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginBottom: 125,
   },
 });
 

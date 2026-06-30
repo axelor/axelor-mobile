@@ -19,6 +19,7 @@
 import React, {useMemo} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
+  Color,
   HeaderContainer,
   Icon,
   Text,
@@ -48,10 +49,7 @@ const FilterContainer = ({
   const Colors = useThemeColor();
   const {activeFilter} = useActiveFilter();
 
-  const styles = useMemo(
-    () => getStyles(Colors.primaryColor.background),
-    [Colors],
-  );
+  const styles = useMemo(() => getStyles(Colors.primaryColor), [Colors]);
 
   if (activeFilter?.id) {
     return (
@@ -59,12 +57,14 @@ const FilterContainer = ({
         style={style}
         fixedItems={
           <View style={styles.filterContainer}>
-            <Icon name="filter" size={18} />
+            <Icon name="filter" />
             <TouchableOpacity
               style={styles.filterTag}
               onPress={() => filterProvider.setActiveFilter()}>
-              <Text fontSize={14}>{activeFilter.title}</Text>
-              <Icon name="x" size={18} />
+              <Text textColor={Colors.primaryColor.background}>
+                {activeFilter.title}
+              </Text>
+              <Icon name="x" />
             </TouchableOpacity>
           </View>
         }
@@ -86,7 +86,7 @@ const FilterContainer = ({
   );
 };
 
-const getStyles = (borderColor: string) =>
+const getStyles = (color: Color) =>
   StyleSheet.create({
     filterContainer: {
       flexDirection: 'row',
@@ -99,8 +99,9 @@ const getStyles = (borderColor: string) =>
       alignItems: 'center',
       paddingHorizontal: 8,
       borderRadius: 14,
-      borderWidth: 2,
-      borderColor,
+      borderWidth: 1,
+      borderColor: color.background,
+      backgroundColor: color.background_light,
     },
   });
 

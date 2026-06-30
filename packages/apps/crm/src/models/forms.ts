@@ -336,6 +336,13 @@ export const crm_formsRegister: FormConfigs = {
           },
         },
       },
+      opportunityStatus: {
+        titleKey: 'Crm_Opportunity_Status',
+        type: 'object',
+        widget: 'custom',
+        customComponent: OpportunityStatusPicker,
+        required: true,
+      },
       expectedCloseDate: {
         titleKey: 'Crm_Opportunity_ExpectedCloseDate',
         type: 'date',
@@ -356,13 +363,6 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Base_Description',
         type: 'string',
         widget: 'HTML',
-      },
-      opportunityStatus: {
-        titleKey: 'Crm_Opportunity_Status',
-        type: 'object',
-        widget: 'custom',
-        customComponent: OpportunityStatusPicker,
-        required: true,
       },
     },
   },

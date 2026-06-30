@@ -38,7 +38,7 @@ class LinkingProvider {
     if (supported || !checkSupport) {
       try {
         await Linking.openURL(url);
-      } catch (e) {
+      } catch (e: any) {
         showToastMessage({
           type: 'error',
           position: 'bottom',
@@ -58,7 +58,8 @@ class LinkingProvider {
     }
   }
 
-  async openBrowser(url: string, checkSupport: boolean = true) {
+  async openBrowser(url?: string, checkSupport: boolean = true) {
+    if (!url) return;
     await this.openURL(
       url,
       {
@@ -69,7 +70,8 @@ class LinkingProvider {
     );
   }
 
-  async openCallApp(tel: string) {
+  async openCallApp(tel?: string) {
+    if (!tel) return;
     const URL = `tel:${tel}`;
     await this.openURL(URL, {
       title: 'Could not open the call app',
@@ -102,7 +104,7 @@ class LinkingProvider {
       {param: 'to', value: to},
       {param: 'cc', value: cc},
       {param: 'bcc', value: bcc},
-    ]);
+    ] as any);
     await this.openURL(URL, {
       title: 'Could not open the mail app',
       message: `Error while opening ${email} in the mail app`,

@@ -21,16 +21,21 @@ import {useSelector} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
 
 const OpportunityStatusPicker = ({
-  style = null,
+  style,
   title = 'Crm_Opportunity_Status',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   required = false,
   readonly = false,
+}: {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
 }) => {
-  const {opportunityStatusList} = useSelector(
-    (state: any) => state.opportunity,
-  );
+  const {opportunityStatusList} = useSelector(state => state.opportunity);
 
   return (
     <Picker
@@ -45,7 +50,6 @@ const OpportunityStatusPicker = ({
       required={required}
       readonly={readonly}
       isValueItem={true}
-      isScrollViewContainer={true}
     />
   );
 };

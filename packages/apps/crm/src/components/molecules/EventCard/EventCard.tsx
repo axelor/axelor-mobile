@@ -82,32 +82,27 @@ const EventCard = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <BorderBar style={styles.border} color={borderColor} />
-        <View style={styles.content}>
-          <View style={styles.containerChild}>
-            <View style={styles.containerLeft}>
-              <Text>{_date.day}</Text>
-              <Text style={styles.textNumber}>{_date.date}</Text>
-              <Text>{_date.month}</Text>
-            </View>
-            <View style={styles.containerMid}>
-              <Text>{startTime}</Text>
-              <Text>{endTime}</Text>
-            </View>
-            <View style={styles.containerRight}>
-              <Text style={styles.bold}>{eventName}</Text>
-              <Badge
-                title={getItemTitle(Event?.typeSelect, category)}
-                style={styles.badge}
-                color={getItemColor(Event?.typeSelect, category)}
-              />
-            </View>
-          </View>
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
+        <View style={styles.columnContainer}>
+          <Text>{_date.day}</Text>
+          <Text fontSize={25}>{_date.date}</Text>
+          <Text>{_date.month}</Text>
+        </View>
+        <View style={styles.columnContainer}>
+          <Text>{startTime}</Text>
+          <Text>{endTime}</Text>
+        </View>
+        <View style={styles.containerRight}>
+          <Text writingType="important">{eventName}</Text>
+          <Badge
+            title={getItemTitle(Event?.typeSelect, category)}
+            color={getItemColor(Event?.typeSelect, category)}
           />
         </View>
+        <Icon
+          name="chevron-right"
+          color={Colors.secondaryColor.background_light}
+          size={20}
+        />
       </Card>
     </TouchableOpacity>
   );
@@ -117,46 +112,22 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 15,
-    paddingRight: 20,
+    paddingHorizontal: 12,
+    paddingRight: 12,
+    gap: 10,
   },
   border: {
     alignSelf: 'stretch',
     marginVertical: 6,
-    marginRight: 13,
   },
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  containerChild: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  containerLeft: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  containerMid: {
-    flex: 2,
+  columnContainer: {
     flexDirection: 'column',
     alignItems: 'center',
   },
   containerRight: {
     flexDirection: 'column',
-    flex: 4,
-  },
-  textNumber: {
-    fontSize: 25,
-  },
-  bold: {
-    fontWeight: 'bold',
-  },
-  badge: {
-    marginTop: '7%',
+    flex: 1,
+    gap: 8,
   },
 });
 
