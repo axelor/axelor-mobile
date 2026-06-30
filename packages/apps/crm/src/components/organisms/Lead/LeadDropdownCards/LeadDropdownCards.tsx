@@ -37,8 +37,7 @@ const LeadDropdownCards = ({}) => {
 
   useEffect(() => {
     if (lead.eventList?.length > 0) {
-      const idList = lead.eventList?.map(item => item.id);
-      dispatch(searchEventById(idList));
+      dispatch(searchEventById(lead.eventList?.map((_i: any) => _i.id)));
     }
   }, [dispatch, lead.eventList]);
 
@@ -50,20 +49,22 @@ const LeadDropdownCards = ({}) => {
           {
             title: I18n.t('Crm_Contact'),
             key: 1,
+            iconName: 'telephone',
+            isDefaultVisible: true,
             childrenComp: (
               <DropdownContactView
                 contact={lead}
                 isLead
                 refreshContactInfos={() =>
-                  dispatch(fetchLeadById({leadId: lead.id}))
+                  dispatch((fetchLeadById as any)({leadId: lead.id}))
                 }
               />
             ),
-            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_GeneralInformation'),
             key: 2,
+            iconName: 'person',
             childrenComp: (
               <DropdownGeneralView
                 assignedUser={lead.user?.fullName}
@@ -75,6 +76,7 @@ const LeadDropdownCards = ({}) => {
           {
             title: I18n.t('Crm_Events'),
             key: 3,
+            iconName: 'calendar2-event',
             childrenComp: <DropdownEventView eventList={listEventById} />,
           },
         ]}

@@ -32,8 +32,8 @@ import {
 import {LeadHeader, LeadDropdownCards, LeadBottom} from '../../components';
 import {fetchLeadById} from '../../features/leadSlice';
 
-const LeadDetailsScreen = ({route}) => {
-  const {idLead} = route.params;
+const LeadDetailsScreen = ({route}: any) => {
+  const {idLead} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -41,18 +41,14 @@ const LeadDetailsScreen = ({route}) => {
   const {loadingLead, lead} = useSelector(state => state.lead);
 
   const getLead = useCallback(() => {
-    dispatch(fetchLeadById({leadId: idLead}));
+    dispatch((fetchLeadById as any)({leadId: idLead}));
   }, [dispatch, idLead]);
 
   useEffect(() => {
-    if (isFocused) {
-      getLead();
-    }
+    if (isFocused) getLead();
   }, [getLead, isFocused]);
 
-  if (lead?.id !== idLead || !isFocused) {
-    return null;
-  }
+  if (lead?.id !== idLead || !isFocused) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>

@@ -20,16 +20,16 @@ import React, {useCallback, useMemo} from 'react';
 import {useSelector, FormView} from '@axelor/aos-mobile-core';
 import {createLead, updateLead} from '../../features/leadSlice';
 
-const LeadFormScreen = ({navigation, route}) => {
+const LeadFormScreen = ({navigation, route}: any) => {
   const {idLead} = route?.params ?? {};
 
   const {lead} = useSelector(state => state.lead);
   const {user} = useSelector(state => state.user);
 
   const updateLeadAPI = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
-        updateLead({
+        (updateLead as any)({
           lead: {
             ...objectState,
             emailVersion: objectState.emailAddress?.$version,
@@ -44,13 +44,10 @@ const LeadFormScreen = ({navigation, route}) => {
   );
 
   const createLeadAPI = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
-        createLead({
-          lead: {
-            ...objectState,
-            user,
-          },
+        (createLead as any)({
+          lead: {...objectState, user},
           companyId: user.activeCompany?.id,
         }),
       );

@@ -29,7 +29,7 @@ import {
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
 import {LeadsCard} from '../../components';
 
-const LeadListScreen = ({navigation}) => {
+const LeadListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {getCustomSelectionItems} = useTypeHelpers();
@@ -38,8 +38,8 @@ const LeadListScreen = ({navigation}) => {
     useSelector(state => state.lead);
   const {user} = useSelector(state => state.user);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [assigned, setAssigned] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [assigned, setAssigned] = useState<boolean>(false);
 
   const leadStatusListItems = useMemo(
     () => getCustomSelectionItems(leadStatusList, 'name'),
@@ -82,7 +82,7 @@ const LeadListScreen = ({navigation}) => {
           <MultiValuePicker
             listItems={leadStatusListItems}
             placeholder={I18n.t('Base_Status')}
-            onValueChange={statusList => setSelectedStatus(statusList)}
+            onValueChange={setSelectedStatus}
           />
         }
         renderListItem={({item}) => (

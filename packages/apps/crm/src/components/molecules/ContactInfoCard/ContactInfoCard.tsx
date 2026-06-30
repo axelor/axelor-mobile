@@ -21,9 +21,10 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   checkNullString,
   HorizontalRule,
-  Icon,
+  IconTile,
   LabelText,
   Text,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {clipboardProvider} from '@axelor/aos-mobile-core';
 import ContactInfoAlert from './ContactInfoAlert';
@@ -64,6 +65,8 @@ const ContactInfoCard = ({
   refreshContactInfos,
   canCreate = true,
 }: ContactInfoCardProps) => {
+  const Colors = useThemeColor();
+
   const [isVisible, setIsVisible] = useState(false);
 
   const contactInfo = useMemo(
@@ -76,60 +79,59 @@ const ContactInfoCard = ({
     [contactInfo?.displayText],
   );
 
-  if (isCreation && !canCreate) {
-    return null;
-  }
+  if (isCreation && !canCreate) return null;
 
   return (
     <>
-      {isCreation ? (
-        <TouchableOpacity
-          style={[styles.container, styles.rowDirection, style]}
-          activeOpacity={0.9}
-          onPress={() => setIsVisible(true)}>
-          <LabelText
-            title={title}
-            iconName={headerIconName}
-            size={15}
-            textSize={14}
-          />
-          <Icon name="plus-lg" />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={[styles.container, style]}
-          activeOpacity={0.9}
-          onPress={onPress}>
-          <LabelText
-            title={title}
-            iconName={headerIconName}
-            size={15}
-            textSize={14}
-          />
+      <TouchableOpacity
+        style={[styles.container, style]}
+        activeOpacity={0.9}
+        onPress={onPress}>
+        <View style={styles.rowDirection}>
+          <LabelText title={title} iconName={headerIconName} />
+
+          {isCreation && (
+            <IconTile
+              icon="plus-lg"
+              size={30}
+              iconSize={12}
+              onPress={() => setIsVisible(true)}
+              color={Colors.primaryColor}
+            />
+          )}
+        </View>
+        {!isCreation && (
           <View style={styles.rowDirection}>
-            <Text style={styles.text} fontSize={14}>
-              {contactInfo.displayText}
-            </Text>
+            <Text style={styles.text}>{contactInfo.displayText}</Text>
             <View style={styles.rowDirection}>
-              <Icon
-                style={styles.icon}
-                name="copy"
-                touchable={true}
+              <IconTile
+                icon="copy"
+                size={30}
+                iconSize={12}
                 onPress={() =>
                   clipboardProvider.copyToClipboard(contactInfo.displayText)
                 }
+                color={Colors.secondaryColor}
+                backgroundColor={Colors.screenBackgroundColor}
               />
-              <Icon
-                style={styles.icon}
-                name="pencil-fill"
-                touchable={true}
+              <IconTile
+                icon="pencil-fill"
+                size={30}
+                iconSize={12}
                 onPress={() => setIsVisible(true)}
+                color={Colors.primaryColor}
+                backgroundColor={Colors.screenBackgroundColor}
               />
             </View>
           </View>
-        </TouchableOpacity>
+        )}
+      </TouchableOpacity>
+      {border && (
+        <HorizontalRule
+          style={[styles.borderBottom, styleBorder]}
+          color={Colors.secondaryColor.background_light}
+        />
       )}
-      {border && <HorizontalRule style={[styles.borderBottom, styleBorder]} />}
       <ContactInfoAlert
         title={title}
         contact={contact}
@@ -147,22 +149,21 @@ const ContactInfoCard = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingHorizontal: 10,
     gap: 5,
   },
   rowDirection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    gap: 5,
   },
   text: {
     flex: 1,
   },
-  icon: {
-    marginLeft: 5,
-  },
   borderBottom: {
     marginVertical: 8,
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
