@@ -20,19 +20,19 @@ import {StyleSheet} from 'react-native';
 import {ThemeColors} from '../theme';
 
 export const getCommonStyles = (
-  Colors: ThemeColors,
+  Colors?: ThemeColors,
   _required: boolean = false,
   _isFocused: boolean = false,
 ) =>
   StyleSheet.create({
     filter: {
       width: '90%',
-      backgroundColor: Colors.screenBackgroundColor,
+      backgroundColor: Colors?.screenBackgroundColor,
       borderColor: _required
-        ? Colors.errorColor.background
+        ? Colors?.errorColor.background
         : _isFocused
-          ? Colors.primaryColor.background
-          : Colors.secondaryColor.background_light,
+          ? Colors?.primaryColor.background
+          : Colors?.secondaryColor.background_light,
       borderWidth: 1,
       borderRadius: 12,
       paddingHorizontal: 10,
@@ -55,8 +55,7 @@ export const getCommonStyles = (
       paddingVertical: 2,
       marginVertical: 5,
       borderRadius: 7,
-      borderWidth: 2,
+      borderWidth: 1,
       height: 50,
-      minHeight: 40,
     },
   });

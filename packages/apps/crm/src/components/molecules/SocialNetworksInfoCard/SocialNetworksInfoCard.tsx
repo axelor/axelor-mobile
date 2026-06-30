@@ -49,36 +49,23 @@ const SocialNetworksInfoCard = ({
 
   return (
     <View style={[styles.container, style]}>
-      <LabelText
-        title={I18n.t('Crm_SocialNetworks')}
-        iconName="globe"
-        size={15}
+      <LabelText title={I18n.t('Crm_SocialNetworks')} iconName="globe" />
+      <SocialNetworkLinks
+        data={{
+          fullName: fullName,
+          name: name,
+          lastName: lastName,
+          company: company,
+        }}
       />
-      <View style={styles.containerBody}>
-        <SocialNetworkLinks
-          size={25}
-          data={{
-            fullName: fullName,
-            name: name,
-            lastName: lastName,
-            company: company,
-          }}
-        />
-      </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    width: '95%',
-    marginHorizontal: 10,
-  },
-  containerBody: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: '2%',
+    gap: 4,
   },
 });
 

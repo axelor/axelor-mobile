@@ -27,17 +27,17 @@ import {
 
 const EventDatesCard = () => {
   const I18n = useTranslator();
-  const {event} = useSelector((state: any) => state.event);
+  const {event} = useSelector(state => state.event);
 
   const _formatDate = useCallback(
-    date => formatDateTime(date, I18n.t('Base_DateTimeFormat')),
+    (date: string) => formatDateTime(date, I18n.t('Base_DateTimeFormat')),
     [I18n],
   );
 
   if (event.startDateTime || event.endDateTime) {
     return (
       <FromTo
-        style={styles.detailsContainer}
+        style={styles.container}
         fromComponent={
           <TitledValue
             title={I18n.t('Crm_Start')}
@@ -58,9 +58,8 @@ const EventDatesCard = () => {
 };
 
 const styles = StyleSheet.create({
-  detailsContainer: {
-    marginTop: 10,
-    marginBottom: 5,
+  container: {
+    marginVertical: 2,
   },
 });
 

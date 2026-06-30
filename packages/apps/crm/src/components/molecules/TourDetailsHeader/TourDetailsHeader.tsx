@@ -24,42 +24,33 @@ import {DateDisplay, useTranslator, useSelector} from '@axelor/aos-mobile-core';
 const TourDetailsHeader = () => {
   const I18n = useTranslator();
 
-  const {tour} = useSelector((state: any) => state.tour);
-  const {totalTourLine} = useSelector((state: any) => state.tourLine);
+  const {tour} = useSelector(state => state.tour);
+  const {totalTourLine} = useSelector(state => state.tourLine);
 
   return (
     <View style={styles.container}>
-      <Text writingType="title">{tour?.name}</Text>
       <View style={styles.row}>
-        <LabelText
-          iconName="person-fill"
-          title={tour.salespersonUser?.fullName}
-          textStyle={styles.fontSize}
-          size={16}
-        />
+        <Text writingType="title">{tour?.name}</Text>
         <DateDisplay date={tour.date} />
       </View>
-      <Text>
-        {I18n.t('Crm_ScheduledVisits', {
-          totalTourLine,
-        })}
-      </Text>
+      <LabelText
+        iconName="person-fill"
+        title={tour.salespersonUser?.fullName}
+      />
+      <Text>{I18n.t('Crm_ScheduledVisits', {totalTourLine})}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
-    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    gap: 2,
   },
   row: {
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  fontSize: {
-    fontSize: 16,
   },
 });
 

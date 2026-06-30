@@ -22,8 +22,8 @@ import {Color} from '@axelor/aos-mobile-ui';
 export const DEFAULT_COLSPAN = 12;
 
 export interface States {
-  objectState?: any;
-  storeState?: any;
+  objectState: any;
+  storeState: any;
 }
 
 export interface DependsOnStates extends States {
@@ -50,10 +50,10 @@ export interface Field {
   helperKey?: string;
   type: InputType;
   required?: boolean;
-  requiredIf?: (values?: States) => boolean;
+  requiredIf?: (values: States) => boolean;
   readonly?: boolean;
-  readonlyIf?: (values?: States) => boolean;
-  hideIf?: (values?: States) => boolean;
+  readonlyIf?: (values: States) => boolean;
+  hideIf?: (values: States) => boolean;
   dependsOn?: {
     [fieldName: string]: (values: DependsOnStates) => any;
   };

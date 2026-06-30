@@ -29,7 +29,7 @@ import {
   updateContact,
 } from '../../features/contactSlice';
 
-const ContactFormScreen = ({navigation, route}) => {
+const ContactFormScreen = ({navigation, route}: any) => {
   const {contactId} = route?.params ?? {};
   const {Partner} = useTypes();
   const _dispatch = useDispatch();
@@ -56,11 +56,11 @@ const ContactFormScreen = ({navigation, route}) => {
   );
 
   const handleSaveAPI = useCallback(
-    ({dispatch, objectState}) => {
+    ({dispatch, objectState}: any) => {
       const isCreation = objectState?.id == null;
       const sliceFct: any = isCreation ? createContact : updateContact;
 
-      dispatch(sliceFct(objectState)).then(res => {
+      dispatch(sliceFct(objectState)).then((res: any) => {
         const _recordId = res?.payload?.id;
         if (_recordId) {
           navigation.replace('ContactDetailsScreen', {idContact: _recordId});

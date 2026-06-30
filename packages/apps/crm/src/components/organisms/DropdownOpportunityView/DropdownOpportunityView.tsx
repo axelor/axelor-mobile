@@ -39,12 +39,13 @@ const DropdownOpportunityView = ({partnerId}: {partnerId: number}) => {
   const dispatch = useDispatch();
 
   const {partnerOpportunityList, opportunityStatusList} = useSelector(
-    (state: any) => state.opportunity,
+    state => state.opportunity,
   );
 
-  const lastOpportunity = useMemo(() => {
-    return getLastItem(partnerOpportunityList, 'expectedCloseDate');
-  }, [partnerOpportunityList]);
+  const lastOpportunity = useMemo(
+    () => getLastItem(partnerOpportunityList, 'expectedCloseDate'),
+    [partnerOpportunityList],
+  );
 
   useEffect(() => {
     dispatch((getPartnerOpportunities as any)({partnerId}));

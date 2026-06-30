@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {
   handlerApiCall,
   isEmpty,
@@ -77,13 +77,8 @@ const DropdownContactView = ({
   const getState = useCallback(() => ({auth: {userId}}), [userId]);
 
   const updateAddress = useCallback(
-    ({id, version, data}) => {
-      const dataApi = {
-        isLead,
-        id,
-        version,
-        ...data,
-      };
+    ({id, version, data}: any) => {
+      const dataApi = {isLead, id, version, ...data};
 
       return handlerApiCall({
         fetchFunction: updateAddressApi,
@@ -97,7 +92,7 @@ const DropdownContactView = ({
   );
 
   const updateContactInfo = useCallback(
-    ({id, version, data}) => {
+    ({id, version, data}: any) => {
       const dataApi = {id, version, ...data};
 
       return handlerApiCall({
@@ -112,7 +107,7 @@ const DropdownContactView = ({
   );
 
   const updateEmail = useCallback(
-    ({id, version, data}) => {
+    ({id, version, data}: any) => {
       return handlerApiCall({
         fetchFunction: updateEmailApi,
         data: {id, version, email: data.email},
@@ -125,7 +120,7 @@ const DropdownContactView = ({
   );
 
   const linkEmail = useCallback(
-    ({data}) => {
+    ({data}: any) => {
       return handlerApiCall({
         fetchFunction: linkEmailApi,
         data: {
@@ -143,16 +138,14 @@ const DropdownContactView = ({
   );
 
   return (
-    <View style={styles.container}>
+    <View>
       <ContactInfoCard
         headerIconName="geo-alt-fill"
-        title={
-          isMainAddress ? I18n.t('Crm_MainAddress') : I18n.t('Crm_Address')
-        }
+        title={I18n.t(isMainAddress ? 'Crm_MainAddress' : 'Crm_Address')}
         contact={contact}
         contactInfoType={ContactInfoType.type.Address}
         isLead={isLead}
-        onPress={() => linkingProvider.openMapApp(contact.address.fullName)}
+        onPress={() => linkingProvider.openMapApp(contact.address?.fullName)}
         onUpdate={updateAddress}
         refreshContactInfos={refreshContactInfos}
         canCreate={!isMainAddress}
@@ -205,12 +198,5 @@ const DropdownContactView = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    left: -10,
-    width: '107%',
-  },
-});
 
 export default DropdownContactView;

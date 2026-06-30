@@ -25,9 +25,15 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Icon, HorizontalRule, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {ContactInfoAlert, ContactInfoType} from '../ContactInfoCard';
+import {
+  Icon,
+  HorizontalRule,
+  Text,
+  useThemeColor,
+  IconTile,
+} from '@axelor/aos-mobile-ui';
 import {deletePartnerAddressApi, updateAddressApi} from '../../../api';
+import {ContactInfoAlert, ContactInfoType} from '../ContactInfoCard';
 
 interface PartnerAddress {
   id: number;
@@ -59,7 +65,7 @@ const AddressListCard = ({
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {userId} = useSelector(state => state.auth);
 
   const address = useMemo(
     () => partnerAddress.address?.fullName,
@@ -83,17 +89,15 @@ const AddressListCard = ({
   const getState = useCallback(() => ({auth: {userId}}), [userId]);
 
   const updatePartnerAddress = useCallback(
-    ({id, version, data}) => {
-      const dataApi = {
-        id: partnerId,
-        version: partnerVersion,
-        partnerAddress: {id, version},
-        ...data,
-      };
-
+    ({id, version, data}: any) => {
       return handlerApiCall({
         fetchFunction: updateAddressApi,
-        data: dataApi,
+        data: {
+          id: partnerId,
+          version: partnerVersion,
+          partnerAddress: {id, version},
+          ...data,
+        },
         action: 'Crm_ApiAction_UpdateAddress',
         getState,
         responseOptions: {showToast: true},
@@ -103,7 +107,7 @@ const AddressListCard = ({
   );
 
   const deletePartnerAddress = useCallback(
-    ({id}) => {
+    ({id}: any) => {
       return handlerApiCall({
         fetchFunction: deletePartnerAddressApi,
         data: {id},
@@ -126,25 +130,32 @@ const AddressListCard = ({
               <Icon key={idx} name={icon.name} color={icon.color} />
             ))}
           </View>
-          <Text fontSize={14} style={styles.title}>
-            {address}
-          </Text>
+          <Text style={styles.title}>{address}</Text>
           <View style={styles.rigthIconContainer}>
-            <Icon
-              style={styles.icon}
-              name="copy"
-              touchable
+            <IconTile
+              icon="copy"
+              size={30}
+              iconSize={12}
+              color={Colors.secondaryColor}
+              backgroundColor={Colors.screenBackgroundColor}
               onPress={() => clipboardProvider.copyToClipboard(address)}
             />
-            <Icon
-              style={styles.icon}
-              name="pencil-fill"
-              touchable={true}
+            <IconTile
+              icon="pencil-fill"
+              size={30}
+              iconSize={12}
+              color={Colors.primaryColor}
+              backgroundColor={Colors.screenBackgroundColor}
               onPress={() => setIsVisible(true)}
             />
           </View>
         </TouchableOpacity>
-        {borderBottom && <HorizontalRule style={styles.borderBottom} />}
+        {borderBottom && (
+          <HorizontalRule
+            style={styles.border}
+            color={Colors.secondaryColor.background_light}
+          />
+        )}
       </View>
       <ContactInfoAlert
         title={I18n.t('Crm_Address')}
@@ -163,14 +174,11 @@ const AddressListCard = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 7,
-    paddingHorizontal: 10,
+    gap: 10,
   },
   leftIconContainer: {
     flexDirection: 'column',
-    marginRight: 10,
     gap: 5,
   },
   title: {
@@ -178,13 +186,12 @@ const styles = StyleSheet.create({
   },
   rigthIconContainer: {
     flexDirection: 'row',
+    gap: 5,
   },
-  icon: {
-    marginLeft: 4,
-  },
-  borderBottom: {
-    width: '100%',
-    marginVertical: 5,
+  border: {
+    width: '90%',
+    marginVertical: 8,
+    alignSelf: 'center',
   },
 });
 

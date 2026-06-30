@@ -25,9 +25,9 @@ import {searchTourLineApi} from '../../../api';
 const TourItineraryButton = ({}) => {
   const isMounted = useRef(true);
 
-  const {tour} = useSelector((state: any) => state.tour);
+  const {tour} = useSelector(state => state.tour);
 
-  const [adressList, setAdressList] = useState([]);
+  const [adressList, setAdressList] = useState<any[]>([]);
 
   useEffect(() => {
     isMounted.current = true;
@@ -36,11 +36,11 @@ const TourItineraryButton = ({}) => {
       tourId: tour?.id,
       numberElementsByPage: null,
       isValidated: false,
-    })
+    } as any)
       .then(response => {
         if (isMounted.current) {
           if (Array.isArray(response?.data?.data)) {
-            const tourLineList: any[] = response.data.data.map(line => ({
+            const tourLineList: any[] = response.data.data.map((line: any) => ({
               address: line?.address?.fullName,
             }));
 
@@ -64,10 +64,9 @@ const TourItineraryButton = ({}) => {
   return (
     <Button
       style={styles.button}
-      isNeutralBackground={true}
       iconName="map"
-      width={40}
-      iconSize={20}
+      width={30}
+      iconSize={15}
       onPress={() => {
         linkingProvider.openGoogleMapsDirections(adressList);
       }}
@@ -77,8 +76,7 @@ const TourItineraryButton = ({}) => {
 
 const styles = StyleSheet.create({
   button: {
-    height: 40,
-    borderWidth: 1,
+    height: 30,
   },
 });
 
