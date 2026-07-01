@@ -4,7 +4,7 @@
   "Quality_ControlEntry": "Control entry",
   "Quality_QualityImprovements": "Quality improvements",
   "Quality_Sample": "Sample",
-  "Quality_SampleCount": "Sample count",
+  "Quality_SampleCountValue": "Sample count : {{sampleCount}}",
   "Quality_Characteristic": "Characteristic",
   "Quality_Status_Draft": "Draft",
   "Quality_Status_InProgress": "In progress",

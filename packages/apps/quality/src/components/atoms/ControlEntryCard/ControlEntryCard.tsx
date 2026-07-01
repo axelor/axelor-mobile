@@ -99,9 +99,7 @@ const ControlEntryCard = ({
       upperTexts={{
         items: [
           {displayText: name, isTitle: true},
-          {
-            displayText: `${I18n.t('Quality_SampleCount')} : ${sampleCount}`,
-          },
+          {displayText: I18n.t('Quality_SampleCountValue', {sampleCount})},
         ],
       }}
       sideBadges={{

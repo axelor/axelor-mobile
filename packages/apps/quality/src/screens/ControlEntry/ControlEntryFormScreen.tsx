@@ -42,8 +42,8 @@ import {fetchControlPlanById} from '../../features/controlPlanSlice';
 import {ControlEntry as ControlEntryType} from '../../types';
 import {checkComformity, getProgressValuesApi} from '../../api';
 
-const ControlEntryFormScreen = ({navigation, route}) => {
-  const {selectedMode, sampleId} = route.params;
+const ControlEntryFormScreen = ({navigation, route}: any) => {
+  const {selectedMode, sampleId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {readonly} = usePermitted({
@@ -59,10 +59,10 @@ const ControlEntryFormScreen = ({navigation, route}) => {
     state => state.controlEntrySampleLine,
   );
 
-  const [categoryIndex, setCategoryIndex] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const [itemSet, setItemSet] = useState([]);
-  const [categorySet, setCategorySet] = useState([]);
+  const [categoryIndex, setCategoryIndex] = useState<number>();
+  const [currentIndex, setCurrentIndex] = useState<number>();
+  const [itemSet, setItemSet] = useState<any[]>([]);
+  const [categorySet, setCategorySet] = useState<any[]>([]);
   const [progressData, setProgressData] = useState({
     topProgressBar: 0,
     bottomProgressBar: 0,
@@ -77,8 +77,10 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   );
 
   useEffect(() => {
-    dispatch(fetchControlPlanById({id: controlEntry.controlPlan?.id}));
-    dispatch(searchControlEntrySampleLine({controlEntryId: controlEntry.id}));
+    dispatch((fetchControlPlanById as any)({id: controlEntry.controlPlan?.id}));
+    dispatch(
+      (searchControlEntrySampleLine as any)({controlEntryId: controlEntry.id}),
+    );
   }, [controlEntry?.controlPlan?.id, controlEntry?.id, dispatch]);
 
   useEffect(() => {
@@ -119,28 +121,28 @@ const ControlEntryFormScreen = ({navigation, route}) => {
     }
   }, [sampleLineOfEntryList, selectedMode, sampleId]);
 
-  useEffect(() => {
-    fetchSampleLine(itemSet, currentIndex);
-  }, [fetchSampleLine, itemSet, currentIndex]);
-
   const fetchSampleLine = useCallback(
-    (_set, _index) => {
+    (_set: any[], _index: number) => {
       if (Array.isArray(_set) && _set.length > 0) {
-        dispatch(fetchControlEntrySampleLine({id: _set[_index]?.id}));
+        dispatch((fetchControlEntrySampleLine as any)({id: _set[_index]?.id}));
       }
     },
     [dispatch],
   );
 
   useEffect(() => {
+    fetchSampleLine(itemSet, currentIndex!);
+  }, [fetchSampleLine, itemSet, currentIndex]);
+
+  useEffect(() => {
     if (
       Array.isArray(sampleLineOfEntryList) &&
-      categorySet?.[categoryIndex] != null
+      categorySet?.[categoryIndex!] != null
     ) {
       const _itemSet = sampleLineOfEntryList.filter(
         _item =>
           _item[ControlEntryType.getMethodAssociatedAttribut(selectedMode)]
-            .id === categorySet?.[categoryIndex],
+            .id === categorySet?.[categoryIndex!],
       );
       setCurrentIndex(0);
       setItemSet(_itemSet);
@@ -165,55 +167,45 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   ]);
 
   const isLastItem = useMemo(
-    () => (currentIndex + 1) % nbItemInCategory === 0,
+    () => (currentIndex! + 1) % nbItemInCategory === 0,
     [currentIndex, nbItemInCategory],
   );
 
   const isFirstItem = useMemo(() => currentIndex === 0, [currentIndex]);
 
   const canNext = useMemo(
-    () => !isLastItem || categoryIndex + 1 !== nbCategories,
+    () => !isLastItem || categoryIndex! + 1 !== nbCategories,
     [categoryIndex, isLastItem, nbCategories],
   );
 
   const handleNext = useCallback(() => {
     setCurrentIndex(_current => {
-      if ((_current + 1) % nbItemInCategory === 0) {
-        setCategoryIndex(_cIndex => {
-          if (_cIndex !== nbCategories - 1) {
-            return _cIndex + 1;
-          }
-
-          return _cIndex;
-        });
+      if ((_current! + 1) % nbItemInCategory === 0) {
+        setCategoryIndex(_cIndex =>
+          _cIndex !== nbCategories - 1 ? _cIndex! + 1 : _cIndex,
+        );
 
         return _current;
       }
 
-      return _current + 1;
+      return _current! + 1;
     });
   }, [nbCategories, nbItemInCategory]);
 
   const handlePrevious = () => {
     setCurrentIndex(_current => {
       if (_current === 0) {
-        setCategoryIndex(_cIndex => {
-          if (_cIndex !== 0) {
-            return _cIndex - 1;
-          }
-
-          return _cIndex;
-        });
+        setCategoryIndex(_cIndex => (_cIndex !== 0 ? _cIndex! - 1 : _cIndex));
 
         return _current;
       }
 
-      return _current - 1;
+      return _current! - 1;
     });
   };
 
   const getValuesProgressBar = useCallback(
-    param => {
+    (param: any) => {
       getProgressValuesApi(param)
         .then(response => {
           setProgressData({
@@ -251,7 +243,7 @@ const ControlEntryFormScreen = ({navigation, route}) => {
       getValuesProgressBar({
         controlEntryId: controlEntry?.id,
         characteristicId:
-          controlPlan?.controlPlanLinesList?.[categoryIndex]?.id,
+          controlPlan?.controlPlanLinesList?.[categoryIndex!]?.id,
       });
     }
   }, [
@@ -292,29 +284,28 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   useEffect(() => {
     headerActionsProvider.registerModel('quality_controlEntry_form', {
       model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
-      modelId: itemSet[currentIndex]?.id,
+      modelId: itemSet[currentIndex!]?.id,
     });
   }, [currentIndex, itemSet]);
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <ControlEntryFormHeader
         mode={selectedMode}
-        currentIndex={currentIndex}
-        categoryIndex={categoryIndex}
         nbItemInCategory={nbItemInCategory}
         nbCategories={nbCategories}
         progressData={progressData}
       />
-      {categorySet[categoryIndex] != null &&
-        (itemSet[currentIndex] != null ? (
+      {categorySet[categoryIndex!] != null &&
+        (itemSet[currentIndex!] != null ? (
           <CustomFieldForm
             model="com.axelor.apps.quality.db.ControlEntryPlanLine"
             fieldType="entryAttrs"
-            modelId={itemSet[currentIndex].id}
+            modelId={itemSet[currentIndex!].id}
             additionalActions={[
               {
                 key: 'customAction',
+                type: 'custom',
                 useDefaultAction: true,
                 showToast: false,
                 postActions: async res => {

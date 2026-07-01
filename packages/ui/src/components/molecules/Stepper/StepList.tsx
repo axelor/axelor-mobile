@@ -19,15 +19,16 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useThemeColor} from '../../../theme';
-import {Icon, Text} from '../../atoms';
+import {HorizontalRule, Icon, Text, VerticalRule} from '../../atoms';
 import {Step, StepState} from './types';
 
 interface StepListProps {
   steps: Step[];
+  activeStepIndex?: number;
   translator: (key: string, values?: any) => string;
 }
 
-const StepList = ({steps, translator}: StepListProps) => {
+const StepList = ({steps, activeStepIndex = 0, translator}: StepListProps) => {
   const Colors = useThemeColor();
 
   const getIconName = (state: StepState) => {
@@ -57,7 +58,11 @@ const StepList = ({steps, translator}: StepListProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
+      <HorizontalRule
+        style={styles.border}
+        color={Colors.secondaryColor.background_light}
+      />
       {steps.map((step, index) => (
         <View style={styles.stepWrapper} key={index}>
           <View style={styles.stepColumn}>
@@ -66,15 +71,17 @@ const StepList = ({steps, translator}: StepListProps) => {
               color={getIconColor(step.state)}
             />
             {index < steps.length - 1 && (
-              <View
-                style={[
-                  styles.verticalLine,
-                  {backgroundColor: getIconColor(step.state)},
-                ]}
+              <VerticalRule
+                style={styles.verticalLine}
+                color={getIconColor(step.state)}
               />
             )}
           </View>
-          <Text>{translator(step.titleKey)}</Text>
+          <Text
+            writingType={activeStepIndex === index ? 'important' : undefined}
+            fontSize={12}>
+            {translator(step.titleKey)}
+          </Text>
         </View>
       ))}
     </View>
@@ -82,18 +89,20 @@ const StepList = ({steps, translator}: StepListProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 10,
+  border: {
+    marginVertical: 8,
+    width: '80%',
+    alignSelf: 'center',
   },
   stepWrapper: {
     flexDirection: 'row',
+    paddingHorizontal: 10,
+    gap: 10,
   },
   stepColumn: {
     alignItems: 'center',
-    marginRight: 15,
   },
   verticalLine: {
-    width: 1,
     height: 10,
     marginVertical: 5,
   },

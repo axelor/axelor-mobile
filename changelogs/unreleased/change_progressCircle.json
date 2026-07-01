@@ -1,0 +1,5 @@
+{
+  "title": "ProgressCircle: redesign with a smaller default size and a track tinted from the progress color",
+  "type": "refactor",
+  "packages": "ui"
+}

@@ -35,11 +35,13 @@ const ControlEntryDetailsButtons = () => {
   });
   const {ControlEntry} = useTypes();
 
-  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+  const {controlEntry} = useSelector(state => state.controlEntry);
 
-  if (readonly) {
+  if (
+    readonly ||
+    controlEntry.statusSelect !== ControlEntry?.statusSelect.InProgress
+  )
     return null;
-  }
 
   return (
     <Button

@@ -74,6 +74,7 @@ const QualityImprovementCard = ({
         ],
       }}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
             displayText: getItemTitle(
@@ -99,6 +100,9 @@ const styles = StyleSheet.create({
     marginRight: 5,
     paddingRight: 5,
     flex: 1,
+  },
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

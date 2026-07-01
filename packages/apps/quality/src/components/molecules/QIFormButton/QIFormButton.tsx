@@ -52,7 +52,7 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
 
   const handleStepUpdate = useCallback(
     (_value: number) =>
-      handleObjectChange((_current: any) => ({..._current, stepper: _value})),
+      handleObjectChange?.((_current: any) => ({..._current, stepper: _value})),
     [handleObjectChange],
   );
 
@@ -97,8 +97,6 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
       handleStepUpdate(Steps.defaults);
     }
   }, [currentStep, handleStepUpdate, skipIdentification]);
-
-  const styles = useMemo(() => getStyles(currentStep), [currentStep]);
 
   const handleSave = useCallback(() => {
     const sliceFunction: any = objectState.id
@@ -175,16 +173,17 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
   );
 };
 
-const getStyles = (actualStep: number) =>
-  StyleSheet.create({
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      marginHorizontal: actualStep > MIN_STEP ? 10 : 0,
-    },
-    button: {
-      width: actualStep === MIN_STEP ? '100%' : '50%',
-    },
-  });
+const styles = StyleSheet.create({
+  buttonContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  button: {
+    flex: 1,
+  },
+});
 
 export default QIFormButton;

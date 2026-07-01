@@ -18,10 +18,10 @@
 
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text} from '../../atoms';
-import {Alert} from '../../molecules';
-import {CheckboxScrollList} from '../../organisms';
 import {useThemeColor} from '../../../theme';
+import {CheckboxScrollList} from '../../organisms';
+import {Alert, IconTile} from '../../molecules';
+import {Text} from '../../atoms';
 import {Line} from './ViewAllEditList';
 
 interface AllLinesAlertProps {
@@ -45,25 +45,23 @@ const AllLinesAlert = ({
 }: AllLinesAlertProps) => {
   const Colors = useThemeColor();
 
-  const [selectedLines, setSelectedLines] = useState([]);
+  const [selectedLines, setSelectedLines] = useState<any[]>([]);
 
-  const renderChexboxItem = ({item}) => {
+  const renderChexboxItem = ({item}: any) => {
     return (
       <View style={styles.renderContainer}>
         <View style={styles.renderFirstLine}>
           <View style={styles.text}>
-            <Text style={styles.productName} writingType="important">
-              {item.name}
-            </Text>
-            <Text style={styles.productQty}>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.qty}>
               {item.qty} {item.unitName}
             </Text>
           </View>
           {handleEditLine && (
-            <Icon
-              name="pencil-fill"
-              size={16}
-              touchable
+            <IconTile
+              icon="pencil-fill"
+              size={30}
+              iconSize={15}
               onPress={() => {
                 setIsAlertVisible(false);
                 handleEditLine(item);
@@ -71,9 +69,7 @@ const AllLinesAlert = ({
             />
           )}
         </View>
-        {item.nameDetails && (
-          <Text writingType="details">{item.nameDetails}</Text>
-        )}
+        {item.nameDetails && <Text>{item.nameDetails}</Text>}
       </View>
     );
   };
@@ -96,9 +92,8 @@ const AllLinesAlert = ({
           setLines(
             lines.filter(
               _line =>
-                selectedLines.filter(
-                  _selectedLine => _selectedLine.id === _line.id,
-                ).length === 0,
+                selectedLines.filter((_s: any) => _s.id === _line.id).length ===
+                0,
             ),
           );
           setIsAlertVisible(false);
@@ -107,7 +102,7 @@ const AllLinesAlert = ({
       translator={translator}>
       <CheckboxScrollList
         data={lines}
-        onCheckedChange={setSelectedLines}
+        onCheckedChange={setSelectedLines as (items: any[]) => void}
         renderItem={renderChexboxItem}
         translator={translator}
       />
@@ -116,8 +111,10 @@ const AllLinesAlert = ({
 };
 
 const styles = StyleSheet.create({
+  alertContainer: {
+    height: '70%',
+  },
   renderContainer: {
-    minHeight: 45,
     justifyContent: 'center',
   },
   renderFirstLine: {
@@ -129,14 +126,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  productName: {
+  title: {
     flex: 1,
   },
-  productQty: {
+  qty: {
     maxWidth: '25%',
-  },
-  alertContainer: {
-    height: '70%',
   },
 });
 

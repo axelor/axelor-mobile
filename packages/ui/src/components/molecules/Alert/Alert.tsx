@@ -19,9 +19,10 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
 import {useThemeColor} from '../../../theme';
-import {Card, Text, Icon} from '../../atoms';
-import Button, {ButtonProps} from '../Button/Button';
 import {checkNullString} from '../../../utils';
+import {IconTile} from '../../molecules';
+import {Card, Text} from '../../atoms';
+import Button, {ButtonProps} from '../Button/Button';
 
 const DEFAULT_BUTTON_WIDTH = 115;
 
@@ -61,9 +62,7 @@ const Alert = ({
   const Colors = useThemeColor();
 
   const _cancelButtonConfig = useMemo(() => {
-    if (!cancelButtonConfig) {
-      return null;
-    }
+    if (!cancelButtonConfig) return null;
 
     return {
       title: translator('Base_Cancel'),
@@ -71,16 +70,14 @@ const Alert = ({
       iconName: 'x-lg',
       hide: false,
       showInHeader: false,
-      headerSize: 20,
+      headerSize: 30,
       width: DEFAULT_BUTTON_WIDTH,
       ...cancelButtonConfig,
     };
   }, [translator, Colors, cancelButtonConfig]);
 
   const _confirmButtonConfig = useMemo(() => {
-    if (!confirmButtonConfig) {
-      return null;
-    }
+    if (!confirmButtonConfig) return null;
 
     return {
       title: translator('Base_OK'),
@@ -92,13 +89,15 @@ const Alert = ({
     };
   }, [translator, Colors, confirmButtonConfig]);
 
-  const isCancelButtonDisplayedBottom = useMemo(() => {
-    return !_cancelButtonConfig?.hide && !_cancelButtonConfig?.showInHeader;
-  }, [_cancelButtonConfig]);
+  const isCancelButtonDisplayedBottom = useMemo(
+    () => !_cancelButtonConfig?.hide && !_cancelButtonConfig?.showInHeader,
+    [_cancelButtonConfig],
+  );
 
-  const isConfirmButtonDisplayedBottom = useMemo(() => {
-    return !_confirmButtonConfig?.hide;
-  }, [_confirmButtonConfig]);
+  const isConfirmButtonDisplayedBottom = useMemo(
+    () => !_confirmButtonConfig?.hide,
+    [_confirmButtonConfig],
+  );
 
   return (
     <Modal
@@ -112,23 +111,19 @@ const Alert = ({
           <View style={styles.headerContainer}>
             {!checkNullString(title) && (
               <Text
-                writingType={noBoldTitle ? null : 'title'}
-                fontSize={20}
-                style={[
-                  styles.title,
-                  {marginHorizontal: _cancelButtonConfig?.headerSize},
-                  titleStyle,
-                ]}>
+                writingType={noBoldTitle ? undefined : 'title'}
+                style={[styles.title, titleStyle]}>
                 {title}
               </Text>
             )}
             {!_cancelButtonConfig?.hide &&
               _cancelButtonConfig?.showInHeader && (
-                <Icon
-                  name="x-lg"
+                <IconTile
+                  icon="x-lg"
+                  color={Colors.secondaryColor}
+                  backgroundColor={Colors.screenBackgroundColor}
                   size={_cancelButtonConfig?.headerSize}
-                  style={styles.headerCancelButton}
-                  touchable
+                  iconSize={_cancelButtonConfig?.headerSize * 0.4}
                   onPress={_cancelButtonConfig?.onPress}
                 />
               )}
@@ -138,11 +133,7 @@ const Alert = ({
             isConfirmButtonDisplayedBottom) && (
             <View style={[styles.buttonsContainer, buttonsContainerStyle]}>
               {isCancelButtonDisplayedBottom && (
-                <Button
-                  {..._cancelButtonConfig}
-                  testID="alertCancelButton"
-                  style={styles.cancelButton}
-                />
+                <Button {..._cancelButtonConfig} testID="alertCancelButton" />
               )}
               {isConfirmButtonDisplayedBottom && (
                 <Button {..._confirmButtonConfig} testID="alertConfirmButton" />
@@ -169,30 +160,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingRight: 20,
-    paddingVertical: 15,
+    paddingVertical: 10,
+    gap: 10,
   },
   headerContainer: {
     width: '100%',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   title: {
     textAlign: 'center',
-  },
-  headerCancelButton: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
+    flex: 1,
   },
   buttonsContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginTop: 10,
-  },
-  cancelButton: {
-    marginRight: 10,
+    gap: 5,
   },
 });
 
