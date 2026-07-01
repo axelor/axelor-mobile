@@ -18,8 +18,8 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {HorizontalRule, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme';
+import {HorizontalRule, Text} from '../../atoms';
 
 interface HorizontalRuleTextProps {
   style?: any;
@@ -43,18 +43,17 @@ const HorizontalRuleText = ({
     [_color, Colors],
   );
 
-  const renderLine = useCallback(() => {
-    return (
-      <HorizontalRule style={[styles.line, lineStyle, {borderColor: color}]} />
-    );
-  }, [color, lineStyle]);
+  const renderLine = useCallback(
+    () => <HorizontalRule style={[styles.line, lineStyle]} color={color} />,
+    [color, lineStyle],
+  );
 
   return (
     <View
       style={[styles.container, style]}
       testID="horizontalRuleTextContainer">
       {renderLine()}
-      <Text style={[styles.text, textStyle]} fontSize={14} textColor={color}>
+      <Text style={[styles.text, textStyle]} textColor={color}>
         {text}
       </Text>
       {renderLine()}
@@ -67,10 +66,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 2,
+    paddingHorizontal: 10,
+    gap: 10,
   },
   line: {
     flex: 1,
-    marginHorizontal: 10,
   },
   text: {
     textAlign: 'center',
