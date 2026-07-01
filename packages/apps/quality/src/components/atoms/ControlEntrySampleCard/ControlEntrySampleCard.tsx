@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {useTypes, useTypeHelpers, useNavigation} from '@axelor/aos-mobile-core';
 import {ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
+import {ControlEntry as ControlEntryType} from '../../../types';
 import {searchControlEntrySampleLineApi} from '../../../api';
 
 interface ControlEntrySampleCardProps {
@@ -27,18 +28,17 @@ interface ControlEntrySampleCardProps {
   controlEntrySampleId: number;
   resultSelect: number;
   samplefullName: string;
-  onPress: () => void;
 }
+
 const ControlEntrySampleCard = ({
   style,
   controlEntrySampleId,
   resultSelect,
   samplefullName,
-  onPress,
 }: ControlEntrySampleCardProps) => {
+  const navigation = useNavigation();
   const {ControlEntrySample} = useTypes();
   const {getItemColor} = useTypeHelpers();
-
   const isMounted = useRef(true);
 
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
@@ -80,14 +80,23 @@ const ControlEntrySampleCard = ({
     };
   }, [ControlEntrySample?.resultSelect, controlEntrySampleId]);
 
+  const handleSamplePress = useCallback(() => {
+    navigation.navigate('ControlEntryFormScreen', {
+      selectedMode: ControlEntryType.fillingMethod.Sample,
+      sampleId: controlEntrySampleId,
+    });
+  }, [controlEntrySampleId, navigation]);
+
   return (
     <ObjectCard
       style={style}
       borderLeftColor={borderColor}
-      onPress={onPress}
+      onPress={handleSamplePress}
       showArrow={false}
       leftContainerFlex={4}
-      upperTexts={{items: [{displayText: samplefullName, numberOfLines: null}]}}
+      upperTexts={{
+        items: [{displayText: samplefullName, numberOfLines: null as any}],
+      }}
       sideBadges={{
         items: [
           {

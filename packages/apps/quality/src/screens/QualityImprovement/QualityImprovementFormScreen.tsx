@@ -17,7 +17,6 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {Screen} from '@axelor/aos-mobile-ui';
 import {
   FormView,
   useDispatch,
@@ -32,10 +31,10 @@ import {
 } from '../../features/stockMoveSlice';
 import {fetchManufOrder} from '../../features/manufOrderSlice';
 import {fetchOperationOrder} from '../../features/operationOrderSlice';
-import {QualityImprovement as QualityImprovementType} from '../../types';
 import {fetchQIDetection} from '../../features/qiDetectionSlice';
+import {QualityImprovement as QualityImprovementType} from '../../types';
 
-const QualityImprovementFormScreen = ({route}) => {
+const QualityImprovementFormScreen = ({route}: any) => {
   const {
     qualityImprovementId: qiId,
     stockMoveId,
@@ -97,11 +96,13 @@ const QualityImprovementFormScreen = ({route}) => {
     if (stockMoveId) {
       if (stockMove?.purchaseOrderSet) {
         baseValue.purchaseOrderIdList = stockMove?.purchaseOrderSet?.map(
-          ({id}) => id,
+          ({id}: any) => id,
         );
         baseValue.detectionOrigin = QIDetection?.origin.Supplier;
       } else if (stockMove?.saleOrderSet) {
-        baseValue.saleOrderIdList = stockMove?.saleOrderSet?.map(({id}) => id);
+        baseValue.saleOrderIdList = stockMove?.saleOrderSet?.map(
+          ({id}: any) => id,
+        );
         baseValue.detectionOrigin = QIDetection?.origin.Customer;
       }
     }
@@ -146,7 +147,7 @@ const QualityImprovementFormScreen = ({route}) => {
       ...qualityImprovement,
       qiResolutionDefaults:
         qiResolution?.qiResolutionDefaultsList?.map(
-          ({id, name, qiDefault, quantity, description}, idx: number) => ({
+          ({id, name, qiDefault, quantity, description}: any, idx: number) => ({
             id: `qiDefault-${qiDefault.id}.${idx}`,
             _id: id,
             name,
@@ -174,21 +175,19 @@ const QualityImprovementFormScreen = ({route}) => {
   ]);
 
   return (
-    <Screen>
-      <FormView
-        defaultValue={_defaultValue}
-        formKey="quality_qualityImprovement"
-        defaultEditMode
-        floatingTools={false}
-        actions={[
-          {
-            key: 'navigation-button',
-            type: 'custom',
-            customComponent: <QIFormButton />,
-          },
-        ]}
-      />
-    </Screen>
+    <FormView
+      defaultValue={_defaultValue}
+      formKey="quality_qualityImprovement"
+      defaultEditMode
+      floatingTools={false}
+      actions={[
+        {
+          key: 'navigation-button',
+          type: 'custom',
+          customComponent: <QIFormButton />,
+        },
+      ]}
+    />
   );
 };
 

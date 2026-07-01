@@ -45,7 +45,7 @@ describe('HorizontalRuleText Component', () => {
     const lines = getAllByTestId('horizontalRule');
     expect(lines.length).toBe(2);
     lines.forEach(line => {
-      expect(line).toHaveStyle({borderColor: defaultColor});
+      expect(line).toHaveStyle({borderBottomColor: defaultColor});
     });
   });
 
@@ -56,7 +56,7 @@ describe('HorizontalRuleText Component', () => {
 
     expect(getByText(props.text)).toHaveStyle({color: props.color});
     getAllByTestId('horizontalRule').forEach(line => {
-      expect(line).toHaveStyle({borderColor: props.color});
+      expect(line).toHaveStyle({borderBottomColor: props.color});
     });
   });
 

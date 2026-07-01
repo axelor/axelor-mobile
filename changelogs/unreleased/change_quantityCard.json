@@ -1,0 +1,5 @@
+{
+  "title": "QuantityCard: redesign with a horizontal rule separator and an isFormWrapper option to render without a card",
+  "type": "refactor",
+  "packages": "ui"
+}

@@ -1,0 +1,5 @@
+{
+  "title": "ViewAllEditList: redesign the lines with icon tile actions and add an isFormWrapper option",
+  "type": "refactor",
+  "packages": "ui"
+}

@@ -18,7 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ThemeColors, useThemeColor} from '../../../theme';
+import {useThemeColor} from '../../../theme';
+import {getCommonStyles} from '../../../utils';
 import {Card, Icon, Text} from '../../atoms';
 
 interface ViewAllContainerProps {
@@ -32,6 +33,7 @@ interface ViewAllContainerProps {
   onViewPress: () => void;
   renderFirstTwoItems?: (item: any, index: number) => any;
   translator?: (key: string) => string;
+  isFormWrapper?: boolean;
 }
 
 const ViewAllContainer = ({
@@ -41,104 +43,96 @@ const ViewAllContainer = ({
   disabled = false,
   children,
   isHeaderExist = false,
-  onNewIcon = () => {},
-  onViewPress = () => {},
+  onNewIcon,
+  onViewPress,
   renderFirstTwoItems,
-  translator = null,
+  translator,
+  isFormWrapper = false,
 }: ViewAllContainerProps) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
+  const Container = useMemo(
+    () => (isFormWrapper ? View : Card),
+    [isFormWrapper],
+  );
 
   return (
-    <Card style={[styles.container, style]}>
+    <Container
+      style={[
+        isFormWrapper ? commonStyles.filter : undefined,
+        styles.container,
+        style,
+      ]}>
       {isHeaderExist && (
         <View style={styles.headLineMove} testID="viewAllContainerHeader">
-          <Text>
-            {translator == null ? 'Content' : translator('Base_Content')}
-          </Text>
+          <Text>{translator?.('Base_Content') ?? 'Content'}</Text>
           <Icon
             name="plus-lg"
             color={Colors.primaryColor.background}
-            size={24}
-            touchable={true}
+            size={18}
+            touchable
             onPress={onNewIcon}
           />
         </View>
       )}
       {title && <Text style={styles.title}>{title}</Text>}
       <View style={styles.cardContainer}>
-        {data[0] != null && renderFirstTwoItems(data[0], 0)}
-        {data[1] != null && renderFirstTwoItems(data[1], 1)}
+        {data?.[0] != null && renderFirstTwoItems?.(data[0], 0)}
+        {data?.[1] != null && renderFirstTwoItems?.(data[1], 1)}
         {children}
       </View>
       {!disabled && (
         <TouchableOpacity
           onPress={onViewPress}
           activeOpacity={0.9}
+          style={styles.iconContainer}
           testID="viewAllContainerButton">
-          <View style={styles.iconContainer}>
-            <Text style={styles.txtDetails}>
-              {translator == null ? 'View all' : translator('Base_ViewAll')}
-            </Text>
-            <Icon
-              name="chevron-right"
-              color={Colors.secondaryColor.background_light}
-              size={20}
-            />
-          </View>
+          <Text>{translator?.('Base_ViewAll') ?? 'View all'}</Text>
+          <Icon name="chevron-right" color={Colors.secondaryColor.background} />
         </TouchableOpacity>
       )}
-    </Card>
+    </Container>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    container: {
-      paddingVertical: '2%',
-      paddingHorizontal: '3%',
-      paddingRight: 16,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 12,
-      marginVertical: 4,
-    },
-    headLineMove: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginHorizontal: 1,
-      marginVertical: 2,
-      width: '100%',
-    },
-    title: {
-      alignSelf: 'flex-start',
-      fontSize: 14,
-      marginHorizontal: 8,
-      marginBottom: 0,
-    },
-    cardContainer: {
-      marginBottom: 2,
-      width: '100%',
-    },
-    iconContainer: {
-      width: '100%',
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      alignContent: 'center',
-      marginBottom: 2,
-      elevation: 3,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
-    },
-    txtDetails: {
-      fontSize: 14,
-      marginHorizontal: 15,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    paddingRight: 12,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 12,
+    marginVertical: 4,
+    gap: 3,
+  },
+  headLineMove: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 1,
+    marginVertical: 2,
+    width: '100%',
+  },
+  title: {
+    alignSelf: 'flex-start',
+    fontSize: 14,
+    marginHorizontal: 8,
+    marginBottom: 0,
+  },
+  cardContainer: {
+    width: '100%',
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    gap: 5,
+  },
+});
 
 export default ViewAllContainer;

@@ -16,42 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
-import {
-  ChipSelect,
-  Screen,
-  ScrollList,
-  ToggleButton,
-} from '@axelor/aos-mobile-ui';
+import React, {useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {ChipSelect, Screen, ToggleButton} from '@axelor/aos-mobile-ui';
 import {
   DateInput,
-  FilterContainer,
-  useActiveFilter,
-  useDispatch,
   useSelector,
-  useTranslator,
   useTypes,
   useTypeHelpers,
+  SearchListView,
 } from '@axelor/aos-mobile-core';
 import {searchControlEntry} from '../../features/controlEntrySlice';
 import {ControlEntryCard} from '../../components';
 
-const ControlEntryListScreen = ({navigation, route}) => {
+const ControlEntryListScreen = ({navigation, route}: any) => {
   const {relatedToSelect, relatedToSelectId} = route?.params ?? {};
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
   const {ControlEntry} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
-  const {activeFilter} = useActiveFilter();
 
   const {userId} = useSelector(state => state.auth);
   const {controlEntryList, loadingControlEntryList, moreLoading, isListEnd} =
     useSelector(state => state.controlEntry);
 
-  const [isInspectorFilter, setIsInspectorFilter] = useState(false);
-  const [dateFilter, setDateFilter] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [isInspectorFilter, setIsInspectorFilter] = useState<boolean>(true);
+  const [dateFilter, setDateFilter] = useState<Date | undefined>();
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const statusListItems = useMemo(
     () => getSelectionItems(ControlEntry?.statusSelect, selectedStatus),
@@ -64,12 +53,10 @@ const ControlEntryListScreen = ({navigation, route}) => {
       userId,
       date: dateFilter,
       selectedStatus,
-      filterDomain: activeFilter,
       relatedToSelect,
       relatedToSelectId,
     }),
     [
-      activeFilter,
       dateFilter,
       isInspectorFilter,
       relatedToSelect,
@@ -79,25 +66,25 @@ const ControlEntryListScreen = ({navigation, route}) => {
     ],
   );
 
-  const fetchControlEntryAPI = useCallback(
-    (page = 0) => {
-      dispatch((searchControlEntry as any)({page, ...sliceFunctionData}));
-    },
-    [dispatch, sliceFunctionData],
-  );
-
   return (
     <Screen removeSpaceOnTop={true}>
-      <FilterContainer
+      <SearchListView
         expandableFilter={false}
-        fixedItems={
+        list={controlEntryList}
+        loading={loadingControlEntryList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={searchControlEntry}
+        sliceFunctionData={sliceFunctionData}
+        displaySearchBar={false}
+        topFixedItems={
           <View style={styles.headerContainer}>
             <ToggleButton
               isActive={isInspectorFilter}
               onPress={() => setIsInspectorFilter(current => !current)}
               buttonConfig={{
                 iconName: 'person-fill',
-                width: '10%',
+                width: 30,
                 style: styles.toggleButton,
               }}
             />
@@ -114,15 +101,10 @@ const ControlEntryListScreen = ({navigation, route}) => {
           <ChipSelect
             mode="multi"
             selectionItems={statusListItems}
-            width={Dimensions.get('window').width * 0.25}
             onChangeValue={setSelectedStatus}
           />
         }
-      />
-      <ScrollList
-        loadingList={loadingControlEntryList}
-        data={controlEntryList}
-        renderItem={({item}) => (
+        renderListItem={({item}) => (
           <ControlEntryCard
             sampleCount={item.sampleCount}
             entryDateTime={item.entryDateTime}
@@ -136,10 +118,6 @@ const ControlEntryListScreen = ({navigation, route}) => {
             }}
           />
         )}
-        fetchData={fetchControlEntryAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );
@@ -148,16 +126,16 @@ const ControlEntryListScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignSelf: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 5,
   },
   toggleButton: {
     height: 40,
   },
   dateInput: {
-    width: '85%',
+    flex: 1,
   },
 });
 

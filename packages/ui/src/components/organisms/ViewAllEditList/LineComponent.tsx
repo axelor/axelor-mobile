@@ -18,8 +18,9 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme';
+import {IconTile} from '../../molecules';
+import {Text} from '../../atoms';
 import {Line} from './ViewAllEditList';
 
 interface LineComponentProps {
@@ -42,32 +43,31 @@ const LineComponent = ({
       <View style={styles.line}>
         <Text
           style={styles.productName}
-          writingType={isSelected ? 'title' : null}
-          textColor={isSelected ? Colors.secondaryColor.background : null}
-          fontSize={16}>
+          writingType={isSelected ? 'title' : undefined}
+          fontSize={12}
+          textColor={isSelected ? Colors.secondaryColor.background : undefined}>
           {line.name}
         </Text>
         <Text
-          style={styles.productQty}
-          writingType={isSelected ? 'title' : null}
-          textColor={isSelected ? Colors.secondaryColor.background : null}
-          fontSize={16}>
+          writingType={isSelected ? 'title' : undefined}
+          fontSize={12}
+          textColor={isSelected ? Colors.secondaryColor.background : undefined}>
           {line.qty} {line.unitName}
         </Text>
       </View>
-      {handleEditLine && (
-        <Icon
-          name="pencil-fill"
-          size={16}
-          touchable={!isSelected}
-          color={isSelected ? Colors.secondaryColor.background : null}
+      {!isSelected && handleEditLine && (
+        <IconTile
+          size={25}
+          iconSize={12}
+          icon="pencil-fill"
           onPress={() => handleEditLine(line)}
         />
       )}
-      <Icon
-        name="x-lg"
-        size={20}
-        touchable
+      <IconTile
+        size={25}
+        iconSize={12}
+        icon="x-lg"
+        color={Colors.errorColor}
         onPress={() => handleDeleteLine(line.id)}
       />
     </View>
@@ -87,9 +87,6 @@ const styles = StyleSheet.create({
   },
   productName: {
     flex: 1,
-  },
-  productQty: {
-    maxWidth: '25%',
   },
 });
 

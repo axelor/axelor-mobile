@@ -18,12 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Button,
-  checkNullString,
-  Icon,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Button, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface NavigationButtonProps {
   style?: any;
@@ -44,16 +39,14 @@ const NavigationButton = ({
 }: NavigationButtonProps) => {
   const Colors = useThemeColor();
 
-  const positionStyle = useMemo(
-    () => ({[position]: !checkNullString(title) ? '10%' : '15%'}),
-    [position, title],
-  );
+  const positionStyle = useMemo(() => ({[position]: '10%'}), [position]);
 
   return (
     <View style={[styles.buttonContainer, style]}>
       <Button
         title={title}
         onPress={onPress}
+        width="100%"
         color={Colors.priorityColor}
         disabled={disabled}
         iconName={icon}
@@ -68,7 +61,7 @@ const NavigationButton = ({
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: '45%',
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

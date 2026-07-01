@@ -1,0 +1,5 @@
+{
+  "title": "HorizontalRuleText: restyle with gap-based spacing and pass the color directly to the rules",
+  "type": "refactor",
+  "packages": "ui"
+}
