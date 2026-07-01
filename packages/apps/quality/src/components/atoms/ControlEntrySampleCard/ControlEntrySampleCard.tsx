@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
-import {BorderBar, Card, ProgressBar, Text} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {useTypes, useTypeHelpers, useNavigation} from '@axelor/aos-mobile-core';
+import {ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
+import {ControlEntry as ControlEntryType} from '../../../types';
 import {searchControlEntrySampleLineApi} from '../../../api';
 
 interface ControlEntrySampleCardProps {
@@ -27,18 +28,17 @@ interface ControlEntrySampleCardProps {
   controlEntrySampleId: number;
   resultSelect: number;
   samplefullName: string;
-  onPress: () => void;
 }
+
 const ControlEntrySampleCard = ({
   style,
   controlEntrySampleId,
   resultSelect,
   samplefullName,
-  onPress,
 }: ControlEntrySampleCardProps) => {
+  const navigation = useNavigation();
   const {ControlEntrySample} = useTypes();
   const {getItemColor} = useTypeHelpers();
-
   const isMounted = useRef(true);
 
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
@@ -80,51 +80,43 @@ const ControlEntrySampleCard = ({
     };
   }, [ControlEntrySample?.resultSelect, controlEntrySampleId]);
 
+  const handleSamplePress = useCallback(() => {
+    navigation.navigate('ControlEntryFormScreen', {
+      selectedMode: ControlEntryType.fillingMethod.Sample,
+      sampleId: controlEntrySampleId,
+    });
+  }, [controlEntrySampleId, navigation]);
+
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, style]}>
-        <BorderBar style={styles.border} color={borderColor} />
-        <View style={styles.content}>
-          <Text>{samplefullName}</Text>
-          <ProgressBar
-            style={styles.progressBar}
-            value={numberSampleFilled}
-            showPercent={false}
-            height={15}
-            styleTxt={styles.textProgressBar}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      style={style}
+      onPress={handleSamplePress}
+      showArrow={false}
+      borderLeftColor={borderColor}
+      leftContainerFlex={4}
+      upperTexts={{items: [{displayText: samplefullName, isTitle: true}]}}
+      sideBadges={{
+        items: [
+          {
+            customComponent: (
+              <ProgressBar
+                styleTxt={styles.textProgressBar}
+                value={numberSampleFilled}
+                showPercent={false}
+                height={15}
+              />
+            ),
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 12,
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    marginVertical: 5,
-  },
-  border: {
-    marginVertical: 6,
-    marginRight: 13,
-  },
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  progressBar: {
-    borderRadius: 20,
-    width: '40%',
-  },
   textProgressBar: {
     display: 'none',
   },
 });
+
 export default ControlEntrySampleCard;

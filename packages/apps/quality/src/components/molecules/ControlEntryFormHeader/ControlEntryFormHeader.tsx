@@ -48,7 +48,7 @@ const ControlEntryFormHeader = ({
         <ProgressBar
           total={nbCategories}
           value={progressData.topProgressBar}
-          style={[styles.progressBar, styles.margin]}
+          style={styles.progressBar}
           showPercent={false}
         />
       </View>
@@ -68,17 +68,17 @@ const ControlEntryFormHeader = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
+    width: '90%',
+    alignSelf: 'center',
+    gap: 4,
   },
   progressContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 5,
   },
   progressBar: {
-    width: '90%',
-  },
-  margin: {
-    marginVertical: '2%',
+    flex: 1,
   },
 });
 

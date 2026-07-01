@@ -26,7 +26,7 @@ interface QIStepperProps {
   objectState?: any;
 }
 
-const QIStepper = ({defaultValue, objectState}: QIStepperProps) => {
+const QIStepper = ({defaultValue = 0, objectState}: QIStepperProps) => {
   const I18n = useTranslator();
 
   const stepsState: StepState[] = useMemo(
