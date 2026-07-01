@@ -20,6 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Svg, Circle} from 'react-native-svg';
 import {useThemeColor} from '../../../theme';
+import {addOpacityToHex} from '../../../utils';
 import {Text} from '../../atoms';
 
 interface ProgressCircleProps {
@@ -33,8 +34,8 @@ interface ProgressCircleProps {
 }
 
 const ProgressCircle = ({
-  circleSize = 80,
-  strokeWidth = 4,
+  circleSize = 70,
+  strokeWidth = 5,
   isError = false,
   progress,
   innerText,
@@ -54,13 +55,18 @@ const ProgressCircle = ({
     };
   }, [circleSize, progress, strokeWidth]);
 
+  const color = useMemo(
+    () => (isError ? Colors.errorColor : Colors.successColor)?.background,
+    [Colors.errorColor, Colors.successColor, isError],
+  );
+
   return (
     <Svg width={circleSize} height={circleSize}>
       <Circle
         cx={circleSize / 2}
         cy={circleSize / 2}
         r={radius}
-        stroke={Colors.secondaryColor.background_light}
+        stroke={addOpacityToHex(color, 0.2)}
         strokeWidth={strokeWidth}
         fill="none"
         testID="internalCircle"
@@ -69,11 +75,7 @@ const ProgressCircle = ({
         cx={circleSize / 2}
         cy={circleSize / 2}
         r={radius}
-        stroke={
-          isError
-            ? Colors.errorColor.background
-            : Colors.successColor.background
-        }
+        stroke={color}
         strokeLinecap="round"
         strokeWidth={strokeWidth}
         strokeDasharray={`${circumference} ${circumference}`}
@@ -84,7 +86,11 @@ const ProgressCircle = ({
         testID="progressCircle"
       />
       <View style={styles.textContainer}>
-        <Text writingType={writingType} style={textStyle} adjustsFontSizeToFit>
+        <Text
+          writingType={writingType}
+          style={[styles.innerText, textStyle]}
+          numberOfLines={1}
+          adjustsFontSizeToFit>
           {innerText}
         </Text>
       </View>
@@ -94,9 +100,13 @@ const ProgressCircle = ({
 
 const styles = StyleSheet.create({
   textContainer: {
-    height: '100%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 5,
+  },
+  innerText: {
+    textAlign: 'center',
   },
 });
 

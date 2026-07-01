@@ -32,9 +32,9 @@ type SetterFunction<T> = (value: T | ((_current: T) => T)) => void;
 
 interface QualityImprovementFilterProps {
   isAssignedToMe: boolean;
-  setIsAssignedToMe?: SetterFunction<boolean>;
-  setSelectedStatus?: SetterFunction<any[]>;
-  setSelectedGravity?: SetterFunction<any[]>;
+  setIsAssignedToMe: SetterFunction<boolean>;
+  setSelectedStatus: SetterFunction<any[]>;
+  setSelectedGravity: SetterFunction<any[]>;
 }
 
 const QualityImprovementFilter = ({
@@ -51,7 +51,7 @@ const QualityImprovementFilter = ({
   const {qiStatusList} = useSelector(state => state.quality_qualityImprovement);
 
   useEffect(() => {
-    dispatch((fetchQualityImprovementStatus as any)());
+    dispatch(fetchQualityImprovementStatus());
   }, [dispatch]);
 
   const statusList = useMemo(

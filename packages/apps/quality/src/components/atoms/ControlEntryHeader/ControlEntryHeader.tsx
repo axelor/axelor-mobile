@@ -35,9 +35,20 @@ const ControlEntryHeader = ({}) => {
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
 
   return (
-    <View>
-      <View style={styles.row}>
+    <View style={styles.container}>
+      <View style={[styles.columnWrapper, styles.mainPanel]}>
         <Text writingType="title">{controlEntry.name}</Text>
+        <Text>
+          {I18n.t('Quality_SampleCountValue', {
+            sampleCount: controlEntry.sampleCount,
+          })}
+        </Text>
+        <Text>{`${I18n.t('Quality_ControlPlan')} : ${
+          controlEntry.controlPlan?.name
+        }`}</Text>
+      </View>
+      <View style={[styles.columnWrapper, styles.sidePanel]}>
+        <DateDisplay date={controlEntry.entryDateTime} size={15} />
         <Badge
           color={getItemColor(
             ControlEntry?.statusSelect,
@@ -49,24 +60,25 @@ const ControlEntryHeader = ({}) => {
           )}
         />
       </View>
-      <View style={styles.row}>
-        <Text>{`${I18n.t('Quality_SampleCount')} : ${
-          controlEntry.sampleCount
-        }`}</Text>
-        <DateDisplay date={controlEntry.entryDateTime} />
-      </View>
-      <Text>{`${I18n.t('Quality_ControlPlan')} : ${
-        controlEntry.controlPlan?.name
-      }`}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  row: {
-    justifyContent: 'space-between',
+  container: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    gap: 5,
+  },
+  columnWrapper: {
+    flexDirection: 'column',
+    gap: 2,
+  },
+  mainPanel: {
+    flex: 1,
+  },
+  sidePanel: {
+    alignItems: 'flex-end',
   },
 });
 
