@@ -17,7 +17,6 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {Screen} from '@axelor/aos-mobile-ui';
 import {
   FormView,
   useDispatch,
@@ -32,8 +31,8 @@ import {
 } from '../../features/stockMoveSlice';
 import {fetchManufOrder} from '../../features/manufOrderSlice';
 import {fetchOperationOrder} from '../../features/operationOrderSlice';
-import {QualityImprovement as QualityImprovementType} from '../../types';
 import {fetchQIDetection} from '../../features/qiDetectionSlice';
+import {QualityImprovement as QualityImprovementType} from '../../types';
 
 const QualityImprovementFormScreen = ({route}: any) => {
   const {
@@ -180,21 +179,19 @@ const QualityImprovementFormScreen = ({route}: any) => {
   ]);
 
   return (
-    <Screen>
-      <FormView
-        defaultValue={_defaultValue}
-        formKey="quality_qualityImprovement"
-        defaultEditMode
-        floatingTools={false}
-        actions={[
-          {
-            key: 'navigation-button',
-            type: 'custom',
-            customComponent: <QIFormButton />,
-          },
-        ]}
-      />
-    </Screen>
+    <FormView
+      defaultValue={_defaultValue}
+      formKey="quality_qualityImprovement"
+      defaultEditMode
+      floatingTools={false}
+      actions={[
+        {
+          key: 'navigation-button',
+          type: 'custom',
+          customComponent: <QIFormButton />,
+        },
+      ]}
+    />
   );
 };
 

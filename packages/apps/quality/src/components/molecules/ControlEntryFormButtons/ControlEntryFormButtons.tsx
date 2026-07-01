@@ -37,7 +37,7 @@ interface ControlEntryFormButtonsProps {
   isLastItem: boolean;
   handleNext: () => void;
   handlePrevious: () => void;
-  onPress: () => any;
+  onPress?: () => any;
   checkConformity?: boolean;
 }
 
@@ -57,10 +57,8 @@ const ControlEntryFormButtons = ({
   const {ControlEntry, ControlEntrySample} = useTypes();
   const {getItemTitle} = useTypeHelpers();
 
-  const {controlEntry} = useSelector((state: any) => state.controlEntry);
-  const {sampleLine} = useSelector(
-    (state: any) => state.controlEntrySampleLine,
-  );
+  const {controlEntry} = useSelector(state => state.controlEntry);
+  const {sampleLine} = useSelector(state => state.controlEntrySampleLine);
 
   const isConformityButton = useMemo(
     () =>
@@ -104,31 +102,31 @@ const ControlEntryFormButtons = ({
 
   return (
     <View style={styles.container}>
-      <NavigationButton
-        style={styles.navigationButton}
-        position="left"
-        onPress={() => {
-          handleNotControlled();
-          handlePrevious();
-        }}
-        icon={isFirstItem ? categoryIcon : subCategoryIcon}
-        disabled={!canPrevious}
-      />
-      <NavigationButton
-        style={styles.navigationButton}
-        position="right"
-        onPress={() => {
-          handleNotControlled();
-          handleNext();
-        }}
-        icon={isLastItem ? categoryIcon : subCategoryIcon}
-        disabled={!canNext}
-      />
+      <View style={styles.navigationContainer}>
+        <NavigationButton
+          position="left"
+          onPress={() => {
+            handleNotControlled();
+            handlePrevious();
+          }}
+          icon={isFirstItem ? categoryIcon : subCategoryIcon}
+          disabled={!canPrevious}
+        />
+        <NavigationButton
+          position="right"
+          onPress={() => {
+            handleNotControlled();
+            handleNext();
+          }}
+          icon={isLastItem ? categoryIcon : subCategoryIcon}
+          disabled={!canNext}
+        />
+      </View>
       {isConformityButton && (
         <Button
-          style={styles.validationButton}
           onPress={onPress}
           iconName="check-lg"
+          width={50}
           color={Colors.successColor}
         />
       )}
@@ -144,11 +142,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 5,
   },
-  navigationButton: {
+  navigationContainer: {
+    flexDirection: 'row',
     flex: 1,
-  },
-  validationButton: {
-    flex: 2,
+    gap: 5,
   },
 });
 

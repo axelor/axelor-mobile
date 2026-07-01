@@ -134,6 +134,7 @@ const DefectViewAllListAux = ({
         currentLineId={editId!}
         handleEditLine={handleEditLine}
         translator={I18n.t}
+        isFormWrapper
       />
       <HorizontalRuleText
         text={I18n.t('Quality_NewDefault')}
@@ -153,12 +154,13 @@ const DefectViewAllListAux = ({
         onValueChange={setQty}
         editable={!readonly}
         isBigButton
+        isFormWrapper
         translator={I18n.t}
       />
       <FormHtmlInput
         title={I18n.t('Base_Description')}
         defaultValue={description}
-        onChange={setDescription}
+        onChange={setDescription as (_v?: string) => void}
         readonly={readonly}
       />
       <DefectFilesManager

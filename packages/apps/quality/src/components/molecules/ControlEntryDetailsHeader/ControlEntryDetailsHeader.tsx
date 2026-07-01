@@ -25,11 +25,12 @@ import {ControlEntryHeader} from '../../atoms';
 import {FillingMethodAlert} from '../../molecules';
 
 const ControlEntryDetailsHeader = ({}) => {
-  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
-  const [showAlert, setShowAlert] = useState(false);
   const {ControlEntrySample} = useTypes();
 
-  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const {controlEntry} = useSelector(state => state.controlEntry);
 
   useEffect(() => {
     searchControlEntrySampleApi({controlEntryId: controlEntry?.id})
@@ -58,14 +59,14 @@ const ControlEntryDetailsHeader = ({}) => {
         <ProgressBar
           value={numberSampleFilled}
           style={styles.progressBar}
-          height={38}
+          height={30}
         />
         <Button
-          isNeutralBackground={true}
           iconName="clipboard2-fill"
           width="10%"
           style={styles.button}
           onPress={() => setShowAlert(true)}
+          iconSize={15}
         />
       </View>
       <FillingMethodAlert visible={showAlert} setVisible={setShowAlert} />
@@ -75,19 +76,20 @@ const ControlEntryDetailsHeader = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
+    width: '90%',
+    alignSelf: 'center',
   },
   row: {
-    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 5,
   },
   progressBar: {
-    width: '88%',
+    flex: 1,
   },
   button: {
-    height: 40,
-    borderWidth: 1,
+    height: 30,
+    borderWidth: 0.5,
   },
 });
 

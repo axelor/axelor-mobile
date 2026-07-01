@@ -31,22 +31,24 @@ const ControlEntrySampleLineHeader = ({}) => {
   const {ControlEntrySample} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const {sampleLine} = useSelector(
-    (state: any) => state.controlEntrySampleLine,
-  );
+  const {sampleLine} = useSelector(state => state.controlEntrySampleLine);
 
-  if (sampleLine?.id == null) {
-    return null;
-  }
+  if (sampleLine?.id == null) return null;
 
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <Text style={styles.sampleText}>{`${I18n.t('Quality_Sample')} : ${
+      <View style={[styles.columnWrapper, styles.mainPanel]}>
+        <Text>{`${I18n.t('Quality_Sample')} : ${
           sampleLine.controlEntrySample?.fullName
         }`}</Text>
+        <Text>{`${I18n.t('Quality_Characteristic')} : ${
+          sampleLine.controlPlanLine?.name != null
+            ? sampleLine.controlPlanLine?.name
+            : sampleLine.controlPlanLine?.characteristic?.name
+        }`}</Text>
+      </View>
+      <View style={styles.columnWrapper}>
         <Badge
-          style={styles.badge}
           color={getItemColor(
             ControlEntrySample?.resultSelect,
             sampleLine.resultSelect,
@@ -57,31 +59,21 @@ const ControlEntrySampleLineHeader = ({}) => {
           )}
         />
       </View>
-      <Text>{`${I18n.t('Quality_Characteristic')} : ${
-        sampleLine.controlPlanLine?.name != null
-          ? sampleLine.controlPlanLine?.name
-          : sampleLine.controlPlanLine?.characteristic?.name
-      }`}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 5,
-  },
-  row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 5,
   },
-  sampleText: {
+  columnWrapper: {
+    flexDirection: 'column',
+    gap: 2,
+  },
+  mainPanel: {
     flex: 1,
-  },
-  badge: {
-    width: null,
-    margin: 0,
-    marginLeft: 10,
-    paddingHorizontal: 10,
   },
 });
 

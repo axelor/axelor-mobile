@@ -18,18 +18,18 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
-import {Card, Icon, Text} from '../../atoms';
-import {Increment} from '../../molecules';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {useDigitFormat} from '../../../hooks/use-digit-format';
+import {getCommonStyles} from '../../../utils';
+import {useDigitFormat} from '../../../hooks';
 import {useThemeColor} from '../../../theme';
+import {Card, HorizontalRule, Icon, Text} from '../../atoms';
+import {Increment} from '../../molecules';
 
 interface QuantityCardProps {
   style?: any;
   children?: any;
   labelQty: string;
   defaultValue: number;
-  onValueChange: (value: number) => void;
+  onValueChange: (_v?: any) => void;
   editable: boolean;
   actionQty?: boolean;
   iconName?: string;
@@ -45,6 +45,7 @@ interface QuantityCardProps {
   maxValue?: number;
   keyboardType?: KeyboardTypeOptions;
   scale?: number;
+  isFormWrapper?: boolean;
 }
 
 const QuantityCard = ({
@@ -56,9 +57,10 @@ const QuantityCard = ({
   editable,
   actionQty = false,
   iconName = 'pencil-fill',
-  onPressActionQty = () => {},
+  onPressActionQty,
   isBigButton = false,
   translator,
+  isFormWrapper = false,
   ...incrementProps
 }: QuantityCardProps) => {
   const Colors = useThemeColor();
@@ -72,111 +74,98 @@ const QuantityCard = ({
   );
 
   const renderIncrement = useCallback(() => {
-    return (
-      <Increment
-        {...incrementProps}
-        value={_defaultValue}
-        decimalSpacer={translator('Base_DecimalSpacer')}
-        thousandSpacer={translator('Base_ThousandSpacer')}
-        onValueChange={onValueChange}
-        isBigButton={isBigButton}
-      />
-    );
-  }, [_defaultValue, incrementProps, isBigButton, onValueChange, translator]);
+    if (editable)
+      return (
+        <Increment
+          {...incrementProps}
+          value={_defaultValue}
+          decimalSpacer={translator('Base_DecimalSpacer')}
+          thousandSpacer={translator('Base_ThousandSpacer')}
+          onValueChange={onValueChange}
+          isBigButton={isBigButton}
+          inputStyle={styles.incrementInput}
+        />
+      );
 
-  if (children == null || children.length === 0) {
-    return (
-      <Card style={[styles.noChildrenContainer, style]}>
-        <Text style={styles.noChildrenTextField}>{labelQty}</Text>
-        {editable ? (
-          renderIncrement()
-        ) : (
-          <Text style={styles.noChildrenTextValue}>{_defaultValue}</Text>
-        )}
-      </Card>
-    );
-  }
+    return <Text writingType="important">{_defaultValue}</Text>;
+  }, [
+    _defaultValue,
+    editable,
+    incrementProps,
+    isBigButton,
+    onValueChange,
+    translator,
+  ]);
+
+  const Container = useMemo(
+    () => (isFormWrapper ? View : Card),
+    [isFormWrapper],
+  );
 
   return (
-    <Card style={[commonStyles.filter, styles.container]}>
-      <View style={styles.container_up}>
-        {actionQty ? (
-          <View style={styles.actionContainer}>
-            <View style={styles.childrenContainer}>{children}</View>
-            <Icon
-              name={iconName}
-              size={17}
-              touchable={true}
-              onPress={onPressActionQty}
-            />
-          </View>
-        ) : (
-          <View>{children}</View>
-        )}
+    <Container
+      style={[
+        isFormWrapper ? commonStyles.filter : undefined,
+        styles.container,
+        style,
+      ]}>
+      {children != null && (
+        <View style={styles.upperContainer}>
+          {actionQty ? (
+            <View style={styles.actionContainer}>
+              <View style={styles.childrenContainer}>{children}</View>
+              <Icon name={iconName} touchable onPress={onPressActionQty} />
+            </View>
+          ) : (
+            <View>{children}</View>
+          )}
+          <HorizontalRule
+            style={styles.border}
+            color={Colors.secondaryColor.background_light}
+          />
+        </View>
+      )}
+      <View style={styles.incrementContainer}>
+        <Text>{labelQty}</Text>
+        {renderIncrement()}
       </View>
-      <View style={styles.container_down}>
-        <Text style={styles.textField}>{labelQty}</Text>
-        {editable ? (
-          renderIncrement()
-        ) : (
-          <Text style={styles.textValue}>{_defaultValue}</Text>
-        )}
-      </View>
-    </Card>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  noChildrenContainer: {
-    flexDirection: 'column',
-    marginHorizontal: 16,
-    marginBottom: '2%',
-    alignItems: 'center',
-  },
-  noChildrenTextField: {
-    fontSize: 16,
-  },
-  noChildrenTextValue: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   container: {
     flexDirection: 'column',
-    marginHorizontal: 18,
-    paddingVertical: 16,
+    alignItems: 'center',
+    paddingVertical: 8,
     paddingRight: 16,
     paddingLeft: 16,
     width: '90%',
     alignSelf: 'center',
   },
-  container_up: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 0.5,
-    flexDirection: 'column',
+  upperContainer: {
     width: '100%',
-    paddingBottom: '3%',
     alignSelf: 'center',
+    flexDirection: 'column',
   },
   actionContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'flex-start',
+    gap: 5,
   },
   childrenContainer: {
-    flexDirection: 'column',
+    flex: 1,
   },
-  container_down: {
-    paddingTop: '1%',
+  border: {
+    width: '80%',
+    alignSelf: 'center',
+    marginVertical: 5,
+  },
+  incrementContainer: {
     alignItems: 'center',
   },
-  textField: {
-    fontSize: 16,
-    paddingTop: '3%',
-  },
-  textValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingTop: '3%',
+  incrementInput: {
+    fontSize: 15,
   },
 });
 

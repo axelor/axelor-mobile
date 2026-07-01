@@ -56,7 +56,7 @@ const NumberBubble = ({
 
   return (
     <View style={[styles.bubble, style]} testID="numberBubbleContainer">
-      <Text textColor={_color.foreground} fontSize={size * 0.55}>
+      <Text textColor={_color.foreground} adjustsFontSizeToFit>
         {number}
       </Text>
     </View>
@@ -74,7 +74,7 @@ const getStyles = (color: Color, size: number) =>
       backgroundColor: color.background_light,
       borderColor: color.background,
       borderRadius: size,
-      borderWidth: 2,
+      borderWidth: 1,
     },
   });
 

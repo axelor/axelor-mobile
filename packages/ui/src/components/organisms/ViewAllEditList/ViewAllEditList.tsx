@@ -35,10 +35,11 @@ export interface Line {
 interface ViewAllEditListProps {
   title: string;
   lines: Line[];
-  currentLineId: number;
+  currentLineId?: number;
   setLines: (lines: Line[]) => void;
   handleEditLine?: (line: Line) => void;
   translator: (key: string) => string;
+  isFormWrapper?: boolean;
 }
 
 const ViewAllEditList = ({
@@ -48,6 +49,7 @@ const ViewAllEditList = ({
   setLines,
   handleEditLine,
   translator,
+  isFormWrapper = false,
 }: ViewAllEditListProps) => {
   const Colors = useThemeColor();
 
@@ -59,29 +61,28 @@ const ViewAllEditList = ({
         style={styles.container}
         disabled={lines?.length === 0}
         onViewPress={() => setIsAlertVisible(true)}
-        translator={translator}>
+        translator={translator}
+        isFormWrapper={isFormWrapper}>
         <View style={styles.title}>
           <Text>{title}</Text>
           <NumberBubble
-            style={styles.numberBubble}
             number={lines?.length ?? 0}
             color={Colors.primaryColor}
             isNeutralBackground
+            size={25}
           />
         </View>
-        {lines.slice(0, 3).map((line, index) => {
-          return (
-            <LineComponent
-              key={index}
-              line={line}
-              isSelected={currentLineId === line.id}
-              handleEditLine={handleEditLine}
-              handleDeleteLine={lineId =>
-                setLines(lines.filter(_line => _line.id !== lineId))
-              }
-            />
-          );
-        })}
+        {lines.slice(0, 3).map((line, index) => (
+          <LineComponent
+            key={index}
+            line={line}
+            isSelected={currentLineId === line.id}
+            handleEditLine={handleEditLine}
+            handleDeleteLine={lineId =>
+              setLines(lines.filter(_line => _line.id !== lineId))
+            }
+          />
+        ))}
       </ViewAllContainer>
       <AllLinesAlert
         title={title}
@@ -104,9 +105,7 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  numberBubble: {
-    marginLeft: 10,
+    gap: 10,
   },
 });
 

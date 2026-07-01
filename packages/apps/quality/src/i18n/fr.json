@@ -4,7 +4,7 @@
   "Quality_ControlEntry": "Relevé de contrôle",
   "Quality_QualityImprovements": "Améliorations qualité",
   "Quality_Sample": "Échantillon",
-  "Quality_SampleCount": "Nombre d'échantillons",
+  "Quality_SampleCountValue": "Nombre d'échantillons: {{sampleCount}}",
   "Quality_Characteristic": "Caractéristique",
   "Quality_Status_Draft": "Brouillon",
   "Quality_Status_InProgress": "En cours",

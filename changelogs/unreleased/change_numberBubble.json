@@ -1,0 +1,5 @@
+{
+  "title": "NumberBubble: thin the border and auto-fit the number font size",
+  "type": "refactor",
+  "packages": "ui"
+}

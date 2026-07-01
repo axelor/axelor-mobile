@@ -18,15 +18,15 @@
 
 import React, {useMemo, useState} from 'react';
 import {TouchableOpacity, View, StyleSheet} from 'react-native';
+import {getCommonStyles} from '../../../utils';
 import {useThemeColor} from '../../../theme';
-import {Card, Icon, ProgressCircle, Text} from '../../atoms';
+import {Icon, ProgressCircle, Text} from '../../atoms';
 import {Step} from './types';
 import StepList from './StepList';
 
 interface StepperProps {
   steps: Step[];
   activeStepIndex: number;
-  isCardBackground?: boolean;
   displayDropdown?: boolean;
   translator: (key: string, values?: any) => string;
 }
@@ -34,7 +34,6 @@ interface StepperProps {
 const Stepper = ({
   steps,
   activeStepIndex: _activeStepIndex,
-  isCardBackground = false,
   displayDropdown = false,
   translator,
 }: StepperProps) => {
@@ -42,41 +41,25 @@ const Stepper = ({
 
   const [isStepListVisible, setIsStepListVisible] = useState(false);
 
-  const _isCardBackground = useMemo(
-    () => isCardBackground || displayDropdown,
-    [displayDropdown, isCardBackground],
-  );
-
-  const ContainerComponent = useMemo(
-    () => (_isCardBackground ? Card : View),
-    [_isCardBackground],
-  );
-
-  const styles = useMemo(
-    () => getStyles(_isCardBackground, Colors.secondaryColor.background),
-    [Colors.secondaryColor.background, _isCardBackground],
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, false, isStepListVisible),
+    [Colors, isStepListVisible],
   );
 
   const activeStepIndex = useMemo(() => {
-    if (!_activeStepIndex || _activeStepIndex < 0) {
-      return 0;
-    }
+    if (!_activeStepIndex || _activeStepIndex < 0) return 0;
 
     const maxIdx = steps?.length ?? 0;
 
-    if (_activeStepIndex >= maxIdx) {
-      return maxIdx - 1;
-    }
+    if (_activeStepIndex >= maxIdx) return maxIdx - 1;
 
     return _activeStepIndex;
   }, [_activeStepIndex, steps?.length]);
 
-  if (!Array.isArray(steps) || steps.length === 0) {
-    return null;
-  }
+  if (!Array.isArray(steps) || steps.length === 0) return null;
 
   return (
-    <ContainerComponent style={styles.container}>
+    <View style={[commonStyles.filter, styles.container]}>
       <TouchableOpacity
         testID="stepper-dropdown"
         activeOpacity={0.9}
@@ -105,41 +88,36 @@ const Stepper = ({
             <Icon
               name={isStepListVisible ? 'chevron-up' : 'chevron-down'}
               color={Colors.secondaryColor.background}
-              style={styles.chevronIcon}
             />
           )}
         </View>
         {isStepListVisible && (
-          <StepList steps={steps} translator={translator} />
+          <StepList
+            steps={steps}
+            translator={translator}
+            activeStepIndex={activeStepIndex}
+          />
         )}
       </TouchableOpacity>
-    </ContainerComponent>
+    </View>
   );
 };
 
-const getStyles = (isBorder: boolean, borderColor: string) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      alignSelf: 'center',
-      marginVertical: 3,
-      paddingRight: null,
-      borderWidth: isBorder ? 1 : 0,
-      borderColor: borderColor,
-    },
-    fixedContainer: {
-      flexDirection: 'row',
-      gap: 15,
-    },
-    textContainer: {
-      justifyContent: 'center',
-      gap: 5,
-    },
-    chevronIcon: {
-      position: 'absolute',
-      right: 0,
-      bottom: 0,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    alignSelf: 'center',
+    paddingVertical: 5,
+  },
+  fixedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  textContainer: {
+    justifyContent: 'center',
+    flex: 1,
+    gap: 2,
+  },
+});
 
 export default Stepper;

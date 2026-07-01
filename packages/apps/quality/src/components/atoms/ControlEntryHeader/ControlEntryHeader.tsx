@@ -32,7 +32,7 @@ const ControlEntryHeader = ({}) => {
   const {ControlEntry} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+  const {controlEntry} = useSelector(state => state.controlEntry);
 
   return (
     <View>
@@ -55,11 +55,11 @@ const ControlEntryHeader = ({}) => {
         </View>
       </View>
       <Text>
-        {`${I18n.t('Quality_SampleCount')} : ${controlEntry.sampleCount}`}
+        {I18n.t('Quality_SampleCountValue', {
+          sampleCount: controlEntry.sampleCount,
+        })}
       </Text>
-      <Text>{`${I18n.t('Quality_ControlPlan')} : ${
-        controlEntry.controlPlan?.name
-      }`}</Text>
+      <Text>{`${I18n.t('Quality_ControlPlan')} : ${controlEntry.controlPlan?.name}`}</Text>
     </View>
   );
 };

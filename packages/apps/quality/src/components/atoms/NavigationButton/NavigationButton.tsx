@@ -44,6 +44,7 @@ const NavigationButton = ({
       <Button
         title={title}
         onPress={onPress}
+        width="100%"
         color={Colors.priorityColor}
         disabled={disabled}
         iconName={position === 'left' ? 'chevron-left' : icon}
@@ -56,6 +57,7 @@ const NavigationButton = ({
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

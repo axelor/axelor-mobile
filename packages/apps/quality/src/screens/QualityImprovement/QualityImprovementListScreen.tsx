@@ -40,9 +40,9 @@ const QualityImprovementListScreen = ({}) => {
     isListEndQualityImprovement,
   } = useSelector(state => state.quality_qualityImprovement);
 
-  const [isAssignedToMe, setIsAssignedToMe] = useState(true);
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [selectedGravity, setSelectedGravity] = useState([]);
+  const [isAssignedToMe, setIsAssignedToMe] = useState<boolean>(true);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [selectedGravity, setSelectedGravity] = useState<any[]>([]);
 
   const sliceFunctionData = useMemo(
     () => ({
