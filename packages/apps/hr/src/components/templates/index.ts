@@ -50,5 +50,4 @@ export {default as ProjectTaskSearchBar} from './ProjectTaskSearchBar/ProjectTas
 export {default as TimerListAlert} from './TimerListAlert/TimerListAlert';
 export {default as TimesheetFilters} from './TimesheetFilters/TimesheetFilters';
 export {default as TimesheetRefusalPopup} from './TimesheetRefusalPopup/TimesheetRefusalPopup';
-export {default as TimesheetWaitingValidationSearchBar} from './TimesheetWaitingValidationSearchBar/TimesheetWaitingValidationSearchBar';
 export {default as ToggleSwitchMode} from './ToggleSwitchMode/ToggleSwitchMode';

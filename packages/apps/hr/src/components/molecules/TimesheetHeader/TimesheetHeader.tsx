@@ -48,12 +48,15 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const {Timesheet} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
-  const [convertedPeriod, setConvertedPeriod] = useState<{
-    value: number;
-    title: string;
-  }>(null);
+  const [convertedPeriod, setConvertedPeriod] = useState<
+    | {
+        value: number;
+        title: string;
+      }
+    | undefined
+  >();
 
   const isAddButton = useMemo(
     () =>
@@ -74,15 +77,19 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
     convertPeriodTimesheet({timesheetId: timesheet.id})
       .then(res => {
         if (res?.data?.object != null) {
+          console.log(
+            'res.data.object.periodTotalConvert',
+            res.data.object.periodTotalConvert,
+          );
           setConvertedPeriod({
             value: res.data.object.periodTotalConvert,
             title: res.data.object.periodTotalConvertTitle,
           });
         } else {
-          setConvertedPeriod(null);
+          setConvertedPeriod(undefined);
         }
       })
-      .catch(() => setConvertedPeriod(null));
+      .catch(() => setConvertedPeriod(undefined));
   }, [timesheet]);
 
   return (
@@ -93,7 +100,6 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
           endDate={timesheet.toDate}
         />
         <Badge
-          style={styles.badge}
           color={getItemColor(Timesheet?.statusSelect, statusSelect)}
           title={getItemTitle(Timesheet?.statusSelect, statusSelect)}
         />
@@ -143,9 +149,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  badge: {
-    margin: 0,
   },
 });
 

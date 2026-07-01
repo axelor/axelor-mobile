@@ -18,15 +18,14 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
-  FilterContainer,
   headerActionsProvider,
-  useActiveFilter,
+  SearchListView,
   useDispatch,
   usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Screen, ScrollList, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   TimesheetCreationAlert,
   TimesheetDetailCard,
@@ -35,15 +34,13 @@ import {
 import {
   fetchTimesheet,
   fetchTimesheetToValidate,
-  updateTimesheetStatus,
 } from '../../features/timesheetSlice';
 import {Timesheet} from '../../types';
 
-const TimesheetListScreen = ({navigation}) => {
+const TimesheetListScreen = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const {activeFilter} = useActiveFilter();
   const {canCreate, readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.Timesheet',
   });
@@ -67,56 +64,23 @@ const TimesheetListScreen = ({navigation}) => {
   );
   const {user} = useSelector(state => state.user);
 
+  const sliceFunctionData = useMemo(
+    () => ({
+      user,
+      userId: user.id,
+      companyId: user.activeCompany?.id,
+    }),
+    [user],
+  );
+
   useEffect(() => {
     dispatch(
-      fetchTimesheetToValidate({
+      (fetchTimesheetToValidate as any)({
         page: 0,
-        user: user,
-        companyId: user.activeCompany?.id,
+        ...sliceFunctionData,
       }),
     );
-  }, [dispatch, user]);
-
-  const updateTimesheetStatusAPI = useCallback(
-    (timesheet, toStatus) =>
-      dispatch(
-        updateTimesheetStatus({
-          timesheetId: timesheet.id,
-          version: timesheet.version,
-          toStatus: toStatus,
-          user: user,
-        }),
-      ),
-    [dispatch, user],
-  );
-
-  const fetchTimesheetAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        fetchTimesheet({
-          userId: user.id,
-          page: page,
-          companyId: user.activeCompany?.id,
-          filterDomain: activeFilter,
-        }),
-      );
-    },
-    [activeFilter, dispatch, user.activeCompany?.id, user.id],
-  );
-
-  const fetchTimesheetToValidateAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        fetchTimesheetToValidate({
-          page: page,
-          user: user,
-          companyId: user.activeCompany?.id,
-          filterDomain: activeFilter,
-        }),
-      );
-    },
-    [activeFilter, dispatch, user],
-  );
+  }, [dispatch, sliceFunctionData]);
 
   const listToDisplay = useMemo(() => {
     if (mode === Timesheet.mode.personnal) {
@@ -125,7 +89,7 @@ const TimesheetListScreen = ({navigation}) => {
         loading: loadingMyTimesheet,
         moreLoading: moreLoadingMyTimesheet,
         isListEnd: isListEndMyTimesheet,
-        functionApi: fetchTimesheetAPI,
+        sliceFunction: fetchTimesheet,
       };
     } else {
       return {
@@ -133,7 +97,7 @@ const TimesheetListScreen = ({navigation}) => {
         loading: loadingTimesheetToValidate,
         moreLoading: moreLoadingTimesheetToValidate,
         isListEnd: isListEndTimesheetToValidate,
-        functionApi: fetchTimesheetToValidateAPI,
+        sliceFunction: fetchTimesheetToValidate,
       };
     }
   }, [
@@ -141,8 +105,6 @@ const TimesheetListScreen = ({navigation}) => {
     moreLoadingMyTimesheet,
     moreLoadingTimesheetToValidate,
     myTimesheetList,
-    fetchTimesheetAPI,
-    fetchTimesheetToValidateAPI,
     isListEndMyTimesheet,
     isListEndTimesheetToValidate,
     loadingMyTimesheet,
@@ -151,7 +113,7 @@ const TimesheetListScreen = ({navigation}) => {
   ]);
 
   const filterOnStatus = useCallback(
-    list => {
+    (list: any[]) => {
       if (!Array.isArray(list) || list.length === 0) {
         return [];
       } else {
@@ -191,41 +153,34 @@ const TimesheetListScreen = ({navigation}) => {
         },
       ],
     });
-  }, [Colors, dispatch, I18n, mobileSettings, navigation, canCreate]);
+  }, [Colors, I18n, mobileSettings, canCreate]);
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <FilterContainer
+      <SearchListView
         expandableFilter={false}
-        fixedItems={
+        topFixedItems={
           <TimesheetFilters
             onChangeStatus={setSelectedStatus}
             onChangeMode={setMode}
             mode={mode}
           />
         }
-      />
-      <ScrollList
-        loadingList={listToDisplay.loading}
-        data={filteredList}
-        renderItem={({item}) => (
+        displaySearchBar={mode === Timesheet.mode.validation}
+        searchPlaceholder={I18n.t('Hr_Employee')}
+        loading={listToDisplay.loading}
+        moreLoading={listToDisplay.moreLoading}
+        isListEnd={listToDisplay.isListEnd}
+        list={filteredList}
+        sliceFunction={listToDisplay.sliceFunction}
+        sliceFunctionData={sliceFunctionData}
+        renderListItem={({item}) => (
           <TimesheetDetailCard
             item={item}
             isValidationMode={mode === Timesheet.mode.validation}
             isActions={!readonly}
-            onPress={() =>
-              navigation.navigate('TimesheetDetailsScreen', {
-                timesheetId: item.id,
-              })
-            }
-            onSend={() => updateTimesheetStatusAPI(item, 'confirm')}
-            onValidate={() => updateTimesheetStatusAPI(item, 'validate')}
           />
         )}
-        fetchData={listToDisplay.functionApi}
-        moreLoading={listToDisplay.moreLoading}
-        isListEnd={listToDisplay.isListEnd}
-        translator={I18n.t}
       />
       <TimesheetCreationAlert
         isOpen={isCreationAlertOpen}
