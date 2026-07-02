@@ -96,9 +96,8 @@ const SupplierArrivalSearchLineContainer = ({}) => {
 
   const filterLine = useCallback(
     (item: any) =>
-      StockMoveLine.hideLineQty(item, supplierArrival) ||
-      parseFloat(item.realQty) == null ||
-      parseFloat(item.realQty) < parseFloat(item.qty),
+      StockMoveLine.getStockMoveLineStatus(item, supplierArrival) !==
+      StockMoveLine.status.Done,
     [supplierArrival],
   );
 
