@@ -127,7 +127,7 @@ export const helpdesk_formsRegister: FormConfigs = {
         titleKey: 'Helpdesk_Duration',
         type: 'string',
         widget: 'custom',
-        customComponent: DurationInput,
+        customComponent: DurationInput as any,
       },
       assignedToUser: {
         titleKey: 'Helpdesk_AssignedToUser',

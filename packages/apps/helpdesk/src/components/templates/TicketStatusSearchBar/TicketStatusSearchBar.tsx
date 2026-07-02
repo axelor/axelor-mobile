@@ -36,10 +36,10 @@ interface TicketStatusSearchBarProps {
 }
 
 const TicketStatusSearchBar = ({
-  style = null,
+  style,
   title = 'Helpdesk_Status',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
 }: TicketStatusSearchBarProps) => {
@@ -54,7 +54,7 @@ const TicketStatusSearchBar = ({
   } = useSelector((state: any) => state.ticket);
 
   const searchTicketStatusAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch((searchTicketStatus as any)({page, searchValue}));
     },
     [dispatch],
