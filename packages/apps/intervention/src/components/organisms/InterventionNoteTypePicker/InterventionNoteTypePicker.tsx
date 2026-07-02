@@ -28,15 +28,15 @@ interface InterventionNoteTypePickerProps {
 }
 
 const InterventionNoteTypePicker = ({
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   isScrollViewContainer = false,
 }: InterventionNoteTypePickerProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {interventionNoteTypeList} = useSelector(
-    (state: any) => state.intervention_interventionNote,
+    state => state.intervention_interventionNote,
   );
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const InterventionNoteTypePicker = ({
 
   return (
     <Picker
-      title={I18n.t('Intervention_Type')}
+      placeholder={I18n.t('Intervention_Type')}
       listItems={interventionNoteTypeList}
       labelField="name"
       valueField="id"

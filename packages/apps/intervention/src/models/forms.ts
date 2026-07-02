@@ -34,7 +34,7 @@ import {
   TypePicker,
 } from '../components';
 
-const CustomerComponentWrapper = component => {
+const CustomerComponentWrapper = (component: any) => {
   return ({objectState, ...props}: customComponentOptions) =>
     component({...props, customerId: objectState.partner?.id});
 };
@@ -157,7 +157,6 @@ export const intervention_formsRegister: FormConfigs = {
         options: {
           multiline: true,
           adjustHeightWithLines: true,
-          style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
         },
       },
     },
@@ -183,10 +182,8 @@ export const intervention_formsRegister: FormConfigs = {
           multiline: true,
           adjustHeightWithLines: true,
         },
-        requiredIf: ({objectState}) =>
-          objectState.type && objectState.type.attachedFile === false,
-        hideIf: ({objectState}) =>
-          !objectState.type || objectState.type.attachedFile === true,
+        requiredIf: ({objectState}) => !objectState.type?.attachedFile,
+        hideIf: ({objectState}) => objectState.type?.attachedFile,
       },
       metaFile: {
         titleKey: 'Intervention_MetaFile',
@@ -195,10 +192,8 @@ export const intervention_formsRegister: FormConfigs = {
         options: {
           displayPreview: true,
         },
-        requiredIf: ({objectState}) =>
-          objectState.type && objectState.type.attachedFile === true,
-        hideIf: ({objectState}) =>
-          !objectState.type || objectState.type.attachedFile === false,
+        requiredIf: ({objectState}) => objectState.type?.attachedFile === true,
+        hideIf: ({objectState}) => !objectState.type?.attachedFile,
       },
     },
   },

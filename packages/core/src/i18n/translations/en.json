@@ -103,7 +103,7 @@
   "Base_Connection_DefaultSession": "Default session ?",
   "User_BlockConnection": "Stop internet connection",
   "Stopwatch_Status_Ready": "Ready",
-  "Stopwatch_Status_InProgress": "InProgress",
+  "Stopwatch_Status_InProgress": "In progress",
   "Stopwatch_Status_Paused": "Paused",
   "Stopwatch_Status_Finished": "Finished",
   "Stopwatch_Status_Canceled": "Canceled",

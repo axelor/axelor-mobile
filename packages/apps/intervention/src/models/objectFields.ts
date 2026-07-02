@@ -162,5 +162,6 @@ export const intervention_modelAPI: ObjectFields = {
   }),
   intervention_interventionNoteType: schemaContructor.object({
     name: schemaContructor.string(),
+    attachedFile: schemaContructor.boolean(),
   }),
 };

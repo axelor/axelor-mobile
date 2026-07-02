@@ -42,8 +42,8 @@ const CustomerParkScreen = ({}) => {
   const {Equipment} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [customer, setCustomer] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [customer, setCustomer] = useState<any>(null);
 
   const {
     loadingList,
@@ -51,7 +51,7 @@ const CustomerParkScreen = ({}) => {
     isListEnd,
     equipmentList,
     equipmentPlaceList,
-  } = useSelector((state: any) => state.intervention_equipment);
+  } = useSelector(state => state.intervention_equipment);
 
   const serviceStatusList = useMemo(
     () => getSelectionItems(Equipment?.serviceSelect, selectedStatus),
@@ -59,9 +59,7 @@ const CustomerParkScreen = ({}) => {
   );
 
   const sliceParentFunctionData = useMemo(
-    () => ({
-      partnerId: customer?.id,
-    }),
+    () => ({partnerId: customer?.id}),
     [customer?.id],
   );
 
@@ -116,9 +114,9 @@ const CustomerParkScreen = ({}) => {
             code={item.code}
             equipmentFamily={item.equipmentFamily?.name}
             inService={item.inService}
-            handleArchive={() => {
-              setCustomer(_current => ({..._current}));
-            }}
+            handleArchive={() =>
+              setCustomer((_current: any) => ({..._current}))
+            }
             canArchive={canDelete}
             canCopy={canCreate}
             canEdit={!readonly}
