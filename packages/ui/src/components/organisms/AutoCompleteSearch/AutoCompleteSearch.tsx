@@ -23,7 +23,7 @@ import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
 import SearchDetailsPopUp from './SearchDetailsPopUp';
 
-const isValidString = (string: String) => {
+const isValidString = (string?: String) => {
   return typeof string === 'string' && string !== '';
 };
 
@@ -80,7 +80,7 @@ const AutoCompleteSearch = ({
   oneFilter = false,
   onSelection = () => {},
   onScanPress,
-  scanIconColor = null,
+  scanIconColor,
   selectLastItem = true,
   style,
   showDetailsPopup = false,
@@ -92,11 +92,11 @@ const AutoCompleteSearch = ({
   isScannableInput,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
-  const [previousState, setPreviousState] = useState(null);
+  const [previousState, setPreviousState] = useState<string | undefined>();
   const [selected, setSelected] = useState(value ? true : false);
   const [isPopupVisible, setPopupIsVisible] = useState(false);
   const [searchText, setSearchText] = useState(
-    value ? displayValue(value) : null,
+    value ? displayValue?.(value) : undefined,
   );
   let timeOutRequestCall = useRef<number>(null);
   let intervalRequestCall = useRef<number>(null);
@@ -114,7 +114,7 @@ const AutoCompleteSearch = ({
   });
 
   const fetchDataAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       fetchData({page, searchValue});
     },
     [fetchData],
@@ -138,7 +138,7 @@ const AutoCompleteSearch = ({
         inputRef?.current?.blur();
         setDisplayList(false);
         setSelected(true);
-        setSearchText(changeScreenAfter ? '' : displayValue(item));
+        setSearchText(changeScreenAfter ? '' : displayValue?.(item));
         setPopupIsVisible(false);
         onChangeValue?.(item);
       }
@@ -203,7 +203,7 @@ const AutoCompleteSearch = ({
       if (isValidString(searchText) && !selected) {
         if (set.length === 1 && selectLastItem) {
           const shouldResetValue = changeScreenAfter || oneFilter;
-          setSearchText(shouldResetValue ? '' : displayValue(set[0]));
+          setSearchText(shouldResetValue ? '' : displayValue?.(set[0]));
           setDisplayList(false);
           stopInterval();
           onChangeValue?.(set[0]);

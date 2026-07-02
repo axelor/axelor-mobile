@@ -59,9 +59,7 @@ const CustomerParkScreen = ({}) => {
   );
 
   const sliceParentFunctionData = useMemo(
-    () => ({
-      partnerId: customer?.id,
-    }),
+    () => ({partnerId: customer?.id}),
     [customer?.id],
   );
 

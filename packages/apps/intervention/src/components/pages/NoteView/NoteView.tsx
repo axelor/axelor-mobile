@@ -35,14 +35,14 @@ const NoteView = ({}) => {
     modelName: 'com.axelor.apps.intervention.db.InterventionNote',
   });
 
-  const [selectedNoteTypeId, setSelectedNoteTypeId] = useState(null);
+  const [selectedNoteTypeId, setSelectedNoteTypeId] = useState<
+    number | undefined
+  >(undefined);
 
   const {loading, moreLoading, isListEnd, interventionNoteList} = useSelector(
-    (state: any) => state.intervention_interventionNote,
+    state => state.intervention_interventionNote,
   );
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
+  const {intervention} = useSelector(state => state.intervention_intervention);
 
   const sliceFunctionData = useMemo(
     () => ({

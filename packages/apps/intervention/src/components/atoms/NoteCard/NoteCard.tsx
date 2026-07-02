@@ -52,7 +52,6 @@ const NoteCard = ({
           {
             displayText: metaFile ? metaFile.fileName : description,
             isTitle: true,
-            style: styles.marginBottom,
           },
           {
             indicatorText: I18n.t('Intervention_CreatedOn'),
@@ -80,12 +79,8 @@ const NoteCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: 100,
     marginHorizontal: 1,
     marginVertical: 2,
-  },
-  marginBottom: {
-    marginBottom: 5,
   },
 });
 

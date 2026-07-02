@@ -23,11 +23,11 @@ import {
   useNavigation,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {EquipmentCard} from '../../atoms';
 import {
   archiveEquipment,
   copyEquipment,
 } from '../../../features/equipmentSlice';
+import {EquipmentCard} from '../../atoms';
 
 interface EquipmentActionCardProps {
   idEquipment: number;
@@ -59,7 +59,7 @@ const EquipmentActionCard = ({
   canEdit = true,
   canArchive = true,
   handleArchive = () => {},
-  handleUnlink,
+  handleUnlink = () => {},
   handleDuplicate,
 }: EquipmentActionCardProps) => {
   const Colors = useThemeColor();
@@ -87,7 +87,7 @@ const EquipmentActionCard = ({
               (copyEquipment as any)({
                 equipmentId: idEquipment,
               }),
-            ).then(({payload}) => {
+            ).then(({payload}: any) => {
               const equipmentId = payload?.id;
               if (equipmentId != null) {
                 handleDuplicate != null
@@ -104,9 +104,7 @@ const EquipmentActionCard = ({
           iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
           helper: I18n.t('Intervention_Edit'),
           onPress: () =>
-            navigation.navigate('EquipmentFormView', {
-              idEquipment,
-            }),
+            navigation.navigate('EquipmentFormView', {idEquipment}),
         },
         {
           iconName: 'archive-fill',

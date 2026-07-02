@@ -39,7 +39,7 @@ import {fetchQuestionById, updateQuestion} from '../../features/questionSlice';
 import {Question as QuestionType} from '../../types';
 import {useQuestionNavigation} from '../../hooks';
 
-const InterventionQuestionFormScreen = ({route, navigation}) => {
+const InterventionQuestionFormScreen = ({route, navigation}: any) => {
   const {questionId} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -64,7 +64,7 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
       QuestionType.getStatus(
         question,
         questionlist.find(
-          ({id}) => id === question.conditionalInterventionQuestion?.id,
+          ({id}: any) => id === question.conditionalInterventionQuestion?.id,
         ),
       ),
     [question, questionlist],
@@ -113,7 +113,6 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
-        style={styles.headerContainer}
         expandableFilter={false}
         fixedItems={<InterventionHeader intervention={intervention} />}
       />
@@ -129,11 +128,7 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
             {question.title}
           </Text>
           {questionBadge && (
-            <Badge
-              style={styles.badge}
-              title={questionBadge.title}
-              color={questionBadge.color}
-            />
+            <Badge title={questionBadge.title} color={questionBadge.color} />
           )}
           {question.isPrivate && (
             <InfoBubble
@@ -173,9 +168,6 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    marginBottom: 10,
-  },
   questionContainer: {
     width: '90%',
     alignSelf: 'center',
@@ -183,15 +175,11 @@ const styles = StyleSheet.create({
   },
   questionTitleContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 2,
   },
   questionTitle: {
-    flex: 4,
-  },
-  badge: {
-    width: null,
-    paddingHorizontal: 5,
+    flex: 1,
   },
 });
 

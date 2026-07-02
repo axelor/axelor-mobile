@@ -44,9 +44,7 @@ const GeneralInformationView = ({}) => {
   });
   const {Intervention} = useTypes();
 
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
+  const {intervention} = useSelector(state => state.intervention_intervention);
 
   const [duration, setDuration] = useState(
     intervention.totalDuration * NUMBER_MILLISECONDS_IN_SECOND,

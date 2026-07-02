@@ -31,8 +31,18 @@ const InterventionHeader = ({intervention}: InterventionHeaderProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.rowContainer}>
+      <View style={styles.columnContainer}>
         <Text writingType="title">{intervention.sequence}</Text>
+        <LabelText
+          iconName="tools"
+          title={intervention.interventionType.name}
+        />
+        <LabelText
+          iconName="person-fill"
+          title={intervention.deliveredPartner.fullName}
+        />
+      </View>
+      <View style={styles.badgeContainer}>
         <Badge
           title={getItemTitle(
             Intervention?.statusSelect,
@@ -43,38 +53,25 @@ const InterventionHeader = ({intervention}: InterventionHeaderProps) => {
             intervention.statusSelect,
           )}
         />
-      </View>
-      <View style={styles.rowContainer}>
-        <LabelText
-          iconName="tools"
-          size={16}
-          title={intervention.interventionType.name}
-          textStyle={styles.labelText}
-        />
         <DateDisplay date={intervention.planifStartDateTime} size={16} />
       </View>
-      <LabelText
-        iconName="person-fill"
-        size={16}
-        title={intervention.deliveredPartner.fullName}
-        textStyle={styles.labelText}
-      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
-    marginBottom: 5,
-  },
-  rowContainer: {
+    marginHorizontal: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 3,
+    gap: 5,
   },
-  labelText: {
-    fontSize: 16,
+  columnContainer: {
+    flexDirection: 'column',
+    flex: 1,
+  },
+  badgeContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
   },
 });
 

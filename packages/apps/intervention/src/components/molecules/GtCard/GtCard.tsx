@@ -75,7 +75,7 @@ const GtCard = ({
     <Card style={styles.container}>
       <BorderBar style={styles.border} color={borderColor} />
       <Text writingType="title">{I18n.t(titleKey)}</Text>
-      <Text style={styles.date}>
+      <Text>
         {maxDate ? formatDateTime(maxDate, I18n.t('Base_DateTimeFormat')) : '-'}
       </Text>
     </Card>
@@ -87,15 +87,12 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+    gap: 5,
+    marginVertical: 2,
   },
   border: {
     alignSelf: 'stretch',
-    marginVertical: 6,
-    marginRight: 13,
-  },
-  date: {
-    marginLeft: 20,
+    marginVertical: 0,
   },
 });
 

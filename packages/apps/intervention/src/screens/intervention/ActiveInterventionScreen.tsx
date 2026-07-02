@@ -51,7 +51,7 @@ const ActiveInterventionScreen = ({}) => {
 
   const {user} = useSelector(state => state.user);
   const {loadingActiveIntervention, activeIntervention, intervention} =
-    useSelector((state: any) => state.intervention_intervention);
+    useSelector(state => state.intervention_intervention);
 
   useEffect(() => {
     isFocused &&
