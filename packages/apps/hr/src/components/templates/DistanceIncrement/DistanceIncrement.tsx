@@ -49,7 +49,7 @@ const DistanceIncrementAux = ({
 }: DistanceIncrementProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const timerRef = useRef(null);
+  const timerRef = useRef<any>(null);
   const {ExpenseLine} = useTypes();
 
   const {distance} = useSelector(state => state.distance);
@@ -67,7 +67,7 @@ const DistanceIncrementAux = ({
 
   useEffect(() => {
     if (distance != null) {
-      onChange(
+      onChange?.(
         kilometricTypeSelect === ExpenseLine?.kilometricTypeSelect.RoundTrip
           ? distance * 2
           : distance,
@@ -105,7 +105,7 @@ const DistanceIncrementAux = ({
     <FormIncrementInput
       title={title}
       style={style}
-      onChange={onChange}
+      onChange={onChange!}
       defaultValue={defaultValue}
       decimalSpacer={I18n.t('Base_DecimalSpacer')}
       thousandSpacer={I18n.t('Base_ThousandSpacer')}

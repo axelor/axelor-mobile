@@ -31,8 +31,8 @@ interface ExpenseCardProps {
   expenseId: number;
   expenseSeq: string;
   onPress: () => void;
-  onValidate: () => void;
-  onSend: () => void;
+  onValidate?: () => void;
+  onSend?: () => void;
   periodeCode?: string;
   inTaxTotal?: string;
   companyInTaxTotal?: string;
@@ -43,8 +43,8 @@ interface ExpenseCardProps {
 
 const ExpenseCard = ({
   onPress,
-  onValidate = () => {},
-  onSend = () => {},
+  onValidate,
+  onSend,
   statusSelect,
   expenseId,
   expenseSeq,
@@ -61,51 +61,50 @@ const ExpenseCard = ({
   });
   const {Expense} = useTypes();
 
-  const {user} = useSelector((state: any) => state.user);
+  const {user} = useSelector(state => state.user);
 
-  const userCanValidate = useMemo(() => {
-    if (
+  const userCanValidate = useMemo(
+    () =>
       (user?.employee?.hrManager || employeeManagerId === user.id) &&
-      statusSelect === Expense?.statusSelect.WaitingValidation
-    ) {
-      return true;
-    }
-    return false;
-  }, [
-    Expense?.statusSelect,
-    employeeManagerId,
-    statusSelect,
-    user?.employee?.hrManager,
-    user.id,
-  ]);
+      statusSelect === Expense?.statusSelect.WaitingValidation,
+    [
+      Expense?.statusSelect,
+      employeeManagerId,
+      statusSelect,
+      user?.employee?.hrManager,
+      user.id,
+    ],
+  );
 
-  const isDefaultDisplay = useMemo(() => {
-    return (
+  const isDefaultDisplay = useMemo(
+    () =>
       readonly ||
       ((statusSelect !== Expense?.statusSelect.WaitingValidation ||
         !userCanValidate) &&
-        statusSelect !== Expense?.statusSelect.Draft)
-    );
-  }, [Expense?.statusSelect, readonly, statusSelect, userCanValidate]);
+        statusSelect !== Expense?.statusSelect.Draft),
+    [Expense?.statusSelect, readonly, statusSelect, userCanValidate],
+  );
 
   return (
     <ActionCard
       translator={I18n.t}
       actionList={
-        !isDefaultDisplay && [
-          {
-            iconName: 'send-fill',
-            helper: I18n.t('Hr_Send'),
-            onPress: onSend,
-            hidden: statusSelect !== Expense?.statusSelect.Draft,
-          },
-          {
-            iconName: 'check-lg',
-            helper: I18n.t('Hr_Validate'),
-            onPress: onValidate,
-            hidden: statusSelect === Expense?.statusSelect.Draft,
-          },
-        ]
+        !isDefaultDisplay
+          ? [
+              {
+                iconName: 'send-fill',
+                helper: I18n.t('Hr_Send'),
+                onPress: onSend!,
+                hidden: statusSelect !== Expense?.statusSelect.Draft,
+              },
+              {
+                iconName: 'check-lg',
+                helper: I18n.t('Hr_Validate'),
+                onPress: onValidate!,
+                hidden: statusSelect === Expense?.statusSelect.Draft,
+              },
+            ]
+          : []
       }>
       <LiteExpenseCard
         onPress={onPress}

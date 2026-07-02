@@ -62,40 +62,35 @@ const TimesheetCard = ({
       style={[styles.container, style]}
       leftContainerFlex={2}
       onPress={onPress}
+      showArrow={false}
       upperTexts={{
         items: [
           {
             customComponent: (
-              <PeriodDisplay
-                startDate={startDate}
-                endDate={endDate}
-                style={styles.datesInterval}
-              />
+              <PeriodDisplay startDate={startDate} endDate={endDate} />
             ),
           },
           {
             iconName: 'building-fill',
             displayText: company,
             numberOfLines: 2,
-            style: styles.iconText,
           },
 
           {
             iconName: 'person-fill',
             displayText: employeeName,
-            style: styles.iconText,
             hideIfNull: true,
           },
         ],
       }}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
             customComponent: (
               <TextUnit
                 value={totalDuration}
                 unit={getDurationUnit(durationUnit, I18n)}
-                style={styles.textUnit}
               />
             ),
           },
@@ -110,16 +105,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
     marginVertical: 1,
   },
-  datesInterval: {
-    marginBottom: 15,
-  },
-  iconText: {
-    fontSize: 15,
-    fontWeight: null,
-  },
-  textUnit: {
-    alignSelf: 'flex-end',
-    lineHeight: 25,
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

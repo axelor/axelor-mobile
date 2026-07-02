@@ -307,10 +307,6 @@ const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
       borderRadius: 14,
       zIndex: 110,
     },
-    titleContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
     title: {
       marginLeft: 10,
     },

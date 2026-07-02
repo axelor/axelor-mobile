@@ -19,9 +19,9 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Label} from '@axelor/aos-mobile-ui';
-import {DateInput} from '../../organisms';
 import {getEndOfDay, getStartOfDay, hoursToMilliseconds} from '../../../utils';
 import {useTranslator} from '../../../i18n';
+import {DateInput} from '../../organisms';
 
 const DATE_INPUT_MODE = {
   startDate: 0,
@@ -55,18 +55,20 @@ const PeriodInput = ({
   usePopup = false,
   startDateConfig,
   endDateConfig,
-  defaultIntervalHours = null,
+  defaultIntervalHours,
   onPeriodErrorChange,
 }: PeriodInputProps) => {
   const I18n = useTranslator();
 
-  const [startDate, setStartDate] = useState(startDateConfig.date);
-  const [endDate, setEndDate] = useState(endDateConfig.date);
-  const [isPeriodError, setIsPeriodError] = useState(false);
-  const [interval, setInterval] = useState(
+  const [startDate, setStartDate] = useState<Date | undefined>(
+    startDateConfig.date,
+  );
+  const [endDate, setEndDate] = useState<Date | undefined>(endDateConfig.date);
+  const [isPeriodError, setIsPeriodError] = useState<boolean>(false);
+  const [interval, setInterval] = useState<number | undefined>(
     defaultIntervalHours !== null
       ? hoursToMilliseconds(defaultIntervalHours)
-      : null,
+      : undefined,
   );
 
   useEffect(() => {
@@ -94,12 +96,12 @@ const PeriodInput = ({
   useEffect(() => {
     const _startDate =
       startDateConfig.dateInputMode === 'date'
-        ? getStartOfDay(startDate)
+        ? getStartOfDay(startDate!)
         : startDate;
     const _endDate =
-      endDateConfig.dateInputMode === 'date' ? getEndOfDay(endDate) : endDate;
+      endDateConfig.dateInputMode === 'date' ? getEndOfDay(endDate!) : endDate;
 
-    const isError = startDate && endDate && _startDate > _endDate;
+    const isError = startDate && endDate && _startDate! > _endDate!;
     setIsPeriodError(!!isError);
     onPeriodErrorChange?.(!!isError);
   }, [
@@ -133,7 +135,7 @@ const PeriodInput = ({
       if (interval != null) {
         if (isStartDate) {
           const newEndDate = date ? new Date(date.getTime() + interval) : null;
-          updateDates(date, newEndDate);
+          updateDates(date, newEndDate!);
         } else {
           const newInterval =
             date && startDate instanceof Date
@@ -168,12 +170,12 @@ const PeriodInput = ({
       return (
         <DateInput
           style={styles.dateInput}
-          title={showTitle && I18n.t(translationKey)}
+          title={showTitle ? I18n.t(translationKey) : undefined}
           mode={dateConfig.dateInputMode ?? 'date'}
           nullable={nullable}
           popup={usePopup || horizontal}
           defaultDate={date}
-          onDateChange={_date => handleDateChange(isStartDate, _date)}
+          onDateChange={_date => handleDateChange(isStartDate, _date!)}
           readonly={dateConfig.readonly}
           required={dateConfig.required}
         />
@@ -216,9 +218,10 @@ const getStyles = (horizontal: boolean) =>
     datesContainer: {
       flexDirection: horizontal ? 'row' : 'column',
       justifyContent: 'space-between',
+      gap: 5,
     },
     dateInput: {
-      width: horizontal ? '48%' : '100%',
+      flex: 1,
     },
   });
 

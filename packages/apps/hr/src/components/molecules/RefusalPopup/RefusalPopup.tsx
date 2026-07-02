@@ -29,23 +29,23 @@ interface RefusalPopupProps {
 const RefusalPopup = ({isOpen, onValidate, onCancel}: RefusalPopupProps) => {
   const I18n = useTranslator();
 
-  const [refusalMessage, setRefusalMessage] = useState('');
+  const [refusalMessage, setRefusalMessage] = useState<string | undefined>();
 
   return (
     <Alert
       visible={isOpen}
       cancelButtonConfig={{onPress: onCancel}}
       confirmButtonConfig={{
-        onPress: () => onValidate(refusalMessage),
+        onPress: () => onValidate(refusalMessage!),
         disabled: checkNullString(refusalMessage),
       }}
       translator={I18n.t}>
       <FormInput
         title={I18n.t('Hr_ReasonRefusal')}
-        multiline={true}
-        adjustHeightWithLines={true}
-        required={true}
         onChange={setRefusalMessage}
+        multiline
+        adjustHeightWithLines
+        required
       />
     </Alert>
   );

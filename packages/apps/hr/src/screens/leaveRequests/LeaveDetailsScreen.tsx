@@ -45,8 +45,8 @@ import {
 } from '../../components';
 import {fetchLeaveById} from '../../features/leaveSlice';
 
-const LeaveDetailsScreen = ({route}) => {
-  const {leaveId} = route.params;
+const LeaveDetailsScreen = ({route}: any) => {
+  const {leaveId} = route?.params ?? {};
   const I18n = useTranslator();
   const {LeaveRequest} = useTypes();
   const navigation = useNavigation();

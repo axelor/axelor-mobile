@@ -65,6 +65,8 @@ const LeaveCard = ({
         getItemColor(LeaveRequest?.statusSelect, statusSelect)?.background
       }
       style={[styles.container, style]}
+      leftContainerFlex={2}
+      showArrow={false}
       onPress={onPress}
       upperTexts={{
         items: [
@@ -89,11 +91,11 @@ const LeaveCard = ({
         ],
       }}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
             customComponent: (
               <TextUnit
-                style={styles.textUnit}
                 value={duration}
                 unit={getItemTitle(LeaveReason?.unitSelect, durationUnitSelect)}
               />
@@ -118,13 +120,11 @@ const LeaveCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingRight: 10,
     marginHorizontal: 1,
     marginVertical: 2,
   },
-  textUnit: {
-    alignSelf: 'flex-end',
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
   anoBubble: {
     position: 'absolute',

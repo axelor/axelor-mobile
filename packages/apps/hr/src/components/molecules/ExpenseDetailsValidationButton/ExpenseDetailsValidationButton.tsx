@@ -107,41 +107,41 @@ const ExpenseDetailsValidationButton = ({
     );
   }, [dispatch, expense, user]);
 
-  const renderCancelButton = width => {
-    return (
-      <Button
-        title={I18n.t('Base_Cancel')}
-        onPress={cancelExpenseAPI}
-        width={width}
-        color={Colors.errorColor}
-        iconName="x-lg"
-      />
-    );
-  };
-
-  if (readonly) {
-    return null;
-  }
+  if (readonly) return null;
 
   if (expense.statusSelect === Expense?.statusSelect.Draft) {
     return (
       <View style={styles.buttonContainer}>
+        <Button
+          numberOfLines={1}
+          width={null}
+          style={styles.button}
+          title={I18n.t('Hr_Send')}
+          onPress={sendExpenseAPI}
+          iconName="send-fill"
+        />
         {canDelete && (
           <Button
+            numberOfLines={1}
+            width={null}
+            style={styles.button}
             title={I18n.t(isManualCreation ? 'Base_Cancel' : 'Hr_Delete')}
             onPress={deleteExpenseAPI}
-            width="45%"
             color={Colors.errorColor}
             iconName={isManualCreation ? 'x-lg' : 'trash3-fill'}
           />
         )}
-        {(!canDelete || !isManualCreation) && renderCancelButton('45%')}
-        <Button
-          title={I18n.t('Hr_Send')}
-          onPress={sendExpenseAPI}
-          width={canDelete && !isManualCreation ? '94%' : '45%'}
-          iconName="send-fill"
-        />
+        {(!canDelete || !isManualCreation) && (
+          <Button
+            numberOfLines={1}
+            width={null}
+            style={styles.button}
+            title={I18n.t('Base_Cancel')}
+            onPress={cancelExpenseAPI}
+            color={Colors.errorColor}
+            iconName="x-lg"
+          />
+        )}
       </View>
     );
   }
@@ -153,10 +153,12 @@ const ExpenseDetailsValidationButton = ({
           expense.employee?.managerUser?.id === user.id) && (
           <>
             <Button
+              numberOfLines={1}
+              width={null}
+              style={styles.button}
               title={I18n.t('Hr_Refuse')}
               onPress={() => setRefusalPopupIsOpen(true)}
               color={Colors.errorColor}
-              width="45%"
               iconName="ban"
             />
             <ExpenseRefusalPopup
@@ -166,21 +168,41 @@ const ExpenseDetailsValidationButton = ({
               onCancel={() => setRefusalPopupIsOpen(false)}
             />
             <Button
+              numberOfLines={1}
+              width={null}
+              style={styles.button}
               title={I18n.t('Hr_Validate')}
               onPress={validateExpenseAPI}
-              width="45%"
               iconName="check-lg"
             />
           </>
         )}
-        {renderCancelButton('94%')}
+        <Button
+          numberOfLines={1}
+          width={null}
+          style={styles.button}
+          title={I18n.t('Base_Cancel')}
+          onPress={cancelExpenseAPI}
+          color={Colors.errorColor}
+          iconName="x-lg"
+        />
       </View>
     );
   }
 
   if (expense.statusSelect === Expense?.statusSelect.Validate) {
     return (
-      <View style={styles.buttonContainer}>{renderCancelButton('94%')}</View>
+      <View style={styles.buttonContainer}>
+        <Button
+          numberOfLines={1}
+          width={null}
+          style={styles.button}
+          title={I18n.t('Base_Cancel')}
+          onPress={cancelExpenseAPI}
+          color={Colors.errorColor}
+          iconName="x-lg"
+        />
+      </View>
     );
   }
 
@@ -191,9 +213,11 @@ const ExpenseDetailsValidationButton = ({
     return (
       <View style={styles.buttonContainer}>
         <Button
+          numberOfLines={1}
+          width={null}
+          style={styles.button}
           title={I18n.t('Hr_ReturnToDraftStatus')}
           onPress={returnToDraftStatusExpenseAPI}
-          width="94%"
           color={Colors.primaryColor}
           iconName="reply-fill"
         />
@@ -206,9 +230,17 @@ const ExpenseDetailsValidationButton = ({
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flexWrap: 'wrap',
+    width: '90%',
+    alignSelf: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 5,
+  },
+  button: {
+    flex: 1,
+    minWidth: '40%',
+    marginVertical: 2,
   },
 });
 

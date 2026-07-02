@@ -30,7 +30,7 @@ interface ProjectSearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: string;
-  onChange?: (any: any) => void;
+  onChange?: (_v?: any) => void;
   readonly?: boolean;
   required?: boolean;
   manageTimeSpent?: boolean;
@@ -39,10 +39,10 @@ interface ProjectSearchBarProps {
 }
 
 const ProjectSearchBarAux = ({
-  style = null,
+  style,
   title = 'Hr_Project',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   manageTimeSpent = false,
@@ -58,7 +58,7 @@ const ProjectSearchBarAux = ({
   const {user} = useSelector(state => state.user);
 
   const searchProjectAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
         (searchProject as any)({
           page,

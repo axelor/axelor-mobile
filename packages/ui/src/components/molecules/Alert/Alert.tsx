@@ -120,6 +120,7 @@ const Alert = ({
               _cancelButtonConfig?.showInHeader && (
                 <IconTile
                   icon="x-lg"
+                  style={styles.closeIcon}
                   color={Colors.secondaryColor}
                   backgroundColor={Colors.screenBackgroundColor}
                   size={_cancelButtonConfig?.headerSize}
@@ -173,6 +174,9 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     flex: 1,
+  },
+  closeIcon: {
+    marginLeft: 'auto',
   },
   buttonsContainer: {
     width: '100%',

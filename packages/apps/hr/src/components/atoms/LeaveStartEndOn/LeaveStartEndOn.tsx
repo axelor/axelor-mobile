@@ -69,6 +69,7 @@ const LeaveStartEndOn = ({
           labelField="title"
           valueField="key"
           emptyValue={false}
+          required
         />
       );
     },
@@ -96,11 +97,11 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 5,
     zIndex: 1,
+    gap: 5,
   },
   picker: {
-    width: '48%',
+    flex: 1,
   },
 });
 

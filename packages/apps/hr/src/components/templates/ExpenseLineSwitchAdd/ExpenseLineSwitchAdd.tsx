@@ -43,8 +43,8 @@ const ExpenseLineSwitchAdd = ({
   });
   const {Expense} = useTypes();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
-  const {expense} = useSelector((state: any) => state.expense);
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {expense} = useSelector(state => state.expense);
 
   const isAddButton = useMemo(
     () =>
@@ -85,8 +85,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 2,
-    marginHorizontal: 18,
     gap: 5,
   },
 });

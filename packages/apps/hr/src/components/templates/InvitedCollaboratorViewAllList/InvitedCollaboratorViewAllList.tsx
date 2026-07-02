@@ -72,11 +72,11 @@ const InvitedCollaboratorViewAllListAux = ({
   return (
     <>
       <ViewAllEditList
-        currentLineId={null}
         title={I18n.t(title)}
         lines={lines}
         setLines={handleChange}
         translator={I18n.t}
+        isFormWrapper
       />
       {!readonly && (
         <EmployeeSearchBar

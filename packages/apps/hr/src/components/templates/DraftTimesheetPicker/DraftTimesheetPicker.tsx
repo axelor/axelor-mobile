@@ -38,16 +38,16 @@ interface DraftTimesheetPickerProps {
 const DraftTimesheetPicker = ({
   style,
   title = 'Hr_TimesheetToLink',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
 }: DraftTimesheetPickerProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {user} = useSelector((state: any) => state.user);
-  const {draftTimesheetList} = useSelector((state: any) => state.timesheet);
+  const {user} = useSelector(state => state.user);
+  const {draftTimesheetList} = useSelector(state => state.timesheet);
 
   useEffect(() => {
     dispatch(
@@ -58,7 +58,7 @@ const DraftTimesheetPicker = ({
     );
   }, [dispatch, user.activeCompany?.id, user.id]);
 
-  const displayValue = item => {
+  const displayValue = (item: any) => {
     return `${formatDate(
       item.fromDate,
       I18n.t('Base_DateFormat'),

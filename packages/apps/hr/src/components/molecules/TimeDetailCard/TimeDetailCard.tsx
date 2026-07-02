@@ -55,8 +55,8 @@ const TimeDetailCard = ({
   showTrash = true,
   canEdit = true,
   isActions = true,
-  onEdit = () => {},
-  onDelete = () => {},
+  onEdit,
+  onDelete,
 }: TimeDetailCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -65,20 +65,22 @@ const TimeDetailCard = ({
     <ActionCard
       translator={I18n.t}
       actionList={
-        isActions && [
-          {
-            iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
-            helper: I18n.t(canEdit ? 'Hr_Edit' : 'Hr_See'),
-            onPress: onEdit,
-          },
-          {
-            iconName: 'trash3-fill',
-            iconColor: Colors.errorColor.background,
-            helper: I18n.t('Hr_Delete'),
-            onPress: onDelete,
-            hidden: !showTrash,
-          },
-        ]
+        isActions
+          ? [
+              {
+                iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
+                helper: I18n.t(canEdit ? 'Hr_Edit' : 'Hr_See'),
+                onPress: onEdit!,
+              },
+              {
+                iconName: 'trash3-fill',
+                iconColor: Colors.errorColor.background,
+                helper: I18n.t('Hr_Delete'),
+                onPress: onDelete!,
+                hidden: !showTrash,
+              },
+            ]
+          : []
       }>
       <TimeCard
         mode={mode}

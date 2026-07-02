@@ -33,9 +33,9 @@ interface DurationIncrementProps {
 
 const DurationIncrementAux = ({
   style,
-  title,
-  defaultValue = null,
-  onChange = () => {},
+  title = 'Hr_Duration',
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   objectState: leaveRequest,
@@ -73,7 +73,7 @@ const DurationIncrementAux = ({
     <FormIncrementInput
       style={style}
       defaultValue={value}
-      onChange={onChange}
+      onChange={onChange!}
       title={title}
       readOnly={readonly}
       required={required}

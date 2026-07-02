@@ -40,7 +40,7 @@ const FromToDateDisplay = ({
   const renderDate = useCallback((date: string, subtitle: string) => {
     return (
       <View style={styles.dateContainer}>
-        <DateDisplay date={date} />
+        <DateDisplay date={date} size={16} />
         <Text>{subtitle}</Text>
       </View>
     );
@@ -52,7 +52,7 @@ const FromToDateDisplay = ({
         fromDate,
         getItemTitle(LeaveRequest?.startOnSelect, startOnSelect),
       )}
-      <Icon name="arrow-right" size={30} />
+      <Icon name="arrow-right" size={20} />
       {renderDate(toDate, getItemTitle(LeaveRequest?.endOnSelect, endOnSelect))}
     </View>
   );
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   container: {
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
   dateContainer: {

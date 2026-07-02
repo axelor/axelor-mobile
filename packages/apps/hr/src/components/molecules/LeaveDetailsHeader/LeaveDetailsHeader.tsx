@@ -38,24 +38,15 @@ const LeaveDetailsHeader = ({leave}: LeaveDetailsHeaderProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <LabelText
-          iconName="building-fill"
-          size={16}
-          title={leave.company?.name}
-          textStyle={styles.labelText}
-        />
+        <View style={styles.columnContainer}>
+          <LabelText iconName="building-fill" title={leave.company?.name} />
+          <LabelText iconName="person-fill" title={leave.employee?.name} />
+        </View>
         <Badge
-          style={styles.statusBadge}
           title={getItemTitle(LeaveRequest?.statusSelect, leave.statusSelect)}
           color={getItemColor(LeaveRequest?.statusSelect, leave.statusSelect)}
         />
       </View>
-      <LabelText
-        iconName="person-fill"
-        size={16}
-        title={leave.employee?.name}
-        textStyle={styles.labelText}
-      />
       {leave.statusSelect === LeaveRequest?.statusSelect.Refused &&
         !checkNullString(leave.groundForRefusal) && (
           <Label
@@ -71,19 +62,15 @@ const LeaveDetailsHeader = ({leave}: LeaveDetailsHeaderProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
+    marginHorizontal: 20,
   },
   rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 3,
+    alignItems: 'flex-start',
   },
-  labelText: {
-    fontSize: 16,
-  },
-  statusBadge: {
-    width: undefined,
-    paddingHorizontal: 10,
+  columnContainer: {
+    flexDirection: 'column',
+    flex: 1,
   },
 });
 

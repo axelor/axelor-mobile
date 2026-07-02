@@ -26,6 +26,7 @@ import {
   TextUnit,
   useDigitFormat,
   useThemeColor,
+  VerticalRule,
 } from '@axelor/aos-mobile-ui';
 import {fetchLeaveReasonAvailability} from '../../../api/leave-api';
 
@@ -71,36 +72,27 @@ const LeaveAvailableDuractionCard = ({
     }
   }, [isExceptionalLeave, leaveReason?.id, toDate]);
 
-  const styles = useMemo(() => {
-    return getStyles(Colors.secondaryColor.background);
-  }, [Colors]);
-
   return (
     <Card style={[styles.cardContainer, style]}>
-      <LabelText
-        iconName="tag-fill"
-        size={16}
-        title={leaveReason?.name}
-        textStyle={styles.labelText}
-      />
+      <LabelText iconName="tag-fill" title={leaveReason?.name} />
       <View style={styles.container}>
         <View style={styles.leaveContainer}>
           <Text style={styles.titleText}>{I18n.t('Hr_Available')}</Text>
           <TextUnit
-            fontSize={30}
+            fontSize={25}
             value={isExceptionalLeave ? '-' : formatNumber(availableLeave)}
             unit={
               isExceptionalLeave
-                ? undefined
+                ? ''
                 : getItemTitle(LeaveReason?.unitSelect, leaveReason?.unitSelect)
             }
           />
         </View>
-        <View style={styles.horizontalRule} />
+        <VerticalRule color={Colors.secondaryColor.background} />
         <View style={styles.leaveContainer}>
           <Text style={styles.titleText}>{I18n.t('Hr_Duration')}</Text>
           <TextUnit
-            fontSize={30}
+            fontSize={25}
             value={formatNumber(durationLeave)}
             unit={getItemTitle(
               LeaveReason?.unitSelect,
@@ -113,30 +105,22 @@ const LeaveAvailableDuractionCard = ({
   );
 };
 
-const getStyles = (ruleColor: string) =>
-  StyleSheet.create({
-    cardContainer: {
-      width: '90%',
-    },
-    labelText: {
-      fontSize: 16,
-    },
-    container: {
-      flexDirection: 'row',
-      marginTop: 15,
-    },
-    leaveContainer: {
-      flex: 1,
-      alignItems: 'center',
-      marginVertical: 10,
-    },
-    horizontalRule: {
-      borderWidth: 0.5,
-      borderColor: ruleColor,
-    },
-    titleText: {
-      paddingHorizontal: 10,
-    },
-  });
+const styles = StyleSheet.create({
+  cardContainer: {
+    width: '90%',
+    gap: 5,
+  },
+  container: {
+    flexDirection: 'row',
+    gap: 5,
+  },
+  leaveContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  titleText: {
+    textAlign: 'center',
+  },
+});
 
 export default LeaveAvailableDuractionCard;

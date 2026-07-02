@@ -40,7 +40,7 @@ import {
 } from '../../components';
 import {getNumberExpenseLineByDateApi} from '../../api';
 
-const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
+const ExpenseLinesListScreen = ({navigation, customOnUpload = null}: any) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -52,18 +52,16 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
     useSelector(state => state.expenseLine);
   const {userId} = useSelector(state => state.auth);
 
-  const [isSelectionMode, setIsSelectionMode] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [addPopupIsVisible, setAddPopupIsVisible] = useState(false);
+  const [isSelectionMode, setIsSelectionMode] = useState<boolean>(false);
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
+  const [addPopupIsVisible, setAddPopupIsVisible] = useState<boolean>(false);
 
-  const handleItemSelection = itemId => {
-    setSelectedItems(_current => {
-      if (_current.includes(itemId)) {
-        return _current.filter(id => id !== itemId);
-      } else {
-        return [..._current, itemId];
-      }
-    });
+  const handleItemSelection = (itemId: number) => {
+    setSelectedItems(_current =>
+      _current.includes(itemId)
+        ? _current.filter(id => id !== itemId)
+        : [..._current, itemId],
+    );
   };
 
   const handleCancelButton = () => {
@@ -73,7 +71,7 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
 
   const fetchExpenseLineAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchExpenseLine({userId: userId, page: page}));
+      dispatch((fetchExpenseLine as any)({userId, page}));
     },
     [dispatch, userId],
   );
@@ -153,9 +151,7 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
           <ExpenseLineDetailCard
             item={item}
             onEdit={() =>
-              navigation.navigate('ExpenseLineFormScreen', {
-                expenseLine: item,
-              })
+              navigation.navigate('ExpenseLineFormScreen', {expenseLine: item})
             }
             onLongPress={() => handleModeChange(item.id)}
             onItemSelection={() => handleItemSelection(item.id)}
@@ -170,11 +166,11 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
         separatorCondition={(prevItem, currentItem) =>
           prevItem.expenseDate > currentItem.expenseDate
         }
-        fetchTopIndicator={currentItem => ({
-          title: currentItem.expenseDate,
-        })}
+        fetchTopIndicator={currentItem => ({title: currentItem.expenseDate})}
         customTopSeparator={
-          <DateSeparator fetchNumberOfItems={getNumberExpenseLineByDateApi} />
+          <DateSeparator
+            fetchNumberOfItems={getNumberExpenseLineByDateApi as any}
+          />
         }
       />
       {!isSelectionMode && canCreate && (
