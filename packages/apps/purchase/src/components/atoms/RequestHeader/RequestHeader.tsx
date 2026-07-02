@@ -31,23 +31,23 @@ const RequestHeader = ({}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.chlidrenContainer}>
+      <View style={styles.columnWrapper}>
         <Text writingType="title">{purchaseRequest?.purchaseRequestSeq}</Text>
-        <Badge
-          title={getItemTitle(
-            PurchaseRequest?.statusSelect,
-            purchaseRequest.statusSelect,
-          )}
-          color={getItemColor(
-            PurchaseRequest?.statusSelect,
-            purchaseRequest.statusSelect,
-          )}
+        <LabelText
+          iconName="building-fill"
+          size={16}
+          title={purchaseRequest?.company?.name}
         />
       </View>
-      <LabelText
-        iconName="building-fill"
-        size={16}
-        title={purchaseRequest?.company?.name}
+      <Badge
+        title={getItemTitle(
+          PurchaseRequest?.statusSelect,
+          purchaseRequest.statusSelect,
+        )}
+        color={getItemColor(
+          PurchaseRequest?.statusSelect,
+          purchaseRequest.statusSelect,
+        )}
       />
     </View>
   );
@@ -55,14 +55,15 @@ const RequestHeader = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
-    marginBottom: 5,
-  },
-  chlidrenContainer: {
+    marginHorizontal: 18,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
+    alignItems: 'flex-start',
+    gap: 5,
+  },
+  columnWrapper: {
+    flexDirection: 'column',
+    gap: 5,
+    flex: 1,
   },
 });
 
