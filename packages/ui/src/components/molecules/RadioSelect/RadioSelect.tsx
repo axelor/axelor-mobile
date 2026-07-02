@@ -72,9 +72,7 @@ const RadioSelect = ({
   return (
     <View testID="radioSelectContainer" style={[styles.container, style]}>
       {!checkNullString(question) && (
-        <Text writingType="important" style={[styles.question, questionStyle]}>
-          {question}
-        </Text>
+        <Text style={[styles.question, questionStyle]}>{question}</Text>
       )}
       <View
         testID="radioSelectButtonContainer"
@@ -103,9 +101,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     minHeight: 40,
     height: null,
+    gap: 5,
   },
   question: {
-    marginVertical: 5,
+    marginLeft: 10,
   },
   itemsContainer: {
     width: '100%',

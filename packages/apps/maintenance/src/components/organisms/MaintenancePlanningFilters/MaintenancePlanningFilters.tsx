@@ -41,7 +41,6 @@ const MaintenancePlanningFilters = ({
   return (
     <View style={styles.container}>
       <MachineSearchBar
-        style={styles.searchBar}
         defaultValue={selectedMachine}
         onChange={onChangeMachine}
         showTitle={false}
@@ -62,9 +61,6 @@ const MaintenancePlanningFilters = ({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-  },
-  searchBar: {
-    width: '90%',
   },
 });
 

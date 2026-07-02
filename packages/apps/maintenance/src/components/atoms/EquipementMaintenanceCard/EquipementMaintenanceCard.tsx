@@ -44,7 +44,6 @@ const EquipementMaintenanceCard = ({
       style={[styles.card, style]}
       showArrow={false}
       touchable={false}
-      leftContainerFlex={2}
       image={
         image?.id != null
           ? {
@@ -73,9 +72,8 @@ const EquipementMaintenanceCard = ({
 
 const styles = StyleSheet.create({
   card: {
-    marginHorizontal: 0,
-    marginVertical: 4,
-    paddingRight: 5,
+    marginHorizontal: 2,
+    marginVertical: 2,
   },
   imageSize: {
     height: 50,

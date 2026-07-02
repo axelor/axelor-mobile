@@ -122,19 +122,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingRight: 10,
     paddingVertical: 10,
-    paddingTop: 20,
     position: 'absolute',
-    top: '5%',
+    gap: 0,
   },
   container: {
-    marginTop: 15,
+    flex: 1,
+    width: '100%',
   },
   input: {
     width: '100%',
   },
   scroll: {
-    flexGrow: 0,
-    height: '100%',
+    flex: 1,
   },
 });
 

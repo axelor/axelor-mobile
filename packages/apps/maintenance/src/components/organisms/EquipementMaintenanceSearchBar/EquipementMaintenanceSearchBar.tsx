@@ -72,7 +72,7 @@ const EquipementMaintenanceSearchBarAux = ({
   );
 
   const fetchEquipementMaintenanceAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
         (searchEquipementMaintenance as any)({
           page,

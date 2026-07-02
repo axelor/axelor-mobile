@@ -256,7 +256,7 @@ const SelectionContainer = ({
             <SelectionItem
               content={moreResultsItemContent}
               onPress={handleMoreResult!}
-              isMoreResultsItem={isMoreResultsItem}
+              isMoreResultsItem
             />
           </View>
         )}
@@ -289,14 +289,20 @@ const SelectionContainer = ({
               content={''}
               onPress={() => handleSelect?.(null)}
               readonly={readonly}
+              isMoreResultsItem
             />
-            <View style={styles.border} />
+            <HorizontalRule
+              style={styles.border}
+              color={Colors.secondaryColor.background_light}
+              width={0.5}
+            />
           </View>
         ) : null}
         {renderListItemContainer()}
       </View>
     );
   }, [
+    Colors.secondaryColor.background_light,
     emptyValue,
     handleSelect,
     readonly,
