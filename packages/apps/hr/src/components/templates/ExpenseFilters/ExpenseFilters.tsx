@@ -31,73 +31,71 @@ import {
   ToggleSwitch,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {fetchLeaveToValidate} from '../../../features/leaveSlice';
+import {searchExpenseToValidate} from '../../../features/expenseSlice';
+import {Expense as ExpenseType} from '../../../types';
 import {useManagedEmployees} from '../../../hooks';
-import {Leave} from '../../../types';
 
-interface LeaveFiltersProps {
-  mode: number;
+const ExpenseFilters = ({
+  mode,
+  onChangeStatus,
+  onChangeMode,
+}: {
+  mode: string;
   onChangeMode: (mode: any) => void;
   onChangeStatus: (status: any) => void;
-}
-
-const LeaveFilters = ({
-  mode,
-  onChangeMode,
-  onChangeStatus,
-}: LeaveFiltersProps) => {
+}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const {LeaveRequest} = useTypes();
+  const {Expense} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
   const {managedEmployeeTotal} = useManagedEmployees();
 
+  const {totalNumberExpenseToValidate} = useSelector(state => state.expense);
   const {user} = useSelector(state => state.user);
-  const {totalNumberLeaveToValidate} = useSelector(state => state.hr_leave);
+
+  const expenseStatusListItems = useMemo(
+    () => getSelectionItems(Expense?.statusSelect),
+    [Expense?.statusSelect, getSelectionItems],
+  );
 
   useEffect(() => {
     dispatch(
-      (fetchLeaveToValidate as any)({
-        user: user,
+      (searchExpenseToValidate as any)({
         page: 0,
+        user,
         companyId: user.activeCompany?.id,
       }),
     );
   }, [dispatch, user]);
 
-  const leaveStatusList = useMemo(
-    () => getSelectionItems(LeaveRequest?.statusSelect),
-    [getSelectionItems, LeaveRequest?.statusSelect],
-  );
-
   return (
     <View style={styles.container}>
       {(user?.employee?.hrManager || managedEmployeeTotal > 0) && (
         <ToggleSwitch
-          leftTitle={I18n.t('Hr_MyLeaves')}
+          leftTitle={I18n.t('Hr_MyExpenses')}
           rightTitle={I18n.t('Hr_ToValidate')}
           rigthElement={
             <NumberBubble
               style={styles.numberBubble}
-              number={totalNumberLeaveToValidate}
+              number={totalNumberExpenseToValidate}
               color={Colors.cautionColor}
               isNeutralBackground={true}
             />
           }
           onSwitch={() => {
             onChangeStatus(null);
-            onChangeMode((_mode: number) =>
-              _mode === Leave.mode.myLeaves
-                ? Leave.mode.leavesToValidate
-                : Leave.mode.myLeaves,
+            onChangeMode((_mode: string) =>
+              _mode === ExpenseType.mode.personnal
+                ? ExpenseType.mode.validation
+                : ExpenseType.mode.personnal,
             );
           }}
         />
       )}
-      {mode === Leave.mode.myLeaves && (
+      {mode === ExpenseType.mode.personnal && (
         <Picker
-          listItems={leaveStatusList}
+          listItems={expenseStatusListItems}
           placeholder={I18n.t('Hr_Status')}
           onValueChange={onChangeStatus}
           labelField="title"
@@ -118,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LeaveFilters;
+export default ExpenseFilters;

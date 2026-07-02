@@ -20,42 +20,36 @@ import React from 'react';
 import {SwitchCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
+interface BillableSwitchCardProps {
+  style?: any;
+  title?: string;
+  defaultValue?: boolean;
+  onChange?: (_v?: any) => void;
+  readonly?: boolean;
+}
+
 const BillableSwitchCardAux = ({
-  style = null,
+  style,
   title = 'Hr_ToInvoice',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
-}) => {
+}: BillableSwitchCardProps) => {
   const I18n = useTranslator();
 
   return (
     <SwitchCard
       style={style}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue ?? false}
       title={I18n.t(title)}
-      onToggle={onChange}
+      onToggle={onChange!}
       readonly={readonly}
     />
   );
 };
 
-const BillableSwitchCard = ({
-  style = null,
-  title = 'Hr_ToInvoice',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-}) => {
-  return (
-    <BillableSwitchCardAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-    />
-  );
+const BillableSwitchCard = (props: BillableSwitchCardProps) => {
+  return <BillableSwitchCardAux {...props} />;
 };
 
 export default BillableSwitchCard;

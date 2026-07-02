@@ -16,85 +16,89 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
-import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
-import {TimesheetCard} from '../../atoms';
+import {updateTimesheetStatus} from '../../../features/timesheetSlice';
 import {convertPeriodTimesheet} from '../../../api/timesheet-api';
 import {Timesheet as TimesheetType} from '../../../types';
+import {TimesheetCard} from '../../atoms';
 
 interface TimesheetDetailCardProps {
   item: any;
   isValidationMode?: boolean;
   isActions?: boolean;
-  onPress: () => void;
-  onSend: () => void;
-  onValidate: () => void;
 }
 
 const TimesheetDetailCard = ({
   item,
   isValidationMode = false,
   isActions = true,
-  onPress,
-  onSend,
-  onValidate,
 }: TimesheetDetailCardProps) => {
   const I18n = useTranslator();
   const {Timesheet} = useTypes();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const {timesheet: timesheetConfig} = useSelector(
-    (state: any) => state.appConfig,
-  );
-  const {user} = useSelector((state: any) => state.user);
+  const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
+  const {user} = useSelector(state => state.user);
 
   const [convertedPeriod, setConvertedPeriod] = useState<number>(0);
 
-  const _statusSelect = useMemo(() => {
-    return TimesheetType.getStatus(timesheetConfig?.needValidation, item);
-  }, [item, timesheetConfig]);
+  const _statusSelect = useMemo(
+    () => TimesheetType.getStatus(timesheetConfig?.needValidation, item),
+    [item, timesheetConfig],
+  );
 
-  const userCanValidate = useMemo(() => {
-    if (
+  const userCanValidate = useMemo(
+    () =>
       (user?.employee?.hrManager ||
         item.employee?.managerUser?.id === user.id) &&
-      _statusSelect === Timesheet?.statusSelect.WaitingValidation
-    ) {
-      return true;
-    }
-    return false;
-  }, [
-    user?.employee?.hrManager,
-    user.id,
-    item.employee?.managerUser?.id,
-    _statusSelect,
-    Timesheet?.statusSelect,
-  ]);
+      _statusSelect === Timesheet?.statusSelect.WaitingValidation,
+    [
+      user?.employee?.hrManager,
+      user.id,
+      item.employee?.managerUser?.id,
+      _statusSelect,
+      Timesheet?.statusSelect,
+    ],
+  );
 
-  const _isActions = useMemo(() => {
-    if (
+  const _isActions = useMemo(
+    () =>
       isActions &&
       (_statusSelect === Timesheet?.statusSelect.Draft ||
         (_statusSelect === Timesheet?.statusSelect.WaitingValidation &&
-          userCanValidate))
-    ) {
-      return true;
-    }
-
-    return false;
-  }, [isActions, _statusSelect, Timesheet?.statusSelect, userCanValidate]);
+          userCanValidate)),
+    [isActions, _statusSelect, Timesheet?.statusSelect, userCanValidate],
+  );
 
   useEffect(() => {
     convertPeriodTimesheet({timesheetId: item.id})
-      .then(res => {
-        if (res?.data?.object != null) {
-          setConvertedPeriod(res.data.object.periodTotalConvert);
-        } else {
-          setConvertedPeriod(0);
-        }
-      })
+      .then(res =>
+        setConvertedPeriod(res?.data?.object?.periodTotalConvert ?? 0),
+      )
       .catch(() => setConvertedPeriod(0));
   }, [item]);
+
+  const updateTimesheetStatusAPI = useCallback(
+    (timesheet: any, toStatus: string) =>
+      dispatch(
+        (updateTimesheetStatus as any)({
+          timesheetId: timesheet.id,
+          version: timesheet.version,
+          toStatus: toStatus,
+          user: user,
+        }),
+      ),
+    [dispatch, user],
+  );
 
   return (
     <ActionCard
@@ -104,13 +108,13 @@ const TimesheetDetailCard = ({
           {
             iconName: 'send-fill',
             helper: I18n.t('Hr_Send'),
-            onPress: onSend,
+            onPress: () => updateTimesheetStatusAPI(item, 'confirm'),
             hidden: _statusSelect !== Timesheet?.statusSelect.Draft,
           },
           {
             iconName: 'check-lg',
             helper: I18n.t('Hr_Validate'),
-            onPress: onValidate,
+            onPress: () => updateTimesheetStatusAPI(item, 'validate'),
             hidden: _statusSelect === Timesheet?.statusSelect.Draft,
           },
         ]
@@ -123,7 +127,11 @@ const TimesheetDetailCard = ({
         totalDuration={convertedPeriod}
         durationUnit={item.timeLoggingPreferenceSelect}
         employeeName={isValidationMode ? item.employee?.name : null}
-        onPress={onPress}
+        onPress={() =>
+          navigation.navigate('TimesheetDetailsScreen', {
+            timesheetId: item.id,
+          })
+        }
       />
     </ActionCard>
   );

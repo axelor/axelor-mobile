@@ -24,7 +24,7 @@ interface KilometricTypeSelectPickerProps {
   style?: any;
   title?: string;
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  onChange?: (_v?: string) => void;
   readonly?: boolean;
   required?: boolean;
 }
@@ -54,7 +54,7 @@ const KilometricTypeSelectPickerAux = ({
       labelField="title"
       valueField="key"
       emptyValue={false}
-      onValueChange={onChange}
+      onValueChange={onChange!}
       required={required}
       readonly={readonly}
     />

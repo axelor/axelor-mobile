@@ -74,7 +74,7 @@ const HeaderContainer = ({
           <View style={styles.arrowContainer}>
             <Icon
               name={isVisible ? 'chevron-up' : 'chevron-down'}
-              size={22}
+              size={18}
               color={Colors.primaryColor.background}
             />
           </View>
@@ -95,7 +95,7 @@ const getStyles = (Colors: ThemeColors) =>
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
       marginTop: 0,
-      marginBottom: 8,
+      marginBottom: 4,
       marginHorizontal: 10,
       paddingVertical: 12,
       borderRadius: 24,
@@ -103,12 +103,12 @@ const getStyles = (Colors: ThemeColors) =>
     },
     arrowTouchable: {
       position: 'absolute',
-      bottom: -14,
+      bottom: -10,
       alignSelf: 'center',
     },
     arrowContainer: {
-      width: 60,
-      height: 28,
+      paddingHorizontal: 18,
+      paddingVertical: 3,
       borderRadius: 14,
       backgroundColor: Colors.backgroundColor,
       justifyContent: 'center',

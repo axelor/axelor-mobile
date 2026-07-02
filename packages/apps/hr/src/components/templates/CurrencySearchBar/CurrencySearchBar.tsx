@@ -26,14 +26,26 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCurrencies} from '../../../features/currencySlice';
 
+interface CurrencySearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (_v?: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  manageTimeSpent?: boolean;
+  isMemberRequired?: boolean;
+  inProgress?: boolean;
+}
+
 const CurrencySearchBarAux = ({
-  style = null,
+  style,
   title = 'Hr_Currency',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   required = false,
   readonly = false,
-}) => {
+}: CurrencySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -45,13 +57,8 @@ const CurrencySearchBarAux = ({
   } = useSelector(state => state.currency);
 
   const searchCurrenciesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        searchCurrencies({
-          page,
-          searchValue,
-        }),
-      );
+    ({page = 0, searchValue}: any) => {
+      dispatch((searchCurrencies as any)({page, searchValue}));
     },
     [dispatch],
   );
@@ -74,29 +81,12 @@ const CurrencySearchBarAux = ({
       isListEnd={isListEndCurrencies}
       navigate={false}
       oneFilter={false}
-      isFocus={false}
     />
   );
 };
 
-const CurrencySearchBar = ({
-  style,
-  title,
-  defaultValue,
-  onChange,
-  readonly,
-  required,
-}) => {
-  return (
-    <CurrencySearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const CurrencySearchBar = (props: CurrencySearchBarProps) => {
+  return <CurrencySearchBarAux {...props} />;
 };
 
 export default CurrencySearchBar;

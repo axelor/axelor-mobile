@@ -69,48 +69,47 @@ const TimeCard = ({
     return getItemColor(timeObject?.statusSelect, statusSelect)?.background;
   }, [Timer, Timesheet, getItemColor, mode, statusSelect]);
 
-  const styles = useMemo(() => getStyles(isSmallCard), [isSmallCard]);
-
   return (
     <ObjectCard
       touchable={false}
       showArrow={false}
-      leftContainerFlex={1.3}
+      leftContainerFlex={2}
       borderLeftColor={isBorderColor ? cardColor : undefined}
       style={[styles.container, style]}
       upperTexts={{
         items: [
           {
-            displayText: (project || manufOrder) ?? '-',
+            displayText: project ?? manufOrder ?? '-',
             isTitle: true,
             numberOfLines: 2,
           },
           {
-            displayText: !isSmallCard && ((task || operation) ?? '-'),
+            displayText: task ?? operation ?? '-',
             numberOfLines: 2,
             hideIfNull: true,
+            hideIf: isSmallCard,
             style: styles.subTitle,
           },
           {
-            displayText: !isSmallCard && comments,
+            displayText: comments,
             numberOfLines: 2,
             hideIfNull: true,
+            hideIf: isSmallCard,
             style: styles.subTitle,
           },
         ],
       }}
       sideBadges={{
-        style: styles.badges,
+        style: styles.badgeContainer,
         items: [
           {
-            customComponent: <DateDisplay date={date} />,
+            customComponent: <DateDisplay date={date} size={15} />,
           },
           {
             customComponent: (
               <TextUnit
                 value={duration}
                 unit={getDurationUnit(durationUnit, I18n)}
-                style={styles.textUnit}
               />
             ),
           },
@@ -120,24 +119,17 @@ const TimeCard = ({
   );
 };
 
-const getStyles = (isSmallCard: boolean) =>
-  StyleSheet.create({
-    container: {
-      minHeight: isSmallCard ? 'auto' : 100,
-      justifyContent: 'center',
-      marginHorizontal: 1,
-      marginVertical: 2,
-    },
-    subTitle: {
-      fontStyle: 'italic',
-      marginTop: 5,
-    },
-    badges: {
-      alignItems: 'flex-end',
-    },
-    textUnit: {
-      marginTop: isSmallCard ? 0 : 5,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 1,
+    marginVertical: 2,
+  },
+  subTitle: {
+    fontStyle: 'italic',
+  },
+  badgeContainer: {
+    alignItems: 'flex-end',
+  },
+});
 
 export default TimeCard;

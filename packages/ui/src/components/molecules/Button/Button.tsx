@@ -30,6 +30,7 @@ export interface ButtonProps {
   iconName?: string;
   iconSize?: number;
   title?: string;
+  titleSize?: number;
   style?: any;
   styleIcon?: any;
   styleTxt?: any;
@@ -45,8 +46,9 @@ const Button = ({
   color,
   isNeutralBackground = false,
   iconName,
-  iconSize = 20,
+  iconSize = 16,
   title,
+  titleSize = 16,
   style,
   styleIcon,
   styleTxt,
@@ -103,7 +105,7 @@ const Button = ({
           style={[styles.text, styleTxt]}
           numberOfLines={numberOfLines}
           adjustsFontSizeToFit
-          fontSize={17}
+          fontSize={titleSize}
           textColor={buttonColor.foreground}>
           {title}
         </Text>

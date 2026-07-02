@@ -26,14 +26,25 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchKilometricAllowParam} from '../../../features/kilometricAllowParamSlice';
 
+interface KilometricAllowParamSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (_v?: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  isAssignedToRequired?: boolean;
+  isMemberRequired?: boolean;
+}
+
 const KilometricAllowParamSearchBarAux = ({
-  style = null,
+  style,
   title = 'Hr_KilometricAllowParam',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
-}) => {
+}: KilometricAllowParamSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -47,12 +58,12 @@ const KilometricAllowParamSearchBarAux = ({
   const {user} = useSelector(state => state.user);
 
   const searchKilometricAllowParamAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
-        searchKilometricAllowParam({
+        (searchKilometricAllowParam as any)({
           page,
           searchValue,
-          idList: user.employee?.employeeVehicleList.map(_vehicle => {
+          idList: user.employee?.employeeVehicleList.map((_vehicle: any) => {
             if (expenseDate != null) {
               const _expenseDate = new Date(expenseDate);
 
@@ -64,7 +75,7 @@ const KilometricAllowParamSearchBarAux = ({
                 if (_vehicle.endDate == null) {
                   // Vehicle has no period, always valid
                   return _vehicle.kilometricAllowParam.id;
-                } else if (_expenseDate <= _endDate) {
+                } else if (_expenseDate <= _endDate!) {
                   // Vehicle has end date, expense date should be before end date
                   return _vehicle.kilometricAllowParam.id;
                 }
@@ -74,13 +85,13 @@ const KilometricAllowParamSearchBarAux = ({
                   : null;
 
                 if (_vehicle.endDate == null) {
-                  if (_expenseDate >= _startDate) {
+                  if (_expenseDate >= _startDate!) {
                     // Vehicle has start date, expense date should be after start date
                     return _vehicle.kilometricAllowParam.id;
                   }
                 } else if (
-                  _expenseDate >= _startDate &&
-                  _expenseDate <= _endDate
+                  _expenseDate >= _startDate! &&
+                  _expenseDate <= _endDate!
                 ) {
                   // Vehicle has a period, expense date should be after start date and before end date
                   return _vehicle.kilometricAllowParam.id;
@@ -99,7 +110,7 @@ const KilometricAllowParamSearchBarAux = ({
       Array.isArray(kilometricAllowParamList) &&
       kilometricAllowParamList.length === 1
     ) {
-      onChange(kilometricAllowParamList[0]);
+      onChange?.(kilometricAllowParamList[0]);
     }
   }, [kilometricAllowParamList, onChange]);
 
@@ -121,29 +132,14 @@ const KilometricAllowParamSearchBarAux = ({
       isListEnd={isListEndKilometricAllowParam}
       navigate={false}
       oneFilter={false}
-      isFocus={false}
     />
   );
 };
 
-const KilometricAllowParamSearchBar = ({
-  style = null,
-  title = 'Hr_KilometricAllowParam',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-}) => {
-  return (
-    <KilometricAllowParamSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const KilometricAllowParamSearchBar = (
+  props: KilometricAllowParamSearchBarProps,
+) => {
+  return <KilometricAllowParamSearchBarAux {...props} />;
 };
 
 export default KilometricAllowParamSearchBar;

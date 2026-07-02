@@ -28,7 +28,17 @@ import {
 import {createExpense, updateExpense} from '../../../features/expenseSlice';
 import {DraftExpensePicker} from '../../templates';
 
-const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
+const ExpenseAddPopup = ({
+  style,
+  visible = false,
+  onClose,
+  selectedItems,
+}: {
+  style?: any;
+  visible?: boolean;
+  onClose?: () => void;
+  selectedItems?: any[];
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -36,23 +46,27 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
 
   const {user} = useSelector(state => state.user);
 
-  const [expenseSelected, setExpenseSelected] = useState(null);
+  const [expenseSelected, setExpenseSelected] = useState<any>();
 
   const createExpenseAPI = useCallback(() => {
-    const _expense = {
-      expenseLineIdList: selectedItems,
-      employeeId: user?.employee?.id,
-      companyId: user?.activeCompany?.id,
-      currencyId: user?.activeCompany?.currency?.id,
-    };
-    dispatch(createExpense({expense: _expense, userId: user.id}));
-    onClose();
+    dispatch(
+      (createExpense as any)({
+        expense: {
+          expenseLineIdList: selectedItems,
+          employeeId: user?.employee?.id,
+          companyId: user?.activeCompany?.id,
+          currencyId: user?.activeCompany?.currency?.id,
+        },
+        userId: user.id,
+      }),
+    );
+    onClose?.();
     navigation.navigate('ExpenseListScreen');
   }, [dispatch, onClose, navigation, selectedItems, user]);
 
   const updateExpenseAPI = useCallback(() => {
     dispatch(
-      updateExpense({
+      (updateExpense as any)({
         expenseId: expenseSelected.id,
         version: expenseSelected.version,
         userId: user.id,
@@ -60,7 +74,7 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
       }),
     );
     navigation.navigate('ExpenseListScreen');
-    onClose();
+    onClose?.();
   }, [dispatch, onClose, expenseSelected, navigation, selectedItems, user.id]);
 
   return (

@@ -39,31 +39,34 @@ const ExpenseLineTypeSwitch = ({
   return (
     <ToggleSwitch
       styleContainer={styles.toggleContainer}
+      styleToogle={styles.toggleElt}
       leftTitle={I18n.t('Hr_General')}
       rightTitle={I18n.t('Hr_Kilometric')}
       leftElement={
         <NumberBubble
           style={styles.indicator}
+          size={25}
           number={totalNumberExpenseGeneral}
           color={Colors.inverseColor}
-          isNeutralBackground={true}
+          isNeutralBackground
         />
       }
       rigthElement={
         <NumberBubble
           style={styles.indicator}
+          size={25}
           number={totalNumberExpenseKilomectric}
           color={Colors.inverseColor}
-          isNeutralBackground={true}
+          isNeutralBackground
         />
       }
-      onSwitch={() => {
-        onChange((_mode: string) => {
-          return _mode === ExpenseLine.modes.general
+      onSwitch={() =>
+        onChange((_mode: string) =>
+          _mode === ExpenseLine.modes.general
             ? ExpenseLine.modes.kilometric
-            : ExpenseLine.modes.general;
-        });
-      }}
+            : ExpenseLine.modes.general,
+        )
+      }
     />
   );
 };
@@ -73,9 +76,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 0,
   },
+  toggleElt: {
+    paddingVertical: 6,
+  },
   indicator: {
-    position: 'absolute',
-    right: '5%',
+    marginLeft: 5,
   },
 });
 

@@ -247,7 +247,6 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           multiline: true,
           adjustHeightWithLines: true,
-          style: {marginBottom: 40, width: '90%', alignSelf: 'center'},
         },
       },
     },
@@ -370,7 +369,6 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           multiline: true,
           adjustHeightWithLines: true,
-          style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
         },
       },
     },
@@ -437,7 +435,7 @@ export const hr_formsRegister: FormConfigs = {
         titleKey: 'Hr_UpdatedDuration',
         type: 'string',
         widget: 'custom',
-        customComponent: DurationInput,
+        customComponent: DurationInput as any,
       },
       comments: {
         titleKey: 'Hr_Comments',
@@ -507,7 +505,6 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           multiline: true,
           adjustHeightWithLines: true,
-          style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
         },
       },
     },

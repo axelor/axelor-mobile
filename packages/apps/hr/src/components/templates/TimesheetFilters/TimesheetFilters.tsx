@@ -32,15 +32,18 @@ import {
   ToggleSwitch,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import TimesheetWaitingValidationSearchBar from '../TimesheetWaitingValidationSearchBar/TimesheetWaitingValidationSearchBar';
 import {fetchTimesheetToValidate} from '../../../features/timesheetSlice';
 import {Timesheet as TimesheetType} from '../../../types';
 import {useManagedEmployees} from '../../../hooks';
 
 const TimesheetFilters = ({
   mode,
-  onChangeStatus = () => {},
-  onChangeMode = () => {},
+  onChangeStatus,
+  onChangeMode,
+}: {
+  mode: string;
+  onChangeMode: (mode: any) => void;
+  onChangeStatus: (status: any) => void;
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -76,9 +79,9 @@ const TimesheetFilters = ({
 
   useEffect(() => {
     dispatch(
-      fetchTimesheetToValidate({
+      (fetchTimesheetToValidate as any)({
         page: 0,
-        user: user,
+        user,
         companyId: user.activeCompany?.id,
       }),
     );
@@ -101,7 +104,7 @@ const TimesheetFilters = ({
             }
             onSwitch={() => {
               onChangeStatus(null);
-              onChangeMode(_mode =>
+              onChangeMode((_mode: string) =>
                 _mode === TimesheetType.mode.personnal
                   ? TimesheetType.mode.validation
                   : TimesheetType.mode.personnal,
@@ -125,9 +128,6 @@ const TimesheetFilters = ({
             selectionItems={timesheetStatusListItems}
           />
         ))}
-      {mode === TimesheetType.mode.validation && (
-        <TimesheetWaitingValidationSearchBar />
-      )}
     </View>
   );
 };

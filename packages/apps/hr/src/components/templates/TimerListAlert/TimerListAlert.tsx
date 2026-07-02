@@ -65,18 +65,20 @@ const TimerListAlert = ({
     loadingTimerDateInterval,
     moreLoadingTimerDateInterval,
     isListEndTimerDateInterval,
-  } = useSelector((state: any) => state.hr_timer);
+  } = useSelector(state => state.hr_timer);
   const {user} = useSelector(state => state.user);
 
-  const [timesheet, setTimesheet] = useState(null);
-  const [fromDate, setFromDate] = useState(null);
-  const [toDate, setToDate] = useState(new Date());
-  const [errorKey, setErrorKey] = useState(null);
-  const [selectedTimers, setSelectedTimers] = useState([]);
+  const [timesheet, setTimesheet] = useState<any>();
+  const [fromDate, setFromDate] = useState<Date | undefined>();
+  const [toDate, setToDate] = useState<Date | undefined>(new Date());
+  const [errorKey, setErrorKey] = useState<string | undefined>();
+  const [selectedTimers, setSelectedTimers] = useState<any[]>([]);
 
   const isConfirmButtonDisabled = useMemo(
     () =>
-      errorKey || !Array.isArray(selectedTimers) || selectedTimers.length === 0,
+      errorKey != null ||
+      !Array.isArray(selectedTimers) ||
+      selectedTimers.length === 0,
     [errorKey, selectedTimers],
   );
 
@@ -110,7 +112,7 @@ const TimerListAlert = ({
           isOverlapAllowed: false,
           companyId: user.activeCompany?.id,
         }).then(res => {
-          setErrorKey(null);
+          setErrorKey(undefined);
           res.data?.data?.length > 0 &&
             setErrorKey('Hr_TimesheetAlreadyExists');
         });
@@ -118,11 +120,11 @@ const TimerListAlert = ({
         setErrorKey('Hr_DateIntervalError');
       }
     } else {
-      setErrorKey(null);
+      setErrorKey(undefined);
     }
   }, [fromDate, timesheet, toDate, user]);
 
-  const renderChexboxItem = ({item}) => {
+  const renderChexboxItem = ({item}: any) => {
     return (
       <TimeDetailCard
         mode={Time.mode.Timer}
@@ -139,10 +141,10 @@ const TimerListAlert = ({
 
   const resetStates = () => {
     setIsAlertVisible(false);
-    setTimesheet(null);
-    setFromDate(null);
+    setTimesheet(undefined);
+    setFromDate(undefined);
     setToDate(new Date());
-    setErrorKey(null);
+    setErrorKey(undefined);
     setSelectedTimers([]);
   };
 
@@ -181,7 +183,7 @@ const TimerListAlert = ({
       }}
       confirmButtonConfig={{
         width: 50,
-        title: null,
+        title: undefined,
         disabled: isConfirmButtonDisabled,
         onPress: handleConfirm,
       }}

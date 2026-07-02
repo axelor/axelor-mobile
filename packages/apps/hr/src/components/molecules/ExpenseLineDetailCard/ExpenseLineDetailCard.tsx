@@ -41,6 +41,15 @@ const ExpenseLineDetailCard = ({
   onItemSelection,
   isSelectionMode,
   isSelected,
+}: {
+  style?: any;
+  item: any;
+  expense?: any;
+  onEdit: () => void;
+  onLongPress?: () => void;
+  onItemSelection?: () => void;
+  isSelectionMode?: boolean;
+  isSelected?: boolean;
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -52,7 +61,7 @@ const ExpenseLineDetailCard = ({
   const {Expense, ExpenseLine} = useTypes();
   const {getItemTitle} = useTypeHelpers();
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {userId} = useSelector(state => state.auth);
 
   const [cardHeight, setCardHeight] = useState<number>();
 
@@ -107,7 +116,7 @@ const ExpenseLineDetailCard = ({
       <Checkbox
         style={styles.checkbox}
         isDefaultChecked={isSelected}
-        onChange={onItemSelection}
+        onChange={onItemSelection!}
       />
       <Animated.View
         style={[

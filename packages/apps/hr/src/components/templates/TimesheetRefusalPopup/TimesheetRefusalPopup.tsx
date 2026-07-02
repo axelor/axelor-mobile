@@ -34,7 +34,7 @@ const TimesheetRefusalPopup = ({
 }: TimesheetRefusalPopupProps) => {
   const dispatch = useDispatch();
 
-  const {user} = useSelector((state: any) => state.user);
+  const {user} = useSelector(state => state.user);
 
   const refuseAPI = useCallback(
     (refusalMessage: string) => {

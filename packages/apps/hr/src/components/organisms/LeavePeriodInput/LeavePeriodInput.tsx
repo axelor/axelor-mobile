@@ -28,7 +28,7 @@ interface LeavePeriodInputProps {
 }
 
 const LeavePeriodInputAux = ({
-  defaultValue = null,
+  defaultValue,
   onChange,
 }: LeavePeriodInputProps) => {
   const I18n = useTranslator();
@@ -37,7 +37,7 @@ const LeavePeriodInputAux = ({
 
   const handleValueChange = (field: string, value: any) => {
     if (value !== defaultValue?.[field]) {
-      onChange({
+      onChange?.({
         ...defaultValue,
         [field]: value,
       });
@@ -61,7 +61,7 @@ const LeavePeriodInputAux = ({
     }
 
     setIsHalfDayError(isError);
-    onChange({
+    onChange?.({
       ...defaultValue,
       isStartEndError: isError,
       [field]: value,
@@ -112,13 +112,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const LeavePeriodInput = ({
-  defaultValue = null,
-  onChange,
-}: LeavePeriodInputProps) => {
-  return (
-    <LeavePeriodInputAux defaultValue={defaultValue} onChange={onChange} />
-  );
+const LeavePeriodInput = (props: LeavePeriodInputProps) => {
+  return <LeavePeriodInputAux {...props} />;
 };
 
 export default LeavePeriodInput;

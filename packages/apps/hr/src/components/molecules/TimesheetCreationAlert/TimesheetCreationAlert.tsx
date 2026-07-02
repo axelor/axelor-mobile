@@ -41,15 +41,15 @@ const TimesheetCreationAlert = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const [fromDate, setFromDate] = useState(null);
-  const [toDate, setToDate] = useState(null);
+  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
+  const [toDate, setToDate] = useState<Date | undefined>(undefined);
 
-  const {userId} = useSelector((state: any) => state.auth);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {userId} = useSelector(state => state.auth);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   const handleCancel = useCallback(() => {
-    setFromDate(null);
-    setToDate(null);
+    setFromDate(undefined);
+    setToDate(undefined);
     onCancel();
   }, [onCancel]);
 
@@ -60,7 +60,7 @@ const TimesheetCreationAlert = ({
         toDate,
         userId,
       }),
-    ).then(res => {
+    ).then((res: any) => {
       mobileSettings?.isLineCreationOfTimesheetDetailsAllowed &&
         navigation.navigate('TimesheetDetailsScreen', {
           timesheetId: res.payload.timesheetId,
@@ -85,7 +85,7 @@ const TimesheetCreationAlert = ({
       cancelButtonConfig={{onPress: handleCancel}}
       confirmButtonConfig={{
         width: 50,
-        title: null,
+        title: undefined,
         disabled: !fromDate,
         onPress: createTimesheetAPI,
       }}
@@ -120,9 +120,10 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 5,
   },
   dateInput: {
-    width: '48%',
+    flex: 1,
   },
 });
 

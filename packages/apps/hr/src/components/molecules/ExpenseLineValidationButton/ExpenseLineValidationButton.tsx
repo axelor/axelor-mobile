@@ -21,24 +21,32 @@ import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
+const ExpenseLineValidationButton = ({
+  onOpen,
+  selectedItems,
+  onChangeMode,
+}: {
+  onOpen: () => void;
+  selectedItems: any[];
+  onChangeMode: () => void;
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   return (
     <View style={styles.container}>
       <Button
+        style={styles.button}
         title={I18n.t('Base_Cancel')}
         color={Colors.errorColor}
         onPress={onChangeMode}
-        width="45%"
         iconName="x-lg"
       />
       <Button
+        style={styles.button}
         title={I18n.t('Base_Add')}
         disabled={selectedItems.length <= 0}
         onPress={onOpen}
-        width="45%"
         iconName="plus-lg"
       />
     </View>
@@ -47,8 +55,13 @@ const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
 
 const styles = StyleSheet.create({
   container: {
+    width: '90%',
+    alignSelf: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    gap: 5,
+  },
+  button: {
+    flex: 1,
   },
 });
 
