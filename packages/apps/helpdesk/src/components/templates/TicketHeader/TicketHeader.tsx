@@ -40,69 +40,40 @@ const TicketHeader = ({}) => {
   );
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.headerInfo}>
-        <View style={styles.textContainer}>
-          {!checkNullString(ticket.ticketSeq) && (
-            <Text writingType="title">{ticket.ticketSeq}</Text>
-          )}
-          {!checkNullString(ticket.subject) && <Text>{ticket.subject}</Text>}
-        </View>
-        <View style={styles.badgeContainer}>
-          <View style={styles.upperBadgesContainer}>
-            {!checkNullString(ticket.ticketStatus?.name) && (
-              <Badge title={ticket.ticketStatus?.name} color={colorStatus} />
-            )}
-            {!checkNullString(ticket.ticketType?.name) && (
-              <Badge title={ticket.ticketType?.name} color={colorType} />
-            )}
-          </View>
-          {ticket.prioritySelect !== null && (
-            <Badge
-              title={getItemTitle(
-                Ticket?.prioritySelect,
-                ticket.prioritySelect,
-              )}
-              color={getItemColor(
-                Ticket?.prioritySelect,
-                ticket.prioritySelect,
-              )}
-            />
-          )}
-        </View>
+    <View style={styles.container}>
+      {!checkNullString(ticket.ticketSeq) && (
+        <Text writingType="title">{ticket.ticketSeq}</Text>
+      )}
+      {!checkNullString(ticket.subject) && <Text>{ticket.subject}</Text>}
+      <View style={styles.badgeContainer}>
+        {!checkNullString(ticket.ticketStatus?.name) && (
+          <Badge title={ticket.ticketStatus?.name} color={colorStatus} />
+        )}
+        {!checkNullString(ticket.ticketType?.name) && (
+          <Badge title={ticket.ticketType?.name} color={colorType} />
+        )}
+        {ticket.prioritySelect !== null && (
+          <Badge
+            title={getItemTitle(Ticket?.prioritySelect, ticket.prioritySelect)}
+            color={getItemColor(Ticket?.prioritySelect, ticket.prioritySelect)}
+          />
+        )}
       </View>
-      <ProgressBar value={ticket.progressSelect} style={styles.progressBar} />
+      <ProgressBar value={ticket.progressSelect} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  container: {
     flexDirection: 'column',
     marginHorizontal: 16,
-  },
-  headerInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 2,
-  },
-  textContainer: {
-    width: '50%',
+    gap: 2,
   },
   badgeContainer: {
-    width: '50%',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  upperBadgesContainer: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
     alignItems: 'center',
-  },
-  progressBar: {
-    width: '100%',
   },
 });
 

@@ -39,9 +39,9 @@ const TicketStatusButton = ({}) => {
   const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
 
   const updateStatus = useCallback(
-    status => {
+    (status: any) => {
       dispatch(
-        updateTicketStatus({
+        (updateTicketStatus as any)({
           version: ticket?.version,
           dateTime: getNowDateZonesISOString(),
           targetStatus: status,
@@ -52,9 +52,7 @@ const TicketStatusButton = ({}) => {
     [dispatch, ticket],
   );
 
-  if (readonly) {
-    return null;
-  }
+  if (readonly) return null;
 
   if (ticket?.ticketStatus?.id === helpdeskConfig?.defaultTicketStatus?.id) {
     return (
