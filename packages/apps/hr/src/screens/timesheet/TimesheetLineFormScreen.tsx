@@ -27,15 +27,15 @@ import {
   updateTimesheetLine,
 } from '../../features/timesheetLineSlice';
 
-const TimesheetLineFormScreen = ({route, navigation}) => {
-  const {timesheetId, timesheetLine} = route?.params;
+const TimesheetLineFormScreen = ({route, navigation}: any) => {
+  const {timesheetId, timesheetLine} = route?.params ?? {};
 
   const {user} = useSelector(state => state.user);
 
   const createTimesheetLineAPI = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
-        createTimesheetLine({
+        (createTimesheetLine as any)({
           timesheetLine: {
             ...objectState,
             timesheetId,
@@ -54,9 +54,9 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
   );
 
   const updateTimesheetLineAPI = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
-        updateTimesheetLine({
+        (updateTimesheetLine as any)({
           timesheetId,
           timesheetLineId: objectState?.id,
           timesheetLine: {
@@ -99,6 +99,7 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
 
   return (
     <FormView
+      formKey="hr_TimesheetLine"
       defaultValue={defaultValue}
       creationDefaultValue={creationDefaultValue}
       defaultEditMode
@@ -124,7 +125,6 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
           },
         },
       ]}
-      formKey="hr_TimesheetLine"
     />
   );
 };

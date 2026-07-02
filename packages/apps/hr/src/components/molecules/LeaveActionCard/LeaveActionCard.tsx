@@ -16,32 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import React, {useCallback} from 'react';
+import {
+  useDispatch,
+  useNavigation,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
+import {sendLeave, validateLeave} from '../../../features/leaveSlice';
 import {useLeaveRequestRights} from '../../../hooks';
 import {LeaveCard} from '../../atoms';
 
 interface LeaveActionCardProps {
   mode: number;
   leave: any;
-  onPress: () => void;
-  onSend: () => void;
-  onValidate: () => void;
-  onEdit: () => void;
 }
 
-const LeaveActionCard = ({
-  mode,
-  leave,
-  onPress,
-  onSend,
-  onValidate,
-  onEdit,
-}: LeaveActionCardProps) => {
+const LeaveActionCard = ({mode, leave}: LeaveActionCardProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {LeaveRequest} = useTypes();
   const {canValidate, canEdit} = useLeaveRequestRights(leave);
+
+  const sendLeaveAPI = useCallback(() => {
+    dispatch(
+      (sendLeave as any)({
+        leaveRequestId: leave.id,
+        version: leave.version,
+      }),
+    );
+  }, [dispatch, leave]);
+
+  const validateLeaveAPI = useCallback(() => {
+    dispatch(
+      (validateLeave as any)({
+        leaveRequestId: leave.id,
+        version: leave.version,
+      }),
+    );
+  }, [dispatch, leave]);
 
   return (
     <ActionCard
@@ -52,19 +67,20 @@ const LeaveActionCard = ({
               {
                 iconName: 'send-fill',
                 helper: I18n.t('Hr_Send'),
-                onPress: onSend,
+                onPress: sendLeaveAPI,
                 hidden: leave.statusSelect !== LeaveRequest?.statusSelect.Draft,
               },
               {
                 iconName: 'pencil-fill',
                 helper: I18n.t('Hr_Edit'),
-                onPress: onEdit,
+                onPress: () =>
+                  navigation.navigate('LeaveFormScreen', {leaveId: leave.id}),
                 hidden: !canEdit,
               },
               {
                 iconName: 'check-lg',
                 helper: I18n.t('Hr_Validate'),
-                onPress: onValidate,
+                onPress: validateLeaveAPI,
                 hidden: !canValidate,
               },
             ]
@@ -81,7 +97,9 @@ const LeaveActionCard = ({
         reason={leave.leaveReason?.name}
         company={leave.company?.name}
         employee={leave.employee?.name}
-        onPress={onPress}
+        onPress={() =>
+          navigation.navigate('LeaveDetailsScreen', {leaveId: leave.id})
+        }
       />
     </ActionCard>
   );

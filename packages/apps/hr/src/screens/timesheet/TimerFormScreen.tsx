@@ -32,11 +32,10 @@ import {
   updateTimer,
 } from '../../features/timerSlice';
 
-const TimerFormScreen = ({route}) => {
-  const isCreation = route?.params?.isCreation;
-  const idTimerToUpdate = route?.params?.idTimerToUpdate;
+const TimerFormScreen = ({route}: any) => {
+  const {isCreation, idTimerToUpdate} = route?.params ?? {};
   const isFocused = useIsFocused();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {setActivityIndicator} = useConfig();
 
   const [creation, setCreation] = useState(isCreation ?? false);
@@ -48,13 +47,15 @@ const TimerFormScreen = ({route}) => {
   useEffect(() => {
     if (isFocused) {
       if (!timesheetConfig?.isMultipleTimerEnabled) {
-        dispatch(fetchActiveTimer({userId: user?.id})).then(res => {
-          setCreation(!res?.payload);
-        });
+        dispatch((fetchActiveTimer as any)({userId: user?.id})).then(
+          (res: any) => {
+            setCreation(!res?.payload);
+          },
+        );
       } else if (!creation && !loadingCreation) {
         idTimerToUpdate
-          ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
-          : dispatch(fetchActiveTimer({userId: user?.id}));
+          ? dispatch((fetchTimerById as any)({timerId: idTimerToUpdate}))
+          : dispatch((fetchActiveTimer as any)({userId: user?.id}));
       }
     }
   }, [
@@ -87,11 +88,7 @@ const TimerFormScreen = ({route}) => {
     () => ({
       startDateTime: new Date().toISOString(),
       product: user?.employee?.product,
-      stopwatch: {
-        onCreation: () => {
-          setCreation(false);
-        },
-      },
+      stopwatch: {onCreation: () => setCreation(false)},
     }),
     [user?.employee?.product],
   );
@@ -117,7 +114,7 @@ const TimerFormScreen = ({route}) => {
       : null;
   }, [creation, timer]);
 
-  const fieldsComparison = objectState => {
+  const fieldsComparison = (objectState: any) => {
     return (
       objectState.startDateTime === timer.startDateTime &&
       objectState.project?.id === timer.project?.id &&
@@ -129,19 +126,21 @@ const TimerFormScreen = ({route}) => {
   };
 
   const updateTimerAPI = useCallback(
-    objectState => {
-      const _timer = {
-        id: timer.id,
-        version: timer.version,
-        startDateTime: objectState.startDateTime,
-        projectId: objectState.project?.id,
-        projectTaskId: objectState.projectTask?.id,
-        productId: objectState.product?.id,
-        duration: objectState.updatedDuration,
-        comments: objectState.comments,
-      };
-
-      dispatch(updateTimer({timer: _timer}));
+    (objectState: any) => {
+      dispatch(
+        (updateTimer as any)({
+          timer: {
+            id: timer.id,
+            version: timer.version,
+            startDateTime: objectState.startDateTime,
+            projectId: objectState.project?.id,
+            projectTaskId: objectState.projectTask?.id,
+            productId: objectState.product?.id,
+            duration: objectState.updatedDuration,
+            comments: objectState.comments,
+          },
+        }),
+      );
     },
     [dispatch, timer],
   );

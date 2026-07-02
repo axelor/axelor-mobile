@@ -18,9 +18,9 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {Text} from '../../atoms';
 import {Color, useThemeColor} from '../../../theme';
 import {checkNullString} from '../../../utils';
+import {Text} from '../../atoms';
 
 interface TextUnitProps {
   title?: string;
@@ -38,14 +38,14 @@ const TextUnit = ({
   value,
   unit,
   color,
-  fontSize = 22,
+  fontSize = 16,
   style,
   numberOfLines,
   defaultColor = false,
 }: TextUnitProps) => {
   const Colors = useThemeColor();
 
-  const _color = useMemo(() => color || Colors.primaryColor, [color, Colors]);
+  const _color = useMemo(() => color ?? Colors.primaryColor, [color, Colors]);
 
   const _title = useMemo(
     () => !checkNullString(title) && `${title} : `,

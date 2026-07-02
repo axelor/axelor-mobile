@@ -30,7 +30,7 @@ interface ProjectTaskSearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: string;
-  onChange?: (any: any) => void;
+  onChange?: (_v?: any) => void;
   readonly?: boolean;
   required?: boolean;
   isAssignedToRequired?: boolean;
@@ -38,10 +38,10 @@ interface ProjectTaskSearchBarProps {
 }
 
 const ProjectTaskSearchBarAux = ({
-  style = null,
+  style,
   title = 'Hr_ProjectTask',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   isAssignedToRequired = false,
@@ -60,7 +60,7 @@ const ProjectTaskSearchBarAux = ({
   } = useSelector((state: any) => state.hr_project);
 
   const searchProjectTaskAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
         (searchProjectTask as any)({
           page,
@@ -98,28 +98,8 @@ const ProjectTaskSearchBarAux = ({
   );
 };
 
-const ProjectTaskSearchBar = ({
-  style = null,
-  title = 'Hr_ProjectTask',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  isAssignedToRequired = false,
-  isMemberRequired = false,
-}: ProjectTaskSearchBarProps) => {
-  return (
-    <ProjectTaskSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-      isAssignedToRequired={isAssignedToRequired}
-      isMemberRequired={isMemberRequired}
-    />
-  );
+const ProjectTaskSearchBar = (props: ProjectTaskSearchBarProps) => {
+  return <ProjectTaskSearchBarAux {...props} />;
 };
 
 export default ProjectTaskSearchBar;

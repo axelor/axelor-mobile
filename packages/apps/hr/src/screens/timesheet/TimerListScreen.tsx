@@ -37,7 +37,7 @@ import {formatSecondsToHours} from '../../utils';
 import {getNumberTimerByDateApi} from '../../api';
 import {Time} from '../../types';
 
-const TimerListScreen = ({navigation}) => {
+const TimerListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {activeFilter} = useActiveFilter();
@@ -47,16 +47,14 @@ const TimerListScreen = ({navigation}) => {
 
   const [isAlertVisible, setIsAlertVisible] = useState(false);
 
+  const {userId} = useSelector(state => state.auth);
   const {timerList, loadingTimer, moreLoading, isListEnd} = useSelector(
     state => state.hr_timer,
   );
-  const {userId} = useSelector(state => state.auth);
 
   const fetchTimerAPI = useCallback(
     (page = 0) => {
-      dispatch(
-        fetchTimer({userId: userId, page: page, filterDomain: activeFilter}),
-      );
+      dispatch((fetchTimer as any)({userId, page, filterDomain: activeFilter}));
     },
     [activeFilter, dispatch, userId],
   );
@@ -79,13 +77,11 @@ const TimerListScreen = ({navigation}) => {
             durationUnit="hours"
             canEdit={!readonly}
             onEdit={() =>
-              navigation.navigate('TimerFormScreen', {
-                idTimerToUpdate: item.id,
-              })
+              navigation.navigate('TimerFormScreen', {idTimerToUpdate: item.id})
             }
             showTrash={canDelete}
             onDelete={() =>
-              dispatch(deleteTimer({timerId: item.id, userId: userId}))
+              dispatch((deleteTimer as any)({timerId: item.id, userId}))
             }
           />
         )}
@@ -101,7 +97,7 @@ const TimerListScreen = ({navigation}) => {
           title: ISODateTimeToDate(currentItem.startDateTime),
         })}
         customTopSeparator={
-          <DateSeparator fetchNumberOfItems={getNumberTimerByDateApi} />
+          <DateSeparator fetchNumberOfItems={getNumberTimerByDateApi as any} />
         }
       />
       <TimerListAlert

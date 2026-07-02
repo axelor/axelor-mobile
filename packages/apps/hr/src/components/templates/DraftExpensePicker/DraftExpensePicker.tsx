@@ -21,13 +21,25 @@ import {Picker} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {searchExpenseDraft} from '../../../features/expenseSlice';
 
+interface DraftExpensePickerProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange: (_v?: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  manageTimeSpent?: boolean;
+  isMemberRequired?: boolean;
+  inProgress?: boolean;
+}
+
 const DraftExpensePickerAux = ({
   title = 'Hr_Expense',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
-}) => {
+}: DraftExpensePickerProps) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
@@ -36,7 +48,10 @@ const DraftExpensePickerAux = ({
 
   useEffect(() => {
     dispatch(
-      searchExpenseDraft({userId: user?.id, companyId: user.activeCompany?.id}),
+      (searchExpenseDraft as any)({
+        userId: user?.id,
+        companyId: user.activeCompany?.id,
+      }),
     );
   }, [dispatch, user.activeCompany?.id, user?.id]);
 
@@ -56,22 +71,8 @@ const DraftExpensePickerAux = ({
   );
 };
 
-const DraftExpensePicker = ({
-  title,
-  defaultValue,
-  onChange,
-  readonly,
-  required,
-}) => {
-  return (
-    <DraftExpensePickerAux
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const DraftExpensePicker = (props: DraftExpensePickerProps) => {
+  return <DraftExpensePickerAux {...props} />;
 };
 
 export default DraftExpensePicker;

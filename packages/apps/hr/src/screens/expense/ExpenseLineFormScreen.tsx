@@ -32,7 +32,7 @@ import {ExpenseLine as ExpenseLineType} from '../../types';
 import {updateExpenseDate} from '../../features/kilometricAllowParamSlice';
 import {resetDistance} from '../../features/distanceSlice';
 
-const ExpenseLineFormScreen = ({route, navigation}) => {
+const ExpenseLineFormScreen = ({route, navigation}: any) => {
   const {
     expenseLine,
     idExpense,
@@ -51,27 +51,25 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   }, [_dispatch]);
 
   const createExpenseLineAPI = useCallback(
-    (state, dispatch) => {
-      const dataToSend = {
-        ...state,
-        projectId: state.project?.id,
-        projectTaskId: state.projectTask?.id,
-        expenseProductId: state.expenseProduct?.id,
-        invitedCollaboratorList: state.invitedCollaboratorSet?.map(
-          employee => employee.id,
-        ),
-        employeeId: user?.employee?.id,
-        currencyId: state.currency?.id,
-        justificationFileId: state.justificationMetaFile?.id,
-        kilometricAllowParamId: state.kilometricAllowParam?.id,
-        kilometricTypeSelect: state.kilometricTypeSelect,
-        expenseLineType: state.manageMode,
-        companyId: user?.activeCompany?.id,
-      };
-
+    (state: any, dispatch: any) => {
       dispatch(
-        createExpenseLine({
-          expenseLine: dataToSend,
+        (createExpenseLine as any)({
+          expenseLine: {
+            ...state,
+            projectId: state.project?.id,
+            projectTaskId: state.projectTask?.id,
+            expenseProductId: state.expenseProduct?.id,
+            invitedCollaboratorList: state.invitedCollaboratorSet?.map(
+              (_e: any) => _e.id,
+            ),
+            employeeId: user?.employee?.id,
+            currencyId: state.currency?.id,
+            justificationFileId: state.justificationMetaFile?.id,
+            kilometricAllowParamId: state.kilometricAllowParam?.id,
+            kilometricTypeSelect: state.kilometricTypeSelect,
+            expenseLineType: state.manageMode,
+            companyId: user?.activeCompany?.id,
+          },
           idExpense: idExpense,
           versionExpense: versionExpense,
           userId: user?.id,
@@ -91,33 +89,32 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   );
 
   const updateExpenseLineAPI = useCallback(
-    (state, dispatch) => {
+    (state: any, dispatch: any) => {
       const mode = ExpenseLineType.getExpenseMode(expenseLine);
 
-      const dataToSend = {
-        ...state,
-        expenseId: state.expense?.id === idExpense ? null : state.expense?.id,
-        projectId: state.project?.id,
-        projectTaskId: state.projectTask?.id,
-        expenseProductId: state.expenseProduct?.id,
-        invitedCollaboratorList: state.invitedCollaboratorSet?.map(
-          employee => employee.id,
-        ),
-        employeeId: user?.employee?.id,
-        currencyId: state.currency?.id,
-        justificationFileId:
-          mode === ExpenseLineType.modes.general
-            ? state.justificationMetaFile?.id
-            : null,
-        kilometricAllowParamId: state.kilometricAllowParam?.id,
-        kilometricTypeSelect: state.kilometricTypeSelect,
-        expenseLineType: state.manageMode,
-        companyId: user?.activeCompany?.id,
-      };
-
       dispatch(
-        updateExpenseLine({
-          expenseLine: dataToSend,
+        (updateExpenseLine as any)({
+          expenseLine: {
+            ...state,
+            expenseId:
+              state.expense?.id === idExpense ? null : state.expense?.id,
+            projectId: state.project?.id,
+            projectTaskId: state.projectTask?.id,
+            expenseProductId: state.expenseProduct?.id,
+            invitedCollaboratorList: state.invitedCollaboratorSet?.map(
+              (_e: any) => _e.id,
+            ),
+            employeeId: user?.employee?.id,
+            currencyId: state.currency?.id,
+            justificationFileId:
+              mode === ExpenseLineType.modes.general
+                ? state.justificationMetaFile?.id
+                : null,
+            kilometricAllowParamId: state.kilometricAllowParam?.id,
+            kilometricTypeSelect: state.kilometricTypeSelect,
+            expenseLineType: state.manageMode,
+            companyId: user?.activeCompany?.id,
+          },
           expenseId: idExpense,
           mode: mode,
           userId: user?.id,

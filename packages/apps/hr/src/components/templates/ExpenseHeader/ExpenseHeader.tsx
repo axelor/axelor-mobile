@@ -26,8 +26,14 @@ import {
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {useTotalCurrency} from '../../../hooks';
+import ExpenseLineSwitchAdd from '../ExpenseLineSwitchAdd/ExpenseLineSwitchAdd';
 
-const ExpenseHeader = ({}) => {
+interface ExpenseHeaderProps {
+  mode: string;
+  onChangeSwicth: (mode: any) => void;
+}
+
+const ExpenseHeader = ({mode, onChangeSwicth}: ExpenseHeaderProps) => {
   const I18n = useTranslator();
   const {Expense} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
@@ -48,19 +54,19 @@ const ExpenseHeader = ({}) => {
   );
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.headerChildrenContainer}>
-        <View>
+    <View style={styles.container}>
+      <View style={styles.rowContainer}>
+        <View style={styles.columnContainer}>
           <Text writingType="title">
             {`${I18n.t('Hr_ExpenseNumber')} ${expense.expenseSeq} `}
           </Text>
+          <Text>{`${I18n.t('Hr_TotalATI')}: ${renderTotal(expenseTotal)}${displayCompanyCurrency ? renderTotal(companyTotal, _s => ` (${_s})`) : ''}`}</Text>
         </View>
         <Badge
           color={getItemColor(Expense?.statusSelect, expense.statusSelect)}
           title={getItemTitle(Expense?.statusSelect, expense.statusSelect)}
         />
       </View>
-      <Text>{`${I18n.t('Hr_TotalATI')}: ${renderTotal(expenseTotal)}${displayCompanyCurrency ? renderTotal(companyTotal, _s => ` (${_s})`) : ''}`}</Text>
       {expense.statusSelect === Expense?.statusSelect.Refused &&
         !checkNullString(expense?.groundForRefusal) && (
           <Label
@@ -70,17 +76,25 @@ const ExpenseHeader = ({}) => {
             type="error"
           />
         )}
+      <ExpenseLineSwitchAdd mode={mode} onChangeSwicth={onChangeSwicth} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    marginHorizontal: 24,
+  container: {
+    marginHorizontal: 16,
+    flexDirection: 'column',
   },
-  headerChildrenContainer: {
+  rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 5,
+  },
+  columnContainer: {
+    flexDirection: 'column',
+    gap: 2,
+    flex: 1,
   },
 });
 

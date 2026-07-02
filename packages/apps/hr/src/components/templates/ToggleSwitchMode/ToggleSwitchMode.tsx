@@ -21,12 +21,19 @@ import {RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
+interface ToggleSwitchModeProps {
+  style?: any;
+  defaultValue?: string;
+  onChange?: (_v?: any) => void;
+  readonly?: boolean;
+}
+
 const ToggleSwitchModeAux = ({
-  style = null,
+  style,
   defaultValue = ExpenseLine.modes.general,
-  onChange = () => {},
+  onChange,
   readonly = false,
-}) => {
+}: ToggleSwitchModeProps) => {
   const I18n = useTranslator();
 
   const [, setMode] = useState(defaultValue);
@@ -40,7 +47,7 @@ const ToggleSwitchModeAux = ({
         {id: ExpenseLine.modes.kilometric, title: I18n.t('Hr_Kilometric')},
       ]}
       onChange={_mode => {
-        onChange(_mode);
+        onChange?.(_mode);
         setMode(_mode);
       }}
       readonly={readonly}
@@ -48,20 +55,8 @@ const ToggleSwitchModeAux = ({
   );
 };
 
-const ToggleSwitchMode = ({
-  style = null,
-  defaultValue = ExpenseLine.modes.general,
-  onChange = () => {},
-  readonly = false,
-}) => {
-  return (
-    <ToggleSwitchModeAux
-      style={style}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-    />
-  );
+const ToggleSwitchMode = (props: ToggleSwitchModeProps) => {
+  return <ToggleSwitchModeAux {...props} />;
 };
 
 export default ToggleSwitchMode;

@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {Button} from '../../molecules';
 import {Color} from '../../../theme';
+import {Button} from '../../molecules';
 
 const BUTTON_SIZE = 50;
 
@@ -44,9 +44,9 @@ const CircleButton = ({
   isNeutralBackground = false,
   iconName,
   style,
-  onPress = () => {},
+  onPress,
   disabled = false,
-  onDisabledPress = null,
+  onDisabledPress,
 }: CircleButtonProps) => {
   const styles = useMemo(() => {
     return getStyles(size, square);

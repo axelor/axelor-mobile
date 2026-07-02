@@ -16,30 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   SearchListView,
-  useDispatch,
-  useNavigation,
   useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {LeaveActionCard, LeaveFilters} from '../../components';
-import {
-  fetchLeave,
-  fetchLeaveToValidate,
-  sendLeave,
-  validateLeave,
-} from '../../features/leaveSlice';
+import {fetchLeave, fetchLeaveToValidate} from '../../features/leaveSlice';
 import {Leave} from '../../types';
 
 const LeaveListScreen = ({route}: any) => {
   const {leaveIds} = route?.params ?? {};
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const I18n = useTranslator();
 
   const [mode, setMode] = useState(Leave.mode.myLeaves);
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>();
 
   const {user} = useSelector(state => state.user);
   const {
@@ -53,44 +46,15 @@ const LeaveListScreen = ({route}: any) => {
     leaveToValidateList,
   } = useSelector(state => state.hr_leave);
 
-  const getActionParams = useCallback(
-    (item: any) => ({
-      leaveRequestId: item.id,
-      version: item.version,
+  const sliceFunctionData = useMemo(
+    () => ({
+      user,
       userId: user?.id,
-      user: user,
-      selectedStatus,
       leaveIds,
       companyId: user.activeCompany?.id,
+      selectedStatus,
     }),
     [leaveIds, selectedStatus, user],
-  );
-
-  const sendLeaveAPI = useCallback(
-    (item: any) => {
-      dispatch((sendLeave as any)(getActionParams(item)));
-    },
-    [dispatch, getActionParams],
-  );
-
-  const validateLeaveApi = useCallback(
-    (item: any) => {
-      dispatch((validateLeave as any)(getActionParams(item)));
-    },
-    [dispatch, getActionParams],
-  );
-
-  const sliceFunctionData = useMemo(
-    () =>
-      mode === Leave.mode.myLeaves
-        ? {
-            userId: user?.id,
-            selectedStatus,
-            leaveIds,
-            companyId: user.activeCompany?.id,
-          }
-        : {user, companyId: user.activeCompany?.id},
-    [leaveIds, mode, selectedStatus, user],
   );
 
   const listToDisplay = useMemo(() => {
@@ -124,36 +88,26 @@ const LeaveListScreen = ({route}: any) => {
   ]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
-        list={listToDisplay.list}
-        loading={listToDisplay.loading}
-        moreLoading={listToDisplay.moreLoading}
-        isListEnd={listToDisplay.isListEnd}
-        sliceFunction={listToDisplay.sliceFunction}
-        sliceFunctionData={sliceFunctionData}
-        displaySearchBar={false}
         expandableFilter={false}
-        fixedItems={
+        topFixedItems={
           <LeaveFilters
             mode={mode}
             onChangeMode={setMode}
             onChangeStatus={setSelectedStatus}
           />
         }
+        displaySearchBar={mode === Leave.mode.leavesToValidate}
+        searchPlaceholder={I18n.t('Hr_Employee')}
+        loading={listToDisplay.loading}
+        moreLoading={listToDisplay.moreLoading}
+        isListEnd={listToDisplay.isListEnd}
+        list={listToDisplay.list}
+        sliceFunction={listToDisplay.sliceFunction}
+        sliceFunctionData={sliceFunctionData}
         renderListItem={({item}) => (
-          <LeaveActionCard
-            mode={mode}
-            leave={item}
-            onPress={() =>
-              navigation.navigate('LeaveDetailsScreen', {leaveId: item.id})
-            }
-            onEdit={() =>
-              navigation.navigate('LeaveFormScreen', {leaveId: item.id})
-            }
-            onSend={() => sendLeaveAPI(item)}
-            onValidate={() => validateLeaveApi(item)}
-          />
+          <LeaveActionCard mode={mode} leave={item} />
         )}
       />
     </Screen>
