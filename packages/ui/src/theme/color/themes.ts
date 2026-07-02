@@ -37,7 +37,7 @@ export const lightTheme: Theme = {
       background: '#6B7B73',
     },
     secondaryColor_dark: {
-      background_light: '#606060',
+      background_light: '#c5c3c3',
       foreground: '#FFFFFF',
       background: '#424242',
     },

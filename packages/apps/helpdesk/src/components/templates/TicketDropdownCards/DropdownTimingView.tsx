@@ -30,10 +30,15 @@ const DropdownTimingView = ({
   startDateT,
   endDateT,
   duration,
+}: {
+  deadlineDateT?: string;
+  startDateT?: string;
+  endDateT?: string;
+  duration?: number;
 }) => {
   const I18n = useTranslator();
 
-  const formatDateTime = (titleKey, value) => {
+  const formatDateTime = (titleKey: string, value?: string) => {
     return (
       <LabelText
         title={I18n.t(titleKey)}

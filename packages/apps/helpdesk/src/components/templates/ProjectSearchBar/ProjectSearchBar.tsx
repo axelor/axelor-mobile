@@ -22,18 +22,29 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
+interface ProjectSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+}
+
 const ProjectSearchBar = ({
-  style = null,
+  style,
   title = 'Helpdesk_Project',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
-}) => {
+}: ProjectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -43,9 +54,13 @@ const ProjectSearchBar = ({
   const {user} = useSelector(state => state.user);
 
   const searchProjectAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
-        searchProject({page, searchValue, companyId: user.activeCompany?.id}),
+        (searchProject as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
       );
     },
     [dispatch, user.activeCompany?.id],
@@ -68,7 +83,6 @@ const ProjectSearchBar = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );

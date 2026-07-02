@@ -24,26 +24,29 @@ import {
   useTranslator,
   useTypes,
   useTypeHelpers,
+  useNavigation,
 } from '@axelor/aos-mobile-core';
 
 interface TicketCardProps {
   style?: any;
+  id: number;
   ticketSeq: string;
   subject: string;
   progressSelect: number;
   duration: number;
   deadlineDateT: string;
-  responsibleUser: string;
-  assignedToUser: string;
+  responsibleUser: any;
+  assignedToUser: any;
   prioritySelect: number;
   allTicketStatus: any[];
   ticketStatus: any;
   allTicketType?: any;
   ticketType?: any;
-  onPress: () => void;
+  showAssigned?: boolean;
 }
 const TicketCard = ({
   style,
+  id,
   ticketSeq,
   subject,
   progressSelect,
@@ -56,9 +59,10 @@ const TicketCard = ({
   ticketStatus,
   allTicketType,
   ticketType,
-  onPress,
+  showAssigned = false,
 }: TicketCardProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const {Ticket} = useTypes();
   const {getItemColor, getItemColorFromIndex} = useTypeHelpers();
 
@@ -78,8 +82,9 @@ const TicketCard = ({
         getItemColor(Ticket?.prioritySelect, prioritySelect)?.background
       }
       style={style}
-      onPress={onPress}
-      sideBadges={{
+      onPress={() => navigation.navigate('TicketDetailsScreen', {idTicket: id})}
+      upperBadges={{
+        fixedOnRightSide: true,
         items: [
           {
             displayText: ticketStatus?.name,
@@ -122,14 +127,14 @@ const TicketCard = ({
             iconName: 'calendar-x',
           },
           {
-            hideIf: checkNullString(responsibleUser),
+            hideIf: checkNullString(responsibleUser?.fullName),
             displayText: `${I18n.t(
               'Helpdesk_User_In_Charge',
-            )}: ${responsibleUser}`,
+            )}: ${responsibleUser?.fullName}`,
           },
           {
-            hideIf: checkNullString(assignedToUser),
-            displayText: `${I18n.t('Helpdesk_Assigned_To')}: ${assignedToUser}`,
+            hideIf: !showAssigned || checkNullString(assignedToUser?.fullName),
+            displayText: `${I18n.t('Helpdesk_Assigned_To')}: ${assignedToUser?.fullName}`,
           },
         ],
       }}

@@ -32,8 +32,8 @@ import {
   TicketStopwatch,
 } from '../components';
 
-const TicketDetailsScreen = ({route}) => {
-  const {idTicket} = route.params;
+const TicketDetailsScreen = ({route}: any) => {
+  const {idTicket} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -41,16 +41,14 @@ const TicketDetailsScreen = ({route}) => {
   const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
 
   const fetchTicket = useCallback(() => {
-    dispatch(fetchTicketById({ticketId: idTicket}));
+    dispatch((fetchTicketById as any)({ticketId: idTicket}));
   }, [dispatch, idTicket]);
 
   useEffect(() => {
     fetchTicket();
   }, [fetchTicket]);
 
-  if (ticket?.id !== idTicket) {
-    return null;
-  }
+  if (ticket?.id !== idTicket) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>

@@ -57,23 +57,25 @@ const TicketStopwatch = ({}) => {
   const {timer, timerHistory} = useSelector(state => state.helpdesk_timer);
   const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
 
-  const [timerStatus, setTimerStatus] = useState(DEFAULT_STATUS);
+  const [timerStatus, setTimerStatus] = useState<number | undefined>(
+    DEFAULT_STATUS,
+  );
   const [time, setTime] = useState(DEFAULT_TIME);
 
   useEffect(() => {
     if (ticket?.timerList?.length > 0) {
-      dispatch(fetchTimerById({timerId: ticket?.timerList[0]?.id}));
+      dispatch((fetchTimerById as any)({timerId: ticket?.timerList[0]?.id}));
     } else {
       dispatch(clearTimer());
     }
   }, [dispatch, ticket?.timerList]);
 
   useEffect(() => {
-    dispatch(searchTimerHistoryById({idTimer: timer?.id}));
+    dispatch((searchTimerHistoryById as any)({idTimer: timer?.id}));
   }, [dispatch, timer]);
 
   const getTimerStatus = useCallback(
-    (ticketStatus, timerState) => {
+    (ticketStatus: any, timerState: number) => {
       if (ticketStatus?.id === helpdeskConfig?.defaultTicketStatus?.id) {
         return StopwatchType.status.Ready;
       }
@@ -114,7 +116,7 @@ const TicketStopwatch = ({}) => {
     setTimerStatus(status);
     setTime(_time);
 
-    return {status, _time};
+    return {status, time: _time};
   }, [getTimerStatus, ticket, timer, timerHistory]);
 
   useEffect(() => {
@@ -148,9 +150,9 @@ const TicketStopwatch = ({}) => {
   );
 
   const updateStatus = useCallback(
-    status => {
+    (status: any) => {
       dispatch(
-        updateTicketStatus({
+        (updateTicketStatus as any)({
           version: ticket?.version,
           dateTime: getNowDateZonesISOString(),
           targetStatus: status,
@@ -168,8 +170,8 @@ const TicketStopwatch = ({}) => {
       ) : (
         <Stopwatch
           startTime={time}
-          status={timerStatus}
-          getTimerState={getTimerState}
+          status={timerStatus!}
+          getTimerState={getTimerState as any}
           timerFormat={I18n.t('Stopwatch_TimerFormat')}
           disableStop={timerStatus === StopwatchType.status.Paused}
           onPlay={() => updateStatus(Ticket.stopWatchStatus.start)}

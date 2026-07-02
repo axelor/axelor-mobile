@@ -20,6 +20,7 @@ export {default as ContactPartnerSearchBar} from './ContactPartnerSearchBar/Cont
 export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdownCards';
+export {default as TicketListScreenTemplate} from './TicketListScreenTemplate/TicketListScreenTemplate';
 export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
 export {default as TicketHeader} from './TicketHeader/TicketHeader';
 export {default as TicketPriorityPicker} from './TicketPriorityPicker/TicketPriorityPicker';
