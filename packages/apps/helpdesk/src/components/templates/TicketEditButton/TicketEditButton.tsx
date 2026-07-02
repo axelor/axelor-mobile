@@ -21,25 +21,19 @@ import {StyleSheet} from 'react-native';
 import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
 import {CircleButton} from '@axelor/aos-mobile-ui';
 
-const TicketEditButton = ({idTicket}) => {
+const TicketEditButton = ({idTicket}: {idTicket: number}) => {
   const navigation = useNavigation();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.helpdesk.db.Ticket',
   });
 
-  if (readonly) {
-    return null;
-  }
+  if (readonly) return null;
 
   return (
     <CircleButton
       style={styles.floatingButton}
       iconName="pencil-fill"
-      onPress={() =>
-        navigation.navigate('TicketFormScreen', {
-          idTicket: idTicket,
-        })
-      }
+      onPress={() => navigation.navigate('TicketFormScreen', {idTicket})}
     />
   );
 };

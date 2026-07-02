@@ -22,19 +22,31 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCustomer} from '../../../features/customerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
+interface CustomerSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  showTitle?: boolean;
+}
+
 const CustomerSearchBar = ({
-  style = null,
+  style,
   title = 'Helpdesk_CustomPartner',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   required = false,
   readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = true,
-}) => {
+}: CustomerSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -44,9 +56,13 @@ const CustomerSearchBar = ({
   const {user} = useSelector(state => state.user);
 
   const searchCustomerAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
-        searchCustomer({page, searchValue, companyId: user.activeCompany?.id}),
+        (searchCustomer as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
       );
     },
     [dispatch, user.activeCompany?.id],
@@ -54,7 +70,7 @@ const CustomerSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(title)}
+      title={showTitle ? I18n.t(title) : undefined}
       objectList={customerList}
       value={defaultValue}
       required={required}
@@ -69,7 +85,6 @@ const CustomerSearchBar = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );

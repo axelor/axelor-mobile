@@ -27,6 +27,12 @@ const DropdownGeneralView = ({
   contactPartner,
   assignedToUser,
   responsibleUser,
+}: {
+  project?: string;
+  customerPartner?: string;
+  contactPartner?: string;
+  assignedToUser?: string;
+  responsibleUser?: string;
 }) => {
   const I18n = useTranslator();
 

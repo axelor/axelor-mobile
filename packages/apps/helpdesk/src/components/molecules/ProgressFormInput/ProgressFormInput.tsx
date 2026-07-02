@@ -21,33 +21,34 @@ import {FormIncrementInput} from '@axelor/aos-mobile-ui';
 
 interface ProgressFormInputProps {
   style?: any;
-  title: string;
+  title?: string;
   defaultValue?: number;
   required?: boolean;
   readonly?: boolean;
-  onChange: (value: any) => void;
+  onChange?: (_v?: any) => void;
 }
 
 const ProgressFormInput = ({
   style,
-  title,
-  defaultValue = null,
+  title = 'Helpdesk_Progress',
+  defaultValue,
   required = false,
   readonly = false,
   onChange,
 }: ProgressFormInputProps) => {
-  const round = useCallback(value => {
-    return Math.round(value / 10) * 10;
-  }, []);
+  const round = useCallback((value: number) => Math.round(value / 10) * 10, []);
 
   const _defaultValue = useMemo(
-    () => round(defaultValue).toString(),
+    () => round(defaultValue ?? 0).toString(),
     [defaultValue, round],
   );
 
-  const onChangeValue = value => {
-    onChange(round(value));
-  };
+  const onChangeValue = useCallback(
+    (value?: number) => {
+      onChange?.(round(value ?? 0));
+    },
+    [onChange, round],
+  );
 
   return (
     <FormIncrementInput

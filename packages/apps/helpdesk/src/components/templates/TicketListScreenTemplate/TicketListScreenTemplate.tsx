@@ -28,39 +28,48 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
-  fetchMyTeamTickets,
   fetchTicketStatus,
   fetchTicketType,
-} from '../features/ticketSlice';
-import {TicketCard} from '../components';
+} from '../../../features/ticketSlice';
+import {TicketCard} from '../../molecules';
 
-const MyTeamTicketListScreen = ({navigation}) => {
+interface TicketListScreenTemplateProps {
+  list: any[];
+  loading: boolean;
+  moreLoading: boolean;
+  isListEnd: boolean;
+  sliceFunction: (...args: any[]) => any;
+  sliceFunctionData?: object;
+  showAssigned?: boolean;
+}
+
+const displayItemTicketSeq = (item: any) => item.ticketSeq;
+
+const TicketListScreenTemplate = ({
+  list,
+  loading,
+  moreLoading,
+  isListEnd,
+  sliceFunction,
+  sliceFunctionData,
+  showAssigned,
+}: TicketListScreenTemplateProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {Ticket} = useTypes();
   const {getCustomSelectionItems, getSelectionItems} = useTypeHelpers();
 
-  const {user} = useSelector(state => state.user);
-  const {
-    myTeamTicketList,
-    loadingMyTeamTicket,
-    moreMoadingMyTeamTicket,
-    isListEndMyTeamTicket,
-    ticketTypeList,
-    ticketStatusList,
-  } = useSelector(state => state.ticket);
+  const {ticketTypeList, ticketStatusList} = useSelector(state => state.ticket);
 
-  const [selectedType, setSelectedType] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [selectedPriority, setSelectedPriority] = useState(
+  const [selectedType, setSelectedType] = useState<any[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [selectedPriority, setSelectedPriority] = useState<any[]>(
     getSelectionItems(Ticket?.prioritySelect).filter(({value}) =>
       [Ticket?.prioritySelect.High, Ticket?.prioritySelect.Urgent].includes(
         value,
       ),
     ),
   );
-
-  const displayItemTicketSeq = item => item.ticketSeq;
 
   useEffect(() => {
     dispatch(fetchTicketType());
@@ -77,14 +86,14 @@ const MyTeamTicketListScreen = ({navigation}) => {
     [getCustomSelectionItems, ticketStatusList],
   );
 
-  const sliceFunctionData = useMemo(
+  const fullSliceFunctionData = useMemo(
     () => ({
-      userTeam: user.activeTeam,
+      ...sliceFunctionData,
       statusList: selectedStatus,
       typeList: selectedType,
       priorityList: selectedPriority,
     }),
-    [selectedPriority, selectedStatus, selectedType, user.activeTeam],
+    [sliceFunctionData, selectedStatus, selectedType, selectedPriority],
   );
 
   const priorityList = useMemo(
@@ -95,12 +104,12 @@ const MyTeamTicketListScreen = ({navigation}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
-        list={myTeamTicketList}
-        loading={loadingMyTeamTicket}
-        moreLoading={moreMoadingMyTeamTicket}
-        isListEnd={isListEndMyTeamTicket}
-        sliceFunction={fetchMyTeamTickets}
-        sliceFunctionData={sliceFunctionData}
+        list={list}
+        loading={loading}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={sliceFunction}
+        sliceFunctionData={fullSliceFunctionData}
         displaySearchValue={displayItemTicketSeq}
         searchPlaceholder={I18n.t('Helpdesk_Ticket')}
         chipComponent={
@@ -113,37 +122,26 @@ const MyTeamTicketListScreen = ({navigation}) => {
         headerChildren={
           <View style={styles.headerContainer}>
             <MultiValuePicker
+              style={styles.picker}
               listItems={ticketStatusListItems}
               placeholder={I18n.t('Helpdesk_Status')}
-              onValueChange={statusList => setSelectedStatus(statusList)}
+              onValueChange={setSelectedStatus}
             />
             <MultiValuePicker
+              style={styles.picker}
               listItems={ticketTypeListItems}
               placeholder={I18n.t('Helpdesk_Type')}
-              onValueChange={typeList => setSelectedType(typeList)}
+              onValueChange={setSelectedType}
             />
           </View>
         }
         renderListItem={({item}) => (
           <TicketCard
             style={styles.item}
-            ticketSeq={item.ticketSeq}
-            subject={item.subject}
-            progressSelect={item.progressSelect}
-            ticketType={item.ticketType}
+            {...item}
             allTicketStatus={ticketStatusList}
-            ticketStatus={item.ticketStatus}
-            deadlineDateT={item.deadlineDateT}
-            responsibleUser={item?.responsibleUser?.fullName}
-            prioritySelect={item.prioritySelect}
-            duration={item.duration}
             allTicketType={ticketTypeList}
-            assignedToUser={item?.assignedToUser?.fullName}
-            onPress={() =>
-              navigation.navigate('TicketDetailsScreen', {
-                idTicket: item.id,
-              })
-            }
+            showAssigned={showAssigned}
           />
         )}
       />
@@ -157,9 +155,16 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   headerContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
     zIndex: 30,
+    gap: 5,
+  },
+  picker: {
+    flex: 1,
   },
 });
 
-export default MyTeamTicketListScreen;
+export default TicketListScreenTemplate;
