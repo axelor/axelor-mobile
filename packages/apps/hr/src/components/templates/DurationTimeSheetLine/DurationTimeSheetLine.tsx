@@ -27,7 +27,7 @@ import {
 
 interface DurationTimeSheetLineProps {
   style?: any;
-  title: string;
+  title?: string;
   defaultValue?: any;
   onChange: (value: number) => void;
   readonly?: boolean;
@@ -36,7 +36,7 @@ interface DurationTimeSheetLineProps {
 
 const DurationTimeSheetLineAux = ({
   style,
-  title,
+  title = 'Hr_Duration',
   defaultValue,
   onChange,
   readonly = false,

@@ -72,7 +72,6 @@ const InvitedCollaboratorViewAllListAux = ({
   return (
     <>
       <ViewAllEditList
-        currentLineId={null}
         title={I18n.t(title)}
         lines={lines}
         setLines={handleChange}

@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {View} from 'react-native';
 import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   AnomalyList,
@@ -29,7 +28,6 @@ import {
   ExpenseDetailsValidationButton,
   ExpenseHeader,
   ExpenseLineDetailCard,
-  ExpenseLineSwitchAdd,
 } from '../../components';
 import {fetchExpenseById} from '../../features/expenseSlice';
 import {
@@ -38,8 +36,8 @@ import {
 } from '../../features/expenseLineSlice';
 import {ExpenseLine} from '../../types';
 
-const ExpenseDetailsScreen = ({route, navigation}) => {
-  const {idExpense, expenseMode, isManualCreation} = route.params;
+const ExpenseDetailsScreen = ({route, navigation}: any) => {
+  const {idExpense, expenseMode, isManualCreation} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -58,9 +56,13 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
   const [mode, setMode] = useState(ExpenseLine.modes.general);
 
   useEffect(() => {
-    dispatch(fetchExpenseById({ExpenseId: idExpense}));
-    dispatch(searchKilometricExpenseLines({expenseId: idExpense, page: 0}));
-    dispatch(searchGeneralExpenseLines({expenseId: idExpense, page: 0}));
+    dispatch((fetchExpenseById as any)({ExpenseId: idExpense}));
+    dispatch(
+      (searchKilometricExpenseLines as any)({expenseId: idExpense, page: 0}),
+    );
+    dispatch(
+      (searchGeneralExpenseLines as any)({expenseId: idExpense, page: 0}),
+    );
   }, [dispatch, idExpense]);
 
   const ObjectToDisplay = useMemo(() => {
@@ -94,17 +96,17 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
   const fetchExpenseLineAPI = useCallback(
     (page = 0) => {
       dispatch(
-        (mode === ExpenseLine.modes.general
-          ? searchGeneralExpenseLines
-          : searchKilometricExpenseLines)({expenseId: expense?.id, page: page}),
+        (
+          (mode === ExpenseLine.modes.general
+            ? searchGeneralExpenseLines
+            : searchKilometricExpenseLines) as any
+        )({expenseId: expense?.id, page: page}),
       );
     },
     [dispatch, expense, mode],
   );
 
-  if (expense?.id !== idExpense) {
-    return null;
-  }
+  if (expense?.id !== idExpense) return null;
 
   return (
     <Screen
@@ -118,12 +120,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
       }>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <View>
-            <ExpenseHeader />
-            <ExpenseLineSwitchAdd mode={mode} onChangeSwicth={setMode} />
-          </View>
-        }
+        fixedItems={<ExpenseHeader mode={mode} onChangeSwicth={setMode} />}
       />
       <AnomalyList objectName="expense" objectId={expense.id} />
       <ScrollList
@@ -136,7 +133,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
             onEdit={() =>
               navigation.navigate('ExpenseLineFormScreen', {
                 expenseLine: item,
-                idExpense: idExpense,
+                idExpense,
               })
             }
           />

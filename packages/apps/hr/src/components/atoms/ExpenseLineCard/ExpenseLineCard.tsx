@@ -34,6 +34,7 @@ import {
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
+  style?: any;
   expenseId: number;
   expenseDate?: string;
   projectName?: string;
@@ -44,11 +45,12 @@ interface ExpenseLineCardProps {
   fromCity?: string;
   toCity?: string;
   distance?: number;
-  onLongPress: () => void;
+  onLongPress?: () => void;
   setCardHeight: (height: any) => void;
 }
 
 const ExpenseLineCard = ({
+  style,
   expenseId,
   expenseDate,
   projectName,
@@ -65,7 +67,7 @@ const ExpenseLineCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const {user} = useSelector((state: any) => state.user);
+  const {user} = useSelector(state => state.user);
 
   return (
     <TouchableOpacity
@@ -74,13 +76,15 @@ const ExpenseLineCard = ({
       activeOpacity={1}
       onLayout={event => {
         const {height} = event.nativeEvent.layout;
-        setCardHeight(_current => (_current == null ? height : _current));
+        setCardHeight((_current: number) =>
+          _current == null ? height : _current,
+        );
       }}>
       <ObjectCard
         touchable={false}
         showArrow={false}
         borderLeftColor={Colors.secondaryColor.background}
-        style={styles.border}
+        style={[styles.container, style]}
         leftContainerFlex={2}
         upperTexts={{
           style: styles.texts,
@@ -89,27 +93,26 @@ const ExpenseLineCard = ({
               displayText: displayText,
               isTitle: true,
               numberOfLines: 2,
-              style: styles.title,
             },
             {
-              customComponent: <DateDisplay date={expenseDate} size={16} />,
+              customComponent: <DateDisplay date={expenseDate!} size={15} />,
             },
             {
               indicatorText: projectName,
               hideIfNull: true,
-              style: [styles.details, styles.italic],
+              style: styles.italic,
             },
             {
               indicatorText: projectTaskName,
               hideIfNull: true,
-              style: [styles.details, styles.italic],
+              style: styles.italic,
             },
             {
               customComponent: (
                 <View style={styles.cityContainer}>
-                  <Text>{capitalizeFirstLetter(fromCity)}</Text>
+                  <Text>{capitalizeFirstLetter(fromCity!)}</Text>
                   <Icon style={styles.arrowIcon} name="arrow-right" />
-                  <Text>{capitalizeFirstLetter(toCity)}</Text>
+                  <Text>{capitalizeFirstLetter(toCity!)}</Text>
                 </View>
               ),
               hideIf: fromCity == null && toCity == null,
@@ -129,7 +132,7 @@ const ExpenseLineCard = ({
             {
               customComponent: (
                 <TextUnit
-                  value={totalAmount}
+                  value={totalAmount ?? 0}
                   unit={
                     currency != null
                       ? currency
@@ -158,8 +161,10 @@ const ExpenseLineCard = ({
 };
 
 const styles = StyleSheet.create({
-  title: {
-    marginBottom: 5,
+  container: {
+    marginHorizontal: 2,
+    marginVertical: 2,
+    // paddingRight: 5,
   },
   cityContainer: {
     flexDirection: 'row',
@@ -169,22 +174,12 @@ const styles = StyleSheet.create({
   },
   italic: {
     fontStyle: 'italic',
-    marginTop: 2,
-  },
-  details: {
-    fontSize: 16,
   },
   texts: {
     justifyContent: 'center',
-    minHeight: 100,
   },
   badges: {
     alignItems: 'flex-end',
-  },
-  border: {
-    marginHorizontal: 2,
-    marginVertical: 2,
-    paddingRight: 5,
   },
   anoBubble: {
     position: 'absolute',

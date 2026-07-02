@@ -25,7 +25,7 @@ interface CityFormInputProps {
   style?: any;
   title?: string;
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  onChange?: (_v?: string) => void;
   readonly?: boolean;
   required?: boolean;
 }
@@ -49,7 +49,7 @@ const CityFormInputAux = ({
         style={style}
         title={title}
         defaultValue={defaultValue}
-        onChange={onChange}
+        onChange={onChange!}
         readOnly={readonly}
         required={required}
       />

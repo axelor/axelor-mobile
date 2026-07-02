@@ -26,14 +26,23 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchExpenseType} from '../../../features/expenseTypeSlice';
 
+interface ExpenseTypeSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (_v?: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+}
+
 const ExpenseTypeSearchBarAux = ({
-  style = null,
+  style,
   title = 'Hr_ExpenseType',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   required = true,
   readonly = false,
-}) => {
+}: ExpenseTypeSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -46,14 +55,8 @@ const ExpenseTypeSearchBarAux = ({
   const {user} = useSelector(state => state.user);
 
   const searchExpenseTypeAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        searchExpenseType({
-          page,
-          searchValue,
-          user,
-        }),
-      );
+    ({page = 0, searchValue}: any) => {
+      dispatch((searchExpenseType as any)({page, searchValue, user}));
     },
     [dispatch, user],
   );
@@ -76,29 +79,12 @@ const ExpenseTypeSearchBarAux = ({
       isListEnd={isListEndExpenseType}
       navigate={false}
       oneFilter={false}
-      isFocus={false}
     />
   );
 };
 
-const ExpenseTypeSearchBar = ({
-  style = null,
-  title = 'Hr_ExpenseType',
-  defaultValue = null,
-  onChange = () => {},
-  required = true,
-  readonly = false,
-}) => {
-  return (
-    <ExpenseTypeSearchBarAux
-      defaultValue={defaultValue}
-      onChange={onChange}
-      style={style}
-      title={title}
-      required={required}
-      readonly={readonly}
-    />
-  );
+const ExpenseTypeSearchBar = (props: ExpenseTypeSearchBarProps) => {
+  return <ExpenseTypeSearchBarAux {...props} />;
 };
 
 export default ExpenseTypeSearchBar;

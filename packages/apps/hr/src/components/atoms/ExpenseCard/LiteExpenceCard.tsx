@@ -16,9 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {checkNullString, ObjectCard, Text} from '@axelor/aos-mobile-ui';
+import {
+  checkNullString,
+  ObjectCard,
+  Text,
+  TextUnit,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {
   AnomalyBubble,
   useTranslator,
@@ -28,6 +34,7 @@ import {
 import {useTotalCurrency} from '../../../hooks';
 
 interface LiteExpenseCardProps {
+  style?: any;
   statusSelect: number;
   expenseId: number;
   expenseSeq: string;
@@ -40,6 +47,7 @@ interface LiteExpenseCardProps {
 }
 
 const LiteExpenseCard = ({
+  style,
   onPress,
   statusSelect,
   expenseId,
@@ -51,35 +59,22 @@ const LiteExpenseCard = ({
   employeeName,
 }: LiteExpenseCardProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const {Expense} = useTypes();
   const {getItemColor} = useTypeHelpers();
   const {displayCompanyCurrency, companyTotal, expenseTotal} = useTotalCurrency(
-    {inTaxTotal, companyInTaxTotal, currency},
-  );
-
-  const renderTotal = useCallback(
-    (
-      config: {inTaxTotal: string; currency: string},
-      wrapper: (_s: string) => string = _s => _s,
-    ) => {
-      return (
-        <Text style={styles.price}>
-          {wrapper(`${config.inTaxTotal} ${config.currency}`)}
-        </Text>
-      );
-    },
-    [],
+    {inTaxTotal, companyInTaxTotal, currency} as any,
   );
 
   return (
     <ObjectCard
       onPress={onPress}
+      showArrow={false}
       borderLeftColor={
         getItemColor(Expense?.statusSelect, statusSelect)?.background
       }
-      style={styles.container}
+      style={[styles.container, style]}
       leftContainerFlex={2}
-      iconLeftMargin={10}
       upperTexts={{
         items: [
           {
@@ -90,9 +85,7 @@ const LiteExpenseCard = ({
                   objectId={expenseId}
                   isIndicationDisabled
                 />
-                <Text writingType="title" style={styles.titleText}>
-                  {expenseSeq}
-                </Text>
+                <Text writingType="title">{expenseSeq}</Text>
               </View>
             ),
           },
@@ -107,16 +100,28 @@ const LiteExpenseCard = ({
           },
         ],
       }}
-      upperBadges={{
-        fixedOnRightSide: true,
+      sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
-            customComponent: renderTotal(expenseTotal),
+            customComponent: (
+              <TextUnit
+                value={expenseTotal.inTaxTotal}
+                unit={expenseTotal.currency}
+                fontSize={15}
+              />
+            ),
           },
           {
-            customComponent: displayCompanyCurrency
-              ? renderTotal(companyTotal, _s => ` (${_s})`)
-              : null,
+            showIf: displayCompanyCurrency,
+            customComponent: (
+              <TextUnit
+                value={companyTotal.inTaxTotal}
+                unit={companyTotal.currency}
+                fontSize={12}
+                color={Colors.secondaryColor}
+              />
+            ),
           },
         ],
       }}
@@ -131,13 +136,10 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
+    gap: 5,
   },
-  titleText: {
-    alignSelf: 'center',
-    marginLeft: 5,
-  },
-  price: {
-    textAlign: 'right',
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 
