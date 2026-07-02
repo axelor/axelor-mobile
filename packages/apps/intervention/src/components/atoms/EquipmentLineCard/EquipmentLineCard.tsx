@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {ObjectCard, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
 
 interface EquipmentLineCardProps {
   style?: any;
@@ -38,8 +38,6 @@ const EquipmentLineCard = ({
   quantity,
   unit,
 }: EquipmentLineCardProps) => {
-  const Colors = useThemeColor();
-
   return (
     <ObjectCard
       style={style}
@@ -48,11 +46,7 @@ const EquipmentLineCard = ({
         items: [
           {
             customComponent: (
-              <Text
-                writingType="important"
-                textColor={
-                  Colors.successColor.background
-                }>{`${quantity} ${unit}`}</Text>
+              <TextUnit value={quantity} unit={unit} fontSize={14} />
             ),
           },
         ],

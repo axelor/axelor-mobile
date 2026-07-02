@@ -28,10 +28,10 @@ import {searchClientAndProspect} from '../../../features/clientAndProspectSlice'
 import {CustomComponentProps} from '../../../utils';
 
 const ClientProspectSearchBar = ({
-  style = null,
+  style,
   title = 'Intervention_Customer',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showDetailsPopup = true,
@@ -47,7 +47,7 @@ const ClientProspectSearchBar = ({
     useSelector((state: any) => state.intervention_clientAndProspect);
 
   const searchClientAndProspectAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
         (searchClientAndProspect as any)({
           page,

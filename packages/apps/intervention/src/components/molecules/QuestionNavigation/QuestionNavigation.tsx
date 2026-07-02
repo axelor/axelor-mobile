@@ -23,8 +23,8 @@ import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 interface QuestionNavigationProps {
   handleNavigatePrevious: () => void;
   handleNavigateNext: () => void;
-  previousQuestionId: number;
-  nextQuestionId: number;
+  previousQuestionId?: number;
+  nextQuestionId?: number;
 }
 
 const QuestionNavigation = ({

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   DateInput,
@@ -47,12 +47,12 @@ const InterventionsListView = ({
   const {getSelectionItems} = useTypeHelpers();
 
   const {loading, moreLoading, isListEnd, interventionList} = useSelector(
-    (state: any) => state.intervention_intervention,
+    state => state.intervention_intervention,
   );
   const {user} = useSelector(state => state.user);
 
   const [filteredList, setFilteredList] = useState(interventionList);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [selectedDate, setSelectedDate] = useState(defaultDate);
   const [isAssignedToMe, setIsAssignedToMe] = useState(true);
 
@@ -82,12 +82,15 @@ const InterventionsListView = ({
     [Intervention?.statusSelect, getSelectionItems, selectedStatus, statusList],
   );
 
-  const handleItemPress = item => {
-    item &&
-      navigation.navigate('InterventionDetailsScreen', {
-        interventionId: item.id,
-      });
-  };
+  const handleItemPress = useCallback(
+    (item: any) => {
+      item &&
+        navigation.navigate('InterventionDetailsScreen', {
+          interventionId: item.id,
+        });
+    },
+    [navigation],
+  );
 
   return (
     <SearchListView
@@ -116,7 +119,7 @@ const InterventionsListView = ({
             popup
             nullable={true}
             defaultDate={selectedDate}
-            onDateChange={date => setSelectedDate(date)}
+            onDateChange={setSelectedDate}
           />
         </View>
       }
@@ -141,15 +144,15 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
+    gap: 5,
   },
   toggleButton: {
     height: 40,
   },
   dateInput: {
-    width: '85%',
+    flex: 1,
   },
 });
 

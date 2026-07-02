@@ -35,13 +35,13 @@ const EquipmentInterventionListScreen = ({}) => {
   const {Intervention} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
-  const {equipment} = useSelector((state: any) => state.intervention_equipment);
+  const {equipment} = useSelector(state => state.intervention_equipment);
   const {
     loadingHistoryList,
     moreLoadingHistory,
     isListEndHistory,
     interventionHistoryList,
-  } = useSelector((state: any) => state.intervention_intervention);
+  } = useSelector(state => state.intervention_intervention);
   const {user} = useSelector(state => state.user);
 
   const fetchEquipmentHistoryAPI = useCallback(

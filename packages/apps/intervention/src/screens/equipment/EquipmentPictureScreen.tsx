@@ -49,12 +49,12 @@ const EquipmentPictureScreen = ({}) => {
     modelName: 'com.axelor.apps.intervention.db.Picture',
   });
 
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
-  const {equipment} = useSelector((state: any) => state.intervention_equipment);
+  const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
+  const {equipment} = useSelector(state => state.intervention_equipment);
   const {equipmentPictureList, loadingList, moreLoading, isListEnd} =
-    useSelector((state: any) => state.intervention_equipmentPicture);
+    useSelector(state => state.intervention_equipmentPicture);
 
-  const [selectedImageId, setSelectedImageId] = useState(null);
+  const [selectedImageId, setSelectedImageId] = useState<number | undefined>();
 
   const fetchEquipmentPictureAPI = useCallback(
     (page = 0) => {

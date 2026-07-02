@@ -28,33 +28,33 @@ const EquipmentDetailsHeader = () => {
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.headerChildrenContainer}>
-        <View>
-          <Text writingType="title">{equipment.sequence}</Text>
-          <Text>{equipment.code}</Text>
-          <Text>{equipment.name}</Text>
-          <LabelText
-            iconName="palette2"
-            title={equipment.equipmentFamily?.name}
-          />
-        </View>
-        <Badge
-          color={getItemColor(Equipment?.serviceSelect, equipment.inService)}
-          title={getItemTitle(Equipment?.serviceSelect, equipment.inService)}
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <Text writingType="title">{equipment.sequence}</Text>
+        <Text>{equipment.code}</Text>
+        <Text>{equipment.name}</Text>
+        <LabelText
+          iconName="palette2"
+          title={equipment.equipmentFamily?.name}
         />
       </View>
+      <Badge
+        color={getItemColor(Equipment?.serviceSelect, equipment.inService)}
+        title={getItemTitle(Equipment?.serviceSelect, equipment.inService)}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  container: {
     marginHorizontal: 24,
-  },
-  headerChildrenContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 5,
+    alignItems: 'flex-start',
+  },
+  content: {
+    flex: 1,
   },
 });
 

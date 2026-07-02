@@ -17,12 +17,11 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {DropdownContactView} from '@axelor/aos-mobile-crm';
-import {DropdownGeneralView} from '../../molecules';
 import {fetchInterventionById} from '../../../features/interventionSlice';
+import {DropdownGeneralView} from '../../molecules';
 
 interface DropdownCardsProps {
   intervention: any;
@@ -34,10 +33,11 @@ const DropdownCards = ({intervention}: DropdownCardsProps) => {
 
   return (
     <DropdownCardSwitch
-      styleTitle={styles.dropdownTitle}
       dropdownItems={[
         {
+          key: 1,
           title: I18n.t('Crm_Contact'),
+          iconName: 'telephone',
           childrenComp: (
             <DropdownContactView
               contact={{
@@ -54,10 +54,11 @@ const DropdownCards = ({intervention}: DropdownCardsProps) => {
               }
             />
           ),
-          key: 1,
         },
         {
+          key: 2,
           title: I18n.t('Crm_GeneralInformation'),
+          iconName: 'person',
           childrenComp: (
             <DropdownGeneralView
               assignedToName={intervention.assignedTo?.fullName}
@@ -66,17 +67,10 @@ const DropdownCards = ({intervention}: DropdownCardsProps) => {
               onCallManagement={intervention.customerRequest?.onCallManagement}
             />
           ),
-          key: 2,
         },
       ]}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  dropdownTitle: {
-    fontWeight: 'bold',
-  },
-});
 
 export default DropdownCards;

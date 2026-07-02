@@ -27,15 +27,13 @@ import {
   updateInterventionNote,
 } from '../../features/interventionNoteSlice';
 
-const InterventionNoteFormScreen = ({route, navigation}) => {
+const InterventionNoteFormScreen = ({route, navigation}: any) => {
   const noteId = route?.params?.noteId;
   const dispatch: any = useDispatch();
 
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
+  const {intervention} = useSelector(state => state.intervention_intervention);
   const {interventionNote} = useSelector(
-    (state: any) => state.intervention_interventionNote,
+    state => state.intervention_interventionNote,
   );
 
   useEffect(() => {
@@ -58,7 +56,7 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
   );
 
   const interventionNoteAPI = useCallback(
-    objectState => {
+    (objectState: any) => {
       const sliceFunction = noteId
         ? updateInterventionNote
         : createInterventionNote;

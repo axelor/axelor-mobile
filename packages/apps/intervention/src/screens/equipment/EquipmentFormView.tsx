@@ -33,7 +33,6 @@ import {
 
 const EquipmentFormView = ({navigation, route}: any) => {
   const {idEquipment, isCreation} = route?.params ?? {};
-
   const Colors = useThemeColor();
   const _dispatch: any = useDispatch();
   const {Equipment} = useTypes();

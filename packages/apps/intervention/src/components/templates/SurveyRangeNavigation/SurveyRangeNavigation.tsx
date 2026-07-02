@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {Button, Picker} from '@axelor/aos-mobile-ui';
 
@@ -36,10 +36,10 @@ const SurveyRangeNavigation = ({
   selectedRangeId,
   onChangeRangeId,
 }: SurveyRangeNavigationProps) => {
-  const {rangeList} = useSelector((state: any) => state.intervention_question);
+  const {rangeList} = useSelector(state => state.intervention_question);
 
   const isArrowDisabled = useCallback(
-    arrowType => {
+    (arrowType: number) => {
       if (!Array.isArray(rangeList) || rangeList.length === 0) {
         return true;
       } else if (selectedRangeId == null) {
@@ -56,14 +56,14 @@ const SurveyRangeNavigation = ({
     [rangeList, selectedRangeId],
   );
 
-  const displayValue = item =>
+  const displayValue = (item: any) =>
     item?.equipment
       ? `${item?.equipment.name} - ${item.rangeVal?.title}`
       : item.rangeVal?.title;
 
   const handleChangeRange = (arrowType: number) => {
     const selectedRangeIdx = rangeList.findIndex(
-      range => range.id === selectedRangeId,
+      (_r: any) => _r.id === selectedRangeId,
     );
 
     let newRange = rangeList[0];
@@ -104,9 +104,9 @@ const SurveyRangeNavigation = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignSelf: 'center',
     width: '90%',
+    gap: 5,
   },
   button: {
     width: BUTTON_SIZE,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     marginVertical: 0,
   },
   picker: {
-    width: Dimensions.get('window').width * 0.9 - (2 * BUTTON_SIZE + 10),
+    flex: 1,
   },
 });
 

@@ -59,7 +59,7 @@ const InterventionCard = ({
   const {Intervention} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {userId} = useSelector(state => state.auth);
 
   return (
     <ObjectCard
@@ -113,7 +113,8 @@ const InterventionCard = ({
       sideBadges={{
         style: styles.badges,
         items: [
-          isCopyCard && {
+          {
+            showIf: isCopyCard,
             customComponent: (
               <Icon name="copy" color={Colors.secondaryColor.background} />
             ),
@@ -126,7 +127,6 @@ const InterventionCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginHorizontal: 1,
     marginVertical: 2,
   },

@@ -52,9 +52,7 @@ const EquipmentView = ({}) => {
   const {Equipment} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
+  const {intervention} = useSelector(state => state.intervention_intervention);
   const {
     loadingList,
     moreLoading,
@@ -64,9 +62,9 @@ const EquipmentView = ({}) => {
     moreLoadingInterventionEquipment,
     isInterventionEquipmentListEnd,
     interventionEquipmentList,
-  } = useSelector((state: any) => state.intervention_equipment);
+  } = useSelector(state => state.intervention_equipment);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [mode, setMode] = useState(EquipmentType.mode.intervention);
   const [alertVisible, setAlertVisible] = useState(false);
 
@@ -81,11 +79,9 @@ const EquipmentView = ({}) => {
   );
 
   const actionList = useMemo(() => {
-    const _actionList = [];
+    const _actionList: any[] = [];
 
-    if (interventionReadonly && isInterventionMode) {
-      return _actionList;
-    }
+    if (interventionReadonly && isInterventionMode) _actionList;
 
     if (canCreate) {
       _actionList.push({
@@ -120,7 +116,7 @@ const EquipmentView = ({}) => {
   ]);
 
   const idsInterventionEquipement = useMemo(
-    () => intervention.equipmentSet.map(equipment => equipment.id),
+    () => intervention.equipmentSet.map((_e: any) => _e.id),
     [intervention],
   );
 
@@ -181,7 +177,7 @@ const EquipmentView = ({}) => {
   ]);
 
   const handleUnlinkEquipment = useCallback(
-    equipmentId => {
+    (equipmentId: number) => {
       dispatch(
         (unlinkEquipment as any)({
           interventionId: intervention.id,
@@ -239,7 +235,7 @@ const EquipmentView = ({}) => {
                       interventionId: intervention.id,
                       interventionVersion: intervention.version,
                     })
-                : null
+                : undefined
             }
             canArchive={canDelete}
             canCopy={canCreate}

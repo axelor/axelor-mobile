@@ -48,7 +48,7 @@ const SurveyView = () => {
       Question.getStatus(
         _q,
         questionlist.find(
-          ({id}) => id === _q.conditionalInterventionQuestion?.id,
+          ({id}: any) => id === _q.conditionalInterventionQuestion?.id,
         ),
       ),
     [questionlist],

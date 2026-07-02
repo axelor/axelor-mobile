@@ -26,9 +26,9 @@ const EquipmentLineListScreen = ({}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
-  const {equipment} = useSelector((state: any) => state.intervention_equipment);
+  const {equipment} = useSelector(state => state.intervention_equipment);
   const {loadingList, moreLoading, isListEnd, equipmentLineList} = useSelector(
-    (state: any) => state.intervention_equipmentLine,
+    state => state.intervention_equipmentLine,
   );
 
   const fetchEquipmentLineAPI = useCallback(
