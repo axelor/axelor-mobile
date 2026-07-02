@@ -26,7 +26,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {createMaintenanceRequest} from '../features/maintenanceRequestSlice';
 
-const MaintenanceRequestFormScreen = ({route}) => {
+const MaintenanceRequestFormScreen = ({route}: any) => {
   const {machineId} = route?.params ?? {};
   const {MaintenanceRequest} = useTypes();
   const navigation = useNavigation();

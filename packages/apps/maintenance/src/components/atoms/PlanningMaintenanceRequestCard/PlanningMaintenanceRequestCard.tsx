@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 
@@ -43,7 +42,7 @@ const PlanningMaintenanceRequestCard = ({
 
   return (
     <ObjectCard
-      style={[styles.container, style]}
+      style={style}
       touchable={false}
       showArrow={false}
       borderLeftColor={
@@ -75,13 +74,5 @@ const PlanningMaintenanceRequestCard = ({
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginHorizontal: 1,
-    marginVertical: 2,
-  },
-});
 
 export default PlanningMaintenanceRequestCard;
