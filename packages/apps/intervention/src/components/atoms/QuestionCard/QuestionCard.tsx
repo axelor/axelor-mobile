@@ -47,9 +47,7 @@ const QuestionCard = ({
   const {InterventionQuestion} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
-  if (status === InterventionQuestion?.statusSelect.Hidden) {
-    return null;
-  }
+  if (status === InterventionQuestion?.statusSelect.Hidden) return null;
 
   return (
     <ObjectCard
@@ -78,7 +76,8 @@ const QuestionCard = ({
       sideBadges={{
         style: styles.badges,
         items: [
-          isPrivate && {
+          {
+            showIf: isPrivate,
             customComponent: (
               <InfoBubble
                 coloredBubble={false}
