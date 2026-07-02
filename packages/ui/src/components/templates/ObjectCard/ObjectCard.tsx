@@ -213,15 +213,15 @@ const ObjectCard = ({
   }, []);
 
   const renderBadgeElement = useCallback((item: BadgeElement) => {
+    if (item.showIf === false) return null;
+
     if (item.customComponent != null) {
       return React.cloneElement(item.customComponent, {
         key: `${item.displayText} - ${item.order}`,
       });
     }
 
-    if (item.showIf === false || checkNullString(item.displayText)) {
-      return null;
-    }
+    if (checkNullString(item.displayText)) return null;
 
     return (
       <Badge
