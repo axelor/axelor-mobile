@@ -85,13 +85,9 @@ const InternalMoveSearchLineContainer = ({}) => {
   );
 
   const filterLine = useCallback(
-    item => {
-      return (
-        StockMoveLine.hideLineQty(item, internalMove) ||
-        parseFloat(item.realQty) == null ||
-        parseFloat(item.realQty) < parseFloat(item.qty)
-      );
-    },
+    item =>
+      StockMoveLine.getStockMoveLineStatus(item, internalMove) !==
+      StockMoveLine.status.Done,
     [internalMove],
   );
 
