@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {PictureCard} from '../../atoms';
 
@@ -35,14 +35,17 @@ const PicturesRow = ({
   selectedImageId,
   onSelectImage,
 }: PicturesRowProps) => {
-  const renderImage = picture => (
-    <PictureCard
-      style={style}
-      item={picture.pictureFile}
-      handleDelete={() => handleDelete(picture.id)}
-      showDeleteIcon={selectedImageId === picture.pictureFile.id}
-      onSelectImage={onSelectImage}
-    />
+  const renderImage = useCallback(
+    (picture: any) => (
+      <PictureCard
+        style={style}
+        item={picture.pictureFile}
+        handleDelete={() => handleDelete(picture.id)}
+        showDeleteIcon={selectedImageId === picture.pictureFile.id}
+        onSelectImage={onSelectImage}
+      />
+    ),
+    [handleDelete, onSelectImage, selectedImageId, style],
   );
 
   return (

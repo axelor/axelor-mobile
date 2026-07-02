@@ -39,7 +39,7 @@ const InterventionDetailsScreen = ({
   route,
   interventionId,
 }: InterventionDetailsScreenProps) => {
-  const _interventionId = route?.params?.interventionId || interventionId;
+  const _interventionId = route?.params?.interventionId ?? interventionId;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {Intervention} = useTypes();
@@ -50,7 +50,7 @@ const InterventionDetailsScreen = ({
   );
 
   const idsInterventionEquipement = useMemo(
-    () => intervention?.equipmentSet?.map(equipment => equipment.id),
+    () => intervention?.equipmentSet?.map((_e: any) => _e.id),
     [intervention],
   );
 
@@ -66,9 +66,7 @@ const InterventionDetailsScreen = ({
 
   useEffect(() => {
     dispatch(
-      (fetchNumberInterventionEquipment as any)({
-        idsInterventionEquipement,
-      }),
+      (fetchNumberInterventionEquipment as any)({idsInterventionEquipement}),
     );
   }, [dispatch, idsInterventionEquipement]);
 
@@ -111,9 +109,7 @@ const InterventionDetailsScreen = ({
     ],
   );
 
-  if (intervention?.id !== _interventionId) {
-    return null;
-  }
+  if (intervention?.id !== _interventionId) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>

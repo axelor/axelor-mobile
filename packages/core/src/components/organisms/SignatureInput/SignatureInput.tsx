@@ -222,20 +222,16 @@ const SignatureInput = ({
             size={iconSize}
             touchable={true}
             onPress={handleClose}
-            style={styles.icon}
           />
-          <View style={styles.icon} />
           <Icon
             name="upload"
             size={iconSize}
-            style={styles.icon}
             touchable={true}
             visible={enableFileSelection}
             onPress={() => handleDocumentSelection(handleUpload)}
           />
           {enablePicture && (
             <PictureIcon
-              style={styles.icon}
               size={iconSize}
               cameraKey={cameraKey}
               onChange={handleUpload}
@@ -246,7 +242,6 @@ const SignatureInput = ({
             size={iconSize}
             touchable={true}
             onPress={handleClear}
-            style={styles.icon}
           />
           <Icon
             name="check-lg"
@@ -258,7 +253,6 @@ const SignatureInput = ({
                 : Colors.secondaryColor.background
             }
             onPress={handleSave}
-            style={styles.icon}
           />
         </View>
       </View>
@@ -306,7 +300,6 @@ const SignatureInput = ({
                   popup && setPopupIsOpen(true);
                   setEditSignature(true);
                 }}
-                style={styles.icon}
               />
               <Icon
                 name="trash3-fill"
@@ -315,7 +308,6 @@ const SignatureInput = ({
                 touchable={true}
                 color={Colors.errorColor.background}
                 onPress={handleFileDelete}
-                style={styles.icon}
               />
             </View>
           )}
@@ -348,9 +340,7 @@ const getStyles = (canvaSize: any) =>
       alignItems: 'center',
       height: '100%',
       marginLeft: 5,
-    },
-    icon: {
-      marginVertical: 5,
+      gap: 5,
     },
     title: {
       marginLeft: 10,

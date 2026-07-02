@@ -66,7 +66,14 @@ const SearchBar = ({
 
   if (readonly) {
     return (
-      <FormInput style={style} title={title} defaultValue={valueTxt} readOnly />
+      <View style={style}>
+        <FormInput
+          style={styles.content}
+          title={title}
+          defaultValue={valueTxt}
+          readOnly
+        />
+      </View>
     );
   }
 

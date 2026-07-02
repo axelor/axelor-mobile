@@ -31,18 +31,14 @@ import {
   saveEquipment,
 } from '../../features/equipmentSlice';
 
-const EquipmentFormView = ({navigation, route}) => {
-  const idEquipment = route.params.idEquipment;
-  const isCreation = route.params.isCreation;
-
+const EquipmentFormView = ({navigation, route}: any) => {
+  const {idEquipment, isCreation} = route?.params ?? {};
   const Colors = useThemeColor();
   const _dispatch: any = useDispatch();
   const {Equipment} = useTypes();
 
-  const {equipment} = useSelector((state: any) => state.intervention_equipment);
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
+  const {equipment} = useSelector(state => state.intervention_equipment);
+  const {intervention} = useSelector(state => state.intervention_intervention);
 
   useEffect(() => {
     if (idEquipment != null) {
@@ -53,7 +49,7 @@ const EquipmentFormView = ({navigation, route}) => {
   }, [_dispatch, idEquipment]);
 
   const saveEquipmentAPI = useCallback(
-    (_equipment, dispatch) => {
+    (_equipment: any, dispatch: any) => {
       dispatch(
         (saveEquipment as any)({
           equipment: _equipment,
@@ -73,12 +69,10 @@ const EquipmentFormView = ({navigation, route}) => {
   );
 
   const deleteEquipmentAPI = useCallback(
-    (_equipment, dispatch) => {
-      dispatch(
-        (deleteEquipment as any)({
-          equipmentId: _equipment?.id,
-        }),
-      ).then(() => navigation.pop());
+    (_equipment: any, dispatch: any) => {
+      dispatch((deleteEquipment as any)({equipmentId: _equipment?.id})).then(
+        () => navigation.pop(),
+      );
     },
     [navigation],
   );
