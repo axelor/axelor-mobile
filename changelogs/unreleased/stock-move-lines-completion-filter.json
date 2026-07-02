@@ -1,0 +1,5 @@
+{
+  "title": "Stock move lines: filter completed lines based on their status instead of quantity",
+  "type": "fix",
+  "packages": "stock"
+}
