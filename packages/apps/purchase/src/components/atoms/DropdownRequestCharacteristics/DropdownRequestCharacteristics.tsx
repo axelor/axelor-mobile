@@ -49,28 +49,24 @@ const DropdownRequestCharacteristics = () => {
         <LabelText
           title={purchaseRequest.supplierPartner?.fullName}
           iconName="person-fill"
-          textSize={16}
         />
       )}
       {!checkNullString(purchaseRequest.stockLocation?.name) && (
         <LabelText
           title={`${I18n.t('Purchase_StockLocation')} :`}
           value={purchaseRequest.stockLocation?.name}
-          textSize={16}
         />
       )}
       {!checkNullString(purchaseRequest.requesterUser?.fullName) && (
         <LabelText
           title={`${I18n.t('Purchase_RequesterUser')} :`}
           value={purchaseRequest.requesterUser?.fullName}
-          textSize={16}
         />
       )}
       {!checkNullString(purchaseRequest.validatorUser?.fullName) && (
         <LabelText
           title={`${I18n.t('Purchase_ValidatorUser')} :`}
           value={purchaseRequest.validatorUser?.fullName}
-          textSize={16}
         />
       )}
     </View>

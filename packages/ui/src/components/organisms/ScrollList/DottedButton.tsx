@@ -34,8 +34,8 @@ const DottedButton = ({
   iconName,
   title,
   color,
-  horizontal = true,
-  onPress = () => {},
+  horizontal = false,
+  onPress,
 }: DottedButtonProps) => {
   const Colors = useThemeColor();
 
@@ -44,28 +44,21 @@ const DottedButton = ({
     [color, Colors],
   );
 
-  const styles = useMemo(() => {
-    return getStyles(buttonColor, horizontal);
-  }, [buttonColor, horizontal]);
-
-  const commonStyles = useMemo(() => {
-    return getCommonStyles(Colors);
-  }, [Colors]);
+  const styles = useMemo(
+    () => getStyles(buttonColor, horizontal),
+    [buttonColor, horizontal],
+  );
+  const commonStyles = useMemo(() => getCommonStyles(), []);
 
   return (
     <TouchableOpacity
       style={[commonStyles.button, styles.button]}
       onPress={onPress}
       testID="dottedButtonContainer">
-      <Icon
-        style={styles.icon}
-        name={iconName}
-        size={28}
-        color={buttonColor.background}
-      />
+      <Icon name={iconName} size={20} color={buttonColor.background} />
       <Text
         style={styles.text}
-        fontSize={18}
+        fontSize={16}
         textColor={buttonColor.background}>
         {title}
       </Text>
@@ -81,18 +74,14 @@ const getStyles = (color: Color, horizontal: boolean) =>
       height: 'auto',
       justifyContent: 'flex-start',
       alignSelf: 'stretch',
-      marginBottom: 0,
       borderStyle: 'dotted',
       borderColor: color.background,
-    },
-    icon: {
-      flex: 0,
-      marginHorizontal: horizontal ? 5 : 0,
+      paddingVertical: 10,
+      gap: 5,
+      marginVertical: 0,
     },
     text: {
-      flex: horizontal ? 1 : 0,
-      marginLeft: horizontal ? 15 : 0,
-      marginTop: horizontal ? 0 : 5,
+      flex: 1,
     },
   });
 

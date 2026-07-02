@@ -29,7 +29,7 @@ import {
 import {RequestHeader, RequestLineCard} from '../components';
 import {searchPurchaseRequestLine} from '../features/purchaseRequestLineSlice';
 
-const RequestLineListScreen = ({navigation}) => {
+const RequestLineListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {PurchaseRequestLine} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -47,7 +47,7 @@ const RequestLineListScreen = ({navigation}) => {
     purchaseRequestLineList,
   } = useSelector(state => state.purchase_purchaseRequestLine);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const statusList = useMemo(
     () => getSelectionItems(PurchaseRequestLine?.newProduct, selectedStatus),
@@ -67,15 +67,15 @@ const RequestLineListScreen = ({navigation}) => {
       <SearchListView
         topFixedItems={<RequestHeader />}
         actionList={
-          canCreate && [
-            {
-              iconName: 'plus',
-              title: I18n.t('Purchase_AddProduct'),
-              onPress: () => {
-                navigation.navigate('RequestLineFormScreen');
-              },
-            },
-          ]
+          canCreate
+            ? [
+                {
+                  iconName: 'plus',
+                  title: I18n.t('Purchase_AddProduct'),
+                  onPress: () => navigation.navigate('RequestLineFormScreen'),
+                },
+              ]
+            : []
         }
         chipComponent={
           <ChipSelect

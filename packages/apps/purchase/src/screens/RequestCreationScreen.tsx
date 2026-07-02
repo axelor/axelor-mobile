@@ -17,13 +17,14 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   FormHtmlInput,
   FormInput,
   KeyboardAvoidingScrollView,
   Label,
   Screen,
+  useThemeColor,
   ViewAllEditList,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -42,6 +43,7 @@ import {
 } from '../components';
 
 const RequestCreationScreen = () => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
@@ -50,31 +52,23 @@ const RequestCreationScreen = () => {
   const {user} = useSelector(state => state.user);
   const {purchase: purchaseConfig} = useSelector(state => state.appConfig);
 
-  const [company, setCompany] = useState(user.activeCompany);
-  const [description, setDescription] = useState('');
-  const [currentStep, setCurrentStep] = useState(RequestCreation.step.addLine);
-  const [lines, setLines] = useState([]);
-  const [newLine, setNewLine] = useState(null);
-  const [productTitle, setProductTitle] = useState('');
-  const [isCustomProduct, setIsCustomProduct] = useState(false);
-  const [quantity, setQuantity] = useState(0);
-  const [unit, setUnit] = useState(purchaseConfig?.purchaseUnit);
+  const [company, setCompany] = useState<any>(user.activeCompany);
+  const [description, setDescription] = useState<string | undefined>();
+  const [currentStep, setCurrentStep] = useState<number>(
+    RequestCreation.step.addLine,
+  );
+  const [lines, setLines] = useState<any[]>([]);
+  const [newLine, setNewLine] = useState<any>(null);
+  const [productTitle, setProductTitle] = useState<string | undefined>();
+  const [isCustomProduct, setIsCustomProduct] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(0);
+  const [unit, setUnit] = useState<any>(purchaseConfig?.purchaseUnit);
 
-  const resetDefaultStates = () => {
-    handleReset();
-    setCompany(user.activeCompany);
-    setDescription('');
-    setLines([]);
-  };
-
-  const handleEditLine = (line: any) => {
-    setNewLine(line);
-    setProductTitle(line.productTitle);
-    setIsCustomProduct(line.product == null);
-    setQuantity(line.quantity);
-    setUnit(line.unit);
-    setCurrentStep(RequestCreation.step.validateLine);
-  };
+  const isEditionMode = useMemo(
+    () =>
+      newLine?.quantity > 0 && lines.find(({id}) => id === newLine?.id) != null,
+    [lines, newLine],
+  );
 
   const handleReset = useCallback(
     (_step = RequestCreation.step.addLine) => {
@@ -87,6 +81,22 @@ const RequestCreationScreen = () => {
     },
     [purchaseConfig?.purchaseUnit],
   );
+
+  const resetDefaultStates = useCallback(() => {
+    handleReset();
+    setCompany(user.activeCompany);
+    setDescription('');
+    setLines([]);
+  }, [handleReset, user.activeCompany]);
+
+  const handleEditLine = useCallback((line: any) => {
+    setNewLine(line);
+    setProductTitle(line.productTitle);
+    setIsCustomProduct(line.product == null);
+    setQuantity(line.quantity);
+    setUnit(line.unit);
+    setCurrentStep(RequestCreation.step.validateLine);
+  }, []);
 
   const handleProductChange = useCallback(
     (_value: any) => {
@@ -103,7 +113,7 @@ const RequestCreationScreen = () => {
     [handleReset],
   );
 
-  const handleCustomProductInput = useCallback((value: string) => {
+  const handleCustomProductInput = useCallback((value?: string) => {
     setProductTitle(value);
     setIsCustomProduct(!!value);
 
@@ -112,7 +122,7 @@ const RequestCreationScreen = () => {
     }
   }, []);
 
-  const handleAddLine = () => {
+  const handleAddLine = useCallback(() => {
     setLines(prevLines => {
       const newLines = [...prevLines];
       const indexLine = newLines.findIndex(({id}) => id === newLine?.id);
@@ -136,13 +146,15 @@ const RequestCreationScreen = () => {
       return newLines;
     });
     handleReset();
-  };
-
-  const isEditionMode = useMemo(
-    () =>
-      newLine?.quantity > 0 && lines.find(({id}) => id === newLine?.id) != null,
-    [lines, newLine],
-  );
+  }, [
+    handleReset,
+    isCustomProduct,
+    isEditionMode,
+    newLine,
+    productTitle,
+    quantity,
+    unit,
+  ]);
 
   if (!canCreate) {
     return (
@@ -165,54 +177,57 @@ const RequestCreationScreen = () => {
           isEditionMode={isEditionMode}
           addLine={handleAddLine}
           companyId={company.id}
-          description={description}
+          description={description!}
           resetDefaultStates={resetDefaultStates}
         />
       }>
       <KeyboardAvoidingScrollView style={styles.container}>
-        <CompanyPicker onChange={setCompany} company={company} />
-        <FormHtmlInput
-          title={I18n.t('Purchase_RequestDescription')}
-          defaultValue={description}
-          onChange={setDescription}
-        />
-        <ViewAllEditList
-          title={I18n.t('Purchase_Products')}
-          lines={lines.map(line => ({
-            ...line,
-            name: line.productTitle,
-            qty: line.quantity,
-            unitName: line.unit?.name,
-          }))}
-          currentLineId={isEditionMode ? newLine.id : null}
-          setLines={setLines}
-          handleEditLine={handleEditLine}
-          translator={I18n.t}
-        />
-        <ProductSearchBar
-          onChange={handleProductChange}
-          defaultValue={newLine}
-        />
-        <HorizontalOrRuleText />
-        <FormInput
-          readOnly={!isCustomProduct && newLine != null}
-          title={I18n.t('Purchase_ProductTitle')}
-          defaultValue={productTitle}
-          onChange={handleCustomProductInput}
-        />
-        <RequestCreationQuantityCard
-          quantity={quantity}
-          setQuantity={setQuantity}
-          cancelLine={() => handleReset(RequestCreation.step.addLine)}
-          productName={productTitle}
-          productUnit={unit?.name || newLine?.product?.unit?.name}
-        />
-        <UnitSearchBar
-          defaultValue={unit}
-          onChange={setUnit}
-          required={true}
-          isScrollViewContainer={true}
-        />
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <CompanyPicker onChange={setCompany} company={company} />
+          <FormHtmlInput
+            title={I18n.t('Purchase_RequestDescription')}
+            defaultValue={description}
+            onChange={setDescription}
+          />
+          <ViewAllEditList
+            title={I18n.t('Purchase_Products')}
+            lines={lines.map(line => ({
+              ...line,
+              name: line.productTitle,
+              qty: line.quantity,
+              unitName: line.unit?.name,
+            }))}
+            currentLineId={isEditionMode ? newLine.id : null}
+            setLines={setLines}
+            handleEditLine={handleEditLine}
+            translator={I18n.t}
+            isFormWrapper
+          />
+          <ProductSearchBar
+            onChange={handleProductChange}
+            defaultValue={newLine}
+          />
+          <HorizontalOrRuleText />
+          <FormInput
+            readOnly={!isCustomProduct && newLine != null}
+            title={I18n.t('Purchase_ProductTitle')}
+            defaultValue={productTitle}
+            onChange={handleCustomProductInput}
+          />
+          <RequestCreationQuantityCard
+            quantity={quantity}
+            setQuantity={setQuantity}
+            cancelLine={() => handleReset(RequestCreation.step.addLine)}
+            productName={productTitle}
+          />
+          <UnitSearchBar
+            defaultValue={unit}
+            onChange={setUnit}
+            required={true}
+            isScrollViewContainer={true}
+          />
+        </View>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
@@ -221,11 +236,18 @@ const RequestCreationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingTop: 10,
+  },
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginBottom: 125,
   },
   label: {
     width: '90%',
-    alignSelf: 'center',
   },
 });
 

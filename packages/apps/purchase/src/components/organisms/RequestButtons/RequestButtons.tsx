@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {View, StyleSheet, DimensionValue} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -42,7 +42,7 @@ const RequestButtons = () => {
   );
 
   const getButtonsForStatus = useCallback(
-    status => {
+    (status: number) => {
       switch (status) {
         case PurchaseRequest.statusSelect.Draft:
           return [
@@ -55,7 +55,6 @@ const RequestButtons = () => {
                     status: 'request',
                   }),
                 ),
-              width: '45%',
               iconName: 'check-lg',
             },
             {
@@ -67,7 +66,6 @@ const RequestButtons = () => {
                     status: 'cancel',
                   }),
                 ),
-              width: '45%',
               color: Colors.cautionColor,
               iconName: 'reply-fill',
             },
@@ -83,7 +81,6 @@ const RequestButtons = () => {
                     status: 'accept',
                   }),
                 ),
-              width: '45%',
               iconName: 'check-lg',
             },
             {
@@ -95,7 +92,6 @@ const RequestButtons = () => {
                     status: 'refuse',
                   }),
                 ),
-              width: '45%',
               color: Colors.errorColor,
               iconName: 'x-lg',
             },
@@ -108,7 +104,6 @@ const RequestButtons = () => {
                     status: 'cancel',
                   }),
                 ),
-              width: '94%',
               color: Colors.cautionColor,
               iconName: 'reply-fill',
             },
@@ -126,7 +121,6 @@ const RequestButtons = () => {
                     status: 'cancel',
                   }),
                 ),
-              width: '90%',
               color: Colors.cautionColor,
               iconName: 'reply-fill',
             },
@@ -142,7 +136,6 @@ const RequestButtons = () => {
                     status: 'draft',
                   }),
                 ),
-              width: '90%',
               color: Colors.secondaryColor,
               iconName: 'reply-all-fill',
             },
@@ -159,14 +152,12 @@ const RequestButtons = () => {
     [getButtonsForStatus, purchaseRequest?.statusSelect],
   );
 
-  if (buttons.length === 0 || readonly) {
-    return null;
-  }
+  if (buttons.length === 0 || readonly) return null;
 
   return (
     <View style={styles.buttonContainer}>
       {buttons.map((btn, idx) => (
-        <Button key={idx} {...btn} width={btn.width as DimensionValue} />
+        <Button key={idx} {...btn} style={styles.button} />
       ))}
     </View>
   );
@@ -174,9 +165,17 @@ const RequestButtons = () => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flexWrap: 'wrap',
+    width: '90%',
+    alignSelf: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 5,
+  },
+  button: {
+    flex: 1,
+    minWidth: '40%',
+    marginVertical: 2,
   },
 });
 

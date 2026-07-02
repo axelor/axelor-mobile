@@ -24,8 +24,7 @@ interface RequestCreationQuantityCardProps {
   quantity: number;
   setQuantity: (state: any) => void;
   cancelLine: () => void;
-  productName: string;
-  productUnit: string;
+  productName?: string;
 }
 
 const RequestCreationQuantityCard = ({
@@ -51,9 +50,10 @@ const RequestCreationQuantityCard = ({
       iconName="x-lg"
       onPressActionQty={cancelLine}
       isBigButton={true}
-      translator={I18n.t}>
-      {isProductName && <Text fontSize={16}>{productName}</Text>}
-    </QuantityCard>
+      translator={I18n.t}
+      isFormWrapper
+      children={isProductName ? <Text>{productName}</Text> : undefined}
+    />
   );
 };
 

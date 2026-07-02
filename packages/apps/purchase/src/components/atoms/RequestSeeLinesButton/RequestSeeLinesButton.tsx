@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   useNavigation,
@@ -36,11 +36,6 @@ const RequestSeeLinesButton = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
 
-  const styles = useMemo(
-    () => getStyles(Colors.secondaryColor.background),
-    [Colors.secondaryColor.background],
-  );
-
   const {totalPurchaseRequestLine} = useSelector(
     state => state.purchase_purchaseRequestLine,
   );
@@ -51,7 +46,7 @@ const RequestSeeLinesButton = () => {
       disabled={totalPurchaseRequestLine === 0}
       activeOpacity={0.9}>
       <Card style={styles.container}>
-        <Text style={styles.text}>{I18n.t('Purchase_SeeLines')}</Text>
+        <Text writingType="important">{I18n.t('Purchase_SeeLines')}</Text>
         <View style={styles.rightContainer}>
           <NumberBubble
             style={styles.numberBubble}
@@ -68,34 +63,28 @@ const RequestSeeLinesButton = () => {
   );
 };
 
-const getStyles = (borderColor: string) =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      height: 40,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignSelf: 'center',
-      alignItems: 'center',
-      marginRight: 0,
-      paddingVertical: 5,
-      paddingLeft: 10,
-      paddingRight: 10,
-      borderWidth: 1,
-      borderRadius: 7,
-      borderColor: borderColor,
-      marginVertical: 3,
-    },
-    text: {
-      fontWeight: 'bold',
-    },
-    rightContainer: {
-      flexDirection: 'row',
-    },
-    numberBubble: {
-      borderRadius: 7,
-      marginRight: 4,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginRight: 0,
+    marginVertical: 3,
+    paddingVertical: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 7,
+  },
+  rightContainer: {
+    flexDirection: 'row',
+    gap: 4,
+  },
+  numberBubble: {
+    borderRadius: 7,
+  },
+});
 
 export default RequestSeeLinesButton;
