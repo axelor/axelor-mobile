@@ -29,9 +29,11 @@ export interface TopActionsProps {
 const TopActions = ({actionList, verticalActions}: TopActionsProps) => {
   return (
     <View style={styles.container} testID="topActionsContainer">
-      {actionList.map((action, index) => {
+      {actionList?.map((action, index) => {
         let horizontal = verticalActions;
-        if (!verticalActions && index === actionList.length - 1) {
+        const isLast = index === actionList.length - 1;
+        const isOddCount = actionList.length % 2 === 1;
+        if (!verticalActions && isLast && isOddCount) {
           horizontal = true;
         }
 
@@ -53,9 +55,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
     marginBottom: 5,
     marginHorizontal: 12,
+    gap: 5,
   },
 });
 
