@@ -22,9 +22,8 @@ import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {createTicket, updateTicket} from '../features/ticketSlice';
 import {getCustomerbyId} from '../features/customerSlice';
 
-const TicketFormScreen = ({navigation, route}) => {
-  const idTicket = route?.params?.idTicket;
-
+const TicketFormScreen = ({navigation, route}: any) => {
+  const {idTicket} = route?.params ?? {};
   const Colors = useThemeColor();
   const _dispatch = useDispatch();
 
@@ -33,12 +32,7 @@ const TicketFormScreen = ({navigation, route}) => {
 
   const defaultValue = useMemo(
     () =>
-      idTicket != null
-        ? {
-            ...ticket,
-            duration: ticket.duration || 0,
-          }
-        : null,
+      idTicket != null ? {...ticket, duration: ticket.duration ?? 0} : null,
     [idTicket, ticket],
   );
 
@@ -50,13 +44,13 @@ const TicketFormScreen = ({navigation, route}) => {
     [helpdeskConfig?.defaultTicketStatus],
   );
 
-  const createTicketAPI = useCallback((_ticket, dispatch) => {
-    dispatch(createTicket({ticket: _ticket}));
+  const createTicketAPI = useCallback((_ticket: any, dispatch: any) => {
+    dispatch((createTicket as any)({ticket: _ticket}));
   }, []);
 
   const updateTicketAPI = useCallback(
-    (_ticket, dispatch) => {
-      dispatch(updateTicket({ticket: _ticket}));
+    (_ticket: any, dispatch: any) => {
+      dispatch((updateTicket as any)({ticket: _ticket}));
 
       navigation.pop();
     },
@@ -64,7 +58,7 @@ const TicketFormScreen = ({navigation, route}) => {
   );
 
   useEffect(() => {
-    _dispatch(getCustomerbyId(null));
+    _dispatch((getCustomerbyId as any)({}));
   }, [_dispatch]);
 
   return (
@@ -82,7 +76,7 @@ const TicketFormScreen = ({navigation, route}) => {
           hideIf: () => idTicket != null,
           customAction: ({dispatch, objectState, handleReset}) => {
             createTicketAPI(objectState, dispatch);
-            handleReset();
+            handleReset?.();
           },
         },
         {

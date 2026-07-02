@@ -36,6 +36,7 @@ const TicketDropdownCards = ({}) => {
           {
             title: I18n.t('Helpdesk_GeneralInformations'),
             key: 1,
+            iconName: 'card-text',
             childrenComp: (
               <DropdownGeneralView
                 project={ticket.project?.fullName}
@@ -49,6 +50,7 @@ const TicketDropdownCards = ({}) => {
           {
             title: I18n.t('Helpdesk_Timing'),
             key: 2,
+            iconName: 'stopwatch',
             childrenComp: (
               <DropdownTimingView
                 deadlineDateT={ticket.deadlineDateT}

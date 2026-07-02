@@ -26,19 +26,31 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchTicketType} from '../../../features/ticketSlice';
 
+interface TicketTypeSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  showTitle?: boolean;
+}
+
 const TicketTypeSearchBar = ({
-  style = null,
+  style,
   title = 'Helpdesk_Type',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   required = false,
   readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = true,
-}) => {
+}: TicketTypeSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -50,15 +62,15 @@ const TicketTypeSearchBar = ({
   } = useSelector(state => state.ticket);
 
   const searchTicketTypeAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(searchTicketType({page, searchValue}));
+    ({page = 0, searchValue}: any) => {
+      dispatch((searchTicketType as any)({page, searchValue}));
     },
     [dispatch],
   );
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(title)}
+      title={showTitle ? I18n.t(title) : undefined}
       objectList={ticketTypeList}
       value={defaultValue}
       required={required}
@@ -73,7 +85,6 @@ const TicketTypeSearchBar = ({
       isListEnd={isListEndTicketType}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );

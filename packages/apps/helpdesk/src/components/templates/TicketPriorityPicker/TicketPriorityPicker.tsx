@@ -20,14 +20,23 @@ import React, {useMemo} from 'react';
 import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
 
+interface TicketPriorityPickerProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+}
+
 const TicketPriorityPicker = ({
-  style = null,
+  style,
   title = 'Helpdesk_Priority',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   required = false,
   readonly = false,
-}) => {
+}: TicketPriorityPickerProps) => {
   const I18n = useTranslator();
   const {Ticket} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -41,9 +50,10 @@ const TicketPriorityPicker = ({
     <Picker
       style={style}
       title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       defaultValue={defaultValue}
       listItems={priorityList}
-      onValueChange={onChange}
+      onValueChange={onChange!}
       labelField="title"
       valueField="value"
       required={required}
