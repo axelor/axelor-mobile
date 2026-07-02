@@ -61,7 +61,6 @@ const ActionRadioSelect = ({
       style={[styles.radioSelect, style]}
       direction="row"
       question={I18n.t(title)}
-      questionStyle={styles.question}
       items={statusList}
       onChange={handleChange}
       readonly={readonly}
@@ -74,10 +73,6 @@ const styles = StyleSheet.create({
   radioSelect: {
     alignSelf: 'center',
     width: '90%',
-  },
-  question: {
-    fontWeight: null,
-    marginLeft: 10,
   },
 });
 
