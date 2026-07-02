@@ -28,9 +28,9 @@ import {
 import {RequestCard, SupplierSearchBar} from '../components';
 import {searchPurchaseRequest} from '../features/purchaseRequestSlice';
 
-const displayPurchaseRequestSeq = item => item.purchaseRequestSeq;
+const displayPurchaseRequestSeq = (item: any) => item.purchaseRequestSeq;
 
-const RequestListScreen = ({navigation}) => {
+const RequestListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {PurchaseRequest} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -84,9 +84,7 @@ const RequestListScreen = ({navigation}) => {
         renderListItem={({item}) => (
           <RequestCard
             onPress={() => {
-              navigation.navigate('RequestDetailsView', {
-                idRequest: item.id,
-              });
+              navigation.navigate('RequestDetailsView', {idRequest: item.id});
             }}
             statusSelect={item.statusSelect}
             reference={item.purchaseRequestSeq}

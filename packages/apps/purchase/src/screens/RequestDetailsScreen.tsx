@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   EditableHtmlInput,
   HeaderContainer,
@@ -42,8 +41,8 @@ import {
 } from '../features/purchaseRequestSlice';
 import {searchPurchaseRequestLine} from '../features/purchaseRequestLineSlice';
 
-const RequestDetailsScreen = ({route}) => {
-  const {idRequest} = route.params;
+const RequestDetailsScreen = ({route}: any) => {
+  const {idRequest} = route?.params ?? {};
   const I18n = useTranslator();
   const {PurchaseRequest} = useTypes();
   const dispatch = useDispatch();
@@ -53,7 +52,7 @@ const RequestDetailsScreen = ({route}) => {
   );
 
   const handleDescriptionChange = useCallback(
-    description => {
+    (description: string) => {
       dispatch(
         (updatePurchaseRequest as any)({
           purchaseRequest: {
@@ -99,7 +98,7 @@ const RequestDetailsScreen = ({route}) => {
           }
           onValidate={handleDescriptionChange}
         />
-        <RequestDropdownCards style={styles.margin} />
+        <RequestDropdownCards />
         <RequestSeeLinesButton />
       </ScrollView>
     </Screen>
@@ -107,9 +106,3 @@ const RequestDetailsScreen = ({route}) => {
 };
 
 export default RequestDetailsScreen;
-
-const styles = StyleSheet.create({
-  margin: {
-    marginVertical: 5,
-  },
-});

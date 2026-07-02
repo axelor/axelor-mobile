@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {
   ObjectCard,
   TextUnit,
@@ -55,16 +56,17 @@ const RequestLineCard = ({
       }}
       borderLeftColor={newProduct ? Colors.plannedColor.background : undefined}
       style={style}
-      leftContainerFlex={3}
-      iconLeftMargin={5}
+      leftContainerFlex={2}
+      showArrow={false}
       upperTexts={{
         items: [{isTitle: true, displayText: productName}],
       }}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
             customComponent: (
-              <TextUnit unit={unit} value={priceFormat(qty)} fontSize={20} />
+              <TextUnit unit={unit!} value={priceFormat(qty ?? '0')} />
             ),
           },
         ],
@@ -72,5 +74,11 @@ const RequestLineCard = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  badgeContainer: {
+    alignItems: 'flex-end',
+  },
+});
 
 export default RequestLineCard;

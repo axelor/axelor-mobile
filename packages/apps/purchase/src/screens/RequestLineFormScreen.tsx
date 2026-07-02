@@ -24,7 +24,7 @@ import {
   updatePurchaseRequestLine,
 } from '../features/purchaseRequestLineSlice';
 
-const RequestLineFormScreen = ({navigation, route}) => {
+const RequestLineFormScreen = ({navigation, route}: any) => {
   const {purchaseRequestLineId} = route?.params ?? {};
 
   const _dispatch = useDispatch();
@@ -48,7 +48,7 @@ const RequestLineFormScreen = ({navigation, route}) => {
   );
 
   const createPurchaseRequestLineAPI = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
         (createPurchaseRequestLine as any)({
           purchaseRequestLine: objectState,
@@ -62,7 +62,7 @@ const RequestLineFormScreen = ({navigation, route}) => {
   );
 
   const updatePurchaseRequestLineAPI = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
         (updatePurchaseRequestLine as any)({
           purchaseRequestLine: objectState,

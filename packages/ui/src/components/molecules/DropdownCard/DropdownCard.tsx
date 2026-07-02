@@ -75,7 +75,7 @@ const DropdownCard = ({
         )}
         <Text
           style={[styles.title, styleText]}
-          writingType="title"
+          writingType="important"
           numberOfLines={1}>
           {title}
         </Text>

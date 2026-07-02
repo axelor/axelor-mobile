@@ -30,6 +30,7 @@ const RequestDropdownCards = ({style}: {style?: any}) => {
       dropdownItems={[
         {
           key: 1,
+          iconName: 'card-text',
           title: I18n.t('Purchase_Characteristics'),
           childrenComp: <DropdownRequestCharacteristics />,
         },
