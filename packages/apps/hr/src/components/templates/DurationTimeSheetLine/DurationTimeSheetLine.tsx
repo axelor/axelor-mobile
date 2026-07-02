@@ -29,16 +29,16 @@ interface DurationTimeSheetLineProps {
   style?: any;
   title?: string;
   defaultValue?: any;
-  onChange?: (value: number) => void;
+  onChange: (value: number) => void;
   readonly?: boolean;
   required?: boolean;
 }
 
 const DurationTimeSheetLineAux = ({
   style,
-  title,
-  defaultValue = null,
-  onChange = () => {},
+  title = 'Hr_Duration',
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
 }: DurationTimeSheetLineProps) => {

@@ -33,15 +33,15 @@ interface LeaveReasonSearchBarProps {
   required?: boolean;
   placeholderKey?: string;
   defaultValue?: string;
-  onChange: (leaveReason: any) => void;
+  onChange?: (_v: any) => void;
 }
 
 const LeaveReasonSearchBar = ({
   title = 'Hr_LeaveReason',
   placeholderKey = 'Hr_LeaveReason',
-  defaultValue = null,
+  defaultValue,
   showTitle = true,
-  onChange = () => {},
+  onChange,
   readonly = false,
   required = false,
 }: LeaveReasonSearchBarProps) => {
@@ -57,7 +57,7 @@ const LeaveReasonSearchBar = ({
   } = useSelector(state => state.hr_leave);
 
   const fetchLeaveReasonAPI = useCallback(
-    ({searchValue, page = 0}) => {
+    ({searchValue, page = 0}: any) => {
       dispatch(
         (fetchLeaveReason as any)({
           searchValue,
@@ -71,7 +71,7 @@ const LeaveReasonSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(title)}
+      title={showTitle ? I18n.t(title) : undefined}
       objectList={leaveReasonList}
       value={defaultValue}
       required={required}

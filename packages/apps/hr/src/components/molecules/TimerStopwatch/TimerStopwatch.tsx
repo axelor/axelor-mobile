@@ -55,8 +55,8 @@ interface TimerStopwatchProps {
 }
 
 const TimerStopwatch = ({
-  style = null,
-  defaultValue = null,
+  style,
+  defaultValue,
   objectState,
 }: TimerStopwatchProps) => {
   const I18n = useTranslator();
@@ -70,10 +70,8 @@ const TimerStopwatch = ({
   const [status, setStatus] = useState(DEFAULT_STATUS);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
 
-  const {timesheet: timesheetConfig} = useSelector(
-    (state: any) => state.appConfig,
-  );
-  const {userId} = useSelector((state: any) => state.auth);
+  const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
+  const {userId} = useSelector(state => state.auth);
 
   const createTimerAPI = useCallback(() => {
     const _timer = {
@@ -87,7 +85,7 @@ const TimerStopwatch = ({
 
     (dispatch as any)(
       (createTimer as any)({userId: userId, timer: _timer}),
-    ).then(() => defaultValue.onCreation());
+    ).then(() => defaultValue?.onCreation?.());
   }, [defaultValue, dispatch, objectState, userId]);
 
   const updateTimerStatusAPI = useCallback(
@@ -99,7 +97,7 @@ const TimerStopwatch = ({
           version: defaultValue?.version,
           toStatus: toStatus,
         }),
-      ).then(res => {
+      ).then((res: any) => {
         const _timer = res?.payload?.payload?.[0];
         if (
           toStatus === 'stop' &&

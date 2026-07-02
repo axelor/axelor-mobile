@@ -28,13 +28,13 @@ export {default as DraftTimesheetPicker} from './DraftTimesheetPicker/DraftTimes
 export {default as DurationTimeSheetLine} from './DurationTimeSheetLine/DurationTimeSheetLine';
 export {default as DurationIncrement} from './DurationIncrement/DurationIncrement';
 export {default as EmployeeSearchBar} from './EmployeeSearchBar/EmployeeSearchBar';
+export {default as ExpenseFilters} from './ExpenseFilters/ExpenseFilters';
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineSwitchAdd} from './ExpenseLineSwitchAdd/ExpenseLineSwitchAdd';
 export {default as ExpenseLineTypeDisplay} from './ExpenseLineTypeDisplay/ExpenseLineTypeDisplay';
 export {default as ExpenseLineTypeSwitch} from './ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
 export {default as ExpenseRefusalPopup} from './ExpenseRefusalPopup/ExpenseRefusalPopup';
 export {default as ExpenseTypeSearchBar} from './ExpenseTypeSearchBar/ExpenseTypeSearchBar';
-export {default as ExpenseWaitingValidationSearchBar} from './ExpenseWaitingValidationSearchBar/ExpenseWaitingValidationSearchBar';
 export {default as InvitedCollaboratorViewAllList} from './InvitedCollaboratorViewAllList/InvitedCollaboratorViewAllList';
 export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSearchBar/KilometricAllowParamSearchBar';
 export {default as KilometricTypeSelectPicker} from './KilometricTypeSelectPicker/KilometricTypeSelectPicker';
@@ -50,5 +50,4 @@ export {default as ProjectTaskSearchBar} from './ProjectTaskSearchBar/ProjectTas
 export {default as TimerListAlert} from './TimerListAlert/TimerListAlert';
 export {default as TimesheetFilters} from './TimesheetFilters/TimesheetFilters';
 export {default as TimesheetRefusalPopup} from './TimesheetRefusalPopup/TimesheetRefusalPopup';
-export {default as TimesheetWaitingValidationSearchBar} from './TimesheetWaitingValidationSearchBar/TimesheetWaitingValidationSearchBar';
 export {default as ToggleSwitchMode} from './ToggleSwitchMode/ToggleSwitchMode';

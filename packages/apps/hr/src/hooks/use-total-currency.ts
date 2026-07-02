@@ -39,14 +39,9 @@ export const useTotalCurrency = ({
     [user.activeCompany?.currency],
   );
 
-  const displayCompanyCurrency = useMemo(
-    () => currency?.id !== companyCurrency?.id,
-    [currency?.id, companyCurrency?.id],
-  );
-
   return useMemo(
     () => ({
-      displayCompanyCurrency,
+      displayCompanyCurrency: currency?.id !== companyCurrency?.id,
       expenseTotal: {
         inTaxTotal: inTaxTotal,
         currency: getCurrencyLabel(currency),
@@ -56,12 +51,6 @@ export const useTotalCurrency = ({
         currency: getCurrencyLabel(companyCurrency),
       },
     }),
-    [
-      companyInTaxTotal,
-      currency,
-      inTaxTotal,
-      companyCurrency,
-      displayCompanyCurrency,
-    ],
+    [companyInTaxTotal, currency, inTaxTotal, companyCurrency],
   );
 };

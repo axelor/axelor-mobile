@@ -73,10 +73,10 @@ const CompleteRequestQuantityCard = ({
       iconName="x-lg"
       onPressActionQty={cancelLeave}
       isBigButton={true}
+      isFormWrapper
       translator={I18n.t}>
-      <Text
-        fontSize={16}>{`${I18n.t('Hr_LeaveReason')} : ${newLine.name}`}</Text>
-      <Text fontSize={16}>
+      <Text>{`${I18n.t('Hr_LeaveReason')} : ${newLine.name}`}</Text>
+      <Text>
         {I18n.t('Hr_AvailableQty', {
           availableQty: isExceptionalLeave ? '-' : formatNumber(availableQty),
         })}

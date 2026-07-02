@@ -210,12 +210,7 @@ const DateInput = ({
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
       ]}>
-      {!checkNullString(title) && (
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{title}</Text>
-          {required && <View style={styles.requiredDot} />}
-        </View>
-      )}
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <RightIconButton
         onPress={togglePicker}
         showWrapper={false}
@@ -311,19 +306,8 @@ const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
       borderRadius: 14,
       zIndex: 110,
     },
-    titleContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
     title: {
       marginLeft: 10,
-    },
-    requiredDot: {
-      width: 6,
-      height: 6,
-      borderRadius: 3,
-      marginLeft: 5,
-      backgroundColor: Colors.errorColor.background,
     },
     text: {
       flex: 1,

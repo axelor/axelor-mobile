@@ -22,50 +22,34 @@ import {NumberBubble, useThemeColor} from '@axelor/aos-mobile-ui';
 import {DateDisplay, useSelector} from '@axelor/aos-mobile-core';
 
 interface DateSeparatorProps {
-  title: string;
-  isFirstItem: boolean;
-  fetchNumberOfItems: ({
-    date,
-    userId,
-  }: {
-    date: string;
-    userId: number;
-  }) => Promise<any>;
+  title?: string;
+  isFirstItem?: boolean;
+  fetchNumberOfItems?: (data: {date?: string; userId: number}) => Promise<any>;
 }
 
 const DateSeparator = ({
   title: date,
   fetchNumberOfItems,
-  isFirstItem,
+  isFirstItem = false,
 }: DateSeparatorProps) => {
   const Colors = useThemeColor();
   const isMounted = useRef(true);
 
+  const {userId} = useSelector(state => state.auth);
+
   const [numberItems, setNumberItems] = useState(0);
 
   const styles = useMemo(() => getSeparatorStyles(isFirstItem), [isFirstItem]);
-  const {userId} = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     isMounted.current = true;
 
-    fetchNumberOfItems({
-      date: date,
-      userId: userId,
-    })
+    fetchNumberOfItems?.({date, userId})
       .then(({data}) => {
-        if (isMounted.current) {
-          if (data?.total != null) {
-            setNumberItems(data?.total);
-          } else {
-            setNumberItems(0);
-          }
-        }
+        if (isMounted.current) setNumberItems(data?.total ?? 0);
       })
       .catch(() => {
-        if (isMounted.current) {
-          setNumberItems(0);
-        }
+        if (isMounted.current) setNumberItems(0);
       });
 
     return () => {
@@ -75,7 +59,7 @@ const DateSeparator = ({
 
   return (
     <View style={styles.separatorContainer}>
-      <DateDisplay date={date} />
+      <DateDisplay date={date!} />
       <NumberBubble
         style={styles.number}
         number={numberItems}
@@ -86,7 +70,7 @@ const DateSeparator = ({
   );
 };
 
-const getSeparatorStyles = isFirstItem =>
+const getSeparatorStyles = (isFirstItem: boolean) =>
   StyleSheet.create({
     separatorContainer: {
       width: '90%',

@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   PeriodInput,
   useDispatch,
@@ -31,6 +31,7 @@ import {
   KeyboardAvoidingScrollView,
   Label,
   Screen,
+  useThemeColor,
   ViewAllEditList,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -44,15 +45,16 @@ import {fetchMissingDuration} from '../../api/leave-api';
 
 const CompleteRequestScreen = ({}) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
   const {LeaveReason, LeaveRequest} = useTypes();
   const {getItemTitle} = useTypeHelpers();
-  const dispatch = useDispatch();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.LeaveRequest',
   });
 
   const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState<Date | null>();
+  const [toDate, setToDate] = useState<Date | undefined>();
   const [startOn, setStartOn] = useState<number>(
     LeaveRequest?.startOnSelect?.Morning,
   );
@@ -60,20 +62,20 @@ const CompleteRequestScreen = ({}) => {
     LeaveRequest?.endOnSelect?.Afternoon,
   );
   const [lines, setLines] = useState<any[]>([]);
-  const [newLine, setNewLine] = useState<any>(null);
+  const [newLine, setNewLine] = useState<any>();
   const [leaveQty, setLeaveQty] = useState(0);
-  const [comment, setComment] = useState<string | null>(null);
+  const [comment, setComment] = useState<string | undefined>();
   const [missingQty, setMissingQty] = useState(0);
 
   const resetDefaultStates = useCallback(() => {
     setFromDate(new Date());
-    setToDate(null);
+    setToDate(undefined);
     setStartOn(LeaveRequest?.startOnSelect?.Morning);
     setEndOn(LeaveRequest?.endOnSelect?.Afternoon);
     setLines([]);
-    setNewLine(null);
+    setNewLine(undefined);
     setLeaveQty(0);
-    setComment(null);
+    setComment(undefined);
     setMissingQty(0);
   }, [
     LeaveRequest?.endOnSelect?.Afternoon,
@@ -81,8 +83,8 @@ const CompleteRequestScreen = ({}) => {
   ]);
 
   const handleReset = useCallback(() => {
-    setNewLine(null);
-    setComment(null);
+    setNewLine(undefined);
+    setComment(undefined);
     setLeaveQty(0);
   }, []);
 
@@ -100,11 +102,7 @@ const CompleteRequestScreen = ({}) => {
 
         newLines[indexLine].comment = comment;
       } else {
-        newLines.push({
-          ...newLine,
-          qty: leaveQty,
-          comment,
-        });
+        newLines.push({...newLine, qty: leaveQty, comment});
       }
 
       return newLines;
@@ -178,67 +176,79 @@ const CompleteRequestScreen = ({}) => {
       <KeyboardAvoidingScrollView
         keyboardOffset={{ios: 70, android: 100}}
         style={styles.container}>
-        <PeriodInput
-          startDateConfig={{date: fromDate, onDateChange: setFromDate}}
-          endDateConfig={{date: toDate as any, onDateChange: setToDate}}
-        />
-        <LeaveStartEndOn
-          startOn={startOn}
-          endOn={endOn}
-          onStartOnChange={setStartOn}
-          onEndOnChange={setEndOn}
-        />
-        <ViewAllEditList
-          title={I18n.t('Hr_Distribution')}
-          lines={lines}
-          currentLineId={isEditionMode ? newLine.id : null}
-          setLines={setLines}
-          handleEditLine={handleEditLine}
-          translator={I18n.t}
-        />
-        {missingQty !== 0 && (
-          <Label
-            style={styles.label}
-            message={`${I18n.t(missingQty > 0 ? 'Hr_MissingQuantity' : 'Hr_ExceedingQuantity')} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
-            type="error"
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <PeriodInput
+            startDateConfig={{
+              date: fromDate,
+              required: true,
+              onDateChange: setFromDate,
+            }}
+            endDateConfig={{
+              date: toDate as any,
+              required: true,
+              onDateChange: setToDate,
+            }}
           />
-        )}
-        {!newLine && (
-          <LeaveReasonSearchBar
-            showTitle={false}
-            defaultValue={newLine}
-            onChange={leaveReason =>
-              leaveReason != null &&
-              setNewLine({
-                id: leaveReason.id,
-                name: leaveReason.name,
-                unitName: getItemTitle(
-                  LeaveReason?.unitSelect,
-                  leaveReason.unitSelect,
-                ),
-                leaveReasonTypeSelect: leaveReason.leaveReasonTypeSelect,
-              })
-            }
+          <LeaveStartEndOn
+            startOn={startOn}
+            endOn={endOn}
+            onStartOnChange={setStartOn}
+            onEndOnChange={setEndOn}
           />
-        )}
-        {newLine && (
-          <CompleteRequestQuantityCard
-            leaveQty={leaveQty}
-            setLeaveQty={setLeaveQty}
-            cancelLeave={handleReset}
-            newLine={newLine}
-            toDate={toDate as any}
+          <ViewAllEditList
+            title={I18n.t('Hr_Distribution')}
+            lines={lines}
+            currentLineId={isEditionMode ? newLine.id : null}
+            setLines={setLines}
+            handleEditLine={handleEditLine}
+            translator={I18n.t}
+            isFormWrapper
           />
-        )}
-        {newLine && (
-          <FormInput
-            title={I18n.t('Hr_Comments')}
-            defaultValue={comment as any}
-            onChange={setComment}
-            multiline
-            adjustHeightWithLines
-          />
-        )}
+          {missingQty !== 0 && (
+            <Label
+              style={styles.label}
+              message={`${I18n.t(missingQty > 0 ? 'Hr_MissingQuantity' : 'Hr_ExceedingQuantity')} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
+              type="error"
+            />
+          )}
+          {!newLine && (
+            <LeaveReasonSearchBar
+              showTitle={false}
+              defaultValue={newLine}
+              onChange={leaveReason =>
+                leaveReason != null &&
+                setNewLine({
+                  id: leaveReason.id,
+                  name: leaveReason.name,
+                  unitName: getItemTitle(
+                    LeaveReason?.unitSelect,
+                    leaveReason.unitSelect,
+                  ),
+                  leaveReasonTypeSelect: leaveReason.leaveReasonTypeSelect,
+                })
+              }
+            />
+          )}
+          {newLine && (
+            <CompleteRequestQuantityCard
+              leaveQty={leaveQty}
+              setLeaveQty={setLeaveQty}
+              cancelLeave={handleReset}
+              newLine={newLine}
+              toDate={toDate as any}
+            />
+          )}
+          {newLine && (
+            <FormInput
+              title={I18n.t('Hr_Comments')}
+              defaultValue={comment as any}
+              onChange={setComment}
+              multiline
+              adjustHeightWithLines
+            />
+          )}
+        </View>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
@@ -248,9 +258,17 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginBottom: 125,
+  },
   label: {
     width: '90%',
-    alignSelf: 'center',
   },
 });
 

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useThemeColor, NumberBubble, Text} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -24,7 +24,7 @@ import {ExpenseLine} from '../../../types';
 import {ExpenseLineTypeSwitch} from '../../templates';
 
 interface ExpenseLineTypeDisplayProps {
-  onChange: (mode: any) => void;
+  onChange: (mode: string) => void;
 }
 
 const ExpenseLineTypeDisplay = ({onChange}: ExpenseLineTypeDisplayProps) => {
@@ -32,7 +32,7 @@ const ExpenseLineTypeDisplay = ({onChange}: ExpenseLineTypeDisplayProps) => {
   const Colors = useThemeColor();
 
   const {totalNumberExpenseGeneral, totalNumberExpenseKilomectric} =
-    useSelector((state: any) => state.expenseLine);
+    useSelector(state => state.expenseLine);
 
   const isGeneral = useMemo(
     () => totalNumberExpenseGeneral > 0,
@@ -44,85 +44,67 @@ const ExpenseLineTypeDisplay = ({onChange}: ExpenseLineTypeDisplayProps) => {
     [totalNumberExpenseKilomectric],
   );
 
-  const displayToggle = useMemo(() => {
-    return isGeneral && isKilometric;
-  }, [isGeneral, isKilometric]);
+  const displayToggle = useMemo(
+    () => isGeneral && isKilometric,
+    [isGeneral, isKilometric],
+  );
 
-  const hasExpenseLines = useMemo(() => {
-    return isGeneral || isKilometric;
-  }, [isGeneral, isKilometric]);
+  const hasExpenseLines = useMemo(
+    () => isGeneral || isKilometric,
+    [isGeneral, isKilometric],
+  );
 
-  const modeTitle = useMemo(() => {
-    if (isGeneral) {
-      return I18n.t('Hr_General');
-    } else if (isKilometric) {
-      return I18n.t('Hr_Kilometric');
-    } else {
-      return I18n.t('Hr_NoExpenseLine');
-    }
-  }, [isGeneral, isKilometric, I18n]);
+  const modeTitle = useMemo(
+    () =>
+      I18n.t(
+        isGeneral
+          ? 'Hr_General'
+          : isKilometric
+            ? 'Hr_Kilometric'
+            : 'Hr_NoExpenseLine',
+      ),
+    [isGeneral, isKilometric, I18n],
+  );
 
   useEffect(() => {
     if (hasExpenseLines && !displayToggle) {
-      if (isGeneral) {
-        onChange(ExpenseLine.modes.general);
-      }
-
-      if (isKilometric) {
-        onChange(ExpenseLine.modes.kilometric);
-      }
-    } else {
-      onChange(ExpenseLine.modes.general);
-    }
+      if (isGeneral) onChange(ExpenseLine.modes.general);
+      if (isKilometric) onChange(ExpenseLine.modes.kilometric);
+    } else onChange(ExpenseLine.modes.general);
   }, [displayToggle, hasExpenseLines, isGeneral, isKilometric, onChange]);
 
-  const renderToggle = useCallback(() => {
-    return (
-      <ExpenseLineTypeSwitch
-        onChange={onChange}
-        totalNumberExpenseGeneral={totalNumberExpenseGeneral}
-        totalNumberExpenseKilomectric={totalNumberExpenseKilomectric}
-      />
-    );
-  }, [onChange, totalNumberExpenseGeneral, totalNumberExpenseKilomectric]);
-
-  const renderTitle = useCallback(() => {
-    return (
-      <View style={styles.containerTitle}>
-        <Text writingType="title">{modeTitle}</Text>
-        {hasExpenseLines && (
-          <NumberBubble
-            number={
-              isGeneral
-                ? totalNumberExpenseGeneral
-                : totalNumberExpenseKilomectric
-            }
-            color={Colors.inverseColor}
-            isNeutralBackground={true}
-            style={styles.bubbleStyle}
-          />
-        )}
-      </View>
-    );
-  }, [
-    modeTitle,
-    hasExpenseLines,
-    isGeneral,
-    totalNumberExpenseGeneral,
-    totalNumberExpenseKilomectric,
-    Colors.inverseColor,
-  ]);
-
-  return displayToggle ? renderToggle() : renderTitle();
+  return displayToggle ? (
+    <ExpenseLineTypeSwitch
+      onChange={onChange}
+      totalNumberExpenseGeneral={totalNumberExpenseGeneral}
+      totalNumberExpenseKilomectric={totalNumberExpenseKilomectric}
+    />
+  ) : (
+    <View style={styles.containerTitle}>
+      <Text writingType="title">{modeTitle}</Text>
+      {hasExpenseLines && (
+        <NumberBubble
+          number={
+            isGeneral
+              ? totalNumberExpenseGeneral
+              : totalNumberExpenseKilomectric
+          }
+          size={25}
+          color={Colors.inverseColor}
+          isNeutralBackground
+        />
+      )}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   containerTitle: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  bubbleStyle: {
-    marginLeft: 10,
+    gap: 10,
+    marginTop: 5,
+    flex: 1,
   },
 });
 

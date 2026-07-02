@@ -17,12 +17,19 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {formatNumber, Text} from '@axelor/aos-mobile-ui';
+import {formatNumber, Label} from '@axelor/aos-mobile-ui';
 import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import {fetchLeaveReasonAvailability} from '../../../api/leave-api';
 
-const AvailableQtyInputAux = ({objectState: leaveRequest}) => {
+interface AvailableQtyInputProps {
+  style?: any;
+  objectState?: any;
+}
+
+const AvailableQtyInputAux = ({
+  style,
+  objectState: leaveRequest,
+}: AvailableQtyInputProps) => {
   const I18n = useTranslator();
   const {LeaveReason} = useTypes();
   const {getItemTitle} = useTypeHelpers();
@@ -41,9 +48,10 @@ const AvailableQtyInputAux = ({objectState: leaveRequest}) => {
     [LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave, leaveReson],
   );
 
-  const _unitName = useMemo(() => {
-    return getItemTitle(LeaveReason?.unitSelect, leaveReson?.unitSelect);
-  }, [LeaveReason?.unitSelect, getItemTitle, leaveReson?.unitSelect]);
+  const _unitName = useMemo(
+    () => getItemTitle(LeaveReason?.unitSelect, leaveReson?.unitSelect),
+    [LeaveReason?.unitSelect, getItemTitle, leaveReson?.unitSelect],
+  );
 
   useEffect(() => {
     if (!isExceptionalLeave && leaveRequest?.toDateT && leaveReson?.id) {
@@ -59,26 +67,20 @@ const AvailableQtyInputAux = ({objectState: leaveRequest}) => {
   }, [isExceptionalLeave, leaveRequest?.toDateT, leaveReson]);
 
   return (
-    <Text style={styles.input} fontSize={16}>
-      {I18n.t('Hr_AvailableQty', {
+    <Label
+      style={style}
+      message={I18n.t('Hr_AvailableQty', {
         availableQty: isExceptionalLeave
           ? '-'
           : `${formatNumber(availableLeave)} ${_unitName}`,
       })}
-    </Text>
+      type="info"
+    />
   );
 };
 
-const AvailableQtyInput = ({objectState}: {objectState?: any}) => {
-  return <AvailableQtyInputAux objectState={objectState} />;
+const AvailableQtyInput = (props: AvailableQtyInputProps) => {
+  return <AvailableQtyInputAux {...props} />;
 };
-
-const styles = StyleSheet.create({
-  input: {
-    width: '100%',
-    marginHorizontal: 24,
-    marginVertical: 10,
-  },
-});
 
 export default AvailableQtyInput;

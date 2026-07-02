@@ -20,8 +20,8 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchLeaveById, updateLeave} from '../../features/leaveSlice';
 
-const LeaveFormScreen = ({route, navigation}) => {
-  const {leaveId} = route.params;
+const LeaveFormScreen = ({route, navigation}: any) => {
+  const {leaveId} = route?.params ?? {};
   const _dispatch = useDispatch();
 
   const {leave} = useSelector(state => state.hr_leave);
@@ -32,7 +32,7 @@ const LeaveFormScreen = ({route, navigation}) => {
   }, [_dispatch, leaveId]);
 
   const updateLeaveApi = useCallback(
-    (objectState, dispatch) => {
+    (objectState: any, dispatch: any) => {
       dispatch(
         (updateLeave as any)({
           leave: {

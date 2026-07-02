@@ -38,8 +38,8 @@ import {
 } from '../../features/timesheetLineSlice';
 import {Time, Timesheet as TimesheetType} from '../../types';
 
-const TimesheetDetailsScreen = ({navigation, route}) => {
-  const {timesheetId, isManualCreation} = route.params;
+const TimesheetDetailsScreen = ({navigation, route}: any) => {
+  const {timesheetId, isManualCreation} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {canDelete, readonly} = usePermitted({
@@ -52,9 +52,10 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
   const {loadingTimesheetLine, moreLoading, isListEnd, timesheetLineList} =
     useSelector(state => state.timesheetLine);
 
-  const _statusSelect = useMemo(() => {
-    return TimesheetType.getStatus(timesheetConfig?.needValidation, timesheet);
-  }, [timesheet, timesheetConfig]);
+  const _statusSelect = useMemo(
+    () => TimesheetType.getStatus(timesheetConfig?.needValidation, timesheet),
+    [timesheet, timesheetConfig],
+  );
 
   const isTimesheetLineListEmpty = useMemo(
     () => timesheetLineList == null || timesheetLineList.length === 0,
@@ -62,19 +63,17 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
   );
 
   useEffect(() => {
-    dispatch(fetchTimesheetById({timesheetId: timesheetId}));
+    dispatch((fetchTimesheetById as any)({timesheetId}));
   }, [dispatch, timesheetId]);
 
   const fetchTimesheetLineAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchTimesheetLine({timesheetId: timesheet?.id, page: page}));
+      dispatch((fetchTimesheetLine as any)({timesheetId: timesheet?.id, page}));
     },
     [dispatch, timesheet],
   );
 
-  if (timesheet?.id !== timesheetId) {
-    return null;
-  }
+  if (timesheet?.id !== timesheetId) return null;
 
   return (
     <Screen
@@ -114,14 +113,14 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
             canEdit={!readonly}
             onEdit={() =>
               navigation.navigate('TimesheetLineFormScreen', {
-                timesheetId: timesheetId,
+                timesheetId,
                 timesheetLine: item,
               })
             }
             onDelete={() =>
               dispatch(
-                deleteTimesheetLine({
-                  timesheetId: timesheetId,
+                (deleteTimesheetLine as any)({
+                  timesheetId,
                   timesheetLineId: item.id,
                 }),
               )
