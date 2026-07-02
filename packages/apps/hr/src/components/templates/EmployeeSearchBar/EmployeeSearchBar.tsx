@@ -27,6 +27,7 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchEmployee} from '../../../features/employeeSlice';
 
 interface EmployeeSearchBarProps {
+  style?: any;
   title?: string;
   showTitle?: boolean;
   readonly?: boolean;
@@ -38,11 +39,12 @@ interface EmployeeSearchBarProps {
 }
 
 const EmployeeSearchBar = ({
+  style,
   title = 'Hr_Employee',
   placeholderKey = 'Hr_Employee',
-  defaultValue = null,
+  defaultValue,
   showTitle = true,
-  onChange = () => {},
+  onChange,
   readonly = false,
   required = false,
   additionnalFilters,
@@ -59,7 +61,7 @@ const EmployeeSearchBar = ({
   } = useSelector(state => state.employee);
 
   const fetchEmployeeAPI = useCallback(
-    ({searchValue, page = 0}) => {
+    ({searchValue, page = 0}: any) => {
       dispatch(
         (searchEmployee as any)({
           searchValue,
@@ -74,7 +76,8 @@ const EmployeeSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(title)}
+      style={style}
+      title={showTitle ? I18n.t(title) : undefined}
       objectList={employeeList}
       value={defaultValue}
       required={required}

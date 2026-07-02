@@ -34,7 +34,6 @@ import {
 import {fetchLeaveToValidate} from '../../../features/leaveSlice';
 import {useManagedEmployees} from '../../../hooks';
 import {Leave} from '../../../types';
-import {LeaveWaitingValidationSearchBar} from '../../templates';
 
 interface LeaveFiltersProps {
   mode: number;
@@ -96,7 +95,7 @@ const LeaveFilters = ({
           }}
         />
       )}
-      {mode === Leave.mode.myLeaves ? (
+      {mode === Leave.mode.myLeaves && (
         <Picker
           listItems={leaveStatusList}
           placeholder={I18n.t('Hr_Status')}
@@ -104,8 +103,6 @@ const LeaveFilters = ({
           labelField="title"
           valueField="key"
         />
-      ) : (
-        <LeaveWaitingValidationSearchBar />
       )}
     </View>
   );

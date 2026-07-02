@@ -76,6 +76,7 @@ const InvitedCollaboratorViewAllListAux = ({
         lines={lines}
         setLines={handleChange}
         translator={I18n.t}
+        isFormWrapper
       />
       {!readonly && (
         <EmployeeSearchBar

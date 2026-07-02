@@ -86,26 +86,24 @@ const LeaveDetailsButtons = ({
     navigation.pop();
   }, [dispatch, leaveRequestParams, navigation]);
 
-  if (readonly) {
-    return null;
-  }
+  if (readonly) return null;
 
   if (statusSelect === LeaveRequest?.statusSelect.Draft) {
     return (
       <View style={styles.container}>
         {canDelete && (
           <Button
+            style={styles.button}
             title={I18n.t('Hr_Delete')}
             onPress={deleteLeaveAPI}
-            width="45%"
             color={Colors.errorColor}
             iconName="trash3-fill"
           />
         )}
         <Button
+          style={styles.button}
           title={I18n.t('Hr_Send')}
           onPress={sendLeaveAPI}
-          width="45%"
           iconName="send-fill"
         />
       </View>
@@ -120,16 +118,16 @@ const LeaveDetailsButtons = ({
       return (
         <View style={styles.container}>
           <Button
+            style={styles.button}
             title={I18n.t('Hr_Refuse')}
             onPress={() => setRefusalPopupIsOpen(true)}
-            width="45%"
             color={Colors.errorColor}
             iconName="x-lg"
           />
           <Button
+            style={styles.button}
             title={I18n.t('Hr_Validate')}
             onPress={validateLeaveAPI}
-            width="45%"
             iconName="check-lg"
           />
           <LeaveRefusalPopup
@@ -145,6 +143,7 @@ const LeaveDetailsButtons = ({
     return (
       <View style={styles.container}>
         <Button
+          style={styles.button}
           title={I18n.t('Hr_Cancel')}
           onPress={cancelLeaveAPI}
           color={Colors.errorColor}
@@ -160,7 +159,12 @@ const LeaveDetailsButtons = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    width: '90%',
+    alignSelf: 'center',
+    gap: 5,
+  },
+  button: {
+    flex: 1,
   },
 });
 
