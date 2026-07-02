@@ -79,9 +79,9 @@ const MaintenanceRequestCard = ({
         ],
       }}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
-            style: {width: undefined, paddingHorizontal: 5},
             color: getItemColor(MaintenanceRequest?.actionSelect, actionSelect),
             displayText: getItemTitle(
               MaintenanceRequest?.actionSelect,
@@ -98,7 +98,9 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 10,
     marginVertical: 4,
-    paddingRight: 5,
+  },
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

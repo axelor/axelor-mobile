@@ -41,10 +41,10 @@ const MaintenanceRequestListScreen = () => {
   } = useSelector(state => state.maintenance_maintenanceRequest);
   const {user} = useSelector(state => state.user);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [selectedAction, setSelectedAction] = useState(null);
-  const [selectedMachine, setSelectedMachine] = useState(null);
-  const [isAssignedToMe, setIsAssignedToMe] = useState(true);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [selectedAction, setSelectedAction] = useState<any>();
+  const [selectedMachine, setSelectedMachine] = useState<any>();
+  const [isAssignedToMe, setIsAssignedToMe] = useState<boolean>(true);
 
   const availableStatus = useMemo(
     () => [
