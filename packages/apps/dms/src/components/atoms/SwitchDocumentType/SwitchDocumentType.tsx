@@ -27,7 +27,7 @@ const DOCUMENT_TYPE = {
 };
 
 interface SwitchDocumentTypeProps {
-  defaultValue: boolean;
+  defaultValue?: boolean;
   onChange: (value: boolean) => void;
 }
 
@@ -37,7 +37,7 @@ const SwitchDocumentTypeAux = ({
 }: SwitchDocumentTypeProps) => {
   const I18n = useTranslator();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   return (
     <RadioSelect
@@ -56,13 +56,8 @@ const SwitchDocumentTypeAux = ({
   );
 };
 
-const SwitchDocumentType = ({
-  defaultValue,
-  onChange,
-}: SwitchDocumentTypeProps) => {
-  return (
-    <SwitchDocumentTypeAux defaultValue={defaultValue} onChange={onChange} />
-  );
+const SwitchDocumentType = (props: SwitchDocumentTypeProps) => {
+  return <SwitchDocumentTypeAux {...props} />;
 };
 
 const styles = StyleSheet.create({
