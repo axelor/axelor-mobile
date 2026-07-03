@@ -73,7 +73,7 @@ const TaskCard = ({
           : undefined
       }
       style={[styles.card, style]}
-      iconLeftMargin={30}
+      iconLeftMargin={5}
       leftContainerFlex={2}
       showArrow={showArrow}
       upperTexts={{
@@ -93,10 +93,10 @@ const TaskCard = ({
         ],
       }}
       sideBadges={{
-        style: isCopyCard && styles.badge,
+        style: styles.badge,
         items: [
           {
-            customComponent: <DateDisplay date={taskDeadline} size={16} />,
+            customComponent: <DateDisplay date={taskDeadline!} size={16} />,
           },
           {
             customComponent: (
@@ -114,7 +114,8 @@ const TaskCard = ({
             color: getItemColorFromIndex(projectPriorityList, priority),
             showIf: priority != null,
           },
-          isCopyCard && {
+          {
+            showIf: isCopyCard,
             customComponent: (
               <Icon name="copy" color={Colors.secondaryColor.background} />
             ),
@@ -129,8 +130,7 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 2,
     marginVertical: 2,
-    padding: 0,
-    marginRight: 5,
+    marginRight: 2,
     paddingRight: 5,
     flex: 1,
   },

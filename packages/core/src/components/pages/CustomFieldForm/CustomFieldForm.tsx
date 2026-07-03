@@ -18,9 +18,8 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useSelector} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {FormView} from '../../pages';
+import {useSelector} from '../../../redux/hooks';
 import {handlerApiCall} from '../../../apiProviders';
 import {
   Action,
@@ -34,6 +33,7 @@ import {
   updateJsonFieldsObject,
   useFieldPermitter,
 } from '../../../forms';
+import {FormView} from '../../pages';
 
 const FORM_KEY = 'customField-form';
 
@@ -59,7 +59,7 @@ const CustomFieldForm = ({
   style,
   model,
   modelId,
-  fieldType = null,
+  fieldType,
   additionalActions = [],
   readonly = false,
   readonlyButton = false,
@@ -70,8 +70,8 @@ const CustomFieldForm = ({
 
   const {userId} = useSelector((state: any) => state.auth);
 
-  const [_fields, setFields] = useState(null);
-  const [object, setObject] = useState(null);
+  const [_fields, setFields] = useState<any>();
+  const [object, setObject] = useState<any>();
 
   const removeUnauthorizedFields = useFieldPermitter({modelName: model});
 
@@ -178,9 +178,10 @@ const CustomFieldForm = ({
 const styles = StyleSheet.create({
   formView: {
     paddingBottom: 0,
+    marginBottom: 0,
   },
   screen: {
-    backgroundColor: null,
+    backgroundColor: undefined,
   },
 });
 
