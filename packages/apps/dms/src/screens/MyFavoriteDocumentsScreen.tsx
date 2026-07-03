@@ -31,8 +31,8 @@ const MyFavoriteDocumentsScreen = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const [author, setAuthor] = useState(null);
-  const [selectedExtensions, setSelectedExtensions] = useState([]);
+  const [author, setAuthor] = useState<any>(null);
+  const [selectedExtensions, setSelectedExtensions] = useState<any[]>([]);
 
   const {user} = useSelector(state => state.user);
   const {
