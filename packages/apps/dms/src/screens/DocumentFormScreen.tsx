@@ -17,11 +17,10 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {FormView, useSelector} from '@axelor/aos-mobile-core';
 import {createDocument, updateDocument} from '../features/documentSlice';
 
-const DocumentFormScreen = ({navigation, route}) => {
+const DocumentFormScreen = ({navigation, route}: any) => {
   const {parent, document, model, modelId} = route?.params ?? {};
 
   const {user} = useSelector(state => state.user);
@@ -39,7 +38,7 @@ const DocumentFormScreen = ({navigation, route}) => {
   const defaultValue = useMemo(() => document, [document]);
 
   const documentAPI = useCallback(
-    (_document, isCreation, dispatch) => {
+    (_document: any, isCreation: boolean, dispatch: any) => {
       if (!_document.isAttachedFileCreation && _document.parent?.id == null) {
         _document.parent = user.dmsRoot ?? mobileSettings?.defaultDmsRoot;
       }
@@ -54,7 +53,6 @@ const DocumentFormScreen = ({navigation, route}) => {
 
   return (
     <FormView
-      style={styles.form}
       formKey="dms_document"
       creationDefaultValue={creationDefaultValue}
       defaultValue={defaultValue}
@@ -82,11 +80,5 @@ const DocumentFormScreen = ({navigation, route}) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  form: {
-    paddingBottom: 150,
-  },
-});
 
 export default DocumentFormScreen;

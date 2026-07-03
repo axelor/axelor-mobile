@@ -29,7 +29,7 @@ import {Alert, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchDirectory} from '../api/document-api';
 import {DocumentList} from '../components';
 
-const AttachedFilesScreen = ({navigation, route}) => {
+const AttachedFilesScreen = ({navigation, route}: any) => {
   const {parent: _parent, model, modelId, options} = route?.params ?? {};
   const I18n = useTranslator();
   const Colors = useThemeColor();

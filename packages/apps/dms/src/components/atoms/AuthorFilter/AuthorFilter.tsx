@@ -34,7 +34,7 @@ const AuthorFilter = ({author, setAuthor}: AuthorFilterProps) => {
       <ToggleButton
         isActive={author?.id === user?.id}
         onPress={() =>
-          setAuthor(current => (current?.id === user?.id ? null : user))
+          setAuthor((current: any) => (current?.id === user?.id ? null : user))
         }
         buttonConfig={{
           iconName: 'person-fill',
@@ -59,14 +59,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     width: '90%',
+    gap: 5,
   },
   toggleButton: {
-    width: '10%',
+    width: 30,
     height: 40,
     marginVertical: 0,
   },
   userSearchBar: {
-    width: '88%',
+    flex: 1,
   },
 });
 

@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {DocumentList} from '../components';
 
-const AllDocumentsScreen = ({defaultParent}) => {
+const AllDocumentsScreen = ({defaultParent}: {defaultParent?: any}) => {
   const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector(state => state.appConfig);
 
