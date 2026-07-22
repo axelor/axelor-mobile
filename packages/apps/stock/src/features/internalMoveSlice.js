@@ -88,9 +88,17 @@ export const createInternalMove = createAsyncThunk(
 export const realizeInternalMove = createAsyncThunk(
   'internalMove/realizeInternalMove',
   async function (data, {getState}) {
+    const freshInternalMove = await handlerApiCall({
+      fetchFunction: _fetchInternalMove,
+      data: {internalMoveId: data.stockMoveId},
+      action: 'Stock_SliceAction_FetchInternalMove',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+
     return handlerApiCall({
       fetchFunction: _realizeInternalMove,
-      data,
+      data: {...data, version: freshInternalMove?.version ?? data.version},
       action: 'Stock_SliceAction_RealizeInternalMove',
       getState,
       responseOptions: {showToast: true},
