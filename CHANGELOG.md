@@ -3,6 +3,15 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.19] (2026-07-22)
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock move: refresh record before realize to avoid version conflict
+- Stock move lines: filter completed lines based on their status instead of quantity
+
 ## [8.5.18] (2026-06-19)
 
 ### @axelor/aos-mobile-stock
@@ -548,6 +557,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.19]: https://github.com/axelor/axelor-mobile/compare/8.5.18...8.5.19
 [8.5.18]: https://github.com/axelor/axelor-mobile/compare/8.5.17...8.5.18
 [8.5.17]: https://github.com/axelor/axelor-mobile/compare/8.5.16...8.5.17
 [8.5.16]: https://github.com/axelor/axelor-mobile/compare/8.5.15...8.5.16
