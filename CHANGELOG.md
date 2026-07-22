@@ -3,6 +3,15 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.1] (2026-07-22)
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock move: refresh record before realize to avoid version conflict
+- Stock move lines: filter completed lines based on their status instead of quantity
+
 ## [9.1.0] (2026-06-22)
 
 ### @axelor/aos-mobile-core
@@ -197,4 +206,5 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.1]: https://github.com/axelor/axelor-mobile/compare/9.1.0...9.1.1
 [9.1.0]: https://github.com/axelor/axelor-mobile/compare/9.0.13...9.1.0
