@@ -71,9 +71,17 @@ export const addNewLine = createAsyncThunk(
 export const realizeSupplierArrival = createAsyncThunk(
   'supplierArrivals/realizeSupplierArrival',
   async function (data: any = {}, {getState}) {
+    const freshSupplierArrival = await handlerApiCall({
+      fetchFunction: _fetchSupplierArrival,
+      data: {supplierArrivalId: data.stockMoveId},
+      action: 'Stock_SliceAction_FetchSupplierArrival',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+
     return handlerApiCall({
       fetchFunction: realizeSockMove,
-      data,
+      data: {...data, version: freshSupplierArrival?.version ?? data.version},
       action: 'Stock_SliceAction_RealizeSupplierArrival',
       getState,
       responseOptions: {showToast: true},

@@ -1,0 +1,5 @@
+{
+  "title": "Stock move: refresh record before realize to avoid version conflict",
+  "type": "fix",
+  "packages": "stock"
+}
