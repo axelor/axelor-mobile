@@ -71,9 +71,17 @@ export const addNewLine = createAsyncThunk(
 export const realizeCustomerDelivery = createAsyncThunk(
   'deliveries/realizeCustomerDelivery',
   async function (data, {getState}) {
+    const freshCustomerDelivery = await handlerApiCall({
+      fetchFunction: _fetchCustomerDelivery,
+      data: {customerDeliveryId: data.stockMoveId},
+      action: 'Stock_SliceAction_FetchCustomerDeliveryById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+
     return handlerApiCall({
       fetchFunction: realizeSockMove,
-      data,
+      data: {...data, version: freshCustomerDelivery?.version ?? data.version},
       action: 'Stock_SliceAction_RealizeCustomerDelivery',
       getState,
       responseOptions: {showToast: true},
