@@ -3,6 +3,15 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.14] (2026-07-22)
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock move: refresh record before realize to avoid version conflict
+- Stock move lines: filter completed lines based on their status instead of quantity
+
 ## [9.0.13] (2026-06-19)
 
 ### @axelor/aos-mobile-stock
@@ -324,6 +333,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.14]: https://github.com/axelor/axelor-mobile/compare/9.0.13...9.0.14
 [9.0.13]: https://github.com/axelor/axelor-mobile/compare/9.0.12...9.0.13
 [9.0.12]: https://github.com/axelor/axelor-mobile/compare/9.0.11...9.0.12
 [9.0.11]: https://github.com/axelor/axelor-mobile/compare/9.0.10...9.0.11
