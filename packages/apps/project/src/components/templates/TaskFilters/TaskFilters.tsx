@@ -155,6 +155,7 @@ const TaskFilters = ({
           onPress={() => setIsAssignedToMe(current => !current)}
           buttonConfig={{
             iconName: 'person-fill',
+            width: '10%',
             style: styles.toggleButton,
           }}
         />
@@ -196,9 +197,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   toggleButton: {
-    width: 30,
     height: 40,
-    marginVertical: 0,
+    borderRadius: 12,
   },
   flexPicker: {
     flex: 1,

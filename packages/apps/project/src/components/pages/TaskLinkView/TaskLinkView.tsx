@@ -43,7 +43,7 @@ const TaskLinkView = ({}) => {
     loadingTaskLink,
     moreLoadingTaskLink,
     isListEndTaskLink,
-  } = useSelector((state: any) => state.project_projectTask);
+  } = useSelector(state => state.project_projectTask);
 
   useEffect(() => {
     dispatch((searchProjectTaskLink as any)({taskId: projectTask?.id}));
@@ -52,10 +52,7 @@ const TaskLinkView = ({}) => {
   const fetchProjectTaskLinkAPI = useCallback(
     (page = 0) => {
       dispatch(
-        (searchProjectTaskLink as any)({
-          taskId: projectTask?.id,
-          page: page,
-        }),
+        (searchProjectTaskLink as any)({taskId: projectTask?.id, page: page}),
       );
     },
     [dispatch, projectTask?.id],
@@ -82,6 +79,7 @@ const TaskLinkView = ({}) => {
         fetchData={fetchProjectTaskLinkAPI}
         renderItem={({item}) => (
           <TaskCard
+            style={styles.card}
             name={item?.relatedTask.name}
             assignedTo={item?.relatedTask?.assignedTo?.fullName}
             taskDeadline={item?.relatedTask?.taskDeadline}
@@ -111,6 +109,10 @@ const TaskLinkView = ({}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  card: {
+    width: '95%',
+    alignSelf: 'center',
   },
   horizotalRule: {
     marginTop: 15,
