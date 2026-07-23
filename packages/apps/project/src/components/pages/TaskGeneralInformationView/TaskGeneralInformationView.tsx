@@ -34,7 +34,7 @@ const TaskGeneralInformationView = ({
   const navigation = useNavigation();
 
   const {projectTask, loadingProjectTask} = useSelector(
-    (state: any) => state.project_projectTask,
+    state => state.project_projectTask,
   );
 
   useEffect(() => {

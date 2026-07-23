@@ -20,7 +20,7 @@ import React, {useCallback, useMemo} from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 import {createCheckListItem} from '../../features/checkListSlice';
 
-const CheckListItemFormScreen = ({navigation, route}) => {
+const CheckListItemFormScreen = ({navigation, route}: any) => {
   const {parentItem, projectId, projectTaskId} = route.params ?? {};
 
   const creationDefaultValue = useMemo(

@@ -17,10 +17,11 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {
   LabelText,
   TagList,
+  ThemeColors,
   checkNullString,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -51,30 +52,22 @@ const DropdownTaskCharacteristics = ({
   const Colors = useThemeColor();
 
   const tagsList = useMemo(() => {
-    return tagSet?.map(tag => ({
+    return tagSet?.map((tag: any) => ({
       title: tag?.name,
-      color: Colors[tag?.colorSelect],
+      color: Colors[tag?.colorSelect as keyof ThemeColors],
     }));
   }, [tagSet, Colors]);
 
   const _formatDate = useCallback(
-    _date => {
-      return _date ? formatDate(_date, I18n.t('Base_DateFormat')) : null;
-    },
+    (_date?: string) =>
+      _date ? formatDate(_date, I18n.t('Base_DateFormat')) : null,
     [I18n],
   );
 
   const renderLabelText = useCallback(
     (titleKey: string, value: string | number) => {
       if (!checkNullString(value)) {
-        return (
-          <LabelText
-            style={styles.labelText}
-            title={`${I18n.t(titleKey)} :`}
-            value={value}
-            textSize={16}
-          />
-        );
+        return <LabelText title={`${I18n.t(titleKey)} :`} value={value} />;
       }
       return null;
     },
@@ -93,10 +86,5 @@ const DropdownTaskCharacteristics = ({
     </View>
   );
 };
-const styles = StyleSheet.create({
-  labelText: {
-    alignItems: 'flex-start',
-  },
-});
 
 export default DropdownTaskCharacteristics;

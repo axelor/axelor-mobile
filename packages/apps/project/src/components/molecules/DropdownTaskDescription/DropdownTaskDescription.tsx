@@ -35,16 +35,15 @@ const DropdownTaskDescription = ({
   const I18n = useTranslator();
 
   const renderDescription = useCallback(
-    (titleKey: string, value: string) => {
-      if (!checkNullString(value)) {
-        return (
-          <>
-            <Text writingType="important">{`${I18n.t(titleKey)}:`}</Text>
-            <HtmlInput defaultInput={value} readonly={true} />
-          </>
-        );
-      }
-      return null;
+    (titleKey: string, value?: string) => {
+      if (checkNullString(value)) return null;
+
+      return (
+        <>
+          <Text writingType="important">{`${I18n.t(titleKey)}:`}</Text>
+          <HtmlInput defaultInput={value} readonly />
+        </>
+      );
     },
     [I18n],
   );

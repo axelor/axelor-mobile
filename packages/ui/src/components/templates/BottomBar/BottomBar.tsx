@@ -17,7 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -26,7 +33,7 @@ import Animated, {
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme';
-import {Card} from '../../atoms';
+import {Card, Icon} from '../../atoms';
 import BarItem from './BarItem';
 import ItemTitle from './ItemTitle';
 import {BottomBarItem} from './types.helper';
@@ -50,15 +57,22 @@ const BottomBar = ({
   const {headerHeight} = useConfig();
   const Colors = useThemeColor();
 
+  const itemPositions = useRef<any>({});
+  const animatedX = useSharedValue(0);
+  const scrollRef = useRef<ScrollView>(null);
+  const viewportWidthRef = useRef<number>(0);
+  const contentWidthRef = useRef<number>(0);
+  const offsetRef = useRef<number>(0);
+  const didInitialScrollRef = useRef<boolean>(false);
+
   const [selectedKey, setSelectedKey] = useState<string>();
   const [viewHeight, setViewHeight] = useState<number>(WINDOW_HEIGHT * 0.8);
   const [selectedItemColor, setSelectedItemColor] = useState<any>();
-
-  const itemPositions = useRef({});
-  const animatedX = useSharedValue(0);
+  const [showLeftIndicator, setShowLeftIndicator] = useState<boolean>(false);
+  const [showRightIndicator, setShowRightIndicator] = useState<boolean>(false);
 
   const onItemLayout = useCallback(
-    (event, key) => {
+    (event: any, key: any) => {
       itemPositions.current[key] = event.nativeEvent.layout.x;
       if (key === selectedKey) {
         animatedX.value = itemPositions.current[key];
@@ -82,6 +96,40 @@ const BottomBar = ({
       transform: [{translateX: animatedX.value}],
     };
   });
+
+  const recomputeIndicators = useCallback(() => {
+    const maxX = contentWidthRef.current - viewportWidthRef.current;
+    setShowLeftIndicator(offsetRef.current > 1);
+    setShowRightIndicator(maxX > 1 && offsetRef.current < maxX - 1);
+  }, []);
+
+  const handleScroll = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      offsetRef.current = event.nativeEvent.contentOffset.x;
+      recomputeIndicators();
+    },
+    [recomputeIndicators],
+  );
+
+  const scrollToKey = useCallback(
+    (key?: string, animated: boolean = true) => {
+      const x = key != null ? itemPositions.current[key] : null;
+      if (
+        x == null ||
+        scrollRef.current == null ||
+        viewportWidthRef.current === 0
+      ) {
+        return;
+      }
+      const target = Math.max(0, x - (viewportWidthRef.current - itemSize) / 2);
+      scrollRef.current.scrollTo({x: target, animated});
+    },
+    [itemSize],
+  );
+
+  useEffect(() => {
+    scrollToKey(selectedKey);
+  }, [selectedKey, scrollToKey]);
 
   const visibleItems: BottomBarItem[] = useMemo(
     () => getVisibleItems(items),
@@ -163,20 +211,54 @@ const BottomBar = ({
           );
         }}>
         <Card style={[styles.bottomContainer, style]}>
-          <View style={styles.itemsContainer}>
-            {visibleItems.map(renderItem)}
-            <Animated.View
-              style={[
-                styles.animatedBar,
-                animatedStyle,
-                {
-                  backgroundColor:
-                    selectedItemColor?.background != null
-                      ? selectedItemColor?.background
-                      : Colors.primaryColor?.background,
-                },
-              ]}
-            />
+          <View style={styles.scrollWrapper}>
+            <ScrollView
+              ref={scrollRef}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              scrollEventThrottle={16}
+              onScroll={handleScroll}
+              onLayout={event => {
+                viewportWidthRef.current = event.nativeEvent.layout.width;
+                recomputeIndicators();
+              }}
+              onContentSizeChange={width => {
+                contentWidthRef.current = width;
+                recomputeIndicators();
+                if (!didInitialScrollRef.current) {
+                  didInitialScrollRef.current = true;
+                  scrollToKey(selectedKey, false);
+                }
+              }}
+              contentContainerStyle={styles.itemsContainer}>
+              {visibleItems.map(renderItem)}
+              <Animated.View
+                style={[
+                  styles.animatedBar,
+                  animatedStyle,
+                  {
+                    backgroundColor:
+                      selectedItemColor?.background != null
+                        ? selectedItemColor?.background
+                        : Colors.primaryColor?.background,
+                  },
+                ]}
+              />
+            </ScrollView>
+            {showLeftIndicator && (
+              <View
+                pointerEvents="none"
+                style={[styles.chevron, styles.chevronLeft]}>
+                <Icon name="chevron-left" size={16} />
+              </View>
+            )}
+            {showRightIndicator && (
+              <View
+                pointerEvents="none"
+                style={[styles.chevron, styles.chevronRight]}>
+                <Icon name="chevron-right" size={16} />
+              </View>
+            )}
           </View>
           <ItemTitle
             title={manageActiveTitle ? activeView?.title : undefined}
@@ -201,10 +283,26 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 10,
   },
+  scrollWrapper: {
+    position: 'relative',
+  },
   itemsContainer: {
+    flexGrow: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+  },
+  chevron: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+  },
+  chevronLeft: {
+    left: -8,
+  },
+  chevronRight: {
+    right: -8,
   },
   animatedBar: {
     position: 'absolute',

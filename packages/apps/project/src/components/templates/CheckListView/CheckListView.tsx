@@ -116,7 +116,7 @@ const CheckListView = ({
       searchPlaceholder={I18n.t('Base_Search')}
       parentFieldName="parentItem"
       renderBranch={({item}) => <ParentCheckListItemCard item={item} />}
-      getBranchActions={({item}) => (showActions ? getItemActions(item) : null)}
+      getBranchActions={({item}) => (showActions ? getItemActions(item) : [])}
       renderLeaf={({item}) => (
         <CheckListItemActionCard
           item={item}
@@ -133,16 +133,18 @@ const CheckListView = ({
       }
       headerTopChildren={headerTopChildren}
       actionList={
-        canCreate && [
-          {
-            iconName: 'plus-lg',
-            title: I18n.t('Project_CreateItem'),
-            onPress: () =>
-              navigation.navigate('CheckListItemFormScreen', {
-                [`${parentKey}Id`]: parentId,
-              }),
-          },
-        ]
+        canCreate
+          ? [
+              {
+                iconName: 'plus-lg',
+                title: I18n.t('Project_CreateItem'),
+                onPress: () =>
+                  navigation.navigate('CheckListItemFormScreen', {
+                    [`${parentKey}Id`]: parentId,
+                  }),
+              },
+            ]
+          : []
       }
     />
   );

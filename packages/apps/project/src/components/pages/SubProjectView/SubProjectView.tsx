@@ -45,7 +45,7 @@ const SubProjectView = () => {
     moreLoadingSubProject,
     isListEndSubProject,
     subProjectList,
-  } = useSelector((state: any) => state.project_project);
+  } = useSelector(state => state.project_project);
   const {user} = useSelector(state => state.user);
 
   const sliceFunctionData = useMemo(

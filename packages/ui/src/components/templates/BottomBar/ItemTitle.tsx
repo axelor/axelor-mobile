@@ -27,12 +27,10 @@ const ItemTitle = ({
   fontSize = 12,
 }: {
   style?: any;
-  title: string;
+  title?: string;
   fontSize?: number;
 }) => {
-  if (checkNullString(title)) {
-    return null;
-  }
+  if (checkNullString(title)) return null;
 
   return (
     <Text fontSize={fontSize} numberOfLines={1} style={[styles.title, style]}>

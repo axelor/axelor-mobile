@@ -30,17 +30,14 @@ interface DropdownMembersProps {
 const DropdownMembers = ({style, team, memberSet}: DropdownMembersProps) => {
   const I18n = useTranslator();
 
-  const members = useMemo(() => {
-    return memberSet?.map(member => ({title: member?.fullName}));
-  }, [memberSet]);
+  const members = useMemo(
+    () => memberSet?.map(member => ({title: member?.fullName})) ?? [],
+    [memberSet],
+  );
 
   return (
     <View style={style}>
-      <LabelText
-        title={`${I18n.t('Project_Team')} :`}
-        value={team ?? '-'}
-        textSize={16}
-      />
+      <LabelText title={`${I18n.t('Project_Team')} :`} value={team ?? '-'} />
       <TagList title={I18n.t('Project_Members')} tags={members} />
     </View>
   );

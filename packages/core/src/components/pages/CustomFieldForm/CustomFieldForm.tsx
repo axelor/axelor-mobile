@@ -204,6 +204,7 @@ const CustomFieldForm = ({
 const styles = StyleSheet.create({
   formView: {
     paddingBottom: 0,
+    marginBottom: 0,
   },
   screen: {
     backgroundColor: undefined,

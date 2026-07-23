@@ -80,7 +80,7 @@ const ProjectCard = ({
               defaultIconSize: 50,
               source: formatMetaFile(customer?.picture?.id),
             }
-          : null
+          : undefined
       }
       upperTexts={{
         items: [
@@ -121,7 +121,8 @@ const ProjectCard = ({
       sideBadges={{
         style: styles.badges,
         items: [
-          isCopyCard && {
+          {
+            showIf: isCopyCard,
             customComponent: (
               <Icon name="copy" color={Colors.secondaryColor.background} />
             ),

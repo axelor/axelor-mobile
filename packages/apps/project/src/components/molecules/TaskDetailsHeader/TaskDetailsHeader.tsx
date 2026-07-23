@@ -31,7 +31,7 @@ const TaskDetailsHeader = ({}) => {
   const {getItemColorFromIndex} = useTypeHelpers();
 
   const {projectTask, projectTaskStatusList, projectPriorityList} = useSelector(
-    (state: any) => state.project_projectTask,
+    state => state.project_projectTask,
   );
 
   return (
@@ -41,20 +41,16 @@ const TaskDetailsHeader = ({}) => {
           <Text writingType="title">{projectTask?.name}</Text>
           <LabelText
             iconName="pin-angle-fill"
-            size={16}
             title={projectTask?.assignedTo?.fullName}
-            textStyle={styles.labelText}
           />
           {!checkNullString(projectTask?.parentTask?.fullName) && (
             <LabelText
               iconName="diagram-3-fill"
-              size={16}
               title={projectTask?.parentTask?.fullName}
-              textStyle={styles.labelText}
             />
           )}
         </View>
-        <View style={[styles.columnContainer, styles.alignEnd]}>
+        <View>
           {projectTask?.status != null && (
             <Badge
               title={projectTask?.status?.name}
@@ -62,7 +58,6 @@ const TaskDetailsHeader = ({}) => {
                 projectTaskStatusList,
                 projectTask?.status,
               )}
-              style={styles.badge}
             />
           )}
           {projectTask?.priority != null && (
@@ -72,7 +67,6 @@ const TaskDetailsHeader = ({}) => {
                 projectPriorityList,
                 projectTask?.priority,
               )}
-              style={styles.badge}
             />
           )}
         </View>
@@ -84,28 +78,18 @@ const TaskDetailsHeader = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
-    marginBottom: 5,
+    marginHorizontal: 20,
     flexDirection: 'column',
+    gap: 5,
   },
   rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 3,
   },
   columnContainer: {
     flexDirection: 'column',
-    marginBottom: 3,
     flex: 1,
-  },
-  alignEnd: {
-    alignItems: 'flex-end',
-  },
-  labelText: {
-    fontSize: 16,
-    marginBottom: 3,
-  },
-  badge: {
-    marginTop: 3,
+    gap: 2,
   },
 });
 

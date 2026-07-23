@@ -37,14 +37,12 @@ const DatesDisplay = ({
 
   const renderDateItem = useCallback(
     ({title, value}: DateItemProps) => {
-      if (!value) {
-        return null;
-      }
+      if (!value) return null;
 
       return (
         <View style={styles.dateWrapper}>
-          <Text style={styles.centerText}>{I18n.t(title)}</Text>
-          <DateDisplay date={value} />
+          <Text>{I18n.t(title)}</Text>
+          <DateDisplay date={value} displayYear size={14} />
         </View>
       );
     },
@@ -56,8 +54,7 @@ const DatesDisplay = ({
       {renderDateItem({title: 'Project_StartedOn', value: fromDate})}
       <Icon
         name="arrow-right"
-        size={30}
-        style={styles.icon}
+        size={20}
         visible={fromDate != null && toDate != null}
       />
       {renderDateItem({title: 'Project_EndedOn', value: toDate})}
@@ -71,17 +68,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
-  },
-  icon: {
-    marginHorizontal: 2,
+    gap: 2,
   },
   dateWrapper: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  centerText: {
-    textAlign: 'center',
   },
 });
 
