@@ -18,7 +18,7 @@
 
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {HorizontalRule} from '@axelor/aos-mobile-ui';
+import {HorizontalRule, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CustomFieldForm, usePermitted} from '@axelor/aos-mobile-core';
 import {CustomFieldPopup, SectionHeader} from '../../molecules';
 
@@ -37,6 +37,7 @@ const CustomSection = ({
   refreshKey: number;
   onRefresh: () => void;
 }) => {
+  const Colors = useThemeColor();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.project.db.ProjectTask',
   });
@@ -44,9 +45,7 @@ const CustomSection = ({
   const [expanded, setExpanded] = useState(true);
   const [alertVisible, setAlertVisible] = useState(false);
 
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
   return (
     <>
@@ -67,7 +66,10 @@ const CustomSection = ({
             readonly
             key={refreshKey}
           />
-          <HorizontalRule style={styles.horizontalRule} />
+          <HorizontalRule
+            style={styles.horizontalRule}
+            color={Colors.secondaryColor.background_light}
+          />
         </>
       )}
       <CustomFieldPopup

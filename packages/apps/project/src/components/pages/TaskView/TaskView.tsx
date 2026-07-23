@@ -38,15 +38,15 @@ const TaskView = () => {
 
   useTaskFilters();
 
-  const {user} = useSelector((state: any) => state.user);
-  const {project} = useSelector((state: any) => state.project_project);
+  const {user} = useSelector(state => state.user);
+  const {project} = useSelector(state => state.project_project);
   const {loading, moreLoading, isListEnd, projectTaskList} = useSelector(
-    (state: any) => state.project_projectTask,
+    state => state.project_projectTask,
   );
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [selectedPriority, setSelectedPriority] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [selectedPriority, setSelectedPriority] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<any[]>([]);
   const [isAssignedToMe, setIsAssignedToMe] = useState(false);
 
   const actionList = useMemo(() => {
@@ -65,24 +65,25 @@ const TaskView = () => {
     return _actionList;
   }, [I18n, canCreate, navigation]);
 
-  const sliceFunctionData = useMemo(() => {
-    return {
+  const sliceFunctionData = useMemo(
+    () => ({
       projectId: project?.id,
-      isAssignedToMe: isAssignedToMe,
-      selectedStatus: selectedStatus,
-      selectedPriority: selectedPriority,
-      selectedCategory: selectedCategory,
+      isAssignedToMe,
+      selectedStatus,
+      selectedPriority,
+      selectedCategory,
       userId: isAssignedToMe ? user.id : null,
       companyId: user.activeCompany?.id,
-    };
-  }, [
-    project?.id,
-    isAssignedToMe,
-    selectedStatus,
-    selectedPriority,
-    selectedCategory,
-    user,
-  ]);
+    }),
+    [
+      project?.id,
+      isAssignedToMe,
+      selectedStatus,
+      selectedPriority,
+      selectedCategory,
+      user,
+    ],
+  );
 
   return (
     <SearchListView
@@ -109,9 +110,9 @@ const TaskView = () => {
       renderListItem={({item}) => (
         <TaskActionCard
           task={item}
-          onPress={() => {
-            navigation.popTo('TaskDetailsScreen', {projecTaskId: item.id});
-          }}
+          onPress={() =>
+            navigation.popTo('TaskDetailsScreen', {projecTaskId: item.id})
+          }
         />
       )}
     />

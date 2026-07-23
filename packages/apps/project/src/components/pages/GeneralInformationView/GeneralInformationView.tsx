@@ -35,11 +35,9 @@ const GeneralInformationView = ({
 }) => {
   const I18n = useTranslator();
 
-  const {project} = useSelector((state: any) => state.project_project);
+  const {project} = useSelector(state => state.project_project);
 
-  if (project == null || isEmpty(project)) {
-    return null;
-  }
+  if (project == null || isEmpty(project)) return null;
 
   return (
     <View>

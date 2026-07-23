@@ -35,8 +35,8 @@ import {
 } from '../../components';
 import {fetchProjectTaskById} from '../../features/projectTaskSlice';
 
-const TaskDetailsScreen = ({navigation, route}) => {
-  const {projecTaskId, isTimeViewActive} = route?.params;
+const TaskDetailsScreen = ({navigation, route}: any) => {
+  const {projecTaskId, isTimeViewActive} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -49,8 +49,8 @@ const TaskDetailsScreen = ({navigation, route}) => {
 
   const [manageActiveItem, setManageActiveItem] = useState(isTimeViewActive);
 
-  const {projectTask} = useSelector((state: any) => state.project_projectTask);
-  const {user} = useSelector((state: any) => state.user);
+  const {projectTask} = useSelector(state => state.project_projectTask);
+  const {user} = useSelector(state => state.user);
 
   const fetchProjectTask = useCallback(() => {
     dispatch((fetchProjectTaskById as any)({projecTaskId}));

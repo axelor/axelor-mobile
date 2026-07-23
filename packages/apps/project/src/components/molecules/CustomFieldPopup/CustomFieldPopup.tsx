@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {CustomFieldForm, useTranslator} from '@axelor/aos-mobile-core';
 import {Alert} from '@axelor/aos-mobile-ui';
 
@@ -50,38 +50,39 @@ const CustomFieldPopup = ({
         onPress: onClose,
         showInHeader: true,
       }}>
-      <View style={styles.content}>
-        <CustomFieldForm
-          model="com.axelor.apps.project.db.ProjectTask"
-          fieldType={fieldType}
-          modelId={projectTaskId}
-          readonly={false}
-          hideFormBackground={true}
-          hideButtonBackground={true}
-          additionalActions={[
-            {
-              key: 'validateChanges',
-              type: 'update',
-              useDefaultAction: true,
-              readonlyAfterAction: true,
-              postActions: () => {
-                onSave();
-                onClose();
-              },
+      <CustomFieldForm
+        style={styles.formWrapper}
+        model="com.axelor.apps.project.db.ProjectTask"
+        fieldType={fieldType}
+        modelId={projectTaskId}
+        readonly={false}
+        hideFormBackground={true}
+        hideButtonBackground={true}
+        additionalActions={[
+          {
+            key: 'validateChanges',
+            type: 'update',
+            useDefaultAction: true,
+            readonlyAfterAction: true,
+            postActions: () => {
+              onSave();
+              onClose();
             },
-          ]}
-        />
-      </View>
+          },
+        ]}
+      />
     </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-  },
   container: {
     height: '80%',
+    paddingHorizontal: 5,
+    paddingRight: 5,
+  },
+  formWrapper: {
+    width: '100%',
   },
 });
 

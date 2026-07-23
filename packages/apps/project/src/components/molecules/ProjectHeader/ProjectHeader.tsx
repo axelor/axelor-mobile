@@ -35,40 +35,28 @@ const ProjectHeader = ({}) => {
       <View style={styles.leftContainer}>
         <Text writingType="title">{project?.name}</Text>
         {baseConfig?.enableMultiCompany && user?.companySet?.length > 1 && (
-          <LabelText
-            iconName="building-fill"
-            size={16}
-            title={project?.company?.name}
-            textStyle={styles.labelText}
-          />
+          <LabelText iconName="building-fill" title={project?.company?.name} />
         )}
         <LabelText
           iconName="pin-angle-fill"
-          size={16}
           title={project?.assignedTo?.fullName}
-          textStyle={styles.labelText}
         />
         {!checkNullString(project?.parentProject?.fullName) && (
           <LabelText
             iconName="diagram-3-fill"
-            size={16}
             title={project?.parentProject?.fullName}
-            textStyle={styles.labelText}
           />
         )}
       </View>
-      <View style={styles.rightContainer}>
-        {project?.projectStatus != null && (
-          <Badge
-            title={project?.projectStatus?.name}
-            color={getItemColorFromIndex(
-              projectStatusList,
-              project?.projectStatus,
-            )}
-            style={styles.badge}
-          />
-        )}
-      </View>
+      {project?.projectStatus != null && (
+        <Badge
+          title={project?.projectStatus?.name}
+          color={getItemColorFromIndex(
+            projectStatusList,
+            project?.projectStatus,
+          )}
+        />
+      )}
     </View>
   );
 };
@@ -76,25 +64,14 @@ const ProjectHeader = ({}) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 15,
-    marginBottom: 5,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 5,
   },
   leftContainer: {
     flex: 1,
     flexDirection: 'column',
-    marginBottom: 3,
-  },
-  rightContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  },
-  labelText: {
-    fontSize: 16,
-    marginBottom: 3,
-  },
-  badge: {
-    marginTop: 3,
+    gap: 2,
   },
 });
 

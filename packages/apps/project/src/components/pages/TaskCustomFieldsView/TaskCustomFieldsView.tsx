@@ -24,7 +24,7 @@ import {TaskDetailsHeader} from '../../molecules';
 import {CustomSection} from '../../organisms';
 
 const TaskCustomFieldsView = ({}) => {
-  const {projectTask} = useSelector((state: any) => state.project_projectTask);
+  const {projectTask} = useSelector(state => state.project_projectTask);
 
   const [refreshKey, setRefreshKey] = useState(0);
 

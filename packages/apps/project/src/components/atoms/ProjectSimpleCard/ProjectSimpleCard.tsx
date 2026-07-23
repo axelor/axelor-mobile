@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {useSelector, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 
@@ -48,7 +47,7 @@ const ProjectSimpleCard = ({
           ? getItemColorFromIndex(projectStatusList, projectStatus)?.background
           : undefined
       }
-      style={[projectStatus != null ? styles.container : null, style]}
+      style={style}
       upperTexts={{
         items: [
           {displayText: name, isTitle: true},
@@ -61,12 +60,5 @@ const ProjectSimpleCard = ({
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '90%',
-    alignSelf: 'center',
-  },
-});
 
 export default ProjectSimpleCard;

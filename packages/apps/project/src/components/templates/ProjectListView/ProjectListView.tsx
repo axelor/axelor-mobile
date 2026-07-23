@@ -55,7 +55,7 @@ const ProjectListView = ({
   const {user} = useSelector(state => state.user);
   const {projectStatusList} = useSelector(state => state.project_project);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [isAssignedToMe, setIsAssignedToMe] = useState(true);
 
   const statusList = useMemo(
@@ -99,7 +99,6 @@ const ProjectListView = ({
             onPress={() => setIsAssignedToMe(current => !current)}
             buttonConfig={{
               iconName: 'person-fill',
-              width: '10%',
               style: styles.toggleButton,
             }}
           />
@@ -138,12 +137,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
+    gap: 5,
   },
   toggleButton: {
+    width: 30,
     height: 40,
   },
   picker: {
-    width: '85%',
+    flex: 1,
   },
 });
 

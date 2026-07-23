@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch, checkNullString} from '@axelor/aos-mobile-ui';
 import {
@@ -46,6 +45,7 @@ const ProjectTaskDropdownCards = () => {
       {
         key: 1,
         title: I18n.t('Project_Characteristics'),
+        iconName: 'gear',
         childrenComp: (
           <DropdownTaskCharacteristics
             projectTaskCategory={projectTask.projectTaskCategory}
@@ -67,6 +67,7 @@ const ProjectTaskDropdownCards = () => {
       result.push({
         key: 2,
         title: I18n.t('Project_Descriptions'),
+        iconName: 'card-text',
         childrenComp: (
           <DropdownTaskDescription
             description={projectTask?.description}
@@ -79,13 +80,7 @@ const ProjectTaskDropdownCards = () => {
     return result;
   }, [I18n, isSprintManagementEnabled, projectTask]);
 
-  return <DropdownCardSwitch dropdownItems={items} style={styles.dropdown} />;
+  return <DropdownCardSwitch dropdownItems={items} />;
 };
-
-const styles = StyleSheet.create({
-  dropdown: {
-    marginTop: 5,
-  },
-});
 
 export default ProjectTaskDropdownCards;

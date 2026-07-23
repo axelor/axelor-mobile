@@ -34,6 +34,7 @@ const ProjectDropdownCards = ({additionalItems}: {additionalItems?: any[]}) => {
         {
           key: 10,
           order: 10,
+          iconName: 'people',
           title: I18n.t('Project_Members'),
           childrenComp: (
             <DropdownMembers

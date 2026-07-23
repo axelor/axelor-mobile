@@ -35,7 +35,7 @@ import {
   TimeView,
 } from '../../components';
 import {fetchProjectById} from '../../features/projectSlice';
-import {useReportingConfiguration} from '../../hooks/use-reporting-configuration';
+import {useReportingConfiguration} from '../../hooks';
 
 export interface ProjectDetailsScreenProps {
   route?: any;

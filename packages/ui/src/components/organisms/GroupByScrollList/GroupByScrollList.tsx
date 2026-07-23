@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactElement, useRef, useState} from 'react';
+import React, {ReactElement, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import TopSeparator, {TopIndicator, TopSeparatorProps} from './TopSeparator';
 import BottomSeparator, {
@@ -68,9 +68,15 @@ const GroupByScrollList = ({
   verticalActions,
   displayStickyIndicator = true,
 }: GroupByScrollListProps) => {
-  const [stickyIndicator, setStickyIndicator] = useState(null);
+  const [stickyIndicator, setStickyIndicator] = useState<
+    TopIndicator | undefined
+  >();
 
-  const renderSeparator = (customSeparator, Separator, props) => {
+  const renderSeparator = (
+    customSeparator: ReactElement | undefined,
+    Separator: any,
+    props: any,
+  ) => {
     return customSeparator ? (
       React.cloneElement(customSeparator, {...props})
     ) : (
@@ -78,7 +84,7 @@ const GroupByScrollList = ({
     );
   };
 
-  const _renderItem = ({item, index}) => {
+  const _renderItem = ({item, index}: any) => {
     let prevItem = null;
     if (index !== 0) {
       prevItem = data[index - 1];
@@ -130,12 +136,17 @@ const GroupByScrollList = ({
     );
   };
 
-  const onViewableItemsChanged = useRef(({viewableItems}) => {
+  const onViewableItemsChanged = useRef(({viewableItems}: any) => {
     if (viewableItems.length > 0) {
       const firstItem = viewableItems[0];
       setStickyIndicator(fetchTopIndicator?.(firstItem.item));
     }
   });
+
+  useEffect(() => {
+    if (!Array.isArray(data) || data.length === 0)
+      setStickyIndicator(undefined);
+  }, [data]);
 
   return (
     <View style={styles.container}>
