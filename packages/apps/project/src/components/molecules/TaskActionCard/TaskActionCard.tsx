@@ -39,7 +39,7 @@ interface TaskProps {
 
 interface TaskActionCardProps {
   style?: any;
-  task?: TaskProps;
+  task: TaskProps;
   displayParentProjet?: boolean;
   onPress?: () => void;
 }
