@@ -33,12 +33,12 @@ import {
 } from '../../../features/projectTaskSlice';
 import {ProjectSearchBar} from '../../templates';
 
-const filterAvailableSet = (allowValues, _set) => {
+const filterAvailableSet = (allowValues: any[], _set: any[]) => {
   const _availableSet = allowValues?.map(({id}) => id);
   return _set.filter(({value}) => _availableSet.includes(value));
 };
 
-type SetterFunction = (value: any | ((_current: any) => any)) => void;
+type SetterFunction<T> = (value: T | ((_current: T) => T)) => void;
 
 const TaskFilters = ({
   isAssignedToMe,
@@ -53,12 +53,12 @@ const TaskFilters = ({
 }: {
   isAssignedToMe: boolean;
   selectedCategories?: any[];
-  setSelectedCategory: SetterFunction;
-  setIsAssignedToMe: SetterFunction;
-  setSelectedStatus: SetterFunction;
-  setSelectedPriority: SetterFunction;
+  setSelectedCategory: SetterFunction<any[]>;
+  setIsAssignedToMe: SetterFunction<boolean>;
+  setSelectedStatus: SetterFunction<any[]>;
+  setSelectedPriority: SetterFunction<any[]>;
   project?: any;
-  setProject?: SetterFunction;
+  setProject?: SetterFunction<any>;
   showProjectSearchBar?: boolean;
 }) => {
   const I18n = useTranslator();
@@ -67,12 +67,12 @@ const TaskFilters = ({
   const {getCustomSelectionItems} = useTypeHelpers();
 
   const {projectTaskStatusList, projectPriorityList, projectCategoryList} =
-    useSelector((state: any) => state.project_projectTask);
+    useSelector(state => state.project_projectTask);
 
   const selectedCategories = useMemo(
     () =>
       _selectedCategories?.map(({key}) =>
-        projectCategoryList.find(({id}) => id === key),
+        projectCategoryList.find(({id}: any) => id === key),
       ),
     [_selectedCategories, projectCategoryList],
   );
@@ -160,10 +160,10 @@ const TaskFilters = ({
           }}
         />
         <MultiValuePicker
+          style={styles.flexPicker}
           listItems={categoryList}
           onValueChange={setSelectedCategory}
           placeholder={I18n.t('Project_Category')}
-          style={[styles.flexPicker, styles.pickerSpacingLeft]}
         />
       </View>
       <View style={styles.headerContainer}>
@@ -174,7 +174,7 @@ const TaskFilters = ({
           placeholder={I18n.t('Project_Status')}
         />
         <MultiValuePicker
-          style={[styles.flexPicker, styles.pickerSpacingLeft]}
+          style={styles.flexPicker}
           listItems={priorityList}
           onValueChange={setSelectedPriority}
           placeholder={I18n.t('Project_Priority')}
@@ -189,22 +189,19 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
+    gap: 5,
   },
   zIndex: {
     zIndex: 2,
   },
   toggleButton: {
     height: 40,
-    marginVertical: 0,
+    borderRadius: 12,
   },
   flexPicker: {
     flex: 1,
-  },
-  pickerSpacingLeft: {
-    marginLeft: 10,
   },
 });
 

@@ -26,7 +26,7 @@ const BORDER_RADIUS = 7;
 type ProgressBarProps = {
   style?: object;
   styleTxt?: object;
-  value?: number;
+  value?: number | string;
   total?: number;
   showPercent?: boolean;
   centeredPercent?: boolean;
@@ -60,15 +60,16 @@ const ProgressBar = ({
   const [textWidth, setTextWidth] = useState(0);
 
   const percent = useMemo(() => {
-    if (value !== 0 && total !== 0 && progressBarContainerWidth !== 0) {
-      let _progressBarWidth = (value / total) * progressBarContainerWidth;
+    const _value = typeof value === 'string' ? parseFloat(value) : value;
+    if (_value !== 0 && total !== 0 && progressBarContainerWidth !== 0) {
+      let _progressBarWidth = (_value / total) * progressBarContainerWidth;
 
       if (_progressBarWidth < 2 * BORDER_RADIUS) {
         _progressBarWidth = 2 * BORDER_RADIUS;
       }
 
       return {
-        real: (value / total) * 100,
+        real: (_value / total) * 100,
         progressBar: (_progressBarWidth / progressBarContainerWidth) * 100,
       };
     } else {
