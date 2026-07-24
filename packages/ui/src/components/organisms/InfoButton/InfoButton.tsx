@@ -25,7 +25,7 @@ interface InfoButtonProps {
   textIndicationStyle?: any;
   iconName: string;
   iconColor: string;
-  indication: string;
+  indication?: string;
   position?: 'left' | 'right';
   disabled?: boolean;
   onPress: () => void;

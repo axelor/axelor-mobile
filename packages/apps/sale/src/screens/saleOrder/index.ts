@@ -54,6 +54,7 @@ export default {
   SaleQuotationCreationScreen: {
     title: 'Sale_SaleQuotation',
     component: SaleQuotationCreationScreen,
+    isUsableOnShortcut: true,
   },
 };
 

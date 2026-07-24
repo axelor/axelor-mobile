@@ -18,8 +18,8 @@
 
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, HtmlInput, Icon, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme';
+import {Card, HtmlInput, Icon, Text} from '../../atoms';
 
 const MAX_HEIGHT = 71;
 
@@ -35,13 +35,7 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
   const [expanded, setExpanded] = useState(false);
   const [chevronHeight, setChevronHeight] = useState(0);
 
-  if (data == null || data === '') {
-    return null;
-  }
-
-  const toggleExpanded = () => {
-    setExpanded(current => !current);
-  };
+  if (data == null || data === '') return null;
 
   return (
     <View testID="notesCardContainer" style={[styles.description, style]}>
@@ -50,13 +44,14 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
         testID="notesCardTouchable"
         disabled={chevronHeight < MAX_HEIGHT}
         activeOpacity={0.9}
-        onPress={toggleExpanded}>
+        onPress={() => setExpanded(current => !current)}>
         <Card style={styles.note}>
           <HtmlInput
             defaultInput={data}
             readonly={true}
             onHeightChange={setChevronHeight}
             style={!expanded && styles.htmlInput}
+            editorBackgroundColor={Colors.backgroundColor}
           />
           {chevronHeight > MAX_HEIGHT && (
             <Icon
@@ -73,9 +68,10 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
 const styles = StyleSheet.create({
   description: {
     flexDirection: 'column',
-    marginVertical: 5,
+    marginVertical: 4,
     width: '90%',
     alignSelf: 'center',
+    gap: 4,
   },
   title: {
     marginLeft: 10,
@@ -84,10 +80,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     borderRadius: 7,
-    marginVertical: 4,
-    paddingRight: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingRight: 5,
+    paddingVertical: 2,
+    paddingHorizontal: 5,
   },
   htmlInput: {
     maxHeight: MAX_HEIGHT,

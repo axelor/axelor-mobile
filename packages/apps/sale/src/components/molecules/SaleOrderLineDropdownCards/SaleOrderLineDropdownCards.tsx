@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {DropdownSOLConfigurationView, DropdownSOLMarginView} from '../../atoms';
@@ -32,49 +31,35 @@ const SaleOrderLineDropdownCards = ({
   const I18n = useTranslator();
 
   return (
-    <View style={styles.container}>
-      <DropdownCardSwitch
-        style={styles.dropdown}
-        styleTitle={styles.textTitle}
-        dropdownItems={[
-          {
-            key: 1,
-            title: I18n.t('Sale_Margin'),
-            childrenComp: (
-              <DropdownSOLMarginView
-                subTotalCostPrice={saleOrderLine.subTotalCostPrice}
-                subTotalGrossMargin={saleOrderLine.subTotalGrossMargin}
-                subMarginRate={saleOrderLine.subMarginRate}
-                subTotalMarkup={saleOrderLine.subTotalMarkup}
-              />
-            ),
-          },
-          {
-            key: 2,
-            title: I18n.t('Sale_Configuration'),
-            childrenComp: (
-              <DropdownSOLConfigurationView
-                saleSupplySelect={saleOrderLine.saleSupplySelect}
-                pricingScaleLogs={saleOrderLine.pricingScaleLogs}
-              />
-            ),
-          },
-        ]}
-      />
-    </View>
+    <DropdownCardSwitch
+      dropdownItems={[
+        {
+          key: 1,
+          title: I18n.t('Sale_Margin'),
+          iconName: 'search-dollar',
+          childrenComp: (
+            <DropdownSOLMarginView
+              subTotalCostPrice={saleOrderLine.subTotalCostPrice}
+              subTotalGrossMargin={saleOrderLine.subTotalGrossMargin}
+              subMarginRate={saleOrderLine.subMarginRate}
+              subTotalMarkup={saleOrderLine.subTotalMarkup}
+            />
+          ),
+        },
+        {
+          key: 2,
+          title: I18n.t('Sale_Configuration'),
+          iconName: 'gear',
+          childrenComp: (
+            <DropdownSOLConfigurationView
+              saleSupplySelect={saleOrderLine.saleSupplySelect}
+              pricingScaleLogs={saleOrderLine.pricingScaleLogs}
+            />
+          ),
+        },
+      ]}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  dropdown: {
-    marginBottom: 0,
-  },
-  textTitle: {
-    fontWeight: 'bold',
-  },
-});
 
 export default SaleOrderLineDropdownCards;

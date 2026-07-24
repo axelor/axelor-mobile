@@ -22,7 +22,7 @@ import {Picker} from '@axelor/aos-mobile-ui';
 
 interface CompanyPickerProps {
   style?: any;
-  setCompany?: (state: any) => any;
+  setCompany: (value?: any) => void;
   company?: any;
   emptyValue?: boolean;
 }
@@ -35,11 +35,10 @@ const CompanyPicker = ({
 }: CompanyPickerProps) => {
   const I18n = useTranslator();
 
-  const {user} = useSelector((state: any) => state.user);
+  const {user} = useSelector(state => state.user);
 
-  if (!Array.isArray(user?.companySet) || user.companySet.length === 0) {
+  if (!Array.isArray(user?.companySet) || user.companySet.length === 0)
     return null;
-  }
 
   return (
     <Picker

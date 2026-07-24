@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {Badge, Color, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
@@ -60,21 +59,8 @@ const StateBadge = ({
   }, [Colors, I18n, title, type]);
 
   return (
-    <Badge
-      style={[styles.badge, style]}
-      title={typeConfig.title}
-      color={typeConfig.color}
-    />
+    <Badge style={style} title={typeConfig.title} color={typeConfig.color} />
   );
 };
-
-const styles = StyleSheet.create({
-  badge: {
-    width: null,
-    height: null,
-    margin: null,
-    paddingHorizontal: 5,
-  },
-});
 
 export default StateBadge;

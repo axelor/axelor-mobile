@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   useMetafileUri,
   useTypeHelpers,
@@ -29,8 +29,8 @@ import {
   useDigitFormat,
   usePriceFormat,
 } from '@axelor/aos-mobile-ui';
-import {TaxModeBadge} from '../../atoms';
 import {fetchVariantAttributes} from '../../../api/product-api';
+import {TaxModeBadge} from '../../atoms';
 
 interface VariantProductCardProps {
   style?: any;
@@ -63,9 +63,9 @@ const VariantProductCard = ({
   const formatPrice = usePriceFormat();
   const formatNumber = useDigitFormat();
 
-  const isMounted = useRef(true);
+  const isMounted = useRef<boolean>(true);
 
-  const [attributesList, setAttributesList] = useState([]);
+  const [attributesList, setAttributesList] = useState<any[]>([]);
 
   useEffect(() => {
     isMounted.current = true;
@@ -90,9 +90,8 @@ const VariantProductCard = ({
   }, [id, version]);
 
   const attributes = useMemo(() => {
-    if (!Array.isArray(attributesList) || attributesList?.length === 0) {
-      return null;
-    }
+    if (!Array.isArray(attributesList) || attributesList?.length === 0)
+      return undefined;
 
     let items = [];
 
@@ -112,7 +111,7 @@ const VariantProductCard = ({
       }
     }
 
-    return items?.length > 0 ? {items} : null;
+    return items?.length > 0 ? {items} : undefined;
   }, [
     attributesList,
     formatNumber,
@@ -122,55 +121,49 @@ const VariantProductCard = ({
   ]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        style={styles.container}
-        leftContainerFlex={2}
-        iconLeftMargin={5}
-        onPress={onPress}
-        image={{
-          generalStyle: styles.imageSize,
-          imageSize: styles.imageSize,
-          resizeMode: 'contain',
-          defaultIconSize: 50,
-          source: formatMetaFile(picture?.id),
-        }}
-        upperTexts={{
-          items: [
-            {
-              displayText: name,
-              isTitle: true,
-            },
-            {
-              displayText: code,
-            },
-          ],
-        }}
-        lowerTexts={attributes}
-        sideBadges={{
-          style: styles.sideContainer,
-          items: [
-            {
-              customComponent: (
-                <TextUnit value={formatPrice(price)} unit={unit} />
-              ),
-            },
-            {
-              customComponent: <TaxModeBadge inAti={inAti} />,
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      style={[styles.container, style]}
+      leftContainerFlex={2}
+      iconLeftMargin={5}
+      onPress={onPress}
+      image={{
+        generalStyle: styles.imageSize,
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        defaultIconSize: 50,
+        source: formatMetaFile(picture?.id),
+      }}
+      upperTexts={{
+        items: [
+          {
+            displayText: name,
+            isTitle: true,
+          },
+          {
+            displayText: code,
+          },
+        ],
+      }}
+      lowerTexts={attributes}
+      sideBadges={{
+        style: styles.sideContainer,
+        items: [
+          {
+            customComponent: (
+              <TextUnit value={formatPrice(price)} unit={unit} />
+            ),
+          },
+          {
+            customComponent: <TaxModeBadge inAti={inAti} />,
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: '96%',
-    alignSelf: 'center',
-    marginVertical: 3,
     paddingRight: 5,
   },
   imageSize: {

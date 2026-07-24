@@ -25,7 +25,7 @@ const DropdownMultipleQuantities = ({}) => {
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
 
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {product} = useSelector(state => state.sale_product);
 
   const quantities = useMemo(
     () =>
@@ -36,14 +36,12 @@ const DropdownMultipleQuantities = ({}) => {
   );
 
   const renderQuantityItem = useCallback(
-    (line, idx) => {
-      return (
-        <View key={idx} style={styles.container}>
-          <Text>{line.name} </Text>
-          <Text writingType="important">{formatNumber(line.multipleQty)}</Text>
-        </View>
-      );
-    },
+    (line: any, idx: number) => (
+      <View key={idx} style={styles.container}>
+        <Text style={styles.text}>{line.name}</Text>
+        <Text writingType="important">{formatNumber(line.multipleQty)}</Text>
+      </View>
+    ),
     [formatNumber],
   );
 
@@ -51,6 +49,7 @@ const DropdownMultipleQuantities = ({}) => {
     <View>
       <Label
         type="error"
+        style={styles.label}
         message={I18n.t('Sale_QuantitiesAreRestricted')}
         iconName="lock-fill"
         visible={!product.allowToForceSaleQty}
@@ -61,9 +60,15 @@ const DropdownMultipleQuantities = ({}) => {
 };
 
 const styles = StyleSheet.create({
+  label: {
+    marginVertical: 5,
+  },
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 5,
+  },
+  text: {
+    flex: 1,
   },
 });
 

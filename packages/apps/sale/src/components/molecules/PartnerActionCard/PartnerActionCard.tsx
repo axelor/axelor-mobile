@@ -74,9 +74,7 @@ const PartnerActionCard = ({
     [I18n, partner, showAddressAction, showPhoneAction],
   );
 
-  if (isEmpty(partner)) {
-    return null;
-  }
+  if (isEmpty(partner)) return null;
 
   return (
     <ActionCard
