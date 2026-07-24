@@ -30,18 +30,16 @@ const AdressLine = ({address}: AdressLineProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.addressText} fontSize={14} numberOfLines={2}>
+      <Text style={styles.addressText} numberOfLines={2}>
         {_address}
       </Text>
       <View style={styles.iconContainer}>
         <Icon
-          style={styles.marginLeft}
           name="pin-map-fill"
           touchable={true}
           onPress={() => linkingProvider.openMapApp(_address)}
         />
         <Icon
-          style={styles.marginLeft}
           name="copy"
           touchable={true}
           onPress={() => clipboardProvider.copyToClipboard(_address)}
@@ -56,15 +54,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 2,
   },
   addressText: {
     flex: 1,
   },
   iconContainer: {
     flexDirection: 'row',
-  },
-  marginLeft: {
-    marginLeft: 8,
+    gap: 6,
   },
 });
 

@@ -59,11 +59,12 @@ const PartnerCard = ({
     <ObjectCard
       onPress={handleCardPress}
       style={[styles.card, style]}
+      showArrow={false}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
         resizeMode: 'contain',
-        defaultIconSize: 50,
+        defaultIconSize: 60,
         source: formatMetaFile(picture?.id),
       }}
       upperTexts={{
@@ -93,8 +94,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   imageSize: {
-    height: 50,
-    width: 50,
+    height: 60,
+    width: 60,
   },
 });
 

@@ -39,8 +39,8 @@ const SaleOrderSeeLinesButton = ({
   const navigation = useNavigation();
 
   const styles = useMemo(
-    () => getStyles(Colors.secondaryColor.background),
-    [Colors.secondaryColor.background],
+    () => getStyles(Colors.secondaryColor.background_light),
+    [Colors],
   );
 
   return (
@@ -52,7 +52,6 @@ const SaleOrderSeeLinesButton = ({
         <View style={styles.rightContainer}>
           {numberLines > 0 && (
             <NumberBubble
-              style={styles.numberBubble}
               number={numberLines}
               color={Colors.progressColor}
               isNeutralBackground={false}
@@ -81,17 +80,13 @@ const getStyles = (borderColor: string) =>
       borderWidth: 1,
       borderRadius: 7,
       borderColor: borderColor,
-      marginVertical: 3,
     },
     text: {
       fontWeight: 'bold',
     },
     rightContainer: {
       flexDirection: 'row',
-    },
-    numberBubble: {
-      borderRadius: 7,
-      marginRight: 4,
+      gap: 4,
     },
   });
 

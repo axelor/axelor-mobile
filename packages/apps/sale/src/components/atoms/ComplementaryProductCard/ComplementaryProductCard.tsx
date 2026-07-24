@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   useMetafileUri,
   useTranslator,
@@ -58,70 +58,65 @@ const ComplementaryProductCard = ({
   const formatNumber = useDigitFormat();
   const formatPrice = usePriceFormat();
 
-  const cardColor = useMemo(() => {
-    const color = optional ? Colors.secondaryColor : Colors.primaryColor;
-    return color.background;
-  }, [Colors, optional]);
+  const cardColor = useMemo(
+    () => (optional ? Colors.secondaryColor : Colors.primaryColor).background,
+    [Colors, optional],
+  );
 
   return (
-    <View style={style}>
-      <ObjectCard
-        borderLeftColor={cardColor}
-        style={styles.container}
-        leftContainerFlex={2}
-        showArrow={false}
-        onPress={() => clipboardProvider.copyToClipboard(code)}
-        image={{
-          generalStyle: styles.imageSize,
-          imageSize: styles.imageSize,
-          resizeMode: 'contain',
-          defaultIconSize: 50,
-          source: formatMetaFile(picture?.id),
-        }}
-        upperTexts={{
-          items: [
-            {
-              displayText: name,
-              isTitle: true,
-            },
-            {
-              displayText: code,
-            },
-          ],
-        }}
-        lowerTexts={{
-          items: [
-            {
-              indicatorText: I18n.t('Sale_Quantity'),
-              displayText: formatNumber(qty),
-            },
-          ],
-        }}
-        sideBadges={{
-          items: [
-            {
-              customComponent: (
-                <TextUnit value={formatPrice(price)} unit={currency} />
-              ),
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      borderLeftColor={cardColor}
+      style={style}
+      leftContainerFlex={2}
+      showArrow={false}
+      onPress={() => clipboardProvider.copyToClipboard(code)}
+      image={{
+        generalStyle: styles.imageSize,
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        defaultIconSize: 50,
+        source: formatMetaFile(picture?.id),
+      }}
+      upperTexts={{
+        items: [
+          {
+            displayText: name,
+            isTitle: true,
+          },
+          {
+            displayText: code,
+          },
+        ],
+      }}
+      lowerTexts={{
+        items: [
+          {
+            indicatorText: I18n.t('Sale_Quantity'),
+            displayText: formatNumber(qty),
+          },
+        ],
+      }}
+      sideBadges={{
+        style: styles.badge,
+        items: [
+          {
+            customComponent: (
+              <TextUnit value={formatPrice(price)} unit={currency} />
+            ),
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '96%',
-    alignSelf: 'center',
-    marginVertical: 3,
-    paddingRight: 5,
-  },
   imageSize: {
     height: 50,
     width: 50,
+  },
+  badge: {
+    alignItems: 'flex-end',
   },
 });
 

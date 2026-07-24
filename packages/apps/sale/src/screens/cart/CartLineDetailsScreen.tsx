@@ -17,8 +17,13 @@
  */
 
 import React, {useEffect, useMemo, useState, useCallback} from 'react';
-import {StyleSheet} from 'react-native';
-import {QuantityCard, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {StyleSheet, View} from 'react-native';
+import {
+  KeyboardAvoidingScrollView,
+  QuantityCard,
+  Screen,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   usePermitted,
@@ -35,19 +40,19 @@ import {
 
 const productScanKey = 'product_sale_cart-line-details';
 
-const CartLineDetailsScreen = ({route}) => {
-  const cartLineId = route.params?.cartLineId;
-
+const CartLineDetailsScreen = ({route}: any) => {
+  const {cartLineId} = route?.params ?? {};
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.CartLine',
   });
 
-  const {cartLine} = useSelector((state: any) => state.sale_cartLine);
+  const {cartLine} = useSelector(state => state.sale_cartLine);
 
-  const [product, setProduct] = useState(null);
-  const [newQty, setNewQty] = useState(cartLineId ? cartLine?.qty : 0);
+  const [product, setProduct] = useState<any>(null);
+  const [newQty, setNewQty] = useState<number>(cartLineId ? cartLine?.qty : 0);
 
   const _cartLine = useMemo(() => {
     if (cartLineId) {
@@ -62,12 +67,12 @@ const CartLineDetailsScreen = ({route}) => {
   }, [cartLine, cartLineId, product]);
 
   const refreshLine = useCallback(() => {
-    dispatch((fetchCartLineById as any)({cartLineId}));
+    if (cartLineId) dispatch((fetchCartLineById as any)({cartLineId}));
   }, [cartLineId, dispatch]);
 
   useEffect(() => {
-    cartLineId && refreshLine();
-  }, [cartLineId, refreshLine]);
+    refreshLine();
+  }, [refreshLine]);
 
   useEffect(() => {
     cartLineId && setNewQty(cartLine?.qty);
@@ -82,40 +87,44 @@ const CartLineDetailsScreen = ({route}) => {
           productId={product?.id}
         />
       }>
-      <ScrollView
-        style={styles.container}
-        refresh={{fetcher: refreshLine, loading: false}}>
-        {cartLineId ? (
-          <CartLineActionCard
-            cartLine={cartLine}
-            hideIncrement={true}
-            hideDelete={true}
-            hideBadgeInformation={true}
-            style={styles.card}
-          />
-        ) : (
-          <ProductSearchBar
-            scanKey={productScanKey}
-            defaultValue={product}
-            onChange={setProduct}
-            isScrollViewContainer
-          />
-        )}
-        {(cartLineId || product) && (
-          <>
-            <QuantityCard
-              labelQty={I18n.t('Sale_Quantity')}
-              defaultValue={newQty}
-              onValueChange={setNewQty}
-              editable={!readonly}
-              isBigButton
-              translator={I18n.t}
+      <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 70, android: 100}}
+        refresh={{fetcher: refreshLine, loading: false}}
+        style={styles.container}>
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          {cartLineId ? (
+            <CartLineActionCard
+              cartLine={cartLine}
+              hideIncrement={true}
+              hideDelete={true}
+              hideBadgeInformation={true}
               style={styles.card}
             />
-            <CartLinePriceDetails cartLine={_cartLine} qty={newQty} />
-          </>
-        )}
-      </ScrollView>
+          ) : (
+            <ProductSearchBar
+              scanKey={productScanKey}
+              defaultValue={product}
+              onChange={setProduct}
+              isScrollViewContainer
+            />
+          )}
+          {(cartLineId || product) && (
+            <>
+              <QuantityCard
+                labelQty={I18n.t('Sale_Quantity')}
+                defaultValue={newQty}
+                onValueChange={setNewQty}
+                editable={!readonly}
+                isBigButton
+                translator={I18n.t}
+                isFormWrapper
+              />
+              <CartLinePriceDetails cartLine={_cartLine} qty={newQty} />
+            </>
+          )}
+        </View>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
@@ -124,9 +133,18 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginBottom: 125,
+    gap: 5,
+  },
   card: {
     width: '90%',
-    marginVertical: 5,
   },
 });
 

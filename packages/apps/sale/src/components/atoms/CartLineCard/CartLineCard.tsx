@@ -58,10 +58,9 @@ const CartLineCard = ({
     <ObjectCard
       style={[styles.container, style]}
       touchable={onPress != null}
-      showArrow={onPress != null}
+      showArrow={false}
       onPress={onPress}
       leftContainerFlex={2}
-      iconLeftMargin={5}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
@@ -92,31 +91,33 @@ const CartLineCard = ({
         ],
       }}
       sideBadges={
-        !hideBadgeInformation && {
-          style: styles.badges,
-          items: [
-            {
-              customComponent: (
-                <TextUnit
-                  unit={product?.saleCurrency?.symbol}
-                  value={priceFormat(price ?? product?.salePrice)}
-                  fontSize={20}
-                  numberOfLines={1}
-                />
-              ),
-            },
-            {
-              customComponent: (
-                <TextUnit
-                  unit={unit}
-                  value={qty}
-                  fontSize={20}
-                  numberOfLines={1}
-                />
-              ),
-            },
-          ],
-        }
+        !hideBadgeInformation
+          ? {
+              style: styles.badges,
+              items: [
+                {
+                  customComponent: (
+                    <TextUnit
+                      unit={product?.saleCurrency?.symbol}
+                      value={priceFormat(price ?? product?.salePrice)}
+                      fontSize={16}
+                      numberOfLines={1}
+                    />
+                  ),
+                },
+                {
+                  customComponent: (
+                    <TextUnit
+                      unit={unit!}
+                      value={qty!}
+                      fontSize={16}
+                      numberOfLines={1}
+                    />
+                  ),
+                },
+              ],
+            }
+          : undefined
       }
     />
   );
@@ -126,7 +127,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 2,
     marginVertical: 2,
-    paddingRight: 5,
   },
   title: {
     flexDirection: 'row',

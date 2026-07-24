@@ -67,88 +67,87 @@ const SaleOrderHeader = ({saleOrder}: SaleOrderHeaderProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.rowContainer}>
-        <View style={styles.title}>
-          {saleOrder.orderBeingEdited && (
-            <InfoBubble
-              style={styles.infoBubble}
-              iconName="exclamation-triangle-fill"
-              badgeColor={Colors.warningColor}
-              indication={I18n.t('Sale_OrderBeingEdited')}
-              coloredBubble={false}
-            />
-          )}
-          <Text writingType="title">{saleOrder.saleOrderSeq}</Text>
-        </View>
-        <Badge
-          title={getItemTitle(SaleOrder?.statusSelect, saleOrder.statusSelect)}
-          color={getItemColor(SaleOrder?.statusSelect, saleOrder.statusSelect)}
-        />
-      </View>
-      <View style={styles.rowContainer}>
-        <View>
+      <View style={styles.rowWrapper}>
+        <View style={styles.columnWrapper}>
+          <View style={styles.title}>
+            {saleOrder.orderBeingEdited && (
+              <InfoBubble
+                style={styles.infoBubble}
+                iconName="exclamation-triangle-fill"
+                badgeColor={Colors.warningColor}
+                indication={I18n.t('Sale_OrderBeingEdited')}
+                coloredBubble={false}
+              />
+            )}
+            <Text writingType="title">{saleOrder.saleOrderSeq}</Text>
+          </View>
           {saleOrder.externalReference && (
             <LabelText
               iconName="tag-fill"
-              size={16}
               title={saleOrder.externalReference}
-              textStyle={styles.labelText}
             />
           )}
           <LabelText
             iconName="clock-history"
-            size={16}
             title={I18n.t('Sale_Version')}
             value={saleOrder.version}
-            textStyle={styles.labelText}
           />
         </View>
-        <View>
-          <View style={styles.badgesContainer}>
-            {saleOrder.oneoffSale && (
-              <Badge
-                title={I18n.t('Sale_OneOffSale')}
-                color={Colors.cautionColor}
-              />
+        <View style={styles.badgesContainer}>
+          <Badge
+            title={getItemTitle(
+              SaleOrder?.statusSelect,
+              saleOrder.statusSelect,
             )}
-            {saleOrder.saleOrderTypeSelect ===
-              SaleOrder?.saleOrderTypeSelect.Subscription && (
-              <Badge
-                title={I18n.t('Sale_Subscription')}
-                color={Colors.plannedColor}
-              />
+            color={getItemColor(
+              SaleOrder?.statusSelect,
+              saleOrder.statusSelect,
             )}
-            <TaxModeBadge inAti={saleOrder.inAti} type="sale" />
-          </View>
-          {displayStateBadges && (
-            <View style={styles.badgesContainer}>
-              <StateBadge
-                style={styles.stateBadge}
-                title={I18n.t('Sale_Delivered')}
-                type={deliveredStateBadgeType}
-              />
-              <StateBadge
-                style={styles.stateBadge}
-                title={I18n.t('Sale_Invoiced')}
-                type={invoicedStateBadgeType}
-              />
-            </View>
+          />
+          {saleOrder.oneoffSale && (
+            <Badge
+              title={I18n.t('Sale_OneOffSale')}
+              color={Colors.cautionColor}
+            />
           )}
+          {saleOrder.saleOrderTypeSelect ===
+            SaleOrder?.saleOrderTypeSelect.Subscription && (
+            <Badge
+              title={I18n.t('Sale_Subscription')}
+              color={Colors.plannedColor}
+            />
+          )}
+          <TaxModeBadge inAti={saleOrder.inAti} type="sale" />
         </View>
       </View>
+      {displayStateBadges && (
+        <View style={[styles.badgesContainer, styles.rowWrapper]}>
+          <StateBadge
+            title={I18n.t('Sale_Delivered')}
+            type={deliveredStateBadgeType}
+          />
+          <StateBadge
+            title={I18n.t('Sale_Invoiced')}
+            type={invoicedStateBadgeType}
+          />
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
-    marginBottom: 5,
+    flexDirection: 'column',
+    marginHorizontal: 18,
   },
-  rowContainer: {
+  rowWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 3,
+  },
+  columnWrapper: {
+    flexDirection: 'column',
+    gap: 2,
+    flex: 1,
   },
   title: {
     flexDirection: 'row',
@@ -156,18 +155,9 @@ const styles = StyleSheet.create({
   infoBubble: {
     marginRight: 8,
   },
-  labelText: {
-    fontSize: 16,
-    fontWeight: 'normal',
-    marginBottom: 3,
-  },
   badgesContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'flex-end',
-    marginBottom: 3,
-  },
-  stateBadge: {
-    margin: '1%',
   },
 });
 

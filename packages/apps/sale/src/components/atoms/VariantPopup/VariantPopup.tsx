@@ -44,11 +44,9 @@ const VariantPopup = ({
   const I18n = useTranslator();
   const dispatch: any = useDispatch();
 
-  const {productVariantConfig} = useSelector(
-    (state: any) => state.sale_product,
-  );
+  const {productVariantConfig} = useSelector(state => state.sale_product);
 
-  const [selectedVariants, setSelectedVariants] = useState({});
+  const [selectedVariants, setSelectedVariants] = useState<any>({});
 
   useEffect(() => {
     if (visible && parentProduct?.productVariantConfig != null) {
@@ -65,7 +63,7 @@ const VariantPopup = ({
       (fetchMatchingProduct as any)({
         selectedVariants,
       }),
-    ).then(res => {
+    ).then((res: any) => {
       const _productId = res?.payload?.id;
       if (_productId != null) {
         handleConfirm(res?.payload?.id);
@@ -80,7 +78,7 @@ const VariantPopup = ({
         .then(res => {
           const variantData = res?.data?.data?.[0]?.productVariant;
           if (variantData) {
-            const newSelectedVariants = {};
+            const newSelectedVariants: any = {};
             for (let i = 1; i <= 5; i++) {
               newSelectedVariants[`productVariantValue${i}`] =
                 variantData[`productVariantValue${i}`] ?? undefined;
@@ -139,7 +137,7 @@ const VariantPopup = ({
               data={item.values}
               defaultSelected={item.defaultValue}
               onChange={value => {
-                setSelectedVariants(prev => {
+                setSelectedVariants((prev: any) => {
                   const attributeIndex = variantAttributes.findIndex(
                     attr => attr.attribute.code === item.attribute.code,
                   );

@@ -31,18 +31,16 @@ const VariantProductsScreen = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {product} = useSelector(state => state.sale_product);
   const {
     loadingVariantList,
     moreLoadingVariantList,
     isVariantListEnd,
     variantProductList,
-  } = useSelector((state: any) => state.sale_product);
+  } = useSelector(state => state.sale_product);
 
   const sliceFunctionData = useMemo(
-    () => ({
-      parentProductId: product?.parentProduct?.id ?? product?.id,
-    }),
+    () => ({parentProductId: product?.parentProduct?.id ?? product?.id}),
     [product?.id, product?.parentProduct?.id],
   );
 

@@ -43,17 +43,17 @@ import {
   ProductHeader,
 } from '../../components';
 
-const ProductSaleDetailsScreen = ({route}) => {
-  const productId = route.params.productId;
+const ProductSaleDetailsScreen = ({route}: any) => {
+  const {productId} = route?.params ?? {};
   useContextRegister({
     models: [{model: 'com.axelor.apps.base.db.Product', id: productId}],
   });
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {user} = useSelector((state: any) => state.user);
+  const {user} = useSelector(state => state.user);
   const {loadingProduct, product, productCompany} = useSelector(
-    (state: any) => state.sale_product,
+    state => state.sale_product,
   );
 
   const [company, setCompany] = useState<any>(user?.activeCompany);
@@ -71,48 +71,36 @@ const ProductSaleDetailsScreen = ({route}) => {
     );
   }, [company?.id, dispatch, productId]);
 
-  useEffect(() => {
+  const refreshData = useCallback(() => {
     fetchProduct();
-  }, [fetchProduct]);
+    fetchProductCompany();
+  }, [fetchProduct, fetchProductCompany]);
 
   useEffect(() => {
-    fetchProductCompany();
-  }, [fetchProductCompany]);
+    refreshData();
+  }, [refreshData]);
 
   const noCompanyConfig = useMemo(
     () => company != null && isEmpty(productCompany),
     [company, productCompany],
   );
 
-  if (product?.id !== productId) {
-    return null;
-  }
+  if (product?.id !== productId) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<ProductHeader />}
       />
-      <ScrollView
-        refresh={{
-          loading: loadingProduct,
-          fetcher: () => {
-            fetchProduct();
-            fetchProductCompany();
-          },
-        }}>
+      <ScrollView refresh={{loading: loadingProduct, fetcher: refreshData}}>
         <Label
           style={styles.label}
           message={I18n.t('Sale_NoConfigPerCompany')}
           type="info"
           visible={noCompanyConfig}
         />
-        <CompanyPicker
-          style={!noCompanyConfig && styles.searchBar}
-          company={company}
-          setCompany={setCompany}
-        />
+        <CompanyPicker company={company} setCompany={setCompany} />
         <ProductDescription />
         <ProductDropdownCard />
       </ScrollView>
@@ -125,9 +113,6 @@ const styles = StyleSheet.create({
   label: {
     width: '90%',
     alignSelf: 'center',
-  },
-  searchBar: {
-    marginTop: 10,
   },
 });
 

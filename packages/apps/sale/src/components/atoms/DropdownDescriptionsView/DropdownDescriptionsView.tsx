@@ -46,18 +46,14 @@ const DropdownDescriptionsView = ({
     <View>
       {isDescription && (
         <>
-          <Text writingType="important">{`${I18n.t(
-            'Base_Description',
-          )} :`}</Text>
-          <HtmlInput defaultInput={description} readonly={true} />
+          <Text writingType="important">{I18n.t('Base_Description')}</Text>
+          <HtmlInput defaultInput={description} readonly />
         </>
       )}
       {isInternalNote && (
         <>
-          <Text writingType="important">{`${I18n.t(
-            'Sale_InternalNote',
-          )} :`}</Text>
-          <HtmlInput defaultInput={internalNote} readonly={true} />
+          <Text writingType="important">{I18n.t('Sale_InternalNote')}</Text>
+          <HtmlInput defaultInput={internalNote} readonly />
         </>
       )}
       {!isDescription && !isInternalNote && (

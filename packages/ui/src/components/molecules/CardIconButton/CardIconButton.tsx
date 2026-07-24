@@ -58,7 +58,7 @@ const CardIconButton = ({
       activeOpacity={0.9}
       testID="cardIconButtonContainer">
       <Wrapper style={displayCard ? styles.cardContainer : undefined}>
-        <Icon size={20} name={iconName} color={_iconColor} />
+        <Icon size={16} name={iconName} color={_iconColor} />
       </Wrapper>
     </TouchableOpacity>
   );

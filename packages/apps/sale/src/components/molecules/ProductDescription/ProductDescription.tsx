@@ -24,7 +24,7 @@ import {NotesCard} from '@axelor/aos-mobile-ui';
 const ProductDescription = ({}) => {
   const I18n = useTranslator();
 
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {product} = useSelector(state => state.sale_product);
 
   return (
     <View>

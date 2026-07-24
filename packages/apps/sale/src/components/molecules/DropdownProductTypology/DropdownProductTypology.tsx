@@ -31,13 +31,11 @@ const DropdownProductTypology = ({}) => {
   const {SaleProduct: Product} = useTypes();
   const {getItemTitle} = useTypeHelpers();
 
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {product} = useSelector(state => state.sale_product);
 
   const renderLabelText = useCallback(
     (titleKey: string, value: string | number) => {
-      if (checkNullString(value)) {
-        return null;
-      }
+      if (checkNullString(value)) return null;
 
       return <LabelText title={I18n.t(titleKey)} value={value} />;
     },

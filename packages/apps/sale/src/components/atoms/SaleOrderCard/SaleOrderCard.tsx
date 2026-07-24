@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   checkNullString,
   DateDisplay,
@@ -28,7 +28,7 @@ import {
   useCurrencyFormat,
 } from '@axelor/aos-mobile-core';
 import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
-import StateBadge from '../StateBadge/StateBadge';
+import {StateBadge} from '../../atoms';
 import SaleOrderCardTitle from './SaleOrderCardTitle';
 
 interface SaleOrderCardProps {
@@ -76,8 +76,8 @@ const SaleOrderCard = ({
     [formatCurrencyPrice, currency?.id],
   );
 
-  const {base: baseConfig} = useSelector((state: any) => state.appConfig);
-  const {companyList} = useSelector((state: any) => state.company);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+  const {companyList} = useSelector(state => state.company);
 
   const cardColor = useMemo(
     () => getItemColor(SaleOrder?.statusSelect, statusSelect)?.background,
@@ -129,110 +129,99 @@ const SaleOrderCard = ({
   }, [invoicingState, SaleOrder?.invoicingState]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        borderLeftColor={cardColor}
-        style={styles.container}
-        leftContainerFlex={2}
-        iconLeftMargin={5}
-        onPress={onPress}
-        upperTexts={{
-          items: [
-            {
-              customComponent: (
-                <SaleOrderCardTitle
-                  title={sequence}
-                  isIconVisible={orderBeingEdited}
-                />
-              ),
-            },
-            {
-              iconName: 'tag-fill',
-              indicatorText: externalReference,
-              hideIfNull: true,
-            },
-            {
-              iconName: 'person-fill',
-              indicatorText: clientPartnerName,
-              numberOfLines: 2,
-              hideIfNull: true,
-            },
-            {
-              iconName: 'building-fill',
-              indicatorText: companyFullName,
-              hideIfNull: true,
-            },
-            {
-              customComponent: <DateDisplay date={orderDate} size={14} />,
-            },
-          ],
-        }}
-        sideBadges={{
-          items: [
-            {
-              customComponent: (
-                <TextUnit
-                  title={I18n.t('Sale_WT')}
-                  value={formatPrice(WTPrice)}
-                  unit={currency?.symbol}
-                  fontSize={16}
-                  defaultColor
-                />
-              ),
-            },
-            {
-              customComponent: (
-                <TextUnit
-                  title={I18n.t('Sale_ATI')}
-                  value={formatPrice(ATIPrice)}
-                  unit={currency?.symbol}
-                  fontSize={16}
-                />
-              ),
-            },
-          ],
-        }}
-        lowerBadges={
-          displayBadges && {
-            fixedOnRightSide: true,
-            items: [
-              {
-                customComponent: (
-                  <StateBadge
-                    style={styles.stateBadge}
-                    title={I18n.t('Sale_Delivered')}
-                    type={deliveredStateBadgeType}
-                  />
-                ),
-              },
-              {
-                customComponent: (
-                  <StateBadge
-                    style={styles.stateBadge}
-                    title={I18n.t('Sale_Invoiced')}
-                    type={invoicedStateBadgeType}
-                  />
-                ),
-              },
-            ],
-          }
-        }
-      />
-    </View>
+    <ObjectCard
+      borderLeftColor={cardColor}
+      style={style}
+      leftContainerFlex={1}
+      showArrow={false}
+      onPress={onPress}
+      upperTexts={{
+        items: [
+          {
+            customComponent: (
+              <SaleOrderCardTitle
+                title={sequence}
+                isIconVisible={orderBeingEdited}
+              />
+            ),
+          },
+          {
+            iconName: 'tag-fill',
+            indicatorText: externalReference,
+            hideIfNull: true,
+          },
+          {
+            iconName: 'person-fill',
+            indicatorText: clientPartnerName,
+            numberOfLines: 2,
+            hideIfNull: true,
+          },
+          {
+            iconName: 'building-fill',
+            indicatorText: companyFullName,
+            hideIfNull: true,
+          },
+          {
+            customComponent: <DateDisplay date={orderDate} size={12} />,
+          },
+        ],
+      }}
+      sideBadges={{
+        style: styles.badges,
+        items: [
+          {
+            customComponent: (
+              <TextUnit
+                title={I18n.t('Sale_WT')}
+                value={formatPrice(WTPrice)}
+                unit={currency?.symbol}
+                defaultColor
+              />
+            ),
+          },
+          {
+            customComponent: (
+              <TextUnit
+                title={I18n.t('Sale_ATI')}
+                value={formatPrice(ATIPrice)}
+                unit={currency?.symbol}
+              />
+            ),
+          },
+        ],
+      }}
+      lowerBadges={
+        displayBadges
+          ? {
+              fixedOnRightSide: true,
+              items: [
+                {
+                  customComponent: (
+                    <StateBadge
+                      title={I18n.t('Sale_Delivered')}
+                      type={deliveredStateBadgeType}
+                    />
+                  ),
+                },
+                {
+                  customComponent: (
+                    <StateBadge
+                      title={I18n.t('Sale_Invoiced')}
+                      type={invoicedStateBadgeType}
+                    />
+                  ),
+                },
+              ],
+            }
+          : undefined
+      }
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '96%',
-    alignSelf: 'center',
-    marginVertical: 3,
-    paddingRight: 5,
-  },
-  stateBadge: {
-    marginTop: 5,
-    marginHorizontal: 2,
+  badges: {
+    alignItems: 'flex-end',
   },
 });
 

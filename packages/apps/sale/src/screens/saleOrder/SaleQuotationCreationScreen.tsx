@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   usePermitted,
   useSelector,
@@ -25,9 +25,10 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
+  KeyboardAvoidingScrollView,
   Label,
   Screen,
-  ScrollView,
+  useThemeColor,
   ViewAllEditList,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -42,22 +43,23 @@ import {
 
 const productScanKey = 'product_sale_quotation-creation';
 
-const SaleQuotationCreationScreen = ({route}) => {
+const SaleQuotationCreationScreen = ({route}: any) => {
   const {clientPartner} = route?.params ?? {};
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.SaleOrder',
   });
   const {checkAppInstallation} = useStudioApps();
 
-  const [customer, setCustomer] = useState(clientPartner);
-  const [lines, setLines] = useState([]);
-  const [product, setProduct] = useState(null);
-  const [productQty, setProductQty] = useState(0);
-  const [isEditionMode, setIsEditionMode] = useState(false);
-  const [deliveredPartner, setDeliveredPartner] = useState<any>(null);
-  const [paymentMode, setPaymentMode] = useState(null);
-  const [paymentCondition, setPaymentCondition] = useState(null);
+  const [customer, setCustomer] = useState<any>(clientPartner);
+  const [lines, setLines] = useState<any[]>([]);
+  const [product, setProduct] = useState<any>();
+  const [productQty, setProductQty] = useState<number>(0);
+  const [isEditionMode, setIsEditionMode] = useState<boolean>(false);
+  const [deliveredPartner, setDeliveredPartner] = useState<any>();
+  const [paymentMode, setPaymentMode] = useState<any>();
+  const [paymentCondition, setPaymentCondition] = useState<any>();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
 
@@ -105,7 +107,7 @@ const SaleQuotationCreationScreen = ({route}) => {
     [checkAppInstallation],
   );
 
-  if (!canCreate) {
+  if (!canCreate)
     return (
       <Label
         type="danger"
@@ -113,7 +115,6 @@ const SaleQuotationCreationScreen = ({route}) => {
         message={I18n.t('Base_NoPermForCreate')}
       />
     );
-  }
 
   return (
     <Screen
@@ -131,75 +132,88 @@ const SaleQuotationCreationScreen = ({route}) => {
           paymentConditionId={paymentCondition?.id}
         />
       }>
-      <ScrollView>
-        <CustomerSearchBar
-          defaultValue={customer}
-          onChange={cust => {
-            setCustomer(cust);
-            setDeliveredPartner(null);
-            setPaymentMode(cust?.inPaymentMode);
-            setPaymentCondition(cust?.paymentCondition);
-          }}
-        />
-        {customer && (
-          <>
-            {partnerRelationsEnabled && (
-              <DeliveredPartnerSearchBar
-                customer={customer}
-                defaultValue={deliveredPartner}
-                onChange={setDeliveredPartner}
-                required
+      <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 70, android: 100}}
+        style={styles.container}>
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <CustomerSearchBar
+            defaultValue={customer}
+            onChange={cust => {
+              setCustomer(cust);
+              setDeliveredPartner(null);
+              setPaymentMode(cust?.inPaymentMode);
+              setPaymentCondition(cust?.paymentCondition);
+            }}
+          />
+          {customer && (
+            <>
+              {partnerRelationsEnabled && (
+                <DeliveredPartnerSearchBar
+                  customer={customer}
+                  defaultValue={deliveredPartner}
+                  onChange={setDeliveredPartner}
+                  required
+                />
+              )}
+              {isAccountEnabled && (
+                <PaymentModeSearchBar
+                  defaultValue={paymentMode}
+                  onChange={setPaymentMode}
+                />
+              )}
+              {isAccountEnabled && (
+                <PaymentConditionSearchBar
+                  defaultValue={paymentCondition}
+                  onChange={setPaymentCondition}
+                />
+              )}
+              <ViewAllEditList
+                title={I18n.t('Sale_Products')}
+                lines={lines.map(line => ({
+                  ...line,
+                  name: line.product?.name,
+                  unitName: line.unit?.name,
+                }))}
+                currentLineId={isEditionMode ? product?.id : null}
+                setLines={setLines}
+                handleEditLine={handleEditLine}
+                translator={I18n.t}
+                isFormWrapper
               />
-            )}
-            {isAccountEnabled && (
-              <PaymentModeSearchBar
-                defaultValue={paymentMode}
-                onChange={setPaymentMode}
+              <ProductSearchBar
+                scanKey={productScanKey}
+                defaultValue={product}
+                onChange={setProduct}
+                isScrollViewContainer
               />
-            )}
-            {isAccountEnabled && (
-              <PaymentConditionSearchBar
-                defaultValue={paymentCondition}
-                onChange={setPaymentCondition}
-              />
-            )}
-            <ViewAllEditList
-              title={I18n.t('Sale_Products')}
-              lines={lines.map(line => ({
-                ...line,
-                name: line.product?.name,
-                unitName: line.unit?.name,
-              }))}
-              currentLineId={isEditionMode ? product?.id : null}
-              setLines={setLines}
-              handleEditLine={handleEditLine}
-              translator={I18n.t}
-            />
-            <ProductSearchBar
-              scanKey={productScanKey}
-              defaultValue={product}
-              onChange={setProduct}
-              isScrollViewContainer
-            />
-            {product && (
-              <SaleQuotationCreationQuantityCard
-                productQty={productQty}
-                setProductQty={setProductQty}
-                cancelProduct={() => {
-                  setProduct(null);
-                  setProductQty(0);
-                }}
-                productName={product?.name}
-              />
-            )}
-          </>
-        )}
-      </ScrollView>
+              {product && (
+                <SaleQuotationCreationQuantityCard
+                  productQty={productQty}
+                  setProductQty={setProductQty}
+                />
+              )}
+            </>
+          )}
+        </View>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginBottom: 125,
+  },
   label: {
     width: '90%',
     alignSelf: 'center',

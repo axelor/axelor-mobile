@@ -69,7 +69,7 @@ const CartLinePriceDetails = ({
     [I18n, formatPrice, qty, cartLine, unitPrice, totalPrice],
   );
 
-  return <PriceDetails style={style} lineList={priceList} />;
+  return <PriceDetails style={style} lineList={priceList} isFormWrapper />;
 };
 
 export default CartLinePriceDetails;

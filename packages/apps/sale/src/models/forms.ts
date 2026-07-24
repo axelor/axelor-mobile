@@ -19,13 +19,13 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {CrmModule} from '@axelor/aos-mobile-crm';
 
-const crm_partner = CrmModule.models.formsRegister.crm_partner;
+const crm_partner = CrmModule?.models?.formsRegister?.crm_partner;
 
 export const sale_formsRegister: FormConfigs = {
   sale_client: {
     modelName: 'com.axelor.apps.base.db.Partner',
     fields: {
-      ...crm_partner.fields,
+      ...crm_partner!.fields,
       isProspect: {
         titleKey: 'Crm_Prospect',
         type: 'boolean',

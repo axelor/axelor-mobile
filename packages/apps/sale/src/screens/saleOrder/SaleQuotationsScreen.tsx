@@ -21,9 +21,9 @@ import {useTypes} from '@axelor/aos-mobile-core';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {SaleOrderListView} from '../../components';
 
-const SaleQuotationsScreen = ({route}) => {
-  const {SaleOrder} = useTypes();
+const SaleQuotationsScreen = ({route}: any) => {
   const {customer} = route.params ?? {};
+  const {SaleOrder} = useTypes();
 
   return (
     <Screen removeSpaceOnTop>
