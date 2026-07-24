@@ -61,9 +61,9 @@ const ActiveCartScreen = ({}) => {
   });
 
   const {user} = useSelector(state => state.user);
-  const {activeCart} = useSelector((state: any) => state.sale_cart);
+  const {activeCart} = useSelector(state => state.sale_cart);
   const {loading, moreLoading, isListEnd, carLineList} = useSelector(
-    (state: any) => state.sale_cartLine,
+    state => state.sale_cartLine,
   );
 
   const [showPopup, setShowPopup] = useState(false);
@@ -125,7 +125,7 @@ const ActiveCartScreen = ({}) => {
                 topIconPosition={{bottom: -7, right: -7}}
               />
             ),
-            iconName: null,
+            iconName: undefined as any,
             key: 'activeCart_emptyCart',
             order: 20,
             title: I18n.t('Sale_EmptyCart'),
@@ -142,7 +142,7 @@ const ActiveCartScreen = ({}) => {
     [activeCart],
   );
 
-  if (activeCart == null) {
+  if (activeCart == null)
     return (
       <Label
         style={styles.label}
@@ -150,7 +150,6 @@ const ActiveCartScreen = ({}) => {
         message={I18n.t('Sale_NoCartAvailable')}
       />
     );
-  }
 
   return (
     <Screen
@@ -166,13 +165,15 @@ const ActiveCartScreen = ({}) => {
       }>
       <SearchListView
         actionList={
-          canCreateLine && [
-            {
-              iconName: 'plus-lg',
-              title: I18n.t('Sale_AddProduct'),
-              onPress: () => navigation.navigate('CartLineDetailsScreen'),
-            },
-          ]
+          canCreateLine
+            ? [
+                {
+                  iconName: 'plus-lg',
+                  title: I18n.t('Sale_AddProduct'),
+                  onPress: () => navigation.navigate('CartLineDetailsScreen'),
+                },
+              ]
+            : undefined
         }
         list={carLineList}
         loading={loading}

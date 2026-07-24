@@ -69,7 +69,7 @@ const SaleOrderLinePriceDetails = ({
           saleOrder.currency?.id,
         ),
         unit: saleOrder.currency?.symbol,
-        size: 20,
+        size: 16,
         showLine: true,
       },
     ],

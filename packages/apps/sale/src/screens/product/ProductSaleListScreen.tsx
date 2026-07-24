@@ -31,13 +31,13 @@ import {ProductCard, ProductCategorySearchBar} from '../../components';
 
 const productScanKey = 'product_sale_product-list';
 
-const ProductSaleListScreen = ({navigation}) => {
+const ProductSaleListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {SaleProduct} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
-  const [productTypeSelect, setProductTypeSelect] = useState();
-  const [productCategory, setProductCategory] = useState();
+  const [productTypeSelect, setProductTypeSelect] = useState<any[]>([]);
+  const [productCategory, setProductCategory] = useState<any>();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
@@ -45,9 +45,9 @@ const ProductSaleListScreen = ({navigation}) => {
   );
 
   const filterProductTypeSelectForApi = useCallback(
-    selectedTypes => {
+    (selectedTypes: any[]) => {
       if (!Array.isArray(selectedTypes) || selectedTypes.length === 0) {
-        return mobileSettings?.productTypesToDisplay.map(type => ({
+        return mobileSettings?.productTypesToDisplay.map((type: any) => ({
           value: type,
         }));
       }
@@ -71,24 +71,24 @@ const ProductSaleListScreen = ({navigation}) => {
     ],
   );
 
-  const productTypeSelectList = useMemo(() => {
-    const selectionItems = getSelectionItems(
+  const productTypeSelectList = useMemo(
+    () =>
+      getSelectionItems(
+        SaleProduct?.productTypeSelect,
+        productTypeSelect,
+      ).filter(({value}) =>
+        mobileSettings?.productTypesToDisplay.includes(value),
+      ),
+    [
       SaleProduct?.productTypeSelect,
+      getSelectionItems,
       productTypeSelect,
-    );
-
-    return selectionItems.filter(({value}) =>
-      mobileSettings?.productTypesToDisplay.includes(value),
-    );
-  }, [
-    SaleProduct?.productTypeSelect,
-    getSelectionItems,
-    productTypeSelect,
-    mobileSettings?.productTypesToDisplay,
-  ]);
+      mobileSettings?.productTypesToDisplay,
+    ],
+  );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={productList}
         loading={loadingList}

@@ -32,20 +32,17 @@ const DropdownProductSale = ({}) => {
   const Colors = useThemeColor();
   const formatPrice = usePriceFormat();
 
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {product} = useSelector(state => state.sale_product);
 
   const _formatDate = useCallback(
-    _date => {
-      return _date ? formatDate(_date, I18n.t('Base_DateFormat')) : null;
-    },
+    (_date?: string) =>
+      _date ? formatDate(_date, I18n.t('Base_DateFormat')) : undefined,
     [I18n],
   );
 
   const renderLabelText = useCallback(
     (titleKey: string, value: string | number) => {
-      if (checkNullString(value)) {
-        return null;
-      }
+      if (checkNullString(value)) return null;
 
       return <LabelText title={I18n.t(titleKey)} value={value} />;
     },
@@ -64,18 +61,10 @@ const DropdownProductSale = ({}) => {
       )}
       <View style={styles.rowContainer}>
         {product.isPrototype && (
-          <Badge
-            color={Colors.infoColor}
-            title={I18n.t('Sale_Prototype')}
-            style={styles.badge}
-          />
+          <Badge color={Colors.infoColor} title={I18n.t('Sale_Prototype')} />
         )}
         {product.isUnrenewed && (
-          <Badge
-            color={Colors.cautionColor}
-            title={I18n.t('Sale_Unrenewed')}
-            style={styles.badge}
-          />
+          <Badge color={Colors.cautionColor} title={I18n.t('Sale_Unrenewed')} />
         )}
       </View>
     </View>
@@ -85,16 +74,10 @@ const DropdownProductSale = ({}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    justifyContent: 'flex-start',
   },
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginVertical: 3,
-  },
-  badge: {
-    width: null,
-    paddingHorizontal: 10,
   },
 });
 

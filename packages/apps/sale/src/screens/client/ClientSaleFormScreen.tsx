@@ -21,7 +21,7 @@ import {DeviceEventEmitter} from 'react-native';
 import {FormView, useTypes} from '@axelor/aos-mobile-core';
 import {createCustomer} from '../../features/customerSlice';
 
-const ClientSaleFormScreen = ({navigation, route}) => {
+const ClientSaleFormScreen = ({navigation, route}: any) => {
   const {eventName} = route?.params ?? {};
   const {Partner} = useTypes();
 
@@ -34,8 +34,8 @@ const ClientSaleFormScreen = ({navigation, route}) => {
   );
 
   const handleSaveAPI = useCallback(
-    ({dispatch, objectState}) => {
-      dispatch((createCustomer as any)(objectState)).then(res => {
+    ({dispatch, objectState}: any) => {
+      dispatch((createCustomer as any)(objectState)).then((res: any) => {
         const _recordId = res?.payload?.id;
         if (_recordId) {
           if (eventName) {

@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   formatDate,
   PeriodDisplay,
@@ -101,9 +101,7 @@ const PriceListCard = ({
         break;
     }
 
-    const formattedAmount =
-      unitTextUnit === currency ? formatPrice(amount) : formatNumber(amount);
-    return `${sign} ${formattedAmount}`;
+    return `${sign} ${unitTextUnit === currency ? formatPrice(amount) : formatNumber(amount)}`;
   }, [
     PriceListLine?.typeSelect,
     amount,
@@ -115,82 +113,66 @@ const PriceListCard = ({
   ]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        borderLeftColor={cardColor}
-        style={styles.container}
-        leftContainerFlex={2}
-        touchable={false}
-        showArrow={false}
-        upperTexts={{
-          items: [
-            {
-              displayText: title,
-              isTitle: true,
-            },
-            {
-              indicatorText: I18n.t('Sale_MinimalQuantity'),
-              displayText: formatNumber(minQty),
-            },
-            {
-              indicatorText: I18n.t('Sale_Type'),
-              displayText: getItemTitle(PriceList?.typeSelect, typeSelect),
-            },
-            {
-              indicatorText: I18n.t('Base_StartDate'),
-              displayText: formatDate(startDate, I18n.t('Base_DateFormat')),
-              hideIf: startDate == null || !hidePeriod,
-            },
-            {
-              indicatorText: I18n.t('Base_EndDate'),
-              displayText: formatDate(endDate, I18n.t('Base_DateFormat')),
-              hideIf: endDate == null || !hidePeriod,
-            },
-            {
-              customComponent: (
-                <PeriodDisplay startDate={startDate} endDate={endDate} />
-              ),
-              hideIf: hidePeriod,
-            },
-          ],
-        }}
-        sideBadges={{
-          style: styles.sideContainer,
-          items: [
-            {
-              customComponent: (
-                <TextUnit value={valueTextUnit} unit={unitTextUnit} />
-              ),
-            },
-            {
-              displayText: I18n.t('Sale_NonNegotiable'),
-              color: Colors.warningColor,
-              style: styles.badge,
-              showIf: nonNegotiable,
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      borderLeftColor={cardColor}
+      style={style}
+      leftContainerFlex={2}
+      touchable={false}
+      showArrow={false}
+      upperTexts={{
+        items: [
+          {
+            displayText: title,
+            isTitle: true,
+          },
+          {
+            indicatorText: I18n.t('Sale_MinimalQuantity'),
+            displayText: formatNumber(minQty),
+          },
+          {
+            indicatorText: I18n.t('Sale_Type'),
+            displayText: getItemTitle(PriceList?.typeSelect, typeSelect),
+          },
+          {
+            indicatorText: I18n.t('Base_StartDate'),
+            displayText: formatDate(startDate, I18n.t('Base_DateFormat')),
+            hideIf: startDate == null || !hidePeriod,
+          },
+          {
+            indicatorText: I18n.t('Base_EndDate'),
+            displayText: formatDate(endDate, I18n.t('Base_DateFormat')),
+            hideIf: endDate == null || !hidePeriod,
+          },
+          {
+            customComponent: (
+              <PeriodDisplay startDate={startDate} endDate={endDate} />
+            ),
+            hideIf: hidePeriod,
+          },
+        ],
+      }}
+      sideBadges={{
+        style: styles.sideContainer,
+        items: [
+          {
+            customComponent: (
+              <TextUnit value={valueTextUnit} unit={unitTextUnit} />
+            ),
+          },
+          {
+            displayText: I18n.t('Sale_NonNegotiable'),
+            color: Colors.warningColor,
+            showIf: nonNegotiable,
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '96%',
-    alignSelf: 'center',
-    marginVertical: 3,
-    paddingRight: 5,
-  },
   sideContainer: {
-    height: null,
     alignItems: 'flex-end',
-    justifyContent: 'space-between',
-  },
-  badge: {
-    width: null,
-    paddingHorizontal: 5,
   },
 });
 

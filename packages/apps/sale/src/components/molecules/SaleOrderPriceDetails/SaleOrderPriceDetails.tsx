@@ -59,7 +59,7 @@ const SaleOrderPriceDetails = ({
         title: I18n.t('Sale_TotalATI'),
         value: formatPrice(saleOrder.inTaxTotal),
         unit: saleOrder.currency?.symbol,
-        size: 20,
+        size: 16,
         showLine: true,
       },
       {

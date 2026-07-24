@@ -68,12 +68,14 @@ const ActionCard = ({
       displaySeeActionsButton && isActionsVisible && !forceActionsDisplay,
   });
 
-  const _actionList = useMemo(
+  const _actionList: Action[] = useMemo(
     () =>
       Array.isArray(actionList) && actionList.length > 0
         ? actionList
             .filter(action => !action.hidden)
-            .flatMap(action => (action.large ? [action, null] : action))
+            .flatMap(action =>
+              action.large ? ([action, undefined] as Action[]) : action,
+            )
         : [],
     [actionList],
   );
@@ -127,11 +129,9 @@ const ActionCard = ({
     return action?.iconColor ?? Colors.secondaryColor_dark.background;
   };
 
-  const renderHorizontalActions = (list, isLastList) => {
+  const renderHorizontalActions = (list: Action[], isLastList: boolean) => {
     return list.map((action, index) => {
-      if (action == null) {
-        return null;
-      }
+      if (action == null) return null;
 
       const isDoubleWidth =
         action.large ||
@@ -155,7 +155,7 @@ const ActionCard = ({
 
     let index = 0;
     while (index < _actionList.length) {
-      const action1 = _actionList[index];
+      const action1 = _actionList[index] as Action;
       const action2 = _actionList[index + 1];
       const action3 = _actionList[index + 2];
 
@@ -248,7 +248,7 @@ const ActionCard = ({
           (!isActionsVisible || _quickAction != null) && (
             <InfoButton
               style={getVerticalActionStyle(
-                _quickAction == null || _quickAction.large,
+                _quickAction == null || (_quickAction.large ?? false),
               )}
               iconName="three-dots"
               iconColor={Colors.secondaryColor_dark.background}
@@ -259,7 +259,7 @@ const ActionCard = ({
         {_quickAction != null && (
           <InfoButton
             style={getVerticalActionStyle(
-              _actionList.length === 0 || _quickAction.large,
+              _actionList.length === 0 || (_quickAction.large ?? false),
             )}
             iconName={_quickAction.iconName}
             iconColor={getIconColor(_quickAction)}

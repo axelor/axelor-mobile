@@ -32,13 +32,13 @@ const ProductSalePriceListsScreen = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [fromDate, setFromDate] = useState<Date | undefined>(new Date());
+  const [toDate, setToDate] = useState<Date | undefined>();
 
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {product} = useSelector(state => state.sale_product);
   const {loading, moreLoading, isListEnd, priceListLineList} = useSelector(
-    (state: any) => state.sale_priceListLine,
+    state => state.sale_priceListLine,
   );
 
   const statuslist = useMemo(

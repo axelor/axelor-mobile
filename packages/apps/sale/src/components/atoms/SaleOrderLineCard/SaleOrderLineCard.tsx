@@ -25,11 +25,13 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
+  checkNullString,
   HtmlInput,
   ObjectCard,
   TextUnit,
   useDigitFormat,
   usePriceFormat,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSaleOrderLineAvailability} from '../../../hooks';
 
@@ -71,6 +73,7 @@ const SaleOrderLineCard = ({
   onPress,
 }: SaleOrderLineCardProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const {SaleOrderLine} = useTypes();
   const formatMetaFile = useMetafileUri();
   const formatNumber = useDigitFormat();
@@ -110,12 +113,10 @@ const SaleOrderLineCard = ({
             {
               displayText: product?.name,
               isTitle: true,
-              fontSize: 16,
             },
             {
               displayText: productName,
               hideIfNull: true,
-              fontSize: 14,
             },
           ],
         }}
@@ -123,12 +124,12 @@ const SaleOrderLineCard = ({
           items: [
             {
               indicatorText: I18n.t('Sale_UnitPrice'),
-              displayText: formatPrice(price),
+              displayText: formatPrice(price!),
               style: styles.noBold,
             },
             {
               indicatorText: I18n.t('Sale_MissingQty'),
-              displayText: formatNumber(missingQty),
+              displayText: formatNumber(missingQty!),
               hideIf: missingQty == null,
               style: [styles.noBold, {color: availabilityColor?.background}],
               numberOfLines: 2,
@@ -152,8 +153,8 @@ const SaleOrderLineCard = ({
               customComponent: (
                 <TextUnit
                   style={styles.sideText}
-                  value={formatNumber(qty)}
-                  unit={unit}
+                  value={formatNumber(qty!)}
+                  unit={unit!}
                 />
               ),
             },
@@ -161,8 +162,8 @@ const SaleOrderLineCard = ({
               customComponent: (
                 <TextUnit
                   style={styles.sideText}
-                  value={formatCurrencyPrice(total, currency?.id)}
-                  unit={currency?.symbol}
+                  value={formatCurrencyPrice(total!, currency?.id!)}
+                  unit={currency?.symbol!}
                 />
               ),
             },
@@ -185,9 +186,14 @@ const SaleOrderLineCard = ({
               isTitle: true,
             },
             {
+              hideIf: checkNullString(description),
               customComponent: (
                 <View style={styles.htmlInputContainer}>
-                  <HtmlInput defaultInput={description} readonly={true} />
+                  <HtmlInput
+                    defaultInput={description}
+                    readonly={true}
+                    editorBackgroundColor={Colors.backgroundColor}
+                  />
                 </View>
               ),
             },
@@ -224,22 +230,25 @@ const SaleOrderLineCard = ({
             },
           ],
         }}
-        sideBadges={{
-          style: styles.sideContainer,
-          items: [
-            !isStartOfPack &&
-              isShowEndOfPackTotal && {
-                customComponent: (
-                  <TextUnit
-                    style={styles.sideText}
-                    value={formatCurrencyPrice(total, currency?.id)}
-                    unit={currency?.symbol}
-                    defaultColor
-                  />
-                ),
-              },
-          ],
-        }}
+        sideBadges={
+          !isStartOfPack && isShowEndOfPackTotal
+            ? {
+                style: styles.sideContainer,
+                items: [
+                  {
+                    customComponent: (
+                      <TextUnit
+                        style={styles.sideText}
+                        value={formatCurrencyPrice(total!, currency?.id!)}
+                        unit={currency?.symbol!}
+                        defaultColor
+                      />
+                    ),
+                  },
+                ],
+              }
+            : undefined
+        }
       />
     );
   }
@@ -266,7 +275,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   sideText: {
-    fontSize: 18,
     fontWeight: 'bold',
   },
   htmlInputContainer: {

@@ -37,16 +37,14 @@ const SaleOrderLineListScreen = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {saleOrder} = useSelector((state: any) => state.sale_saleOrder);
+  const {saleOrder} = useSelector(state => state.sale_saleOrder);
   const {loading, moreLoading, isListEnd, saleOrderLineList} = useSelector(
-    (state: any) => state.sale_saleOrderLine,
+    state => state.sale_saleOrderLine,
   );
 
   const fetchSaleOrderLineAPI = useCallback(
     (page = 0) => {
-      dispatch(
-        (fetchSaleOrderLine as any)({saleOrderId: saleOrder.id, page: page}),
-      );
+      dispatch((fetchSaleOrderLine as any)({saleOrderId: saleOrder.id, page}));
     },
     [dispatch, saleOrder.id],
   );
@@ -89,7 +87,7 @@ const SaleOrderLineListScreen = ({}) => {
 
 const styles = StyleSheet.create({
   marginVertical: {
-    marginVertical: 10,
+    marginVertical: 5,
   },
 });
 

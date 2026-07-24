@@ -30,7 +30,7 @@ const ProductFloatingButton = ({}) => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
 
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {product} = useSelector(state => state.sale_product);
 
   return (
     <FloatingButton

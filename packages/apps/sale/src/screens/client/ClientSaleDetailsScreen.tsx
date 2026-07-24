@@ -37,8 +37,8 @@ import {
 } from '../../components';
 import {fetchCustomerById} from '../../features/customerSlice';
 
-const ClientSaleDetailsScreen = ({route}) => {
-  const {customerId} = route?.params;
+const ClientSaleDetailsScreen = ({route}: any) => {
+  const {customerId} = route?.params ?? {};
   const I18n = useTranslator();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -61,6 +61,7 @@ const ClientSaleDetailsScreen = ({route}) => {
       {
         childrenComp: <DropDownSaleOrderView customer={customer} />,
         title: I18n.t('Sale_LinkedQuotationsAndOrders'),
+        iconName: 'cart-fill',
       },
     ];
 
@@ -72,6 +73,7 @@ const ClientSaleDetailsScreen = ({route}) => {
         _list.push({
           childrenComp: <DropDownPartnerLinks customer={customer} />,
           title: I18n.t('Sale_PartnerLinks'),
+          iconName: 'link-45deg',
         });
       }
     }
