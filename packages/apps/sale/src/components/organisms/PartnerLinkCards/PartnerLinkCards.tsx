@@ -39,9 +39,7 @@ const PartnerLinkCards = ({
 
   const renderPartnerCard = useCallback(
     (titleKey: string, partner: any) => {
-      if (!partner || partner.id === clientPartner?.id) {
-        return null;
-      }
+      if (!partner || partner.id === clientPartner?.id) return null;
 
       return (
         <>
@@ -59,9 +57,7 @@ const PartnerLinkCards = ({
     [I18n, clientPartner?.id],
   );
 
-  if (!baseConfig?.activatePartnerRelations) {
-    return null;
-  }
+  if (!baseConfig?.activatePartnerRelations) return null;
 
   return (
     <>

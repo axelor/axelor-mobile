@@ -38,14 +38,14 @@ import {
 } from '../../components';
 import {fetchSaleOrderLineById} from '../../features/saleOrderLineSlice';
 
-const SaleOrderLineDetailsScreen = ({navigation, route}) => {
-  const {saleOrderLineId} = route?.params;
+const SaleOrderLineDetailsScreen = ({navigation, route}: any) => {
+  const {saleOrderLineId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {saleOrder} = useSelector((state: any) => state.sale_saleOrder);
+  const {saleOrder} = useSelector(state => state.sale_saleOrder);
   const {loadingSaleOrderLine, saleOrderLine} = useSelector(
-    (state: any) => state.sale_saleOrderLine,
+    state => state.sale_saleOrderLine,
   );
 
   useContextRegister({
@@ -78,9 +78,7 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
     [saleOrderLine?.product, saleOrderLine?.productName],
   );
 
-  if (saleOrderLine?.id !== saleOrderLineId) {
-    return null;
-  }
+  if (saleOrderLine?.id !== saleOrderLineId) return null;
 
   return (
     <Screen removeSpaceOnTop>
@@ -126,7 +124,7 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   priceDetails: {
-    marginVertical: 10,
+    marginBottom: 5,
   },
   productCard: {
     width: '90%',

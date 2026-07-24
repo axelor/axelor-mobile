@@ -36,9 +36,9 @@ const CatalogScreen = ({}) => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
-    (state: any) => state.sale_product,
+    state => state.sale_product,
   );
 
   useEffect(() => {
@@ -52,9 +52,9 @@ const CatalogScreen = ({}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      productTypeSelect: mobileSettings?.productTypesToDisplay.map(type => ({
-        value: type,
-      })),
+      productTypeSelect: mobileSettings?.productTypesToDisplay.map(
+        (type: any) => ({value: type}),
+      ),
       isConfiguratorProductShown: mobileSettings?.isConfiguratorProductShown,
       isGenericProductShown: mobileSettings?.isGenericProductShown,
     }),

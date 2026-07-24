@@ -18,7 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
+import {
+  Card,
+  getCommonStyles,
+  HorizontalRule,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 
 interface Line {
   title: string;
@@ -34,6 +40,7 @@ export interface PriceDetailsProps {
   lineList: Line[];
   topChildren?: any;
   bottomChildren?: any;
+  isFormWrapper?: boolean;
 }
 
 const PriceDetails = ({
@@ -41,7 +48,12 @@ const PriceDetails = ({
   lineList,
   topChildren,
   bottomChildren,
+  isFormWrapper = false,
 }: PriceDetailsProps) => {
+  const Colors = useThemeColor();
+
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
   const _lineList = useMemo(
     () =>
       Array.isArray(lineList) && lineList.length > 0
@@ -50,27 +62,29 @@ const PriceDetails = ({
     [lineList],
   );
 
-  if (_lineList.length === 0) {
-    return null;
-  }
+  const Container = useMemo(() => (isFormWrapper ? View : Card), [isFormWrapper]);
+
+  if (_lineList.length === 0) return null;
 
   return (
-    <Card style={[styles.container, style]}>
+    <Container
+      style={[
+        isFormWrapper ? commonStyles.filter : undefined,
+        styles.container,
+        style,
+      ]}>
       {topChildren}
-      {_lineList.map((line, index) => {
-        const fontSize = line.size ?? 16;
-        return (
-          <View key={index}>
-            {line.showLine && <HorizontalRule style={styles.rule} />}
-            <View style={styles.line} key={index}>
-              <Text fontSize={fontSize}>{line.title}</Text>
-              <Text fontSize={fontSize}>{`${line.value} ${line.unit}`}</Text>
-            </View>
+      {_lineList.map((line, index) => (
+        <View key={index}>
+          {line.showLine && <HorizontalRule style={styles.rule} />}
+          <View style={styles.line} key={index}>
+            <Text fontSize={line.size}>{line.title}</Text>
+            <Text fontSize={line.size}>{`${line.value} ${line.unit}`}</Text>
           </View>
-        );
-      })}
+        </View>
+      ))}
       {bottomChildren}
-    </Card>
+    </Container>
   );
 };
 
@@ -80,9 +94,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: 16,
     paddingRight: 16,
+    paddingVertical: 8,
   },
   rule: {
-    marginVertical: 8,
+    marginVertical: 2,
   },
   line: {
     flexDirection: 'row',

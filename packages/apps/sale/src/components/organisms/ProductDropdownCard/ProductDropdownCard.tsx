@@ -28,8 +28,8 @@ import {
 const ProductDropdownCard = ({}) => {
   const I18n = useTranslator();
 
-  const {sale: saleConfig} = useSelector((state: any) => state.appConfig);
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {sale: saleConfig} = useSelector(state => state.appConfig);
+  const {product} = useSelector(state => state.sale_product);
 
   const items = useMemo(() => {
     const result: {
@@ -39,13 +39,15 @@ const ProductDropdownCard = ({}) => {
       iconName?: string;
     }[] = [
       {
-        title: I18n.t('Sale_ProductTypology'),
         key: 0,
+        title: I18n.t('Sale_ProductTypology'),
+        iconName: 'tags-fill',
         childrenComp: <DropdownProductTypology />,
       },
       {
-        title: I18n.t('Sale_Sale'),
         key: 1,
+        title: I18n.t('Sale_Sale'),
+        iconName: 'cart-fill',
         childrenComp: <DropdownProductSale />,
       },
     ];
@@ -55,9 +57,9 @@ const ProductDropdownCard = ({}) => {
       product.saleProductMultipleQtyList?.length > 0
     ) {
       result.push({
-        title: I18n.t('Sale_MultipleQuantities'),
-        iconName: !product.allowToForceSaleQty && 'lock-fill',
         key: 2,
+        title: I18n.t('Sale_MultipleQuantities'),
+        iconName: !product.allowToForceSaleQty ? 'lock-fill' : 'stack',
         childrenComp: <DropdownMultipleQuantities />,
       });
     }

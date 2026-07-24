@@ -18,17 +18,18 @@
 
 import {
   createStandardSearch,
+  Criteria,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
 const createPriceListLineCriteria = (
-  searchValue,
-  productId,
-  fromDate,
-  toDate,
-  isActive,
+  searchValue: string,
+  productId: number,
+  fromDate?: string,
+  toDate?: string,
+  isActive?: boolean,
 ) => {
-  const criteria = [
+  const criteria: Criteria[] = [
     {
       fieldName: 'product.id',
       operator: '=',
@@ -71,6 +72,13 @@ export async function fetchPriceListLine({
   toDate,
   isActive,
   page = 0,
+}: {
+  searchValue?: any;
+  productId: number;
+  fromDate?: string;
+  toDate?: string;
+  isActive: boolean;
+  page?: number;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.PriceListLine',

@@ -18,20 +18,16 @@
 
 import React from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {QuantityCard, Text} from '@axelor/aos-mobile-ui';
+import {QuantityCard} from '@axelor/aos-mobile-ui';
 
 interface SaleQuotationCreationQuantityCardProps {
   productQty: number;
   setProductQty: (productQty: number) => void;
-  cancelProduct: () => void;
-  productName: string;
 }
 
 const SaleQuotationCreationQuantityCard = ({
   productQty,
   setProductQty,
-  cancelProduct,
-  productName,
 }: SaleQuotationCreationQuantityCardProps) => {
   const I18n = useTranslator();
 
@@ -40,14 +36,11 @@ const SaleQuotationCreationQuantityCard = ({
       labelQty={I18n.t('Sale_Quantity')}
       defaultValue={productQty}
       onValueChange={setProductQty}
-      editable={true}
-      actionQty={true}
-      iconName="x-lg"
-      onPressActionQty={cancelProduct}
+      editable
       isBigButton={true}
-      translator={I18n.t}>
-      <Text fontSize={16}>{productName}</Text>
-    </QuantityCard>
+      translator={I18n.t}
+      isFormWrapper
+    />
   );
 };
 

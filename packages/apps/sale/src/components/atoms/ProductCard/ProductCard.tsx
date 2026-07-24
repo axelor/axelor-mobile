@@ -72,7 +72,7 @@ const ProductCard = ({
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
         resizeMode: 'contain',
-        defaultIconSize: 60,
+        defaultIconSize: 50,
         source: formatMetaFile(picture?.id),
       }}
       upperTexts={{
@@ -81,7 +81,7 @@ const ProductCard = ({
             displayText: name,
             isTitle: true,
           },
-          {displayText: code, style: styles.code},
+          {displayText: code},
         ],
       }}
       lowerTexts={{
@@ -103,9 +103,10 @@ const ProductCard = ({
       }}
       upperBadges={{
         items: [
-          displayPrice && {
+          {
+            showIf: displayPrice,
             customComponent: (
-              <TextUnit unit={unit} value={priceFormat(salePrice)} />
+              <TextUnit unit={unit!} value={priceFormat(salePrice!)} />
             ),
           },
         ],
@@ -117,11 +118,8 @@ const ProductCard = ({
 
 const styles = StyleSheet.create({
   imageSize: {
-    height: 60,
-    width: 60,
-  },
-  code: {
-    fontSize: 12,
+    height: 50,
+    width: 50,
   },
 });
 

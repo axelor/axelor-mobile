@@ -32,16 +32,14 @@ import {
 import {fetchSaleOrderById} from '../../features/saleOrderSlice';
 import {fetchSaleOrderLine} from '../../features/saleOrderLineSlice';
 
-const SaleOrderDetailsScreen = ({route}) => {
+const SaleOrderDetailsScreen = ({route}: any) => {
   const {saleOrderId} = route?.params;
   const dispatch = useDispatch();
 
   const {loadingSaleOrder, saleOrder} = useSelector(
-    (state: any) => state.sale_saleOrder,
+    state => state.sale_saleOrder,
   );
-  const {totalSaleOrderLine} = useSelector(
-    (state: any) => state.sale_saleOrderLine,
-  );
+  const {totalSaleOrderLine} = useSelector(state => state.sale_saleOrderLine);
 
   const getSaleOrder = useCallback(() => {
     dispatch((fetchSaleOrderById as any)({saleOrderId}));
@@ -55,9 +53,7 @@ const SaleOrderDetailsScreen = ({route}) => {
     dispatch((fetchSaleOrderLine as any)({saleOrderId}));
   }, [dispatch, saleOrderId]);
 
-  if (saleOrder?.id !== saleOrderId) {
-    return null;
-  }
+  if (saleOrder?.id !== saleOrderId) return null;
 
   return (
     <Screen
@@ -87,8 +83,8 @@ const SaleOrderDetailsScreen = ({route}) => {
           invoicedPartner={saleOrder.invoicedPartner}
           deliveredPartner={saleOrder.deliveredPartner}
         />
-        <SaleOrderDropdownCards saleOrder={saleOrder} />
         <SaleOrderSeeLinesButton numberLines={totalSaleOrderLine} />
+        <SaleOrderDropdownCards saleOrder={saleOrder} />
       </ScrollView>
     </Screen>
   );
@@ -96,7 +92,7 @@ const SaleOrderDetailsScreen = ({route}) => {
 
 const styles = StyleSheet.create({
   marginBottom: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
 });
 
