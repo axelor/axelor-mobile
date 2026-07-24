@@ -32,12 +32,12 @@ const ClientSaleListScreen = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
-  const [isAsssignedToMe, setIsAsssignedToMe] = useState(true);
-  const [category, setCategory] = useState(null);
+  const [isAsssignedToMe, setIsAsssignedToMe] = useState<boolean>(true);
+  const [category, setCategory] = useState<any>(null);
 
   const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, customerList} = useSelector(
-    (state: any) => state.sale_customer,
+    state => state.sale_customer,
   );
 
   const sliceFunctionData = useMemo(
@@ -98,15 +98,15 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
+    gap: 5,
   },
   toggleButton: {
     height: 40,
   },
   categoryPicker: {
-    width: '85%',
+    flex: 1,
   },
 });
 

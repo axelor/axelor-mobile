@@ -29,14 +29,12 @@ import {fetchComplementaryProduct} from '../../features/complementaryProductSlic
 const ComplementaryProductsScreen = ({}) => {
   const I18n = useTranslator();
 
-  const {product} = useSelector((state: any) => state.sale_product);
+  const {product} = useSelector(state => state.sale_product);
   const {loading, moreLoading, isListEnd, complementaryProductList} =
-    useSelector((state: any) => state.sale_complementaryProduct);
+    useSelector(state => state.sale_complementaryProduct);
 
   const sliceFunctionData = useMemo(
-    () => ({
-      productId: product?.id,
-    }),
+    () => ({productId: product?.id}),
     [product?.id],
   );
 

@@ -27,9 +27,9 @@ import {
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {ChipSelect} from '@axelor/aos-mobile-ui';
+import {fetchSaleOrder} from '../../../features/saleOrderSlice';
 import {CustomerSearchBar} from '../../organisms';
 import {SaleOrderCard} from '../../atoms';
-import {fetchSaleOrder} from '../../../features/saleOrderSlice';
 
 interface SaleOrderListViewProps {
   statusList: number[];
@@ -47,12 +47,12 @@ const SaleOrderListView = ({
 
   const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, saleOrderList} = useSelector(
-    (state: any) => state.sale_saleOrder,
+    state => state.sale_saleOrder,
   );
 
-  const [filteredList, setFilteredList] = useState(saleOrderList);
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [customer, setCustomer] = useState(_customer);
+  const [filteredList, setFilteredList] = useState<any[]>(saleOrderList);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [customer, setCustomer] = useState<any>(_customer);
 
   useEffect(
     () =>

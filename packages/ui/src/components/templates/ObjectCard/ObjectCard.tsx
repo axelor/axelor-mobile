@@ -59,7 +59,7 @@ export interface TextElement {
   hideIfNull?: boolean;
   hideIf?: boolean;
   order?: number;
-  numberOfLines?: number;
+  numberOfLines?: number | null;
   customComponent?: ReactElement<any>;
 }
 
@@ -177,7 +177,7 @@ const ObjectCard = ({
           writingType="title"
           fontSize={item.fontSize}
           style={[styles.text, item.style]}
-          numberOfLines={item.numberOfLines}>
+          numberOfLines={item.numberOfLines!}>
           {item.displayText}
         </Text>
       );
@@ -190,7 +190,7 @@ const ObjectCard = ({
           writingType="subtitle"
           fontSize={item.fontSize}
           style={[styles.text, item.style]}
-          numberOfLines={item.numberOfLines}>
+          numberOfLines={item.numberOfLines!}>
           {item.displayText}
         </Text>
       );
