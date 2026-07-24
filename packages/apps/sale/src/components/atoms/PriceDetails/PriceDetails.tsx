@@ -62,7 +62,10 @@ const PriceDetails = ({
     [lineList],
   );
 
-  const Container = useMemo(() => (isFormWrapper ? View : Card), [isFormWrapper]);
+  const Container = useMemo(
+    () => (isFormWrapper ? View : Card),
+    [isFormWrapper],
+  );
 
   if (_lineList.length === 0) return null;
 
