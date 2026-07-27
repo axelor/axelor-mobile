@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {Screen, ScrollView, NotesCard} from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
@@ -32,8 +31,9 @@ import {
   ProductUnitInformations,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
+import {StyleSheet} from 'react-native';
 
-const ProductDetailsScreen = ({route, navigation}) => {
+const ProductDetailsScreen = ({route}: any) => {
   const productId = route.params.product?.id;
   useContextRegister({
     models: [{model: 'com.axelor.apps.base.db.Product', id: productId}],
@@ -53,50 +53,29 @@ const ProductDetailsScreen = ({route, navigation}) => {
     fetchProductFromId();
   }, [fetchProductFromId]);
 
-  const navigateToImageProduct = () => {
-    navigation.navigate('ProductImageScreen', {product: product});
-  };
-
   return (
-    <Screen fixedItems={<ProductVariantButton product={product} />}>
+    <Screen
+      removeSpaceOnTop
+      fixedItems={<ProductVariantButton product={product} />}>
       <ScrollView
         refresh={{loading: loadingProductFromId, fetcher: fetchProductFromId}}>
-        <ProductCharacteristics
-          onPressImage={() => navigateToImageProduct()}
-          picture={product?.picture}
-          category={product.productCategory?.name}
-          prototype={product.isPrototype}
-          unrenewed={product.isUnrenewed}
-          procurMethod={product.procurementMethodSelect}
-          code={product.code}
-          name={product.name}
-          style={styles.item}
-        />
-        <View style={styles.lineContainer}>
-          <View style={styles.lineStyle} />
-        </View>
+        <ProductCharacteristics {...product} />
         <ProductUnitInformations product={product} />
         <ProductPackingInformations product={product} />
         <NotesCard
           title={I18n.t('Base_Description')}
           data={product.description}
+          styleText={styles.text}
         />
       </ScrollView>
     </Screen>
   );
 };
-
 const styles = StyleSheet.create({
-  item: {
-    borderRadius: 0,
-    elevation: 0,
-  },
-  lineContainer: {
-    alignItems: 'center',
-  },
-  lineStyle: {
-    borderWidth: 0.7,
-    width: 280,
+  text: {
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    marginLeft: 0,
   },
 });
 

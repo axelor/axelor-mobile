@@ -17,9 +17,9 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
 import {
   EditableInput,
+  HeaderContainer,
   Picker,
   Screen,
   ScrollView,
@@ -48,7 +48,7 @@ import {
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
-const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
+const ProductStockDetailsScreen = ({route, addtionalIndicators}: any) => {
   const productId = route.params.product?.id;
   useContextRegister({
     models: [{model: 'com.axelor.apps.base.db.Product', id: productId}],
@@ -69,10 +69,10 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
   const {base: baseConfig} = useSelector(state => state.appConfig);
 
-  const [stockLocation, setStockLocation] = useState(
+  const [companyId, setCompany] = useState<any>(user.activeCompany?.id);
+  const [stockLocation, setStockLocation] = useState<any>(
     user?.workshopStockLocation,
   );
-  const [companyId, setCompany] = useState(user.activeCompany?.id);
 
   const fetchProductFromId = useCallback(() => {
     dispatch(fetchProductWithId(productId));
@@ -87,7 +87,7 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   useEffect(() => {
     if (product?.id != null) {
       dispatch(
-        fetchProductIndicators({
+        (fetchProductIndicators as any)({
           version: product.version,
           productId: product.id,
           companyId: companyId,
@@ -97,7 +97,7 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
 
       if (stockLocation != null) {
         dispatch(
-          fetchStockLocationLine({
+          (fetchStockLocationLine as any)({
             stockId: stockLocation.id,
             productId: product.id,
           }),
@@ -107,14 +107,13 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   }, [companyId, dispatch, product, stockLocation]);
 
   useEffect(() => {
-    const isActivityIndicator = loadingProductFromId && product?.id == null;
-    setActivityIndicator(isActivityIndicator);
+    setActivityIndicator(loadingProductFromId && product?.id == null);
   }, [loadingProductFromId, product, setActivityIndicator]);
 
-  const handleLockerChange = input => {
+  const handleLockerChange = (input: any) => {
     if (stockLocation != null) {
       dispatch(
-        updateProductLocker({
+        (updateProductLocker as any)({
           productId: product.id,
           stockLocationId: stockLocation.id,
           newLocker: input.toString(),
@@ -124,48 +123,49 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
     }
   };
 
-  if (product?.id !== productId) {
-    return null;
-  }
+  if (product?.id !== productId) return null;
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop>
       <ScrollView
-        style={styles.container}
         refresh={{fetcher: fetchProductFromId, loading: loadingProductFromId}}>
         <ProductStockHeader
           product={product}
           companyId={companyId}
           stockLocation={stockLocation}
         />
-        <View style={styles.lineStyle} />
-        {baseConfig?.enableMultiCompany && canModifyCompany && (
-          <Picker
-            title={I18n.t('User_Company')}
-            defaultValue={companyId}
-            listItems={companyList}
-            labelField="name"
-            valueField="id"
-            onValueChange={item => setCompany(item)}
-          />
-        )}
-        {!hidden && (
-          <ProductSeeStockLocationDistribution companyId={companyId} />
-        )}
-        <StockLocationSearchBar
-          scanKey={stockLocationScanKey}
-          onChange={setStockLocation}
-          defaultValue={stockLocation}
+        <HeaderContainer
+          expandableFilter={false}
+          fixedItems={
+            <>
+              {baseConfig?.enableMultiCompany && canModifyCompany && (
+                <Picker
+                  title={I18n.t('User_Company')}
+                  defaultValue={companyId}
+                  listItems={companyList}
+                  labelField="name"
+                  valueField="id"
+                  onValueChange={setCompany}
+                />
+              )}
+              {!hidden && (
+                <ProductSeeStockLocationDistribution companyId={companyId} />
+              )}
+              <StockLocationSearchBar
+                scanKey={stockLocationScanKey}
+                onChange={setStockLocation}
+                defaultValue={stockLocation}
+              />
+              {readonly || stockLocation == null ? null : (
+                <EditableInput
+                  placeholder={I18n.t('Stock_Locker')}
+                  onValidate={handleLockerChange}
+                  defaultValue={stockLocationLine?.[0]?.rack}
+                />
+              )}
+            </>
+          }
         />
-        {readonly || stockLocation == null ? null : (
-          <EditableInput
-            placeholder={I18n.t('Stock_Locker')}
-            onValidate={input => handleLockerChange(input)}
-            defaultValue={
-              stockLocationLine == null ? null : stockLocationLine[0]?.rack
-            }
-          />
-        )}
         <ProductCardStockIndicatorList
           stockLocationId={stockLocation?.id}
           companyId={companyId}
@@ -175,18 +175,5 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  lineStyle: {
-    borderWidth: 0.5,
-    width: Dimensions.get('window').width * 0.8,
-    borderColor: 'black',
-    marginHorizontal: '10%',
-    marginBottom: '1%',
-  },
-});
 
 export default ProductStockDetailsScreen;

@@ -22,67 +22,42 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 import {SmallPropertyCard} from '../../../organisms';
 
-const ProductPackingInformations = ({product}) => {
+const ProductPackingInformations = ({product}: {product: any}) => {
   const I18n = useTranslator();
 
   return (
-    <View style={styles.containerPack}>
-      <Text style={styles.titles}>{I18n.t('Stock_Packing')}</Text>
-      <View style={styles.packing}>
+    <View style={styles.wrapper}>
+      <Text style={styles.text}>{I18n.t('Stock_Packing')}</Text>
+      <View style={styles.cardWrapper}>
         <SmallPropertyCard
-          style={styles.packingCard}
           title={I18n.t('Stock_Length')}
           value={product.length}
-          unit={
-            product.lengthUnit == null
-              ? I18n.t('Stock_Meters')
-              : product.lengthUnit?.name
-          }
-          interactive={true}
+          unit={product?.lengthUnit?.name ?? I18n.t('Stock_Meters')}
+          interactive
         />
         <SmallPropertyCard
-          style={styles.packingCard}
           title={I18n.t('Stock_Width')}
           value={product.width}
-          unit={
-            product.lengthUnit == null
-              ? I18n.t('Stock_Meters')
-              : product.lengthUnit?.name
-          }
-          interactive={true}
+          unit={product?.lengthUnit?.name ?? I18n.t('Stock_Meters')}
+          interactive
         />
         <SmallPropertyCard
-          style={styles.packingCard}
           title={I18n.t('Stock_Height')}
           value={product.height}
-          unit={
-            product.lengthUnit == null
-              ? I18n.t('Stock_Meters')
-              : product.lengthUnit?.name
-          }
-          interactive={true}
+          unit={product?.lengthUnit?.name ?? I18n.t('Stock_Meters')}
+          interactive
         />
         <SmallPropertyCard
-          style={styles.packingCard}
           title={I18n.t('Stock_NetMass')}
           value={product.netMass}
-          unit={
-            product.massUnit == null
-              ? I18n.t('Stock_Kilograms')
-              : product.massUnit?.name
-          }
-          interactive={true}
+          unit={product?.massUnit?.name ?? I18n.t('Stock_Kilograms')}
+          interactive
         />
         <SmallPropertyCard
-          style={styles.packingCard}
           title={I18n.t('Stock_GrossMass')}
           value={product.grossMass}
-          unit={
-            product.massUnit == null
-              ? I18n.t('Stock_Kilograms')
-              : product.massUnit?.name
-          }
-          interactive={true}
+          unit={product?.massUnit?.name ?? I18n.t('Stock_Kilograms')}
+          interactive
         />
       </View>
     </View>
@@ -90,23 +65,22 @@ const ProductPackingInformations = ({product}) => {
 };
 
 const styles = StyleSheet.create({
-  containerPack: {
-    marginHorizontal: '5%',
-    marginTop: 18,
+  wrapper: {
+    flexDirection: 'column',
+    width: '90%',
+    alignSelf: 'center',
+    marginVertical: 5,
+    gap: 5,
   },
-  titles: {
-    marginHorizontal: '5%',
+  text: {
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
-  packingCard: {
-    marginHorizontal: '2%',
-    marginTop: 5,
-    minWidth: '28%',
-    marginBottom: '2%',
-  },
-  packing: {
+  cardWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    gap: 5,
   },
 });
 

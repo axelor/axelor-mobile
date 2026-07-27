@@ -24,31 +24,21 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 
-const ProductVariantButton = ({product}) => {
+const ProductVariantButton = ({product}: {product: any}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const {hidden} = usePermitted({
     modelName: 'com.axelor.apps.base.db.ProductVariant',
   });
 
-  const showProductVariables = () => {
-    navigation.navigate('ProductListVariantScreen', {product: product});
-  };
+  if (hidden || product?.productVariant == null) return null;
 
-  if (hidden) {
-    return null;
-  }
-
-  if (product.productVariant != null) {
-    return (
-      <Button
-        onPress={() => showProductVariables()}
-        title={I18n.t('Stock_Variants')}
-      />
-    );
-  }
-
-  return null;
+  return (
+    <Button
+      onPress={() => navigation.navigate('ProductListVariantScreen', {product})}
+      title={I18n.t('Stock_Variants')}
+    />
+  );
 };
 
 export default ProductVariantButton;

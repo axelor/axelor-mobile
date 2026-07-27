@@ -30,6 +30,10 @@ const ProductCardStockIndicatorList = ({
   stockLocationId,
   companyId,
   addtionalIndicators = [],
+}: {
+  stockLocationId?: number;
+  companyId?: number;
+  addtionalIndicators?: any[];
 }) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
@@ -41,7 +45,7 @@ const ProductCardStockIndicatorList = ({
   );
 
   const indicatorOnPress = useCallback(
-    type =>
+    (type: number) =>
       navigation.navigate('ProductStockIndicatorDetails', {
         type,
         stockLocationId,
@@ -94,7 +98,7 @@ const ProductCardStockIndicatorList = ({
   ]);
 
   const renderIndicator = useCallback(
-    ({titleKey, value, condition = true, onPress}, idx) => {
+    ({titleKey, value, condition = true, onPress}: any, idx: number) => {
       if (value != null && condition) {
         return (
           <TouchableOpacity
@@ -109,7 +113,7 @@ const ProductCardStockIndicatorList = ({
                 datasets={[
                   {
                     title: I18n.t(titleKey),
-                    value: formatNumber(value),
+                    value: formatNumber(value) as any,
                   },
                 ]}
                 widthGraph={Dimensions.get('window').width * 0.4}

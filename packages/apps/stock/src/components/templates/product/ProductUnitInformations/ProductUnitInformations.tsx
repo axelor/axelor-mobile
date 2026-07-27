@@ -19,23 +19,25 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {Text} from '@axelor/aos-mobile-ui';
 import {SmallPropertyCard} from '../../../organisms';
 
-const ProductUnitInformations = ({product}) => {
+const ProductUnitInformations = ({product}: {product: any}) => {
   const I18n = useTranslator();
 
-  if (product.unit != null) {
-    return (
-      <View style={styles.stock}>
+  if (product?.unit == null) return null;
+
+  return (
+    <View style={styles.wrapper}>
+      <Text style={styles.text}>{I18n.t('Stock_Units')}</Text>
+      <View style={styles.cardWrapper}>
         <SmallPropertyCard
-          style={styles.stockCard}
           title={I18n.t('Stock_Stock')}
           value={product.unit?.name}
           formatValueToNumber={false}
         />
         {product.sellable && (
           <SmallPropertyCard
-            style={styles.stockCard}
             title={I18n.t('Sale_Sale')}
             value={
               product.salesUnit ? product.salesUnit?.name : product.unit?.name
@@ -45,7 +47,6 @@ const ProductUnitInformations = ({product}) => {
         )}
         {product.purchasable && (
           <SmallPropertyCard
-            style={styles.stockCard}
             title={I18n.t('Purchase_Purchase')}
             value={
               product.purchasesUnit
@@ -56,22 +57,27 @@ const ProductUnitInformations = ({product}) => {
           />
         )}
       </View>
-    );
-  }
-
-  return null;
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-  stockCard: {
-    marginHorizontal: '1.5%',
-    minWidth: '20%',
+  wrapper: {
+    flexDirection: 'column',
+    width: '90%',
+    alignSelf: 'center',
+    marginVertical: 5,
+    gap: 5,
   },
-  stock: {
-    marginTop: 20,
+  text: {
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+  },
+  cardWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    gap: 5,
   },
 });
 

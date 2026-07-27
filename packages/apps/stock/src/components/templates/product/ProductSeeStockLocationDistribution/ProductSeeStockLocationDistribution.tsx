@@ -23,12 +23,15 @@ import {
   useSelector,
   useNavigation,
 } from '@axelor/aos-mobile-core';
-import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
+import {Icon, IconTile, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {StockIndicator} from '../../../../types';
 
 const ProductSeeStockLocationDistribution = ({
   companyId,
   forceShow = false,
+}: {
+  companyId: number;
+  forceShow?: boolean;
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -39,7 +42,7 @@ const ProductSeeStockLocationDistribution = ({
   const navigateStockLocationDetails = () => {
     navigation.navigate('ProductStockIndicatorDetails', {
       type: StockIndicator.type.AvailableStock,
-      companyId: companyId,
+      companyId,
     });
   };
 
@@ -51,14 +54,17 @@ const ProductSeeStockLocationDistribution = ({
   ) {
     return (
       <TouchableOpacity
+        style={styles.container}
         onPress={navigateStockLocationDetails}
-        style={styles.container}>
-        <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
+        activeOpacity={0.9}>
+        <IconTile icon="diagram-3-fill" iconSize={16} />
+        <Text style={styles.text} writingType="details">
+          {I18n.t('Stock_DistributionStockLocation')}
+        </Text>
         <Icon
           name="chevron-right"
           size={18}
           color={Colors.primaryColor.background}
-          style={styles.icon}
         />
       </TouchableOpacity>
     );
@@ -71,11 +77,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '90%',
-    alignSelf: 'center',
-    flex: 1,
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 2,
   },
-  icon: {
+  text: {
     flex: 1,
   },
 });

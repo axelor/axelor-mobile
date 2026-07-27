@@ -17,7 +17,6 @@
  */
 
 import ProductDetailsScreen from './ProductDetailsScreen';
-import ProductImageScreen from './ProductImageScreen';
 import ProductListScreen from './ProductListScreen';
 import ProductListVariantScreen from './ProductListVariantScreen';
 import ProductStockDetailsScreen from './ProductStockDetailsScreen';
@@ -40,10 +39,6 @@ export default {
     component: ProductDetailsScreen,
     actionID: 'stock_product_details',
   },
-  ProductImageScreen: {
-    title: 'Stock_Product',
-    component: ProductImageScreen,
-  },
   ProductListVariantScreen: {
     title: 'Stock_Variants',
     component: ProductListVariantScreen,
@@ -55,7 +50,6 @@ export default {
 };
 
 export {ProductDetailsScreen};
-export {ProductImageScreen};
 export {ProductListScreen};
 export {ProductListVariantScreen};
 export {ProductStockDetailsScreen};

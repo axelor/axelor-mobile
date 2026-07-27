@@ -17,8 +17,8 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
+import {StyleSheet, View} from 'react-native';
+import {getCommonStyles} from '../../../utils';
 import {useThemeColor} from '../../../theme';
 import {Icon, Input} from '../../atoms';
 
@@ -38,6 +38,7 @@ const EditableInput = ({
   numberOfLines = 1,
 }: EditableInputProps) => {
   const Colors = useThemeColor();
+
   const [isEditable, setEditable] = useState(true);
   const [value, setValue] = useState(defaultValue);
 
@@ -71,26 +72,18 @@ const EditableInput = ({
         numberOfLines={numberOfLines}
         testID="editableInput"
       />
-      <View style={styles.actions}>
-        <TouchableOpacity testID="editableInputToggle" onPress={handleIcon}>
-          <Icon name={isEditable ? 'pencil-fill' : 'check-lg'} size={15} />
-        </TouchableOpacity>
-      </View>
+      <Icon
+        name={isEditable ? 'pencil-fill' : 'check-lg'}
+        touchable
+        onPress={handleIcon}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    width: '80%',
-    fontSize: 14,
-  },
-  actions: {
-    width: '20%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start',
+    flex: 1,
   },
 });
 

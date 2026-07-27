@@ -39,7 +39,7 @@ import {
 } from '../../components';
 import {StockIndicator} from '../../types';
 
-const ProductStockIndicatorDetails = ({route}) => {
+const ProductStockIndicatorDetails = ({route}: any) => {
   const {
     type: indicatorType,
     productId,
@@ -81,7 +81,7 @@ const ProductStockIndicatorDetails = ({route}) => {
   }, [dispatch, product?.id, productId]);
 
   const handleOnPressStockQty = useCallback(
-    stockMove => {
+    (stockMove: any) => {
       switch (stockMove?.typeSelect) {
         case StockMove?.typeSelect.internal:
           return navigation.popTo('InternalMoveDetailsGeneralScreen', {
@@ -163,7 +163,7 @@ const ProductStockIndicatorDetails = ({route}) => {
           moreLoading: moreLoadingStockQty,
           isListEnd: isListEndStockQty,
           fetchData: fetchStockQtyIndicatorAPI,
-          renderItem: ({item}) => (
+          renderItem: ({item}: any) => (
             <StockQtyIndicatorCard
               indicatorType={indicatorType}
               {...item}
@@ -178,7 +178,7 @@ const ProductStockIndicatorDetails = ({route}) => {
           moreLoading: moreLoadingSaleOrderQty,
           isListEnd: isListEndSaleOrderQty,
           fetchData: fetchIndicatorAPI,
-          renderItem: ({item}) => <OrderQtyIndicatorCard {...item} />,
+          renderItem: ({item}: any) => <OrderQtyIndicatorCard {...item} />,
         };
       case StockIndicator.type.PurchaseOrderQty:
         return {
@@ -187,7 +187,7 @@ const ProductStockIndicatorDetails = ({route}) => {
           moreLoading: moreLoadingPurchaseOrderQty,
           isListEnd: isListEndPurchaseOrderQty,
           fetchData: fetchIndicatorAPI,
-          renderItem: ({item}) => <OrderQtyIndicatorCard {...item} />,
+          renderItem: ({item}: any) => <OrderQtyIndicatorCard {...item} />,
         };
       case StockIndicator.type.AvailableStock:
         return {
@@ -196,7 +196,7 @@ const ProductStockIndicatorDetails = ({route}) => {
           moreLoading: moreLoadingAvailableStock,
           isListEnd: isListEndAvailableStock,
           fetchData: fetchIndicatorAPI,
-          renderItem: ({item}) => (
+          renderItem: ({item}: any) => (
             <AvailableStockIndicatorCard {...item} companyId={companyId} />
           ),
         };
@@ -227,9 +227,7 @@ const ProductStockIndicatorDetails = ({route}) => {
     stockQtyList,
   ]);
 
-  if (scrollListData == null) {
-    return null;
-  }
+  if (scrollListData == null) return null;
 
   return (
     <Screen removeSpaceOnTop>

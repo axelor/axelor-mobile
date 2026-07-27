@@ -29,7 +29,7 @@ import {searchProducts} from '../../features/productSlice';
 
 const productScanKey = 'product_product-list';
 
-const ProductListScreen = ({navigation}) => {
+const ProductListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
 
   const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
@@ -38,7 +38,7 @@ const ProductListScreen = ({navigation}) => {
   const [navigate, setNavigate] = useState(false);
 
   const showProductDetails = useCallback(
-    product => {
+    (product: any) => {
       if (product != null) {
         setNavigate(current => !current);
         navigation.navigate('ProductStockDetailsScreen', {product: product});
@@ -63,7 +63,6 @@ const ProductListScreen = ({navigation}) => {
         expandableFilter={false}
         renderListItem={({item}) => (
           <ProductCard
-            key={item.id}
             productId={item.id}
             productVersion={item.version}
             name={item.name}

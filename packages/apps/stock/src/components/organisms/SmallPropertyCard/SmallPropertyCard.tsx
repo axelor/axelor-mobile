@@ -17,8 +17,14 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Alert, Card, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Card,
+  Text,
+  useDigitFormat,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 
 interface SmallPropertyCardProps {
   style?: any;
@@ -34,15 +40,13 @@ const SmallPropertyCard = ({
   title,
   value,
   formatValueToNumber = true,
-  unit = null,
+  unit,
   interactive = false,
 }: SmallPropertyCardProps) => {
-  const [popUp, setPopUp] = useState(false);
+  const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
 
-  const handlePress = () => {
-    setPopUp(true);
-  };
+  const [popUp, setPopUp] = useState(false);
 
   const _value = useMemo(
     () => (formatValueToNumber ? formatNumber(value) : value),
@@ -50,9 +54,8 @@ const SmallPropertyCard = ({
   );
 
   return (
-    <Card style={[styles.card, style]}>
+    <>
       <Alert
-        style={styles.alert}
         visible={popUp}
         title={title}
         noBoldTitle
@@ -61,48 +64,45 @@ const SmallPropertyCard = ({
           headerSize: 25,
           onPress: () => setPopUp(!popUp),
         }}>
-        <Text writingType="important" fontSize={20}>
-          {unit == null ? `${_value}` : `${_value} ${unit}`}
-        </Text>
+        <Text writingType="important">{`${_value} ${unit ?? ''}`}</Text>
       </Alert>
       <TouchableOpacity
         activeOpacity={0.9}
-        onPress={handlePress}
+        onPress={() => setPopUp(true)}
         disabled={!interactive}>
-        <View style={styles.container}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.value}>{_value}</Text>
-          {unit && <Text style={styles.unit}>{unit}</Text>}
-        </View>
+        <Card style={[styles.card, style]}>
+          <Text
+            writingType="important"
+            fontSize={12}
+            textColor={Colors.secondaryColor.background}>
+            {title}
+          </Text>
+          <Text writingType="title" fontSize={18}>
+            {_value}
+          </Text>
+          {unit && (
+            <Text
+              writingType="important"
+              fontSize={12}
+              textColor={Colors.primaryColor.background}>
+              {unit}
+            </Text>
+          )}
+        </Card>
       </TouchableOpacity>
-    </Card>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  alert: {
-    width: '70%',
-  },
   card: {
-    paddingHorizontal: 0,
-    paddingVertical: 4,
-    paddingRight: 4,
     flexDirection: 'column',
     alignItems: 'center',
-    marginVertical: '1%',
-  },
-  container: {
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 12,
-  },
-  value: {
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
-  unit: {
-    fontSize: 14,
+    paddingHorizontal: 12,
+    paddingRight: 12,
+    paddingVertical: 8,
+    gap: 2,
+    minWidth: '30%',
   },
 });
 

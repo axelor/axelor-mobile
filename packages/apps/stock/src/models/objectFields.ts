@@ -326,6 +326,7 @@ export const stock_modelAPI: ObjectFields = {
         typeSelect: schemaContructor.number(),
         fromStockLocation: schemaContructor.subObject('name'),
         toStockLocation: schemaContructor.subObject('name'),
+        statusSelect: schemaContructor.number(),
       }),
     ),
     realQty: schemaContructor.number(),

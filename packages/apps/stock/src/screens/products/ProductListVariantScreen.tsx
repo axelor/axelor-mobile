@@ -22,26 +22,26 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ProductVariantCard} from '../../components';
 import {fetchProductVariants} from '../../features/productVariantSlice';
 
-const ProductListVariantScreen = ({route, navigation}) => {
-  const product = route.params.product;
-  const companyID = route.params.companyID;
-  const stockLocationId = route.params.stockLocationId;
+const ProductListVariantScreen = ({route, navigation}: any) => {
+  const {product, companyID, stockLocationId} = route?.params ?? {};
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {loadingProductList, moreLoading, isListEnd, productListVariables} =
+    useSelector(state => state.productVariant);
+
   const parentProductId = useMemo(
     () => product?.parentProduct?.id,
     [product?.parentProduct?.id],
   );
-  const {loadingProductList, moreLoading, isListEnd, productListVariables} =
-    useSelector(state => state.productVariant);
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const fetchVariantsAPI = useCallback(
-    page => {
+    (page: number) => {
       if (parentProductId) {
         dispatch(
-          fetchProductVariants({
+          (fetchProductVariants as any)({
             productVariantParentId: parentProductId,
-            page: page,
+            page,
           }),
         );
       }
@@ -49,18 +49,18 @@ const ProductListVariantScreen = ({route, navigation}) => {
     [dispatch, parentProductId],
   );
 
-  const navigateToProductVariable = productVar => {
-    navigation.popTo('ProductStockDetailsScreen', {product: productVar});
-  };
+  const navigateToProductVariable = useCallback(
+    (_p: any) => navigation.popTo('ProductStockDetailsScreen', {product: _p}),
+    [navigation],
+  );
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop>
       <ScrollList
         loadingList={loadingProductList}
         data={productListVariables}
         renderItem={({item}) => (
           <ProductVariantCard
-            key={item.id}
             name={item.name}
             code={item.code}
             productId={item.id}
