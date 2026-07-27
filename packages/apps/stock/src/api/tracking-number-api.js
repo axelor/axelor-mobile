@@ -109,11 +109,9 @@ export async function updateStockMoveLineTrackingNumber({
 }
 
 export async function updateTrackingNumber({id, origin, ...trackingNumber}) {
-  const {$version, version, ...rest} = trackingNumber;
   const payload = {
-    ...rest,
+    ...trackingNumber,
     origin,
-    version: $version ?? version,
   };
 
   const {matchers, formattedData} = formatRequestBody(payload, 'data');

@@ -55,7 +55,7 @@ class ContactInfoType {
         return {
           displayText: contact.emailAddress?.address,
           id: contact.emailAddress?.id,
-          version: contact.emailAddress?.$version,
+          version: contact.emailAddress?.version,
         };
       case this.type.WebSite:
         return {
