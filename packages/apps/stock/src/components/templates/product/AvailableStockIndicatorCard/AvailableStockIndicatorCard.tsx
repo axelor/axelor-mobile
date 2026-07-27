@@ -59,7 +59,7 @@ const AvailableStockIndicatorCard = ({
     if (product != null) {
       getProductStockIndicators({
         productId: product.id,
-        version: product.$version,
+        version: product.version,
         stockLocationId: stockLocation?.id,
         companyId: companyId ?? activeCompany?.id,
       })

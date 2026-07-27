@@ -48,9 +48,11 @@ const parseDataFields = (data: any): any => {
 };
 
 const parseField = (fieldName: string, value: any, object: any): any => {
-  if (fieldName.includes('.')) {
-    const dotIndex = fieldName.indexOf('.');
-    const _name = fieldName.substring(0, dotIndex);
+  const _fieldName = renameVersionField(fieldName);
+
+  if (_fieldName.includes('.')) {
+    const dotIndex = _fieldName.indexOf('.');
+    const _name = _fieldName.substring(0, dotIndex);
 
     if (value == null) {
       return object;
@@ -58,14 +60,29 @@ const parseField = (fieldName: string, value: any, object: any): any => {
 
     return {
       ...object,
-      [fieldName]: value,
+      [_fieldName]: value,
       [_name]: parseField(
-        fieldName.substring(dotIndex + 1),
+        _fieldName.substring(dotIndex + 1),
         value,
         object[_name] || {},
       ),
     };
   }
 
-  return {...object, [fieldName]: value};
+  return {...object, [_fieldName]: parseDataFields(value)};
+};
+
+const API_VERSION_FIELD = '$version';
+const VERSION_FIELD = 'version';
+
+const renameVersionField = (fieldName: string): string => {
+  if (fieldName === API_VERSION_FIELD) {
+    return VERSION_FIELD;
+  }
+
+  if (fieldName.endsWith(`.${API_VERSION_FIELD}`)) {
+    return `${fieldName.slice(0, -API_VERSION_FIELD.length)}${VERSION_FIELD}`;
+  }
+
+  return fieldName;
 };
