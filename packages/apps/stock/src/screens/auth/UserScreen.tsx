@@ -29,7 +29,7 @@ import {StockLocationSearchBar} from '../../components';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
-const UserScreen = ({navigation}) => {
+const UserScreen = () => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -37,12 +37,8 @@ const UserScreen = ({navigation}) => {
   const {mobileSettings} = useSelector(state => state.appConfig);
 
   const updateDefaultStockLocation = useCallback(
-    stockLocation => {
-      dispatch(
-        changeDefaultStockLocation({
-          newStockLocation: stockLocation,
-        }),
-      );
+    (newStockLocation: any) => {
+      dispatch(changeDefaultStockLocation({newStockLocation}));
     },
     [dispatch],
   );
@@ -57,7 +53,7 @@ const UserScreen = ({navigation}) => {
   ]);
 
   return (
-    <AuthUserScreen navigation={navigation}>
+    <AuthUserScreen>
       {mobileSettings?.isStockLocationManagementEnabled && (
         <StockLocationSearchBar
           showTitle={true}
