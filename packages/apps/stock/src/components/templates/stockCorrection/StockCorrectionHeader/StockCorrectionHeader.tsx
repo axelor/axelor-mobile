@@ -21,19 +21,25 @@ import {View, StyleSheet} from 'react-native';
 import {useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import {Text, Badge} from '@axelor/aos-mobile-ui';
 
-const StockCorrectionHeader = ({stockLocation, status}) => {
+const StockCorrectionHeader = ({
+  stockLocation,
+  statusSelect,
+}: {
+  stockLocation: any;
+  statusSelect: number;
+}) => {
   const {StockCorrection} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
   return (
     <View style={styles.content}>
       <View style={styles.textContainer}>
-        <Text style={styles.text_important}>{stockLocation?.name}</Text>
+        <Text writingType="important">{stockLocation?.name}</Text>
       </View>
-      {status && (
+      {statusSelect != null && (
         <Badge
-          color={getItemColor(StockCorrection?.statusSelect, status)}
-          title={getItemTitle(StockCorrection?.statusSelect, status)}
+          color={getItemColor(StockCorrection?.statusSelect, statusSelect)}
+          title={getItemTitle(StockCorrection?.statusSelect, statusSelect)}
         />
       )}
     </View>
@@ -42,20 +48,15 @@ const StockCorrectionHeader = ({stockLocation, status}) => {
 
 const styles = StyleSheet.create({
   content: {
-    marginHorizontal: 32,
-    marginBottom: '3%',
+    marginHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   textContainer: {
-    flex: 2,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-  },
-  text_important: {
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 

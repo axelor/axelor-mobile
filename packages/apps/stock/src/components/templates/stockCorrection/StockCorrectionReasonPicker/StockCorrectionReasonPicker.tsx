@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   useDispatch,
   useSelector,
@@ -29,10 +29,17 @@ import {fetchStockCorrectionReasons} from '../../../../features/stockCorrectionR
 const StockCorrectionReasonPicker = ({
   status,
   reason,
-  setSaveStatus = () => {},
+  setSaveStatus,
   setReason,
   isScrollViewContainer = false,
   readonly = false,
+}: {
+  status?: number;
+  reason: any;
+  setSaveStatus?: (_v?: any) => void;
+  setReason: (_v?: any) => void;
+  isScrollViewContainer?: boolean;
+  readonly?: boolean;
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -46,14 +53,17 @@ const StockCorrectionReasonPicker = ({
     dispatch(fetchStockCorrectionReasons());
   }, [dispatch]);
 
-  const handleReasonChange = reasonId => {
-    if (reasonId === null) {
-      setReason({name: '', id: null});
-    } else {
-      setReason(getFromList(stockCorrectionReasonList, 'id', reasonId));
-    }
-    setSaveStatus(false);
-  };
+  const handleReasonChange = useCallback(
+    (reasonId?: number) => {
+      if (reasonId === null) {
+        setReason({name: '', id: null});
+      } else {
+        setReason(getFromList(stockCorrectionReasonList, 'id', reasonId));
+      }
+      setSaveStatus?.(false);
+    },
+    [setReason, setSaveStatus, stockCorrectionReasonList],
+  );
 
   return (
     <Picker

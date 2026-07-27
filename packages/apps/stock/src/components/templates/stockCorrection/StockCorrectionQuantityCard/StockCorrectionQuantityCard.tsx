@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useCallback} from 'react';
 import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 
@@ -27,17 +26,28 @@ const StockCorrectionQuantityCard = ({
   realQty,
   databaseQty,
   setRealQty,
-  setSaveStatus = () => {},
+  setSaveStatus,
   readonly = false,
+}: {
+  stockProduct: any;
+  status?: number;
+  realQty: number;
+  databaseQty: number;
+  setRealQty: (_v?: any) => void;
+  setSaveStatus?: (_v?: any) => void;
+  readonly?: boolean;
 }) => {
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const {StockCorrection} = useTypes();
 
-  const handleQtyChange = value => {
-    setRealQty(value);
-    setSaveStatus(false);
-  };
+  const handleQtyChange = useCallback(
+    (value: number) => {
+      setRealQty(value);
+      setSaveStatus?.(false);
+    },
+    [setRealQty, setSaveStatus],
+  );
 
   return (
     <QuantityCard
@@ -46,8 +56,9 @@ const StockCorrectionQuantityCard = ({
       onValueChange={handleQtyChange}
       editable={!readonly && status === StockCorrection?.statusSelect.Draft}
       isBigButton={true}
+      isFormWrapper
       translator={I18n.t}>
-      <Text style={styles.text}>
+      <Text>
         {`${I18n.t('Stock_DatabaseQty')}: ${formatNumber(databaseQty)} ${
           stockProduct?.unit?.name
         }`}
@@ -55,11 +66,5 @@ const StockCorrectionQuantityCard = ({
     </QuantityCard>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 16,
-  },
-});
 
 export default StockCorrectionQuantityCard;

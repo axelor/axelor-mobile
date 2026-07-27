@@ -42,6 +42,16 @@ const StockCorrectionButtons = ({
   realQty,
   status,
   comments,
+}: {
+  saveStatus?: boolean;
+  reason?: any;
+  stockCorrection?: any;
+  product?: any;
+  stockLocation?: any;
+  trackingNumber?: any;
+  realQty: number;
+  status?: number;
+  comments?: string;
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -69,7 +79,7 @@ const StockCorrectionButtons = ({
     (_status = StockCorrection?.statusSelect.Draft) => {
       dispatch(
         stockCorrection
-          ? updateCorrection({
+          ? (updateCorrection as any)({
               version: stockCorrection.version,
               stockCorrectionId: stockCorrection.id,
               realQty: saveStatus ? null : realQty,
@@ -77,7 +87,7 @@ const StockCorrectionButtons = ({
               status: _status,
               comments: comments,
             })
-          : createCorrection({
+          : (createCorrection as any)({
               productId: product.id,
               stockLocationId: stockLocation.id,
               reasonId: reason.id,
@@ -119,9 +129,7 @@ const StockCorrectionButtons = ({
     [StockCorrection?.statusSelect.Validated, handleAPI],
   );
 
-  if (reason?.id == null || readonly) {
-    return null;
-  }
+  if (reason?.id == null || readonly) return null;
 
   return (
     <View style={styles.container}>

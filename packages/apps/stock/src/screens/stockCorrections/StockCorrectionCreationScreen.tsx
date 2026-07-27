@@ -17,14 +17,18 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Screen, KeyboardAvoidingScrollView} from '@axelor/aos-mobile-ui';
+import {StyleSheet, View} from 'react-native';
+import {
+  Screen,
+  KeyboardAvoidingScrollView,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {
+  ProductCardInfo,
   ProductTrackingNumberSearchBar,
   StockCorrectionButtons,
   StockCorrectionHtmlInput,
-  StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
   StockCorrectionTrackingNumberSelect,
@@ -45,23 +49,27 @@ const CREATION_STEP = {
 
 const DEFAULT_REASON = {name: '', id: null};
 
-const StockCorrectionCreationScreen = ({route}) => {
-  const routeLocation = route?.params?.stockLocation;
-  const routeProduct = route?.params?.product;
-  const routeTrackingNumber = route?.params?.trackingNumber;
+const StockCorrectionCreationScreen = ({route}: any) => {
+  const {
+    stockLocation: routeLocation,
+    product: routeProduct,
+    trackingNumber: routeTrackingNumber,
+  } = route?.params ?? {};
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {StockCorrection} = useTypes();
 
   const {user} = useSelector(state => state.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
 
-  const [location, setLocation] = useState(routeLocation);
-  const [product, setProduct] = useState(routeProduct);
-  const [trackingNumber, setTrackingNumber] = useState(routeTrackingNumber);
-  const [realQty, setRealQty] = useState(0);
-  const [reason, setReason] = useState(DEFAULT_REASON);
-  const [currentStep, setCurrentStep] = useState();
-  const [comments, setComments] = useState();
+  const [location, setLocation] = useState<any>(routeLocation);
+  const [product, setProduct] = useState<any>(routeProduct);
+  const [trackingNumber, setTrackingNumber] =
+    useState<any>(routeTrackingNumber);
+  const [realQty, setRealQty] = useState<number>(0);
+  const [reason, setReason] = useState<any>(DEFAULT_REASON);
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [comments, setComments] = useState<string | undefined>();
 
   const databaseQty = useMemo(() => {
     if (productIndicators?.id === product?.id) {
@@ -84,8 +92,35 @@ const StockCorrectionCreationScreen = ({route}) => {
     });
   }, [routeLocation, routeProduct, routeTrackingNumber]);
 
+  const handleReset = useCallback((_step = CREATION_STEP.stockLocation) => {
+    setCurrentStep(_step);
+
+    if (_step <= CREATION_STEP.product_trackingNumber) {
+      setProduct(null);
+      setTrackingNumber(null);
+      setRealQty(0);
+      setReason(DEFAULT_REASON);
+    }
+
+    if (_step <= CREATION_STEP.stockLocation) {
+      setLocation(null);
+    }
+  }, []);
+
+  const handleNextStep = useCallback((_current: number) => {
+    setCurrentStep(() => {
+      if (_current <= CREATION_STEP.stockLocation) {
+        return CREATION_STEP.product_trackingNumber;
+      }
+      if (_current <= CREATION_STEP.product_trackingNumber) {
+        return CREATION_STEP.validation;
+      }
+      return _current;
+    });
+  }, []);
+
   const handleStockLocationChange = useCallback(
-    _value => {
+    (_value: any) => {
       if (_value == null) {
         handleReset(CREATION_STEP.stockLocation);
       } else {
@@ -97,10 +132,11 @@ const StockCorrectionCreationScreen = ({route}) => {
   );
 
   const handleProductTrackingNumberChange = useCallback(
-    _value => {
+    (_value: any) => {
       if (_value == null) {
         handleReset(CREATION_STEP.product_trackingNumber);
       } else {
+        console.log(_value);
         if (_value?.product != null) {
           setTrackingNumber(_value);
           setProduct(_value.product);
@@ -117,7 +153,7 @@ const StockCorrectionCreationScreen = ({route}) => {
   useEffect(() => {
     if (product != null && location != null) {
       dispatch(
-        fetchProductIndicators({
+        (fetchProductIndicators as any)({
           version: product.version,
           productId: product.id,
           companyId: user.activeCompany?.id,
@@ -127,36 +163,9 @@ const StockCorrectionCreationScreen = ({route}) => {
     }
   }, [dispatch, user, product, location]);
 
-  const handleReset = useCallback((_step = CREATION_STEP.stockLocation) => {
-    setCurrentStep(_step);
-
-    if (_step <= CREATION_STEP.product_trackingNumber) {
-      setProduct(null);
-      setTrackingNumber(null);
-      setRealQty(0);
-      setReason(DEFAULT_REASON);
-    }
-
-    if (_step <= CREATION_STEP.stockLocation) {
-      setLocation(null);
-    }
-  }, []);
-
-  const handleNextStep = useCallback(_current => {
-    setCurrentStep(() => {
-      if (_current <= CREATION_STEP.stockLocation) {
-        return CREATION_STEP.product_trackingNumber;
-      }
-      if (_current <= CREATION_STEP.product_trackingNumber) {
-        return CREATION_STEP.validation;
-      }
-      return _current;
-    });
-  }, []);
-
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         currentStep === CREATION_STEP.validation && (
           <StockCorrectionButtons
@@ -169,60 +178,69 @@ const StockCorrectionCreationScreen = ({route}) => {
           />
         )
       }>
-      <KeyboardAvoidingScrollView style={styles.container}>
-        <StockLocationSearchBar
-          defaultValue={location}
-          scanKey={stockLocationScanKey}
-          onChange={handleStockLocationChange}
-          isFocus={currentStep === CREATION_STEP.stockLocation}
-          isScrollViewContainer={location == null}
-        />
-        {currentStep >= CREATION_STEP.product_trackingNumber ? (
-          <ProductTrackingNumberSearchBar
-            scanKey={itemScanKey}
-            onChange={handleProductTrackingNumberChange}
-            defaultValue={trackingNumber || product}
-            isFocus={currentStep === CREATION_STEP.product_trackingNumber}
-            isScrollViewContainer={product == null}
+      <KeyboardAvoidingScrollView keyboardOffset={{ios: 70, android: 100}}>
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <StockLocationSearchBar
+            defaultValue={location}
+            scanKey={stockLocationScanKey}
+            onChange={handleStockLocationChange}
+            isFocus={currentStep === CREATION_STEP.stockLocation}
+            isScrollViewContainer={location == null}
           />
-        ) : null}
-        {currentStep >= CREATION_STEP.validation ? (
-          <>
-            <StockCorrectionProductCardInfo
-              stockProduct={product}
-              trackingNumber={trackingNumber}
+          {currentStep >= CREATION_STEP.product_trackingNumber ? (
+            <ProductTrackingNumberSearchBar
+              scanKey={itemScanKey}
+              onChange={handleProductTrackingNumberChange}
+              defaultValue={trackingNumber ?? product}
+              isFocus={currentStep === CREATION_STEP.product_trackingNumber}
+              isScrollViewContainer={product == null}
             />
-            <StockCorrectionTrackingNumberSelect
-              product={product}
-              visible={
-                trackingNumber == null &&
-                product?.trackingNumberConfiguration != null
-              }
-              handleTrackingSelect={setTrackingNumber}
-            />
-            <StockCorrectionQuantityCard
-              databaseQty={databaseQty}
-              realQty={realQty}
-              setRealQty={setRealQty}
-              status={StockCorrection?.statusSelect.Draft}
-              stockProduct={product}
-            />
-            <StockCorrectionReasonPicker
-              reason={reason}
-              setReason={setReason}
-              status={StockCorrection?.statusSelect.Draft}
-            />
-            <StockCorrectionHtmlInput setComments={setComments} />
-          </>
-        ) : null}
+          ) : null}
+          {currentStep >= CREATION_STEP.validation ? (
+            <>
+              <ProductCardInfo
+                product={product}
+                trackingNumber={trackingNumber}
+              />
+              <StockCorrectionTrackingNumberSelect
+                product={product}
+                visible={
+                  trackingNumber == null &&
+                  product?.trackingNumberConfiguration != null
+                }
+                handleTrackingSelect={setTrackingNumber}
+              />
+              <StockCorrectionQuantityCard
+                databaseQty={databaseQty}
+                realQty={realQty}
+                setRealQty={setRealQty}
+                status={StockCorrection?.statusSelect.Draft}
+                stockProduct={product}
+              />
+              <StockCorrectionReasonPicker
+                reason={reason}
+                setReason={setReason}
+                status={StockCorrection?.statusSelect.Draft}
+              />
+              <StockCorrectionHtmlInput setComments={setComments} />
+            </>
+          ) : null}
+        </View>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 100,
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
   },
 });
 

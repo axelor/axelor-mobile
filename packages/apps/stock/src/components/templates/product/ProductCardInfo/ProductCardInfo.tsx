@@ -16,77 +16,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {LabelText, Text} from '@axelor/aos-mobile-ui';
-import {AOSImage, checkNullString} from '@axelor/aos-mobile-core';
-import {ProductCardDetails} from '../../../molecules';
+import React, {useCallback} from 'react';
+import {StyleSheet} from 'react-native';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {useMetafileUri, useNavigation} from '@axelor/aos-mobile-core';
 
 interface ProductCardInfoProps {
-  name: string;
-  code: string;
-  picture: any;
-  trackingNumber?: string;
+  style?: any;
+  product?: any;
+  trackingNumber?: any;
   locker?: string;
-  onPress: () => void;
+  onPress?: () => void;
+  [key: string]: any; //TODO: remove this & ? on product
 }
 
 const ProductCardInfo = ({
-  name,
-  code,
-  picture = null,
-  trackingNumber = null,
-  locker = null,
-  onPress = () => {},
+  style,
+  product,
+  trackingNumber,
+  locker,
+  onPress,
 }: ProductCardInfoProps) => {
+  const navigation = useNavigation();
+  const formatMetaFile = useMetafileUri();
+
+  const handleShowProduct = useCallback(() => {
+    if (onPress != null) return onPress();
+
+    navigation.navigate('ProductStockDetailsScreen', {product});
+  }, [navigation, onPress, product]);
+
   return (
-    <View style={styles.container}>
-      <AOSImage
-        generalStyle={styles.imageStyle}
-        imageSize={styles.imageSize}
-        resizeMode="contain"
-        metaFile={picture}
-        defaultIconSize={60}
-      />
-      <ProductCardDetails style={styles.textContainer} onPress={onPress}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.code}>{code}</Text>
-        {!checkNullString(trackingNumber) && (
-          <LabelText iconName="qr-code" size={15} title={trackingNumber} />
-        )}
-        {!checkNullString(locker) && (
-          <LabelText iconName="geo-alt-fill" size={15} title={locker} />
-        )}
-      </ProductCardDetails>
-    </View>
+    <ObjectCard
+      style={style}
+      onPress={handleShowProduct}
+      image={{
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        defaultIconSize: 60,
+        source: formatMetaFile(product.picture?.id),
+      }}
+      upperTexts={{
+        items: [
+          {
+            displayText: product.name,
+            isTitle: true,
+          },
+          {
+            displayText: product.code,
+          },
+          {
+            iconName: 'qr-code',
+            hideIfNull: true,
+            displayText: trackingNumber?.trackingNumberSeq,
+          },
+          {iconName: 'geo-alt-fill', hideIfNull: true, displayText: locker},
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '90%',
-    marginVertical: 10,
-    alignSelf: 'center',
-  },
   imageSize: {
     height: 60,
     width: 60,
-  },
-  imageStyle: {
-    marginRight: 10,
-  },
-  textContainer: {
-    flexDirection: 'row',
-    width: '90%',
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  code: {
-    fontSize: 14,
   },
 });
 

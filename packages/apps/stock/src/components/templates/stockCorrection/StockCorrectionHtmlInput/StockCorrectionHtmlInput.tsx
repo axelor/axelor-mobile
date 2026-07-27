@@ -16,23 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {FormHtmlInput} from '@axelor/aos-mobile-ui';
 
 const StockCorrectionHtmlInput = ({
   stockCorrection,
   setComments,
-  setSaveStatus = () => {},
+  setSaveStatus,
   readonly = false,
+}: {
+  stockCorrection?: any;
+  setComments: (_v?: any) => void;
+  setSaveStatus?: (_v?: any) => void;
+  readonly?: boolean;
 }) => {
   const I18n = useTranslator();
   const {StockCorrection} = useTypes();
 
-  const handleCommentsChange = comments => {
-    setComments(comments);
-    setSaveStatus(false);
-  };
+  const handleCommentsChange = useCallback(
+    (comments?: string) => {
+      setComments(comments);
+      setSaveStatus?.(false);
+    },
+    [setComments, setSaveStatus],
+  );
 
   return (
     <FormHtmlInput
