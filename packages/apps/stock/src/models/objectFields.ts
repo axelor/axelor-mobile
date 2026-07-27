@@ -315,6 +315,16 @@ export const stock_modelAPI: ObjectFields = {
     trackingNumberSeq: schemaContructor.string(),
     origin: schemaContructor.string(),
     serialNumber: schemaContructor.string(),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        name: schemaContructor.string(),
+        code: schemaContructor.string(),
+        unit: schemaContructor.subObject('name'),
+        picture: schemaContructor.subObject('fileName'),
+        trackingNumberConfiguration: schemaContructor.subObject(),
+      }),
+    ),
   }),
   stock_unit: schemaContructor.object({name: schemaContructor.string()}),
   stock_stockQtyIndicator: schemaContructor.object({
