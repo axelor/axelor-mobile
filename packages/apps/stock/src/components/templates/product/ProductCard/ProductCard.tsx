@@ -52,7 +52,7 @@ const ProductCard = ({
 
   const {activeCompany} = useSelector(state => state.user.user);
 
-  const [availableStock, setAvailableStock] = useState(null);
+  const [availableStock, setAvailableStock] = useState<any>(null);
 
   useEffect(() => {
     isMounted.current = true;
@@ -83,26 +83,21 @@ const ProductCard = ({
 
   return (
     <ObjectCard
-      showArrow={true}
+      showArrow={false}
+      leftContainerFlex={2}
       onPress={onPress}
       style={style}
       image={{
-        generalStyle: styles.imageStyle,
         imageSize: styles.imageSize,
         resizeMode: 'contain',
-        defaultIconSize: 60,
+        defaultIconSize: 50,
         source: formatMetaFile(picture?.id),
       }}
       upperTexts={{
-        items: [
-          {
-            displayText: name,
-            isTitle: true,
-          },
-          {displayText: code, style: styles.code},
-        ],
+        items: [{displayText: name, isTitle: true}, {displayText: code}],
       }}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
             displayText:
@@ -126,14 +121,11 @@ const ProductCard = ({
 
 const styles = StyleSheet.create({
   imageSize: {
-    height: 60,
-    width: 60,
+    height: 50,
+    width: 50,
   },
-  imageStyle: {
-    marginRight: 30,
-  },
-  code: {
-    fontSize: 12,
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

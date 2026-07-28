@@ -25,70 +25,80 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {Inventory as InventoryType} from '../../../../types';
 
 interface InventoryCardProps {
   style?: any;
-  reference: string;
-  status: number;
-  date: string;
-  stockLocation?: string;
+  inventorySeq: string;
+  statusSelect: number;
+  stockLocation?: any;
+  [key: string]: any;
   onPress: () => void;
 }
 
 const InventoryCard = ({
   style,
-  reference,
-  status,
-  date,
+  inventorySeq,
+  statusSelect,
   stockLocation,
   onPress,
+  ...props
 }: InventoryCardProps) => {
   const I18n = useTranslator();
   const {Inventory} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
   const _formatDate = useMemo(() => {
-    if (date == null) {
-      return null;
-    }
+    const date = InventoryType.getDate({...props, statusSelect});
+    if (date == null) return undefined;
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
-    if (status === Inventory?.statusSelect.Planned) {
+    if (statusSelect === Inventory?.statusSelect.Planned) {
       return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
-    if (status === Inventory?.statusSelect.InProgress) {
+    if (statusSelect === Inventory?.statusSelect.InProgress) {
       return `${I18n.t('Base_StartedOn')} ${_date}`;
     }
 
-    if (status === Inventory?.statusSelect.Completed) {
+    if (statusSelect === Inventory?.statusSelect.Completed) {
       return `${I18n.t('Base_CompletedOn')} ${_date}`;
     }
 
     return `${I18n.t('Base_ValidatedOn')} ${_date}`;
-  }, [I18n, Inventory?.statusSelect, date, status]);
+  }, [
+    I18n,
+    Inventory?.statusSelect.Completed,
+    Inventory?.statusSelect.InProgress,
+    Inventory?.statusSelect.Planned,
+    props,
+    statusSelect,
+  ]);
 
   return (
     <ObjectCard
-      onPress={onPress}
-      showArrow={true}
-      borderLeftColor={
-        getItemColor(Inventory?.statusSelect, status)?.background
-      }
       style={style}
+      onPress={onPress}
+      showArrow={false}
+      leftContainerFlex={2}
+      borderLeftColor={
+        getItemColor(Inventory?.statusSelect, statusSelect)?.background
+      }
       lowerTexts={{
         items: [
-          {displayText: reference, isTitle: true},
-          {displayText: stockLocation, style: styles.noBold, hideIfNull: true},
+          {displayText: inventorySeq, isTitle: true},
+          {
+            displayText: stockLocation?.name,
+            iconName: 'house',
+            hideIfNull: true,
+          },
           {
             displayText: _formatDate,
-            style: [
-              styles.noBold,
-              status === Inventory?.statusSelect.Planned ||
-              status === Inventory?.statusSelect.InProgress
+            style:
+              statusSelect === Inventory?.statusSelect.Planned ||
+              statusSelect === Inventory?.statusSelect.InProgress
                 ? styles.date
                 : null,
-            ],
             hideIfNull: true,
           },
         ],
@@ -98,9 +108,6 @@ const InventoryCard = ({
 };
 
 const styles = StyleSheet.create({
-  noBold: {
-    fontWeight: null,
-  },
   date: {
     fontStyle: 'italic',
   },

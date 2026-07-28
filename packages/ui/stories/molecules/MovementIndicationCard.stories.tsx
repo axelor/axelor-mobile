@@ -16,14 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
 import type {Meta} from '@storybook/react';
-import {MovementIndicationCard as Component, Icon} from '../../src/components';
-import {
-  colorPicker,
-  disabledControl,
-  Story,
-} from '../utils/control-type.helpers';
+import {MovementIndicationCard as Component} from '../../src/components';
+import {Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/MovementIndicationCard',
@@ -34,35 +29,12 @@ export default meta;
 
 export const MovementIndicationCard: Story<typeof Component> = {
   args: {
-    titleTop: 'Title top',
-    disabledTop: false,
-    topIcon_name: 'truck',
-    topIcon_color: 'primaryColor',
-    titleDown: 'Title down',
-    disabledDown: false,
-    downIcon_name: 'geo-alt',
-    downIcon_color: 'plannedColor',
+    titleTop: 'Main Warehouse',
+    labelTop: 'Origin',
+    iconTop: 'house-down',
+    titleDown: 'Waste',
+    labelDown: 'Destination',
+    iconDown: 'house-up',
+    displayCard: true,
   },
-  argTypes: {
-    topIcon_color: colorPicker,
-    downIcon_color: colorPicker,
-    iconDown: disabledControl,
-    iconTop: disabledControl,
-    onPressTitleDown: disabledControl,
-    onPressTitleTop: disabledControl,
-  },
-  render: args => (
-    <Component
-      {...args}
-      iconTop={
-        <Icon name={args.topIcon_name} color={args.topIcon_color?.background} />
-      }
-      iconDown={
-        <Icon
-          name={args.downIcon_name}
-          color={args.downIcon_color?.background}
-        />
-      }
-    />
-  ),
 };

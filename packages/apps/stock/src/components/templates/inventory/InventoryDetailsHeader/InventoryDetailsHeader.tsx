@@ -16,31 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator, useSelector, useTypes} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
+import {Inventory} from '../../../../types';
 import {InventoryHeader} from '../../inventory';
 
 const InventoryDetailsHeader = ({}) => {
   const I18n = useTranslator();
-  const {Inventory} = useTypes();
 
-  const {inventory} = useSelector((state: any) => state.inventory);
+  const {inventory} = useSelector(state => state.inventory);
+
+  const movementIndicatorData = useMemo(
+    () =>
+      inventory?.fromRack == null
+        ? undefined
+        : {
+            titleTop: inventory.fromRack,
+            labelTop: 'Stock_FromLocker',
+            iconTop: 'geo-alt-fill',
+            titleDown: inventory.toRack,
+            labelDown: 'Stock_ToLocker',
+            iconDown: 'geo-alt-fill',
+          },
+    [inventory?.fromRack, inventory?.toRack],
+  );
 
   return (
-    <View>
-      <InventoryHeader
-        reference={inventory?.inventorySeq}
-        status={inventory?.statusSelect}
-        date={
-          inventory?.statusSelect === Inventory?.statusSelect.Planned
-            ? inventory?.plannedStartDateT
-            : inventory?.plannedEndDateT
-        }
-        stockLocation={inventory?.stockLocation?.name}
-      />
-      <View style={styles.marginHorizontal}>
+    <InventoryHeader
+      reference={inventory?.inventorySeq}
+      status={inventory?.statusSelect}
+      date={Inventory.getDate(inventory)}
+      stockLocation={inventory?.stockLocation?.name}
+      showMovementIndicator={movementIndicatorData != null}
+      movementIndicatorData={movementIndicatorData}>
+      <View style={styles.productInfos}>
         {inventory?.productFamily != null && (
           <Text>{`${I18n.t('Stock_ProductFamily')} : ${
             inventory?.productFamily?.name
@@ -52,12 +63,12 @@ const InventoryDetailsHeader = ({}) => {
           }`}</Text>
         )}
       </View>
-    </View>
+    </InventoryHeader>
   );
 };
 
 const styles = StyleSheet.create({
-  marginHorizontal: {
+  productInfos: {
     marginHorizontal: 24,
   },
 });

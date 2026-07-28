@@ -154,12 +154,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
               }
             : null
         }>
-        <ProductCardInfo
-          name={product?.name}
-          code={product?.code}
-          picture={product?.picture}
-          onPress={handleShowProduct}
-        />
+        <ProductCardInfo product={product} />
         <QuantityCard
           labelQty={I18n.t('Manufacturing_WasteQty')}
           defaultValue={wasteQty}

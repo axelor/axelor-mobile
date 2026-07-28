@@ -54,7 +54,7 @@ const InternalMoveCreationButtons = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {user} = useSelector((state: any) => state.user);
+  const {user} = useSelector(state => state.user);
 
   const handleFinishPress = () => {
     if (step === InternalMoveCreation.step.validateLine) {
@@ -84,7 +84,7 @@ const InternalMoveCreationButtons = ({
         {step === InternalMoveCreation.step.validateLine && (
           <Button
             title={I18n.t(isEditionMode ? 'Base_Save' : 'Base_Add')}
-            iconName={isEditionMode ? null : 'plus-lg'}
+            iconName={isEditionMode ? undefined : 'plus-lg'}
             color={Colors.progressColor}
             width="45%"
             disabled={movedQty === 0}

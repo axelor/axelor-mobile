@@ -26,11 +26,11 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {InventoryPickingWidget, SearchLineContainer} from '../../../organisms';
-import {InventoryLineActionCard} from '../../../templates';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 import {useLineHandler} from '../../../../hooks';
 import {LineVerification} from '../../../../types';
+import {InventoryPickingWidget, SearchLineContainer} from '../../../organisms';
+import {InventoryLineActionCard} from '../../../templates';
 
 const scanKey = 'trackingNumber-or-product_inventory-details';
 const massScanKey = 'inventory-line_mass-scan';
@@ -66,7 +66,7 @@ const InventorySearchLineContainer = ({}) => {
   }, [inventory, navigation]);
 
   const handleShowLine = useCallback(
-    (item: any, skipVerification = undefined) => {
+    (item: any, skipVerification: boolean | undefined = undefined) => {
       showLine({
         move: inventory,
         line: item,

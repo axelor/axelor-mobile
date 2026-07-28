@@ -30,7 +30,7 @@ interface PackagingLineQuantityCardProps {
   style?: any;
   title?: string;
   defaultValue?: any;
-  onChange?: (value: any) => void;
+  onChange: (value?: any) => void;
   readonly?: boolean;
   objectState?: any;
 }
@@ -95,6 +95,7 @@ const PackagingLineQuantityCardAux = ({
       onValueChange={onChange}
       editable={!readonly}
       isBigButton
+      isFormWrapper
       maxValue={initalValue + qtyRemainingToPackage}
       translator={I18n.t}>
       <LabelText value={stockMoveLine?.product?.fullName} />

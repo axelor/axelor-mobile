@@ -16,28 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {FreightCarrierContent} from '../../atoms';
+import {CustomerDeliveryNotes} from '../../templates';
 
 const CustomerDeliveryDropdownCard = () => {
   const I18n = useTranslator();
 
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
-  const dropdownItems = useMemo(
-    () => [
-      {
-        key: 1,
-        title: I18n.t('Stock_FreightCarrier'),
-        childrenComp: <FreightCarrierContent {...customerDelivery} />,
-      },
-    ],
-    [I18n, customerDelivery],
+  return (
+    <DropdownCardSwitch
+      dropdownItems={[
+        {
+          key: 1,
+          title: I18n.t('Stock_FreightCarrier'),
+          iconName: 'truck',
+          childrenComp: <FreightCarrierContent {...customerDelivery} />,
+        },
+        {
+          key: 2,
+          title: I18n.t('Stock_Notes'),
+          iconName: 'journals',
+          childrenComp: <CustomerDeliveryNotes />,
+        },
+      ]}
+    />
   );
-
-  return <DropdownCardSwitch dropdownItems={dropdownItems} />;
 };
 
 export default CustomerDeliveryDropdownCard;

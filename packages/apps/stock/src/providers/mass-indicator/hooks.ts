@@ -51,10 +51,12 @@ export const useMassIndicatorChecker = () => {
   const {user} = useSelector(state => state.user);
 
   const getMassIndicator = useCallback(
-    (massValue: number | string): MassIndicator => {
-      if (Object.entries(massIndicatorConfig ?? {}).length === 0) {
+    (massValue?: number | string): MassIndicator | undefined => {
+      if (
+        Object.entries(massIndicatorConfig ?? {}).length === 0 ||
+        massValue == null
+      )
         return undefined;
-      }
 
       const _value: number =
         typeof massValue === 'string' ? parseFloat(massValue) : massValue;
@@ -62,10 +64,10 @@ export const useMassIndicatorChecker = () => {
 
       const limited = entries
         .filter(e => e.limit != null)
-        .sort((a, b) => a.limit - b.limit);
+        .sort((a, b) => a.limit! - b.limit!);
 
       for (let i = 0; i < limited.length; i++) {
-        if (_value < limited[i].limit) return limited[i];
+        if (_value < limited[i].limit!) return limited[i];
       }
 
       return entries.find(e => !e.limit);

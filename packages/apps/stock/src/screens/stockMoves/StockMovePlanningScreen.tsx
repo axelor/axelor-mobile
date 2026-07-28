@@ -108,26 +108,29 @@ function StockMovePlanningScreen() {
   }, []);
 
   return (
-    <Screen removeSpaceOnTop={true}>
-      <HeaderContainer expandableFilter={true}>
-        <StockMovePlanningFilters
-          selectedType={selectedType}
-          onChangeType={_v => {
-            setSelectedType(_v);
-            setFromStockLocation(null);
-            setToStockLocation(null);
-            setPartner(null);
-          }}
-          selectedStatus={selectedStatus}
-          onChangeStatus={setSelectedStatus}
-          fromStockLocation={fromStockLocation}
-          onChangeFromStockLocation={setFromStockLocation}
-          toStockLocation={toStockLocation}
-          onChangeToStockLocation={setToStockLocation}
-          partner={partner}
-          onChangePartner={setPartner}
-        />
-      </HeaderContainer>
+    <Screen removeSpaceOnTop>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMovePlanningFilters
+            selectedType={selectedType}
+            onChangeType={_v => {
+              setSelectedType(_v);
+              setFromStockLocation(null);
+              setToStockLocation(null);
+              setPartner(null);
+            }}
+            selectedStatus={selectedStatus}
+            onChangeStatus={setSelectedStatus}
+            fromStockLocation={fromStockLocation}
+            onChangeFromStockLocation={setFromStockLocation}
+            toStockLocation={toStockLocation}
+            onChangeToStockLocation={setToStockLocation}
+            partner={partner}
+            onChangePartner={setPartner}
+          />
+        }
+      />
       <PlanningView
         loading={loadingPlanning}
         itemList={filteredList}

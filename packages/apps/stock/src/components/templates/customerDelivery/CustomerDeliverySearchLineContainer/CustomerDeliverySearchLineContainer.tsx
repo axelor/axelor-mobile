@@ -26,11 +26,11 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {CustomerDeliveryLineActionCard} from '../../../templates';
-import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
-import {LineVerification, StockMoveLine} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
 import {useCustomerLinesWithRacks, useLineHandler} from '../../../../hooks';
+import {LineVerification, StockMoveLine} from '../../../../types';
+import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
+import {CustomerDeliveryLineActionCard} from '../../../templates';
 
 const scanKey = 'trackingNumber-or-product_dustomer-delivery-details';
 const massScanKey = 'customer-delivery-line_mass-scan';
@@ -67,7 +67,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   }, [customerDelivery, navigation]);
 
   const handleShowLine = useCallback(
-    (item: any, skipVerification = undefined) => {
+    (item: any, skipVerification: boolean | undefined = undefined) => {
       showLine({
         move: customerDelivery,
         line: item,

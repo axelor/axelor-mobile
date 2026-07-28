@@ -27,7 +27,7 @@ import {
 
 interface InternalMoveCreationQuantityCardProps {
   movedQty: number;
-  setMovedQty: () => void;
+  setMovedQty: (_v?: any) => void;
   cancelMove: () => void;
   productName: string;
   trackingNumber: string;
@@ -52,17 +52,18 @@ const InternalMoveCreationQuantityCard = ({
       labelQty={I18n.t('Stock_Quantity')}
       defaultValue={movedQty}
       onValueChange={setMovedQty}
-      editable={true}
-      actionQty={true}
+      editable
+      actionQty
       iconName="x-lg"
       onPressActionQty={cancelMove}
-      isBigButton={true}
+      isBigButton
+      isFormWrapper
       translator={I18n.t}>
-      <Text fontSize={16}>
+      <Text>
         {productName}
         {!checkNullString(trackingNumber) && ' - ' + trackingNumber}
       </Text>
-      <Text fontSize={16}>
+      <Text>
         {`${I18n.t('Stock_AvailableQty')} : ${formatNumber(
           availableQty,
         )} ${productUnit}`}

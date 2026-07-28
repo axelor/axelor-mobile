@@ -27,17 +27,16 @@ import {
   useDispatch,
   useSelector,
 } from '@axelor/aos-mobile-core';
+import {fetchSupplierArrival} from '../../features/supplierArrivalSlice';
 import {
   SupplierArrivalHeader,
   SupplierArrivalButtons,
-  SupplierArrivalMovementIndicationCard,
   SupplierArrivalSearchLineContainer,
   SupplierArrivalShipmentDropdownCard,
 } from '../../components';
-import {fetchSupplierArrival} from '../../features/supplierArrivalSlice';
 
 const SupplierArrivalDetailsScreen = ({route}: any) => {
-  const supplierArrivalId = route.params.supplierArrivalId;
+  const {supplierArrivalId} = route?.params ?? {};
   const dispatch = useDispatch();
   useContextRegister({
     models: [
@@ -50,20 +49,18 @@ const SupplierArrivalDetailsScreen = ({route}: any) => {
   );
 
   const getSupplierArrival = useCallback(() => {
-    dispatch(fetchSupplierArrival({supplierArrivalId: supplierArrivalId}));
+    dispatch((fetchSupplierArrival as any)({supplierArrivalId}));
   }, [dispatch, supplierArrivalId]);
 
   useEffect(() => {
     getSupplierArrival();
   }, [getSupplierArrival]);
 
-  if (supplierArrival?.id !== supplierArrivalId) {
-    return null;
-  }
+  if (supplierArrival?.id !== supplierArrivalId) return null;
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={<SupplierArrivalButtons supplierArrival={supplierArrival} />}>
       <HeaderContainer
         expandableFilter={false}
@@ -71,9 +68,6 @@ const SupplierArrivalDetailsScreen = ({route}: any) => {
       />
       <KeyboardAvoidingScrollView
         refresh={{loading, fetcher: getSupplierArrival}}>
-        <SupplierArrivalMovementIndicationCard
-          supplierArrival={supplierArrival}
-        />
         <SupplierArrivalShipmentDropdownCard
           supplierArrival={supplierArrival}
         />

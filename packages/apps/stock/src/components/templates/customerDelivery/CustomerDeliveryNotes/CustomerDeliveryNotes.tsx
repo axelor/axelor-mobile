@@ -26,18 +26,9 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {updateCustomerDeliveryNote} from '../../../../features/customerDeliverySlice';
+import {StyleSheet} from 'react-native';
 
-interface CustomerDeliveryNotesProps {
-  titleKey?: string;
-  notes: string;
-  readonly?: boolean;
-}
-
-const CustomerDeliveryNotes = ({
-  titleKey = 'Stock_NotesOnStockMove',
-  notes,
-  readonly = false,
-}: CustomerDeliveryNotesProps) => {
+const CustomerDeliveryNotes = () => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {StockMove} = useTypes();
@@ -62,28 +53,49 @@ const CustomerDeliveryNotes = ({
 
   const isReadonly = useMemo(
     () =>
-      readonly ||
       modelReadonly ||
       customerDelivery?.statusSelect >= StockMove?.statusSelect.Realized,
     [
       StockMove?.statusSelect.Realized,
       customerDelivery?.statusSelect,
       modelReadonly,
-      readonly,
     ],
   );
 
-  if (isReadonly) {
-    return <NotesCard title={I18n.t(titleKey)} data={notes} />;
-  }
-
   return (
-    <EditableHtmlInput
-      title={I18n.t(titleKey)}
-      onValidate={handleValidate}
-      defaultValue={notes}
-    />
+    <>
+      {isReadonly ? (
+        <NotesCard
+          style={styles.notes}
+          title={I18n.t('Stock_NotesOnStockMove')}
+          data={customerDelivery?.note}
+        />
+      ) : (
+        <EditableHtmlInput
+          style={styles.notes}
+          title={I18n.t('Stock_NotesOnStockMove')}
+          onValidate={handleValidate}
+          defaultValue={customerDelivery?.note}
+        />
+      )}
+      <NotesCard
+        style={styles.notes}
+        title={I18n.t('Stock_PickingOrderComments')}
+        data={customerDelivery?.pickingOrderComments}
+      />
+      <NotesCard
+        style={styles.notes}
+        title={I18n.t('Stock_DeliveryCondition')}
+        data={customerDelivery?.deliveryCondition}
+      />
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  notes: {
+    width: '100%',
+  },
+});
 
 export default CustomerDeliveryNotes;

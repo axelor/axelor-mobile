@@ -16,87 +16,190 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Text} from '../../atoms';
-import {DottedLine} from '../../atoms';
+import React, {useCallback, useMemo, useState} from 'react';
+import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useThemeColor} from '../../../theme';
+import {checkNullString} from '../../../utils';
+import {Card, HorizontalRule, Icon, Text, VerticalRule} from '../../atoms';
+import {IconTile} from '../../molecules';
+
+const COLLAPSED_TILE_SIZE = 24;
+const EXPANDED_TILE_SIZE = 30;
 
 interface MovementIndicationCardProps {
   style?: any;
+  iconTop: string;
+  labelTop?: string;
   titleTop: string;
-  iconTop: React.ReactElement;
-  onPressTitleTop?: () => void;
-  disabledTop?: boolean;
+  iconDown: string;
+  labelDown?: string;
   titleDown: string;
-  iconDown: React.ReactElement;
-  onPressTitleDown?: () => void;
-  disabledDown?: boolean;
+  displayCard?: boolean;
 }
 
 function MovementIndicationCard({
   style,
-  titleTop,
   iconTop,
-  onPressTitleTop,
-  disabledTop = true,
-  titleDown,
+  labelTop,
+  titleTop,
   iconDown,
-  onPressTitleDown,
-  disabledDown = true,
+  labelDown,
+  titleDown,
+  displayCard = true,
 }: MovementIndicationCardProps) {
+  const Colors = useThemeColor();
+
+  const [expanded, setExpanded] = useState(false);
+
+  const hasTop = useMemo(() => !checkNullString(titleTop), [titleTop]);
+  const hasDown = useMemo(() => !checkNullString(titleDown), [titleDown]);
+
+  const renderTile = useCallback(
+    (icon: string, size: number) => (
+      <IconTile
+        icon={icon}
+        size={size}
+        iconSize={size / 2}
+        borderRadius={size / 3}
+      />
+    ),
+    [],
+  );
+
+  const renderCollapsedItem = useCallback(
+    (icon: string, title: string) => (
+      <View style={styles.collapsedItem}>
+        {renderTile(icon, COLLAPSED_TILE_SIZE)}
+        <Text numberOfLines={1} style={styles.collapsedTitle}>
+          {title}
+        </Text>
+      </View>
+    ),
+    [renderTile],
+  );
+
+  const renderExpandedItem = useCallback(
+    (icon: string, label: string | undefined, title: string) => (
+      <View style={styles.expandedItem}>
+        {renderTile(icon, EXPANDED_TILE_SIZE)}
+        <View style={styles.expandedTexts}>
+          {!checkNullString(label) && (
+            <Text
+              fontSize={10}
+              textColor={Colors.secondaryColor_dark.background}
+              style={styles.label}>
+              {label}
+            </Text>
+          )}
+          <Text writingType="important">{title}</Text>
+        </View>
+      </View>
+    ),
+    [Colors.secondaryColor_dark.background, renderTile],
+  );
+
+  if (!hasTop && !hasDown) return null;
+
+  const Wrapper: any = displayCard ? Card : View;
+
   return (
-    <View
-      style={[styles.container, style]}
-      testID="movementIndicationCardContainer">
-      <View style={styles.titleContainer}>
-        {React.cloneElement(iconTop, {style: styles.icon} as any)}
-        <TouchableOpacity
-          style={styles.title}
-          onPress={onPressTitleTop}
-          disabled={disabledTop}
-          testID="movementIndicationCardTouchable">
-          <Text numberOfLines={2}>{titleTop}</Text>
-        </TouchableOpacity>
-      </View>
-      <DottedLine style={styles.dottedLine} />
-      <View style={styles.titleContainer}>
-        {React.cloneElement(iconDown, {style: styles.icon} as any)}
-        <TouchableOpacity
-          style={styles.title}
-          onPress={onPressTitleDown}
-          disabled={disabledDown}
-          testID="movementIndicationCardTouchable">
-          <Text numberOfLines={2}>{titleDown}</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      style={styles.touchable}
+      onPress={() => setExpanded(current => !current)}
+      testID="movementIndicationCardTouchable">
+      <Wrapper
+        style={[displayCard ? styles.card : styles.container, style]}
+        testID="movementIndicationCardContainer">
+        {expanded ? (
+          <View>
+            {hasTop && renderExpandedItem(iconTop, labelTop, titleTop)}
+            {hasTop && hasDown && (
+              <VerticalRule
+                style={styles.verticalRule}
+                color={Colors.primaryColor.background}
+              />
+            )}
+            {hasDown && renderExpandedItem(iconDown, labelDown, titleDown)}
+          </View>
+        ) : (
+          <View style={styles.collapsedContainer}>
+            {hasTop && renderCollapsedItem(iconTop, titleTop)}
+            {hasTop && hasDown && (
+              <View style={styles.arrowContainer}>
+                <HorizontalRule
+                  style={styles.dottedLine}
+                  color={Colors.secondaryColor_dark.background}
+                />
+                <Icon
+                  name="arrow-right"
+                  size={12}
+                  color={Colors.secondaryColor_dark.background}
+                />
+              </View>
+            )}
+            {hasDown && renderCollapsedItem(iconDown, titleDown)}
+          </View>
+        )}
+      </Wrapper>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
+  touchable: {
+    width: '90%',
+    alignSelf: 'center',
+    marginVertical: 4,
+  },
   container: {
     width: '100%',
-    marginHorizontal: 16,
+  },
+  card: {
+    width: '100%',
+    paddingHorizontal: 12,
+    paddingRight: 12,
+    paddingVertical: 10,
+  },
+  collapsedContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+  },
+  collapsedItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexShrink: 1,
+    gap: 8,
+  },
+  collapsedTitle: {
+    flexShrink: 1,
+  },
+  arrowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexGrow: 1,
+    minWidth: 24,
+    marginHorizontal: 8,
   },
   dottedLine: {
-    marginHorizontal: '5%',
-    alignSelf: 'flex-start',
+    flexGrow: 1,
+    borderStyle: Platform.OS === 'ios' ? 'solid' : 'dotted',
   },
-  titleContainer: {
+  expandedItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    gap: 12,
   },
-  title: {
-    flex: 9,
-    width: '90%',
-    marginLeft: 5,
+  expandedTexts: {
+    flexShrink: 1,
   },
-  icon: {
-    flex: 1,
+  label: {
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+  },
+  verticalRule: {
+    height: 16,
+    marginLeft: EXPANDED_TILE_SIZE / 2,
   },
 });
 

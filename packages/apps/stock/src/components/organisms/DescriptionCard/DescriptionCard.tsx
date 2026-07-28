@@ -22,12 +22,14 @@ import {Card, EditableInput, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface DescriptionCardProps {
+  style?: any;
   isEditable?: boolean;
   description: string;
-  onChange: () => void;
+  onChange: (_v?: any) => void;
 }
 
 const DescriptionCard = ({
+  style,
   isEditable = true,
   description,
   onChange = () => {},
@@ -35,9 +37,9 @@ const DescriptionCard = ({
   const I18n = useTranslator();
 
   return (
-    <View>
+    <View style={style}>
       {isEditable ? (
-        <View>
+        <>
           <Text style={styles.title}>{I18n.t('Base_Description')}</Text>
           <EditableInput
             defaultValue={description}
@@ -46,15 +48,15 @@ const DescriptionCard = ({
             multiline={true}
             numberOfLines={5}
           />
-        </View>
+        </>
       ) : (
         description != null && (
-          <View>
+          <>
             <Text style={styles.title}>{I18n.t('Base_Description')}</Text>
             <Card>
               <Text numberOfLines={5}>{description}</Text>
             </Card>
-          </View>
+          </>
         )
       )}
     </View>
@@ -63,7 +65,7 @@ const DescriptionCard = ({
 
 const styles = StyleSheet.create({
   title: {
-    marginHorizontal: 16,
+    marginLeft: 26,
   },
 });
 

@@ -46,7 +46,7 @@ const LogisticalFormStockMoveLineCard = ({
 
   return (
     <LogisticalFormPackagingLineCard
-      style={[styles.border]}
+      style={styles.border}
       stockMoveLine={stockMoveLine}
       saleOrderLine={saleOrderLine}
       qty={qtyRemainingToPackage}

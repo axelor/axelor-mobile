@@ -137,10 +137,6 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     getOrderAndConsumedProduct();
   }, [getOrderAndConsumedProduct]);
 
-  const handleShowProduct = useCallback(() => {
-    navigation.navigate('ProductStockDetailsScreen', {product});
-  }, [navigation, product]);
-
   const handleNavigateBackToList = useCallback(() => {
     navigation.popTo('ConsumedProductListScreen', {
       manufOrder,
@@ -248,16 +244,10 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
             : null
         }>
         <ProductCardInfo
-          name={product?.name}
-          code={product?.code}
-          picture={product?.picture}
+          product={product}
           trackingNumber={
-            product?.trackingNumberConfiguration == null ||
-            trackingNumber == null
-              ? null
-              : trackingNumber.trackingNumberSeq
+            product?.trackingNumberConfiguration == null ? null : trackingNumber
           }
-          onPress={handleShowProduct}
         />
         <ConsumedProductTrackingNumberSelect
           product={product}

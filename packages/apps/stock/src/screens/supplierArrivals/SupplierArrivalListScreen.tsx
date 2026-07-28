@@ -25,18 +25,18 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {searchSupplierArrivals} from '../../features/supplierArrivalSlice';
+import {displayStockMoveSeq} from '../../utils';
 import {
   PartnerSearchBar,
   StockLocationSearchBar,
   SupplierArrivalCard,
 } from '../../components';
-import {searchSupplierArrivals} from '../../features/supplierArrivalSlice';
-import {displayStockMoveSeq} from '../../utils/displayers';
 
 const stockLocationScanKey = 'stock-location_supplier-arrival-list';
 const scanKey = 'stock-move_supplier-arrival-list';
 
-const SupplierArrivalListScreen = ({navigation}) => {
+const SupplierArrivalListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -45,16 +45,16 @@ const SupplierArrivalListScreen = ({navigation}) => {
     useSelector(state => state.supplierArrival);
   const {user} = useSelector(state => state.user);
 
-  const [stockLocation, setStockLocation] = useState(null);
-  const [partner, setPartner] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [stockLocation, setStockLocation] = useState<any>();
+  const [partner, setPartner] = useState<any>();
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [navigate, setNavigate] = useState(false);
 
-  const navigateToSupplierDetail = item => {
-    if (item != null) {
+  const navigateToSupplierDetail = (_item: any) => {
+    if (_item != null) {
       setNavigate(current => !current);
       navigation.navigate('SupplierArrivalDetailsScreen', {
-        supplierArrivalId: item?.id,
+        supplierArrivalId: _item?.id,
       });
     }
   };
@@ -81,7 +81,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={supplierArrivalsList}
         loading={loadingList}
@@ -119,16 +119,8 @@ const SupplierArrivalListScreen = ({navigation}) => {
         }
         renderListItem={({item}) => (
           <SupplierArrivalCard
-            reference={item.stockMoveSeq}
-            client={item.partner?.fullName}
-            status={item.statusSelect}
-            date={
-              item.statusSelect === StockMove?.statusSelect.Planned
-                ? item.estimatedDate
-                : item.realDate
-            }
+            {...item}
             onPress={() => navigateToSupplierDetail(item)}
-            origin={item.origin}
           />
         )}
       />

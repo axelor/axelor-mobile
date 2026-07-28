@@ -60,7 +60,7 @@ const SupplierArrivalLineCard = ({
   const formatNumber = useDigitFormat();
   const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
-  const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
+  const {stock: stockConfig} = useSelector(state => state.appConfig);
 
   const borderColor = useMemo(
     () =>
@@ -97,7 +97,7 @@ const SupplierArrivalLineCard = ({
       showArrow={true}
       lowerTexts={{
         items: [
-          {displayText: productName, isTitle: true, fontSize: 16},
+          {displayText: productName, isTitle: true},
           {
             displayText: formatNumber(askedQty),
             indicatorText: `${I18n.t('Stock_AskedQty')} :`,

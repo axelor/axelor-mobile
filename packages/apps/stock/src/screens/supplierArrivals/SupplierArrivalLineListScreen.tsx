@@ -23,11 +23,11 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {StockMoveHeader, SupplierArrivalLineActionCard} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import {LineVerification, StockMove, StockMoveLine} from '../../types';
 import {useLineHandler, useSupplierLinesWithRacks} from '../../hooks';
-import {displayLine} from '../../utils/displayers';
+import {displayLine} from '../../utils';
+import {StockMoveHeader, SupplierArrivalLineActionCard} from '../../components';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-line-list';
 const massScanKey = 'supplier-arrival-line_mass-scan';
@@ -98,7 +98,7 @@ const SupplierArrivalLineListScreen = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={filteredList}
         loading={loadingSALinesList}
@@ -115,14 +115,10 @@ const SupplierArrivalLineListScreen = ({route}: any) => {
           <StockMoveHeader
             reference={supplierArrival.stockMoveSeq}
             status={supplierArrival.statusSelect}
-            date={
-              supplierArrival
-                ? StockMove.getStockMoveDate(
-                    supplierArrival.statusSelect,
-                    supplierArrival,
-                  )
-                : null
-            }
+            date={StockMove.getStockMoveDate(
+              supplierArrival.statusSelect,
+              supplierArrival,
+            )}
             showMassScanner
             massScanData={{
               scanKey: massScanKey,
