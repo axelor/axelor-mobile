@@ -27,8 +27,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import {fetchPlannedOperationOrder} from '../../features/operationOrderSlice';
 
-function OperationOrderPlanningScreen({navigation}) {
-  const dispatch = useDispatch();
+function OperationOrderPlanningScreen({navigation}: any) {
+  const dispatch: any = useDispatch();
   const {OperationOrder} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
@@ -39,41 +39,41 @@ function OperationOrderPlanningScreen({navigation}) {
 
   const listItem = useMemo(() => {
     if (
-      plannedOperationOrderList == null ||
+      !Array.isArray(plannedOperationOrderList) ||
       plannedOperationOrderList.length === 0
-    ) {
+    )
       return [];
-    }
 
-    return plannedOperationOrderList.map(plannedOperationOrder => {
-      return {
+    return plannedOperationOrderList.map((plannedOperationOrder: any) => ({
+      id: plannedOperationOrder.id,
+      startDate: plannedOperationOrder.plannedStartDateT,
+      endDate: plannedOperationOrder.plannedEndDateT,
+      data: {
         id: plannedOperationOrder.id,
-        startDate: plannedOperationOrder.plannedStartDateT,
-        endDate: plannedOperationOrder.plannedEndDateT,
-        data: {
-          id: plannedOperationOrder.id,
-          name: plannedOperationOrder.operationName,
-          ref: plannedOperationOrder.manufOrder?.manufOrderSeq,
-          workCenter: plannedOperationOrder.workCenter?.name,
-          border: getItemColor(
-            OperationOrder?.statusSelect,
-            plannedOperationOrder.statusSelect,
-          )?.background,
-        },
-      };
-    });
+        name: plannedOperationOrder.operationName,
+        ref: plannedOperationOrder.manufOrder?.manufOrderSeq,
+        workCenter: plannedOperationOrder.workCenter?.name,
+        border: getItemColor(
+          OperationOrder?.statusSelect,
+          plannedOperationOrder.statusSelect,
+        )?.background,
+      },
+    }));
   }, [OperationOrder?.statusSelect, getItemColor, plannedOperationOrderList]);
 
   const fetchItemsByMonth = useCallback(
-    ({date}) => {
+    ({date}: any) => {
       dispatch(
-        fetchPlannedOperationOrder({date, companyId: user.activeCompany?.id}),
+        (fetchPlannedOperationOrder as any)({
+          date,
+          companyId: user.activeCompany?.id,
+        }),
       );
     },
     [dispatch, user.activeCompany?.id],
   );
 
-  const navigateToOperationOrder = id => {
+  const navigateToOperationOrder = (id?: number) => {
     if (id != null) {
       navigation.navigate('OperationOrderDetailsScreen', {
         operationOrderId: id,
@@ -81,10 +81,8 @@ function OperationOrderPlanningScreen({navigation}) {
     }
   };
 
-  const renderDayEventDetails = ({id, data: operationOrder}) => {
-    if (operationOrder == null) {
-      return null;
-    }
+  const renderDayEventDetails = ({id, data: operationOrder}: any) => {
+    if (operationOrder == null) return null;
 
     return (
       <ObjectCard
@@ -102,10 +100,8 @@ function OperationOrderPlanningScreen({navigation}) {
     );
   };
 
-  const renderDayEvent = ({id, data: operationOrder}) => {
-    if (operationOrder == null) {
-      return null;
-    }
+  const renderDayEvent = ({id, data: operationOrder}: any) => {
+    if (operationOrder == null) return null;
 
     return (
       <ObjectCard
@@ -123,7 +119,7 @@ function OperationOrderPlanningScreen({navigation}) {
   };
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <PlanningView
         itemList={listItem}
         renderItem={renderDayEventDetails}

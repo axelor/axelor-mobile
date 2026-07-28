@@ -17,20 +17,23 @@
  */
 
 import React, {useMemo} from 'react';
-import {FromTo, TitledValue} from '@axelor/aos-mobile-ui';
+import {MovementIndicationCard} from '@axelor/aos-mobile-ui';
 import {
   isEmpty,
   useSelector,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {default as OperationOrderType} from '../../../types/operation-order';
+import {OperationOrder as OperationOrderType} from '../../../types';
+
+const ESTIMATED_ICON = 'calendar-event';
+const REAL_ICON = 'calendar-check';
 
 function OperationOrderDatesCard({}) {
   const I18n = useTranslator();
   const {OperationOrder} = useTypes();
 
-  const {operationOrder} = useSelector((state: any) => state.operationOrder);
+  const {operationOrder} = useSelector(state => state.operationOrder);
 
   const [startDate, endDate] = useMemo(() => {
     if (!isEmpty(operationOrder)) {
@@ -46,32 +49,37 @@ function OperationOrderDatesCard({}) {
     return [];
   }, [I18n, operationOrder]);
 
+  const startConfig = useMemo(
+    () =>
+      operationOrder?.statusSelect === OperationOrder?.statusSelect.Draft ||
+      operationOrder?.statusSelect === OperationOrder?.statusSelect.Planned
+        ? {label: I18n.t('Base_Estimated'), icon: ESTIMATED_ICON}
+        : {label: I18n.t('Base_Real'), icon: REAL_ICON},
+    [
+      I18n,
+      OperationOrder?.statusSelect.Draft,
+      OperationOrder?.statusSelect.Planned,
+      operationOrder?.statusSelect,
+    ],
+  );
+
+  const endConfig = useMemo(
+    () =>
+      operationOrder?.statusSelect === OperationOrder?.statusSelect.Finished
+        ? {label: I18n.t('Base_Real'), icon: REAL_ICON}
+        : {label: I18n.t('Base_Estimated'), icon: ESTIMATED_ICON},
+    [I18n, OperationOrder?.statusSelect.Finished, operationOrder?.statusSelect],
+  );
+
   return (
-    <FromTo
-      fromComponent={
-        <TitledValue
-          title={
-            operationOrder?.statusSelect ===
-              OperationOrder?.statusSelect.Draft ||
-            operationOrder?.statusSelect ===
-              OperationOrder?.statusSelect.Planned
-              ? I18n.t('Base_Estimated')
-              : I18n.t('Base_Real')
-          }
-          value={startDate?.value}
-        />
-      }
-      toComponent={
-        <TitledValue
-          title={
-            operationOrder?.statusSelect ===
-            OperationOrder?.statusSelect.Finished
-              ? I18n.t('Base_Real')
-              : I18n.t('Base_Estimated')
-          }
-          value={endDate?.value}
-        />
-      }
+    <MovementIndicationCard
+      iconTop={startConfig.icon}
+      labelTop={startConfig.label}
+      titleTop={startDate?.value ?? ''}
+      iconDown={endConfig.icon}
+      labelDown={endConfig.label}
+      titleDown={endDate?.value ?? ''}
+      displayCard={false}
     />
   );
 }

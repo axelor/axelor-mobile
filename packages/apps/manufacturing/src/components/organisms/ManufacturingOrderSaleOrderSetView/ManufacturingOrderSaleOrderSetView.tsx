@@ -59,11 +59,10 @@ const ManufacturingOrderSaleOrderSetView = () => {
       <View style={styles.orderSetContainer}>
         {manufOrder.saleOrderSet.slice(0, 3).map((item: any) => (
           <Badge
-            style={styles.orderBadge}
             title={item.fullName}
             key={item.id}
             color={Colors.priorityColor}
-            numberOfLines={null}
+            numberOfLines={null as any}
           />
         ))}
       </View>
@@ -71,10 +70,6 @@ const ManufacturingOrderSaleOrderSetView = () => {
   );
 };
 const styles = StyleSheet.create({
-  orderBadge: {
-    paddingHorizontal: 10,
-    width: null,
-  },
   orderTitle: {
     marginHorizontal: 8,
   },

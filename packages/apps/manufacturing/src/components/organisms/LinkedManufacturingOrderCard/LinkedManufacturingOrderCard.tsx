@@ -37,6 +37,7 @@ const LinkedManufacturingOrderCard = ({
   return (
     <ObjectCard
       showArrow={false}
+      leftContainerFlex={2}
       onPress={() => clipboardProvider.copyToClipboard(manufOrderSeq)}
       sideBadges={{
         items: [

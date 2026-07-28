@@ -19,7 +19,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
-  ClearableCard,
   Icon,
   Screen,
   ScrollView,
@@ -28,30 +27,32 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {TrackingNumberSearchBar} from '@axelor/aos-mobile-stock';
+import {
+  ProductCardInfo,
+  TrackingNumberSearchBar,
+} from '@axelor/aos-mobile-stock';
 import {ManufacturingOrderHeader} from '../../../components';
 
 const trackingNumberScanKey =
   'tracking-number_manufacturing-order-produced-product-select';
 
-const ProducedProductSelectTrackingScreen = ({route, navigation}) => {
+const ProducedProductSelectTrackingScreen = ({navigation, route}: any) => {
+  const {manufOrder, product} = route?.params ?? {};
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const manufOrder = route.params.manufOrder;
-  const product = route.params.product;
 
-  const handleTrackingNumberSelection = item => {
+  const handleTrackingNumberSelection = (item: any) => {
     if (item != null) {
       navigation.navigate('ProducedProductDetailsScreen', {
         manufOrderId: manufOrder.id,
-        product: product,
+        product,
         trackingNumber: item,
       });
     }
   };
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -64,25 +65,22 @@ const ProducedProductSelectTrackingScreen = ({route, navigation}) => {
         }
       />
       <ScrollView>
-        <ClearableCard valueTxt={product.name} clearable={false} />
+        <ProductCardInfo product={product} />
         <View style={styles.trackingNumber}>
-          <Text style={styles.text_secondary}>
-            {I18n.t('Stock_AddTrackingNumber')}
-          </Text>
+          <Text>{I18n.t('Stock_AddTrackingNumber')}</Text>
           <Icon
             name="plus-lg"
             color={Colors.primaryColor.background}
-            size={24}
-            style={styles.action}
-            touchable={true}
+            size={20}
+            touchable
             onPress={() => {}}
           />
         </View>
         <TrackingNumberSearchBar
           scanKey={trackingNumberScanKey}
           onChange={handleTrackingNumberSelection}
-          isFocus={true}
-          changeScreenAfter={true}
+          isFocus
+          changeScreenAfter
           product={product}
         />
       </ScrollView>
@@ -96,13 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginRight: 16,
-    marginBottom: 5,
-  },
-  text_secondary: {
-    fontSize: 14,
-  },
-  action: {
-    marginLeft: 10,
+    gap: 5,
   },
 });
 

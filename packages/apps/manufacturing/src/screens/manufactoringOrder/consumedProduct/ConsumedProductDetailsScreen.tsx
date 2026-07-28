@@ -17,13 +17,15 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
+  KeyboardAvoidingScrollView,
   QuantityCard,
   Screen,
-  ScrollView,
   Text,
   useDigitFormat,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -48,12 +50,13 @@ import {
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 import {fetchOperationOrderById} from '../../../features/operationOrderSlice';
 
-const ConsumedProductDetailsScreen = ({route, navigation}) => {
+const ConsumedProductDetailsScreen = ({navigation, route}: any) => {
   const {operationOrderId, manufOrderId, consumedProdProduct} =
     route?.params ?? {};
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
@@ -123,13 +126,16 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
 
   const getOrderAndConsumedProduct = useCallback(() => {
     if (operationOrderId != null) {
-      dispatch(fetchOperationOrderById({operationOrderId}));
+      dispatch((fetchOperationOrderById as any)({operationOrderId}));
     }
 
-    if (manufOrderId != null) dispatch(fetchManufOrder({manufOrderId}));
+    if (manufOrderId != null)
+      dispatch((fetchManufOrder as any)({manufOrderId}));
 
     if (consumedProdProduct != null) {
-      dispatch(fetchConsumedProductWithId(consumedProdProduct?.productId));
+      dispatch(
+        (fetchConsumedProductWithId as any)(consumedProdProduct?.productId),
+      );
     }
   }, [consumedProdProduct, dispatch, manufOrderId, operationOrderId]);
 
@@ -145,7 +151,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   }, [navigation, manufOrder, operationOrderId]);
 
   const handleCreateConsumedProduct = useCallback(() => {
-    const sliceFct = operationOrderId
+    const sliceFct: any = operationOrderId
       ? addProdProductToOperationOrder
       : addProdProductToManufOrder;
 
@@ -176,7 +182,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
 
   const handleUpdateConsumedProduct = useCallback(() => {
     dispatch(
-      updateProdProductOfManufOrder({
+      (updateProdProductOfManufOrder as any)({
         stockMoveLineVersion:
           consumedProdProduct?.stockMoveLineId ===
           consumedProductStockMoveLine?.id
@@ -205,7 +211,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         <ProdProductFixedItems
           show={isEditableStatus}
@@ -234,14 +240,15 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           )
         }
       />
-      <ScrollView
+      <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 70, android: 100}}
         refresh={
           consumedProdProduct != null
             ? {
                 loading: loadingOperation || loadingOrder,
                 fetcher: getOrderAndConsumedProduct,
               }
-            : null
+            : undefined
         }>
         <ProductCardInfo
           product={product}
@@ -249,36 +256,52 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
             product?.trackingNumberConfiguration == null ? null : trackingNumber
           }
         />
-        <ConsumedProductTrackingNumberSelect
-          product={product}
-          stockMoveLineId={consumedProdProduct?.stockMoveLineId}
-          stockMoveLineVersion={consumedProdProduct?.stockMoveLineVersion}
-          manufOrderId={manufOrder?.id}
-          manufOrderVersion={manufOrder?.version}
-          operationOrderId={operationOrder?.id}
-          operationOrderVersion={operationOrder?.version}
-          visible={!readonly && isTrackingNumberSelectVisible}
-        />
-        <QuantityCard
-          labelQty={I18n.t('Manufacturing_ConsumedQty')}
-          defaultValue={consumedQty}
-          onValueChange={setConsumedQty}
-          editable={!readonly && isEditableStatus}
-          isBigButton={true}
-          translator={I18n.t}>
-          <Text>
-            {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
-              consumedProdProduct?.plannedQty,
-            )} ${
-              consumedProdProduct
-                ? consumedProdProduct.unit?.unitName
-                : product.unit?.name
-            }`}
-          </Text>
-        </QuantityCard>
-      </ScrollView>
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <ConsumedProductTrackingNumberSelect
+            product={product}
+            stockMoveLineId={consumedProdProduct?.stockMoveLineId}
+            stockMoveLineVersion={consumedProdProduct?.stockMoveLineVersion}
+            manufOrderId={manufOrder?.id}
+            manufOrderVersion={manufOrder?.version}
+            operationOrderId={operationOrder?.id}
+            operationOrderVersion={operationOrder?.version}
+            visible={!readonly && isTrackingNumberSelectVisible}
+          />
+          <QuantityCard
+            labelQty={I18n.t('Manufacturing_ConsumedQty')}
+            defaultValue={consumedQty}
+            onValueChange={setConsumedQty}
+            editable={!readonly && isEditableStatus}
+            isBigButton
+            isFormWrapper
+            translator={I18n.t}>
+            <Text>
+              {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
+                consumedProdProduct?.plannedQty,
+              )} ${
+                consumedProdProduct
+                  ? consumedProdProduct.unit?.unitName
+                  : product.unit?.name
+              }`}
+            </Text>
+          </QuantityCard>
+        </View>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
+  },
+});
 
 export default ConsumedProductDetailsScreen;

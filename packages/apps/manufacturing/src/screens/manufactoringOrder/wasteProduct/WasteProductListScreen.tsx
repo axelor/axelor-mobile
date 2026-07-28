@@ -44,12 +44,12 @@ import {
 
 const productScanKey = 'product_manufacturing-order-waste-product-list';
 
-const WasteProductListScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+const WasteProductListScreen = ({navigation, route}: any) => {
+  const {manufOrder} = route?.params ?? {};
   const {setActivityIndicator} = useConfig();
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
@@ -78,26 +78,28 @@ const WasteProductListScreen = ({route, navigation}) => {
     }
   }, [declareResponse, dispatch, manufOrder, setActivityIndicator]);
 
-  const handleViewItem = item => {
-    if (item) {
-      navigation.navigate('WasteProductDetailsScreen', {
-        manufOrderId: manufOrder?.id,
-        wasteProductId: item?.id,
-      });
-    }
-  };
+  const handleViewItem = useCallback(
+    (item: any) => {
+      if (item) {
+        navigation.navigate('WasteProductDetailsScreen', {
+          manufOrderId: manufOrder?.id,
+          wasteProductId: item?.id,
+        });
+      }
+    },
+    [manufOrder?.id, navigation],
+  );
 
-  const handleAddProduct = () => {
-    navigation.navigate('WasteProductSelectProductScreen', {
-      manufOrder: manufOrder,
-    });
-  };
+  const handleAddProduct = useCallback(
+    () => navigation.navigate('WasteProductSelectProductScreen', {manufOrder}),
+    [manufOrder, navigation],
+  );
 
   const handleDeclareWasteProduct = useCallback(() => {
     setVisible(false);
     setActivityIndicator(true);
     dispatch(
-      declareWasteProductsOfManufOrder({
+      (declareWasteProductsOfManufOrder as any)({
         manufOrderVersion: manufOrder.version,
         manufOrderId: manufOrder.id,
       }),
@@ -105,15 +107,13 @@ const WasteProductListScreen = ({route, navigation}) => {
   }, [dispatch, manufOrder, setActivityIndicator]);
 
   const sliceFunctionData = useMemo(
-    () => ({
-      manufOrderId: manufOrder?.id,
-    }),
+    () => ({manufOrderId: manufOrder?.id}),
     [manufOrder?.id],
   );
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         !readonly &&
         canDeclare &&
@@ -156,12 +156,14 @@ const WasteProductListScreen = ({route, navigation}) => {
               priority={manufOrder.prioritySelect}
             />
             <View style={styles.titleContainer}>
-              <Text>{I18n.t('Manufacturing_WasteDeclaration')}</Text>
+              <Text writingType="important">
+                {I18n.t('Manufacturing_WasteDeclaration')}
+              </Text>
               <Icon
                 name="plus-lg"
                 size={20}
                 color={Colors.primaryColor.background}
-                touchable={true}
+                touchable
                 visible={canCreate && canDeclare}
                 onPress={handleAddProduct}
               />
@@ -184,7 +186,6 @@ const WasteProductListScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
-    marginBottom: '2%',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 24,

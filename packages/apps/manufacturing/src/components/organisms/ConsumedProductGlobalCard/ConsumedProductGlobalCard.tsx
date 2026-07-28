@@ -47,7 +47,7 @@ const ConsumedProductGlobalCard = ({
   missingQty,
   availableQty,
   unitName,
-  trackingNumber = null,
+  trackingNumber,
   onPress,
   onMorePress,
   disableMore = false,
@@ -61,7 +61,7 @@ const ConsumedProductGlobalCard = ({
 
   const [addedQty, setAddedQty] = useState(0);
   const [incrementVisible, setIncrementVisible] = useState(false);
-  let timeOutIncrement = useRef<number>(null);
+  let timeOutIncrement = useRef<number>(undefined);
 
   const handleIncrement = () => {
     setIncrementVisible(true);

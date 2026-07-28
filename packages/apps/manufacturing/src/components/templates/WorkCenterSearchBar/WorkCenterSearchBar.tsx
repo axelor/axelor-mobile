@@ -23,19 +23,34 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchWorkCenters} from '../../../features/workCentersSlice';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import {searchWorkCenters} from '../../../features/workCentersSlice';
+
+interface WorkCenterSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange: (value: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  showTitle?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+}
 
 const WorkCenterSearchBar = ({
-  placeholderKey = 'Manufacturing_WorkCenter',
-  defaultValue = '',
-  onChange = () => {},
-  scanKey,
+  style,
+  title = 'Manufacturing_WorkCenter',
+  defaultValue,
+  onChange,
+  readonly = false,
+  required = false,
+  showTitle = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
-}) => {
+}: WorkCenterSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -45,27 +60,29 @@ const WorkCenterSearchBar = ({
 
   const fetchWorkCenterAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchWorkCenters({page, searchValue}));
+      dispatch((searchWorkCenters as any)({page, searchValue}));
     },
     [dispatch],
   );
 
   return (
     <AutoCompleteSearch
+      style={style}
+      title={showTitle && I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={workCenterList}
+      loadingList={loading}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchWorkCenterAPI}
       displayValue={displayItemName}
-      scanKeySearch={scanKey}
-      placeholder={I18n.t(placeholderKey)}
+      readonly={readonly}
+      required={required}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loading}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
     />
   );
 };

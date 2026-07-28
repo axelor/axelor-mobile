@@ -45,11 +45,11 @@ import {fetchProducedProducts} from '../../../features/prodProductSlice';
 const productScanKey = 'product_manufacturing-order-produced-product-list';
 const IS_INFINITE_SCROLL_ENABLED = false;
 
-const ProducedProductListScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+const ProducedProductListScreen = ({navigation, route}: any) => {
+  const {manufOrder} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
@@ -60,12 +60,12 @@ const ProducedProductListScreen = ({route, navigation}) => {
   );
 
   const [filteredList, setFilteredList] = useState(producedProductList);
-  const [product, setProduct] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [product, setProduct] = useState<any>();
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const fetchProducedProductsAPI = useCallback(() => {
     dispatch(
-      fetchProducedProducts({
+      (fetchProducedProducts as any)({
         manufOrderId: manufOrder?.id,
         manufOrderVersion: manufOrder?.version,
       }),
@@ -73,7 +73,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
   }, [dispatch, manufOrder]);
 
   const filterOnStatus = useCallback(
-    list => {
+    (list: any[]) => {
       if (list == null || list?.length === 0) {
         return list;
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
@@ -93,7 +93,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
     [selectedStatus],
   );
 
-  const filterOnProduct = useCallback((list, value) => {
+  const filterOnProduct = useCallback((list: any[], value: string) => {
     if (list == null || list?.length === 0) {
       return [];
     } else {
@@ -111,21 +111,22 @@ const ProducedProductListScreen = ({route, navigation}) => {
     );
   }, [filterOnStatus, producedProductList, filterOnProduct, product]);
 
-  const handleViewItem = item => {
-    navigation.navigate('ProducedProductDetailsScreen', {
-      manufOrderId: manufOrder.id,
-      producedProdProduct: item,
-    });
-  };
+  const handleViewItem = useCallback(
+    (item: any) => {
+      navigation.navigate('ProducedProductDetailsScreen', {
+        manufOrderId: manufOrder.id,
+        producedProdProduct: item,
+      });
+    },
+    [manufOrder.id, navigation],
+  );
 
-  const handleAddProduct = () => {
-    navigation.navigate('ProducedProductSelectProductScreen', {
-      manufOrder: manufOrder,
-    });
-  };
+  const handleAddProduct = useCallback(() => {
+    navigation.navigate('ProducedProductSelectProductScreen', {manufOrder});
+  }, [manufOrder, navigation]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -137,12 +138,14 @@ const ProducedProductListScreen = ({route, navigation}) => {
               priority={manufOrder.prioritySelect}
             />
             <View style={styles.titleContainer}>
-              <Text>{I18n.t('Manufacturing_ProducedProduct')}</Text>
+              <Text writingType="important">
+                {I18n.t('Manufacturing_ProducedProduct')}
+              </Text>
               <Icon
                 name="plus-lg"
                 size={20}
                 color={Colors.primaryColor.background}
-                touchable={true}
+                touchable
                 visible={
                   canCreate &&
                   manufOrder?.statusSelect ===
@@ -157,7 +160,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
               displayValue={item => item?.productName}
               placeholder={I18n.t('Manufacturing_Product')}
               scanKeySearch={productScanKey}
-              oneFilter={true}
+              oneFilter
             />
           </>
         }
@@ -185,7 +188,6 @@ const ProducedProductListScreen = ({route, navigation}) => {
         data={filteredList}
         renderItem={({item}) => (
           <ProducedProductCard
-            style={styles.item}
             productName={item?.productName}
             plannedQty={item?.plannedQty}
             producedQty={item?.realQty}
@@ -195,6 +197,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
           />
         )}
         fetchData={fetchProducedProductsAPI}
+        moreLoading={IS_INFINITE_SCROLL_ENABLED}
         isListEnd={!IS_INFINITE_SCROLL_ENABLED}
         filter={IS_INFINITE_SCROLL_ENABLED}
         translator={I18n.t}
@@ -206,17 +209,9 @@ const ProducedProductListScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
-    marginBottom: '2%',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 24,
-  },
-  item: {
-    marginHorizontal: 16,
-    marginVertical: 4,
-  },
-  action: {
-    marginRight: 15,
   },
 });
 

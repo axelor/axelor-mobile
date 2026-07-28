@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {FromTo, TitledValue} from '@axelor/aos-mobile-ui';
+import {MovementIndicationCard} from '@axelor/aos-mobile-ui';
 import {
   isEmpty,
   useSelector,
@@ -26,11 +26,14 @@ import {
 } from '@axelor/aos-mobile-core';
 import {ManufacturingOrder} from '../../../types';
 
+const ESTIMATED_ICON = 'calendar-event';
+const REAL_ICON = 'calendar-check';
+
 function ManufacturingOrderDatesCard({}) {
   const I18n = useTranslator();
   const {ManufOrder} = useTypes();
 
-  const {manufOrder} = useSelector((state: any) => state.manufacturingOrder);
+  const {manufOrder} = useSelector(state => state.manufacturingOrder);
 
   const [startDate, endDate] = useMemo(() => {
     if (!isEmpty(manufOrder)) {
@@ -46,29 +49,37 @@ function ManufacturingOrderDatesCard({}) {
     return [];
   }, [I18n, manufOrder]);
 
+  const startConfig = useMemo(
+    () =>
+      manufOrder?.statusSelect === ManufOrder?.statusSelect.Draft ||
+      manufOrder?.statusSelect === ManufOrder?.statusSelect.Planned
+        ? {label: I18n.t('Base_Estimated'), icon: ESTIMATED_ICON}
+        : {label: I18n.t('Base_Real'), icon: REAL_ICON},
+    [
+      I18n,
+      ManufOrder?.statusSelect.Draft,
+      ManufOrder?.statusSelect.Planned,
+      manufOrder?.statusSelect,
+    ],
+  );
+
+  const endConfig = useMemo(
+    () =>
+      manufOrder?.statusSelect === ManufOrder?.statusSelect.Finished
+        ? {label: I18n.t('Base_Real'), icon: REAL_ICON}
+        : {label: I18n.t('Base_Estimated'), icon: ESTIMATED_ICON},
+    [I18n, ManufOrder?.statusSelect.Finished, manufOrder?.statusSelect],
+  );
+
   return (
-    <FromTo
-      fromComponent={
-        <TitledValue
-          title={
-            manufOrder?.statusSelect === ManufOrder?.statusSelect.Draft ||
-            manufOrder?.statusSelect === ManufOrder?.statusSelect.Planned
-              ? I18n.t('Base_Estimated')
-              : I18n.t('Base_Real')
-          }
-          value={startDate?.value}
-        />
-      }
-      toComponent={
-        <TitledValue
-          title={
-            manufOrder?.statusSelect === ManufOrder?.statusSelect.Finished
-              ? I18n.t('Base_Real')
-              : I18n.t('Base_Estimated')
-          }
-          value={endDate?.value}
-        />
-      }
+    <MovementIndicationCard
+      iconTop={startConfig.icon}
+      labelTop={startConfig.label}
+      titleTop={startDate?.value ?? ''}
+      iconDown={endConfig.icon}
+      labelDown={endConfig.label}
+      titleDown={endDate?.value ?? ''}
+      displayCard={false}
     />
   );
 }

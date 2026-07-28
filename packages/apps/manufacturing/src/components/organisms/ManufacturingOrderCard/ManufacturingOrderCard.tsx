@@ -17,39 +17,42 @@
  */
 
 import React, {useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
-import ManufacturingOrder from '../../../types/manufacturing-order';
+import {ManufacturingOrder} from '../../../types';
 
 interface ManufacturingOrderCardProps {
   style?: any;
-  reference: string;
-  status: number;
-  priority: number;
-  productName: string;
+  manufOrderSeq: string;
+  statusSelect: number;
+  prioritySelect: number;
+  product: any;
   qty: number;
   unit?: any;
-  link?: {ordersRef: any[]; client: any};
-  plannedStartDate?: string;
-  plannedEndDate?: string;
-  realStartDate?: string;
-  realEndDate?: string;
+  saleOrderSet?: any[];
+  clientPartner?: any;
+  plannedStartDateT?: string;
+  plannedEndDateT?: string;
+  realStartDateT?: string;
+  realEndDateT?: string;
   onPress: () => void;
 }
 
 const ManufacturingOrderCard = ({
   style,
-  reference,
-  status,
-  priority,
-  productName,
+  manufOrderSeq,
+  statusSelect,
+  prioritySelect,
+  product,
   qty,
   unit,
-  link = {ordersRef: [null], client: null},
-  plannedStartDate,
-  plannedEndDate,
-  realStartDate,
-  realEndDate,
+  saleOrderSet,
+  clientPartner,
+  plannedStartDateT,
+  plannedEndDateT,
+  realStartDateT,
+  realEndDateT,
   onPress,
 }: ManufacturingOrderCardProps) => {
   const I18n = useTranslator();
@@ -59,55 +62,67 @@ const ManufacturingOrderCard = ({
 
   const isPriorityValid = useMemo(
     () =>
-      priority != null &&
-      ManufOrder?.prioritySelect.list.find(({value}) => value === priority) !=
-        null,
-    [ManufOrder?.prioritySelect, priority],
+      prioritySelect != null &&
+      ManufOrder?.prioritySelect.list.find(
+        ({value}) => value === prioritySelect,
+      ) != null,
+    [ManufOrder?.prioritySelect, prioritySelect],
   );
 
   const [startDate, endDate] = ManufacturingOrder.getDates(
-    status,
-    plannedStartDate,
-    plannedEndDate,
-    realStartDate,
-    realEndDate,
+    statusSelect,
+    plannedStartDateT,
+    plannedEndDateT,
+    realStartDateT,
+    realEndDateT,
     I18n,
   );
 
   return (
     <ObjectCard
-      onPress={onPress}
-      borderLeftColor={
-        getItemColor(ManufOrder?.statusSelect, status)?.background
-      }
       style={style}
-      sideBadges={{
-        items: [
-          isPriorityValid && {
-            color: getItemColor(ManufOrder?.prioritySelect, priority),
-            displayText: getItemTitle(ManufOrder?.prioritySelect, priority),
-          },
-        ],
-      }}
+      onPress={onPress}
+      showArrow={false}
+      leftContainerFlex={2}
+      borderLeftColor={
+        getItemColor(ManufOrder?.statusSelect, statusSelect)?.background
+      }
+      sideBadges={
+        !isPriorityValid
+          ? undefined
+          : {
+              style: styles.badgeContainer,
+              items: [
+                {
+                  color: getItemColor(
+                    ManufOrder?.prioritySelect,
+                    prioritySelect,
+                  ),
+                  displayText: getItemTitle(
+                    ManufOrder?.prioritySelect,
+                    prioritySelect,
+                  ),
+                },
+              ],
+            }
+      }
       upperTexts={{
         items: [
           {
             isTitle: true,
-            displayText: reference,
+            displayText: manufOrderSeq,
           },
           {
-            displayText: productName,
+            displayText: product?.fullName,
           },
           {
             iconName: 'hammer',
-            indicatorText: `${formatNumber(qty)} ${
-              unit != null ? unit.name : ''
-            }`,
+            indicatorText: `${formatNumber(qty)} ${unit?.name ?? ''}`,
           },
           {
-            hideIf: link.client == null || link.ordersRef?.length <= 0,
+            hideIf: clientPartner == null || (saleOrderSet?.length ?? 0) === 0,
             iconName: 'tag-fill',
-            indicatorText: link.ordersRef[0]?.fullName,
+            indicatorText: saleOrderSet?.[0]?.fullName,
           },
           {
             iconName: 'calendar-event',
@@ -120,8 +135,8 @@ const ManufacturingOrderCard = ({
             indicatorText: endDate.title,
             displayText: endDate.value,
             hideIf:
-              status === ManufOrder?.statusSelect.InProgress ||
-              status === ManufOrder?.statusSelect.StandBy ||
+              statusSelect === ManufOrder?.statusSelect.InProgress ||
+              statusSelect === ManufOrder?.statusSelect.StandBy ||
               endDate == null,
           },
         ],
@@ -129,5 +144,11 @@ const ManufacturingOrderCard = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  badgeContainer: {
+    alignItems: 'flex-end',
+  },
+});
 
 export default ManufacturingOrderCard;

@@ -23,14 +23,17 @@ import {
   Badge,
   useThemeColor,
   checkNullString,
+  HorizontalRule,
 } from '@axelor/aos-mobile-ui';
 import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {OperationOrderDatesCard} from '../../molecules';
 
 interface OperationOrderHeaderProps {
   manufOrderRef: string;
   name: string;
   status: number;
   priority: number;
+  showDates?: boolean;
 }
 
 function OperationOrderHeader({
@@ -38,22 +41,21 @@ function OperationOrderHeader({
   name,
   status,
   priority,
+  showDates = false,
 }: OperationOrderHeaderProps) {
   const Colors = useThemeColor();
   const {OperationOrder} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
   return (
-    <View style={styles.infoContainer}>
-      <View style={styles.refContainer}>
-        {!checkNullString(manufOrderRef) && (
-          <Text style={styles.textImportant}>{manufOrderRef}</Text>
-        )}
-        {!checkNullString(name) && (
-          <Text style={styles.textSecondary}>{name}</Text>
-        )}
-      </View>
-      <View style={styles.badgeContainer}>
+    <View>
+      <View style={styles.infoContainer}>
+        <View style={styles.refContainer}>
+          {!checkNullString(manufOrderRef) && (
+            <Text writingType="important">{manufOrderRef}</Text>
+          )}
+          {!checkNullString(name) && <Text>{name}</Text>}
+        </View>
         {status != null && (
           <Badge
             color={getItemColor(OperationOrder?.statusSelect, status)}
@@ -61,49 +63,35 @@ function OperationOrderHeader({
           />
         )}
         {priority != null && (
-          <Badge
-            color={Colors.priorityColor}
-            title={priority.toString()}
-            style={styles.badge}
-          />
+          <Badge color={Colors.priorityColor} title={priority.toString()} />
         )}
       </View>
+      {showDates && (
+        <>
+          <HorizontalRule
+            style={styles.line}
+            color={Colors.secondaryColor.background_light}
+          />
+          <OperationOrderDatesCard />
+        </>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  badge: {
-    borderRadius: 50,
-    width: 35,
-    height: 35,
-    marginRight: 10,
-  },
-  badgeContainer: {
-    flex: 1,
-    alignItems: 'center',
-    marginTop: '2%',
-    marginHorizontal: 20,
-    flexDirection: 'row-reverse',
-  },
   infoContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginBottom: '2%',
+    justifyContent: 'space-between',
+    marginHorizontal: 16,
   },
   refContainer: {
     flex: 1,
-    alignItems: 'flex-start',
-    marginLeft: 24,
   },
-  textImportant: {
-    marginRight: 8,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  textSecondary: {
-    fontSize: 14,
+  line: {
+    width: '80%',
+    alignSelf: 'center',
+    marginVertical: 4,
   },
 });
 
