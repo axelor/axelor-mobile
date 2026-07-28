@@ -22,6 +22,75 @@ const RECORD = '$record';
 
 const SEPARATOR_REGEX = /^(\.|\?\.)/g;
 
+/**
+ * Matches, in order of priority:
+ * 1. a literal (string or number) : left untouched
+ * 2. an optional accessor (`.` / `?.`) followed by an identifier and its
+ *    access path (`field`, `field.sub`, `field?.sub.value`, ...)
+ */
+const TOKEN_REGEX =
+  /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\d[\w.]*)|(\??\.\s*)?([A-Za-z_$][\w$]*)((?:\s*\??\.\s*[A-Za-z_$][\w$]*)*)/g;
+
+const NON_FIELD_IDENTIFIERS = [
+  'true',
+  'false',
+  'in',
+  'of',
+  'new',
+  'void',
+  'delete',
+  'typeof',
+  'instanceof',
+  'this',
+  'NaN',
+  'Infinity',
+  'Math',
+  'Number',
+  'String',
+  'Boolean',
+  'Array',
+  'Object',
+  'JSON',
+  'Date',
+  'parseInt',
+  'parseFloat',
+  'isNaN',
+  'isFinite',
+];
+
+const toOptionalChain = (path: string): string =>
+  (path ?? '').replace(/\??\./g, '?.');
+
+/**
+ * Replaces every field of the formula which has not been resolved from the
+ * object state by `null`, so that a blank state does not throw on evaluation.
+ * The access path is turned into an optional chain to keep the expression safe
+ * (`unknown.indexOf('x')` becomes `null?.indexOf('x')`, ie. `undefined`).
+ */
+const nullifyUnresolvedFields = (expr: string): string =>
+  expr.replace(
+    TOKEN_REGEX,
+    (match, literal, accessor, identifier, path, offset, source) => {
+      if (literal != null || accessor != null) {
+        return match;
+      }
+
+      if (identifier === 'null' || identifier === 'undefined') {
+        return identifier + toOptionalChain(path);
+      }
+
+      if (NON_FIELD_IDENTIFIERS.includes(identifier)) {
+        return match;
+      }
+
+      const isFunctionCall =
+        checkNullString(path) &&
+        /^\s*\(/.test(source.slice(offset + match.length));
+
+      return isFunctionCall ? match : 'null' + toOptionalChain(path);
+    },
+  );
+
 const removeContextedFields = (fields: any[], object: any): any[] => {
   if (!Array.isArray(fields) || fields.length === 0) {
     return [];
@@ -83,6 +152,8 @@ export const createFormulaFunction = (formula: string | undefined) => {
         expr = manageDottedFields(expr, _key, objectState[_key]);
       }
     });
+
+    expr = nullifyUnresolvedFields(expr);
 
     try {
       // eslint-disable-next-line no-eval

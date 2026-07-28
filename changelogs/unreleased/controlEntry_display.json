@@ -1,0 +1,5 @@
+{
+  "title": "Control entry: harmonize the display of control entries and samples with the other lists of the application",
+  "type": "refactor",
+  "packages": "quality"
+}
