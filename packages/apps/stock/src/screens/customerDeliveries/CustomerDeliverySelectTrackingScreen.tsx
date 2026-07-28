@@ -19,23 +19,23 @@
 import React, {useState, useCallback} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {StockMove} from '../../types';
 import {
   ProductCardInfo,
   StockMoveHeader,
   TrackingNumberSearchBar,
 } from '../../components';
-import StockMove from '../../types/stock-move';
 
 const trackingScanKey = 'tracking_customer-delivery-select';
 
-const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
-  const {customerDelivery, customerDeliveryLine, product} = route.params;
+const CustomerDeliverySelectTrackingScreen = ({navigation, route}: any) => {
+  const {customerDelivery, customerDeliveryLine, product} = route?.params ?? {};
   const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
 
   const handleTrackingNumberSelection = useCallback(
-    item => {
+    (item: any) => {
       if (item != null) {
         if (
           customerDeliveryLine != null &&
@@ -56,7 +56,7 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -64,34 +64,25 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
             reference={customerDelivery.stockMoveSeq}
             status={customerDelivery.statusSelect}
             lineRef={customerDeliveryLine?.name}
-            date={
-              customerDelivery
-                ? StockMove.getStockMoveDate(
-                    customerDelivery.statusSelect,
-                    customerDelivery,
-                  )
-                : null
-            }
+            date={StockMove.getStockMoveDate(
+              customerDelivery.statusSelect,
+              customerDelivery,
+            )}
             availability={customerDeliveryLine?.availableStatusSelect}
             stockMoveLineId={customerDeliveryLine?.id}
           />
         }
       />
       <ProductCardInfo
-        onPress={() =>
-          navigation.navigate('ProductStockDetailsScreen', {product})
-        }
-        picture={product?.picture}
-        code={product?.code}
-        name={product?.name}
-        trackingNumber={customerDeliveryLine?.trackingNumber?.trackingNumberSeq}
+        product={product}
+        trackingNumber={customerDeliveryLine?.trackingNumber}
         locker={customerDeliveryLine?.locker}
       />
       <TrackingNumberSearchBar
         scanKey={trackingScanKey}
         onChange={handleTrackingNumberSelection}
-        isFocus={true}
-        changeScreenAfter={true}
+        isFocus
+        changeScreenAfter
         product={product}
       />
       <Alert
@@ -99,7 +90,7 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
         title={I18n.t('Auth_Warning')}
         confirmButtonConfig={{
           width: 50,
-          title: null,
+          title: undefined,
           onPress: () => setVisible(false),
         }}>
         <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>

@@ -20,7 +20,7 @@ import {useMemo} from 'react';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {useLinesWithRacks} from './use-line-with-rack';
 
-export const useCustomerLinesWithRacks = customerDelivery => {
+export const useCustomerLinesWithRacks = (customerDelivery: any) => {
   const {customerDeliveryLineList, totalNumberLines} = useSelector(
     state => state.customerDeliveryLine,
   );

@@ -20,28 +20,36 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {LabelText, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StockMove} from '../../../../types';
 import {StockMoveHeader} from '../../../organisms';
-import StockMove from '../../../../types/stock-move';
 
-const CustomerDeliveryHeader = ({customerDelivery}) => {
+const CustomerDeliveryHeader = ({
+  customerDelivery,
+}: {
+  customerDelivery: any;
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   return (
-    <View>
-      <StockMoveHeader
-        reference={customerDelivery.stockMoveSeq}
-        status={customerDelivery.statusSelect}
-        date={
-          customerDelivery
-            ? StockMove.getStockMoveDate(
-                customerDelivery.statusSelect,
-                customerDelivery,
-              )
-            : null
-        }
-        availability={customerDelivery.availableStatusSelect}
-      />
+    <StockMoveHeader
+      reference={customerDelivery.stockMoveSeq}
+      status={customerDelivery.statusSelect}
+      date={StockMove.getStockMoveDate(
+        customerDelivery.statusSelect,
+        customerDelivery,
+      )}
+      availability={customerDelivery.availableStatusSelect}
+      showMovementIndicator
+      movementIndicatorData={{
+        titleTop: customerDelivery.fromStockLocation?.name,
+        labelTop: 'Stock_Origin',
+        iconTop: 'house-down',
+        titleDown:
+          customerDelivery.toAddress?.fullName ?? customerDelivery.toAddressStr,
+        labelDown: 'Stock_DestinationAddress',
+        iconDown: 'geo-alt-fill',
+      }}>
       <View style={styles.generalInfoContainer}>
         <View style={styles.clientInfos}>
           {customerDelivery.partner?.fullName && (
@@ -54,35 +62,30 @@ const CustomerDeliveryHeader = ({customerDelivery}) => {
             <LabelText iconName="tag-fill" title={customerDelivery?.origin} />
           )}
         </View>
-        <View style={styles.ispmInfos}>
+        <View style={styles.badgeContainer}>
           {customerDelivery?.isIspmRequired && (
             <Badge
               color={Colors.errorColor}
               title={I18n.t('Stock_StandardISPM')}
-              style={styles.ispmBadge}
             />
           )}
         </View>
       </View>
-    </View>
+    </StockMoveHeader>
   );
 };
 
 const styles = StyleSheet.create({
   generalInfoContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
     marginHorizontal: 24,
   },
   clientInfos: {
-    flex: 3,
+    flex: 1,
   },
-  ispmInfos: {
-    flex: 2,
-    flexDirection: 'row-reverse',
-  },
-  ispmBadge: {
-    width: '90%',
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

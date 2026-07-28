@@ -18,8 +18,8 @@
 
 import React, {useCallback} from 'react';
 import {useDispatch} from '@axelor/aos-mobile-core';
-import {ProductTrackingNumberSelect} from '../../../templates';
 import {addTrackingNumber} from '../../../../features/customerDeliveryLineSlice';
+import {ProductTrackingNumberSelect} from '../../product';
 
 const trackingScanKey = 'tracking_customer-delivery-line-select';
 
@@ -27,13 +27,17 @@ const CustomerDeliveryLineTrackingNumberSelect = ({
   product,
   customerDeliveryLine,
   visible,
+}: {
+  product: any;
+  customerDeliveryLine: any;
+  visible?: boolean;
 }) => {
   const dispatch = useDispatch();
 
   const handleAddTrackingNumber = useCallback(
-    selectedTrackingNumber => {
+    (selectedTrackingNumber: any) => {
       dispatch(
-        addTrackingNumber({
+        (addTrackingNumber as any)({
           stockMoveLineId: customerDeliveryLine?.id,
           stockMoveLineVersion: customerDeliveryLine?.version,
           trackingNumber: selectedTrackingNumber,

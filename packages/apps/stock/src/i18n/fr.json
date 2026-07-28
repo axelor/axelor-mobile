@@ -108,6 +108,7 @@
   "Stock_Status_Completed": "Complété",
   "Stock_Status_Canceled": "Annulé",
   "Stock_Reason": "Motif",
+  "Stock_Notes": "Commentaires",
   "Stock_NotesOnStockMove": "Commentaire à afficher sur les mouvements de stock",
   "Stock_PickingOrderComments": "Commentaire à afficher sur les bons de préparation",
   "Stock_DeliveryCondition": "Condition de livraison",

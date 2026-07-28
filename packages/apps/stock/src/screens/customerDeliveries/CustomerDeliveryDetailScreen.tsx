@@ -21,27 +21,22 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
   HeaderContainer,
-  NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
   useDispatch,
   useSelector,
-  useTranslator,
 } from '@axelor/aos-mobile-core';
+import {fetchCustomerDelivery} from '../../features/customerDeliverySlice';
 import {
   CustomerDeliveryHeader,
   CustomerDeliverySearchLineContainer,
-  CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
-  CustomerDeliveryNotes,
   CustomerDeliveryDropdownCard,
 } from '../../components';
-import {fetchCustomerDelivery} from '../../features/customerDeliverySlice';
 
-const CustomerDeliveryDetailScreen = ({route}) => {
-  const customerDeliveryId = route.params.customerDeliveryId;
-  const I18n = useTranslator();
+const CustomerDeliveryDetailScreen = ({route}: any) => {
+  const {customerDeliveryId} = route?.params ?? {};
   const dispatch = useDispatch();
   useContextRegister({
     models: [
@@ -54,20 +49,18 @@ const CustomerDeliveryDetailScreen = ({route}) => {
   );
 
   const getCustomerDelivery = useCallback(() => {
-    dispatch(fetchCustomerDelivery({customerDeliveryId: customerDeliveryId}));
+    dispatch((fetchCustomerDelivery as any)({customerDeliveryId}));
   }, [customerDeliveryId, dispatch]);
 
   useEffect(() => {
     getCustomerDelivery();
   }, [getCustomerDelivery]);
 
-  if (customerDelivery?.id !== customerDeliveryId) {
-    return null;
-  }
+  if (customerDelivery?.id !== customerDeliveryId) return null;
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         <CustomerDeliveryRealizeButton customerDelivery={customerDelivery} />
       }>
@@ -79,19 +72,7 @@ const CustomerDeliveryDetailScreen = ({route}) => {
       />
       <KeyboardAvoidingScrollView
         refresh={{loading, fetcher: getCustomerDelivery}}>
-        <CustomerDeliveryMovementIndicationCard
-          customerDelivery={customerDelivery}
-        />
         <CustomerDeliveryDropdownCard />
-        <CustomerDeliveryNotes notes={customerDelivery?.note} />
-        <NotesCard
-          title={I18n.t('Stock_PickingOrderComments')}
-          data={customerDelivery?.pickingOrderComments}
-        />
-        <NotesCard
-          title={I18n.t('Stock_DeliveryCondition')}
-          data={customerDelivery?.deliveryCondition}
-        />
         <CustomerDeliverySearchLineContainer />
       </KeyboardAvoidingScrollView>
     </Screen>

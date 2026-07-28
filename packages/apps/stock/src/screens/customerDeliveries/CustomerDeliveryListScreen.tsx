@@ -25,18 +25,18 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {searchDeliveries} from '../../features/customerDeliverySlice';
+import {displayStockMoveSeq} from '../../utils';
 import {
   CustomerDeliveryCard,
   PartnerSearchBar,
   StockLocationSearchBar,
 } from '../../components';
-import {searchDeliveries} from '../../features/customerDeliverySlice';
-import {displayStockMoveSeq} from '../../utils/displayers';
 
 const stockLocationScanKey = 'stock-location_customer-delivery-list';
 const scanKey = 'stock-move_customer-delivery-list';
 
-const CustomerDeliveryListScreen = ({navigation}) => {
+const CustomerDeliveryListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -46,16 +46,16 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   );
   const {user} = useSelector(state => state.user);
 
-  const [stockLocation, setStockLocation] = useState(null);
-  const [customer, setCustomer] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [stockLocation, setStockLocation] = useState<any>();
+  const [customer, setCustomer] = useState<any>();
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [navigate, setNavigate] = useState(false);
 
-  const navigateToCustomerDelivery = item => {
-    if (item != null) {
+  const navigateToCustomerDelivery = (_item: any) => {
+    if (_item != null) {
       setNavigate(current => !current);
       navigation.navigate('CustomerDeliveryDetailScreen', {
-        customerDeliveryId: item?.id,
+        customerDeliveryId: _item?.id,
       });
     }
   };
@@ -82,7 +82,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={deliveryList}
         loading={loadingList}
@@ -119,18 +119,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
         }
         renderListItem={({item}) => (
           <CustomerDeliveryCard
-            reference={item.stockMoveSeq}
-            client={item.partner?.fullName}
-            status={item.statusSelect}
-            date={
-              item.statusSelect === StockMove?.statusSelect.Draft
-                ? item.createdOn
-                : item.statusSelect === StockMove?.statusSelect.Planned
-                  ? item.estimatedDate
-                  : item.realDate
-            }
-            origin={item.origin}
-            availability={item.availableStatusSelect}
+            {...item}
             onPress={() => navigateToCustomerDelivery(item)}
           />
         )}

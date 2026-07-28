@@ -18,12 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  useTranslator,
-  useSelector,
-  isEmpty,
-  useTypes,
-} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector, isEmpty} from '@axelor/aos-mobile-core';
 import {
   Badge,
   LabelText,
@@ -34,13 +29,11 @@ import {
 import {useMassIndicatorChecker} from '../../../../providers';
 
 const CustomerDeliveryLineQuantityCard = ({
-  customerDelivery,
   customerDeliveryLine,
   realQty,
   setRealQty,
   readonly = false,
 }: {
-  customerDelivery: any;
   customerDeliveryLine?: any;
   realQty: number;
   setRealQty: (value: number) => void;
@@ -49,10 +42,9 @@ const CustomerDeliveryLineQuantityCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
-  const {StockMove} = useTypes();
   const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
-  const {productFromId: product} = useSelector((state: any) => state.product);
+  const {productFromId: product} = useSelector(state => state.product);
 
   const indicatorBadge = useMemo(
     () =>
@@ -83,11 +75,9 @@ const CustomerDeliveryLineQuantityCard = ({
       labelQty={I18n.t('Stock_PickedQty')}
       defaultValue={realQty}
       onValueChange={setRealQty}
-      editable={
-        !readonly &&
-        customerDelivery.statusSelect < StockMove?.statusSelect.Realized
-      }
-      isBigButton={true}
+      editable={!readonly}
+      isBigButton
+      isFormWrapper
       translator={I18n.t}>
       <View style={styles.headerQuantityCard}>
         <LabelText title={`${I18n.t('Stock_AskedQty')} :`} value={askedQty} />

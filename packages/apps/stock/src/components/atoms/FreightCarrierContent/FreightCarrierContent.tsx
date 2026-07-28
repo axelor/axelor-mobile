@@ -165,7 +165,9 @@ const FreightCarrierContent = ({
     <View style={styles.container}>
       {labelFields
         .filter(f =>
-          typeof f.value === 'string' ? !checkNullString(f.value) : f.value > 0,
+          typeof f.value === 'string'
+            ? !checkNullString(f.value)
+            : f.value! > 0,
         )
         .map((field, idx) => (
           <LabelText key={idx} title={`${field.label} :`} value={field.value} />

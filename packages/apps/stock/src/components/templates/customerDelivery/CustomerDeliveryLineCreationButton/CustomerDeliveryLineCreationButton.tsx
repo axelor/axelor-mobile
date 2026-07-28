@@ -33,6 +33,14 @@ const CustomerDeliveryLineCreationButton = ({
   trackingNumber,
   fromStockLocation,
   visible = true,
+}: {
+  customerDelivery: any;
+  product: any;
+  realQty?: number;
+  description?: string;
+  trackingNumber?: any;
+  fromStockLocation?: any;
+  visible?: boolean;
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -46,7 +54,7 @@ const CustomerDeliveryLineCreationButton = ({
 
   const handleAddLine = useCallback(() => {
     dispatch(
-      addNewLine({
+      (addNewLine as any)({
         stockMoveId: customerDelivery.id,
         version: customerDelivery.version,
         fromStockLocationId: fromStockLocation?.id,
@@ -71,9 +79,7 @@ const CustomerDeliveryLineCreationButton = ({
     trackingNumber,
   ]);
 
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
   return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
 };

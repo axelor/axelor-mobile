@@ -59,6 +59,7 @@ interface StockMoveHeaderProps {
     labelDown?: string;
     titleDown: string;
   };
+  children?: any;
 }
 
 const StockMoveHeader = ({
@@ -72,6 +73,7 @@ const StockMoveHeader = ({
   massScanData,
   showMovementIndicator = false,
   movementIndicatorData,
+  children,
 }: StockMoveHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -120,6 +122,7 @@ const StockMoveHeader = ({
           )}
         </View>
       </View>
+      {children}
       {showMovementIndicator && movementIndicatorData != null && (
         <>
           <HorizontalRule
