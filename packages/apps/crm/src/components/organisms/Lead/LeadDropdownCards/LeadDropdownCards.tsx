@@ -17,7 +17,6 @@
  */
 
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {
@@ -42,56 +41,44 @@ const LeadDropdownCards = ({}) => {
   }, [dispatch, lead.eventList]);
 
   return (
-    <View style={styles.container}>
-      <DropdownCardSwitch
-        styleTitle={styles.textTitle}
-        dropdownItems={[
-          {
-            title: I18n.t('Crm_Contact'),
-            key: 1,
-            iconName: 'telephone',
-            isDefaultVisible: true,
-            childrenComp: (
-              <DropdownContactView
-                contact={lead}
-                isLead
-                refreshContactInfos={() =>
-                  dispatch((fetchLeadById as any)({leadId: lead.id}))
-                }
-              />
-            ),
-          },
-          {
-            title: I18n.t('Crm_GeneralInformation'),
-            key: 2,
-            iconName: 'person',
-            childrenComp: (
-              <DropdownGeneralView
-                assignedUser={lead.user?.fullName}
-                category={lead.type?.name}
-                industrySector={lead.industrySector?.name}
-              />
-            ),
-          },
-          {
-            title: I18n.t('Crm_Events'),
-            key: 3,
-            iconName: 'calendar2-event',
-            childrenComp: <DropdownEventView eventList={listEventById} />,
-          },
-        ]}
-      />
-    </View>
+    <DropdownCardSwitch
+      dropdownItems={[
+        {
+          title: I18n.t('Crm_Contact'),
+          key: 1,
+          iconName: 'telephone',
+          isDefaultVisible: true,
+          childrenComp: (
+            <DropdownContactView
+              contact={lead}
+              isLead
+              refreshContactInfos={() =>
+                dispatch((fetchLeadById as any)({leadId: lead.id}))
+              }
+            />
+          ),
+        },
+        {
+          title: I18n.t('Crm_GeneralInformation'),
+          key: 2,
+          iconName: 'person',
+          childrenComp: (
+            <DropdownGeneralView
+              assignedUser={lead.user?.fullName}
+              category={lead.type?.name}
+              industrySector={lead.industrySector?.name}
+            />
+          ),
+        },
+        {
+          title: I18n.t('Crm_Events'),
+          key: 3,
+          iconName: 'calendar2-event',
+          childrenComp: <DropdownEventView eventList={listEventById} />,
+        },
+      ]}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  textTitle: {
-    fontWeight: 'bold',
-  },
-});
 
 export default LeadDropdownCards;
