@@ -18,22 +18,34 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, LabelText, Text} from '@axelor/aos-mobile-ui';
+import {
+  Badge,
+  HorizontalRule,
+  LabelText,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
+import {ManufacturingOrderDatesCard} from '../../molecules';
 
 interface ManufacturingOrderHeaderProps {
   reference: string;
   status: number;
   priority: number;
   parentMO?: any;
+  children?: any;
+  showDates?: boolean;
 }
 
 const ManufacturingOrderHeader = ({
   reference,
   status,
   priority,
-  parentMO = null,
+  parentMO,
+  children,
+  showDates = false,
 }: ManufacturingOrderHeaderProps) => {
+  const Colors = useThemeColor();
   const {ManufOrder} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
@@ -46,31 +58,44 @@ const ManufacturingOrderHeader = ({
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.refContainer}>
-        {reference != null && <Text writingType="important">{reference}</Text>}
-        {parentMO != null && (
-          <LabelText
-            style={styles.manufOrderSeq}
-            iconName="diagram-3-fill"
-            title={parentMO.manufOrderSeq}
-          />
-        )}
+    <View>
+      <View style={styles.container}>
+        <View style={styles.columnWrapper}>
+          {reference != null && (
+            <Text writingType="important">{reference}</Text>
+          )}
+          {parentMO != null && (
+            <LabelText
+              iconName="diagram-3-fill"
+              title={parentMO.manufOrderSeq}
+            />
+          )}
+        </View>
+        <View style={styles.badgesContainer}>
+          {isPriorityValid && (
+            <Badge
+              color={getItemColor(ManufOrder?.prioritySelect, priority)}
+              title={getItemTitle(ManufOrder?.prioritySelect, priority)}
+            />
+          )}
+          {status != null && (
+            <Badge
+              color={getItemColor(ManufOrder?.statusSelect, status)}
+              title={getItemTitle(ManufOrder?.statusSelect, status)}
+            />
+          )}
+        </View>
       </View>
-      <View style={[styles.badgesContainer]}>
-        {isPriorityValid && (
-          <Badge
-            color={getItemColor(ManufOrder?.prioritySelect, priority)}
-            title={getItemTitle(ManufOrder?.prioritySelect, priority)}
+      {children}
+      {showDates ? (
+        <>
+          <HorizontalRule
+            style={styles.line}
+            color={Colors.secondaryColor.background_light}
           />
-        )}
-        {status != null && (
-          <Badge
-            color={getItemColor(ManufOrder?.statusSelect, status)}
-            title={getItemTitle(ManufOrder?.statusSelect, status)}
-          />
-        )}
-      </View>
+          <ManufacturingOrderDatesCard />
+        </>
+      ) : undefined}
     </View>
   );
 };
@@ -80,17 +105,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 24,
+    marginBottom: 5,
   },
-  refContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  columnWrapper: {
+    flex: 1,
   },
   badgesContainer: {
     flexDirection: 'row',
-    alignContent: 'flex-end',
+    alignItems: 'flex-start',
   },
-  manufOrderSeq: {
-    marginLeft: 8,
+  line: {
+    width: '80%',
+    alignSelf: 'center',
+    marginVertical: 4,
   },
 });
 

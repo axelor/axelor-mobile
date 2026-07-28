@@ -18,7 +18,14 @@
 
 import {splitInTwo} from '@axelor/aos-mobile-core';
 
-export function splitSaleOrderRef(saleOrderRef) {
+export function splitSaleOrderRef(saleOrderRef?: string): {
+  ref?: string;
+  client?: string;
+} {
   const saleOrderDetails = splitInTwo(saleOrderRef, '-');
-  return {ref: saleOrderDetails[0], client: saleOrderDetails[1]};
+
+  return {
+    ref: saleOrderDetails?.[0]?.toString(),
+    client: saleOrderDetails?.[1]?.toString(),
+  };
 }

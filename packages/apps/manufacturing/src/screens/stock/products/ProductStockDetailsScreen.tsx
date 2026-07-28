@@ -21,14 +21,14 @@ import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
 import {ProductStockDetailsScreen as StockProductDetailsScreen} from '@axelor/aos-mobile-stock';
 import {ProductIndicator} from '../../../types';
 
-const ProductStockDetailsScreen = ({route}) => {
+const ProductStockDetailsScreen = ({route}: any) => {
   const navigation = useNavigation();
 
   const {productIndicators} = useSelector(state => state.productIndicators);
   const {productFromId: product} = useSelector(state => state.product);
 
   const addtionalIndicatorOnPress = useCallback(
-    type =>
+    (type: number) =>
       navigation.navigate('ProductManufacturingIndicatorDetails', {
         type,
         productId: product?.id,
