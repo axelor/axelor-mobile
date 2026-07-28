@@ -79,13 +79,13 @@ const FormView = ({
 
   const {config} = useFormConfig(formKey);
 
-  const storeState = useSelector((state: any) => state);
-  const {record} = useSelector((state: any) => state.form);
+  const storeState = useSelector(state => state);
+  const {record} = useSelector(state => state.form);
   const {canCreate, canDelete, readonly} = usePermitted({
     modelName: config?.modelName,
   });
 
-  const [object, setObject] = useState(
+  const [object, setObject] = useState<any>(
     defaultValue ?? creationDefaultValue ?? {},
   );
   const [errors, setErrors] = useState<any[]>();
@@ -121,7 +121,7 @@ const FormView = ({
   }, [dispatch]);
 
   useEffect(() => {
-    setObject(_current => {
+    setObject((_current: any) => {
       if (isEmpty(record)) {
         const _default = defaultValue ?? creationDefaultValue ?? {};
         if (_default == null || areObjectsEquals(_current, _default)) {
@@ -140,7 +140,7 @@ const FormView = ({
   }, [creationDefaultValue, defaultValue, isCreation, record]);
 
   const handleFieldChange = (newValue: any, fieldName: string) => {
-    setObject(_current => {
+    setObject((_current: any) => {
       if (_current?.[fieldName] === newValue) {
         return _current;
       }
@@ -151,9 +151,9 @@ const FormView = ({
 
       getFields(config)
         .filter(_field => _field.dependsOn != null)
-        .filter(_field => Object.keys(_field.dependsOn).includes(fieldName))
+        .filter(_field => Object.keys(_field.dependsOn!).includes(fieldName))
         .forEach(_field => {
-          updatedObject[_field.key] = _field.dependsOn[fieldName]({
+          updatedObject[_field.key] = _field.dependsOn![fieldName]({
             newValue,
             storeState,
             objectState: updatedObject,
@@ -189,7 +189,10 @@ const FormView = ({
     setObject((isCreation ? creationDefaultValue : defaultValue) ?? {});
   }, [creationDefaultValue, defaultValue, isCreation]);
 
-  const handleValidate = (_action, needValidation) => {
+  const handleValidate = (
+    _action: (_v: any) => void,
+    needValidation: boolean,
+  ) => {
     if (needValidation) {
       return validateSchema(config, object)
         .then(() => {
@@ -249,7 +252,7 @@ const FormView = ({
         if (_action.readonlyAfterAction) {
           toggleReadonlyMode();
         }
-      }, _action.needValidation);
+      }, _action.needValidation ?? false);
 
     if (_action.customComponent) {
       return React.cloneElement(_action.customComponent, {
@@ -273,7 +276,17 @@ const FormView = ({
     );
   };
 
-  const renderItem = (item: DisplayPanel | DisplayField) => {
+  const isGlobalReadonly = useMemo(
+    () =>
+      isReadonly ||
+      (config?.readonlyIf?.({objectState: object, storeState}) ?? false),
+    [config, isReadonly, object, storeState],
+  );
+
+  const renderItem = (
+    item: DisplayPanel | DisplayField,
+    parentReadonly: boolean = false,
+  ) => {
     if (isField(item)) {
       return (
         <FieldComponent
@@ -282,11 +295,7 @@ const FormView = ({
           _field={item as DisplayField}
           object={object}
           modelName={config.modelName}
-          globalReadonly={() =>
-            isReadonly ||
-            (config.readonlyIf &&
-              config.readonlyIf({objectState: object, storeState}))
-          }
+          parentReadonly={parentReadonly}
           formContent={getConfigItems(config)}
         />
       );
@@ -298,6 +307,8 @@ const FormView = ({
         renderItem={renderItem}
         formContent={getConfigItems(config)}
         _panel={item as DisplayPanel}
+        object={object}
+        parentReadonly={parentReadonly}
       />
     );
   };
@@ -340,12 +351,12 @@ const FormView = ({
         style={styles.scroll}>
         {Array.isArray(errors) && (
           <ConstraintsValidatorPopup
-            onContinue={() => setErrors(null)}
+            onContinue={() => setErrors(undefined)}
             errors={errors}
           />
         )}
         <View style={[styles.container, style, getZIndexStyle(5)]}>
-          {formContent.map(renderItem)}
+          {formContent.map(_i => renderItem(_i, isGlobalReadonly))}
         </View>
       </KeyboardAvoidingScrollView>
       <FloatingTools
