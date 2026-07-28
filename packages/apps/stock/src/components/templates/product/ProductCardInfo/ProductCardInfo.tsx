@@ -26,8 +26,6 @@ interface ProductCardInfoProps {
   product?: any;
   trackingNumber?: any;
   locker?: string;
-  onPress?: () => void;
-  [key: string]: any; //TODO: remove this & ? on product
 }
 
 const ProductCardInfo = ({
@@ -35,16 +33,14 @@ const ProductCardInfo = ({
   product,
   trackingNumber,
   locker,
-  onPress,
 }: ProductCardInfoProps) => {
   const navigation = useNavigation();
   const formatMetaFile = useMetafileUri();
 
-  const handleShowProduct = useCallback(() => {
-    if (onPress != null) return onPress();
-
-    navigation.navigate('ProductStockDetailsScreen', {product});
-  }, [navigation, onPress, product]);
+  const handleShowProduct = useCallback(
+    () => navigation.navigate('ProductStockDetailsScreen', {product}),
+    [navigation, product],
+  );
 
   return (
     <ObjectCard

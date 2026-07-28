@@ -77,7 +77,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}: any) => {
       />
       <ProductCardInfo
         product={product}
-        trackingNumber={internalMoveLine?.trackingNumber?.trackingNumberSeq}
+        trackingNumber={internalMoveLine?.trackingNumber}
         locker={internalMoveLine?.locker}
       />
       <ProductSearchBar
