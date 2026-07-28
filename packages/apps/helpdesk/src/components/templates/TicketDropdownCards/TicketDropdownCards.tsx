@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import DropdownGeneralView from './DropdownGeneralView';
@@ -29,50 +28,38 @@ const TicketDropdownCards = ({}) => {
   const {ticket} = useSelector(state => state.ticket);
 
   return (
-    <View style={styles.container}>
-      <DropdownCardSwitch
-        styleTitle={styles.textTitle}
-        dropdownItems={[
-          {
-            title: I18n.t('Helpdesk_GeneralInformations'),
-            key: 1,
-            iconName: 'card-text',
-            childrenComp: (
-              <DropdownGeneralView
-                project={ticket.project?.fullName}
-                contactPartner={ticket.contactPartner?.fullName}
-                customerPartner={ticket.customerPartner?.fullName}
-                assignedToUser={ticket.assignedToUser?.fullName}
-                responsibleUser={ticket.responsibleUser?.fullName}
-              />
-            ),
-          },
-          {
-            title: I18n.t('Helpdesk_Timing'),
-            key: 2,
-            iconName: 'stopwatch',
-            childrenComp: (
-              <DropdownTimingView
-                deadlineDateT={ticket.deadlineDateT}
-                startDateT={ticket.startDateT}
-                endDateT={ticket.endDateT}
-                duration={ticket.duration}
-              />
-            ),
-          },
-        ]}
-      />
-    </View>
+    <DropdownCardSwitch
+      dropdownItems={[
+        {
+          title: I18n.t('Helpdesk_GeneralInformations'),
+          key: 1,
+          iconName: 'card-text',
+          childrenComp: (
+            <DropdownGeneralView
+              project={ticket.project?.fullName}
+              contactPartner={ticket.contactPartner?.fullName}
+              customerPartner={ticket.customerPartner?.fullName}
+              assignedToUser={ticket.assignedToUser?.fullName}
+              responsibleUser={ticket.responsibleUser?.fullName}
+            />
+          ),
+        },
+        {
+          title: I18n.t('Helpdesk_Timing'),
+          key: 2,
+          iconName: 'stopwatch',
+          childrenComp: (
+            <DropdownTimingView
+              deadlineDateT={ticket.deadlineDateT}
+              startDateT={ticket.startDateT}
+              endDateT={ticket.endDateT}
+              duration={ticket.duration}
+            />
+          ),
+        },
+      ]}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  textTitle: {
-    fontWeight: 'bold',
-  },
-});
 
 export default TicketDropdownCards;
