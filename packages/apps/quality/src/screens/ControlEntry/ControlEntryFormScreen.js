@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
   showToastMessage,
@@ -290,18 +290,13 @@ const ControlEntryFormScreen = ({navigation, route}) => {
 
   return (
     <Screen removeSpaceOnTop>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
-          <ControlEntryFormHeader
-            mode={selectedMode}
-            currentIndex={currentIndex}
-            categoryIndex={categoryIndex}
-            nbItemInCategory={nbItemInCategory}
-            nbCategories={nbCategories}
-            progressData={progressData}
-          />
-        }
+      <ControlEntryFormHeader
+        mode={selectedMode}
+        currentIndex={currentIndex}
+        categoryIndex={categoryIndex}
+        nbItemInCategory={nbItemInCategory}
+        nbCategories={nbCategories}
+        progressData={progressData}
       />
       {categorySet[categoryIndex] != null &&
         (itemSet[currentIndex] != null ? (
