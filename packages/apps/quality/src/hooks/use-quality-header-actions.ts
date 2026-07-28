@@ -87,10 +87,12 @@ const useControlEntryDetailsActions = () => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+  const {controlEntry} = useSelector(state => state.controlEntry);
 
   useEffect(() => {
     headerActionsProvider.registerModel('quality_controlEntry_details', {
+      model: 'com.axelor.apps.quality.db.ControlEntry',
+      modelId: controlEntry?.id,
       actions: [
         {
           key: 'refreshControlEntry',
