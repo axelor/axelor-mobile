@@ -25,16 +25,16 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {fetchStockMoveLines} from '../../../../features/stockMoveLineSlice';
+import {useLogisticalFormState} from '../../../../hooks';
+import {StockMoveTagSelect} from '../../../molecules';
+import {StockMoveSearchBar} from '../../../organisms';
 import {
   LogisticalFormHeader,
   LogisticalFormStockMoveLineCard,
   SelectStockMovePopup,
   SelectStockMovePopupType,
 } from '../../logisticalForm';
-import {StockMoveTagSelect} from '../../../molecules';
-import {StockMoveSearchBar} from '../../../organisms';
-import {fetchStockMoveLines} from '../../../../features/stockMoveLineSlice';
-import {useLogisticalFormState} from '../../../../hooks';
 
 const stockMoveLineScanKey = 'stock-move-line_logistical-form-state-list';
 const stockMoveScanKey = 'stock-move_logistical-form-state-list';
@@ -53,8 +53,8 @@ const LogisticalFormStockMoveLinesView = () => {
     state => state.stock_stockMoveLine,
   );
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [selectedStockMove, setSelectedStockMove] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [selectedStockMove, setSelectedStockMove] = useState<any>();
   const [popupConfig, setPopupConfig] =
     useState<SelectStockMovePopupType | null>(null);
 
@@ -142,11 +142,11 @@ const LogisticalFormStockMoveLinesView = () => {
         )}
         isHideableSearch={false}
         actionList={actionList}
-        verticalActions={true}
+        verticalActions
       />
       <SelectStockMovePopup
         logisticalForm={logisticalForm}
-        type={popupConfig}
+        type={popupConfig!}
         closePopup={() => setPopupConfig(null)}
       />
     </>

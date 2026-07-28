@@ -18,7 +18,14 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, LabelText, Text} from '@axelor/aos-mobile-ui';
+import {
+  Badge,
+  HorizontalRule,
+  LabelText,
+  MovementIndicationCard,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {
   formatDate,
   useSelector,
@@ -33,6 +40,7 @@ interface LogisticalFormHeaderProps {
   collectionDate: string;
   stockLocation?: any;
   deliverToCustomerPartner?: any;
+  children?: any;
 }
 
 const LogisticalFormHeader = ({
@@ -41,8 +49,10 @@ const LogisticalFormHeader = ({
   collectionDate,
   stockLocation,
   deliverToCustomerPartner,
+  children,
 }: LogisticalFormHeaderProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const {LogisticalForm} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
@@ -68,42 +78,62 @@ const LogisticalFormHeader = ({
     return formatDate(collectionDate, I18n.t('Base_DateFormat'));
   }, [I18n, collectionDate]);
 
+  const movementIndicatorData = useMemo(() => {
+    const _customer = isMultiClientsEnabled
+      ? null
+      : deliverToCustomerPartner?.fullName;
+
+    if (!stockLocation?.name && !_customer) return undefined;
+
+    return {
+      titleTop: stockLocation?.name,
+      labelTop: 'Stock_StockLocation',
+      iconTop: 'house-down',
+      titleDown: _customer,
+      labelDown: 'Stock_DeliverToCustomerPartner',
+      iconDown: 'person-fill',
+    };
+  }, [
+    deliverToCustomerPartner?.fullName,
+    isMultiClientsEnabled,
+    stockLocation?.name,
+  ]);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.column}>
-        {deliveryNumberSeq && (
-          <Text fontSize={18} writingType="important">
-            {deliveryNumberSeq}
-          </Text>
-        )}
-        {stockLocation?.name && (
-          <LabelText
-            iconName="geo-alt-fill"
-            title={`${I18n.t('Stock_StockLocation')}:`}
-            value={stockLocation.name}
-          />
-        )}
-        {formattedDate && (
-          <LabelText
-            iconName="calendar-event"
-            title={`${I18n.t('Stock_CollectionDate')}:`}
-            value={formattedDate}
-          />
-        )}
-        {!isMultiClientsEnabled && deliverToCustomerPartner?.fullName && (
-          <LabelText
-            iconName="person-fill"
-            title={`${I18n.t('Stock_DeliverToCustomerPartner')}:`}
-            value={deliverToCustomerPartner?.fullName}
-          />
-        )}
+    <View>
+      <View style={styles.container}>
+        <View style={styles.columnWrapper}>
+          {deliveryNumberSeq && (
+            <Text writingType="important">{deliveryNumberSeq}</Text>
+          )}
+          {formattedDate && (
+            <LabelText
+              iconName="calendar-event"
+              title={`${I18n.t('Stock_CollectionDate')} :`}
+              value={formattedDate}
+            />
+          )}
+        </View>
+        <View style={styles.badgesContainer}>
+          {statusBadge != null && (
+            <Badge color={statusBadge.color} title={statusBadge.title} />
+          )}
+        </View>
       </View>
-      {statusBadge != null && (
-        <Badge
-          color={statusBadge.color}
-          title={statusBadge.title}
-          style={styles.badge}
-        />
+      {children}
+      {movementIndicatorData != null && (
+        <>
+          <HorizontalRule
+            style={styles.line}
+            color={Colors.secondaryColor.background_light}
+          />
+          <MovementIndicationCard
+            {...movementIndicatorData}
+            labelTop={I18n.t(movementIndicatorData.labelTop)}
+            labelDown={I18n.t(movementIndicatorData.labelDown)}
+            displayCard={false}
+          />
+        </>
       )}
     </View>
   );
@@ -116,17 +146,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '90%',
     gap: 5,
-    marginBottom: 10,
+    marginBottom: 5,
   },
-  column: {
-    flexDirection: 'column',
+  columnWrapper: {
     flex: 1,
     gap: 5,
   },
-  badge: {
-    width: undefined,
-    paddingHorizontal: 10,
-    marginHorizontal: 0,
+  badgesContainer: {
+    alignItems: 'flex-end',
+  },
+  line: {
+    width: '80%',
+    alignSelf: 'center',
+    marginVertical: 4,
   },
 });
 
