@@ -32,13 +32,13 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {ManufacturingOrderHeader, OperationOrderCard} from '../../components';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
+import {ManufacturingOrderHeader, OperationOrderCard} from '../../components';
 
-const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+const ManufacturingOrderOperationListScreen = ({navigation, route}: any) => {
+  const {manufOrder} = route?.params ?? {};
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {ManufOrder} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
@@ -50,18 +50,18 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
   } = useSelector(state => state.operationOrder);
 
   const [filteredList, setFilteredList] = useState(operationOrderList);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
-  const handleShowLine = item => {
+  const handleShowLine = (item: any) => {
     navigation.navigate('OperationOrderDetailsScreen', {
       operationOrderId: item.id,
     });
   };
 
   const fetchOperationOrdersAPI = useCallback(
-    page => {
+    (page: number) => {
       dispatch(
-        fetchOperationOrders({
+        (fetchOperationOrders as any)({
           manufOrderId: manufOrder?.id,
           page: page,
         }),
@@ -71,9 +71,7 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
   );
 
   const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
+    (list: any[]) => filterChip(list, selectedStatus, 'statusSelect'),
     [selectedStatus],
   );
 
@@ -95,7 +93,7 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
   }, [ManufOrder?.statusSelect, getSelectionItems, selectedStatus]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

@@ -33,7 +33,6 @@ import {
 import {
   HazardPhraseAlert,
   HazardPhraseDropdownCard,
-  OperationOrderDatesCard,
   OperationOrderHeader,
   OperationOrderLabelTextList,
   OperationOrderStopwatch,
@@ -45,10 +44,10 @@ const MODELS = {
   Machine: 'com.axelor.apps.production.db.Machine',
 };
 
-function OperationOrderDetailsScreen({route, navigation}) {
+function OperationOrderDetailsScreen({navigation, route}: any) {
   const {operationOrderId} = route.params;
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingOrder, operationOrder} = useSelector(
@@ -102,7 +101,7 @@ function OperationOrderDetailsScreen({route, navigation}) {
   }, [hazardPhraseEnabled]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         fixedItems={
           <OperationOrderHeader
@@ -110,12 +109,12 @@ function OperationOrderDetailsScreen({route, navigation}) {
             name={operationOrder?.operationName}
             status={operationOrder?.statusSelect}
             priority={operationOrder?.priority}
+            showDates
           />
         }
         expandableFilter={false}
       />
       <ScrollView refresh={{loading: loadingOrder, fetcher: getOperationOrder}}>
-        <OperationOrderDatesCard />
         <OperationOrderLabelTextList />
         {showConsumedProducts && (
           <HalfLabelCard

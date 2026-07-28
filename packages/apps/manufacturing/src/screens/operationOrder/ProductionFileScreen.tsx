@@ -30,9 +30,9 @@ import {
   ProductionFileSmallCard,
 } from '../../components';
 
-const ProductionFileScreen = ({route}) => {
+const ProductionFileScreen = ({route}: any) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const {loading, moreLoading, isListEnd, productionFileList} = useSelector(
     state => state.productionFile,
@@ -41,9 +41,9 @@ const ProductionFileScreen = ({route}) => {
   const [tab, setTab] = useState(false);
 
   const fetchProductionFileAPI = useCallback(
-    page => {
+    (page: number) => {
       dispatch(
-        fetchProductionFile({
+        (fetchProductionFile as any)({
           prodProcessLineId: route?.params?.prodProcessLineId,
           page: page,
         }),
@@ -53,7 +53,7 @@ const ProductionFileScreen = ({route}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         fixedItems={
           <ToggleSwitch

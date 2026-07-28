@@ -28,13 +28,13 @@ import {
 } from '@axelor/aos-mobile-core';
 import {ProductSearchBar} from '@axelor/aos-mobile-stock';
 import {fetchManufacturingOrders} from '../../features/manufacturingOrderSlice';
+import {displayManufOrderSeq} from '../../utils';
 import {ManufacturingOrderCard} from '../../components';
-import {displayManufOrderSeq} from '../../utils/displayers';
 
 const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 
-const ManufacturingOrderListScreen = ({navigation}) => {
+const ManufacturingOrderListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {ManufOrder} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -45,15 +45,15 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   );
   const {production: productionConfig} = useSelector(state => state.appConfig);
 
-  const [product, setProduct] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [product, setProduct] = useState<any>();
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [navigate, setNavigate] = useState(false);
 
-  const navigateToManufOrder = item => {
-    if (item != null) {
+  const navigateToManufOrder = (_item: any) => {
+    if (_item != null) {
       setNavigate(current => !current);
       navigation.navigate('ManufacturingOrderDetailsScreen', {
-        manufacturingOrderId: item.id,
+        manufacturingOrderId: _item.id,
       });
     }
   };
@@ -89,7 +89,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   }, [ManufOrder?.statusSelect, getSelectionItems, selectedStatus]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={manufOrderList}
         loading={loading}
@@ -119,18 +119,8 @@ const ManufacturingOrderListScreen = ({navigation}) => {
         }
         renderListItem={({item}) => (
           <ManufacturingOrderCard
-            reference={item.manufOrderSeq}
-            status={item.statusSelect}
+            {...item}
             style={styles.item}
-            priority={item.prioritySelect}
-            productName={item.product.fullName}
-            qty={item.qty}
-            unit={item.unit}
-            link={{ordersRef: item.saleOrderSet, client: item.clientPartner}}
-            plannedStartDate={item.plannedStartDateT}
-            plannedEndDate={item.plannedEndDateT}
-            realStartDate={item.realStartDateT}
-            realEndDate={item.realEndDateT}
             onPress={() => navigateToManufOrder(item)}
           />
         )}

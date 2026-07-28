@@ -39,15 +39,12 @@ import {
 } from '../../../components';
 import {fetchChildrenOfManufacturingOrder} from '../../../features/manufacturingOrderSlice';
 
-const ChildrenManufOrderListScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+const ChildrenManufOrderListScreen = ({navigation, route}: any) => {
+  const {manufOrder} = route?.params ?? {};
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {ManufOrder} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
-
-  const [filteredList, setFilteredList] = useState(childrenManufOrders);
-  const [selectedStatus, setSelectedStatus] = useState([]);
 
   const {
     loadingChildrenMO,
@@ -57,8 +54,11 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
   } = useSelector(state => state.manufacturingOrder);
   const {user} = useSelector(state => state.user);
 
+  const [filteredList, setFilteredList] = useState<any[]>(childrenManufOrders);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+
   const filterOnStatus = useCallback(
-    list => {
+    (list: any[]) => {
       return filterChip(list, selectedStatus, 'statusSelect');
     },
     [selectedStatus],
@@ -69,9 +69,9 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
   }, [filterOnStatus, childrenManufOrders]);
 
   const fetchManufOrdersAPI = useCallback(
-    (page = 0) => {
+    (page: number = 0) => {
       dispatch(
-        fetchChildrenOfManufacturingOrder({
+        (fetchChildrenOfManufacturingOrder as any)({
           parentManufOrderId: manufOrder?.id,
           companyId: user.activeCompany?.id,
           page,
@@ -81,7 +81,7 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
     [dispatch, manufOrder?.id, user.activeCompany?.id],
   );
 
-  const handleViewItem = item => {
+  const handleViewItem = (item: any) => {
     if (item != null) {
       navigation.popTo('ManufacturingOrderDetailsScreen', {
         manufacturingOrderId: item.id,
@@ -104,21 +104,21 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
   }, [ManufOrder?.statusSelect, getSelectionItems, selectedStatus]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <>
-            <ManufacturingOrderHeader
-              parentMO={manufOrder.parentMO}
-              reference={manufOrder.manufOrderSeq}
-              status={manufOrder.statusSelect}
-              priority={manufOrder.prioritySelect}
-            />
+          <ManufacturingOrderHeader
+            parentMO={manufOrder.parentMO}
+            reference={manufOrder.manufOrderSeq}
+            status={manufOrder.statusSelect}
+            priority={manufOrder.prioritySelect}>
             <View style={styles.titleContainer}>
-              <Text>{I18n.t('Manufacturing_ChildrenMO')}</Text>
+              <Text writingType="important">
+                {I18n.t('Manufacturing_ChildrenMO')}
+              </Text>
             </View>
-          </>
+          </ManufacturingOrderHeader>
         }
         chipComponent={
           <ChipSelect
@@ -133,18 +133,8 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
         data={filteredList}
         renderItem={({item}) => (
           <ManufacturingOrderCard
-            reference={item.manufOrderSeq}
-            status={item.statusSelect}
+            {...item}
             style={styles.item}
-            priority={item.prioritySelect == null ? null : item.prioritySelect}
-            productName={item.product.fullName}
-            qty={item.qty}
-            unit={item.unit}
-            link={{ordersRef: item.saleOrderSet, client: item.clientPartner}}
-            plannedStartDate={item.plannedStartDateT}
-            plannedEndDate={item.plannedEndDateT}
-            realStartDate={item.realStartDateT}
-            realEndDate={item.realEndDateT}
             onPress={() => handleViewItem(item)}
           />
         )}

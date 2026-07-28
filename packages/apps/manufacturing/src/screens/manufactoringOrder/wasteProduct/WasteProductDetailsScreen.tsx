@@ -17,13 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Picker,
   QuantityCard,
   Screen,
-  ScrollView,
+  KeyboardAvoidingScrollView,
   HeaderContainer,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -44,11 +45,11 @@ import {
 import {fetchProdProductWithId} from '../../../features/prodProductSlice';
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
-const WasteProductDetailsScreen = ({route, navigation}) => {
-  const manufOrderId = route.params.manufOrderId;
-  const wasteProductId = route.params.wasteProductId;
+const WasteProductDetailsScreen = ({navigation, route}: any) => {
+  const {manufOrderId, wasteProductId} = route?.params ?? {};
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const Colors = useThemeColor();
+  const dispatch: any = useDispatch();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
@@ -60,7 +61,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
     state => state.manufacturingOrder,
   );
 
-  const [unit, setUnit] = useState(null);
+  const [unit, setUnit] = useState<any>();
   const [wasteQty, setWasteQty] = useState(0);
 
   const product = useMemo(
@@ -69,25 +70,21 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
     [prodProduct?.product, route.params.product, wasteProductId],
   );
 
-  useEffect(() => {
-    getManufOrderAndWasteProduct();
-  }, [getManufOrderAndWasteProduct]);
-
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {product});
-  };
-
   const handleNavigateBackToList = useCallback(() => {
     navigation.popTo('WasteProductListScreen', {manufOrder});
   }, [manufOrder, navigation]);
 
   const getManufOrderAndWasteProduct = useCallback(() => {
-    dispatch(fetchUnit());
-    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
+    dispatch((fetchUnit as any)());
+    dispatch((fetchManufOrder as any)({manufOrderId}));
     if (wasteProductId != null) {
-      dispatch(fetchProdProductWithId({productId: wasteProductId}));
+      dispatch((fetchProdProductWithId as any)({productId: wasteProductId}));
     }
   }, [dispatch, manufOrderId, wasteProductId]);
+
+  useEffect(() => {
+    getManufOrderAndWasteProduct();
+  }, [getManufOrderAndWasteProduct]);
 
   useEffect(() => {
     setWasteQty(prodProduct?.qty);
@@ -96,7 +93,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   const handleCreateWasteProduct = useCallback(() => {
     dispatch(
-      addWasteProductToManufOrder({
+      (addWasteProductToManufOrder as any)({
         manufOrderVersion: manufOrder.version,
         manufOrderId: manufOrder.id,
         productId: product.id,
@@ -108,7 +105,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   const handleUpdateWasteProduct = useCallback(() => {
     dispatch(
-      updateWasteProductOfManufOrder({
+      (updateWasteProductOfManufOrder as any)({
         manufOrderId: manufOrder?.id,
         page: 0,
         prodProductVersion: prodProduct.version,
@@ -121,7 +118,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         <ProdProductFixedItems
           show={
@@ -144,52 +141,62 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView
-        style={styles.container}
+      <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 70, android: 100}}
         refresh={
           wasteProductId != null
             ? {
                 loading: loadingOrder,
                 fetcher: getManufOrderAndWasteProduct,
               }
-            : null
+            : undefined
         }>
         <ProductCardInfo product={product} />
-        <QuantityCard
-          labelQty={I18n.t('Manufacturing_WasteQty')}
-          defaultValue={wasteQty}
-          editable={
-            !readonly &&
-            manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress &&
-            manufOrder?.wasteStockMove == null
-          }
-          onValueChange={setWasteQty}
-          isBigButton={true}
-          translator={I18n.t}
-        />
-        <Picker
-          title={I18n.t('Stock_Unit')}
-          onValueChange={setUnit}
-          defaultValue={unit?.id}
-          listItems={unitList}
-          labelField="name"
-          valueField="id"
-          readonly={
-            readonly ||
-            manufOrder.statusSelect >= ManufOrder?.statusSelect.Finished
-          }
-          required={true}
-          isScrollViewContainer={true}
-        />
-      </ScrollView>
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <QuantityCard
+            labelQty={I18n.t('Manufacturing_WasteQty')}
+            defaultValue={wasteQty}
+            editable={
+              !readonly &&
+              manufOrder?.statusSelect ===
+                ManufOrder?.statusSelect.InProgress &&
+              manufOrder?.wasteStockMove == null
+            }
+            onValueChange={setWasteQty}
+            isBigButton
+            isFormWrapper
+            translator={I18n.t}
+          />
+          <Picker
+            title={I18n.t('Stock_Unit')}
+            onValueChange={setUnit}
+            defaultValue={unit?.id}
+            listItems={unitList}
+            labelField="name"
+            valueField="id"
+            readonly={
+              readonly ||
+              manufOrder.statusSelect >= ManufOrder?.statusSelect.Finished
+            }
+            required
+            isScrollViewContainer
+          />
+        </View>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    minHeight: '100%',
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
   },
 });
 

@@ -20,25 +20,25 @@ import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {Screen, ScrollList, HeaderContainer, Text} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {fetchLinkedManufOrders} from '../../features/manufacturingOrderSlice';
 import {
   LinkedManufacturingOrderCard,
   ManufacturingOrderHeader,
 } from '../../components';
-import {fetchLinkedManufOrders} from '../../features/manufacturingOrderSlice';
 
-const ManufacturingOrderListProductionOrderScreen = ({route}) => {
-  const manufOrder = route.params.manufOrder;
+const ManufacturingOrderListProductionOrderScreen = ({route}: any) => {
+  const {manufOrder} = route?.params ?? {};
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const {loadingLinkMO, moreLoadingLinkMO, isListEndLinkMO, linkedManufOrders} =
     useSelector(state => state.manufacturingOrder);
   const {user} = useSelector(state => state.user);
 
   const fetchManufOrderAPI = useCallback(
-    (page = 0) => {
+    (page: number = 0) => {
       dispatch(
-        fetchLinkedManufOrders({
+        (fetchLinkedManufOrders as any)({
           productionOrderList: manufOrder.productionOrderSet,
           companyId: user.activeCompany?.id,
           page,
@@ -49,21 +49,19 @@ const ManufacturingOrderListProductionOrderScreen = ({route}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <>
-            <ManufacturingOrderHeader
-              parentMO={manufOrder.parentMO}
-              reference={manufOrder.manufOrderSeq}
-              status={manufOrder.statusSelect}
-              priority={manufOrder.prioritySelect}
-            />
-            <Text style={styles.orderTitle}>
+          <ManufacturingOrderHeader
+            parentMO={manufOrder.parentMO}
+            reference={manufOrder.manufOrderSeq}
+            status={manufOrder.statusSelect}
+            priority={manufOrder.prioritySelect}>
+            <Text style={styles.orderTitle} writingType="important">
               {I18n.t('Manufacturing_RefOP')}
             </Text>
-          </>
+          </ManufacturingOrderHeader>
         }
       />
       <ScrollList
@@ -86,10 +84,7 @@ const ManufacturingOrderListProductionOrderScreen = ({route}) => {
 
 const styles = StyleSheet.create({
   orderTitle: {
-    marginLeft: 12,
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginHorizontal: 8,
+    marginHorizontal: 24,
   },
 });
 
