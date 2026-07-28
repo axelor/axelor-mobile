@@ -22,17 +22,17 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
+import {searchPackagingBranchApi} from '../../../../api';
+import {
+  searchPackaging,
+  searchParentPackaging,
+} from '../../../../features/packagingSlice';
+import {usePackagingItemActions} from '../../../../hooks';
 import {
   LogisticalFormHeader,
   LogisticalFormPackagingCard,
   LogisticalFormPackagingLineActionCard,
 } from '../../logisticalForm';
-import {
-  searchPackaging,
-  searchParentPackaging,
-} from '../../../../features/packagingSlice';
-import {searchPackagingBranchApi} from '../../../../api';
-import {usePackagingItemActions} from '../../../../hooks';
 
 const LogisticalFormPackagingView = () => {
   const I18n = useTranslator();

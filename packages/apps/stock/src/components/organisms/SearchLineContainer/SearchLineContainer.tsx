@@ -144,7 +144,7 @@ const SearchLineContainer = ({
           style={styles.iconContainer}
           onPress={onViewPress}
           activeOpacity={0.9}>
-          <Text fontSize={14}>{I18n.t('Base_ViewAll')}</Text>
+          <Text>{I18n.t('Base_ViewAll')}</Text>
           <Icon
             name="chevron-right"
             color={Colors.secondaryColor.background_light}
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     alignContent: 'center',
-    margin: 2,
+    margin: 4,
     gap: 5,
   },
 });

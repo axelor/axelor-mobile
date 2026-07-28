@@ -76,7 +76,7 @@ const StockLocationSearchBar = ({
   const {user} = useSelector(state => state.user);
 
   const fetchStockLocationsAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
         (searchStockLocations as any)({
           page,
@@ -91,7 +91,7 @@ const StockLocationSearchBar = ({
   );
 
   const fetchStockLocationsMultiFilterAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
         (filterSecondStockLocations as any)({
           page,
@@ -115,7 +115,7 @@ const StockLocationSearchBar = ({
 
   return (
     <ScannerAutocompleteSearch
-      title={showTitle && I18n.t(titleKey)}
+      title={showTitle ? I18n.t(titleKey) : undefined}
       objectList={
         secondFilter ? stockLocationListMultiFilter : stockLocationList
       }

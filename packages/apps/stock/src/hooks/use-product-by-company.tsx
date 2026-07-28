@@ -53,7 +53,7 @@ export const useTrackingConfigByCompany = () => {
   );
 };
 
-export const useProductByCompany = (productId: boolean) => {
+export const useProductByCompany = (productId?: number) => {
   const dispatch = useDispatch();
   const isTrackingNumberConfiguration = useTrackingConfigByCompany();
 

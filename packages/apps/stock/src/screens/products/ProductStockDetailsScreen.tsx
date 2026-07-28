@@ -1,0 +1,179 @@
+/*
+ * Axelor Business Solutions
+ *
+ * Copyright (C) 2026 Axelor (<http://axelor.com>).
+ *
+ * This program is free software: you can redistribute it and/or  modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  EditableInput,
+  HeaderContainer,
+  Picker,
+  Screen,
+  ScrollView,
+  useConfig,
+} from '@axelor/aos-mobile-ui';
+import {
+  useContextRegister,
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+  useIsFocused,
+} from '@axelor/aos-mobile-core';
+import {
+  ProductCardStockIndicatorList,
+  ProductSeeStockLocationDistribution,
+  ProductStockHeader,
+  StockLocationSearchBar,
+} from '../../components';
+import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
+import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
+import {
+  fetchProductWithId,
+  updateProductLocker,
+} from '../../features/productSlice';
+
+const stockLocationScanKey = 'stock-location_product-indicators';
+
+const ProductStockDetailsScreen = ({route, addtionalIndicators}: any) => {
+  const productId = route.params.product?.id;
+  useContextRegister({
+    models: [{model: 'com.axelor.apps.base.db.Product', id: productId}],
+  });
+  const I18n = useTranslator();
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const {readonly, hidden} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockLocationLine',
+  });
+  const {setActivityIndicator} = useConfig();
+
+  const {loadingProductFromId, productFromId: product} = useSelector(
+    state => state.product,
+  );
+  const {user, canModifyCompany} = useSelector(state => state.user);
+  const {companyList} = useSelector(state => state.company);
+  const {stockLocationLine} = useSelector(state => state.stockLocationLine);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+
+  const [companyId, setCompany] = useState<any>(user.activeCompany?.id);
+  const [stockLocation, setStockLocation] = useState<any>(
+    user?.workshopStockLocation,
+  );
+
+  const fetchProductFromId = useCallback(() => {
+    dispatch(fetchProductWithId(productId));
+  }, [dispatch, productId]);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchProductFromId();
+    }
+  }, [fetchProductFromId, isFocused]);
+
+  useEffect(() => {
+    if (product?.id != null) {
+      dispatch(
+        (fetchProductIndicators as any)({
+          version: product.version,
+          productId: product.id,
+          companyId: companyId,
+          stockLocationId: stockLocation?.id,
+        }),
+      );
+
+      if (stockLocation != null) {
+        dispatch(
+          (fetchStockLocationLine as any)({
+            stockId: stockLocation.id,
+            productId: product.id,
+          }),
+        );
+      }
+    }
+  }, [companyId, dispatch, product, stockLocation]);
+
+  useEffect(() => {
+    setActivityIndicator(loadingProductFromId && product?.id == null);
+  }, [loadingProductFromId, product, setActivityIndicator]);
+
+  const handleLockerChange = (input: any) => {
+    if (stockLocation != null) {
+      dispatch(
+        (updateProductLocker as any)({
+          productId: product.id,
+          stockLocationId: stockLocation.id,
+          newLocker: input.toString(),
+          version: product.version,
+        }),
+      );
+    }
+  };
+
+  if (product?.id !== productId) return null;
+
+  return (
+    <Screen removeSpaceOnTop>
+      <ScrollView
+        refresh={{fetcher: fetchProductFromId, loading: loadingProductFromId}}>
+        <ProductStockHeader
+          product={product}
+          companyId={companyId}
+          stockLocation={stockLocation}
+        />
+        <HeaderContainer
+          expandableFilter={false}
+          fixedItems={
+            <>
+              {baseConfig?.enableMultiCompany && canModifyCompany && (
+                <Picker
+                  title={I18n.t('User_Company')}
+                  defaultValue={companyId}
+                  listItems={companyList}
+                  labelField="name"
+                  valueField="id"
+                  onValueChange={setCompany}
+                />
+              )}
+              {!hidden && (
+                <ProductSeeStockLocationDistribution companyId={companyId} />
+              )}
+              <StockLocationSearchBar
+                scanKey={stockLocationScanKey}
+                onChange={setStockLocation}
+                defaultValue={stockLocation}
+              />
+              {readonly || stockLocation == null ? null : (
+                <EditableInput
+                  placeholder={I18n.t('Stock_Locker')}
+                  onValidate={handleLockerChange}
+                  defaultValue={stockLocationLine?.[0]?.rack}
+                />
+              )}
+            </>
+          }
+        />
+        <ProductCardStockIndicatorList
+          stockLocationId={stockLocation?.id}
+          companyId={companyId}
+          addtionalIndicators={addtionalIndicators}
+        />
+      </ScrollView>
+    </Screen>
+  );
+};
+
+export default ProductStockDetailsScreen;

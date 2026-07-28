@@ -25,9 +25,9 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {LogisticalFormCard, LogisticalFormFilter} from '../../components';
 import {searchLogisticalForms} from '../../features/logisticalFormSlice';
 import {displayLogisticalForm} from '../../utils';
+import {LogisticalFormCard, LogisticalFormFilter} from '../../components';
 
 const stockLocationScanKey = 'stock-location_logistical-form-list';
 
@@ -41,10 +41,10 @@ const LogisticalFormListScreen = ({navigation}: any) => {
   );
   const {user} = useSelector(state => state.user);
 
-  const [carrier, setCarrier] = useState<any>(null);
-  const [stockLocation, setStockLocation] = useState<any>(null);
-  const [collectionDate, setCollectionDate] = useState<Date>(null);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [carrier, setCarrier] = useState<any>();
+  const [stockLocation, setStockLocation] = useState<any>();
+  const [collectionDate, setCollectionDate] = useState<Date>();
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const statusList = useMemo(
     () => getSelectionItems(LogisticalForm?.statusSelect, selectedStatus),
@@ -69,7 +69,7 @@ const LogisticalFormListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={logisticalFormList}
         loading={loadingList}
@@ -99,11 +99,7 @@ const LogisticalFormListScreen = ({navigation}: any) => {
         }
         renderListItem={({item}) => (
           <LogisticalFormCard
-            reference={item.deliveryNumberSeq}
-            carrier={item.carrierPartner?.fullName}
-            stockLocation={item.stockLocation?.name}
-            collectionDate={item.collectionDate}
-            status={item.statusSelect}
+            {...item}
             onPress={() =>
               navigation.navigate('LogisticalFormDetailsScreen', {
                 logisticalFormId: item.id,

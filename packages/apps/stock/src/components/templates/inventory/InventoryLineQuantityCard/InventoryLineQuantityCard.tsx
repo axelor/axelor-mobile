@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {useTranslator, useSelector, useTypes} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 
 const InventoryLineQuantityCard = ({
@@ -25,23 +25,23 @@ const InventoryLineQuantityCard = ({
   setRealQty,
   inventoryLine,
   readonly = false,
+}: {
+  realQty: number;
+  setRealQty: (_v?: any) => void;
+  inventoryLine?: any;
+  readonly?: boolean;
 }) => {
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
-  const {Inventory} = useTypes();
-
-  const {inventory} = useSelector((state: any) => state.inventory);
 
   return (
     <QuantityCard
       labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
       defaultValue={realQty}
       onValueChange={setRealQty}
-      editable={
-        !readonly &&
-        inventory.statusSelect !== Inventory?.statusSelect.Validated
-      }
-      isBigButton={true}
+      editable={!readonly}
+      isBigButton
+      isFormWrapper
       translator={I18n.t}>
       {inventoryLine == null ? (
         <Text>

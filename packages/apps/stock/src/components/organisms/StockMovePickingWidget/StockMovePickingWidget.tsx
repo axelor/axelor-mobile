@@ -75,7 +75,7 @@ const StockMovePickingWidget = ({
   }, [totalLines, validatedLines]);
 
   const handleScanValue = useCallback(
-    async (scanValue: string, {disableScan}: {disableScan: () => void}) => {
+    async (scanValue: string, tools?: {disableScan: () => void}) => {
       const data = await searchStockMoveLineApi({stockMoveId, scanValue}).then(
         res => res?.data?.data,
       );
@@ -113,7 +113,7 @@ const StockMovePickingWidget = ({
         onPress: !handleShowLine
           ? undefined
           : () => {
-              disableScan();
+              tools?.disableScan();
               handleShowLine(line);
             },
       });
@@ -134,7 +134,7 @@ const StockMovePickingWidget = ({
   );
 
   const isAvailable = useMemo(
-    () => !readonly && stockMoveStatus < StockMove?.statusSelect.Realized,
+    () => !readonly && stockMoveStatus! < StockMove?.statusSelect.Realized,
     [StockMove?.statusSelect.Realized, readonly, stockMoveStatus],
   );
 

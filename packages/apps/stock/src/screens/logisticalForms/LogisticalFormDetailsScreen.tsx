@@ -25,12 +25,12 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {fetchLogisticalForm} from '../../features/logisticalFormSlice';
 import {
   LogisticalFormGeneralInformationView,
   LogisticalFormPackagingView,
   LogisticalFormStockMoveLinesView,
 } from '../../components';
-import {fetchLogisticalForm} from '../../features/logisticalFormSlice';
 
 const LogisticalFormDetailsScreen = ({navigation, route}: any) => {
   const {logisticalFormId} = route?.params ?? {};
@@ -100,12 +100,10 @@ const LogisticalFormDetailsScreen = ({navigation, route}: any) => {
     ],
   );
 
-  if (logisticalForm?.id !== logisticalFormId) {
-    return null;
-  }
+  if (logisticalForm?.id !== logisticalFormId) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <BottomBar items={bottomBarItems} />
     </Screen>
   );

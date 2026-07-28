@@ -48,7 +48,7 @@ import {fetchHazardPhrases} from '../../features/hazardPhraseSlice';
 
 const MODELS = {ManufOrder: 'com.axelor.apps.production.db.ManufOrder'};
 
-const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
+const ManufacturingOrderDetailsScreen = ({route, navigation}: any) => {
   const {manufacturingOrderId: manufOrderId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -84,10 +84,6 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   useEffect(() => {
     fetchManufOrderAndOperation();
   }, [fetchManufOrderAndOperation]);
-
-  const handleShowProduct = useCallback(() => {
-    navigation.navigate('ProductStockDetailsScreen', {product});
-  }, [navigation, product]);
 
   const handleViewAll = useCallback(() => {
     navigation.navigate('ManufacturingOrderOperationListScreen', {manufOrder});
@@ -125,12 +121,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
         style={styles.scroll}
         refresh={{loading: loadingOrder, fetcher: fetchManufOrderAndOperation}}>
         <ManufacturingOrderDatesCard />
-        <ProductCardInfo
-          onPress={handleShowProduct}
-          picture={product?.picture}
-          code={product?.code}
-          name={product?.name}
-        />
+        <ProductCardInfo product={product} />
         <ManufacturingOrderSaleOrderSetView />
         <ManufacturingOrderProductionOrderSetView />
         <ManufacturingOrderHalfLabelCardList />
