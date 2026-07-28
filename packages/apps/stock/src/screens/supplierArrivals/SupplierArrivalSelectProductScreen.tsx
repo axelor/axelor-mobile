@@ -16,88 +16,89 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {StockMove} from '../../types';
 import {
   ProductCardInfo,
+  ProductSearchBar,
   StockMoveHeader,
-  SupplierArrivalTrackingNumberSelect,
 } from '../../components';
-import StockMove from '../../types/stock-move';
 
-const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
-  const {product, supplierArrival, supplierArrivalLine} = route.params;
+const productScanKey = 'product_supplier-arrival-select';
+
+const SupplierArrivalSelectProductScreen = ({navigation, route}: any) => {
+  const {product, supplierArrival, supplierArrivalLine} = route?.params ?? {};
   const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
 
-  const handleTrackingNumberSelection = item => {
-    if (item !== null) {
+  const handleProductSelection = useCallback(
+    (item: any) => {
+      if (item == null) return;
+
       if (
         supplierArrivalLine != null &&
-        item.id !== supplierArrivalLine.trackingNumber?.id
+        item.id !== supplierArrivalLine?.product.id
       ) {
         setVisible(true);
+      } else if (item.trackingNumberConfiguration != null) {
+        navigation.navigate('SupplierArrivalSelectTrackingScreen', {
+          supplierArrivalLine,
+          supplierArrival,
+          product: item,
+        });
       } else {
         navigation.navigate('SupplierArrivalLineDetailScreen', {
           supplierArrivalLineId: supplierArrivalLine?.id,
-          supplierArrival: supplierArrival,
-          productId: product?.id,
-          trackingNumber: item,
+          supplierArrival,
+          productId: item?.id,
         });
       }
-    }
-  };
+    },
+    [navigation, supplierArrival, supplierArrivalLine],
+  );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
           <StockMoveHeader
-            reference={supplierArrival.stockMoveSeq}
+            reference={supplierArrival?.stockMoveSeq}
             lineRef={supplierArrivalLine?.name}
-            status={supplierArrival.statusSelect}
-            date={
-              supplierArrival
-                ? StockMove.getStockMoveDate(
-                    supplierArrival.statusSelect,
-                    supplierArrival,
-                  )
-                : null
-            }
+            status={supplierArrival?.statusSelect}
+            date={StockMove.getStockMoveDate(
+              supplierArrival?.statusSelect,
+              supplierArrival,
+            )}
           />
         }
       />
       <ProductCardInfo
-        onPress={() =>
-          navigation.navigate('ProductStockDetailsScreen', {product})
-        }
-        picture={product?.picture}
-        code={product?.code}
-        name={product?.name}
-        trackingNumber={supplierArrivalLine?.trackingNumber?.trackingNumberSeq}
+        product={product}
+        trackingNumber={supplierArrivalLine?.trackingNumber}
         locker={supplierArrivalLine?.locker}
       />
-      <SupplierArrivalTrackingNumberSelect
-        product={product}
-        supplierArrival={supplierArrival}
-        handleTrackingNumberSelection={handleTrackingNumberSelection}
-        supplierArrivalLine={supplierArrivalLine}
+      <ProductSearchBar
+        scanKey={productScanKey}
+        onChange={handleProductSelection}
+        isFocus
+        changeScreenAfter
       />
       <Alert
         visible={isVisible}
         title={I18n.t('Auth_Warning')}
         confirmButtonConfig={{
           width: 50,
-          title: null,
+          title: undefined,
           onPress: () => setVisible(false),
         }}>
-        <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>
+        <Text>{I18n.t('Stock_ErrorProduct')}</Text>
       </Alert>
     </Screen>
   );
 };
 
-export default SupplierArrivalSelectTrackingScreen;
+export default SupplierArrivalSelectProductScreen;

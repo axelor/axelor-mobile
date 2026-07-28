@@ -63,7 +63,7 @@ const SupplierArrivalShipmentDropdownCard = ({
     (ref: string | undefined, date: string | undefined) => {
       setEditPopupVisible(false);
       dispatch(
-        updateSupplierArrivalShipmentDetails({
+        (updateSupplierArrivalShipmentDetails as any)({
           id: supplierArrival.id,
           version: supplierArrival.version,
           supplierShipmentRef: ref ?? null,
@@ -79,6 +79,7 @@ const SupplierArrivalShipmentDropdownCard = ({
       {
         key: 1,
         title: I18n.t('Stock_SupplierShipmentDetails'),
+        iconName: 'truck',
         childrenComp: (
           <>
             <LabelText

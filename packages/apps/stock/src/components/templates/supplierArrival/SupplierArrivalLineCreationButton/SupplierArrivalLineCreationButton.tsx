@@ -34,6 +34,15 @@ const SupplierArrivalLineCreationButton = ({
   toStockLocation,
   description,
   visible = true,
+}: {
+  supplierArrival: any;
+  product: any;
+  realQty?: number;
+  trackingNumber?: any;
+  conformity?: any;
+  toStockLocation?: any;
+  description?: string;
+  visible?: boolean;
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -47,7 +56,7 @@ const SupplierArrivalLineCreationButton = ({
 
   const handleAddLine = useCallback(() => {
     dispatch(
-      addNewLine({
+      (addNewLine as any)({
         stockMoveId: supplierArrival.id,
         version: supplierArrival.version,
         productId: product.id,
@@ -74,9 +83,7 @@ const SupplierArrivalLineCreationButton = ({
     navigateBackToDetails,
   ]);
 
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
   return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
 };

@@ -21,7 +21,7 @@ import {Text, Icon} from '@axelor/aos-mobile-ui';
 import {View, StyleSheet} from 'react-native';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 
-const SupplierProductInfo = ({}) => {
+const SupplierProductInfo = ({style}: {style?: any}) => {
   const I18n = useTranslator();
 
   const {supplierProductInfo} = useSelector(state => state.supplierCatalog);
@@ -34,12 +34,10 @@ const SupplierProductInfo = ({}) => {
   }
 
   return (
-    <View style={styles.supplierInfoContainer}>
+    <View style={[styles.supplierInfoContainer, style]}>
       <Icon name="info-circle-fill" size={20} />
       <View style={styles.supplierInfo}>
-        <Text style={styles.text_important}>
-          {I18n.t('Stock_SupplierCatalog')}
-        </Text>
+        <Text writingType="important">{I18n.t('Stock_SupplierCatalog')}</Text>
         <Text>{`${I18n.t('Stock_Name')} : ${
           supplierProductInfo?.productSupplierName
         }`}</Text>
@@ -54,16 +52,13 @@ const SupplierProductInfo = ({}) => {
 const styles = StyleSheet.create({
   supplierInfoContainer: {
     width: '90%',
+    alignSelf: 'center',
     flexDirection: 'row',
     marginVertical: 10,
+    gap: 10,
   },
   supplierInfo: {
-    marginLeft: '3%',
-    flexDirection: 'column',
-  },
-  text_important: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    flexShrink: 1,
   },
 });
 

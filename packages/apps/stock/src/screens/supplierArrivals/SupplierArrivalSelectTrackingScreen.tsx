@@ -16,95 +16,82 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {StockMove} from '../../types';
 import {
   ProductCardInfo,
-  ProductSearchBar,
   StockMoveHeader,
+  SupplierArrivalTrackingNumberSelect,
 } from '../../components';
-import StockMove from '../../types/stock-move';
 
-const productScanKey = 'product_supplier-arrival-select';
-
-const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
-  const {product, supplierArrival, supplierArrivalLine} = route.params;
+const SupplierArrivalSelectTrackingScreen = ({navigation, route}: any) => {
+  const {product, supplierArrival, supplierArrivalLine} = route?.params ?? {};
   const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
 
-  const handleProductSelection = item => {
-    if (item !== null) {
+  const handleTrackingNumberSelection = useCallback(
+    (item: any) => {
+      if (item == null) return;
+
       if (
         supplierArrivalLine != null &&
-        item.id !== supplierArrivalLine?.product.id
+        item.id !== supplierArrivalLine.trackingNumber?.id
       ) {
         setVisible(true);
-      } else if (item.trackingNumberConfiguration != null) {
-        navigation.navigate('SupplierArrivalSelectTrackingScreen', {
-          supplierArrivalLine: supplierArrivalLine,
-          supplierArrival: supplierArrival,
-          product: item,
-        });
       } else {
         navigation.navigate('SupplierArrivalLineDetailScreen', {
           supplierArrivalLineId: supplierArrivalLine?.id,
-          supplierArrival: supplierArrival,
-          productId: item?.id,
+          supplierArrival,
+          productId: product?.id,
+          trackingNumber: item,
         });
       }
-    }
-  };
+    },
+    [navigation, product?.id, supplierArrival, supplierArrivalLine],
+  );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
           <StockMoveHeader
-            reference={supplierArrival?.stockMoveSeq}
+            reference={supplierArrival.stockMoveSeq}
             lineRef={supplierArrivalLine?.name}
-            status={supplierArrival?.statusSelect}
-            date={
-              supplierArrival
-                ? StockMove.getStockMoveDate(
-                    supplierArrival.statusSelect,
-                    supplierArrival,
-                  )
-                : null
-            }
+            status={supplierArrival.statusSelect}
+            date={StockMove.getStockMoveDate(
+              supplierArrival.statusSelect,
+              supplierArrival,
+            )}
           />
         }
       />
       <ProductCardInfo
-        onPress={() =>
-          navigation.navigate('ProductStockDetailsScreen', {product})
-        }
-        picture={product?.picture}
-        code={product?.code}
-        name={product?.name}
-        trackingNumber={supplierArrivalLine?.trackingNumber?.trackingNumberSeq}
+        product={product}
+        trackingNumber={supplierArrivalLine?.trackingNumber}
         locker={supplierArrivalLine?.locker}
       />
-      <ProductSearchBar
-        scanKey={productScanKey}
-        onChange={handleProductSelection}
-        isFocus={true}
-        changeScreenAfter={true}
+      <SupplierArrivalTrackingNumberSelect
+        product={product}
+        supplierArrival={supplierArrival}
+        handleTrackingNumberSelection={handleTrackingNumberSelection}
+        supplierArrivalLine={supplierArrivalLine}
       />
       <Alert
         visible={isVisible}
         title={I18n.t('Auth_Warning')}
         confirmButtonConfig={{
           width: 50,
-          title: null,
+          title: undefined,
           onPress: () => setVisible(false),
         }}>
-        <Text>{I18n.t('Stock_ErrorProduct')}</Text>
+        <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>
       </Alert>
     </Screen>
   );
 };
 
-export default SupplierArrivalSelectProductScreen;
+export default SupplierArrivalSelectTrackingScreen;

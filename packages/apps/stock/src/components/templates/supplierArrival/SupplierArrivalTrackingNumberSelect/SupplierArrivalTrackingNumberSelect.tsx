@@ -29,10 +29,17 @@ import {TrackingNumberSearchBar} from '../../../templates';
 const trackingScanKey = 'tracking_supplier-arrival-select';
 
 const SupplierArrivalTrackingNumberSelect = ({
+  style,
   product,
   supplierArrivalLine,
   supplierArrival,
   handleTrackingNumberSelection,
+}: {
+  style?: any;
+  product: any;
+  supplierArrivalLine?: any;
+  supplierArrival: any;
+  handleTrackingNumberSelection: (_v?: any) => void;
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -43,32 +50,31 @@ const SupplierArrivalTrackingNumberSelect = ({
 
   const handleAddTrackingNumber = () => {
     navigation.navigate('SupplierArrivalAddTrackingScreen', {
-      supplierArrivalLine: supplierArrivalLine,
-      supplierArrival: supplierArrival,
-      product: product,
+      supplierArrivalLine,
+      supplierArrival,
+      product,
     });
   };
 
   return (
-    <View>
+    <View style={style}>
       {canCreate && (
         <TouchableOpacity
           style={styles.trackingNumberContainer}
           onPress={handleAddTrackingNumber}>
-          <Text fontSize={14}>{I18n.t('Stock_AddTrackingNumber')}</Text>
+          <Text>{I18n.t('Stock_AddTrackingNumber')}</Text>
           <Icon
             name="plus-lg"
             color={Colors.primaryColor.background}
-            size={24}
-            style={styles.action}
+            size={20}
           />
         </TouchableOpacity>
       )}
       <TrackingNumberSearchBar
         scanKey={trackingScanKey}
         onChange={handleTrackingNumberSelection}
-        isFocus={true}
-        changeScreenAfter={true}
+        isFocus
+        changeScreenAfter
         product={product}
       />
     </View>
@@ -82,9 +88,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 24,
     marginTop: 10,
-  },
-  action: {
-    marginLeft: 10,
+    gap: 10,
   },
 });
 

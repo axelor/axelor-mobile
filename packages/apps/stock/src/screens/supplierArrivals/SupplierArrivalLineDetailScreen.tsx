@@ -17,13 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
   Picker,
   Screen,
   KeyboardAvoidingScrollView,
   FormHtmlInput,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
@@ -34,6 +35,11 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
+import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
+import {updateStockMoveLineTrackingNumber} from '../../features/trackingNumberSlice';
+import {StockMove as StockMoveType, StockMoveLine} from '../../types';
+import {useLineWithRack, useProductByCompany} from '../../hooks';
 import {
   StockMoveHeader,
   ProductCardInfo,
@@ -44,17 +50,14 @@ import {
   SupplierArrivalTrackingNumberSelect,
   SupplierArrivalOriginInput,
 } from '../../components';
-import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
-import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
-import {updateStockMoveLineTrackingNumber} from '../../features/trackingNumberSlice';
-import {StockMove as StockMoveType, StockMoveLine} from '../../types';
-import {useLineWithRack, useProductByCompany} from '../../hooks';
 
 const stockLocationScanKey = 'to-stock-location_supplier-arrival-line-update';
 
-const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
-  const {supplierArrival, supplierArrivalLineId, productId} = route.params;
+const SupplierArrivalLineDetailScreen = ({route}: any) => {
+  const {supplierArrival, supplierArrivalLineId, productId} =
+    route?.params ?? {};
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {StockMove} = useTypes();
   const {getSelectionItems, getItemTitle} = useTypeHelpers();
@@ -84,22 +87,29 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     supplierArrivalLine,
   );
 
-  const trackingNumber = useMemo(
-    () => supplierArrivalLine?.trackingNumber,
-    [supplierArrivalLine],
-  );
-
-  const [toStockLocation, setToStockLocation] = useState(null);
-  const [realQty, setRealQty] = useState(0);
-  const [origin, setOrigin] = useState();
-  const [description, setDescription] = useState('');
-  const [conformity, setConformity] = useState({
+  const [toStockLocation, setToStockLocation] = useState<any>();
+  const [realQty, setRealQty] = useState<number>(0);
+  const [origin, setOrigin] = useState<string>();
+  const [description, setDescription] = useState<string | undefined>('');
+  const [conformity, setConformity] = useState<any>({
     title: getItemTitle(
       StockMove?.conformitySelect,
       StockMove?.conformitySelect.None,
     ),
     value: StockMove?.conformitySelect.None,
   });
+
+  const trackingNumber = useMemo(
+    () => supplierArrivalLine?.trackingNumber,
+    [supplierArrivalLine],
+  );
+
+  const isReadonly = useMemo(
+    () =>
+      readonly ||
+      supplierArrival?.statusSelect !== StockMove?.statusSelect.Planned,
+    [StockMove?.statusSelect.Planned, readonly, supplierArrival?.statusSelect],
+  );
 
   useEffect(() => {
     setRealQty(
@@ -129,7 +139,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     dispatch(
-      fetchProductForSupplier({
+      (fetchProductForSupplier as any)({
         supplierId: supplierArrival?.partner?.id,
         productId: supplierArrivalLine?.product?.id ?? productId,
       }),
@@ -137,39 +147,30 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   }, [dispatch, productId, supplierArrival, supplierArrivalLine]);
 
   const getSupplierArrivalLine = useCallback(() => {
-    dispatch(fetchSupplierArrivalLine({supplierArrivalLineId}));
+    dispatch((fetchSupplierArrivalLine as any)({supplierArrivalLineId}));
   }, [dispatch, supplierArrivalLineId]);
 
   useEffect(() => {
     getSupplierArrivalLine();
   }, [getSupplierArrivalLine]);
 
-  const handleConformityChange = item => {
-    if (item === null) {
-      setConformity({
-        title: getItemTitle(
-          StockMove?.conformitySelect,
-          StockMove?.conformitySelect.None,
-        ),
-        value: StockMove?.conformitySelect.None,
-      });
-    } else {
-      setConformity({
-        title: getItemTitle(StockMove?.conformitySelect, item),
-        value: item,
-      });
-    }
-  };
+  const handleConformityChange = useCallback(
+    (item: any) => {
+      const _value = item ?? StockMove?.conformitySelect.None;
 
-  const handleShowProduct = useCallback(() => {
-    navigation.navigate('ProductStockDetailsScreen', {product});
-  }, [navigation, product]);
+      setConformity({
+        title: getItemTitle(StockMove?.conformitySelect, _value),
+        value: _value,
+      });
+    },
+    [StockMove?.conformitySelect, getItemTitle],
+  );
 
   const handleTrackingNumberSelection = useCallback(
-    item => {
-      if (item !== null) {
+    (item: any) => {
+      if (item != null) {
         dispatch(
-          updateStockMoveLineTrackingNumber({
+          (updateStockMoveLineTrackingNumber as any)({
             trackingNumber: item,
             stockMoveLineId: supplierArrivalLine.id,
             stockMoveLineVersion: supplierArrivalLine.version,
@@ -195,7 +196,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         <SupplierArrivalLineButtons
           conformity={conformity}
@@ -223,90 +224,83 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         }
       />
       <KeyboardAvoidingScrollView
-        style={styles.container}
+        keyboardOffset={{ios: 70, android: 100}}
         refresh={{
           loading: loadingSupplierArrivalLine,
           fetcher: getSupplierArrivalLine,
         }}>
         <ProductCardInfo
-          onPress={handleShowProduct}
-          picture={product?.picture}
-          code={product?.code}
-          name={product?.name}
-          trackingNumber={trackingNumber?.trackingNumberSeq}
+          product={product}
+          trackingNumber={trackingNumber}
           locker={locker}
         />
-        {trackingNumber != null && (
-          <SupplierArrivalOriginInput
-            setOrigin={setOrigin}
-            trackingNumber={trackingNumber}
-            readonly={
-              supplierArrival.statusSelect === StockMove?.statusSelect.Realized
-            }
-          />
-        )}
-        {product?.trackingNumberConfiguration != null &&
-          trackingNumber == null && (
-            <SupplierArrivalTrackingNumberSelect
-              supplierArrival={supplierArrival}
-              supplierArrivalLine={supplierArrivalLine}
-              handleTrackingNumberSelection={handleTrackingNumberSelection}
-              product={product}
+        <SupplierProductInfo />
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          {trackingNumber != null && (
+            <SupplierArrivalOriginInput
+              setOrigin={setOrigin}
+              trackingNumber={trackingNumber}
+              readonly={isReadonly}
             />
           )}
-        <SupplierProductInfo />
-        <SupplierArrivalLineQuantityCard
-          realQty={realQty}
-          setRealQty={setRealQty}
-          supplierArrival={supplierArrival}
-          supplierArrivalLine={supplierArrivalLine}
-          readonly={readonly}
-        />
-        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
-          <StockLocationSearchBar
-            placeholderKey="Stock_ToStockLocation"
-            defaultValue={toStockLocation}
-            onChange={setToStockLocation}
-            scanKey={stockLocationScanKey}
-            isFocus={true}
-            defaultStockLocation={supplierArrival.toStockLocation}
-            readonly={
-              readonly ||
-              supplierArrival?.statusSelect !== StockMove?.statusSelect.Planned
-            }
+          {product?.trackingNumberConfiguration != null &&
+            trackingNumber == null && (
+              <SupplierArrivalTrackingNumberSelect
+                supplierArrival={supplierArrival}
+                supplierArrivalLine={supplierArrivalLine}
+                handleTrackingNumberSelection={handleTrackingNumberSelection}
+                product={product}
+              />
+            )}
+          <SupplierArrivalLineQuantityCard
+            realQty={realQty}
+            setRealQty={setRealQty}
+            supplierArrivalLine={supplierArrivalLine}
+            readonly={isReadonly}
           />
-        ) : null}
-        <Picker
-          title={I18n.t('Stock_Conformity')}
-          onValueChange={item => handleConformityChange(item)}
-          defaultValue={conformity?.id}
-          listItems={conformityList}
-          labelField="title"
-          valueField="value"
-          readonly={
-            readonly ||
-            supplierArrival?.statusSelect === StockMove?.statusSelect.Realized
-          }
-          isScrollViewContainer={true}
-        />
-        <FormHtmlInput
-          title={I18n.t('Base_Description')}
-          onChange={setDescription}
-          defaultValue={description}
-          readonly={
-            readonly ||
-            supplierArrival?.statusSelect === StockMove?.statusSelect.Realized
-          }
-        />
+          {stockConfig?.isManageStockLocationOnStockMoveLine ? (
+            <StockLocationSearchBar
+              placeholderKey="Stock_ToStockLocation"
+              defaultValue={toStockLocation}
+              onChange={setToStockLocation}
+              scanKey={stockLocationScanKey}
+              isFocus
+              defaultStockLocation={supplierArrival.toStockLocation}
+              readonly={isReadonly}
+            />
+          ) : null}
+          <Picker
+            title={I18n.t('Stock_Conformity')}
+            onValueChange={handleConformityChange}
+            defaultValue={conformity?.value}
+            listItems={conformityList}
+            labelField="title"
+            valueField="value"
+            readonly={isReadonly}
+            isScrollViewContainer
+          />
+          <FormHtmlInput
+            title={I18n.t('Base_Description')}
+            onChange={setDescription}
+            defaultValue={description}
+            readonly={isReadonly}
+          />
+        </View>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    paddingBottom: 100,
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
   },
 });
 

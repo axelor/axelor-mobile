@@ -24,20 +24,25 @@ import {StockMoveHeader} from '../../../organisms';
 
 const SupplierArrivalHeader = ({supplierArrival}: {supplierArrival: any}) => {
   return (
-    <View>
-      <StockMoveHeader
-        reference={supplierArrival.stockMoveSeq}
-        status={supplierArrival.statusSelect}
-        date={
-          supplierArrival
-            ? StockMove.getStockMoveDate(
-                supplierArrival.statusSelect,
-                supplierArrival,
-              )
-            : null
-        }
-      />
-      <View style={styles.clientContainer}>
+    <StockMoveHeader
+      reference={supplierArrival.stockMoveSeq}
+      status={supplierArrival.statusSelect}
+      date={StockMove.getStockMoveDate(
+        supplierArrival.statusSelect,
+        supplierArrival,
+      )}
+      showMovementIndicator
+      movementIndicatorData={{
+        titleTop:
+          supplierArrival.fromAddress?.fullName ??
+          supplierArrival.fromAddressStr,
+        labelTop: 'Stock_OriginalAddress',
+        iconTop: 'geo-alt-fill',
+        titleDown: supplierArrival.toStockLocation?.name,
+        labelDown: 'Stock_Destination',
+        iconDown: 'house-up',
+      }}>
+      <View style={styles.supplierInfos}>
         <LabelText
           iconName="person-fill"
           title={supplierArrival.partner?.fullName}
@@ -46,15 +51,13 @@ const SupplierArrivalHeader = ({supplierArrival}: {supplierArrival: any}) => {
           <LabelText iconName="tag-fill" title={supplierArrival.origin} />
         )}
       </View>
-    </View>
+    </StockMoveHeader>
   );
 };
 
 const styles = StyleSheet.create({
-  clientContainer: {
+  supplierInfos: {
     marginHorizontal: 24,
-    marginVertical: 6,
-    flexDirection: 'column',
   },
 });
 

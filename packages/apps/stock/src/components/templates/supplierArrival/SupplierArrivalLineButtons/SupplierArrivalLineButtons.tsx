@@ -38,10 +38,19 @@ const SupplierArrivalLineButtons = ({
   trackingNumber,
   origin,
   description,
+}: {
+  supplierArrival: any;
+  supplierArrivalLine: any;
+  realQty?: number;
+  conformity?: any;
+  toStockLocation?: any;
+  trackingNumber?: any;
+  origin?: string;
+  description?: string;
 }) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const dispatch: any = useDispatch();
   const isScreenMounted = useStackChecker();
   const {StockMove} = useTypes();
   const {readonly} = usePermitted({
@@ -61,7 +70,7 @@ const SupplierArrivalLineButtons = ({
   const handleTrackingNumberOrigin = useCallback(() => {
     if (trackingNumber != null && origin !== trackingNumber.origin) {
       dispatch(
-        updateTrackingNumber({
+        (updateTrackingNumber as any)({
           ...trackingNumber,
           origin,
         }),
@@ -72,7 +81,7 @@ const SupplierArrivalLineButtons = ({
   const handleValidate = useCallback(() => {
     handleTrackingNumberOrigin();
     dispatch(
-      updateSupplierArrivalLine({
+      (updateSupplierArrivalLine as any)({
         stockMoveLineId: supplierArrivalLine.id,
         version: supplierArrivalLine.version,
         realQty: realQty,

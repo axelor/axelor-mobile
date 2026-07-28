@@ -17,15 +17,15 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Button,
-  Card,
   HeaderContainer,
+  KeyboardAvoidingScrollView,
   QuantityCard,
   Screen,
-  ScrollView,
-  Text,
+  checkNullString,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   InputBarCodeCard,
@@ -33,40 +33,44 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {StockMoveHeader, SupplierArrivalOriginInput} from '../../components';
 import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove} from '../../types';
+import {
+  ProductCardInfo,
+  StockMoveHeader,
+  SupplierArrivalOriginInput,
+} from '../../components';
 
-const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
-  const supplierArrival = route.params.supplierArrival;
-  const supplierArrivalLine = route.params.supplierArrivalLine;
-  const product = route.params.product;
+const sequenceScanKey = 'tracking-sequence_supplier-arrival-add-tracking';
+
+const SupplierArrivalAddTrackingScreen = ({navigation, route}: any) => {
+  const {supplierArrival, supplierArrivalLine, product} = route?.params ?? {};
   const I18n = useTranslator();
-  const dispatch = useDispatch();
-
-  const [sequence, setSequence] = useState(null);
-  const [trackingQty, setTrackingQty] = useState(0);
-  const [origin, setOrigin] = useState(null);
+  const Colors = useThemeColor();
+  const dispatch: any = useDispatch();
 
   const {loading} = useSelector(state => state.trackingNumber);
 
+  const [sequence, setSequence] = useState<string>();
+  const [trackingQty, setTrackingQty] = useState<number>(0);
+  const [origin, setOrigin] = useState<string>();
+
   const handleCreateTrackingNumber = useCallback(() => {
     dispatch(
-      updateSupplierTrackingNumber({
-        product: product,
+      (updateSupplierTrackingNumber as any)({
+        product,
         trackingNumberSeq: sequence,
         qty: trackingQty,
         origin,
         stockMoveLineId: supplierArrivalLine.id,
         stockMoveLineVersion: supplierArrivalLine.version,
       }),
-    ).then(res => {
-      const _trackingNumber = res?.payload;
+    ).then((res: any) => {
       navigation.popTo('SupplierArrivalLineDetailScreen', {
         supplierArrivalLineId: supplierArrivalLine?.id,
-        supplierArrival: supplierArrival,
+        supplierArrival,
         productId: product?.id,
-        trackingNumber: _trackingNumber,
+        trackingNumber: res?.payload,
       });
     });
   }, [
@@ -82,11 +86,10 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         trackingQty > 0 &&
-        sequence != null &&
-        sequence !== '' && (
+        !checkNullString(sequence) && (
           <Button
             title={I18n.t('Base_Create')}
             onPress={handleCreateTrackingNumber}
@@ -101,47 +104,47 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
             reference={supplierArrival.stockMoveSeq}
             lineRef={supplierArrivalLine?.name}
             status={supplierArrival.statusSelect}
-            date={
-              supplierArrival
-                ? StockMove.getStockMoveDate(
-                    supplierArrival.statusSelect,
-                    supplierArrival,
-                  )
-                : null
-            }
+            date={StockMove.getStockMoveDate(
+              supplierArrival.statusSelect,
+              supplierArrival,
+            )}
           />
         }
       />
-      <ScrollView>
-        <Card style={styles.cardProductInfo}>
-          <Text>{product?.name}</Text>
-        </Card>
-        <InputBarCodeCard
-          title={I18n.t('Stock_TrackingSequence')}
-          onChange={setSequence}
-        />
-        <SupplierArrivalOriginInput setOrigin={setOrigin} />
-        <QuantityCard
-          style={styles.qtyCard}
-          labelQty={I18n.t('Stock_TrackingQty')}
-          defaultValue={trackingQty}
-          onValueChange={setTrackingQty}
-          editable={true}
-          isBigButton={true}
-          translator={I18n.t}
-        />
-      </ScrollView>
+      <KeyboardAvoidingScrollView keyboardOffset={{ios: 70, android: 100}}>
+        <ProductCardInfo product={product} />
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <InputBarCodeCard
+            title={I18n.t('Stock_TrackingSequence')}
+            scanKeySearch={sequenceScanKey}
+            onChange={setSequence}
+          />
+          <SupplierArrivalOriginInput setOrigin={setOrigin} />
+          <QuantityCard
+            labelQty={I18n.t('Stock_TrackingQty')}
+            defaultValue={trackingQty}
+            onValueChange={setTrackingQty}
+            editable
+            isBigButton
+            isFormWrapper
+            translator={I18n.t}
+          />
+        </View>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  cardProductInfo: {
-    marginVertical: '2%',
-    marginHorizontal: 16,
-  },
-  qtyCard: {
-    marginTop: 10,
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
   },
 });
 
