@@ -23,35 +23,32 @@ import {
   Screen,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {fetchInventoryById} from '../../features/inventorySlice';
 import {
-  InventoryLocationsMoveCard,
   InventorySearchLineContainer,
   InventoryButtons,
   InventoryDetailsHeader,
 } from '../../components';
-import {fetchInventoryById} from '../../features/inventorySlice';
 
-const InventoryStartedDetailsScreen = ({route}) => {
-  const inventoryId = route.params.inventoryId;
+const InventoryStartedDetailsScreen = ({route}: any) => {
+  const {inventoryId} = route?.params ?? {};
   const dispatch = useDispatch();
 
   const {loading, inventory} = useSelector(state => state.inventory);
 
   const getInventory = useCallback(() => {
-    dispatch(fetchInventoryById({inventoryId: inventoryId}));
+    dispatch((fetchInventoryById as any)({inventoryId}));
   }, [dispatch, inventoryId]);
 
   useEffect(() => {
     getInventory();
   }, [getInventory]);
 
-  if (inventory?.id !== inventoryId) {
-    return null;
-  }
+  if (inventory?.id !== inventoryId) return null;
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={<InventoryButtons />}
       loading={loading}>
       <HeaderContainer
@@ -59,7 +56,6 @@ const InventoryStartedDetailsScreen = ({route}) => {
         fixedItems={<InventoryDetailsHeader />}
       />
       <KeyboardAvoidingScrollView refresh={{loading, fetcher: getInventory}}>
-        <InventoryLocationsMoveCard />
         <InventorySearchLineContainer />
       </KeyboardAvoidingScrollView>
     </Screen>

@@ -25,14 +25,13 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {InventoryCard, StockLocationSearchBar} from '../../components';
 import {searchInventories} from '../../features/inventorySlice';
-import {displayInventorySeq} from '../../utils/displayers';
-import {default as InventoryType} from '../../types/inventory';
+import {displayInventorySeq} from '../../utils';
+import {InventoryCard, StockLocationSearchBar} from '../../components';
 
 const stockLocationScanKey = 'stock-location_inventory-list';
 
-const InventoryListScreen = ({navigation}) => {
+const InventoryListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {Inventory} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -42,18 +41,18 @@ const InventoryListScreen = ({navigation}) => {
   );
   const {user} = useSelector(state => state.user);
 
-  const [stockLocation, setStockLocation] = useState(null);
+  const [stockLocation, setStockLocation] = useState<any>();
   const [navigate, setNavigate] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
-  const navigateToInventoryDetail = item => {
-    if (item != null) {
+  const navigateToInventoryDetail = (_item: any) => {
+    if (_item != null) {
       setNavigate(current => !current);
       navigation.navigate(
-        item.statusSelect === Inventory?.statusSelect.Planned
+        _item.statusSelect === Inventory?.statusSelect.Planned
           ? 'InventoryPlannedDetailsScreen'
           : 'InventoryStartedDetailsScreen',
-        {inventoryId: item.id},
+        {inventoryId: _item.id},
       );
     }
   };
@@ -73,7 +72,7 @@ const InventoryListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={inventoryList}
         loading={loadingList}
@@ -102,11 +101,7 @@ const InventoryListScreen = ({navigation}) => {
         }
         renderListItem={({item}) => (
           <InventoryCard
-            reference={item.inventorySeq}
-            status={item.statusSelect}
-            date={InventoryType.getDate(item)}
-            stockLocation={item.stockLocation?.name}
-            origin={item.origin}
+            {...item}
             onPress={() => navigateToInventoryDetail(item)}
           />
         )}

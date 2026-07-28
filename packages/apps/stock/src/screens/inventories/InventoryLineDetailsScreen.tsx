@@ -17,11 +17,13 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   EditableInput,
   HeaderContainer,
   KeyboardAvoidingScrollView,
   Screen,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -30,6 +32,9 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {fetchInventoryLine} from '../../features/inventoryLineSlice';
+import {Inventory as InventoryType} from '../../types';
+import {useProductByCompany} from '../../hooks';
 import {
   DescriptionCard,
   InventoryHeader,
@@ -39,15 +44,13 @@ import {
   InventoryLineTrackingNumberSelect,
   StockLocationSearchBar,
 } from '../../components';
-import {fetchInventoryLine} from '../../features/inventoryLineSlice';
-import {Inventory as InventoryType} from '../../types';
-import {useProductByCompany} from '../../hooks';
 
 const stockLocationScanKey = 'stock-location_inventory-line-details';
 
-const InventoryLineDetailsScreen = ({route, navigation}) => {
-  const {inventory, inventoryLineId, productId} = route.params;
+const InventoryLineDetailsScreen = ({route}: any) => {
+  const {inventory, inventoryLineId, productId} = route?.params ?? {};
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {Inventory} = useTypes();
   const {readonly} = usePermitted({
@@ -68,10 +71,10 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   );
 
   const [loading, setLoading] = useState(true);
-  const [rack, setRack] = useState(null);
-  const [realQty, setRealQty] = useState(0);
-  const [description, setDescription] = useState();
-  const [stockLocation, setStockLocation] = useState();
+  const [rack, setRack] = useState<string>();
+  const [realQty, setRealQty] = useState<number>(0);
+  const [description, setDescription] = useState<string>();
+  const [stockLocation, setStockLocation] = useState<any>();
 
   const trackingNumber = useMemo(
     () => inventoryLine?.trackingNumber ?? route.params.trackingNumber,
@@ -88,6 +91,18 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     [inventory, productFromId, trackingNumber],
   );
 
+  const isQtyReadonly = useMemo(
+    () =>
+      readonly || inventory?.statusSelect === Inventory?.statusSelect.Validated,
+    [Inventory?.statusSelect.Validated, inventory?.statusSelect, readonly],
+  );
+
+  const isDescriptionReadonly = useMemo(
+    () =>
+      readonly || inventory?.statusSelect >= Inventory?.statusSelect.Completed,
+    [Inventory?.statusSelect.Completed, inventory?.statusSelect, readonly],
+  );
+
   useEffect(() => {
     setRealQty(inventoryLine?.realQty ?? 0);
     setDescription(inventoryLine?.description);
@@ -97,15 +112,9 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     setLoading(false);
   }, [inventory, inventoryLine]);
 
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: productFromId,
-    });
-  };
-
   const getInventoryLine = useCallback(() => {
     if (inventoryLineId != null) {
-      dispatch(fetchInventoryLine({inventoryLineId}));
+      dispatch((fetchInventoryLine as any)({inventoryLineId}));
     }
   }, [dispatch, inventoryLineId]);
 
@@ -119,7 +128,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         <InventoryLineButtons
           description={description}
@@ -139,66 +148,71 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           <InventoryHeader
             reference={inventory.inventorySeq}
             status={inventory.statusSelect}
-            date={
-              inventory.statusSelect === Inventory?.statusSelect.Planned
-                ? inventory.plannedStartDateT
-                : inventory.plannedEndDateT
-            }
+            date={InventoryType.getDate(inventory)}
             stockLocation={inventory.stockLocation?.name}
           />
         }
       />
       <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 70, android: 100}}
         refresh={
           inventoryLineId != null
             ? {loading: loadingInventoryLine, fetcher: getInventoryLine}
             : undefined
         }>
         <ProductCardInfo
-          onPress={handleShowProduct}
-          picture={productFromId?.picture}
-          code={productFromId?.code}
-          name={productFromId?.name}
-          trackingNumber={trackingNumber?.trackingNumberSeq}
+          product={productFromId}
+          trackingNumber={trackingNumber}
           locker={inventoryLine?.rack}
         />
-        <StockLocationSearchBar
-          scanKey={stockLocationScanKey}
-          placeholderKey="Stock_StockLocation"
-          defaultStockLocation={inventory.stockLocation}
-          defaultValue={stockLocation}
-          onChange={setStockLocation}
-        />
-        <InventoryLineTrackingNumberSelect
-          product={productFromId}
-          inventoryLine={inventoryLine}
-          visible={!readonly && isTrackingNumberSelectVisible}
-        />
-        <InventoryLineQuantityCard
-          inventoryLine={inventoryLine}
-          realQty={realQty}
-          setRealQty={setRealQty}
-          readonly={readonly}
-        />
-        <DescriptionCard
-          onChange={input => setDescription(input)}
-          description={description}
-          isEditable={
-            !readonly &&
-            inventory.statusSelect !== Inventory?.statusSelect.Completed &&
-            inventory.statusSelect !== Inventory?.statusSelect.Validated
-          }
-        />
-        {inventoryLine == null && (
-          <EditableInput
-            placeholder={I18n.t('Stock_Locker')}
-            onValidate={input => setRack(input)}
-            defaultValue={rack}
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <StockLocationSearchBar
+            scanKey={stockLocationScanKey}
+            placeholderKey="Stock_StockLocation"
+            defaultStockLocation={inventory.stockLocation}
+            defaultValue={stockLocation}
+            onChange={setStockLocation}
           />
-        )}
+          <InventoryLineTrackingNumberSelect
+            product={productFromId}
+            inventoryLine={inventoryLine}
+            visible={!readonly && isTrackingNumberSelectVisible}
+          />
+          <InventoryLineQuantityCard
+            inventoryLine={inventoryLine}
+            realQty={realQty}
+            setRealQty={setRealQty}
+            readonly={isQtyReadonly}
+          />
+          <DescriptionCard
+            onChange={setDescription}
+            description={description!}
+            isEditable={!isDescriptionReadonly}
+          />
+          {inventoryLine == null && (
+            <EditableInput
+              placeholder={I18n.t('Stock_Locker')}
+              onValidate={setRack}
+              defaultValue={rack}
+            />
+          )}
+        </View>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
+  },
+});
 
 export default InventoryLineDetailsScreen;

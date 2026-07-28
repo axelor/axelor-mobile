@@ -22,13 +22,12 @@ import {
   SearchListView,
   useSelector,
   useTranslator,
-  useTypes,
 } from '@axelor/aos-mobile-core';
-import {InventoryHeader, InventoryLineActionCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
-import {displayLine} from '../../utils/displayers';
+import {Inventory, LineVerification} from '../../types';
 import {useLineHandler} from '../../hooks';
-import {LineVerification} from '../../types';
+import {displayLine} from '../../utils';
+import {InventoryHeader, InventoryLineActionCard} from '../../components';
 
 const STATUS = {
   done: 'doneStatus',
@@ -38,31 +37,30 @@ const STATUS = {
 
 const scanKey = 'trackingNumber-or-product_inventory-line-list';
 
-const InventoryLineListScreen = ({route}) => {
-  const inventory = route.params.inventory;
+const InventoryLineListScreen = ({route}: any) => {
+  const {inventory} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const {Inventory} = useTypes();
   const {showLine} = useLineHandler();
 
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const handleShowLine = useCallback(
-    (item, skipVerification = undefined) => {
+    (item: any, skipVerification: boolean | undefined = undefined) => {
       showLine({
         move: inventory,
         line: item,
         skipVerification,
-        type: LineVerification.type.inventory,
+        type: LineVerification.type.inventory as any,
       });
     },
     [inventory, showLine],
   );
 
-  const handleLineSearch = item => {
+  const handleLineSearch = (item: any) => {
     handleShowLine(item, true);
   };
 
@@ -74,7 +72,7 @@ const InventoryLineListScreen = ({route}) => {
   );
 
   const filterOnStatus = useCallback(
-    list => {
+    (list: any[]) => {
       if (!Array.isArray(list) || list.length === 0) {
         return [];
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
@@ -102,7 +100,7 @@ const InventoryLineListScreen = ({route}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={filteredList}
         loading={loadingInventoryLines}
@@ -119,11 +117,7 @@ const InventoryLineListScreen = ({route}) => {
           <InventoryHeader
             reference={inventory.inventorySeq}
             status={inventory.statusSelect}
-            date={
-              inventory.statusSelect === Inventory?.statusSelect.Planned
-                ? inventory.plannedStartDateT
-                : inventory.plannedEndDateT
-            }
+            date={Inventory.getDate(inventory)}
             stockLocation={inventory.stockLocation?.name}
           />
         }

@@ -102,7 +102,7 @@ const InventoryLineCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string | undefined) =>
   StyleSheet.create({
     border: {
       borderWidth: 1.5,

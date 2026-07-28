@@ -26,5 +26,4 @@ export {default as InventoryLineCard} from './InventoryLineCard/InventoryLineCar
 export {default as InventoryLineActionCard} from './InventoryLineActionCard/InventoryLineActionCard';
 export {default as InventoryLineQuantityCard} from './InventoryLineQuantityCard/InventoryLineQuantityCard';
 export {default as InventoryLineTrackingNumberSelect} from './InventoryLineTrackingNumberSelect/InventoryLineTrackingNumberSelect';
-export {default as InventoryLocationsMoveCard} from './InventoryLocationsMoveCard/InventoryLocationsMoveCard';
 export {default as InventorySearchLineContainer} from './InventorySearchLineContainer/InventorySearchLineContainer';

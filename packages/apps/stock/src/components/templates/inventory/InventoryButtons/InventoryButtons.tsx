@@ -30,7 +30,7 @@ import {updateInventory} from '../../../../features/inventorySlice';
 
 const InventoryButtons = ({}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const navigation = useNavigation();
   const {Inventory} = useTypes();
   const {readonly} = usePermitted({
@@ -42,7 +42,7 @@ const InventoryButtons = ({}) => {
 
   const handleStartInventory = useCallback(() => {
     dispatch(
-      updateInventory({
+      (updateInventory as any)({
         inventoryId: inventory?.id,
         version: inventory?.version,
         status: Inventory?.statusSelect.InProgress,
@@ -57,7 +57,7 @@ const InventoryButtons = ({}) => {
 
   const handleCompleteInventory = useCallback(() => {
     dispatch(
-      updateInventory({
+      (updateInventory as any)({
         inventoryId: inventory.id,
         version: inventory.version,
         status: Inventory?.statusSelect.Completed,
@@ -69,7 +69,7 @@ const InventoryButtons = ({}) => {
 
   const handleValidateInventory = useCallback(() => {
     dispatch(
-      updateInventory({
+      (updateInventory as any)({
         inventoryId: inventory.id,
         version: inventory.version,
         status: Inventory?.statusSelect.Validated,
@@ -79,9 +79,7 @@ const InventoryButtons = ({}) => {
     navigation.popToTop();
   }, [Inventory?.statusSelect.Validated, dispatch, inventory, navigation]);
 
-  if (readonly) {
-    return null;
-  }
+  if (readonly) return null;
 
   if (inventory?.statusSelect === Inventory?.statusSelect.Planned) {
     return (

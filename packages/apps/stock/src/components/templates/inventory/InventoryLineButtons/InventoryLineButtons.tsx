@@ -41,10 +41,19 @@ const InventoryLineButtons = ({
   realQty,
   description,
   visible = true,
+}: {
+  inventoryLine?: any;
+  inventory: any;
+  stockLocation?: any;
+  trackingNumber?: any;
+  rack?: string;
+  realQty?: number;
+  description?: string;
+  visible?: boolean;
 }) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const dispatch: any = useDispatch();
   const isScreenMounted = useStackChecker();
   const {Inventory} = useTypes();
   const {canCreate, readonly} = usePermitted({
@@ -65,7 +74,7 @@ const InventoryLineButtons = ({
 
   const handleNewLine = useCallback(() => {
     dispatch(
-      createNewInventoryLine({
+      (createNewInventoryLine as any)({
         inventoryId: inventory.id,
         inventoryVersion: inventory.version,
         productId: productFromId?.id,
@@ -91,7 +100,7 @@ const InventoryLineButtons = ({
 
   const handleUpdateLine = useCallback(() => {
     dispatch(
-      updateInventoryLine({
+      (updateInventoryLine as any)({
         inventoryLineId: inventoryLine?.id,
         version: inventoryLine?.version,
         stockLocationId: stockLocation?.id,
@@ -112,9 +121,7 @@ const InventoryLineButtons = ({
     stockLocation?.id,
   ]);
 
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
   if (inventoryLine?.id == null) {
     if (canCreate) {

@@ -18,7 +18,8 @@
 
 import React, {useCallback, useState} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
-import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Inventory} from '../../types';
 import {
   InventoryHeader,
   ProductCardInfo,
@@ -27,72 +28,56 @@ import {
 
 const trackingScanKey = 'tracking_inventory-select';
 
-const InventorySelectTrackingScreen = ({route, navigation}) => {
-  const {inventory, inventoryLine, product} = route.params;
+const InventorySelectTrackingScreen = ({navigation, route}: any) => {
+  const {inventory, inventoryLine, product} = route?.params ?? {};
   const I18n = useTranslator();
-  const {Inventory} = useTypes();
 
   const [isVisible, setVisible] = useState(false);
 
   const handleTrackingNumberSelection = useCallback(
-    item => {
-      if (item !== null) {
-        if (inventoryLine != null) {
-          if (item.id !== inventoryLine.trackingNumber?.id) {
-            setVisible(true);
-          } else {
-            navigation.navigate('InventoryLineDetailsScreen', {
-              inventoryLineId: inventoryLine?.id,
-              inventory: inventory,
-              productId: product?.id,
-              trackingNumber: item,
-            });
-          }
-        } else {
-          navigation.navigate('InventoryLineDetailsScreen', {
-            inventoryLineId: inventoryLine?.id,
-            inventory: inventory,
-            productId: product?.id,
-            trackingNumber: item,
-          });
-        }
+    (item: any) => {
+      if (item == null) return;
+
+      if (
+        inventoryLine != null &&
+        item.id !== inventoryLine.trackingNumber?.id
+      ) {
+        setVisible(true);
+      } else {
+        navigation.navigate('InventoryLineDetailsScreen', {
+          inventoryLineId: inventoryLine?.id,
+          inventory,
+          productId: product?.id,
+          trackingNumber: item,
+        });
       }
     },
     [inventory, inventoryLine, navigation, product],
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
           <InventoryHeader
             reference={inventory.inventorySeq}
             status={inventory.statusSelect}
-            date={
-              inventory.statusSelect === Inventory?.statusSelect.Planned
-                ? inventory.plannedStartDateT
-                : inventory.plannedEndDateT
-            }
+            date={Inventory.getDate(inventory)}
             stockLocation={inventory.stockLocation?.name}
           />
         }
       />
       <ProductCardInfo
-        onPress={() =>
-          navigation.navigate('ProductStockDetailsScreen', {product})
-        }
-        picture={product?.picture}
-        code={product?.code}
-        name={product?.name}
-        trackingNumber={inventoryLine?.trackingNumber?.trackingNumberSeq}
+        product={product}
+        trackingNumber={inventoryLine?.trackingNumber}
         locker={inventoryLine?.locker}
       />
       <TrackingNumberSearchBar
         scanKey={trackingScanKey}
         onChange={handleTrackingNumberSelection}
-        isFocus={true}
-        changeScreenAfter={true}
+        isFocus
+        changeScreenAfter
         product={product}
       />
       <Alert
@@ -100,7 +85,7 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
         title={I18n.t('Auth_Warning')}
         confirmButtonConfig={{
           width: 50,
-          title: null,
+          title: undefined,
           onPress: () => setVisible(false),
         }}>
         <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>

@@ -17,19 +17,12 @@
  */
 
 import React, {useCallback} from 'react';
-import {
-  useSelector,
-  useDispatch,
-  useTranslator,
-  usePermitted,
-} from '@axelor/aos-mobile-core';
-import {EditableInput, NotesCard, Text} from '@axelor/aos-mobile-ui';
+import {useSelector, useDispatch, usePermitted} from '@axelor/aos-mobile-core';
 import {modifyDescription} from '../../../../features/inventorySlice';
-import {StyleSheet, View} from 'react-native';
+import {DescriptionCard} from '../../../organisms';
 
-const InventoryDescription = ({}) => {
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
+const InventoryDescription = ({style}: {style?: any}) => {
+  const dispatch: any = useDispatch();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.Inventory',
   });
@@ -37,11 +30,11 @@ const InventoryDescription = ({}) => {
   const {inventory} = useSelector(state => state.inventory);
 
   const handleDescriptionChange = useCallback(
-    input => {
+    (input: any) => {
       dispatch(
-        modifyDescription({
+        (modifyDescription as any)({
           inventoryId: inventory?.id,
-          description: input.toString(),
+          description: input?.toString(),
           version: inventory?.version,
         }),
       );
@@ -49,34 +42,14 @@ const InventoryDescription = ({}) => {
     [dispatch, inventory],
   );
 
-  if (readonly) {
-    return (
-      <NotesCard
-        title={I18n.t('Base_Description')}
-        data={inventory?.description}
-      />
-    );
-  }
-
   return (
-    <View>
-      <Text style={styles.title}>{I18n.t('Base_Description')}</Text>
-      <EditableInput
-        defaultValue={inventory?.description}
-        placeholder={I18n.t('Base_Description')}
-        onValidate={input => handleDescriptionChange(input)}
-        multiline={true}
-        numberOfLines={5}
-      />
-    </View>
+    <DescriptionCard
+      style={style}
+      description={inventory?.description}
+      isEditable={!readonly}
+      onChange={handleDescriptionChange}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    marginHorizontal: 16,
-    marginTop: 10,
-  },
-});
 
 export default InventoryDescription;
