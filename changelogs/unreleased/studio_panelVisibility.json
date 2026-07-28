@@ -1,0 +1,6 @@
+{
+  "title": "Custom forms: apply the visibility and readonly conditions configured on panels",
+  "type": "fix",
+  "packages": "core",
+  "description": "Panels configured as hidden or readonly, or with a display, hide or readonly condition, were always visible and editable on mobile. They now follow the same rules as the fields they contain, and a panel displayed as readonly applies to its whole content."
+}

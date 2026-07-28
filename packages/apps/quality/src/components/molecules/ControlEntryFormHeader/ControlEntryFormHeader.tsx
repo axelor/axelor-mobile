@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, ProgressBar} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, Icon, ProgressBar} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
 import {ControlEntryHeader, ControlEntrySampleLineHeader} from '../../atoms';
 
@@ -41,28 +41,37 @@ const ControlEntryFormHeader = ({
   );
 
   return (
-    <View style={styles.container}>
-      <ControlEntryHeader />
-      <View style={styles.progressContainer}>
-        <Icon name={categoryIcon} />
-        <ProgressBar
-          total={nbCategories}
-          value={progressData.topProgressBar}
-          style={[styles.progressBar, styles.margin]}
-          showPercent={false}
-        />
-      </View>
-      <View style={styles.progressContainer}>
-        <Icon name={subCategoryIcon} />
-        <ProgressBar
-          total={nbItemInCategory}
-          value={progressData.bottomProgressBar}
-          showPercent={false}
-          style={styles.progressBar}
-        />
-      </View>
-      <ControlEntrySampleLineHeader />
-    </View>
+    <HeaderContainer
+      expandableFilter={true}
+      topChildren={
+        <View style={styles.container}>
+          <ControlEntryHeader />
+        </View>
+      }
+      fixedItems={
+        <View style={styles.container}>
+          <View style={styles.progressContainer}>
+            <Icon name={categoryIcon} />
+            <ProgressBar
+              total={nbCategories}
+              value={progressData.topProgressBar}
+              style={[styles.progressBar, styles.margin]}
+              showPercent={false}
+            />
+          </View>
+          <View style={styles.progressContainer}>
+            <Icon name={subCategoryIcon} />
+            <ProgressBar
+              total={nbItemInCategory}
+              value={progressData.bottomProgressBar}
+              showPercent={false}
+              style={styles.progressBar}
+            />
+          </View>
+          <ControlEntrySampleLineHeader />
+        </View>
+      }
+    />
   );
 };
 

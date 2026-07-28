@@ -41,6 +41,7 @@ export default {
   ControlEntryFormScreen: {
     title: 'Quality_ControlEntry',
     component: ControlEntryFormScreen,
+    actionID: 'quality_controlEntry_form',
     options: {
       shadedHeader: false,
     },

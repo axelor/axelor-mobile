@@ -1,0 +1,5 @@
+{
+  "title": "Form view: manage hidden and readonly conditions on panels",
+  "type": "feat",
+  "packages": "core"
+}

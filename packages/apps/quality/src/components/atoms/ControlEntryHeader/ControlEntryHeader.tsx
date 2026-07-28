@@ -36,25 +36,27 @@ const ControlEntryHeader = ({}) => {
 
   return (
     <View>
-      <View style={styles.row}>
-        <Text writingType="title">{controlEntry.name}</Text>
-        <Badge
-          color={getItemColor(
-            ControlEntry?.statusSelect,
-            controlEntry.statusSelect,
-          )}
-          title={getItemTitle(
-            ControlEntry?.statusSelect,
-            controlEntry.statusSelect,
-          )}
-        />
+      <View style={styles.container}>
+        <View style={[styles.columnWrapper, styles.mainPanel]}>
+          <Text writingType="title">{controlEntry.name}</Text>
+        </View>
+        <View style={[styles.columnWrapper, styles.sidePanel]}>
+          <DateDisplay date={controlEntry.entryDateTime} size={15} />
+          <Badge
+            color={getItemColor(
+              ControlEntry?.statusSelect,
+              controlEntry.statusSelect,
+            )}
+            title={getItemTitle(
+              ControlEntry?.statusSelect,
+              controlEntry.statusSelect,
+            )}
+          />
+        </View>
       </View>
-      <View style={styles.row}>
-        <Text>{`${I18n.t('Quality_SampleCount')} : ${
-          controlEntry.sampleCount
-        }`}</Text>
-        <DateDisplay date={controlEntry.entryDateTime} />
-      </View>
+      <Text>
+        {`${I18n.t('Quality_SampleCount')} : ${controlEntry.sampleCount}`}
+      </Text>
       <Text>{`${I18n.t('Quality_ControlPlan')} : ${
         controlEntry.controlPlan?.name
       }`}</Text>
@@ -63,10 +65,20 @@ const ControlEntryHeader = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  row: {
-    justifyContent: 'space-between',
+  container: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    gap: 5,
+  },
+  columnWrapper: {
+    flexDirection: 'column',
+    gap: 2,
+  },
+  mainPanel: {
+    flex: 1,
+  },
+  sidePanel: {
+    alignItems: 'flex-end',
   },
 });
 

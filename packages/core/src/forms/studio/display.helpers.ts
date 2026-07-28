@@ -207,7 +207,7 @@ const manageContentOfModel = (
   const formFields: JSONObject<Field> = {};
   const formPanels: JSONObject<Panel> = {};
   const defaults: any = {};
-  let lastPanel = null;
+  let lastPanel: string | undefined;
 
   metaJsonFields
     .sort((a, b) => a.sequence - b.sequence)
@@ -224,6 +224,17 @@ const manageContentOfModel = (
             colSpan: 12,
             direction: 'column',
             isCollapsible: isPanelCollapsible(item),
+            readonly: item.readonly,
+            readonlyIf: createFormulaFunction(item.readonlyIf),
+            hideIf: item.hidden
+              ? () => true
+              : createFormulaFunction(
+                  combinedFormula(
+                    '||',
+                    item.hideIf,
+                    reverseFormula(item.showIf),
+                  ),
+                ),
           };
           break;
         case 'spacer':
