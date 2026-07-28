@@ -20,7 +20,7 @@ import {useMemo} from 'react';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {useLinesWithRacks} from './use-line-with-rack';
 
-export const useInternalLinesWithRacks = internalMove => {
+export const useInternalLinesWithRacks = (internalMove: any) => {
   const {internalMoveLineList, totalNumberLines} = useSelector(
     state => state.internalMoveLine,
   );

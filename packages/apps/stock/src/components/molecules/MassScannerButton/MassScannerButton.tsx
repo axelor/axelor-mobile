@@ -28,7 +28,7 @@ interface MassScannerButtonProps {
   scanKey: string;
   backgroundAction: (
     scannedValue: string,
-    tools: {disableScan: () => void},
+    tools?: {disableScan: () => void},
   ) => void;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
@@ -36,7 +36,7 @@ interface MassScannerButtonProps {
 
 const MassScannerButton = ({
   style,
-  progress,
+  progress = -1,
   titleKey,
   scanKey,
   backgroundAction,
@@ -61,14 +61,20 @@ const MassScannerButton = ({
           strokeWidth={2}
           progress={progress}
           innerText={`${(progress * 100).toFixed(2)}%`}
-          textStyle={styles.progressText}
         />
       )}
       <Button
         title={I18n.t(titleKey)}
         iconName="qr-code-scan"
         onPress={enableScan}
-        color={isEnabled ? Colors.progressColor : Colors.secondaryColor}
+        color={
+          isEnabled
+            ? Colors.progressColor
+            : {
+                ...Colors.secondaryColor,
+                background: Colors.secondaryColor.background_light,
+              }
+        }
         isNeutralBackground={!isEnabled}
         style={styles.button}
       />
@@ -82,12 +88,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: 5,
     gap: 5,
     marginVertical: 3,
-  },
-  progressText: {
-    fontSize: 12,
-    fontWeight: undefined,
   },
   button: {
     flex: 1,

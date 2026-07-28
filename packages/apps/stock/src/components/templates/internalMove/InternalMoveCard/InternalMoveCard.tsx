@@ -25,93 +25,100 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {StockMove as StockMoveType} from '../../../../types';
 
 interface InternalMoveCardProps {
   style?: any;
-  name: string;
-  status: number;
-  availability: number;
-  fromStockLocation: string;
-  toStockLocation: string;
+  stockMoveSeq: string;
+  statusSelect: number;
+  availableStatusSelect: number;
+  fromStockLocation: any;
+  toStockLocation: any;
   origin: string;
-  date: string;
+  [key: string]: any;
   onPress: () => void;
 }
 
 const InternalMoveCard = ({
   style,
-  name,
-  status,
-  availability,
+  stockMoveSeq,
+  statusSelect,
+  availableStatusSelect,
   fromStockLocation,
   toStockLocation,
   origin,
-  date,
   onPress,
+  ...props
 }: InternalMoveCardProps) => {
   const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const _formatDate = useMemo(() => {
-    if (date == null) {
-      return null;
-    }
+    const date = StockMoveType.getStockMoveDate(statusSelect, props);
+    if (date == null) return undefined;
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
-    if (status === StockMove?.statusSelect.Draft) {
+    if (statusSelect === StockMove?.statusSelect.Draft) {
       return `${I18n.t('Base_CreatedOn')} ${_date}`;
     }
 
-    if (status === StockMove?.statusSelect.Planned) {
+    if (statusSelect === StockMove?.statusSelect.Planned) {
       return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
     return `${I18n.t('Base_ValidatedOn')} ${_date}`;
-  }, [I18n, StockMove?.statusSelect, date, status]);
+  }, [
+    I18n,
+    StockMove?.statusSelect.Draft,
+    StockMove?.statusSelect.Planned,
+    props,
+    statusSelect,
+  ]);
 
   return (
     <ObjectCard
-      onPress={onPress}
-      showArrow={true}
-      borderLeftColor={
-        getItemColor(StockMove?.statusSelect, status)?.background
-      }
       style={style}
+      onPress={onPress}
+      showArrow={false}
+      leftContainerFlex={2}
+      borderLeftColor={
+        getItemColor(StockMove?.statusSelect, statusSelect)?.background
+      }
       lowerTexts={{
         items: [
-          {displayText: name, isTitle: true},
-          {displayText: fromStockLocation, style: styles.noBold},
-          {displayText: toStockLocation, style: styles.noBold},
+          {displayText: stockMoveSeq, isTitle: true},
+          {displayText: fromStockLocation?.name},
+          {displayText: toStockLocation?.name},
           {
             displayText: origin,
             iconName: 'tag-fill',
-            style: styles.noBold,
             hideIfNull: true,
           },
           {
             displayText: _formatDate,
-            style: [
-              styles.noBold,
-              status !== StockMove?.statusSelect.Realized ? styles.date : null,
-            ],
+            style:
+              statusSelect !== StockMove?.statusSelect.Realized
+                ? styles.date
+                : null,
             hideIfNull: true,
           },
         ],
       }}
       sideBadges={
-        availability == null || availability === 0
-          ? null
+        availableStatusSelect == null || availableStatusSelect === 0
+          ? undefined
           : {
+              style: styles.badgeContainer,
               items: [
                 {
                   displayText: getItemTitle(
                     StockMove?.availableStatusSelect,
-                    availability,
+                    availableStatusSelect,
                   ),
                   color: getItemColor(
                     StockMove?.availableStatusSelect,
-                    availability,
+                    availableStatusSelect,
                   ),
                 },
               ],
@@ -122,11 +129,11 @@ const InternalMoveCard = ({
 };
 
 const styles = StyleSheet.create({
-  noBold: {
-    fontWeight: null,
-  },
   date: {
     fontStyle: 'italic',
+  },
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

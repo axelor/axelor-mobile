@@ -19,8 +19,8 @@
 import {useEffect, useMemo, useState} from 'react';
 import {checkQuantityApi} from '../api';
 
-export const useStockLinesCheckQty = stockMoveLineId => {
-  const [checkQtyObject, setCheckQtyObject] = useState(null);
+export const useStockLinesCheckQty = (stockMoveLineId?: number) => {
+  const [checkQtyObject, setCheckQtyObject] = useState<any>(null);
 
   useEffect(() => {
     if (stockMoveLineId) {

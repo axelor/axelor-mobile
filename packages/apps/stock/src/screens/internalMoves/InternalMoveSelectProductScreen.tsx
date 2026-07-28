@@ -19,31 +19,39 @@
 import React, {useCallback, useState} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {StockMove} from '../../types';
 import {
   ProductCardInfo,
+  ProductSearchBar,
   StockMoveHeader,
-  TrackingNumberSearchBar,
 } from '../../components';
-import StockMove from '../../types/stock-move';
 
-const trackingNumberScanKey = 'tracking-number_internal-move-new';
+const productScanKey = 'product_internal-move-select';
 
-const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
-  const {internalMove, internalMoveLine, product} = route.params;
+const InternalMoveSelectProductScreen = ({navigation, route}: any) => {
+  const {internalMove, internalMoveLine, product} = route?.params ?? {};
   const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
 
-  const handleTrackingNumberSelection = useCallback(
-    trackingNumber => {
-      if (trackingNumber != null) {
-        if (trackingNumber?.id !== internalMoveLine.trackingNumber?.id) {
+  const handleNavigate = useCallback(
+    (item: any) => {
+      if (item != null) {
+        if (item.id !== internalMoveLine?.product.id) {
           setVisible(true);
         } else {
-          navigation.navigate('InternalMoveLineDetailsScreen', {
-            internalMove: internalMove,
-            internalMoveLineId: internalMoveLine?.id,
-          });
+          if (item.trackingNumberConfiguration == null) {
+            navigation.navigate('InternalMoveLineDetailsScreen', {
+              internalMove: internalMove,
+              internalMoveLineId: internalMoveLine?.id,
+            });
+          } else {
+            navigation.navigate('InternalMoveSelectTrackingScreen', {
+              internalMove: internalMove,
+              internalMoveLine: internalMoveLine,
+              product: item,
+            });
+          }
         }
       }
     },
@@ -51,7 +59,7 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={internalMove != null ? true : false}>
+    <Screen removeSpaceOnTop={internalMove != null}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -68,34 +76,28 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
         }
       />
       <ProductCardInfo
-        onPress={() =>
-          navigation.navigate('ProductStockDetailsScreen', {product})
-        }
-        picture={product?.picture}
-        code={product?.code}
-        name={product?.name}
+        product={product}
         trackingNumber={internalMoveLine?.trackingNumber?.trackingNumberSeq}
         locker={internalMoveLine?.locker}
       />
-      <TrackingNumberSearchBar
-        scanKey={trackingNumberScanKey}
-        onChange={handleTrackingNumberSelection}
-        isFocus={true}
-        changeScreenAfter={true}
-        product={product}
+      <ProductSearchBar
+        scanKey={productScanKey}
+        onChange={handleNavigate}
+        isFocus
+        changeScreenAfter
       />
       <Alert
         visible={isVisible}
         title={I18n.t('Auth_Warning')}
         confirmButtonConfig={{
           width: 50,
-          title: null,
+          title: undefined,
           onPress: () => setVisible(false),
         }}>
-        <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>
+        <Text>{I18n.t('Stock_ErrorProduct')}</Text>
       </Alert>
     </Screen>
   );
 };
 
-export default InternalMoveSelectTrackingScreen;
+export default InternalMoveSelectProductScreen;

@@ -18,8 +18,8 @@
 
 import React, {useCallback} from 'react';
 import {useDispatch} from '@axelor/aos-mobile-core';
-import {ProductTrackingNumberSelect} from '../../product';
 import {addTrackingNumber} from '../../../../features/internalMoveLineSlice';
+import {ProductTrackingNumberSelect} from '../../product';
 
 const trackingScanKey = 'tracking_internal-move-line-select';
 
@@ -27,13 +27,17 @@ const InternalMoveLineTrackingNumberSelect = ({
   product,
   internalMoveLine,
   visible,
+}: {
+  product: any;
+  internalMoveLine: any;
+  visible?: boolean;
 }) => {
   const dispatch = useDispatch();
 
   const handleAddTrackingNumber = useCallback(
-    selectedTrackingNumber => {
+    (selectedTrackingNumber: any) => {
       dispatch(
-        addTrackingNumber({
+        (addTrackingNumber as any)({
           stockMoveLineId: internalMoveLine?.id,
           stockMoveLineVersion: internalMoveLine?.version,
           trackingNumber: selectedTrackingNumber,

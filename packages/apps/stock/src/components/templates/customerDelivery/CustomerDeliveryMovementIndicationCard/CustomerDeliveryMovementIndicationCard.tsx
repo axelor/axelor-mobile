@@ -16,26 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
-import {View} from 'react-native';
-import {
-  Alert,
-  checkNullString,
-  Icon,
-  MovementIndicationCard,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React, {useMemo} from 'react';
+import {checkNullString, MovementIndicationCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const CustomerDeliveryMovementIndicationCard = ({
-  customerDelivery,
-  showPopupOnCLick = true,
-}) => {
-  const Colors = useThemeColor();
+const CustomerDeliveryMovementIndicationCard = ({customerDelivery}) => {
   const I18n = useTranslator();
-
-  const [isPopupVisible, setVisiblePopup] = useState(false);
 
   const customerAddress = useMemo(() => {
     return (
@@ -51,30 +37,14 @@ const CustomerDeliveryMovementIndicationCard = ({
   }
 
   return (
-    <View>
-      {showPopupOnCLick && (
-        <Alert
-          visible={isPopupVisible}
-          title={I18n.t('Stock_DestinationAddress')}
-          confirmButtonConfig={{
-            width: 50,
-            title: null,
-            onPress: () => setVisiblePopup(false),
-          }}>
-          <Text>{customerAddress}</Text>
-        </Alert>
-      )}
-      <MovementIndicationCard
-        titleTop={customerDelivery.fromStockLocation?.name}
-        iconTop={
-          <Icon name="house-down" color={Colors.primaryColor.background} />
-        }
-        titleDown={customerAddress}
-        iconDown={<Icon name="geo-alt-fill" />}
-        disabledDown={!showPopupOnCLick}
-        onPressTitleDown={() => setVisiblePopup(true)}
-      />
-    </View>
+    <MovementIndicationCard
+      titleTop={customerDelivery.fromStockLocation?.name}
+      labelTop={I18n.t('Stock_Origin')}
+      iconTop="house-down"
+      titleDown={customerAddress}
+      labelDown={I18n.t('Stock_DestinationAddress')}
+      iconDown="geo-alt-fill"
+    />
   );
 };
 

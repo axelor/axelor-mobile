@@ -27,18 +27,31 @@ import {filterTrackingNumber} from '../../../features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '../../../utils/displayers';
 
 const TrackingNumberSearchBar = ({
+  style,
   placeholderKey = 'Stock_TrackingNumber',
   defaultValue,
   onChange,
   scanKey,
+  product,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
   required = false,
   changeScreenAfter = false,
-  product,
-  style,
+}: {
+  style?: any;
+  placeholderKey?: string;
+  defaultValue?: any;
+  onChange: (_v?: any) => void;
+  scanKey: string;
+  product: any;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  isFocus?: boolean;
+  required?: boolean;
+  changeScreenAfter?: boolean;
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -48,9 +61,13 @@ const TrackingNumberSearchBar = ({
   );
 
   const fetchTrackingNumberAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch(
-        filterTrackingNumber({productId: product.id, page, searchValue}),
+        (filterTrackingNumber as any)({
+          productId: product.id,
+          page,
+          searchValue,
+        }),
       );
     },
     [dispatch, product],

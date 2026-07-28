@@ -27,7 +27,7 @@ import {
 import {Button} from '@axelor/aos-mobile-ui';
 import {realizeInternalMove} from '../../../../features/internalMoveSlice';
 
-const InternalMoveRealizeButton = ({internalMove}) => {
+const InternalMoveRealizeButton = ({internalMove}: {internalMove: any}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -38,7 +38,7 @@ const InternalMoveRealizeButton = ({internalMove}) => {
 
   const handleRealizeStockMove = useCallback(() => {
     dispatch(
-      realizeInternalMove({
+      (realizeInternalMove as any)({
         stockMoveId: internalMove.id,
         version: internalMove.version,
       }),

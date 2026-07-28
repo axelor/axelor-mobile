@@ -24,17 +24,16 @@ import {
   NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {fetchInternalMove} from '../../features/internalMoveSlice';
+import {StockMove} from '../../types';
 import {
-  InternalMoveMovementIndicationCard,
   InternalMoveSearchLineContainer,
   InternalMoveRealizeButton,
   StockMoveHeader,
 } from '../../components';
-import {fetchInternalMove} from '../../features/internalMoveSlice';
-import StockMove from '../../types/stock-move';
 
-const InternalMoveDetailsGeneralScreen = ({route}) => {
-  const internalMoveId = route.params.internalMoveId;
+const InternalMoveDetailsGeneralScreen = ({route}: any) => {
+  const {internalMoveId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -43,16 +42,14 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
   );
 
   const getInternalMove = useCallback(() => {
-    dispatch(fetchInternalMove({internalMoveId: internalMoveId}));
+    dispatch((fetchInternalMove as any)({internalMoveId}));
   }, [internalMoveId, dispatch]);
 
   useEffect(() => {
     getInternalMove();
   }, [getInternalMove]);
 
-  if (internalMove?.id !== internalMoveId) {
-    return null;
-  }
+  if (internalMove?.id !== internalMoveId) return null;
 
   return (
     <Screen
@@ -64,24 +61,25 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
           <StockMoveHeader
             reference={internalMove.stockMoveSeq}
             status={internalMove.statusSelect}
-            date={
-              internalMove
-                ? StockMove.getStockMoveDate(
-                    internalMove.statusSelect,
-                    internalMove,
-                  )
-                : null
-            }
+            date={StockMove.getStockMoveDate(
+              internalMove.statusSelect,
+              internalMove,
+            )}
             availability={internalMove.availableStatusSelect}
+            showMovementIndicator
+            movementIndicatorData={{
+              titleTop: internalMove.fromStockLocation?.name,
+              labelTop: 'Stock_Origin',
+              iconTop: 'house-down',
+              titleDown: internalMove.toStockLocation?.name,
+              labelDown: 'Stock_Destination',
+              iconDown: 'house-up',
+            }}
           />
         }
       />
       <KeyboardAvoidingScrollView
         refresh={{loading: loadingInternalMove, fetcher: getInternalMove}}>
-        <InternalMoveMovementIndicationCard
-          from={internalMove.fromStockLocation?.name}
-          to={internalMove.toStockLocation?.name}
-        />
         <NotesCard
           title={I18n.t('Stock_PickingOrderComments')}
           data={internalMove.pickingOrderComments}

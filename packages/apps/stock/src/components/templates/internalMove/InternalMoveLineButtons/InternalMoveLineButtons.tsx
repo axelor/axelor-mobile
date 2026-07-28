@@ -35,15 +35,24 @@ const InternalMoveLineButtons = ({
   toStockLocation,
   visible = true,
   description,
+}: {
+  internalMove: any;
+  internalMoveLine: any;
+  unit: any;
+  movedQty?: number;
+  fromStockLocation?: any;
+  toStockLocation?: any;
+  visible?: boolean;
+  description?: string;
 }) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const dispatch: any = useDispatch();
   const isScreenMounted = useStackChecker();
 
   const handleSave = () => {
     dispatch(
-      updateInternalMoveLine({
+      (updateInternalMoveLine as any)({
         stockMoveLineId: internalMoveLine.id,
         version: internalMoveLine.version,
         description: description,
@@ -65,9 +74,7 @@ const InternalMoveLineButtons = ({
     });
   };
 
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
   return <Button title={I18n.t('Base_Save')} onPress={handleSave} />;
 };

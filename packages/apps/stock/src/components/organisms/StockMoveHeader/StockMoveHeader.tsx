@@ -20,6 +20,8 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Badge,
+  HorizontalRule,
+  MovementIndicationCard,
   Text,
   useDigitFormat,
   useThemeColor,
@@ -48,6 +50,15 @@ interface StockMoveHeaderProps {
     onRefresh?: () => void;
     handleShowLine?: (line: any) => void;
   };
+  showMovementIndicator?: boolean;
+  movementIndicatorData?: {
+    iconTop: string;
+    labelTop?: string;
+    titleTop: string;
+    iconDown: string;
+    labelDown?: string;
+    titleDown: string;
+  };
 }
 
 const StockMoveHeader = ({
@@ -59,6 +70,8 @@ const StockMoveHeader = ({
   stockMoveLineId,
   showMassScanner = false,
   massScanData,
+  showMovementIndicator = false,
+  movementIndicatorData,
 }: StockMoveHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -71,22 +84,15 @@ const StockMoveHeader = ({
   return (
     <View>
       <View style={styles.container}>
-        <View>
-          {lineRef != null && (
-            <Text style={styles.text_important}>{lineRef}</Text>
-          )}
+        <View style={styles.columnWrapper}>
+          {lineRef != null && <Text writingType="important">{lineRef}</Text>}
           {reference != null && (
-            <Text
-              style={
-                lineRef != null ? styles.text_secondary : styles.text_important
-              }>
+            <Text writingType={lineRef != null ? 'details' : 'important'}>
               {reference}
             </Text>
           )}
           {date != null && (
-            <Text style={styles.text_secondary}>
-              {formatDate(date, I18n.t('Base_DateFormat'))}
-            </Text>
+            <Text>{formatDate(date, I18n.t('Base_DateFormat'))}</Text>
           )}
         </View>
         <View style={styles.badgesContainer}>
@@ -94,28 +100,40 @@ const StockMoveHeader = ({
             color={getItemColor(StockMove?.statusSelect, status)}
             title={getItemTitle(StockMove?.statusSelect, status)}
           />
-          <View style={styles.rowContainer}>
-            {Number(checkQtyObject?.missingQty ?? 0) !== 0 && (
-              <Badge
-                color={Colors.errorColor}
-                title={formatNumber(checkQtyObject?.missingQty)}
-              />
-            )}
-            {availability != null && availability > 0 && (
-              <Badge
-                color={getItemColor(
-                  StockMove?.availableStatusSelect,
-                  availability,
-                )}
-                title={
-                  checkQtyObject?.availability ??
-                  getItemTitle(StockMove?.availableStatusSelect, availability)
-                }
-              />
-            )}
-          </View>
+          {Number(checkQtyObject?.missingQty ?? 0) !== 0 && (
+            <Badge
+              color={Colors.errorColor}
+              title={formatNumber(checkQtyObject?.missingQty)}
+            />
+          )}
+          {availability != null && availability > 0 && (
+            <Badge
+              color={getItemColor(
+                StockMove?.availableStatusSelect,
+                availability,
+              )}
+              title={
+                checkQtyObject?.availability ??
+                getItemTitle(StockMove?.availableStatusSelect, availability)
+              }
+            />
+          )}
         </View>
       </View>
+      {showMovementIndicator && movementIndicatorData != null && (
+        <>
+          <HorizontalRule
+            style={styles.line}
+            color={Colors.secondaryColor.background_light}
+          />
+          <MovementIndicationCard
+            {...movementIndicatorData}
+            labelTop={I18n.t(movementIndicatorData.labelTop)}
+            labelDown={I18n.t(movementIndicatorData.labelDown)}
+            displayCard={false}
+          />
+        </>
+      )}
       {showMassScanner && massScanData != null && (
         <StockMovePickingWidget {...massScanData} stockMoveStatus={status} />
       )}
@@ -130,18 +148,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     marginBottom: 5,
   },
+  columnWrapper: {
+    flex: 1,
+  },
   badgesContainer: {
-    alignItems: 'flex-end',
-  },
-  rowContainer: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
   },
-  text_important: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  text_secondary: {
-    fontSize: 14,
+  line: {
+    width: '80%',
+    alignSelf: 'center',
+    marginVertical: 4,
   },
 });
 

@@ -23,19 +23,23 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {TrackingNumberSearchBar} from '../../../templates';
 
 const ProductTrackingNumberSelect = ({
+  style,
   product,
-  visible,
+  visible = false,
   trackingScanKey,
   onAddTrackingNumber,
-  style,
+}: {
+  style?: any;
+  product: any;
+  visible?: boolean;
+  trackingScanKey: string;
+  onAddTrackingNumber: (_v?: any) => void;
 }) => {
   const I18n = useTranslator();
 
   const [selectedTrackingNumber, setSelectedTrackingNumber] = useState(null);
 
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
   return (
     <View style={[styles.container, style]}>
@@ -43,7 +47,7 @@ const ProductTrackingNumberSelect = ({
         onChange={setSelectedTrackingNumber}
         isFocus={true}
         product={product}
-        scanKeySearch={trackingScanKey}
+        scanKey={trackingScanKey}
         defaultValue={selectedTrackingNumber}
         required={true}
       />

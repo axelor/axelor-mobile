@@ -18,28 +18,28 @@
 
 import React, {useEffect} from 'react';
 import {getFromList, Picker} from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  useTypes,
-} from '@axelor/aos-mobile-core';
-import {fetchUnit} from '../../../../features/unitSlice';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {fetchUnit} from '../../../features/unitSlice';
 
-const InternalMoveLinePicker = ({
+const UnitPicker = ({
   unit,
-  status,
   setUnit,
   isScrollViewContainer = false,
   readonly = false,
+  required = true,
+}: {
+  unit?: any;
+  setUnit: (_v?: any) => void;
+  isScrollViewContainer?: boolean;
+  readonly?: boolean;
+  required?: boolean;
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const {StockMove} = useTypes();
 
   const {unitList} = useSelector(state => state.unit);
 
-  const handleUnitChange = unitId => {
+  const handleUnitChange = (unitId?: number) => {
     if (unitId === null) {
       setUnit({name: '', id: null});
     } else {
@@ -59,15 +59,11 @@ const InternalMoveLinePicker = ({
       listItems={unitList}
       labelField="name"
       valueField="id"
-      readonly={
-        readonly ||
-        status === StockMove?.statusSelect.Realized ||
-        status === StockMove?.statusSelect.Canceled
-      }
-      required={true}
+      readonly={readonly}
+      required={required}
       isScrollViewContainer={isScrollViewContainer}
     />
   );
 };
 
-export default InternalMoveLinePicker;
+export default UnitPicker;

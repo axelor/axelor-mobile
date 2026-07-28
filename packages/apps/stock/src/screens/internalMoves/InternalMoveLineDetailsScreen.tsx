@@ -17,11 +17,13 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   FormHtmlInput,
   HeaderContainer,
   KeyboardAvoidingScrollView,
   Screen,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   isEmpty,
@@ -31,28 +33,28 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {
-  ProductCardInfo,
-  StockMoveHeader,
-  InternalMoveLineButtons,
-  InternalMoveLineNotes,
-  InternalMoveLineQuantityCard,
-  InternalMoveLinePicker,
-  InternalMoveLineTrackingNumberSelect,
-  StockLocationSearchBar,
-} from '../../components';
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {useLineWithRack, useProductByCompany} from '../../hooks';
+import {
+  ProductCardInfo,
+  StockMoveHeader,
+  InternalMoveLineButtons,
+  InternalMoveLineQuantityCard,
+  InternalMoveLineTrackingNumberSelect,
+  StockLocationSearchBar,
+  UnitPicker,
+} from '../../components';
 
 const fromScanKey = 'from-stock-location_internal-move-line-update';
 const toScanKey = 'to-stock-location_internal-move-line-update';
 
-const InternalMoveLineDetailsScreen = ({navigation, route}) => {
-  const {internalMove, internalMoveLineId} = route.params;
-  const dispatch = useDispatch();
+const InternalMoveLineDetailsScreen = ({route}: any) => {
+  const {internalMove, internalMoveLineId} = route?.params ?? {};
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
   const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
@@ -72,19 +74,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     internalMoveLine,
   );
 
-  const [fromStockLocation, setFromStockLocation] = useState(
-    internalMoveLine?.fromStockLocation,
-  );
-  const [toStockLocation, setToStockLocation] = useState(
-    internalMoveLine?.toStockLocation,
-  );
-  const [movedQty, setMovedQty] = useState(
-    StockMoveLine.hideLineQty(internalMoveLine, internalMove)
-      ? 0
-      : internalMoveLine?.realQty,
-  );
-  const [unit, setUnit] = useState(internalMoveLine?.unit);
-  const [description, setDescription] = useState('');
+  const [fromStockLocation, setFromStockLocation] = useState<any>();
+  const [toStockLocation, setToStockLocation] = useState<any>();
+  const [movedQty, setMovedQty] = useState<number>();
+  const [unit, setUnit] = useState<any>();
+  const [description, setDescription] = useState<string>();
 
   const trackingNumber = useMemo(
     () => internalMoveLine?.trackingNumber ?? route.params.trackingNumber,
@@ -101,25 +95,21 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     [internalMove, product, trackingNumber],
   );
 
-  const plannedQty = useMemo(() => {
-    if (internalMove.statusSelect === StockMove?.statusSelect.Realized) {
-      return internalMoveLine?.realQty;
-    } else {
-      return productIndicators?.availableStock;
-    }
-  }, [
-    StockMove?.statusSelect.Realized,
-    internalMove.statusSelect,
-    internalMoveLine?.realQty,
-    productIndicators?.availableStock,
-  ]);
+  const plannedQty = useMemo(
+    () =>
+      internalMove.statusSelect === StockMove?.statusSelect.Realized
+        ? internalMoveLine?.realQty
+        : productIndicators?.availableStock,
+    [
+      StockMove?.statusSelect.Realized,
+      internalMove.statusSelect,
+      internalMoveLine?.realQty,
+      productIndicators?.availableStock,
+    ],
+  );
 
   const getInternalMoveLine = useCallback(() => {
-    dispatch(
-      fetchInternalMoveLine({
-        internalMoveLineId: internalMoveLineId,
-      }),
-    );
+    dispatch((fetchInternalMoveLine as any)({internalMoveLineId}));
   }, [dispatch, internalMoveLineId]);
 
   useEffect(() => {
@@ -129,7 +119,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     if (!isEmpty(product)) {
       dispatch(
-        fetchProductIndicators({
+        (fetchProductIndicators as any)({
           version: product?.version,
           productId: product?.id,
           companyId: activeCompany?.id,
@@ -153,19 +143,17 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     }
   }, [internalMoveLine, internalMove]);
 
-  const handleShowProduct = useCallback(() => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
-  }, [navigation, product]);
+  const isReadonly = useMemo(
+    () =>
+      readonly || internalMove.statusSelect !== StockMove?.statusSelect.Planned,
+    [StockMove?.statusSelect.Planned, internalMove.statusSelect, readonly],
+  );
 
-  if (internalMoveLine?.id !== internalMoveLineId) {
-    return null;
-  }
+  if (internalMoveLine?.id !== internalMoveLineId) return null;
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         <InternalMoveLineButtons
           internalMove={internalMove}
@@ -194,86 +182,93 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         }
       />
       <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 70, android: 100}}
         refresh={{
           loading: loadingInternalMoveLine,
           fetcher: getInternalMoveLine,
         }}>
-        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
-          <StockLocationSearchBar
-            placeholderKey="Stock_OriginalStockLocation"
-            scanKey={fromScanKey}
-            onChange={setFromStockLocation}
-            defaultValue={fromStockLocation}
-            defaultStockLocation={internalMove.fromStockLocation}
-            readonly={
-              readonly ||
-              internalMove.statusSelect !== StockMove?.statusSelect.Planned
-            }
-          />
-        ) : null}
         <ProductCardInfo
-          name={product?.name}
-          code={product?.code}
-          picture={product?.picture}
+          product={product}
           trackingNumber={
             product?.trackingNumberConfiguration == null
               ? null
-              : internalMoveLine.trackingNumber?.trackingNumberSeq
+              : internalMoveLine.trackingNumber
           }
           locker={locker}
-          onPress={handleShowProduct}
         />
-        <InternalMoveLineTrackingNumberSelect
-          product={product}
-          internalMoveLine={internalMoveLine}
-          visible={!readonly && isTrackingNumberSelectVisible}
-        />
-        <InternalMoveLineQuantityCard
-          movedQty={movedQty}
-          originalStockLocation={internalMove.fromStockLocation}
-          plannedQty={plannedQty}
-          setMovedQty={setMovedQty}
-          status={internalMove.statusSelect}
-          stockProduct={product}
-          trackingNumber={internalMoveLine.trackingNumber}
-          totalNetMass={internalMoveLine.totalNetMass}
-          readonly={readonly}
-        />
-        <InternalMoveLinePicker
-          setUnit={setUnit}
-          status={internalMove.statusSelect}
-          unit={unit}
-          isScrollViewContainer={true}
-          readonly={readonly}
-        />
-        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
-          <StockLocationSearchBar
-            placeholderKey="Stock_DestinationStockLocation"
-            scanKey={toScanKey}
-            onChange={setToStockLocation}
-            defaultValue={toStockLocation}
-            secondFilter={true}
-            defaultStockLocation={internalMove.toStockLocation}
-            isScrollViewContainer={true}
-            readonly={
-              readonly ||
-              internalMove.statusSelect !== StockMove?.statusSelect.Planned
-            }
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          {stockConfig?.isManageStockLocationOnStockMoveLine ? (
+            <StockLocationSearchBar
+              placeholderKey="Stock_OriginalStockLocation"
+              scanKey={fromScanKey}
+              onChange={setFromStockLocation}
+              defaultValue={fromStockLocation}
+              defaultStockLocation={internalMove.fromStockLocation}
+              readonly={isReadonly}
+            />
+          ) : null}
+          <InternalMoveLineTrackingNumberSelect
+            product={product}
+            internalMoveLine={internalMoveLine}
+            visible={!isReadonly && isTrackingNumberSelectVisible}
           />
-        ) : null}
-        <InternalMoveLineNotes notes={internalMove.note} readonly={true} />
-        <FormHtmlInput
-          title={I18n.t('Base_Description')}
-          onChange={setDescription}
-          defaultValue={description}
-          readonly={
-            readonly ||
-            internalMove.statusSelect === StockMove?.statusSelect.Realized
-          }
-        />
+          <InternalMoveLineQuantityCard
+            movedQty={movedQty!}
+            originalStockLocation={internalMove.fromStockLocation}
+            plannedQty={plannedQty}
+            setMovedQty={setMovedQty}
+            stockProduct={product}
+            trackingNumber={internalMoveLine.trackingNumber}
+            totalNetMass={internalMoveLine.totalNetMass}
+            readonly={isReadonly}
+          />
+          <UnitPicker
+            setUnit={setUnit}
+            unit={unit}
+            isScrollViewContainer
+            readonly={isReadonly}
+          />
+          {stockConfig?.isManageStockLocationOnStockMoveLine ? (
+            <StockLocationSearchBar
+              placeholderKey="Stock_DestinationStockLocation"
+              scanKey={toScanKey}
+              onChange={setToStockLocation}
+              defaultValue={toStockLocation}
+              secondFilter
+              defaultStockLocation={internalMove.toStockLocation}
+              isScrollViewContainer
+              readonly={isReadonly}
+            />
+          ) : null}
+          <FormHtmlInput
+            title={I18n.t('Stock_NotesOnStockMove')}
+            defaultValue={internalMove.note}
+            readonly={true}
+            hideIfNull
+          />
+          <FormHtmlInput
+            title={I18n.t('Base_Description')}
+            onChange={setDescription}
+            defaultValue={description}
+            readonly={isReadonly}
+          />
+        </View>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
+  },
+});
 
 export default InternalMoveLineDetailsScreen;
