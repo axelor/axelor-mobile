@@ -25,12 +25,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {ObjectCard, TextUnit, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {StockIndicator} from '../../../types';
+import {StyleSheet} from 'react-native';
 
 interface RealQtyIndicatorCardProps {
   style?: any;
   indicatorType: number;
   name: string;
-  statusSelect?: number;
   stockMove: any;
   realQty: number;
   qty: number;
@@ -44,7 +44,6 @@ const RealQtyIndicatorCard = ({
   style,
   indicatorType,
   name,
-  statusSelect,
   stockMove,
   realQty,
   qty,
@@ -75,7 +74,7 @@ const RealQtyIndicatorCard = ({
 
   return (
     <ObjectCard
-      style={style}
+      style={[styles.container, style]}
       leftContainerFlex={2}
       iconLeftMargin={5}
       onPress={onPress}
@@ -90,7 +89,7 @@ const RealQtyIndicatorCard = ({
             ),
             numberOfLines: 2,
           },
-          {customComponent: <DateDisplay date={date} size={14} displayYear />},
+          {customComponent: <DateDisplay date={date} size={12} displayYear />},
           {
             iconName: 'house-down',
             indicatorText: stockMove?.fromStockLocation?.name,
@@ -105,24 +104,40 @@ const RealQtyIndicatorCard = ({
         ],
       }}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
             customComponent: (
               <TextUnit
                 value={formatNumber(quantity)}
                 unit={unit?.name}
-                fontSize={18}
+                fontSize={14}
               />
             ),
           },
           {
-            displayText: getItemTitle(StockMove.statusSelect, statusSelect),
-            color: getItemColor(StockMove.statusSelect, statusSelect),
+            displayText: getItemTitle(
+              StockMove.statusSelect,
+              stockMove?.statusSelect,
+            ),
+            color: getItemColor(
+              StockMove.statusSelect,
+              stockMove?.statusSelect,
+            ),
           },
         ],
       }}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    paddingRight: 5,
+  },
+  badgeContainer: {
+    alignItems: 'flex-end',
+  },
+});
 
 export default RealQtyIndicatorCard;

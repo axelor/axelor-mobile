@@ -17,10 +17,10 @@
  */
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Badge, Card, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  AOSImage,
+  useMetafileUri,
   useTranslator,
   useTypeHelpers,
   useTypes,
@@ -28,106 +28,86 @@ import {
 
 interface ProductCharacteristicsProps {
   style?: any;
-  picture?: any;
-  onPressImage: () => void;
   name: string;
   code: string;
-  category: string;
-  procurMethod: string;
-  prototype: boolean;
-  unrenewed: boolean;
+  picture?: any;
+  productCategory?: any;
+  procurementMethodSelect?: string;
+  isPrototype?: boolean;
+  isUnrenewed?: boolean;
 }
 
 const ProductCharacteristics = ({
   style,
-  picture,
-  onPressImage,
   name,
   code,
-  category,
-  procurMethod,
-  prototype,
-  unrenewed,
+  picture,
+  productCategory,
+  procurementMethodSelect,
+  isPrototype,
+  isUnrenewed,
 }: ProductCharacteristicsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatMetaFile = useMetafileUri();
   const {Product} = useTypes();
   const {getItemTitle} = useTypeHelpers();
 
   return (
-    <Card style={[styles.container, style]}>
-      <View style={styles.content}>
-        <TouchableOpacity onPress={onPressImage}>
-          <AOSImage
-            generalStyle={styles.imageStyle}
-            imageSize={styles.imageSize}
-            resizeMode="contain"
-            metaFile={picture}
-            defaultIconSize={120}
-          />
-        </TouchableOpacity>
-        <View style={styles.textContainer}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.code}>{code}</Text>
-        </View>
-      </View>
-      <View style={styles.states}>
-        {category && <Badge color={Colors.primaryColor} title={category} />}
-        {procurMethod && (
-          <Badge
-            color={Colors.plannedColor}
-            title={getItemTitle(Product?.procurementMethodSelect, procurMethod)}
-          />
-        )}
-        {prototype && (
-          <Badge
-            color={Colors.priorityColor}
-            title={I18n.t('Stock_Prototype')}
-          />
-        )}
-        {unrenewed && (
-          <Badge
-            color={Colors.cautionColor}
-            title={I18n.t('Stock_Unrenewed')}
-          />
-        )}
-      </View>
-    </Card>
+    <ObjectCard
+      style={style}
+      touchable={false}
+      showArrow={false}
+      image={{
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        defaultIconSize: 80,
+        source: formatMetaFile(picture?.id),
+      }}
+      upperTexts={{
+        items: [{displayText: name, isTitle: true}, {displayText: code}],
+      }}
+      lowerBadges={{
+        style: styles.badgeContainer,
+        items: [
+          {
+            showIf: productCategory != null,
+            displayText: productCategory?.name,
+            color: Colors.primaryColor,
+          },
+          {
+            showIf: procurementMethodSelect != null,
+            displayText: getItemTitle(
+              Product?.procurementMethodSelect,
+              procurementMethodSelect,
+            ),
+            color: Colors.plannedColor,
+          },
+          {
+            showIf: isPrototype,
+            displayText: I18n.t('Stock_Prototype'),
+            color: Colors.priorityColor,
+          },
+          {
+            showIf: isUnrenewed,
+            displayText: I18n.t('Stock_Unrenewed'),
+            color: Colors.cautionColor,
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: null,
+  imageSize: {
+    height: 80,
+    width: 80,
   },
-  content: {
-    flexDirection: 'row',
-  },
-  states: {
+  badgeContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-  },
-  imageSize: {
-    height: 120,
-    width: 120,
-  },
-  imageStyle: {
-    marginRight: 32,
-  },
-  textContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  code: {
-    fontSize: 14,
+    justifyContent: 'center',
   },
 });
 

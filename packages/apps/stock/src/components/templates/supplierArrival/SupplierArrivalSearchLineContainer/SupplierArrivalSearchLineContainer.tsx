@@ -26,11 +26,11 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
-import {SupplierArrivalLineActionCard} from '../../../templates';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
 import {useLineHandler, useSupplierLinesWithRacks} from '../../../../hooks';
 import {LineVerification, StockMoveLine} from '../../../../types';
+import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
+import {SupplierArrivalLineActionCard} from '../../../templates';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
 const massScanKey = 'supplier-arrival-line_mass-scan';
@@ -65,7 +65,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   }, [navigation, supplierArrival]);
 
   const handleShowLine = useCallback(
-    (item: any, skipVerification = undefined) => {
+    (item: any, skipVerification: boolean | undefined = undefined) => {
       showLine({
         move: supplierArrival,
         line: item,

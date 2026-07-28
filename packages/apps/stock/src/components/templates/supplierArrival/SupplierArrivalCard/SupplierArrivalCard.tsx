@@ -25,70 +25,68 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {StockMove as StockMoveType} from '../../../../types';
 
 interface SupplierArrivalCardProps {
   style?: any;
-  reference: string;
-  status: number;
-  client: string;
+  stockMoveSeq: string;
+  statusSelect: number;
+  partner: any;
   origin: string;
-  date: string;
+  [key: string]: any;
   onPress: () => void;
 }
 
 const SupplierArrivalCard = ({
   style,
-  reference,
-  status,
-  client,
+  stockMoveSeq,
+  statusSelect,
+  partner,
   origin,
-  date,
   onPress,
+  ...props
 }: SupplierArrivalCardProps) => {
   const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
   const _formatDate = useMemo(() => {
-    if (date == null) {
-      return null;
-    }
+    const date = StockMoveType.getStockMoveDate(statusSelect, props);
+    if (date == null) return undefined;
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
-    if (status === StockMove?.statusSelect.Planned) {
+    if (statusSelect === StockMove?.statusSelect.Planned) {
       return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
     return `${I18n.t('Base_RealizedOn')} ${_date}`;
-  }, [I18n, StockMove?.statusSelect, date, status]);
+  }, [I18n, StockMove?.statusSelect.Planned, props, statusSelect]);
 
   return (
     <ObjectCard
-      onPress={onPress}
-      borderLeftColor={
-        getItemColor(StockMove?.statusSelect, status)?.background
-      }
       style={style}
-      showArrow={true}
+      onPress={onPress}
+      showArrow={false}
+      leftContainerFlex={2}
+      borderLeftColor={
+        getItemColor(StockMove?.statusSelect, statusSelect)?.background
+      }
       lowerTexts={{
         items: [
-          {displayText: reference, isTitle: true},
-          {displayText: client, style: styles.noBold},
+          {displayText: stockMoveSeq, isTitle: true},
+          {displayText: partner?.fullName, hideIfNull: true},
           {
             displayText: origin,
             iconName: 'tag-fill',
             hideIfNull: true,
-            style: styles.noBold,
           },
           {
             displayText: _formatDate,
             hideIfNull: true,
-            style: [
-              styles.noBold,
-              status === StockMove?.statusSelect.Planned
+            style:
+              statusSelect === StockMove?.statusSelect.Planned
                 ? styles.creationDate
                 : null,
-            ],
           },
         ],
       }}
@@ -97,9 +95,6 @@ const SupplierArrivalCard = ({
 };
 
 const styles = StyleSheet.create({
-  noBold: {
-    fontWeight: null,
-  },
   creationDate: {
     fontStyle: 'italic',
   },

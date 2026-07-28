@@ -22,12 +22,12 @@ import {DateInput} from '@axelor/aos-mobile-core';
 import {PartnerSearchBar, StockLocationSearchBar} from '../../../templates';
 
 type LogisticalFormFilterProps = {
-  carrier: any;
-  onCarrierChange: (value: any) => void;
-  stockLocation: any;
-  onStockLocationChange: (value: any) => void;
-  collectionDate: Date;
-  onCollectionDateChange: (value: Date) => void;
+  carrier?: any;
+  onCarrierChange: (value?: any) => void;
+  stockLocation?: any;
+  onStockLocationChange: (value?: any) => void;
+  collectionDate?: Date;
+  onCollectionDateChange: (value?: Date) => void;
   stockLocationScanKey: string;
 };
 

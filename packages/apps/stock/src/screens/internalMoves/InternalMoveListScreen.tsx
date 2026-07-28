@@ -27,8 +27,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {InternalMoveCard, StockLocationSearchBar} from '../../components';
 import {searchInternalMoves} from '../../features/internalMoveSlice';
-import {displayStockMoveSeq} from '../../utils/displayers';
-import {default as StockMoveType} from '../../types/stock-move';
+import {displayStockMoveSeq} from '../../utils';
 
 const stockOriginalLocationScanKey =
   'stock-original-location_internal-move-list';
@@ -36,7 +35,7 @@ const stockDestinationLocationScanKey =
   'stock-destination-location_internal-move-list';
 const scanKey = 'stock-move_internal-move-list';
 
-const InternalMoveListScreen = ({navigation}) => {
+const InternalMoveListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -45,17 +44,17 @@ const InternalMoveListScreen = ({navigation}) => {
     useSelector(state => state.internalMove);
   const {user} = useSelector(state => state.user);
 
-  const [originalStockLocation, setOriginalStockLocation] = useState(null);
+  const [originalStockLocation, setOriginalStockLocation] = useState<any>();
   const [destinationStockLocation, setDestinationStockLocation] =
-    useState(null);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+    useState<any>();
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [navigate, setNavigate] = useState(false);
 
-  const showInternalMoveDetails = internalMove => {
-    if (internalMove != null) {
+  const showInternalMoveDetails = (_item: any) => {
+    if (_item != null) {
       setNavigate(current => !current);
       navigation.navigate('InternalMoveDetailsGeneralScreen', {
-        internalMoveId: internalMove?.id,
+        internalMoveId: _item?.id,
       });
     }
   };
@@ -121,19 +120,13 @@ const InternalMoveListScreen = ({navigation}) => {
               defaultValue={destinationStockLocation}
               onChange={setDestinationStockLocation}
               scanKey={stockDestinationLocationScanKey}
-              secondFilter={true}
+              secondFilter
             />
           </>
         }
         renderListItem={({item}) => (
           <InternalMoveCard
-            name={item.stockMoveSeq}
-            status={item.statusSelect}
-            availability={item.availableStatusSelect}
-            fromStockLocation={item.fromStockLocation.name}
-            toStockLocation={item.toStockLocation.name}
-            origin={item.origin}
-            date={StockMoveType.getStockMoveDate(item.statusSelect, item)}
+            {...item}
             onPress={() => showInternalMoveDetails(item)}
           />
         )}

@@ -22,12 +22,10 @@ import {
   useNavigation,
   usePermitted,
   useTranslator,
-  useTypes,
 } from '@axelor/aos-mobile-core';
 import {useMassIndicatorChecker} from '../../../../providers';
 
 const InternalMoveLineQuantityCard = ({
-  status,
   movedQty,
   plannedQty,
   stockProduct,
@@ -37,7 +35,6 @@ const InternalMoveLineQuantityCard = ({
   totalNetMass,
   readonly = false,
 }: {
-  status: number;
   movedQty: number;
   plannedQty: number;
   stockProduct: any;
@@ -50,7 +47,6 @@ const InternalMoveLineQuantityCard = ({
   const I18n = useTranslator();
   const navigation = useNavigation();
   const formatNumber = useDigitFormat();
-  const {StockMove} = useTypes();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockCorrection',
   });
@@ -74,10 +70,11 @@ const InternalMoveLineQuantityCard = ({
       labelQty={I18n.t('Stock_MovedQty')}
       defaultValue={movedQty}
       onValueChange={setMovedQty}
-      editable={!readonly && status < StockMove?.statusSelect.Realized}
-      actionQty={canCreate && status < StockMove?.statusSelect.Realized}
+      editable={!readonly}
+      actionQty={canCreate && !readonly}
       onPressActionQty={handleCreateCorrection}
-      isBigButton={true}
+      isBigButton
+      isFormWrapper
       translator={I18n.t}>
       <LabelText
         title={`${I18n.t('Stock_AvailableQty')} :`}

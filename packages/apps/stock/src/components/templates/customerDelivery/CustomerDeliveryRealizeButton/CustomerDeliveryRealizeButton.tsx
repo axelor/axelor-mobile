@@ -31,7 +31,11 @@ import CarrierTrackingAlert from './CarrierTrackingAlert';
 
 const trackingScanKey = 'customer-delivery_carrier-tracking-number';
 
-const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
+const CustomerDeliveryRealizeButton = ({
+  customerDelivery,
+}: {
+  customerDelivery: any;
+}) => {
   const I18n = useTranslator();
   const dispatch: any = useDispatch();
   const navigation = useNavigation();

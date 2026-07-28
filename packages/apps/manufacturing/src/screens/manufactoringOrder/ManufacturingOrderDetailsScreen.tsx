@@ -85,10 +85,6 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}: any) => {
     fetchManufOrderAndOperation();
   }, [fetchManufOrderAndOperation]);
 
-  const handleShowProduct = useCallback(() => {
-    navigation.navigate('ProductStockDetailsScreen', {product});
-  }, [navigation, product]);
-
   const handleViewAll = useCallback(() => {
     navigation.navigate('ManufacturingOrderOperationListScreen', {manufOrder});
   }, [manufOrder, navigation]);
@@ -127,12 +123,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}: any) => {
         style={styles.scroll}
         refresh={{loading: loadingOrder, fetcher: fetchManufOrderAndOperation}}>
         <ManufacturingOrderDatesCard />
-        <ProductCardInfo
-          onPress={handleShowProduct}
-          picture={product?.picture}
-          code={product?.code}
-          name={product?.name}
-        />
+        <ProductCardInfo product={product} />
         <ManufacturingOrderSaleOrderSetView />
         <ManufacturingOrderProductionOrderSetView />
         <ManufacturingOrderHalfLabelCardList />

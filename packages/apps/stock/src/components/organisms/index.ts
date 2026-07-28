@@ -28,3 +28,4 @@ export {default as StockMovePlanningFilters} from './StockMovePlanningFilters/St
 export {default as StockMoveLineSearchBar} from './StockMoveLineSearchBar/StockMoveLineSearchBar';
 export {default as StockMovePickingWidget} from './StockMovePickingWidget/StockMovePickingWidget';
 export {default as StockMoveSearchBar} from './StockMoveSearchBar/StockMoveSearchBar';
+export {default as UnitPicker} from './UnitPicker/UnitPicker';

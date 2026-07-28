@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 import {
   formatDate,
+  useNavigation,
   useTranslator,
   useTypeHelpers,
   useTypes,
@@ -28,59 +29,74 @@ import {
 
 interface StockCorrectionCardProps {
   style?: any;
-  status: number;
-  productFullname: string;
-  stockLocation: string;
-  date: string;
-  onPress: () => void;
+  id: number;
+  statusSelect: number;
+  product: any;
+  stockLocation: any;
+  createdOn: string;
+  validationDateT: string;
 }
 
 const StockCorrectionCard = ({
   style,
-  status,
-  productFullname,
+  id,
+  statusSelect,
+  product,
   stockLocation,
-  date,
-  onPress,
+  createdOn,
+  validationDateT,
 }: StockCorrectionCardProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const {StockCorrection} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
   const _formatDate = useMemo(() => {
-    if (date == null) {
-      return null;
-    }
+    const date =
+      statusSelect === StockCorrection?.statusSelect.Draft
+        ? createdOn
+        : validationDateT;
+
+    if (date == null) return undefined;
+
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
-    if (status === StockCorrection?.statusSelect.Draft) {
+    if (statusSelect === StockCorrection?.statusSelect.Draft) {
       return `${I18n.t('Base_CreatedOn')} ${_date}`;
     }
 
     return `${I18n.t('Base_ValidatedOn')} ${_date}`;
-  }, [I18n, StockCorrection?.statusSelect.Draft, date, status]);
+  }, [
+    statusSelect,
+    StockCorrection?.statusSelect.Draft,
+    createdOn,
+    validationDateT,
+    I18n,
+  ]);
 
   return (
     <ObjectCard
-      onPress={onPress}
+      onPress={() =>
+        navigation.navigate('StockCorrectionDetailsScreen', {
+          stockCorrectionId: id,
+        })
+      }
       showArrow={true}
       borderLeftColor={
-        getItemColor(StockCorrection?.statusSelect, status)?.background
+        getItemColor(StockCorrection?.statusSelect, statusSelect)?.background
       }
       style={style}
       lowerTexts={{
         items: [
-          {displayText: productFullname, isTitle: true},
-          {displayText: stockLocation, style: styles.noBold},
+          {displayText: product?.fullName, isTitle: true},
+          {displayText: stockLocation?.name},
           {
             displayText: _formatDate,
             hideIfNull: true,
-            style: [
-              styles.noBold,
-              status === StockCorrection?.statusSelect.Draft
+            style:
+              statusSelect === StockCorrection?.statusSelect.Draft
                 ? styles.creationDate
                 : null,
-            ],
           },
         ],
       }}
@@ -91,9 +107,6 @@ const StockCorrectionCard = ({
 const styles = StyleSheet.create({
   creationDate: {
     fontStyle: 'italic',
-  },
-  noBold: {
-    fontWeight: null,
   },
 });
 

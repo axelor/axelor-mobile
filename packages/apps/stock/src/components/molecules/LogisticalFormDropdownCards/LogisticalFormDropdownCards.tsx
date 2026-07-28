@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
+import {DropdownCardSwitch, NotesCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {LogisticalFormDropdownGeneralView} from '../../atoms';
 
@@ -36,8 +36,28 @@ const LogisticalFormDropdownCards = ({
       {
         key: 1,
         title: I18n.t('Stock_General'),
+        iconName: 'info-circle',
         isDefaultVisible: true,
         childrenComp: <LogisticalFormDropdownGeneralView {...logisticalForm} />,
+      },
+      {
+        key: 2,
+        title: I18n.t('Stock_Notes'),
+        iconName: 'journals',
+        childrenComp: (
+          <>
+            <NotesCard
+              style={styles.notes}
+              title={I18n.t('Stock_InternalDeliveryComment')}
+              data={logisticalForm.internalDeliveryComment}
+            />
+            <NotesCard
+              style={styles.notes}
+              title={I18n.t('Stock_ExternalDeliveryComment')}
+              data={logisticalForm.externalDeliveryComment}
+            />
+          </>
+        ),
       },
     ],
     [I18n, logisticalForm],
@@ -54,6 +74,9 @@ const LogisticalFormDropdownCards = ({
 const styles = StyleSheet.create({
   textTitle: {
     fontWeight: 'bold',
+  },
+  notes: {
+    width: '100%',
   },
 });
 

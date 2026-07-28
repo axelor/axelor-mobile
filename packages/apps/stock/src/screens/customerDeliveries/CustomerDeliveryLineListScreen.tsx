@@ -23,10 +23,6 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  CustomerDeliveryLineActionCard,
-  StockMoveHeader,
-} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import {
   StockMove as StockMoveType,
@@ -34,7 +30,11 @@ import {
   LineVerification,
 } from '../../types';
 import {useCustomerLinesWithRacks, useLineHandler} from '../../hooks';
-import {displayLine} from '../../utils/displayers';
+import {displayLine} from '../../utils';
+import {
+  CustomerDeliveryLineActionCard,
+  StockMoveHeader,
+} from '../../components';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
 const massScanKey = 'customer-delivery-line_mass-scan';
@@ -105,7 +105,7 @@ const CustomerDeliveryLineListScreen = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={filteredList}
         loading={loadingCDLinesList}
@@ -122,14 +122,10 @@ const CustomerDeliveryLineListScreen = ({route}: any) => {
           <StockMoveHeader
             reference={customerDelivery.stockMoveSeq}
             status={customerDelivery.statusSelect}
-            date={
-              customerDelivery
-                ? StockMoveType.getStockMoveDate(
-                    customerDelivery.statusSelect,
-                    customerDelivery,
-                  )
-                : null
-            }
+            date={StockMoveType.getStockMoveDate(
+              customerDelivery.statusSelect,
+              customerDelivery,
+            )}
             availability={customerDelivery.availableStatusSelect}
             showMassScanner
             massScanData={{

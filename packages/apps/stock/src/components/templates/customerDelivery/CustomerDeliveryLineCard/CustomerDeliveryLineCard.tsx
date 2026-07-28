@@ -74,7 +74,7 @@ const CustomerDeliveryLineCard = ({
   const {getItemColor} = useTypeHelpers();
   const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
-  const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
+  const {stock: stockConfig} = useSelector(state => state.appConfig);
 
   const checkQtyObject = useStockLinesCheckQty(stockMoveLineId);
 
@@ -113,7 +113,7 @@ const CustomerDeliveryLineCard = ({
       style={[styles.container, style]}
       lowerTexts={{
         items: [
-          {displayText: productName, isTitle: true, fontSize: 16},
+          {displayText: productName, isTitle: true},
           {
             displayText: formatNumber(askedQty),
             indicatorText: `${I18n.t('Stock_AskedQty')} :`,
@@ -175,7 +175,6 @@ const CustomerDeliveryLineCard = ({
             showIf: Number(checkQtyObject?.missingQty ?? 0) !== 0,
           },
         ],
-        style: styles.badgesContainer,
       }}
     />
   );
@@ -193,9 +192,6 @@ const getStyles = (color: string | undefined) =>
     },
     textWidth: {
       width: '85%',
-    },
-    badgesContainer: {
-      marginRight: 10,
     },
   });
 

@@ -32,11 +32,12 @@ const ProductCardDetails = ({
   onPress,
 }: ProductCardDetailsProps) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <View style={[styles.container, style]}>
-        <View style={styles.textContainer}>{children}</View>
-        <Icon name="chevron-right" size={20} />
-      </View>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      onPress={onPress}
+      activeOpacity={0.9}>
+      <View style={styles.textContainer}>{children}</View>
+      <Icon name="chevron-right" size={18} />
     </TouchableOpacity>
   );
 };
@@ -48,9 +49,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textContainer: {
-    width: '80%',
+    flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    gap: 2,
   },
 });
 

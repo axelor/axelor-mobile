@@ -69,7 +69,7 @@ const ProductVariantCard = ({
   const [attributes, setAttributesList] = useState<
     ProductAttribut[] | undefined
   >();
-  const [availableStock, setAvailableStock] = useState(null);
+  const [qty, setAvailableQty] = useState<number | undefined>();
 
   useEffect(() => {
     isMounted.current = true;
@@ -92,7 +92,7 @@ const ProductVariantCard = ({
         })
         .catch(() => {
           if (isMounted.current) {
-            setAttributesList(null);
+            setAttributesList(undefined);
           }
         });
     }
@@ -107,21 +107,19 @@ const ProductVariantCard = ({
       })
         .then((res: any) => {
           if (isMounted.current) {
-            setAvailableStock(res?.data?.object?.availableStock);
+            setAvailableQty(res?.data?.object?.availableStock);
           }
         })
         .catch(() => {
           if (isMounted.current) {
-            setAvailableStock(null);
+            setAvailableQty(undefined);
           }
         });
     }
   }, [availabiltyData, productId, productVersion]);
 
   const renderAttrItems = useCallback(() => {
-    if (!Array.isArray(attributes)) {
-      return null;
-    }
+    if (!Array.isArray(attributes)) return undefined;
 
     let items = [];
 
@@ -133,7 +131,7 @@ const ProductVariantCard = ({
           numberOfLines: null,
           style: styles.attr,
           displayText: `${attr.attrName} : ${attr.attrValue} ${
-            attr.priceExtra >= 0
+            attr.priceExtra > 0
               ? `(${getItemTitle(
                   ProductVariantValue?.applicationPriceSelect,
                   attr.applicationPriceSelect,
@@ -144,7 +142,7 @@ const ProductVariantCard = ({
       }
     }
 
-    return items?.length > 0 ? {items} : null;
+    return items?.length > 0 ? {items} : undefined;
   }, [
     ProductVariantValue?.applicationPriceSelect,
     attributes,
@@ -156,28 +154,26 @@ const ProductVariantCard = ({
     <ObjectCard
       onPress={onPress}
       style={style}
-      showArrow={true}
+      showArrow={false}
+      leftContainerFlex={2}
       image={{
-        defaultIconSize: 40,
+        defaultIconSize: 50,
         imageSize: styles.imageSize,
-        generalStyle: styles.imageStyle,
         resizeMode: 'contain',
         source: formatMetaFile(picture?.id),
       }}
       upperTexts={{
-        items: [
-          {displayText: name, isTitle: true, numberOfLines: null},
-          {displayText: code, style: styles.code},
-        ],
+        items: [{displayText: name, isTitle: true}, {displayText: code}],
       }}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
-            displayText:
-              availableStock > 0
-                ? I18n.t('Stock_Available')
-                : I18n.t('Stock_Unavailable'),
-            color: availableStock > 0 ? Colors.successColor : Colors.errorColor,
+            showIf: qty != null,
+            displayText: I18n.t(
+              qty! > 0 ? 'Stock_Available' : 'Stock_Unavailable',
+            ),
+            color: qty! > 0 ? Colors.successColor : Colors.errorColor,
           },
         ],
       }}
@@ -188,14 +184,11 @@ const ProductVariantCard = ({
 
 const styles = StyleSheet.create({
   imageSize: {
-    height: 40,
-    width: 40,
+    height: 50,
+    width: 50,
   },
-  imageStyle: {
-    marginRight: 15,
-  },
-  code: {
-    fontSize: 12,
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
   attr: {
     fontStyle: 'italic',

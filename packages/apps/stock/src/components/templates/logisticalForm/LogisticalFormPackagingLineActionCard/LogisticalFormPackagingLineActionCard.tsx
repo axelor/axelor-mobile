@@ -24,8 +24,8 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ActionCard, ActionCardType, useThemeColor} from '@axelor/aos-mobile-ui';
-import {LogisticalFormPackagingLineCard} from '../../logisticalForm';
 import {deletePackagingLine} from '../../../../features/packagingLineSlice';
+import {LogisticalFormPackagingLineCard} from '../../logisticalForm';
 
 interface LogisticalFormPackagingLineActionCardProps {
   packagingLine: any;

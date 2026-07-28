@@ -27,9 +27,10 @@ interface NotesCardProps {
   title: string;
   data: string;
   style?: any;
+  styleText?: any;
 }
 
-const NotesCard = ({title, data, style}: NotesCardProps) => {
+const NotesCard = ({title, data, style, styleText}: NotesCardProps) => {
   const Colors = useThemeColor();
 
   const [expanded, setExpanded] = useState(false);
@@ -39,7 +40,7 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
 
   return (
     <View testID="notesCardContainer" style={[styles.description, style]}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={[styles.title, styleText]}>{title}</Text>
       <TouchableOpacity
         testID="notesCardTouchable"
         disabled={chevronHeight < MAX_HEIGHT}

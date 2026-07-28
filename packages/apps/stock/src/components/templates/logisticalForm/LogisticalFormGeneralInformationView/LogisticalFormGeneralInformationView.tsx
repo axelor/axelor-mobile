@@ -18,8 +18,8 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HeaderContainer, NotesCard, ScrollView} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {HeaderContainer, ScrollView} from '@axelor/aos-mobile-ui';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {
   CarrierActionCard,
   LogisticalFormDropdownCards,
@@ -33,8 +33,6 @@ interface LogisticalFormGeneralInformationViewProps {
 const LogisticalFormGeneralInformationView = ({
   onRefresh,
 }: LogisticalFormGeneralInformationViewProps) => {
-  const I18n = useTranslator();
-
   const {logisticalForm, loading} = useSelector(state => state.logisticalForm);
 
   return (
@@ -43,18 +41,8 @@ const LogisticalFormGeneralInformationView = ({
         expandableFilter={false}
         fixedItems={<LogisticalFormHeader {...logisticalForm} />}
       />
-      <ScrollView
-        style={styles.scrollContent}
-        refresh={{loading, fetcher: onRefresh}}>
+      <ScrollView refresh={{loading, fetcher: onRefresh}}>
         <CarrierActionCard carrierPartner={logisticalForm.carrierPartner} />
-        <NotesCard
-          title={I18n.t('Stock_InternalDeliveryComment')}
-          data={logisticalForm.internalDeliveryComment}
-        />
-        <NotesCard
-          title={I18n.t('Stock_ExternalDeliveryComment')}
-          data={logisticalForm.externalDeliveryComment}
-        />
         <LogisticalFormDropdownCards logisticalForm={logisticalForm} />
       </ScrollView>
     </View>
@@ -64,9 +52,6 @@ const LogisticalFormGeneralInformationView = ({
 const styles = StyleSheet.create({
   flexOne: {
     flex: 1,
-  },
-  scrollContent: {
-    marginTop: 5,
   },
 });
 

@@ -17,8 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {NumberBubble, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const BADGE_SIZE = 30;
 
@@ -35,26 +34,16 @@ export const Indicator = ({style, indicator}: IndicatorProps) => {
   }
 
   return (
-    <Badge
-      style={[styles.badge, style]}
-      txtStyle={styles.badgeText}
+    <NumberBubble
+      style={style}
+      number={indicator}
+      size={BADGE_SIZE}
       color={{
         background_light: Colors.backgroundColor,
         foreground: Colors.text,
         background: Colors.primaryColor.background,
       }}
-      title={indicator}
+      isNeutralBackground
     />
   );
 };
-
-const styles = StyleSheet.create({
-  badge: {
-    width: BADGE_SIZE,
-    height: BADGE_SIZE,
-    borderRadius: Math.ceil(BADGE_SIZE / 2),
-  },
-  badgeText: {
-    fontSize: Math.ceil(BADGE_SIZE / 2),
-  },
-});

@@ -27,19 +27,19 @@ import {
 
 interface LogisticalFormCardProps {
   style?: any;
-  reference?: string;
-  status?: number;
-  carrier?: string;
-  stockLocation?: string;
+  deliveryNumberSeq?: string;
+  statusSelect?: number;
+  carrierPartner?: any;
+  stockLocation?: any;
   collectionDate?: string;
   onPress?: () => void;
 }
 
 const LogisticalFormCard = ({
   style,
-  reference,
-  status,
-  carrier,
+  deliveryNumberSeq,
+  statusSelect,
+  carrierPartner,
   stockLocation,
   collectionDate,
   onPress,
@@ -49,12 +49,12 @@ const LogisticalFormCard = ({
   const {getItemColor} = useTypeHelpers();
 
   const cardColor = useMemo(() => {
-    if (status == null) {
+    if (statusSelect == null) {
       return undefined;
     }
 
-    return getItemColor(LogisticalForm?.statusSelect, status)?.background;
-  }, [LogisticalForm?.statusSelect, getItemColor, status]);
+    return getItemColor(LogisticalForm?.statusSelect, statusSelect)?.background;
+  }, [LogisticalForm?.statusSelect, getItemColor, statusSelect]);
 
   const formattedDate = useMemo(() => {
     if (!collectionDate) return null;
@@ -64,27 +64,29 @@ const LogisticalFormCard = ({
 
   return (
     <ObjectCard
-      onPress={onPress}
-      borderLeftColor={cardColor}
       style={style}
+      onPress={onPress}
+      showArrow={false}
+      leftContainerFlex={2}
+      borderLeftColor={cardColor}
       lowerTexts={{
         items: [
-          {displayText: reference, isTitle: true},
+          {displayText: deliveryNumberSeq, isTitle: true},
           {
-            displayText: carrier,
+            displayText: carrierPartner?.fullName,
             iconName: 'truck',
-            hideIf: carrier == null,
-            indicatorText: I18n.t('Stock_Carrier'),
+            hideIfNull: true,
+            indicatorText: `${I18n.t('Stock_Carrier')} :`,
           },
           {
-            displayText: stockLocation,
+            displayText: stockLocation?.name,
             iconName: 'geo-alt-fill',
-            hideIf: stockLocation == null,
-            indicatorText: I18n.t('Stock_StockLocation'),
+            hideIfNull: true,
+            indicatorText: `${I18n.t('Stock_StockLocation')} :`,
           },
           {
             displayText: formattedDate,
-            hideIf: formattedDate == null,
+            hideIfNull: true,
             iconName: 'calendar-event',
             indicatorText: `${I18n.t('Stock_CollectionDate')} :`,
           },

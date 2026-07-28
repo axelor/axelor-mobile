@@ -17,12 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
   Screen,
   KeyboardAvoidingScrollView,
   NotesCard,
   FormHtmlInput,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
@@ -32,6 +34,9 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
+import {StockMove as StockMoveType, StockMoveLine} from '../../types';
+import {useLineWithRack, useProductByCompany} from '../../hooks';
 import {
   ProductCardInfo,
   StockMoveHeader,
@@ -41,16 +46,15 @@ import {
   StockLocationSearchBar,
   ClipableSaleOrderLabel,
 } from '../../components';
-import {StockMove as StockMoveType, StockMoveLine} from '../../types';
-import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
-import {useLineWithRack, useProductByCompany} from '../../hooks';
 
 const stockLocationScanKey =
   'from-stock-location_customer-delivery-line-update';
 
-const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
-  const {customerDelivery, customerDeliveryLineId, productId} = route.params;
+const CustomerDeliveryLineDetailScreen = ({route}: any) => {
+  const {customerDelivery, customerDeliveryLineId, productId} =
+    route?.params ?? {};
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {StockMove} = useTypes();
   const {readonly} = usePermitted({
@@ -79,9 +83,9 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
     customerDeliveryLine,
   );
 
-  const [fromStockLocation, setFromStockLocation] = useState();
-  const [realQty, setRealQty] = useState(0);
-  const [description, setDescription] = useState('');
+  const [fromStockLocation, setFromStockLocation] = useState<any>();
+  const [realQty, setRealQty] = useState<number>(0);
+  const [description, setDescription] = useState<string | undefined>('');
 
   const trackingNumber = useMemo(
     () => customerDeliveryLine?.trackingNumber ?? route.params.trackingNumber,
@@ -108,10 +112,6 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
     setDescription(customerDeliveryLine?.description ?? '');
   }, [customerDeliveryLine, customerDelivery]);
 
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {product});
-  };
-
   const getCustomerDeliveryLine = useCallback(() => {
     dispatch((fetchCustomerDeliveryLine as any)({customerDeliveryLineId}));
   }, [customerDeliveryLineId, dispatch]);
@@ -120,13 +120,18 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
     getCustomerDeliveryLine();
   }, [getCustomerDeliveryLine]);
 
-  if (customerDeliveryLine?.id !== customerDeliveryLineId) {
-    return null;
-  }
+  const isReadonly = useMemo(
+    () =>
+      readonly ||
+      customerDelivery?.statusSelect !== StockMove?.statusSelect.Planned,
+    [StockMove?.statusSelect.Planned, customerDelivery?.statusSelect, readonly],
+  );
+
+  if (customerDeliveryLine?.id !== customerDeliveryLineId) return null;
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         <CustomerDeliveryLineButtons
           customerDelivery={customerDelivery}
@@ -146,14 +151,10 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
               reference={customerDelivery?.stockMoveSeq}
               status={customerDelivery?.statusSelect}
               lineRef={customerDeliveryLine?.name}
-              date={
-                customerDelivery
-                  ? StockMoveType.getStockMoveDate(
-                      customerDelivery.statusSelect,
-                      customerDelivery,
-                    )
-                  : null
-              }
+              date={StockMoveType.getStockMoveDate(
+                customerDelivery?.statusSelect,
+                customerDelivery,
+              )}
               availability={customerDeliveryLine?.availableStatusSelect}
               stockMoveLineId={customerDeliveryLine?.id}
             />
@@ -164,64 +165,70 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         }
       />
       <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 70, android: 100}}
         refresh={{
           loading: loadingCustomerDeliveryLine,
           fetcher: getCustomerDeliveryLine,
         }}>
-        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
-          <StockLocationSearchBar
-            placeholderKey="Stock_FromStockLocation"
-            defaultValue={fromStockLocation}
-            onChange={setFromStockLocation}
-            scanKey={stockLocationScanKey}
-            isFocus={true}
-            defaultStockLocation={customerDelivery.fromStockLocation}
-            readonly={
-              readonly ||
-              customerDelivery?.statusSelect !== StockMove?.statusSelect.Planned
-            }
-          />
-        ) : null}
         <ProductCardInfo
-          onPress={handleShowProduct}
-          picture={product?.picture}
-          code={product?.code}
-          name={product?.name}
-          trackingNumber={trackingNumber?.trackingNumberSeq}
+          product={product}
+          trackingNumber={trackingNumber}
           locker={locker}
         />
-        <CustomerDeliveryLineTrackingNumberSelect
-          product={product}
-          customerDeliveryLine={customerDeliveryLine}
-          visible={!readonly && isTrackingNumberSelectVisible}
-        />
-        <CustomerDeliveryLineQuantityCard
-          customerDelivery={customerDelivery}
-          customerDeliveryLine={customerDeliveryLine}
-          realQty={realQty}
-          setRealQty={setRealQty}
-          readonly={readonly}
-        />
-        <NotesCard
-          title={I18n.t('Stock_PickingOrderComments')}
-          data={customerDelivery?.pickingOrderComments}
-        />
-        <NotesCard
-          title={I18n.t('Stock_LineComment')}
-          data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
-        />
-        <FormHtmlInput
-          title={I18n.t('Base_Description')}
-          onChange={setDescription}
-          defaultValue={description}
-          readonly={
-            readonly ||
-            customerDelivery?.statusSelect === StockMove?.statusSelect.Realized
-          }
-        />
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          {stockConfig?.isManageStockLocationOnStockMoveLine ? (
+            <StockLocationSearchBar
+              placeholderKey="Stock_FromStockLocation"
+              defaultValue={fromStockLocation}
+              onChange={setFromStockLocation}
+              scanKey={stockLocationScanKey}
+              isFocus
+              defaultStockLocation={customerDelivery.fromStockLocation}
+              readonly={isReadonly}
+            />
+          ) : null}
+          <CustomerDeliveryLineTrackingNumberSelect
+            product={product}
+            customerDeliveryLine={customerDeliveryLine}
+            visible={!isReadonly && isTrackingNumberSelectVisible}
+          />
+          <CustomerDeliveryLineQuantityCard
+            customerDeliveryLine={customerDeliveryLine}
+            realQty={realQty}
+            setRealQty={setRealQty}
+            readonly={isReadonly}
+          />
+          <NotesCard
+            title={I18n.t('Stock_PickingOrderComments')}
+            data={customerDelivery?.pickingOrderComments}
+          />
+          <NotesCard
+            title={I18n.t('Stock_LineComment')}
+            data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
+          />
+          <FormHtmlInput
+            title={I18n.t('Base_Description')}
+            onChange={setDescription}
+            defaultValue={description}
+            readonly={isReadonly}
+          />
+        </View>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
+  },
+});
 
 export default CustomerDeliveryLineDetailScreen;
