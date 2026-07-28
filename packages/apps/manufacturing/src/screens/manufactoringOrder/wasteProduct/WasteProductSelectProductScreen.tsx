@@ -23,10 +23,10 @@ import {ManufacturingOrderHeader} from '../../../components';
 
 const productScanKey = 'product_manufacturing-order-waste-product-select';
 
-const WasteProductSelectProductScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+const WasteProductSelectProductScreen = ({navigation, route}: any) => {
+  const {manufOrder} = route?.params ?? {};
 
-  const handleSelectProduct = product => {
+  const handleSelectProduct = (product: any) => {
     if (product != null) {
       navigation.navigate('WasteProductDetailsScreen', {
         manufOrderId: manufOrder?.id,
@@ -36,7 +36,7 @@ const WasteProductSelectProductScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -52,8 +52,8 @@ const WasteProductSelectProductScreen = ({route, navigation}) => {
         <ProductSearchBar
           scanKey={productScanKey}
           onChange={handleSelectProduct}
-          isFocus={true}
-          changeScreenAfter={true}
+          isFocus
+          changeScreenAfter
         />
       </ScrollView>
     </Screen>
