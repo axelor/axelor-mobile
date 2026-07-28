@@ -76,7 +76,7 @@ const InternalMoveLineCard = ({
   const {getItemColor} = useTypeHelpers();
   const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
-  const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
+  const {stock: stockConfig} = useSelector(state => state.appConfig);
 
   const checkQtyObject = useStockLinesCheckQty(stockMoveLineId);
 
@@ -114,7 +114,7 @@ const InternalMoveLineCard = ({
       style={[borderStyle, style]}
       lowerTexts={{
         items: [
-          {displayText: productName, isTitle: true, fontSize: 16},
+          {displayText: productName, isTitle: true},
           {
             displayText: formatNumber(expectedQty),
             indicatorText: `${I18n.t('Stock_AskedQty')} :`,
@@ -128,7 +128,7 @@ const InternalMoveLineCard = ({
             customComponent: (
               <View style={styles.locations}>
                 <Text numberOfLines={1}>{fromStockLocation ?? '-'}</Text>
-                <Icon name="arrow-right" size={14} style={styles.icon} />
+                <Icon name="arrow-right" />
                 <Text numberOfLines={1}>{toStockLocation ?? '-'}</Text>
               </View>
             ),
@@ -195,9 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '60%',
-  },
-  icon: {
-    marginHorizontal: 2,
+    gap: 2,
   },
 });
 

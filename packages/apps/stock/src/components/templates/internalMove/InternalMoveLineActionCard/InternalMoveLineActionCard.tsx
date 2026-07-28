@@ -23,8 +23,8 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {InternalMoveLineCard} from '../../internalMove';
 import {StockIndicator, StockMoveLine} from '../../../../types';
+import {InternalMoveLineCard} from '../../internalMove';
 
 interface InternalMoveLineActionCardProps {
   style?: any;
@@ -74,11 +74,7 @@ const InternalMoveLineActionCard = ({
         }
         locker={internalMoveLine.locker}
         trackingNumber={internalMoveLine.trackingNumber?.trackingNumberSeq}
-        availability={
-          internalMoveLine.availableStatusSelect != null
-            ? internalMoveLine.availableStatusSelect
-            : null
-        }
+        availability={internalMoveLine.availableStatusSelect}
         totalNetMass={internalMoveLine.totalNetMass}
         stockMoveLineId={internalMoveLine.id}
         isRealQtyModifiedByUser={internalMoveLine.isRealQtyModifiedByUser}

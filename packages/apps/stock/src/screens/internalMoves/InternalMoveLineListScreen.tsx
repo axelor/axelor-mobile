@@ -26,8 +26,8 @@ import {
 import {InternalMoveLineActionCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {LineVerification, StockMove, StockMoveLine} from '../../types';
-import {displayLine} from '../../utils/displayers';
 import {useInternalLinesWithRacks, useLineHandler} from '../../hooks';
+import {displayLine} from '../../utils';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
 const massScanKey = 'internal-move-line_mass-scan';
@@ -112,14 +112,10 @@ const InternalMoveLineListScreen = ({route}: any) => {
           <StockMoveHeader
             reference={internalMove.stockMoveSeq}
             status={internalMove.statusSelect}
-            date={
-              internalMove
-                ? StockMove.getStockMoveDate(
-                    internalMove.statusSelect,
-                    internalMove,
-                  )
-                : null
-            }
+            date={StockMove.getStockMoveDate(
+              internalMove.statusSelect,
+              internalMove,
+            )}
             availability={internalMove.availableStatusSelect}
             showMassScanner
             massScanData={{

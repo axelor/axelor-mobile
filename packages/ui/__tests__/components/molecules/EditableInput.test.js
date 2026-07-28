@@ -48,13 +48,13 @@ describe('EditableInput Component', () => {
   it('toggles to editable mode and back, validating with latest value', () => {
     const {getByTestId, props} = setupEditableInput({onValidate: jest.fn()});
 
-    fireEvent.press(getByTestId('editableInputToggle'));
+    fireEvent.press(getByTestId('iconTouchable'));
 
     expect(getByTestId('icon-check-lg')).toBeTruthy();
 
     const newValue = 'New Value';
     fireEvent.changeText(getByTestId('editableInput'), newValue);
-    fireEvent.press(getByTestId('editableInputToggle'));
+    fireEvent.press(getByTestId('iconTouchable'));
     expect(props.onValidate).toHaveBeenCalledWith(newValue);
 
     expect(getByTestId('icon-pencil-fill')).toBeTruthy();

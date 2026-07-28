@@ -51,7 +51,7 @@ const AvailableStockIndicatorCard = ({
     state => state.appConfig,
   );
 
-  const [availableStock, setAvailableStock] = useState(null);
+  const [availableStock, setAvailableStock] = useState<any>(null);
 
   useEffect(() => {
     isMounted.current = true;
@@ -59,7 +59,7 @@ const AvailableStockIndicatorCard = ({
     if (product != null) {
       getProductStockIndicators({
         productId: product.id,
-        version: product.$version,
+        version: product.version,
         stockLocationId: stockLocation?.id,
         companyId: companyId ?? activeCompany?.id,
       })
@@ -92,7 +92,7 @@ const AvailableStockIndicatorCard = ({
   }, [Colors, availableStock]);
 
   const formatQty = useCallback(
-    (_qty, titleKey) => {
+    (_qty: number, titleKey: string) => {
       return {
         displayText: `${formatNumber(_qty)} ${unit?.name}`,
         indicatorText: `${I18n.t(titleKey)} :`,
@@ -107,6 +107,7 @@ const AvailableStockIndicatorCard = ({
       touchable={false}
       showArrow={false}
       borderLeftColor={cardColor}
+      leftContainerFlex={2}
       lowerTexts={{
         items: [
           {
@@ -127,6 +128,7 @@ const AvailableStockIndicatorCard = ({
       sideBadges={
         availableStock == null || availableStock > 0
           ? {
+              style: styles.badgeContainer,
               items: [
                 {
                   displayText:
@@ -140,7 +142,7 @@ const AvailableStockIndicatorCard = ({
                 },
               ],
             }
-          : null
+          : undefined
       }
     />
   );
@@ -149,6 +151,9 @@ const AvailableStockIndicatorCard = ({
 const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
+  },
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

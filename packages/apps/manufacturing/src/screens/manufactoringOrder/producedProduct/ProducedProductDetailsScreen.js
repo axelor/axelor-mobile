@@ -69,10 +69,6 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
     getManufOrderAndProducedProduct();
   }, [getManufOrderAndProducedProduct]);
 
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {product});
-  };
-
   const handleNavigateBackToList = useCallback(() => {
     navigation.popTo('ProducedProductListScreen', {manufOrder});
   }, [manufOrder, navigation]);
@@ -159,16 +155,10 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
             : null
         }>
         <ProductCardInfo
-          name={product?.name}
-          code={product?.code}
-          picture={product?.picture}
+          product={product}
           trackingNumber={
-            product?.trackingNumberConfiguration == null ||
-            trackingNumber == null
-              ? null
-              : trackingNumber.trackingNumberSeq
+            product?.trackingNumberConfiguration == null ? null : trackingNumber
           }
-          onPress={handleShowProduct}
         />
         <QuantityCard
           labelQty={I18n.t('Manufacturing_ProducedQty')}

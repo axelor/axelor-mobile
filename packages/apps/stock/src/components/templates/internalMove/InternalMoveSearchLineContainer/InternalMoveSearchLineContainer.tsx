@@ -51,7 +51,7 @@ const InternalMoveSearchLineContainer = ({}) => {
   }, [internalMove, navigation]);
 
   const handleShowLine = useCallback(
-    (item: any, skipVerification = undefined) => {
+    (item: any, skipVerification: boolean | undefined = undefined) => {
       showLine({
         move: internalMove,
         line: item,

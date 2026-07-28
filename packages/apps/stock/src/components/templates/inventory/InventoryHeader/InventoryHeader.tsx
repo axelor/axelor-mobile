@@ -16,9 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, LabelText, Text} from '@axelor/aos-mobile-ui';
+import {
+  Badge,
+  HorizontalRule,
+  LabelText,
+  MovementIndicationCard,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {
   formatDate,
   useTranslator,
@@ -31,6 +38,16 @@ interface InventoryHeaderProps {
   status: number;
   date?: string;
   stockLocation?: string;
+  showMovementIndicator?: boolean;
+  movementIndicatorData?: {
+    iconTop: string;
+    labelTop?: string;
+    titleTop: string;
+    iconDown: string;
+    labelDown?: string;
+    titleDown: string;
+  };
+  children?: any;
 }
 
 const InventoryHeader = ({
@@ -38,69 +55,73 @@ const InventoryHeader = ({
   status,
   date,
   stockLocation,
+  showMovementIndicator = false,
+  movementIndicatorData,
+  children,
 }: InventoryHeaderProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const {Inventory} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const _formatDate = useMemo(() => {
-    if (date == null) {
-      return null;
-    }
-    const _date = formatDate(date, I18n.t('Base_DateFormat'));
-
-    return <Text style={styles.text_secondary}>{_date}</Text>;
-  }, [I18n, date]);
-
   return (
-    <View style={styles.infoContainer}>
-      <View style={styles.refContainer}>
-        <Text style={styles.text_important}>{reference}</Text>
-        {_formatDate}
-        {stockLocation && <LabelText iconName="house" title={stockLocation} />}
+    <View>
+      <View style={styles.container}>
+        <View style={styles.columnWrapper}>
+          {reference != null && (
+            <Text writingType="important">{reference}</Text>
+          )}
+          {date != null && (
+            <Text>{formatDate(date, I18n.t('Base_DateFormat'))}</Text>
+          )}
+          {stockLocation && (
+            <LabelText iconName="house" title={stockLocation} />
+          )}
+        </View>
+        <View style={styles.badgesContainer}>
+          <Badge
+            color={getItemColor(Inventory?.statusSelect, status)}
+            title={getItemTitle(Inventory?.statusSelect, status)}
+          />
+        </View>
       </View>
-      <View style={styles.badgeContainer}>
-        <Badge
-          color={getItemColor(Inventory?.statusSelect, status)}
-          title={getItemTitle(Inventory?.statusSelect, status)}
-        />
-      </View>
+      {children}
+      {showMovementIndicator && movementIndicatorData != null && (
+        <>
+          <HorizontalRule
+            style={styles.line}
+            color={Colors.secondaryColor.background_light}
+          />
+          <MovementIndicationCard
+            {...movementIndicatorData}
+            labelTop={I18n.t(movementIndicatorData.labelTop)}
+            labelDown={I18n.t(movementIndicatorData.labelDown)}
+            displayCard={false}
+          />
+        </>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  infoContainer: {
+  container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginBottom: '2%',
+    justifyContent: 'space-between',
+    marginHorizontal: 24,
+    marginBottom: 5,
   },
-  refContainer: {
+  columnWrapper: {
     flex: 1,
-    flexDirection: 'column',
-    marginLeft: 24,
   },
-  badgeContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '2%',
-    marginHorizontal: 32,
-    flexDirection: 'row-reverse',
-  },
-  text_important: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  text_secondary: {
-    fontSize: 14,
-  },
-  iconText: {
+  badgesContainer: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
   },
-  icon: {
-    marginRight: 5,
+  line: {
+    width: '80%',
+    alignSelf: 'center',
+    marginVertical: 4,
   },
 });
 

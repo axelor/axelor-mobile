@@ -32,7 +32,7 @@ const LeadFormScreen = ({navigation, route}: any) => {
         (updateLead as any)({
           lead: {
             ...objectState,
-            emailVersion: objectState.emailAddress?.$version,
+            emailVersion: objectState.emailAddress?.version,
             emailId: objectState.emailAddress?.id,
           },
         }),

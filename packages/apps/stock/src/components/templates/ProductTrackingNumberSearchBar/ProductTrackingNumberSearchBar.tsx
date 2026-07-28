@@ -62,7 +62,7 @@ const ProductTrackingNumberSearchBar = ({
     useSelector(state => state.productTrackingNumber);
 
   const fetchProductTrackingNumberAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: any) => {
       dispatch((searchProductTrackingNumber as any)({page, searchValue}));
     },
     [dispatch],
