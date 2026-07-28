@@ -51,16 +51,17 @@ const OperationOrderCard = ({
   return (
     <ObjectCard
       onPress={onPress}
+      showArrow={false}
       borderLeftColor={
         getItemColor(OperationOrder?.statusSelect, status)?.background
       }
       style={style}
       sideBadges={{
+        style: styles.badgeContainer,
         items: [
           {
             displayText: priority.toString(),
             color: Colors.priorityColor,
-            style: styles.badge,
           },
         ],
       }}
@@ -80,12 +81,8 @@ const OperationOrderCard = ({
 };
 
 const styles = StyleSheet.create({
-  badge: {
-    borderRadius: 50,
-    width: 35,
-    height: 35,
-    marginBottom: 10,
-    alignSelf: 'flex-end',
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

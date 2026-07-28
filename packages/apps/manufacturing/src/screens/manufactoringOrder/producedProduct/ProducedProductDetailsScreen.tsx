@@ -17,13 +17,15 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   QuantityCard,
   Screen,
   Text,
-  ScrollView,
+  KeyboardAvoidingScrollView,
   HeaderContainer,
   useDigitFormat,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -44,11 +46,12 @@ import {
 } from '../../../features/prodProductSlice';
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
-const ProducedProductDetailsScreen = ({route, navigation}) => {
+const ProducedProductDetailsScreen = ({navigation, route}: any) => {
   const {manufOrderId, producedProdProduct, trackingNumber} = route.params;
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
@@ -65,24 +68,26 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
     producedProdProduct ? producedProdProduct.realQty : 0,
   );
 
-  useEffect(() => {
-    getManufOrderAndProducedProduct();
-  }, [getManufOrderAndProducedProduct]);
-
   const handleNavigateBackToList = useCallback(() => {
     navigation.popTo('ProducedProductListScreen', {manufOrder});
   }, [manufOrder, navigation]);
 
   const getManufOrderAndProducedProduct = useCallback(() => {
-    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
+    dispatch((fetchManufOrder as any)({manufOrderId}));
     if (producedProdProduct != null) {
-      dispatch(fetchProducedProductWithId(producedProdProduct?.productId));
+      dispatch(
+        (fetchProducedProductWithId as any)(producedProdProduct?.productId),
+      );
     }
   }, [dispatch, manufOrderId, producedProdProduct]);
 
+  useEffect(() => {
+    getManufOrderAndProducedProduct();
+  }, [getManufOrderAndProducedProduct]);
+
   const handleCreateProducedProduct = useCallback(() => {
     dispatch(
-      addProdProductToManufOrder({
+      (addProdProductToManufOrder as any)({
         manufOrderId: manufOrder?.id,
         manufOrderVersion: manufOrder?.version,
         productId: product?.id,
@@ -103,7 +108,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
 
   const handleUpdateProducedProduct = useCallback(() => {
     dispatch(
-      updateProdProductOfManufOrder({
+      (updateProdProductOfManufOrder as any)({
         stockMoveLineVersion: producedProdProduct?.stockMoveLineVersion,
         stockMoveLineId: producedProdProduct?.stockMoveLineId,
         prodProductQty: producedQty,
@@ -123,7 +128,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={
         <ProdProductFixedItems
           show={
@@ -145,14 +150,15 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView
+      <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 70, android: 100}}
         refresh={
           producedProdProduct != null
             ? {
                 loading: loadingOrder,
                 fetcher: getManufOrderAndProducedProduct,
               }
-            : null
+            : undefined
         }>
         <ProductCardInfo
           product={product}
@@ -160,29 +166,45 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
             product?.trackingNumberConfiguration == null ? null : trackingNumber
           }
         />
-        <QuantityCard
-          labelQty={I18n.t('Manufacturing_ProducedQty')}
-          defaultValue={producedQty}
-          onValueChange={setProducedQty}
-          editable={
-            !readonly &&
-            manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress
-          }
-          isBigButton={true}
-          translator={I18n.t}>
-          <Text>
-            {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
-              producedProdProduct?.plannedQty,
-            )} ${
-              producedProdProduct
-                ? producedProdProduct.unit?.unitName
-                : product.unit?.name
-            }`}
-          </Text>
-        </QuantityCard>
-      </ScrollView>
+        <View
+          style={[styles.wrapper, {backgroundColor: Colors.backgroundColor}]}>
+          <QuantityCard
+            labelQty={I18n.t('Manufacturing_ProducedQty')}
+            defaultValue={producedQty}
+            onValueChange={setProducedQty}
+            editable={
+              !readonly &&
+              manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress
+            }
+            isBigButton
+            isFormWrapper
+            translator={I18n.t}>
+            <Text>
+              {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
+                producedProdProduct?.plannedQty,
+              )} ${
+                producedProdProduct
+                  ? producedProdProduct.unit?.unitName
+                  : product.unit?.name
+              }`}
+            </Text>
+          </QuantityCard>
+        </View>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    borderRadius: 12,
+    width: '92%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingBottom: 10,
+    marginTop: 4,
+    marginBottom: 125,
+  },
+});
 
 export default ProducedProductDetailsScreen;

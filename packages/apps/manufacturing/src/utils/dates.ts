@@ -25,11 +25,11 @@ import {
 export const getDates = (
   status: number,
   statusType: Selection,
-  plannedStartDate: string,
-  plannedEndDate: string,
-  realStartDate: string,
-  realEndDate: string,
-  I18n: TranslatorProps,
+  plannedStartDate?: string,
+  plannedEndDate?: string,
+  realStartDate?: string,
+  realEndDate?: string,
+  I18n?: TranslatorProps,
 ): {title: string; value: string}[] => {
   const formatDate = date => {
     if (date == null) {

@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
-import {DropdownCard} from '@axelor/aos-mobile-ui';
+import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {HazardPhraseList} from '../../atoms';
 
@@ -30,18 +30,22 @@ const HazardPhraseDropdownCard = ({data}: HazardPhraseDropdownCardProps) => {
   const I18n = useTranslator();
 
   return (
-    <DropdownCard
-      title={I18n.t('Manufacturing_HazardPhrases')}
-      style={styles.container}>
-      <HazardPhraseList data={data} />
-    </DropdownCard>
+    <DropdownCardSwitch
+      dropdownItems={[
+        {
+          key: 1,
+          title: I18n.t('Manufacturing_HazardPhrases'),
+          iconName: 'shield-exclamation',
+          style: styles.container,
+          childrenComp: <HazardPhraseList data={data} />,
+        },
+      ]}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '90%',
-    alignSelf: 'center',
     maxHeight: Dimensions.get('window').height * 0.35,
   },
 });

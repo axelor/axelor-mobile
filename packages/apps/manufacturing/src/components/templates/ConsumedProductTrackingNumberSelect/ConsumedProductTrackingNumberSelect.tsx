@@ -32,13 +32,22 @@ const ConsumedProductTrackingNumberSelect = ({
   operationOrderId,
   operationOrderVersion,
   visible,
+}: {
+  product: any;
+  stockMoveLineId?: number;
+  stockMoveLineVersion?: number;
+  manufOrderId?: number;
+  manufOrderVersion?: number;
+  operationOrderId?: number;
+  operationOrderVersion?: number;
+  visible?: boolean;
 }) => {
   const dispatch = useDispatch();
 
   const handleAddTrackingNumber = useCallback(
-    selectedTrackingNumber => {
+    (selectedTrackingNumber: any) => {
       dispatch(
-        addTrackingNumberToConsumedProduct({
+        (addTrackingNumberToConsumedProduct as any)({
           stockMoveLineId,
           stockMoveLineVersion,
           manufOrderId,

@@ -78,13 +78,12 @@ const ManufacturingOrderProductionOrderSetView = () => {
         <Text>{I18n.t('Manufacturing_RefOP')}</Text>
       </View>
       <View style={styles.orderSetContainer}>
-        {linkedManufOrders.slice(0, 3).map(item => (
+        {linkedManufOrders.slice(0, 3).map((item: any) => (
           <Badge
-            style={styles.orderBadge}
             title={item.manufOrderSeq}
             key={item.id}
             color={Colors.priorityColor}
-            numberOfLines={null}
+            numberOfLines={null as any}
           />
         ))}
       </View>
@@ -99,10 +98,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
-  },
-  orderBadge: {
-    paddingHorizontal: 10,
-    width: null,
   },
 });
 

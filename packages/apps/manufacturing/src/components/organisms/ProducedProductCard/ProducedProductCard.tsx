@@ -36,19 +36,20 @@ const ProducedProductCard = ({
   plannedQty,
   producedQty,
   unitName,
-  trackingNumberSeq = null,
+  trackingNumberSeq,
   onPress,
 }: ProducedProductCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
 
-  const cardColor = useMemo(() => {
-    if (plannedQty > producedQty) {
-      return Colors.plannedColor.background;
-    }
-    return Colors.successColor.background;
-  }, [Colors, plannedQty, producedQty]);
+  const cardColor = useMemo(
+    () =>
+      plannedQty > producedQty!
+        ? Colors.plannedColor.background
+        : Colors.successColor.background,
+    [Colors, plannedQty, producedQty],
+  );
 
   return (
     <ObjectCard
@@ -66,7 +67,7 @@ const ProducedProductCard = ({
           },
           {
             indicatorText: `${I18n.t('Manufacturing_ProducedQty')}:`,
-            displayText: `${formatNumber(producedQty)} ${
+            displayText: `${formatNumber(producedQty ?? 0)} ${
               unitName != null ? unitName : ''
             }`,
           },

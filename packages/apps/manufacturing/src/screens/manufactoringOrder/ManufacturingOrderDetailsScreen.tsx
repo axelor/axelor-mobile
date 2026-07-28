@@ -39,7 +39,6 @@ import {
   ManufacturingOrderSaleOrderSetView,
   ManufacturingOrderHalfLabelCardList,
   ManufacturingOrderNotesCardList,
-  ManufacturingOrderDatesCard,
   HazardPhraseAlert,
 } from '../../components';
 import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
@@ -51,7 +50,7 @@ const MODELS = {ManufOrder: 'com.axelor.apps.production.db.ManufOrder'};
 const ManufacturingOrderDetailsScreen = ({route, navigation}: any) => {
   const {manufacturingOrderId: manufOrderId} = route?.params ?? {};
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   useContextRegister({models: [{model: MODELS.ManufOrder, id: manufOrderId}]});
 
   const {operationOrderList} = useSelector(state => state.operationOrder);
@@ -106,7 +105,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
+      removeSpaceOnTop
       fixedItems={<ManufacturingOrderButtons onStart={handleStart} />}>
       <HeaderContainer
         fixedItems={
@@ -115,14 +114,13 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}: any) => {
             reference={manufOrder.manufOrderSeq}
             status={manufOrder.statusSelect}
             priority={manufOrder.prioritySelect}
+            showDates
           />
         }
         expandableFilter={false}
       />
       <KeyboardAvoidingScrollView
-        style={styles.scroll}
         refresh={{loading: loadingOrder, fetcher: fetchManufOrderAndOperation}}>
-        <ManufacturingOrderDatesCard />
         <ProductCardInfo product={product} />
         <ManufacturingOrderSaleOrderSetView />
         <ManufacturingOrderProductionOrderSetView />
@@ -160,9 +158,6 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 1,
     marginVertical: 4,
-  },
-  scroll: {
-    paddingVertical: 10,
   },
 });
 

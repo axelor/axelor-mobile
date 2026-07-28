@@ -26,37 +26,37 @@ import {
   ObjectCard,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {splitSaleOrderRef} from '../../utils';
 import {ManufacturingOrderHeader} from '../../components';
-import {splitSaleOrderRef} from '../../utils/formaters';
 
 const IS_INFINITE_SCROLL_ENABLED = false;
 
-const ManufacturingOrderListSaleOrderScreen = ({route}) => {
-  const manufOrder = route.params.manufOrder;
+const ManufacturingOrderListSaleOrderScreen = ({route}: any) => {
+  const {manufOrder} = route?.params ?? {};
   const I18n = useTranslator();
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <>
-            <ManufacturingOrderHeader
-              parentMO={manufOrder.parentMO}
-              reference={manufOrder.manufOrderSeq}
-              status={manufOrder.statusSelect}
-              priority={manufOrder.prioritySelect}
-            />
-            <Text style={styles.orderTitle}>
+          <ManufacturingOrderHeader
+            parentMO={manufOrder.parentMO}
+            reference={manufOrder.manufOrderSeq}
+            status={manufOrder.statusSelect}
+            priority={manufOrder.prioritySelect}>
+            <Text style={styles.orderTitle} writingType="important">
               {I18n.t('Manufacturing_RefClient')}
             </Text>
-          </>
+          </ManufacturingOrderHeader>
         }
       />
       <ScrollList
         loadingList={IS_INFINITE_SCROLL_ENABLED}
         data={manufOrder.saleOrderSet}
-        renderItem={({item}) => {
+        fetchData={() => {}}
+        moreLoading={false}
+        renderItem={({item}: any) => {
           const saleOrderRef = splitSaleOrderRef(item.fullName);
           return (
             <ObjectCard
@@ -80,17 +80,7 @@ const ManufacturingOrderListSaleOrderScreen = ({route}) => {
 
 const styles = StyleSheet.create({
   orderTitle: {
-    marginLeft: 12,
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginHorizontal: 8,
-  },
-  itemContainer: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-  itemTitle: {
-    fontWeight: 'bold',
+    marginHorizontal: 24,
   },
 });
 

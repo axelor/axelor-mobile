@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -27,7 +26,7 @@ import {
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
-import {displayManufOrderSeq} from '../../utils/displayers';
+import {displayManufOrderSeq} from '../../utils';
 import {
   OperationOrderDetailsCard,
   MachineSearchBar,
@@ -36,7 +35,7 @@ import {
 
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 
-function OperationOrderListScreen({navigation}) {
+function OperationOrderListScreen({navigation}: any) {
   const I18n = useTranslator();
   const {OperationOrder} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -46,12 +45,12 @@ function OperationOrderListScreen({navigation}) {
   );
   const {user} = useSelector(state => state.user);
 
-  const [machine, setMachine] = useState(null);
-  const [workCenter, setWorkCenter] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [machine, setMachine] = useState<any>();
+  const [workCenter, setWorkCenter] = useState<any>();
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [navigate, setNavigate] = useState(false);
 
-  const navigateToOperationOrder = item => {
+  const navigateToOperationOrder = (item: any) => {
     if (item != null) {
       setNavigate(current => !current);
       navigation.navigate('OperationOrderDetailsScreen', {
@@ -85,7 +84,7 @@ function OperationOrderListScreen({navigation}) {
   }, [OperationOrder?.statusSelect, getSelectionItems, selectedStatus]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         list={operationOrderList}
         loading={loadingList}
@@ -103,7 +102,6 @@ function OperationOrderListScreen({navigation}) {
             mode="multi"
             onChangeValue={setSelectedStatus}
             selectionItems={statusList}
-            width={100}
           />
         }
         headerChildren={
@@ -114,7 +112,6 @@ function OperationOrderListScreen({navigation}) {
         }
         renderListItem={({item}) => (
           <OperationOrderDetailsCard
-            style={styles.item}
             status={item.statusSelect}
             manufOrder={item.manufOrder?.manufOrderSeq}
             operationName={item.operationName}
@@ -133,12 +130,5 @@ function OperationOrderListScreen({navigation}) {
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-});
 
 export default OperationOrderListScreen;

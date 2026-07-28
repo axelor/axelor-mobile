@@ -50,11 +50,11 @@ import {
 const productScanKey = 'product_manufacturing-order-consumed-product-list';
 const IS_INFINITE_SCROLL_ENABLED = false;
 
-const ConsumedProductListScreen = ({route, navigation}) => {
+const ConsumedProductListScreen = ({navigation, route}: any) => {
   const {operationOrderId, manufOrder} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {canCreate, readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
@@ -91,12 +91,12 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   );
 
   const [filteredList, setFilteredList] = useState(consumedProductList);
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [product, setProduct] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
+  const [product, setProduct] = useState<any>();
 
   const fetchConsumedProductsAPI = useCallback(() => {
     dispatch(
-      fetchConsumedProducts({
+      (fetchConsumedProducts as any)({
         manufOrderId: manufOrder?.id,
         manufOrderVersion: manufOrder?.version,
         operationOrderId: operationOrder?.id,
@@ -112,9 +112,9 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   ]);
 
   const updateConsumedProductQtyAPI = useCallback(
-    (item, moreValue) => {
+    (item: any, moreValue: any) => {
       dispatch(
-        updateProdProductOfManufOrder({
+        (updateProdProductOfManufOrder as any)({
           stockMoveLineVersion: item.stockMoveLineVersion,
           stockMoveLineId: item.stockMoveLineId,
           prodProductQty: parseFloat(item.realQty) + parseFloat(moreValue),
@@ -130,7 +130,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   );
 
   const filterOnStatus = useCallback(
-    list => {
+    (list: any[]) => {
       if (list == null || list?.length === 0) {
         return list;
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
@@ -152,7 +152,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
     [selectedStatus],
   );
 
-  const filterOnProduct = useCallback((list, value) => {
+  const filterOnProduct = useCallback((list: any[], value: string) => {
     if (list == null || list?.length === 0) {
       return [];
     } else {
@@ -171,7 +171,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   }, [filterOnStatus, consumedProductList, filterOnProduct, product]);
 
   const handleViewItem = useCallback(
-    item => {
+    (item: any) => {
       navigation.navigate('ConsumedProductDetailsScreen', {
         operationOrderId,
         manufOrderId: manufOrder.id,
@@ -194,7 +194,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
     });
   }, [manufOrder, navigation, operationOrderId]);
 
-  const handleViewAvailability = item => {
+  const handleViewAvailability = (item: any) => {
     navigation.navigate('ProductStockIndicatorDetails', {
       type: StockIndicator.type.AvailableStock,
       productId: item.productId,
@@ -203,7 +203,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -224,12 +224,14 @@ const ConsumedProductListScreen = ({route, navigation}) => {
               />
             )}
             <View style={styles.titleContainer}>
-              <Text>{I18n.t('Manufacturing_ConsumedProduct')}</Text>
+              <Text writingType="important">
+                {I18n.t('Manufacturing_ConsumedProduct')}
+              </Text>
               <Icon
                 name="plus-lg"
                 size={20}
                 color={Colors.primaryColor.background}
-                touchable={true}
+                touchable
                 visible={canCreate && isEditableStatus}
                 onPress={handleAddProduct}
               />
@@ -240,7 +242,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
               displayValue={item => item?.productName}
               placeholder={I18n.t('Manufacturing_Product')}
               scanKeySearch={productScanKey}
-              oneFilter={true}
+              oneFilter
             />
           </>
         }
@@ -292,6 +294,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
           />
         )}
         fetchData={fetchConsumedProductsAPI}
+        moreLoading={IS_INFINITE_SCROLL_ENABLED}
         isListEnd={!IS_INFINITE_SCROLL_ENABLED}
         filter={IS_INFINITE_SCROLL_ENABLED}
         translator={I18n.t}
@@ -303,7 +306,6 @@ const ConsumedProductListScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
-    marginBottom: '2%',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 24,

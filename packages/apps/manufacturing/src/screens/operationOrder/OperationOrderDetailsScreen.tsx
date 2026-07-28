@@ -33,7 +33,6 @@ import {
 import {
   HazardPhraseAlert,
   HazardPhraseDropdownCard,
-  OperationOrderDatesCard,
   OperationOrderHeader,
   OperationOrderLabelTextList,
   OperationOrderStopwatch,
@@ -48,7 +47,7 @@ const MODELS = {
 function OperationOrderDetailsScreen({route, navigation}: any) {
   const {operationOrderId} = route?.params ?? {};
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingOrder, operationOrder} = useSelector(
@@ -104,7 +103,7 @@ function OperationOrderDetailsScreen({route, navigation}: any) {
   if (operationOrder?.id !== operationOrderId) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         fixedItems={
           <OperationOrderHeader
@@ -112,12 +111,12 @@ function OperationOrderDetailsScreen({route, navigation}: any) {
             name={operationOrder?.operationName}
             status={operationOrder?.statusSelect}
             priority={operationOrder?.priority}
+            showDates
           />
         }
         expandableFilter={false}
       />
       <ScrollView refresh={{loading: loadingOrder, fetcher: getOperationOrder}}>
-        <OperationOrderDatesCard />
         <OperationOrderLabelTextList />
         {showConsumedProducts && (
           <HalfLabelCard

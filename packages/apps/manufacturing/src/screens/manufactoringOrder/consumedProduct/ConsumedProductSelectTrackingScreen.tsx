@@ -19,39 +19,36 @@
 import React from 'react';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {Screen, ScrollView, HeaderContainer} from '@axelor/aos-mobile-ui';
-import {ProductSearchBar} from '@axelor/aos-mobile-stock';
+import {
+  ProductCardInfo,
+  TrackingNumberSearchBar,
+} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   OperationOrderHeader,
 } from '../../../components';
 
-const productScanKey = 'product_manufacturing-order-consumed-product-select';
+const trackingNumberScanKey =
+  'tracking-number_manufacturing-order-consumed-product-select';
 
-const ConsumedProductSelectProductScreen = ({route, navigation}) => {
-  const {manufOrder, operationOrderId} = route?.params ?? {};
+const ConsumedProductSelectTrackingScreen = ({navigation, route}: any) => {
+  const {manufOrder, operationOrderId, product} = route?.params ?? {};
 
   const {operationOrder} = useSelector(state => state.operationOrder);
 
-  const handleSelectProduct = product => {
-    if (product != null) {
-      if (product.trackingNumberConfiguration == null) {
-        navigation.navigate('ConsumedProductDetailsScreen', {
-          manufOrderId: manufOrder.id,
-          operationOrderId,
-          product,
-        });
-      } else {
-        navigation.navigate('ConsumedProductSelectTrackingScreen', {
-          manufOrder: manufOrder,
-          operationOrderId,
-          product: product,
-        });
-      }
+  const handleTrackingNumberSelection = (item: any) => {
+    if (item != null) {
+      navigation.navigate('ConsumedProductDetailsScreen', {
+        manufOrderId: manufOrder.id,
+        operationOrderId,
+        product,
+        trackingNumber: item,
+      });
     }
   };
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -73,14 +70,17 @@ const ConsumedProductSelectProductScreen = ({route, navigation}) => {
         }
       />
       <ScrollView>
-        <ProductSearchBar
-          scanKey={productScanKey}
-          onChange={handleSelectProduct}
-          isFocus={true}
+        <ProductCardInfo product={product} />
+        <TrackingNumberSearchBar
+          scanKey={trackingNumberScanKey}
+          onChange={handleTrackingNumberSelection}
+          isFocus
+          changeScreenAfter
+          product={product}
         />
       </ScrollView>
     </Screen>
   );
 };
 
-export default ConsumedProductSelectProductScreen;
+export default ConsumedProductSelectTrackingScreen;

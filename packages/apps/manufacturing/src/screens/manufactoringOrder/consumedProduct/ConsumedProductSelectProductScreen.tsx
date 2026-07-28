@@ -17,25 +17,33 @@
  */
 
 import React from 'react';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {Screen, ScrollView, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {ProductSearchBar} from '@axelor/aos-mobile-stock';
-import {ManufacturingOrderHeader} from '../../../components';
+import {
+  ManufacturingOrderHeader,
+  OperationOrderHeader,
+} from '../../../components';
 
-const productScanKey = 'product_manufacturing-order-produced-product-select';
+const productScanKey = 'product_manufacturing-order-consumed-product-select';
 
-const ProducedProductSelectProductScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+const ConsumedProductSelectProductScreen = ({navigation, route}: any) => {
+  const {manufOrder, operationOrderId} = route?.params ?? {};
 
-  const handleSelectProduct = product => {
+  const {operationOrder} = useSelector(state => state.operationOrder);
+
+  const handleSelectProduct = (product: any) => {
     if (product != null) {
       if (product.trackingNumberConfiguration == null) {
-        navigation.navigate('ProducedProductDetailsScreen', {
+        navigation.navigate('ConsumedProductDetailsScreen', {
           manufOrderId: manufOrder.id,
-          product: product,
+          operationOrderId,
+          product,
         });
       } else {
-        navigation.navigate('ProducedProductSelectTrackingScreen', {
+        navigation.navigate('ConsumedProductSelectTrackingScreen', {
           manufOrder: manufOrder,
+          operationOrderId,
           product: product,
         });
       }
@@ -43,28 +51,36 @@ const ProducedProductSelectProductScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <ManufacturingOrderHeader
-            parentMO={manufOrder.parentMO}
-            reference={manufOrder.manufOrderSeq}
-            status={manufOrder.statusSelect}
-            priority={manufOrder.prioritySelect}
-          />
+          operationOrderId != null ? (
+            <OperationOrderHeader
+              manufOrderRef={manufOrder?.manufOrderSeq}
+              name={operationOrder?.operationName}
+              status={operationOrder?.statusSelect}
+              priority={operationOrder?.priority}
+            />
+          ) : (
+            <ManufacturingOrderHeader
+              parentMO={manufOrder?.parentMO}
+              reference={manufOrder?.manufOrderSeq}
+              status={manufOrder?.statusSelect}
+              priority={manufOrder?.prioritySelect}
+            />
+          )
         }
       />
       <ScrollView>
         <ProductSearchBar
           scanKey={productScanKey}
           onChange={handleSelectProduct}
-          isFocus={true}
-          changeScreenAfter={true}
+          isFocus
         />
       </ScrollView>
     </Screen>
   );
 };
 
-export default ProducedProductSelectProductScreen;
+export default ConsumedProductSelectProductScreen;

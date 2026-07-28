@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchStockMoveStatus} from '../../../api';
@@ -31,7 +31,7 @@ interface ConsumedProductCardProps {
   availableQty?: number;
   unitName?: string;
   trackingNumber?: string;
-  onPress: () => void;
+  onPress?: () => void;
   increment: {addedQty: number; incrementVisible: boolean};
   stockMoveLineId: number;
 }
@@ -44,8 +44,8 @@ const ConsumedProductCard = ({
   missingQty,
   availableQty,
   unitName,
-  trackingNumber = null,
-  onPress = () => {},
+  trackingNumber,
+  onPress,
   increment = {addedQty: 0, incrementVisible: false},
   stockMoveLineId,
 }: ConsumedProductCardProps) => {
@@ -58,7 +58,7 @@ const ConsumedProductCard = ({
   const [stockMoveStatus, setStockMoveStatus] = useState(null);
 
   const cardColor = useMemo(() => {
-    if (missingQty > 0) {
+    if (missingQty! > 0) {
       return Colors.errorColor.background;
     } else if (
       consumedQty == null ||
@@ -79,74 +79,69 @@ const ConsumedProductCard = ({
   }, [stockMoveLineId]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        onPress={onPress}
-        borderLeftColor={cardColor}
-        style={styles.card}
-        showArrow={false}
-        upperTexts={{
-          items: [
-            {isTitle: true, displayText: productName},
-            {
-              indicatorText: `${I18n.t('Manufacturing_PlannedQty')}:`,
-              displayText: `${formatNumber(plannedQty)} ${
-                unitName != null ? unitName : ''
-              }`,
-            },
-            {
-              indicatorText: `${I18n.t('Manufacturing_ConsumedQty')}:`,
-              displayText: `${formatNumber(consumedQty)} ${
-                unitName != null ? unitName : ''
-              }`,
-            },
-            {
-              indicatorText: `${I18n.t('Stock_AvailableQty')}`,
-              displayText: `${formatNumber(availableQty)} ${
-                unitName != null ? unitName : ''
-              }`,
-              iconName: 'house-gear-fill',
-            },
-            {
-              iconName: 'qr-code',
-              displayText: trackingNumber,
-              indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
-              hideIf: trackingNumber == null,
-            },
-          ],
-        }}
-        lowerBadges={{
-          items: [
-            {
-              showIf: increment.incrementVisible,
-              displayText: `+ ${increment.addedQty}`,
-              color: Colors.priorityColor,
-            },
-            {
-              displayText:
-                availableQty > 0
-                  ? missingQty > 0
-                    ? I18n.t('Stock_Partially')
-                    : I18n.t('Stock_Available')
-                  : I18n.t('Stock_Unavailable'),
-              color:
-                availableQty > 0
-                  ? missingQty > 0
-                    ? Colors.cautionColor
-                    : Colors.successColor
-                  : Colors.errorColor,
-            },
-            {
-              displayText: getItemTitle(
-                StockMove?.statusSelect,
-                stockMoveStatus,
-              ),
-              color: getItemColor(StockMove?.statusSelect, stockMoveStatus),
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      onPress={onPress}
+      borderLeftColor={cardColor}
+      style={[styles.card, style]}
+      showArrow={false}
+      upperTexts={{
+        items: [
+          {isTitle: true, displayText: productName},
+          {
+            indicatorText: `${I18n.t('Manufacturing_PlannedQty')}:`,
+            displayText: `${formatNumber(plannedQty)} ${
+              unitName != null ? unitName : ''
+            }`,
+          },
+          {
+            indicatorText: `${I18n.t('Manufacturing_ConsumedQty')}:`,
+            displayText: `${formatNumber(consumedQty ?? 0)} ${
+              unitName != null ? unitName : ''
+            }`,
+          },
+          {
+            indicatorText: `${I18n.t('Stock_AvailableQty')}`,
+            displayText: `${formatNumber(availableQty ?? 0)} ${
+              unitName != null ? unitName : ''
+            }`,
+            iconName: 'house-gear-fill',
+          },
+          {
+            iconName: 'qr-code',
+            displayText: trackingNumber,
+            indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
+            hideIf: trackingNumber == null,
+          },
+        ],
+      }}
+      lowerBadges={{
+        items: [
+          {
+            showIf: increment.incrementVisible,
+            displayText: `+ ${increment.addedQty}`,
+            color: Colors.priorityColor,
+          },
+          {
+            displayText:
+              availableQty! > 0
+                ? missingQty! > 0
+                  ? I18n.t('Stock_Partially')
+                  : I18n.t('Stock_Available')
+                : I18n.t('Stock_Unavailable'),
+            color:
+              availableQty! > 0
+                ? missingQty! > 0
+                  ? Colors.cautionColor
+                  : Colors.successColor
+                : Colors.errorColor,
+          },
+          {
+            displayText: getItemTitle(StockMove?.statusSelect, stockMoveStatus),
+            color: getItemColor(StockMove?.statusSelect, stockMoveStatus),
+          },
+        ],
+      }}
+    />
   );
 };
 

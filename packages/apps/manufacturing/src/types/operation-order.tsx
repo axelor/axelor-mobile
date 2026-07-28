@@ -27,11 +27,11 @@ import {getDates} from '../utils';
 class OperationOrder {
   static getDates = (
     status: number,
-    plannedStartDate: string,
-    plannedEndDate: string,
-    realStartDate: string,
-    realEndDate: string,
-    I18n: TranslatorProps,
+    plannedStartDate?: string,
+    plannedEndDate?: string,
+    realStartDate?: string,
+    realEndDate?: string,
+    I18n?: TranslatorProps,
   ): {title: string; value: string}[] => {
     return getDates(
       status,

@@ -54,7 +54,7 @@ const ManufacturingQtyIndicatorCard = ({
 
   return (
     <ObjectCard
-      style={style}
+      style={[styles.container, style]}
       leftContainerFlex={2}
       showArrow={false}
       touchable={false}
@@ -78,7 +78,6 @@ const ManufacturingQtyIndicatorCard = ({
           {
             iconName: 'qr-code',
             displayText: trackingNumber,
-            indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
             hideIf: trackingNumber == null,
           },
         ],
@@ -97,6 +96,10 @@ const ManufacturingQtyIndicatorCard = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 2,
+    marginVertical: 2,
+  },
   badgeContainer: {
     alignItems: 'flex-end',
   },
