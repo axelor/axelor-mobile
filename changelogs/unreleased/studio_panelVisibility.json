@@ -1,0 +1,6 @@
+{
+  "title": "Custom forms: apply the visibility conditions configured on panels",
+  "type": "fix",
+  "packages": "core",
+  "description": "Panels configured as hidden, or with a display or hide condition, were always visible on mobile. They now follow the same visibility rules as the fields they contain."
+}

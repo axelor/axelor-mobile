@@ -17,9 +17,9 @@
  */
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
-import {Card, ProgressBar, Text} from '@axelor/aos-mobile-ui';
+import {ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
 import {searchControlEntrySampleLineApi} from '../../../api';
 
 interface ControlEntrySampleCardProps {
@@ -84,18 +84,27 @@ const ControlEntrySampleCard = ({
   }, [ControlEntrySample?.resultSelect, controlEntrySampleId]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <Text>{samplefullName}</Text>
-        <ProgressBar
-          style={styles.progressBar}
-          value={numberSampleFilled}
-          showPercent={false}
-          height={15}
-          styleTxt={styles.textProgressBar}
-        />
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      style={[borderStyle, style]}
+      onPress={onPress}
+      showArrow={false}
+      leftContainerFlex={4}
+      upperTexts={{items: [{displayText: samplefullName, numberOfLines: null}]}}
+      sideBadges={{
+        items: [
+          {
+            customComponent: (
+              <ProgressBar
+                styleTxt={styles.textProgressBar}
+                value={numberSampleFilled}
+                showPercent={false}
+                height={15}
+              />
+            ),
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -108,22 +117,9 @@ const getStyles = (color: string) =>
   });
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 12,
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-    justifyContent: 'space-between',
-  },
-  progressBar: {
-    borderRadius: 20,
-    width: '40%',
-  },
   textProgressBar: {
     display: 'none',
   },
 });
+
 export default ControlEntrySampleCard;

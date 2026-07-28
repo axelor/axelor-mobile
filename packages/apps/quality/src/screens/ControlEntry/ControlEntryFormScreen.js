@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
   showToastMessage,
@@ -27,6 +27,7 @@ import {
   useTranslator,
   useTypes,
   useTypeHelpers,
+  headerActionsProvider,
 } from '@axelor/aos-mobile-core';
 import {
   ControlEntryFormButtons,
@@ -288,20 +289,22 @@ const ControlEntryFormScreen = ({navigation, route}) => {
     [canNext, categoryIndex, handleNext, isFirstItem, isLastItem, selectedMode],
   );
 
+  useEffect(() => {
+    headerActionsProvider.registerModel('quality_controlEntry_form', {
+      model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+      modelId: itemSet[currentIndex]?.id,
+    });
+  }, [currentIndex, itemSet]);
+
   return (
     <Screen removeSpaceOnTop>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
-          <ControlEntryFormHeader
-            mode={selectedMode}
-            currentIndex={currentIndex}
-            categoryIndex={categoryIndex}
-            nbItemInCategory={nbItemInCategory}
-            nbCategories={nbCategories}
-            progressData={progressData}
-          />
-        }
+      <ControlEntryFormHeader
+        mode={selectedMode}
+        currentIndex={currentIndex}
+        categoryIndex={categoryIndex}
+        nbItemInCategory={nbItemInCategory}
+        nbCategories={nbCategories}
+        progressData={progressData}
       />
       {categorySet[categoryIndex] != null &&
         (itemSet[currentIndex] != null ? (
