@@ -145,9 +145,6 @@ const styles = StyleSheet.create({
   scrollView: {
     alignItems: 'center',
   },
-  dropdownCardTitle: {
-    fontWeight: 'bold',
-  },
   stopwatch: {
     width: '90%',
     marginTop: 30,

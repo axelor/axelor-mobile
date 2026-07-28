@@ -62,7 +62,7 @@ const PartnerTypeRadioSelectAux = ({
     <RadioSelect
       style={[styles.radioSelect, style]}
       direction="row"
-      question={showTitle && I18n.t(title)}
+      question={showTitle ? I18n.t(title) : undefined}
       questionStyle={styles.question}
       items={statusList}
       onChange={handleChange}
@@ -78,7 +78,7 @@ const PartnerTypeRadioSelect = (props: PartnerTypeRadioSelectProps) => {
 
 const styles = StyleSheet.create({
   radioSelect: {alignSelf: 'center', width: '90%'},
-  question: {fontWeight: null, marginLeft: 10},
+  question: {fontWeight: undefined, marginLeft: 10},
 });
 
 export default PartnerTypeRadioSelect;
