@@ -90,7 +90,10 @@ const ExpenseAddPopup = ({
       translator={I18n.t}>
       <View style={styles.container}>
         <DraftExpensePicker onChange={setExpenseSelected} />
-        <TouchableOpacity onPress={createExpenseAPI} style={styles.labelText}>
+        <TouchableOpacity
+          onPress={createExpenseAPI}
+          style={styles.labelText}
+          activeOpacity={0.9}>
           <LabelText
             iconName="plus-lg"
             color={Colors.primaryColor.background}

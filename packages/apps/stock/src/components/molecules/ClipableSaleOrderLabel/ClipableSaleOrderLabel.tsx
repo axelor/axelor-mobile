@@ -52,6 +52,7 @@ const ClipableSaleOrderLabel = ({
   return (
     <TouchableOpacity
       style={styles.container}
+      activeOpacity={0.9}
       onPress={() => clipboardProvider.copyToClipboard(sequence)}>
       <LabelText
         style={styles.text}

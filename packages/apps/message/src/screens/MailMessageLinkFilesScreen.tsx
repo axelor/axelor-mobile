@@ -67,6 +67,7 @@ const MailMessageLinkFilesScreen = ({navigation}) => {
     (file: any, idx: number) => {
       return (
         <TouchableOpacity
+          activeOpacity={0.9}
           style={styles.linkFile}
           onPress={() => handleLinkFiles(file)}
           key={idx}>

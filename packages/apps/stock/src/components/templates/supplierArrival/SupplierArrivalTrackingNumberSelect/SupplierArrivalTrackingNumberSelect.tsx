@@ -60,6 +60,7 @@ const SupplierArrivalTrackingNumberSelect = ({
     <View style={style}>
       {canCreate && (
         <TouchableOpacity
+          activeOpacity={0.9}
           style={styles.trackingNumberContainer}
           onPress={handleAddTrackingNumber}>
           <Text>{I18n.t('Stock_AddTrackingNumber')}</Text>

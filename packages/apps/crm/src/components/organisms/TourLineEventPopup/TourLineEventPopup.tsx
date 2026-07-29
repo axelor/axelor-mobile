@@ -81,6 +81,7 @@ const TourLineEventPopup = ({
           style={styles.picker}
         />
         <TouchableOpacity
+          activeOpacity={0.9}
           onPress={() => {
             onClose();
             navigation.navigate('EventFormScreen', {

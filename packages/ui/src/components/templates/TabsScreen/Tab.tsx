@@ -36,7 +36,7 @@ const Tab = ({
 
   return (
     <TouchableOpacity
-      activeOpacity={0.95}
+      activeOpacity={0.9}
       onPress={onPress}
       disabled={disabled || isActive}
       style={[

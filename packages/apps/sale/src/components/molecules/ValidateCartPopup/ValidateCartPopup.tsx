@@ -110,7 +110,7 @@ const ValidateCartPopup = ({
           defaultValue={customerSelected}
           companyId={activeCart?.company?.id}
         />
-        <TouchableOpacity onPress={handleClientCreation}>
+        <TouchableOpacity activeOpacity={0.9} onPress={handleClientCreation}>
           <LabelText
             iconName="plus-lg"
             color={Colors.primaryColor.background}
