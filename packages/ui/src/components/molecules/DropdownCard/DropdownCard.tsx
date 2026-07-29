@@ -68,7 +68,7 @@ const DropdownCard = ({
         style={[styles.titleRow, styleHeader]}
         onPress={handleCardPress}
         disabled={!showIcon}
-        activeOpacity={0.95}
+        activeOpacity={0.9}
         testID="dropdownCardTouchable">
         {iconName && (
           <IconTile icon={iconName} color={iconColor ?? Colors.primaryColor} />

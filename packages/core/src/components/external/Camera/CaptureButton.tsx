@@ -128,7 +128,7 @@ const CaptureButton = ({
   }, [enabled, isPressingButton]);
 
   return (
-    <TouchableOpacity onPress={takePhoto}>
+    <TouchableOpacity activeOpacity={0.9} onPress={takePhoto}>
       <Reanimated.View style={[buttonStyle, style]}>
         <Reanimated.View style={styles.flex}>
           <Reanimated.View style={[styles.shadow, shadowStyle]} />

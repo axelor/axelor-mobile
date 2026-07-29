@@ -76,6 +76,7 @@ const ToggleSwitch = ({
           ]}
           disabled={isActive}
           onPress={onPress}
+          activeOpacity={0.9}
           testID={testId}>
           <Text
             style={isActive ? styles.boldText : undefined}

@@ -59,6 +59,7 @@ const FilterContainer = ({
           <View style={styles.filterContainer}>
             <Icon name="filter" />
             <TouchableOpacity
+              activeOpacity={0.9}
               style={styles.filterTag}
               onPress={() => filterProvider.setActiveFilter()}>
               <Text textColor={Colors.primaryColor.background}>

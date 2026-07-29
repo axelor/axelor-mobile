@@ -54,6 +54,7 @@ const DottedButton = ({
     <TouchableOpacity
       style={[commonStyles.button, styles.button]}
       onPress={onPress}
+      activeOpacity={0.9}
       testID="dottedButtonContainer">
       <Icon name={iconName} size={20} color={buttonColor.background} />
       <Text

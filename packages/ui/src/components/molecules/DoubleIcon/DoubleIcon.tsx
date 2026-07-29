@@ -73,6 +73,7 @@ const DoubleIcon = ({
       testID="doubleIconTouchable"
       style={[styles.container, style]}
       onPress={onPress}
+      activeOpacity={0.9}
       disabled={!touchable}>
       <Icon
         {...bottomIconConfig}

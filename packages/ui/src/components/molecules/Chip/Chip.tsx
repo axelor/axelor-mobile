@@ -72,7 +72,7 @@ const Chip = ({
       ]}
       disabled={readonly}
       onPress={onPress}
-      activeOpacity={0.8}
+      activeOpacity={0.9}
       testID="chipTouchable">
       <Text
         style={[styles.text, selected ? styles.bold : null]}

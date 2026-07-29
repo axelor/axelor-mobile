@@ -79,6 +79,7 @@ const ActionSheet = ({
               style={styles.row}
               disabled={action.disabled}
               onPress={() => handlePress(action)}
+              activeOpacity={0.9}
               testID="actionSheetRow">
               <Icon name={action.iconName} color={color} size={20} />
               <Text fontSize={16} style={styles.label}>

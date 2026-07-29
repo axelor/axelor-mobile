@@ -61,6 +61,7 @@ const IndicatorItem = ({
   return (
     <TouchableOpacity
       onPress={onPress}
+      activeOpacity={0.9}
       style={[
         commonStyles.button,
         styles.container,

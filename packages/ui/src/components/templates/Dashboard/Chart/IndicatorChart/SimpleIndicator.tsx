@@ -57,7 +57,10 @@ const SimpleIndicator = ({
   }, [Colors, _color]);
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={onPress}
+      style={styles.container}>
       {value > 0 && <BorderBar color={color.background} />}
       <View style={styles.inner}>
         <Icon size={20} name={icon!} visible={isIcon} />

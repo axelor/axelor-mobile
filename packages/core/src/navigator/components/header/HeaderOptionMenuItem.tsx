@@ -61,7 +61,7 @@ const HeaderOptionMenuItem = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={disableIf}
-      activeOpacity={0.7}>
+      activeOpacity={0.9}>
       <Card style={styles.container}>
         {customComponent != null ? (
           React.cloneElement(customComponent)
