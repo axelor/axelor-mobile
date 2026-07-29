@@ -64,6 +64,7 @@ const AOSImage = ({
       disabled={
         !enableImageViewer || metaFile?.id == null || metaFile?.fileName == null
       }
+      activeOpacity={0.9}
       onPress={handleShowFile}>
       <Image
         imageSize={imageSize}

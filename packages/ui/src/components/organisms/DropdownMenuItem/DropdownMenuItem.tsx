@@ -73,6 +73,7 @@ const DropdownMenuItem = ({
       onPress={onPress}
       style={[styles.menuItem, style]}
       disabled={disableIf}
+      activeOpacity={0.9}
       testID="dropdownMenuItemTouchable">
       <IconTile
         style={styles.iconContainer}

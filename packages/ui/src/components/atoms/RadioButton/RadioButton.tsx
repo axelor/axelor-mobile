@@ -52,6 +52,7 @@ const RadioButton = ({
     <TouchableOpacity
       accessibilityRole="button"
       onPress={onPress}
+      activeOpacity={0.9}
       disabled={readonly}
       style={[
         commonStyles.filter,

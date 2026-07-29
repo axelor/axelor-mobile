@@ -86,7 +86,7 @@ const SingleSelectScrollList = ({
         <TouchableOpacity
           testID={`singleSelectScrollListItemContainer-${index}`}
           onPress={() => handleRowSelection(item)}
-          activeOpacity={0.7}
+          activeOpacity={0.9}
           style={[
             styles.container,
             isSelected && styles.selectedCard,

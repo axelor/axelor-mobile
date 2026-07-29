@@ -45,7 +45,8 @@ const MenuTitle = ({module, onPress}: MenuTitleProps) => {
     <TouchableOpacity
       style={styles.menuItemContainer}
       onPress={onPress}
-      disabled={compatibilityError}>
+      disabled={compatibilityError}
+      activeOpacity={0.9}>
       <Text
         style={[styles.text, styles.bold]}
         textColor={Colors.secondaryColor_dark.background}>

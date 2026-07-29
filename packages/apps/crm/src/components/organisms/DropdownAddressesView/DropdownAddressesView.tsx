@@ -103,6 +103,7 @@ const DropdownAddressesView = ({
         {canCreate && (
           <TouchableOpacity
             style={styles.addButton}
+            activeOpacity={0.9}
             onPress={() => setIsVisible(true)}>
             <Icon name="plus-lg" color={Colors.secondaryColor.background} />
             <Text textColor={Colors.secondaryColor.background}>
