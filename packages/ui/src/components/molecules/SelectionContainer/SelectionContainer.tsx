@@ -59,6 +59,7 @@ const SelectionItem = ({
       style={[itemStyles.item, style]}
       onPress={onPress}
       disabled={readonly}
+      activeOpacity={0.9}
       testID="selectionItemTouchable">
       {isPicker && (
         <Icon

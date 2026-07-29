@@ -79,6 +79,7 @@ const PictureCard = ({
   return (
     <View style={style}>
       <TouchableOpacity
+        activeOpacity={0.9}
         onPress={handleShowFile}
         onLongPress={handleLongPress}
         delayLongPress={300}>

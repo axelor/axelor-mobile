@@ -123,6 +123,7 @@ const AddressListCard = ({
     <>
       <View>
         <TouchableOpacity
+          activeOpacity={0.9}
           style={styles.container}
           onPress={() => linkingProvider.openMapApp(address)}>
           <View style={styles.leftIconContainer}>

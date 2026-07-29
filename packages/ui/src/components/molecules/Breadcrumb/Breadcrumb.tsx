@@ -108,7 +108,7 @@ const Breadcrumb = ({
           <TouchableOpacity
             testID={`breadcrumbItem-idx${index}`}
             style={styles.textContainer}
-            activeOpacity={0.7}
+            activeOpacity={0.9}
             disabled={disabled || !item.onPress}
             onPress={item.onPress}>
             <Text>{item.title}</Text>

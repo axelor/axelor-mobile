@@ -89,7 +89,7 @@ const MenuIconButton = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled || compatibilityError}
-      activeOpacity={0.95}>
+      activeOpacity={0.9}>
       <View style={[styles.iconWrapper, style]}>
         <View style={[styles.tile, isActive ? styles.activeShadow : null]}>
           <Icon size={22} name={icon} color={_color.foreground} />

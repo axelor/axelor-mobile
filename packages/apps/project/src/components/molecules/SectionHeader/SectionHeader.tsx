@@ -38,7 +38,10 @@ const SectionHeader = ({
 
   return (
     <View style={styles.sectionContainer}>
-      <TouchableOpacity style={styles.titleContainer} onPress={onPress}>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        style={styles.titleContainer}
+        onPress={onPress}>
         <Text writingType="title" style={styles.title}>
           {I18n.t(titleKey)}
         </Text>

@@ -57,7 +57,7 @@ const Tab = ({
       onPress={handleChangeTab}
       disabled={disabled || isActive}
       style={[styles.tab, isActive ? styles.actifTab : styles.inactifTab]}
-      activeOpacity={0.8}
+      activeOpacity={0.9}
       testID="tabTouchable">
       <Text
         style={isActive ? styles.boldTitle : null}
