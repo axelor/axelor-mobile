@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
-import {useDispatch} from 'react-redux';
 import {Text, Screen} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '../redux/hooks';
+import {clearError} from '../features/authSlice';
 import {
   LogoImage,
   MfaVerificationPopup,
@@ -28,35 +29,30 @@ import {
   SessionListCard,
   PopupEditSession,
   useSessions,
+  Session,
 } from '../sessions';
-import {clearError} from '../features/authSlice';
-import {useSelector} from '../redux/hooks';
 
-const SessionManagementScreen = ({route}) => {
-  const testInstanceConfig = route?.params?.testInstanceConfig;
-  const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
-  const logoFile = route?.params?.logoFile;
+const SessionManagementScreen = ({route}: any) => {
+  const {testInstanceConfig, releaseInstanceConfig, logoFile} =
+    route?.params ?? {};
   const dispatch = useDispatch();
 
   const modeDebug = useMemo(() => __DEV__, []);
 
   const {sessionList, sessionDefault} = useSessions();
 
-  const showUrlInput = useMemo(() => {
-    if (modeDebug) {
-      return true;
-    } else {
-      return releaseInstanceConfig?.showUrlInput || true;
-    }
-  }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
+  const showUrlInput = useMemo(
+    () => modeDebug || (releaseInstanceConfig?.showUrlInput ?? true),
+    [modeDebug, releaseInstanceConfig?.showUrlInput],
+  );
 
   const [isMounted, setIsMounted] = useState(false);
-  const [popupCreateIsOpen, setPopupCreateIsOpen] = useState(false);
+  const [popupCreateIsOpen, setPopupCreateIsOpen] = useState<
+    boolean | undefined
+  >(false);
   const [popupConnectionIsOpen, setPopupConnectionIsOpen] = useState(false);
   const [popupEditIsOpen, setPopupEditIsOpen] = useState(false);
-  const [session, setSession] = useState(
-    sessionDefault != null ? sessionDefault : null,
-  );
+  const [session, setSession] = useState<Session | undefined>(sessionDefault);
 
   const {appVersion} = useSelector(state => state.auth);
 
@@ -68,9 +64,7 @@ const SessionManagementScreen = ({route}) => {
 
   useEffect(() => {
     setIsMounted(true);
-    return () => {
-      setIsMounted(false);
-    };
+    return () => setIsMounted(false);
   }, []);
 
   useEffect(() => {
@@ -85,13 +79,9 @@ const SessionManagementScreen = ({route}) => {
     }
   }, [sessionList]);
 
-  const changeActiveSession = useCallback(_session => {
-    setSession(_session);
-  }, []);
-
   return (
     <Screen>
-      <KeyboardAvoidingView keyboardOffset={{ios: 0, android: 180}}>
+      <KeyboardAvoidingView>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
             <LogoImage logoFile={logoFile} url={session?.url} />
@@ -99,7 +89,7 @@ const SessionManagementScreen = ({route}) => {
           <SessionListCard
             logoFile={logoFile}
             sessionList={sessionList}
-            changeActiveSession={changeActiveSession}
+            changeActiveSession={setSession}
             openConnection={() => setPopupConnectionIsOpen(true)}
             openEdition={() => setPopupEditIsOpen(true)}
             openCreation={() => setPopupCreateIsOpen(true)}
@@ -137,7 +127,6 @@ const SessionManagementScreen = ({route}) => {
             setPopupConnectionIsOpen(false);
             setPopupEditIsOpen(false);
           }}
-          modeDebug={modeDebug}
         />
         <MfaVerificationPopup />
       </KeyboardAvoidingView>

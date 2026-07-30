@@ -21,6 +21,7 @@ import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useThemeColor, Icon, Text, Card} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {SessionCard} from '../../components';
+import {Session} from '../../type';
 
 const SessionListCard = ({
   logoFile,
@@ -30,7 +31,16 @@ const SessionListCard = ({
   openEdition,
   openCreation,
   session,
-  handleRemoveSession = null,
+  handleRemoveSession,
+}: {
+  logoFile?: any;
+  sessionList?: Session[];
+  changeActiveSession: (_v?: Session) => void;
+  openConnection: () => void;
+  openEdition: () => void;
+  openCreation: () => void;
+  session?: Session;
+  handleRemoveSession?: (data: {sessionId: string}) => void;
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();

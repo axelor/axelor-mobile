@@ -33,8 +33,9 @@ import {
   Icon,
   LabelText,
 } from '@axelor/aos-mobile-ui';
+import {sessionStorage} from '../../SessionStorage';
+import {Session} from '../../type';
 import LogoImage from './LogoImage';
-import {sessionStorage} from '../..';
 
 const SessionCard = ({
   session,
@@ -43,10 +44,18 @@ const SessionCard = ({
   openEdition,
   isUnactive,
   logoFile,
-  handleRemove = null,
+  handleRemove,
+}: {
+  session: Session;
+  changeActiveSession: (_v?: Session) => void;
+  openConnection: () => void;
+  openEdition: () => void;
+  isUnactive?: boolean;
+  logoFile?: any;
+  handleRemove?: (data: {sessionId: string}) => void;
 }) => {
   const Colors = useThemeColor();
-  const ref = useRef(null);
+  const ref = useRef<any>(null);
 
   const translateXAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(0)).current;
@@ -98,7 +107,12 @@ const SessionCard = ({
     });
   }, [handleRemove, scaleAnim, session, translateXAnim, translateYAnim]);
 
-  const renderActionButton = (trans, iconName, color, onPress) => {
+  const renderActionButton = (
+    trans: any,
+    iconName: string,
+    color: string,
+    onPress: () => void,
+  ) => {
     return (
       <Animated.View
         style={[styles.actionView, {transform: [{translateX: trans}]}]}>
@@ -115,7 +129,7 @@ const SessionCard = ({
     );
   };
 
-  const renderRightActions = (_, dragX) => {
+  const renderRightActions = (_: any, dragX: any) => {
     const trans = dragX.interpolate({
       inputRange: [0, 100],
       outputRange: [0, 1],

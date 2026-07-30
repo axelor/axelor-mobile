@@ -18,35 +18,43 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {Alert, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
-import {ErrorText, SessionInputs} from '../../components';
+import {useDispatch, useSelector} from '../../../redux/hooks';
 import {login} from '../../../features/authSlice';
-import {sessionStorage} from '../..';
+import {ErrorText, SessionInputs} from '../../components';
+import {sessionStorage} from '../../SessionStorage';
+import {Session} from '../../type';
 
 const PopupSession = ({
   sessionList,
   sessionActive,
-  popupIsOpen,
+  popupIsOpen = false,
   handleClose,
-  showUrlInput,
+  showUrlInput = false,
   testInstanceConfig,
+}: {
+  sessionList?: Session[];
+  sessionActive?: Session;
+  popupIsOpen?: boolean;
+  handleClose?: () => void;
+  showUrlInput?: boolean;
+  testInstanceConfig?: any;
 }) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {loading, error} = useSelector(state => state.auth);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const modeDebug = useMemo(() => __DEV__, []);
 
   const onPressLogin = useCallback(
-    ({password}) => {
+    ({password}: {password: string}) => {
       dispatch(
-        login({
-          url: sessionActive.url,
-          username: sessionActive.username,
+        (login as any)({
+          url: sessionActive!.url,
+          username: sessionActive!.username,
           password,
           closePopup: () => setIsOpen(false),
         }),
@@ -56,17 +64,15 @@ const PopupSession = ({
   );
 
   const deleteSession = useCallback(() => {
-    sessionStorage.removeSession({sessionId: sessionActive?.id});
-    handleClose();
+    sessionStorage.removeSession({sessionId: sessionActive!.id});
+    handleClose?.();
   }, [sessionActive, handleClose]);
 
   useEffect(() => {
     setIsOpen(popupIsOpen);
   }, [popupIsOpen]);
 
-  if (sessionActive == null) {
-    return null;
-  }
+  if (sessionActive == null) return null;
 
   return (
     <Alert
@@ -82,10 +88,12 @@ const PopupSession = ({
         <ErrorText error={error} />
         <SessionInputs
           sessionList={sessionList}
-          session={{
-            ...sessionActive,
-            password: modeDebug ? testInstanceConfig?.defaultPassword : '',
-          }}
+          session={
+            {
+              ...sessionActive,
+              password: modeDebug ? testInstanceConfig?.defaultPassword : '',
+            } as any
+          }
           showUrlInput={showUrlInput}
           loading={loading}
           mode="connection"
@@ -116,8 +124,8 @@ const styles = StyleSheet.create({
   },
   binIcon: {
     position: 'absolute',
-    right: '1%',
-    bottom: '5%',
+    right: 5,
+    bottom: 15,
   },
 });
 

@@ -26,13 +26,11 @@ const LOGIN_ERROR = 401;
 const URL_ERROR = 999;
 const NO_CONNECTION_CODE = 418;
 
-const ErrorText = ({error, style}) => {
+const ErrorText = ({error, style}: {error: any; style?: any}) => {
   const I18n = useTranslator();
 
   const errorCode = useMemo(() => {
-    if (error?.message == null) {
-      return null;
-    }
+    if (error?.message == null) return null;
 
     const regexResult = error.message.match(ERROR_CODE_REGEX)?.[0];
 
@@ -55,9 +53,7 @@ const ErrorText = ({error, style}) => {
     return error?.message;
   }, [I18n, error, errorCode]);
 
-  if (error == null) {
-    return null;
-  }
+  if (error == null) return null;
 
   return (
     <WarningCard style={[styles.card, style]} errorMessage={errorMessage} />
