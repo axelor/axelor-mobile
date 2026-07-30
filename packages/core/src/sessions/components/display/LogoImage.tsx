@@ -19,19 +19,40 @@
 import axios from 'axios';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Image, StyleSheet} from 'react-native';
-import {testUrl} from '../../../utils/api';
-import {checkNullString} from '../../../utils';
+import {checkNullString, testUrl} from '../../../utils';
 
 const axelorLogoPath = '../../../assets/Logo_Axelor.png';
 
-const LogoImage = ({url = null, filePath = 'logo.png', logoFile = null}) => {
+async function generateImageSourceWithUrl(url?: string, logoPath?: string) {
+  if (checkNullString(url)) return undefined;
+
+  const _url = await testUrl(url!)
+    .then(result => result)
+    .catch(() => undefined);
+
+  if (_url == null) return undefined;
+
+  return {uri: `${_url}/img/${logoPath}`};
+}
+
+const LogoImage = ({
+  url,
+  filePath = 'logo.png',
+  logoFile,
+}: {
+  url?: string;
+  filePath?: string;
+  logoFile?: any;
+}) => {
   const companyLogoFile = useRef(logoFile ?? require(axelorLogoPath)).current;
 
   const [source, setSource] = useState(companyLogoFile);
 
-  const urlLogoSource = useMemo(
+  const urlLogoSource: any = useMemo(
     () =>
-      checkNullString(url) ? generateImageSourceWithUrl(url, filePath) : null,
+      checkNullString(url)
+        ? generateImageSourceWithUrl(url, filePath)
+        : undefined,
     [filePath, url],
   );
 
@@ -40,9 +61,7 @@ const LogoImage = ({url = null, filePath = 'logo.png', logoFile = null}) => {
       axios
         .head(urlLogoSource.uri)
         .then(({status}) => {
-          if (status === 200) {
-            setSource(urlLogoSource);
-          }
+          if (status === 200) setSource(urlLogoSource);
         })
         .catch(() => setSource(companyLogoFile));
     } else {
@@ -61,20 +80,5 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-
-async function generateImageSourceWithUrl(url, logoPath) {
-  if (checkNullString(url)) {
-    return null;
-  }
-  const _url = await testUrl(url)
-    .then(result => result)
-    .catch(() => {});
-
-  if (_url == null) {
-    return null;
-  }
-
-  return {uri: `${_url}/img/${logoPath}`};
-}
 
 export default LogoImage;

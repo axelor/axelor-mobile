@@ -18,34 +18,43 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
 import {Alert} from '@axelor/aos-mobile-ui';
+import {useSelector} from '../../../redux/hooks';
 import {useTranslator} from '../../../i18n';
 import {ErrorText, SessionInputs} from '../../components';
-import {sessionStorage} from '../..';
+import {sessionStorage} from '../../SessionStorage';
+import {Session} from '../../type';
 
 const PopupEditSession = ({
   session,
   sessionList,
-  popupIsOpen,
+  popupIsOpen = false,
   handleClose,
-  showUrlInput,
+  showUrlInput = false,
+}: {
+  session?: Session;
+  sessionList?: Session[];
+  popupIsOpen?: boolean;
+  handleClose: () => void;
+  showUrlInput?: boolean;
 }) => {
   const I18n = useTranslator();
 
   const {loading, error} = useSelector(state => state.auth);
 
-  const [updateSession, setUpdateSession] = useState(session);
+  const [updateSession, setUpdateSession] = useState<Session | undefined>(
+    session,
+  );
   const [isBackground, setIsBackground] = useState(false);
 
   const onpressUpdate = useCallback(
-    _session => {
+    (_session: Session) => {
       sessionStorage.registerSession({
-        session: {id: updateSession?.id, ..._session},
+        session: {..._session},
       });
       handleClose();
     },
-    [handleClose, updateSession?.id],
+    [handleClose],
   );
 
   useEffect(() => {
@@ -65,17 +74,15 @@ const PopupEditSession = ({
       showUrlInput,
       loading,
       mode: 'edition',
-      showPopup: value => setIsBackground(!value),
+      showPopup: (value?: boolean) => setIsBackground(!value),
       onValidation: onpressUpdate,
-      saveBeforeScan: value =>
+      saveBeforeScan: (value: any) =>
         setUpdateSession(_current => ({..._current, ...value})),
     }),
     [loading, onpressUpdate, sessionList, showUrlInput, updateSession],
   );
 
-  if (isBackground) {
-    return <SessionInputs hidden={true} {...inputProps} />;
-  }
+  if (isBackground) return <SessionInputs hidden={true} {...inputProps} />;
 
   return (
     <Alert
@@ -83,7 +90,7 @@ const PopupEditSession = ({
       visible={popupIsOpen}
       title={I18n.t('Base_Connection_EditSession')}
       cancelButtonConfig={{
-        hide: sessionList?.length <= 0,
+        hide: sessionList?.length! <= 0,
         showInHeader: true,
         onPress: handleClose,
       }}>

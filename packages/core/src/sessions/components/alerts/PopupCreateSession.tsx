@@ -18,51 +18,53 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
 import {Alert} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '../../../redux/hooks';
+import {login} from '../../../features/authSlice';
 import {useTranslator} from '../../../i18n';
 import {ErrorText, SessionInputs} from '../../components';
-import {login} from '../../../features/authSlice';
-import {getStorageUrl, sessionStorage} from '../..';
-import DeviceInfo from 'react-native-device-info';
+import {sessionStorage} from '../../SessionStorage';
+import {getStorageUrl} from '../../utils';
+import {Session} from '../../type';
 
 const PopupCreateSession = ({
   sessionList,
   visible,
   handleVisibility,
-  showUrlInput,
-  modeDebug,
+  showUrlInput = false,
+  modeDebug = false,
   testInstanceConfig,
   releaseInstanceConfig,
+}: {
+  sessionList?: Session[];
+  visible?: boolean;
+  handleVisibility: (_v?: boolean) => void;
+  showUrlInput?: boolean;
+  modeDebug?: boolean;
+  testInstanceConfig?: any;
+  releaseInstanceConfig?: any;
 }) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const {loading, error, baseUrl} = useSelector(state => state.auth);
 
   const urlStorage = useMemo(() => getStorageUrl(), []);
 
-  const defaultUrl = useMemo(() => {
-    if (urlStorage != null) {
-      return urlStorage;
-    }
-
-    if (baseUrl != null) {
-      return baseUrl;
-    }
-
-    if (modeDebug) {
-      return testInstanceConfig?.defaultUrl;
-    }
-
-    return releaseInstanceConfig?.url;
-  }, [
-    baseUrl,
-    modeDebug,
-    releaseInstanceConfig?.url,
-    testInstanceConfig?.defaultUrl,
-    urlStorage,
-  ]);
+  const defaultUrl = useMemo(
+    () =>
+      urlStorage ??
+      baseUrl ??
+      (modeDebug ? testInstanceConfig?.defaultUrl : releaseInstanceConfig?.url),
+    [
+      urlStorage,
+      baseUrl,
+      modeDebug,
+      releaseInstanceConfig?.url,
+      testInstanceConfig?.defaultUrl,
+    ],
+  );
 
   const [isBackground, setIsBackground] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -70,20 +72,16 @@ const PopupCreateSession = ({
 
   useEffect(() => {
     setIsMounted(true);
-    return () => {
-      setIsMounted(false);
-    };
+    return () => setIsMounted(false);
   }, []);
 
   const onPressLogin = useCallback(
-    session => {
+    (session: Session) => {
       dispatch(
-        login({...session, closePopup: () => handleVisibility(false)}),
-      ).then(res => {
+        (login as any)({...session, closePopup: () => handleVisibility(false)}),
+      ).then((res: any) => {
         if (res.error == null && isMounted) {
-          sessionStorage.registerSession({
-            session,
-          });
+          sessionStorage.registerSession({session});
         }
       });
     },
@@ -96,7 +94,7 @@ const PopupCreateSession = ({
     }
   }, [visible]);
 
-  const inputProps = useMemo(
+  const inputProps: any = useMemo(
     () => ({
       sessionList,
       session:
@@ -114,9 +112,9 @@ const PopupCreateSession = ({
       showUrlInput,
       loading,
       mode: 'creation',
-      showPopup: value => {
-        setIsBackground(!value);
-        handleVisibility(value ? true : null);
+      showPopup: (_v?: boolean) => {
+        setIsBackground(!_v);
+        handleVisibility(_v ? true : undefined);
       },
       onValidation: onPressLogin,
       saveBeforeScan: setSession,
@@ -135,17 +133,15 @@ const PopupCreateSession = ({
     ],
   );
 
-  if (isBackground) {
-    return <SessionInputs hidden={true} {...inputProps} />;
-  }
+  if (isBackground) return <SessionInputs hidden={true} {...inputProps} />;
 
   return (
     <Alert
       style={styles.alert}
-      visible={visible}
+      visible={visible ?? false}
       title={I18n.t('Base_Connection_CreateSession')}
       cancelButtonConfig={{
-        hide: loading || sessionList?.length <= 0,
+        hide: loading || sessionList?.length! <= 0,
         showInHeader: true,
         onPress: handleVisibility,
       }}>
