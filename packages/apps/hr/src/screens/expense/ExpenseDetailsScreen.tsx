@@ -110,7 +110,6 @@ const ExpenseDetailsScreen = ({route, navigation}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
       fixedItems={
         <ExpenseDetailsValidationButton
           expense={expense}

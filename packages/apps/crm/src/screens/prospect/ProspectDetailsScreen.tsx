@@ -55,7 +55,7 @@ const ProspectDetailsScreen = ({route}: any) => {
   if (prospect?.id !== idProspect || !isFocused) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<ProspectHeader />}

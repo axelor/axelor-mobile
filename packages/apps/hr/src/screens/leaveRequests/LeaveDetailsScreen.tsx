@@ -71,7 +71,6 @@ const LeaveDetailsScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
       fixedItems={
         <LeaveDetailsButtons
           statusSelect={leave.statusSelect}

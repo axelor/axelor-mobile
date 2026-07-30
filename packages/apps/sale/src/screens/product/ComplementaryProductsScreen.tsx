@@ -39,7 +39,7 @@ const ComplementaryProductsScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={complementaryProductList}
         loading={loading}

@@ -149,7 +149,7 @@ const ProjectDetailsScreen = ({
   }
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <BottomBar items={bottomBarItems} />
     </Screen>
   );

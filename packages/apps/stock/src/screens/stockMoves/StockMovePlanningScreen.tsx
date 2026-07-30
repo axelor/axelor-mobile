@@ -108,7 +108,7 @@ function StockMovePlanningScreen() {
   }, []);
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

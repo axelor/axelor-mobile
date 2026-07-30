@@ -77,7 +77,6 @@ const TimesheetDetailsScreen = ({navigation, route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <TimesheetDetailsButtons
           timesheet={timesheet}

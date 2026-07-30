@@ -93,7 +93,7 @@ const SettingsScreen = () => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <ScrollView>
         <GroupedCard
           title={I18n.t('Auth_Preferences')}
@@ -105,9 +105,9 @@ const SettingsScreen = () => {
         <GroupedCard data={buttonItems} renderItem={renderSettingsItem} />
       </ScrollView>
       <View style={styles.footerContainer}>
-        <Text
-          writingType="important"
-          fontSize={12}>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
+        <Text writingType="important" fontSize={12}>{`${I18n.t(
+          'Base_ConnectedOn',
+        )}:`}</Text>
         <Text fontSize={12} numberOfLines={1}>
           {baseUrl}
         </Text>

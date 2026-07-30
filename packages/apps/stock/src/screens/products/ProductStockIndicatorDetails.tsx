@@ -230,7 +230,7 @@ const ProductStockIndicatorDetails = ({route}: any) => {
   if (scrollListData == null) return null;
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <ScrollList {...scrollListData} translator={I18n.t} />
     </Screen>
   );

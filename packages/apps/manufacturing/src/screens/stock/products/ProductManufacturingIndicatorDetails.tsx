@@ -50,7 +50,7 @@ const ProductManufacturingIndicatorDetails = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <ScrollList
         loadingList={loadingManufacturingQty}
         data={manufacturingQtyList}

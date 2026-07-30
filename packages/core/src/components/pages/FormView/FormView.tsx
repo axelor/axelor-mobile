@@ -387,8 +387,7 @@ const FormView = ({
                 .map(renderAction)}
         </View>
       }
-      style={styleScreen}
-      removeSpaceOnTop={true}>
+      style={styleScreen}>
       <KeyboardAvoidingScrollView
         keyboardOffset={{ios: 70, android: 100}}
         style={styles.scroll}>

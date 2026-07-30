@@ -111,7 +111,7 @@ const InterventionQuestionFormScreen = ({route, navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<InterventionHeader intervention={intervention} />}

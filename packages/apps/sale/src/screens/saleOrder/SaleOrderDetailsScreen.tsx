@@ -56,9 +56,7 @@ const SaleOrderDetailsScreen = ({route}: any) => {
   if (saleOrder?.id !== saleOrderId) return null;
 
   return (
-    <Screen
-      removeSpaceOnTop
-      fixedItems={<SaleOrderBottomButton saleOrder={saleOrder} />}>
+    <Screen fixedItems={<SaleOrderBottomButton saleOrder={saleOrder} />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<SaleOrderHeader saleOrder={saleOrder} />}

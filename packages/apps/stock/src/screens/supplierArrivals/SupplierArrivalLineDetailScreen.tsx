@@ -196,7 +196,6 @@ const SupplierArrivalLineDetailScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <SupplierArrivalLineButtons
           conformity={conformity}

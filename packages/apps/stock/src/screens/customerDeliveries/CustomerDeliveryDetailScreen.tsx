@@ -60,7 +60,6 @@ const CustomerDeliveryDetailScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <CustomerDeliveryRealizeButton customerDelivery={customerDelivery} />
       }>

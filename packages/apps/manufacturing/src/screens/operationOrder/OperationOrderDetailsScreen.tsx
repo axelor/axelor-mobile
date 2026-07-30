@@ -103,7 +103,7 @@ function OperationOrderDetailsScreen({route, navigation}: any) {
   if (operationOrder?.id !== operationOrderId) return null;
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         fixedItems={
           <OperationOrderHeader

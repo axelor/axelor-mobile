@@ -153,7 +153,6 @@ const ActiveCartScreen = ({}) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         !readonly && (
           <Button

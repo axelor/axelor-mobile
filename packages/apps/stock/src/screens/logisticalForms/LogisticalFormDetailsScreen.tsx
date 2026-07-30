@@ -103,7 +103,7 @@ const LogisticalFormDetailsScreen = ({navigation, route}: any) => {
   if (logisticalForm?.id !== logisticalFormId) return null;
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <BottomBar items={bottomBarItems} />
     </Screen>
   );

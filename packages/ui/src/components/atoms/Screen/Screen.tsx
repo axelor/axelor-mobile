@@ -26,7 +26,6 @@ interface ScreenProps {
   style?: any;
   children: any;
   fixedItems?: any;
-  removeSpaceOnTop?: boolean;
   hideButtonBackground?: boolean;
   loading?: boolean;
 }
@@ -42,7 +41,6 @@ const Screen = ({
   style,
   children,
   fixedItems,
-  removeSpaceOnTop = false,
   loading = false,
   hideButtonBackground = false,
 }: ScreenProps) => {
@@ -81,11 +79,7 @@ const Screen = ({
     <View
       testID="screenRoot"
       pointerEvents={showActivityIndicator === true ? 'none' : 'auto'}
-      style={[
-        styles.container,
-        removeSpaceOnTop ? null : styles.marginTop,
-        style,
-      ]}>
+      style={[styles.container, style]}>
       <View style={styles.childrenContainer}>{children}</View>
       {!!fixedItems && (
         <View
@@ -133,9 +127,6 @@ const getStyles = (Colors: ThemeColors) =>
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
-    },
-    marginTop: {
-      paddingTop: '1.5%',
     },
   });
 

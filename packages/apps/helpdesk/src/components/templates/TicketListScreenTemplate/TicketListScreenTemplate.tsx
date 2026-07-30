@@ -102,7 +102,7 @@ const TicketListScreenTemplate = ({
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         list={list}
         loading={loading}

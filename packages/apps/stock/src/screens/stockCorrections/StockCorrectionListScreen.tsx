@@ -60,7 +60,7 @@ const StockCorrectionListScreen = () => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={stockCorrectionList}
         loading={loadingList}

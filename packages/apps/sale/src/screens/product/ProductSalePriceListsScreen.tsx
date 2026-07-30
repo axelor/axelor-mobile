@@ -70,7 +70,7 @@ const ProductSalePriceListsScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={priceListLineList}
         loading={loading}

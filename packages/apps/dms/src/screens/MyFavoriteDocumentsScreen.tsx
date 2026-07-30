@@ -55,7 +55,7 @@ const MyFavoriteDocumentsScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         list={favoriteDocumentList}
         loading={loadingFavoriteDocument}

@@ -87,7 +87,7 @@ const InternalMoveListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         list={internalMoveList}
         loading={loadingInternalMoveList}

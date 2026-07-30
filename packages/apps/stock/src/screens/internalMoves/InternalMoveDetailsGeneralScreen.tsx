@@ -53,7 +53,6 @@ const InternalMoveDetailsGeneralScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
       fixedItems={<InternalMoveRealizeButton internalMove={internalMove} />}>
       <HeaderContainer
         expandableFilter={false}

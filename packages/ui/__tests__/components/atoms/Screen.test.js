@@ -93,18 +93,6 @@ describe('Screen Component', () => {
     expect(getByTestId('screenRoot').props.pointerEvents).toBe('none');
   });
 
-  it('applies marginTop if removeSpaceOnTop is false', () => {
-    const {getByTestId} = setupScreen({removeSpaceOnTop: false});
-
-    expect(getByTestId('screenRoot')).toHaveStyle({paddingTop: '1.5%'});
-  });
-
-  it('does not apply marginTop if removeSpaceOnTop is true', () => {
-    const {getByTestId} = setupScreen({removeSpaceOnTop: true});
-
-    expect(getByTestId('screenRoot')).not.toHaveStyle({paddingTop: '1.5%'});
-  });
-
   it('applies custom styles', () => {
     const {getByTestId, props} = setupScreen({style: {backgroundColor: 'red'}});
 

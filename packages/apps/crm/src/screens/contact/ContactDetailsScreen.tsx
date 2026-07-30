@@ -56,7 +56,7 @@ const ContactDetailsScreen = ({route}: any) => {
   if (contact?.id !== idContact || !isFocused) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<ContactHeader />}

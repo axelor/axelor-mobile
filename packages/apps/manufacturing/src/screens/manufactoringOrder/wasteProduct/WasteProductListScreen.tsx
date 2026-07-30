@@ -113,7 +113,6 @@ const WasteProductListScreen = ({navigation, route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         !readonly &&
         canDeclare &&
