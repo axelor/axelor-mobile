@@ -16,14 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import UserScreen from './UserScreen';
-
-export default {
-  UserScreen: {
-    title: 'User_UserProfile',
-    component: UserScreen,
-    actionID: 'auth_user_profile',
-  },
-};
-
-export {UserScreen};
+export {default as DashboardsCard} from './DashboardsCard/DashboardsCard';
+export {default as ShortcutsCard} from './ShortcutsCard/ShortcutsCard';
+export {default as UserCard} from './UserCard/UserCard';

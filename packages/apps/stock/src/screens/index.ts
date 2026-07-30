@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import AuthScreens from './auth';
 import CustomerDeliveryScreens from './customerDeliveries';
 import InternalMoveScreens from './internalMoves';
 import InventoryScreens from './inventories';
@@ -27,7 +26,6 @@ import StockMoveScreens from './stockMoves';
 import SupplierArrivalScreens from './supplierArrivals';
 
 export default {
-  ...AuthScreens,
   ...CustomerDeliveryScreens,
   ...InternalMoveScreens,
   ...InventoryScreens,
@@ -38,7 +36,6 @@ export default {
   ...SupplierArrivalScreens,
 };
 
-export * from './auth';
 export * from './customerDeliveries';
 export * from './internalMoves';
 export * from './inventories';

@@ -71,6 +71,7 @@ export {
   pickFieldsOfObject,
   isPlainObject,
 } from './object';
+export {RegistrableItem, RegistryHelper} from './registry.helper';
 export {getRoles} from './role';
 export {showToastMessage} from './show-toast-message';
 export {

@@ -20,16 +20,15 @@ import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   changeDefaultStockLocation,
-  UserScreen as AuthUserScreen,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {StockLocationSearchBar} from '../../components';
+import StockLocationSearchBar from '../StockLocationSearchBar/StockLocationSearchBar';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
-const UserScreen = () => {
+const DefaultStockLocationPicker = () => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -52,20 +51,20 @@ const UserScreen = () => {
     updateDefaultStockLocation,
   ]);
 
+  if (!mobileSettings?.isStockLocationManagementEnabled) {
+    return null;
+  }
+
   return (
-    <AuthUserScreen>
-      {mobileSettings?.isStockLocationManagementEnabled && (
-        <StockLocationSearchBar
-          showTitle={true}
-          titleKey={I18n.t('User_DefaultStockLocation')}
-          scanKey={stockLocationScanKey}
-          placeholderKey="Stock_StockLocation"
-          defaultValue={user?.workshopStockLocation}
-          onChange={updateDefaultStockLocation}
-          style={styles.searchBar}
-        />
-      )}
-    </AuthUserScreen>
+    <StockLocationSearchBar
+      showTitle={true}
+      titleKey={I18n.t('User_DefaultStockLocation')}
+      scanKey={stockLocationScanKey}
+      placeholderKey="Stock_StockLocation"
+      defaultValue={user?.workshopStockLocation}
+      onChange={updateDefaultStockLocation}
+      style={styles.searchBar}
+    />
   );
 };
 
@@ -75,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserScreen;
+export default DefaultStockLocationPicker;

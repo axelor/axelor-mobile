@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useCallback, useEffect, useMemo, useRef} from 'react';
+import {EffectCallback, useCallback, useEffect, useMemo, useRef} from 'react';
 
-const usePrevious = (value, initialValue) => {
+const usePrevious = (value: any, initialValue: any) => {
   const ref = useRef(initialValue);
   useEffect(() => {
     ref.current = value;
@@ -27,9 +27,9 @@ const usePrevious = (value, initialValue) => {
 };
 
 export const useEffectDebugger = (
-  effectHook,
-  dependencies,
-  dependencyNames = [],
+  effectHook: EffectCallback,
+  dependencies: any[],
+  dependencyNames: string[] = [],
 ) => {
   const previousDeps = usePrevious(dependencies, []);
 
@@ -57,9 +57,9 @@ export const useEffectDebugger = (
 };
 
 export const useMemoDebugger = (
-  memoHook,
-  dependencies,
-  dependencyNames = [],
+  memoHook: () => unknown,
+  dependencies: any[],
+  dependencyNames: string[] = [],
 ) => {
   const previousDeps = usePrevious(dependencies, []);
 
@@ -87,9 +87,9 @@ export const useMemoDebugger = (
 };
 
 export const useCallbackDebugger = (
-  callbackHook,
-  dependencies,
-  dependencyNames = [],
+  callbackHook: () => unknown,
+  dependencies: any[],
+  dependencyNames: string[] = [],
 ) => {
   const previousDeps = usePrevious(dependencies, []);
 
