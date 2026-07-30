@@ -25,21 +25,25 @@ import {
   View,
 } from 'react-native';
 import {Card, IconTile, Text} from '@axelor/aos-mobile-ui';
-import {useSelector} from '../../../../redux/hooks';
-import {useNavigation} from '../../../../hooks';
+import {useNavigation, useSelector} from '../../../../index';
 
 const CARD_PERCENT_WIDTH = 90;
 const CARD_PADDING = 8;
 
-interface ShortcutsCardProps {
-  style?: any;
-  horizontal?: boolean;
-}
-
-const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
+const ShortcutsCard = ({style}: {style?: any}) => {
   const navigation = useNavigation();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
+  const horizontal = useMemo(
+    () => mobileSettings?.isOneLineShortcut,
+    [mobileSettings?.isOneLineShortcut],
+  );
+
+  const shortcutSet = useMemo(
+    () => mobileSettings?.mobileShortcutList,
+    [mobileSettings?.mobileShortcutList],
+  );
 
   const styles = useMemo(() => {
     const cardWidth =
@@ -56,43 +60,35 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
   }, [horizontal]);
 
   const renderShortCut = useCallback(
-    ({item}: any) => {
-      return (
-        <TouchableOpacity
-          style={styles.shortcut}
-          onPress={() => navigation.navigate(item.mobileScreenName)}
-          key={item.shortcutId}
-          activeOpacity={0.9}>
-          <IconTile icon={item.iconName} size={45} />
-          <View style={styles.shortcutTextContainer}>
-            <Text numberOfLines={2} style={styles.shortcutText}>
-              {item.name}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      );
-    },
+    ({item}: any) => (
+      <TouchableOpacity
+        style={styles.shortcut}
+        onPress={() => navigation.navigate(item.mobileScreenName)}
+        key={item.shortcutId}
+        activeOpacity={0.9}>
+        <IconTile icon={item.iconName} size={45} />
+        <View style={styles.shortcutTextContainer}>
+          <Text
+            numberOfLines={2}
+            writingType="important"
+            fontSize={12}
+            style={styles.shortcutText}>
+            {item.name}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    ),
     [navigation, styles],
   );
 
-  if (
-    !Array.isArray(mobileSettings?.mobileShortcutList) ||
-    mobileSettings?.mobileShortcutList.length === 0
-  )
-    return null;
+  if (!Array.isArray(shortcutSet) || shortcutSet.length === 0) return null;
 
   return (
     <Card style={[styles.card, style]}>
       {horizontal ? (
-        <FlatList
-          data={mobileSettings?.mobileShortcutList}
-          renderItem={renderShortCut}
-          horizontal
-        />
+        <FlatList data={shortcutSet} renderItem={renderShortCut} horizontal />
       ) : (
-        mobileSettings?.mobileShortcutList.map((item: any) =>
-          renderShortCut({item}),
-        )
+        shortcutSet.map((item: any) => renderShortCut({item}))
       )}
     </Card>
   );
@@ -122,7 +118,6 @@ const getStyles = (shortCutWidth: number) =>
     },
     shortcutText: {
       textAlign: 'center',
-      fontWeight: 'bold',
     },
   });
 

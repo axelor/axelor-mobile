@@ -20,12 +20,11 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Card,
-  Icon,
+  IconTile,
   Image,
   LabelText,
   Picker,
   Text,
-  ThemeColors,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchCompanies} from '../../../features/companySlice';
@@ -37,16 +36,19 @@ import {
   useSelector,
   useTranslator,
 } from '../../../../index';
+import {UserScreenItem, useUserScreen} from '../../../userScreen';
 
-const UserCard = ({children, style}) => {
+const UserCard = ({style}: {style?: any}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const formatImage = useBinaryImageUri();
 
-  const {base: baseConfig} = useSelector((state: any) => state.appConfig);
-  const {user, canModifyCompany} = useSelector((state: any) => state.user);
-  const {companyList} = useSelector((state: any) => state.company);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+  const {user, canModifyCompany} = useSelector(state => state.user);
+  const {companyList} = useSelector(state => state.company);
+
+  const {userCardItems} = useUserScreen();
 
   useEffect(() => {
     dispatch((fetchCompanies as any)({companySet: user.companySet}));
@@ -70,42 +72,35 @@ const UserCard = ({children, style}) => {
     [dispatch, user],
   );
 
-  const styles = useMemo(() => {
-    const isCardTopMargin = displayCompanyPicker || !!children;
-
-    return getStyles(isCardTopMargin, Colors);
-  }, [Colors, children, displayCompanyPicker]);
-
   return (
-    <Card style={[styles.card, style]}>
-      <View style={styles.cardTopContainer}>
-        <View style={styles.cardTopLeftContainer}>
-          <Image
-            source={formatImage(
-              user?.id,
-              user?.version,
-              'com.axelor.auth.db.User',
-            )}
-            resizeMode="contain"
-            generalStyle={styles.image}
-          />
-          <View style={styles.flexOne}>
-            <Text>{user.name}</Text>
-            <Text writingType="details">{user.code}</Text>
-            {!displayCompanyPicker && (
-              <LabelText
-                iconName="building-fill"
-                title={user.activeCompany?.name}
-              />
-            )}
-          </View>
+    <Card style={[styles.container, style]}>
+      <View style={styles.headerWrapper}>
+        <Image
+          source={formatImage(
+            user?.id,
+            user?.version,
+            'com.axelor.auth.db.User',
+          )}
+          resizeMode="contain"
+          imageSize={styles.imageSize}
+        />
+        <View style={styles.flexOne}>
+          <Text writingType="important">{user.name}</Text>
+          <Text writingType="details" fontSize={12}>
+            {user.code}
+          </Text>
+          {!displayCompanyPicker && (
+            <LabelText
+              iconName="building-fill"
+              title={user.activeCompany?.name}
+            />
+          )}
         </View>
-        <Icon
-          style={styles.logOutIcon}
-          name="power"
-          color={Colors.primaryColor.background}
-          size={25}
-          touchable={true}
+        <IconTile
+          icon="power"
+          color={Colors.cautionColor}
+          iconSize={20}
+          borderRadius={20}
           onPress={() => dispatch((logout as any)())}
         />
       </View>
@@ -122,53 +117,39 @@ const UserCard = ({children, style}) => {
           style={styles.picker}
         />
       )}
-      {children}
+      {userCardItems.map((_item: UserScreenItem) => (
+        <_item.component key={_item.key} />
+      ))}
     </Card>
   );
 };
 
-const getStyles = (isCardTopMargin: boolean, Colors: ThemeColors) =>
-  StyleSheet.create({
-    card: {
-      width: '90%',
-      alignSelf: 'center',
-      paddingHorizontal: 16,
-      paddingRight: 16,
-      zIndex: 2,
-    },
-    cardTopContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: isCardTopMargin ? 10 : 0,
-    },
-    cardTopLeftContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    image: {
-      width: 80,
-      height: 80,
-      borderRadius: 40,
-      marginRight: 5,
-    },
-    logOutIcon: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: Colors.backgroundColor,
-      elevation: 5,
-      shadowOpacity: 0.5,
-      shadowOffset: {width: 0, height: 0},
-      shadowColor: Colors.secondaryColor.background,
-    },
-    picker: {
-      width: '100%',
-    },
-    flexOne: {
-      flex: 1,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    alignSelf: 'center',
+    paddingHorizontal: 16,
+    paddingRight: 16,
+    zIndex: 2,
+    gap: 5,
+  },
+  headerWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 5,
+  },
+  imageSize: {
+    width: 70,
+    height: 70,
+    borderRadius: 40,
+  },
+  flexOne: {
+    flex: 1,
+  },
+  picker: {
+    width: '100%',
+  },
+});
 
 export default UserCard;

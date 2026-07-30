@@ -16,34 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {Card} from '@axelor/aos-mobile-ui';
-import {DashboardView} from '../../../../dashboards/view';
+import {DashboardView} from '../../../../dashboards';
 import {useSelector} from '../../../../index';
 
-const DashboardsCard = ({style}) => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+const DashboardsCard = ({style}: {style?: any}) => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
-  const renderDashboards = () => {
-    return mobileSettings.dashboardIdList.map((dashboardId, index) => {
-      return (
+  const dashboardIds = useMemo(
+    () => mobileSettings?.dashboardIdList,
+    [mobileSettings?.dashboardIdList],
+  );
+
+  const renderDashboards = useCallback(
+    () =>
+      dashboardIds.map((dashboardId: number, index: number) => (
         <DashboardView
           dashboardId={dashboardId}
           hideCardBackground
           chartWidth={Dimensions.get('window').width * 0.85}
           key={index}
         />
-      );
-    });
-  };
+      )),
+    [dashboardIds],
+  );
 
-  if (
-    !Array.isArray(mobileSettings?.dashboardIdList) ||
-    mobileSettings?.dashboardIdList.length === 0
-  ) {
-    return null;
-  }
+  if (!Array.isArray(dashboardIds) || dashboardIds.length === 0) return null;
 
   return <Card style={[styles.card, style]}>{renderDashboards()}</Card>;
 };

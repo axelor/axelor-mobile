@@ -16,25 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useCallback, useEffect, useRef} from 'react';
+import React from 'react';
+import {RegistrableItem} from '../../utils/registry.helper';
 
-const TIME_BETWEEN_CALL = 300000;
+export enum UserScreenZone {
+  userCard = 'userCard',
+  content = 'content',
+}
 
-export const useBackgroundFunction = backgroundFunctions => {
-  const interval = useRef(null);
+export interface UserScreenItem extends RegistrableItem {
+  component: React.ComponentType<any>;
+  zone?: UserScreenZone;
+}
 
-  const handleListFunctions = useCallback(() => {
-    backgroundFunctions?.forEach(backgroundFunction => {
-      backgroundFunction();
-    });
-  }, [backgroundFunctions]);
-
-  return useEffect(() => {
-    if (backgroundFunctions?.length === 0) {
-      return;
-    }
-
-    interval.current = setInterval(handleListFunctions, TIME_BETWEEN_CALL);
-    return () => clearInterval(interval.current);
-  }, [backgroundFunctions?.length, handleListFunctions]);
+export type UserScreenItems = {
+  userCardItems: UserScreenItem[];
+  contentItems: UserScreenItem[];
 };

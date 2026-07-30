@@ -19,29 +19,38 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {Screen, ScrollView, useConfig} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '../../index';
+import {
+  PopupApplicationInformation,
+  useDefaultValuesOfUser,
+  useDispatch,
+  useSelector,
+} from '../../index';
+import {DashboardsCard, ShortcutsCard, UserCard} from '../components';
 import {fetchLocalizations} from '../features/localizationSlice';
 import {fetchActiveUser} from '../features/userSlice';
-import {DashboardsCard, ShortcutsCard, UserCard} from '../components';
-import {PopupApplicationInformation} from '../../components';
-import {useDefaultValuesOfUser} from '../../hooks/use-storage-config';
+import {UserScreenItem, useUserScreen} from '../userScreen';
 
-const UserScreen = ({children}) => {
+const UserScreen = () => {
   const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingUser, isUser} = useSelector(state => state.user);
-  const {mobileSettings} = useSelector(state => state.appConfig);
+
+  const {contentItems} = useUserScreen();
 
   const {setNbDecimalDigitForQty, setNbDecimalDigitForUnitPrice} = useConfig();
 
   useDefaultValuesOfUser();
 
+  const fetchUser = useCallback(() => {
+    dispatch(fetchActiveUser(userId));
+  }, [dispatch, userId]);
+
   useEffect(() => {
     fetchUser();
     dispatch(fetchLocalizations());
-  }, [dispatch, fetchUser, userId]);
+  }, [dispatch, fetchUser]);
 
   useEffect(() => {
     if (baseConfig?.nbDecimalDigitForQty != null) {
@@ -52,20 +61,16 @@ const UserScreen = ({children}) => {
     }
   }, [baseConfig, setNbDecimalDigitForQty, setNbDecimalDigitForUnitPrice]);
 
-  const fetchUser = useCallback(() => {
-    dispatch(fetchActiveUser(userId));
-  }, [dispatch, userId]);
-
   return (
     <Screen>
       <ScrollView
         refresh={{loading: false, fetcher: fetchUser}}
         style={styles.scroll}>
-        <UserCard children={children} style={styles.marginCard} />
-        <ShortcutsCard
-          style={styles.marginCard}
-          horizontal={mobileSettings?.isOneLineShortcut}
-        />
+        <UserCard />
+        <ShortcutsCard />
+        {contentItems.map((_item: UserScreenItem) => (
+          <_item.component key={_item.key} />
+        ))}
         <DashboardsCard />
       </ScrollView>
       <PopupApplicationInformation
@@ -79,10 +84,7 @@ const UserScreen = ({children}) => {
 
 const styles = StyleSheet.create({
   scroll: {
-    minHeight: '100%',
-  },
-  marginCard: {
-    marginBottom: 10,
+    gap: 10,
   },
 });
 

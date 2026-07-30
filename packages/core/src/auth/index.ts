@@ -78,3 +78,4 @@ export * from './components';
 export * from './features/asyncFunctionsIndex';
 export * from './screens';
 export * from './settings';
+export * from './userScreen';

@@ -16,36 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {RegistryHelper} from '../../utils/registry.helper';
 import {SettingsItems, BaseSettingsItem} from './types';
 
 export class SettingsHelper {
   static filterItems = (config: SettingsItems): SettingsItems => {
     return {
-      switchItems: config.switchItems
-        ?.filter(item => item.showIf !== false)
-        .sort((a, b) => a.order! - b.order!),
-      pickerItems: config.pickerItems
-        ?.filter(item => item.showIf !== false)
-        .sort((a, b) => a.order! - b.order!),
-      buttonItems: config.buttonItems
-        ?.filter(item => item.showIf !== false)
-        .sort((a, b) => a.order! - b.order!),
+      switchItems: RegistryHelper.sortAndFilter(config.switchItems),
+      pickerItems: RegistryHelper.sortAndFilter(config.pickerItems),
+      buttonItems: RegistryHelper.sortAndFilter(config.buttonItems),
     };
   };
 
   static registerItem<T extends BaseSettingsItem>(allItems: T[], item: T): T[] {
-    if (item == null || item.key == null) return allItems;
-
-    const index = allItems.findIndex(e => e.key === item.key);
-    if (index !== -1) {
-      return allItems.map((_i, _idx) =>
-        _idx === index ? ({..._i, ...item} as T) : _i,
-      );
-    } else {
-      return [
-        ...allItems,
-        {...item, order: item.order ?? (allItems.length + 1) * 10},
-      ];
-    }
+    return RegistryHelper.registerItem(allItems, item);
   }
 }
