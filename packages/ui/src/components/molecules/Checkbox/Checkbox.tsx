@@ -62,11 +62,13 @@ const Checkbox = ({
     }
   }, [isChecked, isPartialChecked]);
 
-  const _iconColor = useMemo(() => {
-    if (disabled) return Colors.secondaryColor.background;
-
-    return iconColor != null ? iconColor : Colors.primaryColor.background;
-  }, [Colors, disabled, iconColor]);
+  const _iconColor = useMemo(
+    () =>
+      disabled
+        ? Colors.secondaryColor.background
+        : (iconColor ?? Colors.primaryColor.background),
+    [Colors, disabled, iconColor],
+  );
 
   const handleToggle = () => {
     onChange(!isChecked);
@@ -90,9 +92,7 @@ const Checkbox = ({
         touchable={!disabled}
         onPress={handleToggle}
       />
-      {!checkNullString(title) && (
-        <Text style={[styles.title, styleTxt]}>{title}</Text>
-      )}
+      {!checkNullString(title) && <Text style={styleTxt}>{title}</Text>}
     </View>
   );
 };
@@ -103,9 +103,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 5,
-  },
-  title: {
-    // fontWeight: '600',
+    marginVertical: 5,
+    marginLeft: 10,
   },
 });
 
