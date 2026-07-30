@@ -17,8 +17,8 @@
  */
 
 export {useStudioApps} from './use-app-installed';
-export * from './use-effect-debugger';
 export {useCurrencyFormat} from './use-currency-formatter';
+export * from './use-effect-debugger';
 export {useMassScanner} from './use-mass-scanner';
 export {
   useIsFocused,
@@ -33,4 +33,9 @@ export {
   useScannerDeviceActivator,
   useCameraScannerActivator,
 } from './use-scan-activator';
-export {useConfigUpdater, useStorageUpdater} from './use-storage-config';
+export {
+  useConfigUpdater,
+  useStorageUpdater,
+  useDefaultValuesOfUser,
+  useCustomThemeOfUser,
+} from './use-storage-config';

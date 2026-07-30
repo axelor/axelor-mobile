@@ -1,0 +1,6 @@
+{
+  "title": "User profile: allow modules to register their own elements on the user profile screen",
+  "type": "feat",
+  "packages": "core",
+  "description": "The user profile screen now builds its content from registered items instead of expecting an application to replace the whole screen. Each item can define the zone it belongs to (inside the user card or as a standalone card), its order and a condition to be displayed, so several applications can contribute their own elements at the same time without depending on each other. The default stock location selector of the stock application is now registered this way and no longer overrides the user profile screen."
+}

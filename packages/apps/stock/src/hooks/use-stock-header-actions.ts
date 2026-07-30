@@ -26,8 +26,10 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {useStockUserScreen} from './use-stock-user-screen';
 
 export const useStockHeaders = () => {
+  useStockUserScreen();
   useCustomerDeliveryListActions();
   useCustomerDeliveryDetailsActions();
   useCustomerDeliveryLineDetailsActions();

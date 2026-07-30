@@ -16,19 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RegistryHelper} from '../../utils/registry.helper';
-import {SettingsItems, BaseSettingsItem} from './types';
+import {useEffect} from 'react';
+import {userScreenProvider, UserScreenZone} from '@axelor/aos-mobile-core';
+import {DefaultStockLocationPicker} from '../components';
 
-export class SettingsHelper {
-  static filterItems = (config: SettingsItems): SettingsItems => {
-    return {
-      switchItems: RegistryHelper.sortAndFilter(config.switchItems),
-      pickerItems: RegistryHelper.sortAndFilter(config.pickerItems),
-      buttonItems: RegistryHelper.sortAndFilter(config.buttonItems),
-    };
-  };
-
-  static registerItem<T extends BaseSettingsItem>(allItems: T[], item: T): T[] {
-    return RegistryHelper.registerItem(allItems, item);
-  }
-}
+export const useStockUserScreen = () => {
+  useEffect(() => {
+    userScreenProvider.registerItem({
+      key: 'stock-default-stock-location',
+      zone: UserScreenZone.userCard,
+      order: 10,
+      component: DefaultStockLocationPicker,
+    });
+  }, []);
+};
