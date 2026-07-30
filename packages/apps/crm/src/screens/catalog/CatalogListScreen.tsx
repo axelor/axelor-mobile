@@ -40,7 +40,7 @@ const CatalogListScreen = ({}) => {
   const {loadingCatalog, moreLoading, isListEnd, catalogList, catalogTypeList} =
     useSelector(state => state.catalog);
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const catalogTypeListItems = useMemo(
     () => getCustomSelectionItems(catalogTypeList, 'name'),
@@ -52,15 +52,11 @@ const CatalogListScreen = ({}) => {
   }, [dispatch]);
 
   const sliceFunctionData = useMemo(
-    () => ({
-      statusList: selectedStatus,
-    }),
+    () => ({statusList: selectedStatus}),
     [selectedStatus],
   );
 
-  if (crmConfig?.isManageCatalogs == null) {
-    return null;
-  }
+  if (crmConfig?.isManageCatalogs == null) return null;
 
   if (!crmConfig?.isManageCatalogs) {
     return (
@@ -91,10 +87,9 @@ const CatalogListScreen = ({}) => {
         searchPlaceholder={I18n.t('Crm_Catalogs')}
         fixedItems={
           <MultiValuePicker
-            style={styles.headerItem}
             listItems={catalogTypeListItems}
             placeholder={I18n.t('Base_Status')}
-            onValueChange={statusList => setSelectedStatus(statusList)}
+            onValueChange={setSelectedStatus}
           />
         }
         renderListItem={({item}) => (
@@ -119,9 +114,6 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,
     marginVertical: 4,
-  },
-  headerItem: {
-    alignSelf: 'center',
   },
 });
 
