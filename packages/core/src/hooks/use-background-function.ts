@@ -16,11 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useBasicActions} from '../header';
+import {useCallback, useEffect, useRef} from 'react';
 
-export const useHeaderRegisters = headerRegisters => {
-  useBasicActions();
-  headerRegisters.forEach(_moduleHook => {
-    _moduleHook();
-  });
+const TIME_BETWEEN_CALL = 300000;
+
+export const useBackgroundFunction = (backgroundFunctions: Function[]) => {
+  const interval = useRef<number | undefined>(undefined);
+
+  const handleListFunctions = useCallback(() => {
+    backgroundFunctions?.forEach(backgroundFunction => {
+      backgroundFunction();
+    });
+  }, [backgroundFunctions]);
+
+  return useEffect(() => {
+    if (backgroundFunctions?.length === 0) {
+      return;
+    }
+
+    interval.current = setInterval(handleListFunctions, TIME_BETWEEN_CALL);
+    return () => clearInterval(interval.current);
+  }, [backgroundFunctions?.length, handleListFunctions]);
 };

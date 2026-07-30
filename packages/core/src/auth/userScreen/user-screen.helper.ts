@@ -17,18 +17,16 @@
  */
 
 import {RegistryHelper} from '../../utils/registry.helper';
-import {SettingsItems, BaseSettingsItem} from './types';
+import {UserScreenItem, UserScreenItems} from './types';
 
-export class SettingsHelper {
-  static filterItems = (config: SettingsItems): SettingsItems => {
-    return {
-      switchItems: RegistryHelper.sortAndFilter(config.switchItems),
-      pickerItems: RegistryHelper.sortAndFilter(config.pickerItems),
-      buttonItems: RegistryHelper.sortAndFilter(config.buttonItems),
-    };
-  };
+export class UserScreenHelper {
+  static filterItems = (items: UserScreenItems): UserScreenItems => ({
+    userCardItems: RegistryHelper.sortAndFilter(items.userCardItems),
+    contentItems: RegistryHelper.sortAndFilter(items.contentItems),
+  });
 
-  static registerItem<T extends BaseSettingsItem>(allItems: T[], item: T): T[] {
-    return RegistryHelper.registerItem(allItems, item);
-  }
+  static registerItem = (
+    allItems: UserScreenItem[],
+    item: UserScreenItem,
+  ): UserScreenItem[] => RegistryHelper.registerItem(allItems, item);
 }
