@@ -19,9 +19,9 @@
 import {createContext, useContext} from 'react';
 import {Module} from '../../app';
 
-export const ModuleNavigatorContext = createContext<{activeModule: Module}>({
-  activeModule: null,
-});
+export const ModuleNavigatorContext = createContext<{
+  activeModule: Module | undefined;
+}>({activeModule: undefined});
 
 export const useActiveModule = () => {
   return useContext(ModuleNavigatorContext);

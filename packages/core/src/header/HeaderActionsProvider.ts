@@ -85,7 +85,7 @@ class HeaderActionsProvider {
     this.updateGenericState();
   }
 
-  getHeaderOptions(key: string): HeaderOptions {
+  getHeaderOptions(key?: string): HeaderOptions | undefined {
     return fetchOptionsOfHeaderKey(this.headerActions, key);
   }
 
@@ -101,7 +101,7 @@ class HeaderActionsProvider {
 export const headerActionsProvider = new HeaderActionsProvider();
 
 export const useHeaderActions = (
-  actionID: string,
+  actionID?: string,
 ): {headers: HeaderOptions; genericHeaders: GenericHeaderActions} => {
   const [headers, setHeaders] = useState<HeaderActions>(
     headerActionsProvider.getAllHeaderActions(),
