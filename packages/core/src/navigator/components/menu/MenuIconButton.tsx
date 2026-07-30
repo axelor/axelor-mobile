@@ -17,13 +17,17 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
-  Color,
-  Icon,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import {
+  Card,
+  IconTile,
   InfoBubble,
   Text,
-  ThemeColors,
   useConfig,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -31,15 +35,16 @@ import {Compatibility} from '../../../app';
 import {useTranslator} from '../../../i18n';
 import {getCompatibilityError, isMenuIncompatible} from '../../helpers';
 
-const WIDTH = 54;
-const HEIGHT = 54;
-const DEFAULT_RADIUS = 10;
-const ROUNDED_RADIUS = WIDTH / 2;
+const TILE_SIZE = 20;
+const LARGE_SCREEN_WIDTH = 768;
+const DRAWER_HORIZONTAL_SPACING = 32;
 
 interface MenuIconButtonProps {
   style?: any;
   icon: string;
   onPress: () => void;
+  title?: string;
+  showTitle?: boolean;
   isActive?: boolean;
   subtitle?: string;
   rounded?: boolean;
@@ -51,6 +56,8 @@ const MenuIconButton = ({
   style,
   icon,
   onPress,
+  title,
+  showTitle = false,
   isActive = false,
   subtitle,
   rounded = false,
@@ -60,29 +67,30 @@ const MenuIconButton = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {showSubtitles} = useConfig();
+  const {width} = useWindowDimensions();
 
-  const _color: Color = useMemo(
+  const expandedWidth = useMemo(
     () =>
-      disabled
-        ? Colors.secondaryColor
-        : isActive
-          ? {...Colors.primaryColor, foreground: Colors.backgroundColor}
-          : {
-              background_light: Colors.secondaryColor_dark.background_light,
-              foreground: Colors.secondaryColor_dark.background,
-              background: Colors.backgroundColor,
-            },
-    [Colors, disabled, isActive],
+      width * (width >= LARGE_SCREEN_WIDTH ? 0.5 : 0.85) -
+      DRAWER_HORIZONTAL_SPACING,
+    [width],
   );
 
-  const styles = useMemo(
-    () => getStyles(Colors, rounded, _color),
-    [Colors, _color, rounded],
-  );
+  const styles = useMemo(() => getStyles(width), [width]);
 
   const compatibilityError = useMemo(
     () => isMenuIncompatible(compatibility),
     [compatibility],
+  );
+
+  const isExpanded = useMemo(
+    () => showTitle && title != null,
+    [showTitle, title],
+  );
+
+  const isPrimary = useMemo(
+    () => isExpanded || isActive,
+    [isActive, isExpanded],
   );
 
   return (
@@ -90,10 +98,27 @@ const MenuIconButton = ({
       onPress={onPress}
       disabled={disabled || compatibilityError}
       activeOpacity={0.9}>
-      <View style={[styles.iconWrapper, style]}>
-        <View style={[styles.tile, isActive ? styles.activeShadow : null]}>
-          <Icon size={22} name={icon} color={_color.foreground} />
-          {compatibilityError && (
+      <Card
+        style={[
+          styles.card,
+          rounded && styles.roundedTile,
+          isExpanded && {width: expandedWidth},
+          style,
+        ]}>
+        <View style={styles.tileContainer}>
+          <IconTile
+            style={rounded && styles.roundedTile}
+            icon={icon}
+            iconSize={TILE_SIZE}
+            color={isPrimary ? Colors.primaryColor : undefined}
+            backgroundColor={isPrimary ? undefined : Colors.backgroundColor}
+            iconColor={
+              isPrimary ? undefined : Colors.secondaryColor_dark.background
+            }
+            disabled={disabled}
+            onPress={onPress}
+          />
+          {compatibilityError && !isExpanded && (
             <InfoBubble
               style={styles.infoBubble}
               usePopup={true}
@@ -104,11 +129,29 @@ const MenuIconButton = ({
             />
           )}
         </View>
-      </View>
-      {showSubtitles && (
+        {isExpanded && (
+          <View style={styles.titleContainer}>
+            <Text
+              writingType="title"
+              textColor={
+                disabled ? Colors.secondaryColor.background : undefined
+              }
+              numberOfLines={2}>
+              {title}
+            </Text>
+            {compatibilityError && (
+              <Text fontSize={10} textColor={Colors.errorColor.background}>
+                {getCompatibilityError(compatibility, I18n, false)}
+              </Text>
+            )}
+          </View>
+        )}
+      </Card>
+      {!isExpanded && showSubtitles && (
         <Text
-          style={styles.moduleSubtitle}
+          style={styles.subtitle}
           fontSize={10}
+          writingType={isActive ? 'important' : undefined}
           textColor={isActive ? Colors.primaryColor.background : undefined}
           numberOfLines={1}>
           {I18n.t(subtitle ?? '')}
@@ -118,45 +161,41 @@ const MenuIconButton = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, rounded: boolean, tileColor: Color) =>
+const getStyles = (windowWidth: number) =>
   StyleSheet.create({
-    iconWrapper: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    tile: {
-      width: WIDTH,
-      height: HEIGHT,
-      borderRadius: rounded ? ROUNDED_RADIUS : DEFAULT_RADIUS,
+    card: {
+      paddingVertical: 8,
+      paddingHorizontal: 8,
+      paddingRight: 8,
+      marginVertical: 4,
       flexDirection: 'row',
+      alignItems: 'center',
+    },
+    roundedTile: {
+      borderRadius: TILE_SIZE,
+    },
+    tileContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: tileColor.background,
-      elevation: 2,
-      shadowOpacity: 0.15,
-      shadowColor: Colors.secondaryColor.background,
-      shadowRadius: 3,
-      shadowOffset: {width: 0, height: 1},
-    },
-    activeShadow: {
-      elevation: 8,
-      shadowColor: Colors.primaryColor.background,
-      shadowOpacity: 0.6,
-      shadowRadius: 12,
-      shadowOffset: {width: 0, height: 6},
-    },
-    moduleSubtitle: {
-      maxWidth: WIDTH,
-      alignSelf: 'center',
     },
     infoBubble: {
       position: 'absolute',
-      bottom: -10,
-      right: -10,
+      bottom: -8,
+      right: -8,
     },
     textIndicationStyle: {
-      width: Dimensions.get('window').width * 0.6,
+      width: windowWidth * 0.6,
       top: 0,
+    },
+    titleContainer: {
+      flex: 1,
+      marginLeft: 12,
+      justifyContent: 'center',
+    },
+    subtitle: {
+      width: TILE_SIZE * 2,
+      alignSelf: 'center',
+      textAlign: 'center',
     },
   });
 

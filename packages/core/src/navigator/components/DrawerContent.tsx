@@ -28,9 +28,11 @@ import {
 } from '../../components';
 import {useOutdatedVersion} from '../../hooks';
 import {MenuWithSubMenus, Module} from '../../app';
+import {useTranslator} from '../../i18n';
 import {useActiveModule} from '../providers';
 import {
   DrawerState,
+  getMenuTitle,
   getModuleOfMenu,
   moduleHasMenus,
   NavigationObject,
@@ -38,7 +40,7 @@ import {
   getDefaultMenuKey,
   hasSubMenus,
 } from '../helpers';
-import {AuthMenu, Menu, MenuIconButton, MenuTitle} from './menu';
+import {AuthMenu, Menu, MenuIconButton} from './menu';
 
 interface DrawerContentProps {
   state: DrawerState;
@@ -58,6 +60,7 @@ const DrawerContent = ({
   versionCheckConfig,
 }: DrawerContentProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {isOutdated} = useOutdatedVersion(versionCheckConfig);
 
   useEffect(() => {
@@ -204,32 +207,22 @@ const DrawerContent = ({
     <SafeAreaView style={styles.container}>
       {externalMenuIsVisible && (
         <View style={styles.iconsContainer}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollView}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             {drawerModules.map(_module => (
-              <View style={styles.globalContainer} key={_module.name}>
-                <MenuIconButton
-                  style={styles.menuItemContainer}
-                  icon={_module.icon ?? ''}
-                  subtitle={_module.subtitle}
-                  disabled={_module.disabled}
-                  isActive={_module.name === activeModule?.name}
-                  onPress={() => handleModuleClick(_module)}
-                  compatibility={_module.compatibilityAOS}
-                />
-                {!innerMenuIsVisible && (
-                  <MenuTitle
-                    module={_module}
-                    onPress={() => handleModuleClick(_module)}
-                  />
-                )}
-              </View>
+              <MenuIconButton
+                key={_module.name}
+                icon={_module.icon ?? ''}
+                title={getMenuTitle(_module, I18n)}
+                showTitle={!innerMenuIsVisible}
+                subtitle={_module.subtitle}
+                disabled={_module.disabled}
+                isActive={_module.name === activeModule?.name}
+                onPress={() => handleModuleClick(_module)}
+                compatibility={_module.compatibilityAOS}
+              />
             ))}
           </ScrollView>
-          <View style={styles.otherIconsContainer}>
-            <AuthMenu onPress={handleModuleClick} />
-          </View>
+          <AuthMenu onPress={handleModuleClick} />
         </View>
       )}
       <View style={styles.menusContainer}>
@@ -278,9 +271,6 @@ const getStyles = (Colors: ThemeColors) =>
       overflow: 'hidden',
       zIndex: 2,
     },
-    globalContainer: {
-      flexDirection: 'row',
-    },
     menusContainer: {
       flex: 1,
     },
@@ -288,19 +278,6 @@ const getStyles = (Colors: ThemeColors) =>
       justifyContent: 'space-between',
       marginHorizontal: 12,
       zIndex: 3,
-    },
-    scrollView: {
-      paddingBottom: 10,
-    },
-    otherIconsContainer: {
-      marginVertical: 8,
-      alignSelf: 'flex-start',
-    },
-    menuItemContainer: {
-      height: 60,
-      marginVertical: 2,
-      justifyContent: 'center',
-      zIndex: 5,
     },
     secondaryMenusContainer: {
       position: 'absolute',

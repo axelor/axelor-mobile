@@ -19,7 +19,8 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, Platform} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../i18n';
 import {useDispatch, useSelector} from '../redux/hooks';
@@ -57,7 +58,84 @@ import {
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
+const HEADER_CONTENT_HEIGHT = 52;
+
+const ModulesScreensStack = ({
+  initialRouteName,
+  modulesScreens,
+  ...rest
+}: any) => {
+  const Colors = useThemeColor();
+  const insets = useSafeAreaInsets();
+
+  const screenOptions = useMemo(
+    () => ({
+      headerMode: 'screen' as const,
+      ...TransitionPresets.SlideFromRightIOS,
+      headerStyle: {
+        elevation: 0,
+        height: HEADER_CONTENT_HEIGHT + insets.top,
+        backgroundColor: Colors.screenBackgroundColor,
+        ...(Platform.OS === 'ios' ? {shadowOpacity: 0} : {}),
+      },
+      headerLeft: () => undefined,
+      headerRight: () => undefined,
+      headerTitleAlign: 'left' as const,
+      headerTitleContainerStyle: {
+        marginHorizontal: 0,
+        maxWidth: '100%' as const,
+        flexGrow: 1,
+        flexBasis: 0,
+      },
+      headerRightContainerStyle: {flexGrow: 0, flexBasis: 'auto' as const},
+    }),
+    [Colors.screenBackgroundColor, insets.top],
+  );
+
+  return (
+    <Stack.Navigator
+      id={undefined}
+      {...rest}
+      screenOptions={screenOptions}
+      initialRouteName={initialRouteName}
+      screenListeners={{
+        state: e => {
+          activeScreenProvider.registerActiveScreen(e.data?.state);
+        },
+      }}>
+      {Object.entries(modulesScreens).map(
+        ([key, {component, title, actionID}]: [string, any]) => {
+          const renderTitle = () => (
+            <Header
+              mainScreen={initialRouteName === key}
+              title={title}
+              actionID={actionID}
+            />
+          );
+
+          return (
+            <Stack.Screen
+              key={key}
+              name={key}
+              component={component}
+              options={{headerTitle: renderTitle}}
+            />
+          );
+        },
+      )}
+    </Stack.Navigator>
+  );
+};
+
+const Navigator = ({
+  mainMenu,
+  onRefresh,
+  versionCheckConfig,
+}: {
+  mainMenu?: string;
+  onRefresh?: () => void;
+  versionCheckConfig?: any;
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -120,7 +198,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   }, [dispatch, fetchAllPermission]);
 
   const changeActiveModule = useCallback(
-    moduleName => {
+    (moduleName: string) => {
       setActiveModule(
         enabledModule.find(_module => _module.name === moduleName),
       );
@@ -152,62 +230,22 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   }, [modules]);
 
   const ModulesScreensStackNavigator = useCallback(
-    ({initialRouteName, ...rest}) => (
-      <Stack.Navigator
-        id={undefined}
-        {...rest}
-        screenOptions={{headerMode: 'float'}}
-        initialRouteName={initialRouteName}
-        screenListeners={{
-          state: e => {
-            activeScreenProvider.registerActiveScreen(e.data?.state);
-          },
-        }}>
-        {Object.entries(modulesScreens).map(
-          ([key, {component, title, actionID}]) => {
-            const renderTitle = () => (
-              <Header
-                mainScreen={initialRouteName === key}
-                title={title}
-                actionID={actionID}
-              />
-            );
-            return (
-              <Stack.Screen
-                key={key}
-                name={key}
-                component={component}
-                options={{
-                  headerStyle: {
-                    elevation: 0,
-                    ...(Platform.OS === 'ios' ? {shadowOpacity: 0} : {}),
-                  },
-                  headerLeft: () => null,
-                  headerRight: () => null,
-                  headerTitleStyle: {width: '100%'},
-                  headerTitle: renderTitle,
-                }}
-              />
-            );
-          },
-        )}
-      </Stack.Navigator>
+    (props: any) => (
+      <ModulesScreensStack {...props} modulesScreens={modulesScreens} />
     ),
     [modulesScreens],
   );
 
   const renderDrawer = useCallback(
-    props => {
-      return (
-        <DrawerContent
-          {...props}
-          modules={enabledModule}
-          onModuleClick={changeActiveModule}
-          onRefresh={onRefresh}
-          versionCheckConfig={versionCheckConfig}
-        />
-      );
-    },
+    (props: any) => (
+      <DrawerContent
+        {...props}
+        modules={enabledModule}
+        onModuleClick={changeActiveModule}
+        onRefresh={onRefresh}
+        versionCheckConfig={versionCheckConfig}
+      />
+    ),
     [changeActiveModule, enabledModule, onRefresh, versionCheckConfig],
   );
 
