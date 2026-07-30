@@ -55,7 +55,7 @@ const ProductListVariantScreen = ({route, navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <ScrollList
         loadingList={loadingProductList}
         data={productListVariables}

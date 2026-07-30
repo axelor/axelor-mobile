@@ -76,7 +76,7 @@ const InterventionNoteFormScreen = ({route, navigation}: any) => {
   }
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         style={styles.headerContainer}
         expandableFilter={false}

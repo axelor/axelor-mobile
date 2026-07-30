@@ -55,7 +55,7 @@ const ControlEntryDetailsScreen = ({route}: any) => {
   if (controlEntry?.id !== controlEntryId) return null;
 
   return (
-    <Screen removeSpaceOnTop fixedItems={<ControlEntryDetailsButtons />}>
+    <Screen fixedItems={<ControlEntryDetailsButtons />}>
       <SearchListView
         expandableFilter={false}
         topFixedItems={<ControlEntryDetailsHeader />}

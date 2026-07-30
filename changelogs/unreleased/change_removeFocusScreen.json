@@ -1,0 +1,6 @@
+{
+  "title": "FocusScreen: remove unused component",
+  "type": "refactor",
+  "packages": "core",
+  "description": "The FocusScreen component has been removed as it was not used anywhere. Screens needing to fetch data when they get the focus can combine Screen with the useIsFocused hook."
+}

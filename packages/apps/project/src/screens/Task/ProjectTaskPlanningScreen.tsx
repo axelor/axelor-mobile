@@ -118,7 +118,7 @@ function ProjectTaskPlanningScreen() {
   }, []);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

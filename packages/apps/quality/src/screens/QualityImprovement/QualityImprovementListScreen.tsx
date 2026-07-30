@@ -61,7 +61,7 @@ const QualityImprovementListScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         fixedItems={
           <QualityImprovementFilter

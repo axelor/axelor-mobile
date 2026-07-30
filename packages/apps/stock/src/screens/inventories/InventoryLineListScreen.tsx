@@ -100,7 +100,7 @@ const InventoryLineListScreen = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={filteredList}
         loading={loadingInventoryLines}

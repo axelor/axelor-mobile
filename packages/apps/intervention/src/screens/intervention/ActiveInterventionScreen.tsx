@@ -83,7 +83,7 @@ const ActiveInterventionScreen = ({}) => {
     return <LoadingComponent />;
   } else {
     return (
-      <Screen removeSpaceOnTop={true}>
+      <Screen>
         <Label
           style={styles.label}
           message={I18n.t('Intervention_NoActiveIntervention')}

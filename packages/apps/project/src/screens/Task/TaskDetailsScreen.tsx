@@ -134,7 +134,7 @@ const TaskDetailsScreen = ({navigation, route}: any) => {
   }
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <BottomBar items={bottomBarItems} updateActiveItem={manageActiveItem} />
     </Screen>
   );

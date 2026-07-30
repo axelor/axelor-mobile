@@ -63,7 +63,7 @@ const RequestLineListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         topFixedItems={<RequestHeader />}
         actionList={

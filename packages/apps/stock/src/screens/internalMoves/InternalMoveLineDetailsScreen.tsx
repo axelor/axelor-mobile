@@ -153,7 +153,6 @@ const InternalMoveLineDetailsScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <InternalMoveLineButtons
           internalMove={internalMove}

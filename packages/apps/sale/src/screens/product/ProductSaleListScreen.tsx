@@ -88,7 +88,7 @@ const ProductSaleListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={productList}
         loading={loadingList}

@@ -59,7 +59,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={internalMove != null}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

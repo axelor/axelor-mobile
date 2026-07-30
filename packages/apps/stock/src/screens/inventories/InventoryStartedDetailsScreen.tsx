@@ -47,10 +47,7 @@ const InventoryStartedDetailsScreen = ({route}: any) => {
   if (inventory?.id !== inventoryId) return null;
 
   return (
-    <Screen
-      removeSpaceOnTop
-      fixedItems={<InventoryButtons />}
-      loading={loading}>
+    <Screen fixedItems={<InventoryButtons />} loading={loading}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<InventoryDetailsHeader />}

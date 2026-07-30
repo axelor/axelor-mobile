@@ -128,7 +128,6 @@ const InventoryLineDetailsScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <InventoryLineButtons
           description={description}

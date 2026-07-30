@@ -62,7 +62,7 @@ const CatalogScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         scanKeySearch={catalogScanKey}
         list={productList}
