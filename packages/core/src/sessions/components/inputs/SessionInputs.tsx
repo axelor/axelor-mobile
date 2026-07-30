@@ -25,7 +25,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
 import {
   Button,
@@ -33,17 +32,10 @@ import {
   useThemeColor,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
-import {
-  DefaultCheckbox,
-  SessionNameInput,
-  UrlInput,
-  UsernameInput,
-  PasswordInput,
-} from '../inputs';
-import {
-  useScanActivator,
-  useScannerDeviceActivator,
-} from '../../../hooks/use-scan-activator';
+import {useScanActivator, useScannerDeviceActivator} from '../../../hooks';
+import {useDispatch} from '../../../redux/hooks';
+import {useTranslator} from '../../../i18n';
+import {isUrlValid} from '../../../features/authSlice';
 import {
   clearScan,
   useScannedValueByKey,
@@ -53,10 +45,16 @@ import {
   clearBarcode,
   useCameraScannerValueByKey,
 } from '../../../features/cameraScannerSlice';
-import {isUrlValid} from '../../../features/authSlice';
-import {useTranslator} from '../../../i18n';
+import {Session} from '../../type';
+import {
+  DefaultCheckbox,
+  SessionNameInput,
+  UrlInput,
+  UsernameInput,
+  PasswordInput,
+} from '../inputs';
 
-const getScanKey = mode => `urlUsername_${mode}_inputs`;
+const getScanKey = (mode: string) => `urlUsername_${mode}_inputs`;
 
 const MODE = {
   creation: 'creation',
@@ -77,13 +75,24 @@ const SessionInputs = ({
   style,
   sessionList,
   session,
-  showUrlInput,
-  loading,
+  showUrlInput = false,
+  loading = false,
   mode,
   showPopup,
   onValidation,
-  hidden,
-  saveBeforeScan = () => {},
+  hidden = false,
+  saveBeforeScan,
+}: {
+  style?: any;
+  sessionList?: Session[];
+  session?: Session;
+  showUrlInput?: boolean;
+  loading?: boolean;
+  mode: string;
+  showPopup?: (_v: boolean) => void;
+  onValidation: (_v?: any) => void;
+  hidden?: boolean;
+  saveBeforeScan?: (_v?: any) => void;
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -98,13 +107,7 @@ const SessionInputs = ({
   const scanData = useCameraScannerValueByKey(_scanKey);
 
   const [showRequiredFields, setShowRequiredFields] = useState(false);
-  const [form, setForm] = useState({
-    name: session?.name,
-    url: session?.url,
-    username: session?.username,
-    password: session?.password,
-    isDefault: session?.isDefault,
-  });
+  const [form, setForm] = useState<Session | undefined>(session);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   useEffect(() => {
@@ -114,9 +117,9 @@ const SessionInputs = ({
   }, [loading, mode, session]);
 
   const handleFieldChange = useCallback(
-    (value, fieldName) => {
+    (value: any, fieldName: string) => {
       setForm(_current => {
-        const old = _current == null ? {} : {..._current};
+        const old: any = _current == null ? {} : {..._current};
 
         if (mode === MODE.unique) {
           return {...old, [fieldName]: value};
@@ -137,7 +140,7 @@ const SessionInputs = ({
   );
 
   const parseQrCode = useCallback(
-    scanValue => {
+    (scanValue: string) => {
       if (scanValue.includes('username')) {
         const parseScannnedData = JSON.parse(scanValue);
         handleFieldChange(parseScannnedData.url, FIELDS.url);
@@ -145,7 +148,7 @@ const SessionInputs = ({
       } else {
         handleFieldChange(scanValue, FIELDS.url);
       }
-      showPopup(true);
+      showPopup?.(true);
     },
     [handleFieldChange, showPopup],
   );
@@ -161,34 +164,33 @@ const SessionInputs = ({
   }, [dispatch, parseQrCode, scanData, scannedValue]);
 
   const handleScanPress = useCallback(() => {
-    saveBeforeScan(form);
+    saveBeforeScan?.(form);
 
     DeviceInfo.getManufacturer()
       .then(manufacturer => {
         if (manufacturer !== 'Zebra Technologies') {
-          showPopup(false);
+          showPopup?.(false);
         }
       })
       .then(() => onScanPress());
   }, [form, onScanPress, saveBeforeScan, showPopup]);
 
   const testUrl = useCallback(
-    url => {
-      dispatch(isUrlValid({url: url}));
-    },
+    (url?: string) => dispatch((isUrlValid as any)({url})),
     [dispatch],
   );
 
-  const handleTestUrl = useCallback(() => {
-    testUrl(form?.url);
-  }, [form?.url, testUrl]);
+  const handleTestUrl = useCallback(
+    () => testUrl(form?.url),
+    [form?.url, testUrl],
+  );
 
   useEffect(() => {
     testUrl(session?.url);
   }, [session?.url, testUrl]);
 
   const nameSessionAlreadyExist = useMemo(() => {
-    if (!Array.isArray(sessionList) || sessionList?.length === 0) {
+    if (!Array.isArray(sessionList) || sessionList.length === 0) {
       return false;
     }
 
@@ -207,19 +209,11 @@ const SessionInputs = ({
     ) {
       return true;
     } else if (mode !== MODE.edition) {
-      return checkNullString(form?.password);
+      return checkNullString((form as any)?.password);
     } else {
       return false;
     }
-  }, [
-    loading,
-    form?.name,
-    form?.url,
-    form?.username,
-    form?.password,
-    mode,
-    nameSessionAlreadyExist,
-  ]);
+  }, [loading, form, mode, nameSessionAlreadyExist]);
 
   const styles = useMemo(
     () => getStyles(mode, isKeyboardOpen),
@@ -229,16 +223,12 @@ const SessionInputs = ({
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
-      () => {
-        setIsKeyboardOpen(false);
-      },
+      () => setIsKeyboardOpen(false),
     );
 
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
-      () => {
-        setIsKeyboardOpen(true);
-      },
+      () => setIsKeyboardOpen(true),
     );
 
     return () => {
@@ -247,12 +237,10 @@ const SessionInputs = ({
     };
   }, []);
 
-  if (hidden) {
-    return null;
-  }
+  if (hidden) return null;
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, style]}>
       <View>
         {!loading && nameSessionAlreadyExist && (
           <WarningCard
@@ -301,7 +289,7 @@ const SessionInputs = ({
       />
       <PasswordInput
         style={styles.fullWidth}
-        value={form?.password}
+        value={(form as any)?.password}
         onChange={_value => handleFieldChange(_value, FIELDS.password)}
         readOnly={loading}
         showRequiredFields={showRequiredFields}
@@ -314,7 +302,10 @@ const SessionInputs = ({
         hidden={mode === MODE.connection || mode === MODE.unique}
       />
       {loading ? (
-        <ActivityIndicator size="large" />
+        <ActivityIndicator
+          size="large"
+          color={Colors.primaryColor.background}
+        />
       ) : (
         <Button
           title={I18n.t(
@@ -332,7 +323,7 @@ const SessionInputs = ({
   );
 };
 
-const getStyles = (mode, isKeyboardOpen) =>
+const getStyles = (mode: string, isKeyboardOpen: boolean) =>
   StyleSheet.create({
     container: {
       width: mode === MODE.unique ? '90%' : '100%',
@@ -345,12 +336,12 @@ const getStyles = (mode, isKeyboardOpen) =>
     fullWidth: {
       width: '100%',
       marginHorizontal: 0,
-      marginLeft: 0,
     },
     button: {
-      marginVertical: 15,
-      width: 150,
-      height: 30,
+      width: undefined,
+      height: undefined,
+      paddingHorizontal: 15,
+      paddingVertical: 8,
     },
   });
 

@@ -17,23 +17,20 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {Checkbox} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 
 interface props {
   style?: any;
   value?: boolean;
-  onChange?: (value: boolean) => void;
+  onChange: (value?: boolean) => void;
   hidden?: boolean;
 }
 
 const DefaultCheckbox = ({style, value, onChange, hidden = false}: props) => {
   const I18n = useTranslator();
 
-  if (hidden) {
-    return null;
-  }
+  if (hidden) return null;
 
   return (
     <Checkbox
@@ -41,16 +38,9 @@ const DefaultCheckbox = ({style, value, onChange, hidden = false}: props) => {
       isDefaultChecked={value}
       onChange={onChange}
       iconSize={20}
-      style={[styles.checkbox, style]}
+      style={style}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  checkbox: {
-    alignSelf: 'flex-start',
-    marginLeft: 20,
-  },
-});
 
 export default DefaultCheckbox;
