@@ -72,7 +72,7 @@ const CustomerParkScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchTreeView
         parentList={equipmentPlaceList}
         list={equipmentList}

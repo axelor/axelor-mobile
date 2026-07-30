@@ -162,7 +162,7 @@ const TimesheetListScreen = ({}) => {
   }, [Colors, I18n, mobileSettings, canCreate]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         expandableFilter={false}
         topFixedItems={

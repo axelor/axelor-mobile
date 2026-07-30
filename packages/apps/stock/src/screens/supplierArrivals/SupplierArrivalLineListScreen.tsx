@@ -98,7 +98,7 @@ const SupplierArrivalLineListScreen = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={filteredList}
         loading={loadingSALinesList}

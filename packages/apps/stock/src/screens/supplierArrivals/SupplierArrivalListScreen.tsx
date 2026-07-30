@@ -81,7 +81,7 @@ const SupplierArrivalListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={supplierArrivalsList}
         loading={loadingList}

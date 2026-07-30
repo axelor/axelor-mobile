@@ -101,7 +101,7 @@ function OperationOrderDetailsScreen({navigation, route}: any) {
   }, [hazardPhraseEnabled]);
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         fixedItems={
           <OperationOrderHeader

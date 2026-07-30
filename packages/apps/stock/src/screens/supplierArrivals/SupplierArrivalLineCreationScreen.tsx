@@ -180,7 +180,6 @@ const SupplierArrivalLineCreationScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <SupplierArrivalLineCreationButton
           supplierArrival={supplierArrival}

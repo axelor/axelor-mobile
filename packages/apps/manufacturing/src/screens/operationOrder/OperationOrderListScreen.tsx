@@ -84,7 +84,7 @@ function OperationOrderListScreen({navigation}: any) {
   }, [OperationOrder?.statusSelect, getSelectionItems, selectedStatus]);
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={operationOrderList}
         loading={loadingList}

@@ -168,7 +168,6 @@ const RequestCreationScreen = () => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <RequestCreationButtons
           step={currentStep}

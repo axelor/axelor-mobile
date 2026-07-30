@@ -131,7 +131,6 @@ const CustomerDeliveryLineDetailScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <CustomerDeliveryLineButtons
           customerDelivery={customerDelivery}

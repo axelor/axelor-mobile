@@ -102,9 +102,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}: any) => {
   }, [hazardPhraseEnabled]);
 
   return (
-    <Screen
-      removeSpaceOnTop
-      fixedItems={<ManufacturingOrderButtons onStart={handleStart} />}>
+    <Screen fixedItems={<ManufacturingOrderButtons onStart={handleStart} />}>
       <HeaderContainer
         fixedItems={
           <ManufacturingOrderHeader

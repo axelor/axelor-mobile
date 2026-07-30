@@ -36,7 +36,7 @@ const ManufacturingOrderListSaleOrderScreen = ({route}: any) => {
   const I18n = useTranslator();
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

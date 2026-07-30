@@ -67,7 +67,7 @@ const ControlEntryListScreen = ({navigation, route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         expandableFilter={false}
         list={controlEntryList}

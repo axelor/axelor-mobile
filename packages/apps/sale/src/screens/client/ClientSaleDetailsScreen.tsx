@@ -86,7 +86,7 @@ const ClientSaleDetailsScreen = ({route}: any) => {
   }
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<ClientHeader customer={customer} />}

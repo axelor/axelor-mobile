@@ -45,7 +45,7 @@ const VariantProductsScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={variantProductList}
         loading={loadingVariantList}

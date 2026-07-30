@@ -133,7 +133,6 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop={true}
       fixedItems={
         isSelectionMode && (
           <ExpenseLineValidationButton

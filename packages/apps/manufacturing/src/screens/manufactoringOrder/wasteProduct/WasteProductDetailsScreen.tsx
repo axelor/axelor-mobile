@@ -118,7 +118,6 @@ const WasteProductDetailsScreen = ({navigation, route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <ProdProductFixedItems
           show={

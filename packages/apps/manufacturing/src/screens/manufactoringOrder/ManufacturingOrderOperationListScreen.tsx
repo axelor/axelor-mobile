@@ -93,7 +93,7 @@ const ManufacturingOrderOperationListScreen = ({navigation, route}: any) => {
   }, [ManufOrder?.statusSelect, getSelectionItems, selectedStatus]);
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

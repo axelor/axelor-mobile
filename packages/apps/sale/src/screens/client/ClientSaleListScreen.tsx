@@ -51,7 +51,7 @@ const ClientSaleListScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={customerList}
         loading={loading}
