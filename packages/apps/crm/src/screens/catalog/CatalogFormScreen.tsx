@@ -20,9 +20,9 @@ import React, {useCallback} from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 import {createCatalog} from '../../features/catalogSlice';
 
-const CatalogFormScreen = ({navigation}) => {
+const CatalogFormScreen = ({navigation}: any) => {
   const createCatalogAPI = useCallback(
-    (catalog, dispatch) => {
+    (catalog: any, dispatch: any) => {
       dispatch(createCatalog(catalog));
 
       navigation.pop();

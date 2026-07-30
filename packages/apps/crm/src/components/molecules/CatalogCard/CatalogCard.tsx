@@ -69,10 +69,9 @@ const CatalogCard = ({
       style={style}
       showArrow={false}
       image={{
-        generalStyle: styles.imageIcon,
         imageSize: styles.imageSize,
         resizeMode: 'contain',
-        defaultIconSize: 70,
+        defaultIconSize: 50,
         source: formatBinaryFile(id, version, 'com.axelor.apps.crm.db.Catalog'),
       }}
       upperTexts={{
@@ -102,10 +101,6 @@ const CatalogCard = ({
 };
 
 const styles = StyleSheet.create({
-  imageIcon: {
-    height: 50,
-    width: 50,
-  },
   imageSize: {
     height: 50,
     width: 50,
