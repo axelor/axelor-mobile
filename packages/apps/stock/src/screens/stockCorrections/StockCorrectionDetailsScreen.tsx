@@ -112,7 +112,6 @@ const StockCorrectionDetailsScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <StockCorrectionButtons
           realQty={realQty}

@@ -51,7 +51,7 @@ const TicketDetailsScreen = ({route}: any) => {
   if (ticket?.id !== idTicket) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer expandableFilter={false} fixedItems={<TicketHeader />} />
       <ScrollView refresh={{loading: loadingTicket, fetcher: fetchTicket}}>
         <NotesCard

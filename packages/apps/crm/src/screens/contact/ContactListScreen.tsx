@@ -47,7 +47,7 @@ const ContactListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         expandableFilter={false}
         list={contactList}

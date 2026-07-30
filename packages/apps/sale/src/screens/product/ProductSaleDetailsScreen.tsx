@@ -88,7 +88,7 @@ const ProductSaleDetailsScreen = ({route}: any) => {
   if (product?.id !== productId) return null;
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<ProductHeader />}

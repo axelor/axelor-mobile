@@ -53,7 +53,7 @@ const OpportunityDetailsScreen = ({route}: any) => {
   if (opportunity?.id !== opportunityId) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<OpportunityHeader />}

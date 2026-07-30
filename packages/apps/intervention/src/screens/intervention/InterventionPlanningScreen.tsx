@@ -123,7 +123,7 @@ function InterventionPlanningScreen({navigation}: any) {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

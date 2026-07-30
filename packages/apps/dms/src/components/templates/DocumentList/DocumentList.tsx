@@ -98,7 +98,7 @@ const DocumentList = ({
   }, [Colors, I18n, canCreate, navigation, parentList]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchTreeView
         parentList={directoryList}
         list={documentList}

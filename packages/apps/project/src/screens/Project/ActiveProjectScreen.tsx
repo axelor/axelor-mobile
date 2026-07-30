@@ -45,7 +45,7 @@ const ActiveProjectScreen = ({}) => {
     return <ProjectDetailsScreen projectId={user.activeProject?.id} />;
   } else {
     return (
-      <Screen removeSpaceOnTop={true}>
+      <Screen>
         <Label
           style={styles.label}
           message={I18n.t('Project_NoActiveProject')}

@@ -25,7 +25,7 @@ const InterventionsHistoryScreen = ({}) => {
   const {Intervention} = useTypes();
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <InterventionsListView
         statusList={[Intervention?.statusSelect.Finished]}
       />

@@ -126,7 +126,7 @@ const ProducedProductListScreen = ({navigation, route}: any) => {
   }, [manufOrder, navigation]);
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

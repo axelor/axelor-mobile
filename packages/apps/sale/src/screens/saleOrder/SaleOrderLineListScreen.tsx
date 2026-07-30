@@ -50,7 +50,7 @@ const SaleOrderLineListScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<SaleOrderHeader saleOrder={saleOrder} />}

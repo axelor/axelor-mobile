@@ -52,7 +52,7 @@ function EventDetailsScreen({route}: any) {
   if (event?.id !== eventId) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer expandableFilter={false} fixedItems={<EventHeader />} />
       <ScrollView refresh={{loading: loadingEvent, fetcher: fetchEvent}}>
         <EventDatesCard />

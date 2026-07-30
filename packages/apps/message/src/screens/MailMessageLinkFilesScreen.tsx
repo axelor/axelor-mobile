@@ -83,7 +83,6 @@ const MailMessageLinkFilesScreen = ({navigation}) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         displayLinkFiles && (
           <View style={styles.linkFilesContainer}>

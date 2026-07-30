@@ -51,7 +51,7 @@ const LeadDetailsScreen = ({route}: any) => {
   if (lead?.id !== idLead || !isFocused) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer expandableFilter={false} fixedItems={<LeadHeader />} />
       <ScrollView refresh={{loading: loadingLead, fetcher: getLead}}>
         <NotesCard title={I18n.t('Crm_Description')} data={lead.description} />

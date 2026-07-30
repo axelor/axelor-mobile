@@ -63,7 +63,7 @@ const TaskListScreen = ({navigation}) => {
   ]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         headerChildren={
           <TaskFilters

@@ -126,7 +126,7 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}: any) => {
   if (product?.id !== productId) return null;
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <ScrollView
         refresh={{fetcher: fetchProductFromId, loading: loadingProductFromId}}>
         <ProductStockHeader

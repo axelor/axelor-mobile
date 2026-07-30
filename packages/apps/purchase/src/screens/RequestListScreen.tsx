@@ -61,7 +61,7 @@ const RequestListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         list={purchaseRequestList}
         loading={loadingPurchaseRequests}

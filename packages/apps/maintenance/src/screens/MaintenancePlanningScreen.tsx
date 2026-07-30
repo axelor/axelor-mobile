@@ -107,7 +107,7 @@ function MaintenancePlanningScreen() {
   }, []);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

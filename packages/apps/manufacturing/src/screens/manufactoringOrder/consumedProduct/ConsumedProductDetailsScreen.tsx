@@ -211,7 +211,6 @@ const ConsumedProductDetailsScreen = ({navigation, route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <ProdProductFixedItems
           show={isEditableStatus}

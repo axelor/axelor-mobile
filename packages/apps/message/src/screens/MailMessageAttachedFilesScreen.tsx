@@ -50,7 +50,7 @@ const MailMessageAttachedFilesScreen = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         list={documentList}
         loading={loadingDocuments}

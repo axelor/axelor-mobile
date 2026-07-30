@@ -69,7 +69,7 @@ const TourDetailsScreen = ({route}: any) => {
   if (tour?.id !== tourId) return null;
 
   return (
-    <Screen removeSpaceOnTop={true} fixedItems={<TourValidateButton />}>
+    <Screen fixedItems={<TourValidateButton />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<TourDetailsHeader />}

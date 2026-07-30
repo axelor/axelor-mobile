@@ -53,7 +53,7 @@ const ProductionFileScreen = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <HeaderContainer
         fixedItems={
           <ToggleSwitch

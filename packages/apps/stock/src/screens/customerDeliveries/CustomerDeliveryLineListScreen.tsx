@@ -105,7 +105,7 @@ const CustomerDeliveryLineListScreen = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={filteredList}
         loading={loadingCDLinesList}

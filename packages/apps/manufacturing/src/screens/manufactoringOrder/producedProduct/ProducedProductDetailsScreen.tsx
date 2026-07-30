@@ -128,7 +128,6 @@ const ProducedProductDetailsScreen = ({navigation, route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         <ProdProductFixedItems
           show={

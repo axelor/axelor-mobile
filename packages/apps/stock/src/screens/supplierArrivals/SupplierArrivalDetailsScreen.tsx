@@ -60,7 +60,6 @@ const SupplierArrivalDetailsScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={<SupplierArrivalButtons supplierArrival={supplierArrival} />}>
       <HeaderContainer
         expandableFilter={false}

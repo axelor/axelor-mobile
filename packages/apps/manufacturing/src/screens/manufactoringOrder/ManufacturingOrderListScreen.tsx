@@ -89,7 +89,7 @@ const ManufacturingOrderListScreen = ({navigation}: any) => {
   }, [ManufOrder?.statusSelect, getSelectionItems, selectedStatus]);
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={manufOrderList}
         loading={loading}

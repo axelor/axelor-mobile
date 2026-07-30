@@ -30,7 +30,7 @@ const meta: Meta<typeof Component> = {
 export default meta;
 
 export const Screen: Story<typeof Component> = {
-  args: {removeSpaceOnTop: false, loading: false},
+  args: {loading: false},
   argTypes: {fixedItems: disabledControl},
   render: args => {
     return (

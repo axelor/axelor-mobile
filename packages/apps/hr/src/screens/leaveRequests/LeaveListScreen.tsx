@@ -86,7 +86,7 @@ const LeaveListScreen = ({}) => {
   ]);
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         expandableFilter={false}
         topFixedItems={

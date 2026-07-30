@@ -112,7 +112,7 @@ const InterventionDetailsScreen = ({
   if (intervention?.id !== _interventionId) return null;
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <BottomBar items={bottomBarItems} />
     </Screen>
   );

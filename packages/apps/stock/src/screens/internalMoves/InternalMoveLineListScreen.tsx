@@ -95,7 +95,7 @@ const InternalMoveLineListScreen = ({route}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <SearchListView
         list={filteredList}
         loading={loadingIMLinesList}

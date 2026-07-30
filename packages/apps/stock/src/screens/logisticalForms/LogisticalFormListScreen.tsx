@@ -69,7 +69,7 @@ const LogisticalFormListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={logisticalFormList}
         loading={loadingList}

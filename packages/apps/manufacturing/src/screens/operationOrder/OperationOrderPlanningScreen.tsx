@@ -119,7 +119,7 @@ function OperationOrderPlanningScreen({navigation}: any) {
   };
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <PlanningView
         itemList={listItem}
         renderItem={renderDayEventDetails}

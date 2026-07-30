@@ -96,7 +96,7 @@ const MailMessageView = ({
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 100}
       style={styles.flexOne}>
-      <Screen removeSpaceOnTop>
+      <Screen>
         <View style={styles.flexOne}>
           <ScrollList
             loadingList={loading}

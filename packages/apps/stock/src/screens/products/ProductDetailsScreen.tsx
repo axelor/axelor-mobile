@@ -54,9 +54,7 @@ const ProductDetailsScreen = ({route}: any) => {
   }, [fetchProductFromId]);
 
   return (
-    <Screen
-      removeSpaceOnTop
-      fixedItems={<ProductVariantButton product={product} />}>
+    <Screen fixedItems={<ProductVariantButton product={product} />}>
       <ScrollView
         refresh={{loading: loadingProductFromId, fetcher: fetchProductFromId}}>
         <ProductCharacteristics {...product} />

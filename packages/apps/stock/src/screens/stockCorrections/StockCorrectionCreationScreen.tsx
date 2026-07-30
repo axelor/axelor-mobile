@@ -165,7 +165,6 @@ const StockCorrectionCreationScreen = ({route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         currentStep === CREATION_STEP.validation && (
           <StockCorrectionButtons

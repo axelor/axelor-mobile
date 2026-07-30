@@ -129,7 +129,7 @@ const EquipmentPictureScreen = ({}) => {
   }, [handleUpload, photo]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<EquipmentDetailsHeader />}

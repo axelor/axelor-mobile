@@ -28,7 +28,7 @@ const ProjectListScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <ProjectListView
         loading={loading}
         moreLoading={moreLoading}

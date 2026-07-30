@@ -72,7 +72,7 @@ const InventoryListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={inventoryList}
         loading={loadingList}

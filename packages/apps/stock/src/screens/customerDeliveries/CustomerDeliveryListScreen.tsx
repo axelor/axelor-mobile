@@ -82,7 +82,7 @@ const CustomerDeliveryListScreen = ({navigation}: any) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={deliveryList}
         loading={loadingList}

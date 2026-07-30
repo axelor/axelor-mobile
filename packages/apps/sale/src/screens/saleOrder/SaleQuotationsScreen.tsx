@@ -26,7 +26,7 @@ const SaleQuotationsScreen = ({route}: any) => {
   const {SaleOrder} = useTypes();
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SaleOrderListView
         customer={customer}
         statusList={[

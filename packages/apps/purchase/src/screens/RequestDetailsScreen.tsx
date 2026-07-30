@@ -77,7 +77,7 @@ const RequestDetailsScreen = ({route}: any) => {
   }, [getPurchaseRequestAPI]);
 
   return (
-    <Screen removeSpaceOnTop={true} fixedItems={<RequestButtons />}>
+    <Screen fixedItems={<RequestButtons />}>
       <HeaderContainer
         fixedItems={<RequestHeader />}
         expandableFilter={false}

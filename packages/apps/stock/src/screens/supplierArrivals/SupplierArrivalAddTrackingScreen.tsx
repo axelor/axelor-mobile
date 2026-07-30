@@ -86,7 +86,6 @@ const SupplierArrivalAddTrackingScreen = ({navigation, route}: any) => {
 
   return (
     <Screen
-      removeSpaceOnTop
       fixedItems={
         trackingQty > 0 &&
         !checkNullString(sequence) && (

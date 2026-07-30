@@ -19,7 +19,6 @@
 export {default as CameraButton} from './CameraButton/CameraButton';
 export {default as DateDisplay} from './DateDisplay/DateDisplay';
 export {default as DatePicker} from './DatePicker/DatePicker';
-export {default as FocusScreen} from './FocusScreen/FocusScreen';
 export {default as HeaderBand} from './HeaderBand/HeaderBand';
 export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
 export {default as PeriodDisplay} from './PeriodDisplay/PeriodDisplay';

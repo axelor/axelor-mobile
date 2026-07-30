@@ -86,7 +86,7 @@ const ProcessListScreen = () => {
   }, []);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <HeaderContainer
         fixedItems={
           <ToggleSwitch

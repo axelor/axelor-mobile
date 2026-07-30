@@ -85,7 +85,7 @@ const MaintenanceRequestListScreen = () => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen>
       <SearchListView
         list={maintenanceRequestList}
         loading={loadingMaintenanceRequests}
