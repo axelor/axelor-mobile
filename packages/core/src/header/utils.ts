@@ -57,15 +57,10 @@ export const mergeActions = (
 
 export const fetchOptionsOfHeaderKey = (
   headerActions: HeaderActions = {},
-  key: string,
-): HeaderOptions => {
-  if (checkNullString(key)) {
-    return null;
-  }
+  key?: string,
+): HeaderOptions | undefined => {
+  if (checkNullString(key) || !Object.keys(headerActions).includes(key!))
+    return undefined;
 
-  if (!Object.keys(headerActions).includes(key)) {
-    return null;
-  }
-
-  return headerActions[key];
+  return headerActions[key!];
 };

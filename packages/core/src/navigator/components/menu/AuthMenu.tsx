@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {authModule} from '../../../auth';
 import {Module} from '../../../app';
 import {useActiveModule} from '../../providers';
@@ -30,13 +31,11 @@ interface AuthMenuProps {
 const AuthMenu = ({isVisible = true, onPress}: AuthMenuProps) => {
   const {activeModule} = useActiveModule();
 
-  if (!isVisible) {
-    return null;
-  }
+  if (!isVisible) return null;
 
   return (
     <MenuIconButton
-      key={authModule.title}
+      style={styles.align}
       icon={authModule.icon!}
       subtitle={authModule.subtitle}
       disabled={authModule.disabled}
@@ -46,5 +45,12 @@ const AuthMenu = ({isVisible = true, onPress}: AuthMenuProps) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  align: {
+    marginVertical: 8,
+    alignSelf: 'flex-start',
+  },
+});
 
 export default AuthMenu;

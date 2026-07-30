@@ -21,12 +21,10 @@ import {Module} from '../../app';
 export function findIndexAndObjectOfModule(
   modules: Module[],
   moduleName: string,
-): {module: Module; index: number} {
+): {module?: Module; index?: number} {
   const index = modules.findIndex(_module => _module.name === moduleName);
 
-  if (index === -1) {
-    return {module: null, index: null};
-  }
+  if (index === -1) return {};
 
   return {module: modules[index], index: index};
 }
@@ -35,9 +33,12 @@ export function moduleHasMenus(_module: Module) {
   return Object.keys(_module.menus ?? {}).length > 0;
 }
 
-export function getDefaultModule(modules: Module[], mainMenu: string): Module {
+export function getDefaultModule(
+  modules: Module[],
+  mainMenu?: string,
+): Module | undefined {
   if (!Array.isArray(modules) || modules.length === 0) {
-    return null;
+    return undefined;
   } else if (mainMenu != null && modulesContainsMenu(modules, mainMenu)) {
     return findModuleWithMenu(modules, mainMenu);
   } else {
@@ -56,13 +57,13 @@ export function numberOfModules(modules: Module[]) {
 function modulesContainsMenu(modules: Module[], menuKey: string) {
   return modules
     .filter(moduleHasMenus)
-    .some(_module => _module.menus[menuKey] != null);
+    .some(_module => _module.menus![menuKey] != null);
 }
 
 function findModuleWithMenu(modules: Module[], menuKey: string) {
   return modules
     .filter(moduleHasMenus)
-    .find(_module => _module.menus[menuKey] != null);
+    .find(_module => _module.menus![menuKey] != null);
 }
 
 function firstModulesWithMenus(modules: Module[]) {

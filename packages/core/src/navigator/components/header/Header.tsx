@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, Platform, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {
   Text,
   ThemeColors,
@@ -47,14 +47,14 @@ interface HeaderProps {
 const Header = ({mainScreen = false, title, actionID}: HeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  let timeOutRequestCall = useRef<number>(null);
+  let timeOutRequestCall = useRef<number | undefined>(undefined);
 
   const {setHeaderHeight} = useConfig();
   const {allBands} = useHeaderBand();
   const {headers, genericHeaders} = useHeaderActions(actionID);
 
   const [options, setOptions] = useState<HeaderOptions>();
-  const [containerHeight, setContainerHeight] = useState<number>();
+  const [containerHeight, setContainerHeight] = useState<number>(0);
 
   const visibleBands = useMemo(
     () => HeaderBandHelper.filterBands(allBands)?.length ?? 0,
@@ -92,19 +92,16 @@ const Header = ({mainScreen = false, title, actionID}: HeaderProps) => {
         setContainerHeight(height);
       }}
       style={styles.header}>
-      <View style={styles.options}>
-        <HeaderButton isRoot={mainScreen} />
-        <View style={styles.titleContainer}>
-          <Text
-            style={styles.headerTitle}
-            fontSize={20}
-            numberOfLines={1}
-            adjustsFontSizeToFit={
-              Dimensions.get('window').width > SMALL_SCREEN_LIMIT
-            }>
-            {options?.headerTitle || I18n.t(title)}
-          </Text>
-        </View>
+      <HeaderButton isRoot={mainScreen} />
+      <View style={styles.titleContainer}>
+        <Text
+          fontSize={18}
+          numberOfLines={1}
+          adjustsFontSizeToFit={
+            Dimensions.get('window').width > SMALL_SCREEN_LIMIT
+          }>
+          {options?.headerTitle || I18n.t(title)}
+        </Text>
       </View>
       {options && (
         <HeaderOptionMenu {...options} genericActions={genericHeaders} />
@@ -115,25 +112,12 @@ const Header = ({mainScreen = false, title, actionID}: HeaderProps) => {
 
 const getHeaderStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
-    headerTitle: {
-      color: Colors.text,
-    },
     header: {
-      position: 'absolute',
-      top: 0,
-      left: Platform.OS === 'ios' ? -Dimensions.get('window').width * 0.5 : -15,
       backgroundColor: Colors.screenBackgroundColor,
       height: '100%',
-      width: Dimensions.get('window').width,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      alignContent: 'center',
-    },
-    options: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
     },
     titleContainer: {
       flex: 1,

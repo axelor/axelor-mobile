@@ -19,4 +19,3 @@
 export {default as AuthMenu} from './AuthMenu';
 export {default as Menu} from './Menu';
 export {default as MenuIconButton} from './MenuIconButton';
-export {default as MenuTitle} from './MenuTitle';
