@@ -3,6 +3,45 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.2] (2026-07-31)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Field parser: expose the entity version returned as $version by the API under the standard version field, on nested objects too
+
+#### Fixes
+
+- Custom forms: correctly evaluate display conditions using fields which have no value yet
+
+<details>
+A condition referencing a field that was still empty could not be evaluated and was considered as not verified. Empty fields are now taken into account as empty values, so a condition such as 'this field is not filled' behaves as expected on a blank form.
+</details>
+
+- Custom forms: apply the visibility conditions configured on panels
+
+<details>
+Panels configured as hidden, or with a display or hide condition, were always visible on mobile. They now follow the same visibility rules as the fields they contain.
+</details>
+
+
+### @axelor/aos-mobile-quality
+
+#### Changes
+
+- Control entry: harmonize the display of control entries and samples with the other lists of the application
+
+#### Fixes
+
+- ControlEntry: add missing screen config to get generic header actions on details and control filling views
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock correction: fix the tracking number selection that prevented creating a correction
+
 ## [9.1.1] (2026-07-22)
 
 ### @axelor/aos-mobile-stock
@@ -206,5 +245,6 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.2]: https://github.com/axelor/axelor-mobile/compare/9.1.1...9.1.2
 [9.1.1]: https://github.com/axelor/axelor-mobile/compare/9.1.0...9.1.1
 [9.1.0]: https://github.com/axelor/axelor-mobile/compare/9.0.13...9.1.0
