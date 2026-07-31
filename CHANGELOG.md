@@ -3,6 +3,49 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.15] (2026-07-31)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Form view: manage hidden and readonly conditions on panels
+
+#### Changes
+
+- Field parser: expose the entity version returned as $version by the API under the standard version field, on nested objects too
+
+#### Fixes
+
+- Custom forms: correctly evaluate display conditions using fields which have no value yet
+
+<details>
+A condition referencing a field that was still empty could not be evaluated and was considered as not verified. Empty fields are now taken into account as empty values, so a condition such as 'this field is not filled' behaves as expected on a blank form.
+</details>
+
+- Custom forms: apply the visibility and readonly conditions configured on panels
+
+<details>
+Panels configured as hidden or readonly, or with a display, hide or readonly condition, were always visible and editable on mobile. They now follow the same rules as the fields they contain, and a panel displayed as readonly applies to its whole content.
+</details>
+
+
+### @axelor/aos-mobile-quality
+
+#### Changes
+
+- Control entry: harmonize the display of control entries and samples with the other lists of the application
+
+#### Fixes
+
+- ControlEntry: add missing screen config to get generic header actions on details and control filling views
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock correction: fix the tracking number selection that prevented creating a correction
+
 ## [9.0.14] (2026-07-22)
 
 ### @axelor/aos-mobile-stock
@@ -333,6 +376,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.15]: https://github.com/axelor/axelor-mobile/compare/9.0.14...9.0.15
 [9.0.14]: https://github.com/axelor/axelor-mobile/compare/9.0.13...9.0.14
 [9.0.13]: https://github.com/axelor/axelor-mobile/compare/9.0.12...9.0.13
 [9.0.12]: https://github.com/axelor/axelor-mobile/compare/9.0.11...9.0.12
