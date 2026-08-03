@@ -1,0 +1,18 @@
+{
+  "Team_Team": "Team",
+  "Team_Tasks": "Tasks",
+  "Team_AssignedTo": "Assigned to",
+  "Team_TaskDate": "Start date",
+  "Team_TaskDeadline": "Deadline",
+  "Team_Status": "Status",
+  "Team_Priority": "Priority",
+  "Team_Priority_Low": "Low",
+  "Team_Priority_Normal": "Normal",
+  "Team_Priority_High": "High",
+  "Team_Priority_Urgent": "Urgent",
+  "Team_TaskStatus_New": "New",
+  "Team_TaskStatus_InProgress": "In progress",
+  "Team_TaskStatus_Closed": "Closed",
+  "Team_TaskStatus_Canceled": "Canceled",
+  "Team_SliceAction_SearchTeamTasks": "search team tasks"
+}
