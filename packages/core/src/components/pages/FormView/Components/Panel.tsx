@@ -18,7 +18,12 @@
 
 import React, {ReactNode, useCallback, useMemo} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
-import {DropdownCard, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
+import {
+  DropdownCard,
+  HorizontalRule,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../../i18n';
 import {
   DEFAULT_COLSPAN,
@@ -48,6 +53,7 @@ const Panel = ({
   parentReadonly = false,
   zIndex,
 }: PanelProps) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
 
   const isHidden = useMemo(
@@ -128,8 +134,13 @@ const Panel = ({
       <View
         key={_panel.key}
         style={[panelStyle, styles.container, getZIndexStyle(zIndex)]}>
-        <Text style={styles.title}>{I18n.t(_panel.titleKey)}</Text>
-        <HorizontalRule style={styles.line} />
+        <Text writingType="important" style={styles.title}>
+          {I18n.t(_panel.titleKey)}
+        </Text>
+        <HorizontalRule
+          style={styles.line}
+          color={Colors.secondaryColor.background_light}
+        />
         <View
           style={[styles.content, contentStyle, getZIndexStyle(zIndex + 1)]}>
           {renderContent()}
@@ -154,8 +165,6 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'flex-start',
     marginLeft: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   line: {
     marginVertical: 4,

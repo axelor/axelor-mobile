@@ -18,7 +18,6 @@
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
-  Dimensions,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
@@ -30,16 +29,12 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
-import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
 import BarItem from './BarItem';
 import ItemTitle from './ItemTitle';
 import {BottomBarItem} from './types.helper';
 import {getVisibleItems} from './display.helper';
-
-const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 const BottomBar = ({
   style,
@@ -54,7 +49,6 @@ const BottomBar = ({
   itemSize?: number;
   manageActiveTitle?: boolean;
 }) => {
-  const {headerHeight} = useConfig();
   const Colors = useThemeColor();
 
   const itemPositions = useRef<any>({});
@@ -66,7 +60,6 @@ const BottomBar = ({
   const didInitialScrollRef = useRef<boolean>(false);
 
   const [selectedKey, setSelectedKey] = useState<string>();
-  const [viewHeight, setViewHeight] = useState<number>(WINDOW_HEIGHT * 0.8);
   const [selectedItemColor, setSelectedItemColor] = useState<any>();
   const [showLeftIndicator, setShowLeftIndicator] = useState<boolean>(false);
   const [showRightIndicator, setShowRightIndicator] = useState<boolean>(false);
@@ -196,20 +189,10 @@ const BottomBar = ({
 
   return (
     <View style={styles.container}>
-      <View style={{height: viewHeight}} testID="bottomBarViewComtainer">
+      <View style={styles.viewContainer} testID="bottomBarViewComtainer">
         {activeView?.viewComponent}
       </View>
-      <View
-        testID="bottomBarComtainer"
-        onLayout={event => {
-          const {height: barHeight} = event.nativeEvent.layout;
-          setViewHeight(
-            WINDOW_HEIGHT -
-              StaticSafeAreaInsets.safeAreaInsetsTop -
-              headerHeight -
-              barHeight,
-          );
-        }}>
+      <View testID="bottomBarComtainer" style={styles.barContainer}>
         <Card style={[styles.bottomContainer, style]}>
           <View style={styles.scrollWrapper}>
             <ScrollView
@@ -273,6 +256,12 @@ const BottomBar = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  viewContainer: {
+    flex: 1,
+  },
+  barContainer: {
+    flexShrink: 0,
   },
   bottomContainer: {
     paddingHorizontal: 20,
