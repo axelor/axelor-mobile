@@ -44,6 +44,7 @@
     "@axelor/aos-mobile-quality": "9.2.0",
     "@axelor/aos-mobile-sale": "9.2.0",
     "@axelor/aos-mobile-stock": "9.2.0",
+    "@axelor/aos-mobile-team": "9.2.0",
     "@axelor/aos-mobile-ui": "9.2.0",
     "@react-native-clipboard/clipboard": "1.16.3",
     "@react-native-community/slider": "5.1.2",
