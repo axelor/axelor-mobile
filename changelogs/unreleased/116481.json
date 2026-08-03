@@ -1,0 +1,5 @@
+{
+  "title": "ControlEntry: sort lines by plan line priority instead of id",
+  "type": "fix",
+  "packages": "quality"
+}
