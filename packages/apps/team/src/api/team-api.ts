@@ -16,8 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {team_formsRegister} from './forms';
-export {team_modelAPI} from './objectFields';
-export {team_searchFields} from './searchFields';
-export {team_sortFields} from './sortFields';
-export {team_typeObjects} from './typeObjects';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
+
+const createTeamCriteria = ({searchValue}: {searchValue?: string}) => {
+  return [getSearchCriterias('team_team', searchValue!)];
+};
+
+export async function searchTeams({
+  searchValue,
+  page = 0,
+}: {
+  searchValue?: string;
+  page?: number;
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.team.db.Team',
+    criteria: createTeamCriteria({searchValue}),
+    fieldKey: 'team_team',
+    sortKey: 'team_team',
+    page,
+    provider: 'model',
+  });
+}

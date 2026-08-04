@@ -1,6 +1,8 @@
 {
   "Team_Team": "Team",
   "Team_Tasks": "Tasks",
+  "Team_Name": "Name",
+  "Team_Description": "Description",
   "Team_AssignedTo": "Assigned to",
   "Team_TaskDate": "Start date",
   "Team_TaskDeadline": "Deadline",
@@ -14,5 +16,9 @@
   "Team_TaskStatus_InProgress": "In progress",
   "Team_TaskStatus_Closed": "Closed",
   "Team_TaskStatus_Canceled": "Canceled",
-  "Team_SliceAction_SearchTeamTasks": "search team tasks"
+  "Team_CreateTeamTask": "Create task",
+  "Team_SliceAction_SearchTeamTasks": "search team tasks",
+  "Team_SliceAction_FetchTeamTask": "fetch team task",
+  "Team_SliceAction_SaveTeamTask": "save team task",
+  "Team_SliceAction_SearchTeams": "search teams"
 }

@@ -20,4 +20,5 @@ import {SearchFields} from '@axelor/aos-mobile-core';
 
 export const team_searchFields: SearchFields = {
   team_teamTask: ['name', 'assignedTo.fullName', 'team.name'],
+  team_team: ['name'],
 };

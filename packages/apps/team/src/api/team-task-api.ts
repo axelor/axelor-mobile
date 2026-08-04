@@ -17,8 +17,11 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   Criteria,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -85,5 +88,32 @@ export async function searchTeamTasks({
     page,
     filter: filterDomain,
     provider: 'model',
+  });
+}
+
+export async function fetchTeamTask({id}: {id: number}) {
+  if (id == null) return null;
+
+  return createStandardFetch({
+    model: 'com.axelor.team.db.TeamTask',
+    id,
+    fieldKey: 'team_teamTask',
+    provider: 'model',
+  });
+}
+
+export async function saveTeamTask(body: any) {
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.team.db.TeamTask',
+    method: 'post',
+    body: {data: formattedData},
+    description: 'save team task',
+    matchers: {
+      modelName: 'com.axelor.team.db.TeamTask',
+      id: body?.id ?? Date.now(),
+      fields: matchers,
+    },
   });
 }
