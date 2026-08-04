@@ -16,11 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchTeams as searchTeamsApi} from './team-api';
-export {
-  deleteTeamTask as deleteTeamTaskApi,
-  fetchTeamTask as fetchTeamTaskApi,
-  saveTeamTask as saveTeamTaskApi,
-  searchTeamTasks as searchTeamTasksApi,
-  updateTeamTaskStatus as updateTeamTaskStatusApi,
-} from './team-task-api';
+import React, {useState} from 'react';
+import {TeamTaskActionSheet, TeamTaskCard} from '../../atoms';
+
+const TeamTaskActionCard = ({
+  task,
+  onRefresh,
+}: {
+  task: any;
+  onRefresh?: () => void;
+}) => {
+  const [visible, setVisible] = useState<boolean>(false);
+
+  return (
+    <>
+      <TeamTaskCard {...task} onPress={() => setVisible(true)} />
+      <TeamTaskActionSheet
+        task={task}
+        visible={visible}
+        onClose={() => setVisible(false)}
+        onRefresh={onRefresh}
+      />
+    </>
+  );
+};
+
+export default TeamTaskActionCard;

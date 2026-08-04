@@ -23,9 +23,11 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  deleteTeamTask as _deleteTeamTask,
   fetchTeamTask as _fetchTeamTask,
   saveTeamTask as _saveTeamTask,
   searchTeamTasks as _searchTeamTasks,
+  updateTeamTaskStatus as _updateTeamTaskStatus,
 } from '../api/team-task-api';
 
 export const searchTeamTasks = createAsyncThunk(
@@ -61,6 +63,32 @@ export const saveTeamTask = createAsyncThunk(
       fetchFunction: _saveTeamTask,
       data,
       action: 'Team_SliceAction_SaveTeamTask',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const updateTeamTaskStatus = createAsyncThunk(
+  'team_teamTask/updateTeamTaskStatus',
+  async function (data: any, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateTeamTaskStatus,
+      data,
+      action: 'Team_SliceAction_UpdateTeamTaskStatus',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const deleteTeamTask = createAsyncThunk(
+  'team_teamTask/deleteTeamTask',
+  async function (data: any, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deleteTeamTask,
+      data,
+      action: 'Team_SliceAction_DeleteTeamTask',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     });

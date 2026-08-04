@@ -17,4 +17,10 @@
  */
 
 export {searchTeams} from './teamSlice';
-export {fetchTeamTask, saveTeamTask, searchTeamTasks} from './teamTaskSlice';
+export {
+  deleteTeamTask,
+  fetchTeamTask,
+  saveTeamTask,
+  searchTeamTasks,
+  updateTeamTaskStatus,
+} from './teamTaskSlice';
