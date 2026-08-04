@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
+import {ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
@@ -24,9 +25,13 @@ import {
 } from '@axelor/aos-mobile-core';
 import {searchTeamTasks} from '../features/teamTaskSlice';
 import {TeamTaskCard, TeamTaskFilters} from '../components';
+import {TeamTaskScope} from '../types';
+
+const DEFAULT_SCOPE = TeamTaskScope.scope.AssignedToMe;
 
 const TeamTaskListScreen = () => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const {
     loadingTeamTasks,
@@ -34,13 +39,29 @@ const TeamTaskListScreen = () => {
     isListEndTeamTask,
     teamTaskList,
   } = useSelector(state => state.team_teamTask);
+  const {user} = useSelector(state => state.user);
 
   const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [selectedPriority, setSelectedPriority] = useState<any[]>([]);
+  const [selectedScope, setSelectedScope] = useState<string>(DEFAULT_SCOPE);
+
+  const scopeList = useMemo(
+    () => TeamTaskScope.getScopeList(Colors, I18n, DEFAULT_SCOPE),
+    [Colors, I18n],
+  );
+
+  const handleScopeChange = useCallback((items: any[]) => {
+    setSelectedScope(items?.[0]?.key);
+  }, []);
 
   const sliceFunctionData = useMemo(
-    () => ({selectedStatus, selectedPriority}),
-    [selectedPriority, selectedStatus],
+    () => ({
+      selectedStatus,
+      selectedPriority,
+      selectedScope,
+      userId: user?.id,
+    }),
+    [selectedPriority, selectedStatus, selectedScope, user?.id],
   );
 
   return (
@@ -53,6 +74,14 @@ const TeamTaskListScreen = () => {
       sliceFunctionData={sliceFunctionData}
       searchPlaceholder={I18n.t('Base_Search')}
       renderListItem={({item}) => <TeamTaskCard {...item} />}
+      chipComponent={
+        <ChipSelect
+          mode="switch"
+          selectionItems={scopeList}
+          onChangeValue={handleScopeChange}
+          chipNumberOfLines={2}
+        />
+      }
       headerChildren={
         <TeamTaskFilters
           setSelectedPriority={setSelectedPriority}
