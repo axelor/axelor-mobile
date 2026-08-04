@@ -24,7 +24,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchTeamTasks} from '../features/teamTaskSlice';
-import {TeamTaskCard, TeamTaskFilters} from '../components';
+import {TeamTaskActionCard, TeamTaskFilters} from '../components';
 import {TeamTaskScope} from '../types';
 
 const DEFAULT_SCOPE = TeamTaskScope.scope.AssignedToMe;
@@ -44,6 +44,7 @@ const TeamTaskListScreen = () => {
   const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
   const [selectedPriority, setSelectedPriority] = useState<any[]>([]);
   const [selectedScope, setSelectedScope] = useState<string>(DEFAULT_SCOPE);
+  const [refreshKey, setRefreshKey] = useState<number>(0);
 
   const scopeList = useMemo(
     () => TeamTaskScope.getScopeList(Colors, I18n, DEFAULT_SCOPE),
@@ -54,14 +55,20 @@ const TeamTaskListScreen = () => {
     setSelectedScope(items?.[0]?.key);
   }, []);
 
+  const handleRefresh = useCallback(
+    () => setRefreshKey(_current => _current + 1),
+    [],
+  );
+
   const sliceFunctionData = useMemo(
     () => ({
       selectedStatus,
       selectedPriority,
       selectedScope,
       userId: user?.id,
+      refreshKey,
     }),
-    [selectedPriority, selectedStatus, selectedScope, user?.id],
+    [selectedPriority, selectedStatus, selectedScope, user?.id, refreshKey],
   );
 
   return (
@@ -73,7 +80,9 @@ const TeamTaskListScreen = () => {
       sliceFunction={searchTeamTasks}
       sliceFunctionData={sliceFunctionData}
       searchPlaceholder={I18n.t('Base_Search')}
-      renderListItem={({item}) => <TeamTaskCard {...item} />}
+      renderListItem={({item}) => (
+        <TeamTaskActionCard task={item} onRefresh={handleRefresh} />
+      )}
       chipComponent={
         <ChipSelect
           mode="switch"

@@ -1,0 +1,5 @@
+{
+  "title": "HtmlViewer: add a new component to display read-only HTML content, scrollable within a bounded height",
+  "type": "feat",
+  "packages": "ui"
+}

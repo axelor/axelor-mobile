@@ -23,6 +23,7 @@ export {default as Card} from './Card/Card';
 export {default as DottedLine} from './DottedLine/DottedLine';
 export {default as HorizontalRule} from './HorizontalRule/HorizontalRule';
 export {default as HtmlInput} from './HtmlInput/HtmlInput';
+export {default as HtmlViewer} from './HtmlViewer/HtmlViewer';
 export {default as Icon} from './Icon/Icon';
 export {default as Input} from './Input/Input';
 export {
