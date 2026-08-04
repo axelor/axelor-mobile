@@ -177,6 +177,12 @@ const TimesheetListScreen = ({navigation}) => {
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timesheets_list', {
       model: 'com.axelor.apps.hr.db.Timesheet',
+      options: {
+        core_modelFilters: {
+          name: 'timesheet-filters',
+          actionViewName: 'action.timesheet.view.my.timesheet',
+        },
+      },
       actions: [
         {
           key: 'newTimesheet',
