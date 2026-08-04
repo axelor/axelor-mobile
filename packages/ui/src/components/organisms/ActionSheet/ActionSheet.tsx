@@ -31,6 +31,7 @@ interface ActionSheetProps {
   style?: any;
   visible: boolean;
   title?: string;
+  headerChildren?: any;
   actionList: Action[];
   onClose?: () => void;
 }
@@ -39,6 +40,7 @@ const ActionSheet = ({
   style,
   visible = false,
   title,
+  headerChildren,
   actionList,
   onClose,
 }: ActionSheetProps) => {
@@ -69,6 +71,16 @@ const ActionSheet = ({
       title={title}
       onClose={onClose}
       style={style}>
+      {headerChildren != null && (
+        <View
+          style={[
+            styles.header,
+            {borderBottomColor: Colors.secondaryColor.background_light},
+          ]}
+          testID="actionSheetHeader">
+          {headerChildren}
+        </View>
+      )}
       <View testID="actionSheetContainer">
         {_actionList.map((action, index) => {
           const color = getColor(action);
@@ -81,10 +93,8 @@ const ActionSheet = ({
               onPress={() => handlePress(action)}
               activeOpacity={0.9}
               testID="actionSheetRow">
-              <Icon name={action.iconName} color={color} size={20} />
-              <Text fontSize={16} style={styles.label}>
-                {action.helper}
-              </Text>
+              <Icon name={action.iconName} color={color} />
+              <Text style={styles.label}>{action.helper}</Text>
             </TouchableOpacity>
           );
         })}
@@ -94,12 +104,18 @@ const ActionSheet = ({
 };
 
 const styles = StyleSheet.create({
+  header: {
+    paddingHorizontal: 20,
+    paddingBottom: 12,
+    marginBottom: 4,
+    borderBottomWidth: 1,
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: 8,
     paddingHorizontal: 20,
-    gap: 16,
+    gap: 10,
   },
   label: {
     flex: 1,

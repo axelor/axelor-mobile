@@ -152,7 +152,6 @@ const BottomSheet = ({
             {!checkNullString(title) && (
               <Text
                 numberOfLines={1}
-                fontSize={12}
                 textColor={Colors.secondaryColor_dark.background}
                 style={styles.title}>
                 {title}
