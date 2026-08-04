@@ -26,6 +26,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import {TeamTaskScope} from '../types';
 
+const MODEL = 'com.axelor.team.db.TeamTask';
+
 const createTeamTaskCriterias = ({
   searchValue,
   selectedStatus,
@@ -121,7 +123,7 @@ export async function searchTeamTasks({
       : {};
 
   return createStandardSearch({
-    model: 'com.axelor.team.db.TeamTask',
+    model: MODEL,
     criteria: createTeamTaskCriterias({
       searchValue,
       selectedStatus,
@@ -142,7 +144,7 @@ export async function fetchTeamTask({id}: {id: number}) {
   if (id == null) return null;
 
   return createStandardFetch({
-    model: 'com.axelor.team.db.TeamTask',
+    model: MODEL,
     id,
     fieldKey: 'team_teamTask',
     provider: 'model',
@@ -153,14 +155,46 @@ export async function saveTeamTask(body: any) {
   const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
-    url: '/ws/rest/com.axelor.team.db.TeamTask',
+    url: `/ws/rest/${MODEL}`,
     method: 'post',
     body: {data: formattedData},
     description: 'save team task',
     matchers: {
-      modelName: 'com.axelor.team.db.TeamTask',
+      modelName: MODEL,
       id: body?.id ?? Date.now(),
       fields: matchers,
     },
+  });
+}
+
+export async function updateTeamTaskStatus({
+  id,
+  version,
+  status,
+}: {
+  id: number;
+  version: number;
+  status: string;
+}) {
+  return getActionApi().send({
+    url: `/ws/rest/${MODEL}`,
+    method: 'post',
+    body: {data: {id, version, status}},
+    description: 'update team task status',
+    matchers: {
+      modelName: MODEL,
+      id,
+      fields: {'data.status': 'status'},
+    },
+  });
+}
+
+export async function deleteTeamTask({id}: {id: number}) {
+  return getActionApi().send({
+    url: `/ws/rest/${MODEL}/${id}`,
+    method: 'delete',
+    body: {},
+    description: 'delete team task',
+    matchers: {modelName: MODEL, id, fields: {}},
   });
 }

@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as TeamTaskActionSheet} from './TeamTaskActionSheet/TeamTaskActionSheet';
 export {default as TeamTaskCard} from './TeamTaskCard/TeamTaskCard';

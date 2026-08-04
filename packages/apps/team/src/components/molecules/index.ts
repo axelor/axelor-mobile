@@ -16,11 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchTeams as searchTeamsApi} from './team-api';
-export {
-  deleteTeamTask as deleteTeamTaskApi,
-  fetchTeamTask as fetchTeamTaskApi,
-  saveTeamTask as saveTeamTaskApi,
-  searchTeamTasks as searchTeamTasksApi,
-  updateTeamTaskStatus as updateTeamTaskStatusApi,
-} from './team-task-api';
+export {default as TeamTaskActionCard} from './TeamTaskActionCard/TeamTaskActionCard';

@@ -21,14 +21,12 @@ import {StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 import {
   formatDate,
-  useNavigation,
   useTranslator,
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
 
 interface TeamTaskCardProps {
-  id: number;
   name: string;
   priority: string;
   status: string;
@@ -36,10 +34,10 @@ interface TeamTaskCardProps {
   team?: {name?: string};
   taskDate?: string;
   taskDeadline?: string;
+  onPress?: () => void;
 }
 
 const TeamTaskCard = ({
-  id,
   name,
   priority,
   status,
@@ -47,8 +45,8 @@ const TeamTaskCard = ({
   team,
   taskDate,
   taskDeadline,
+  onPress,
 }: TeamTaskCardProps) => {
-  const navigation = useNavigation();
   const I18n = useTranslator();
   const {TeamTask} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
@@ -62,7 +60,7 @@ const TeamTaskCard = ({
     <ObjectCard
       showArrow={false}
       leftContainerFlex={2}
-      onPress={() => navigation.navigate('TeamTaskDetailsScreen', {taskId: id})}
+      onPress={onPress}
       borderLeftColor={borderColor}
       upperTexts={{
         items: [
