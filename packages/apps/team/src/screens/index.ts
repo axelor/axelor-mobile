@@ -17,6 +17,7 @@
  */
 
 import {Screen} from '@axelor/aos-mobile-core';
+import {default as TeamTaskDetailsScreen} from './TeamTaskDetailsScreen';
 import {default as TeamTaskListScreen} from './TeamTaskListScreen';
 
 const TeamScreens: {[key: string]: Screen} = {
@@ -26,8 +27,15 @@ const TeamScreens: {[key: string]: Screen} = {
     actionID: 'team_teamTask_list',
     isUsableOnShortcut: true,
   },
+  TeamTaskDetailsScreen: {
+    title: 'Team_Tasks',
+    component: TeamTaskDetailsScreen,
+    actionID: 'team_teamTask_form',
+    isUsableOnShortcut: true,
+  },
 };
 
 export default TeamScreens;
 
+export {TeamTaskDetailsScreen};
 export {TeamTaskListScreen};

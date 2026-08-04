@@ -16,8 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {team_formsRegister} from './forms';
-export {team_modelAPI} from './objectFields';
-export {team_searchFields} from './searchFields';
-export {team_sortFields} from './sortFields';
-export {team_typeObjects} from './typeObjects';
+export {default as TaskPriorityPicker} from './TaskPriorityPicker/TaskPriorityPicker';
+export {default as TaskStatusPicker} from './TaskStatusPicker/TaskStatusPicker';
+export {default as TeamSearchBar} from './TeamSearchBar/TeamSearchBar';

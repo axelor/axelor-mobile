@@ -22,6 +22,7 @@ import frTranslations from './i18n/fr.json';
 import {default as TeamScreens} from './screens';
 import * as teamReducers from './features';
 import {
+  team_formsRegister,
   team_modelAPI,
   team_searchFields,
   team_sortFields,
@@ -46,6 +47,7 @@ export const TeamModule: Module = {
   screens: TeamScreens,
   reducers: teamReducers,
   models: {
+    formsRegister: team_formsRegister,
     objectFields: team_modelAPI,
     searchFields: team_searchFields,
     sortFields: team_sortFields,

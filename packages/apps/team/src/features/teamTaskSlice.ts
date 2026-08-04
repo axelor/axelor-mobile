@@ -18,14 +18,19 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
+  generateFetchRecordCases,
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchTeamTasks as _searchTeamTasks} from '../api/team-task-api';
+import {
+  fetchTeamTask as _fetchTeamTask,
+  saveTeamTask as _saveTeamTask,
+  searchTeamTasks as _searchTeamTasks,
+} from '../api/team-task-api';
 
 export const searchTeamTasks = createAsyncThunk(
   'team_teamTask/searchTeamTasks',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchTeamTasks,
       data,
@@ -36,11 +41,40 @@ export const searchTeamTasks = createAsyncThunk(
   },
 );
 
+export const fetchTeamTask = createAsyncThunk(
+  'team_teamTask/fetchTeamTask',
+  async function (data: any, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchTeamTask,
+      data,
+      action: 'Team_SliceAction_FetchTeamTask',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const saveTeamTask = createAsyncThunk(
+  'team_teamTask/saveTeamTask',
+  async function (data: any, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _saveTeamTask,
+      data,
+      action: 'Team_SliceAction_SaveTeamTask',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
 const initialState = {
   loadingTeamTasks: false,
   moreLoadingTeamTask: false,
   isListEndTeamTask: false,
   teamTaskList: [],
+
+  loading: false,
+  teamTask: null,
 };
 
 const teamTaskSlice = createSlice({
@@ -53,6 +87,10 @@ const teamTaskSlice = createSlice({
       moreLoading: 'moreLoadingTeamTask',
       isListEnd: 'isListEndTeamTask',
       list: 'teamTaskList',
+    });
+    generateFetchRecordCases(builder, fetchTeamTask, {
+      loading: 'loading',
+      record: 'teamTask',
     });
   },
 });
