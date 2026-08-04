@@ -60,7 +60,8 @@ const useFilterGenericAction = () => {
           onPress: () => {},
         };
 
-        if (modelId != null || model == null) return _defaultAction;
+        if (options == null || modelId != null || model == null)
+          return _defaultAction;
 
         const {savedFilters, userFilters} = await fetchDefaultFilters({
           modelName: model,
