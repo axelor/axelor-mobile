@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {team_formsRegister} from './forms';
 export {team_modelAPI} from './objectFields';
 export {team_searchFields} from './searchFields';
 export {team_sortFields} from './sortFields';

@@ -16,4 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchTeamTasks as searchTeamTasksApi} from './team-task-api';
+export {searchTeams as searchTeamsApi} from './team-api';
+export {
+  fetchTeamTask as fetchTeamTaskApi,
+  saveTeamTask as saveTeamTaskApi,
+  searchTeamTasks as searchTeamTasksApi,
+} from './team-task-api';

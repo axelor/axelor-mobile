@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchTeamTasks} from './teamTaskSlice';
+export {searchTeams} from './teamSlice';
+export {fetchTeamTask, saveTeamTask, searchTeamTasks} from './teamTaskSlice';

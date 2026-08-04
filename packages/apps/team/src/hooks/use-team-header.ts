@@ -17,13 +17,26 @@
  */
 
 import {useEffect} from 'react';
-import {headerActionsProvider} from '@axelor/aos-mobile-core';
+import {
+  headerActionsProvider,
+  useNavigation,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 export const useTeamHeaders = () => {
   useTeamTaskListActions();
+  useTeamTaskDetailsActions();
 };
 
 const useTeamTaskListActions = () => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.team.db.TeamTask'});
+
   useEffect(() => {
     headerActionsProvider.registerModel('team_teamTask_list', {
       model: 'com.axelor.team.db.TeamTask',
@@ -33,6 +46,29 @@ const useTeamTaskListActions = () => {
           actionViewName: 'team.tasks.all',
         },
       },
+      actions: [
+        {
+          key: 'createTask',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Team_CreateTeamTask'),
+          iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
+          onPress: () => navigation.navigate('TeamTaskDetailsScreen'),
+          showInHeader: true,
+        },
+      ],
     });
-  }, []);
+  }, [Colors, I18n, canCreate, navigation]);
+};
+
+const useTeamTaskDetailsActions = () => {
+  const {teamTask} = useSelector(state => state.team_teamTask);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('team_teamTask_form', {
+      model: 'com.axelor.team.db.TeamTask',
+      modelId: teamTask?.id,
+    });
+  }, [teamTask?.id]);
 };

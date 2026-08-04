@@ -29,4 +29,7 @@ export const team_modelAPI: ObjectFields = {
     taskDeadline: schemaContructor.string(),
     team: schemaContructor.subObject('name'),
   }),
+  team_team: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
 };

@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {MultiValuePicker} from '@axelor/aos-mobile-ui';
-import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
+import {TaskPriorityPicker, TaskStatusPicker} from '../../organisms';
 
 type SetterFunction<T> = (value: T | ((_current: T) => T)) => void;
 
@@ -30,32 +29,19 @@ const TeamTaskFilters = ({
   setSelectedStatus: SetterFunction<any[]>;
   setSelectedPriority: SetterFunction<any[]>;
 }) => {
-  const I18n = useTranslator();
-  const {TeamTask} = useTypes();
-  const {getSelectionItems} = useTypeHelpers();
-
-  const statusSet = useMemo(
-    () => getSelectionItems(TeamTask?.status),
-    [TeamTask?.status, getSelectionItems],
-  );
-  const prioritySet = useMemo(
-    () => getSelectionItems(TeamTask?.priority),
-    [TeamTask?.priority, getSelectionItems],
-  );
-
   return (
     <View style={styles.rowWrapper}>
-      <MultiValuePicker
+      <TaskStatusPicker
         style={styles.flex}
-        listItems={statusSet}
-        onValueChange={setSelectedStatus}
-        placeholder={I18n.t('Team_Status')}
+        onChange={setSelectedStatus}
+        showTitle={false}
+        isMultiValue
       />
-      <MultiValuePicker
+      <TaskPriorityPicker
         style={styles.flex}
-        listItems={prioritySet}
-        onValueChange={setSelectedPriority}
-        placeholder={I18n.t('Team_Priority')}
+        onChange={setSelectedPriority}
+        showTitle={false}
+        isMultiValue
       />
     </View>
   );
