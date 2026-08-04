@@ -1,6 +1,8 @@
 {
   "Team_Team": "Équipe",
   "Team_Tasks": "Tâches",
+  "Team_Name": "Nom",
+  "Team_Description": "Description",
   "Team_AssignedTo": "Assigné à",
   "Team_TaskDate": "Date de début",
   "Team_TaskDeadline": "Date limite",
@@ -14,5 +16,9 @@
   "Team_TaskStatus_InProgress": "En cours",
   "Team_TaskStatus_Closed": "Fermé",
   "Team_TaskStatus_Canceled": "Annulé",
-  "Team_SliceAction_SearchTeamTasks": "recherche sur les tâches d'équipe"
+  "Team_CreateTeamTask": "Créer une tâche",
+  "Team_SliceAction_SearchTeamTasks": "recherche sur les tâches d'équipe",
+  "Team_SliceAction_FetchTeamTask": "récupération de la tâche d'équipe",
+  "Team_SliceAction_SaveTeamTask": "enregistrement de la tâche d'équipe",
+  "Team_SliceAction_SearchTeams": "recherche sur les équipes"
 }
