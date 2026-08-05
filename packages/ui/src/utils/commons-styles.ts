@@ -19,6 +19,8 @@
 import {StyleSheet} from 'react-native';
 import {ThemeColors} from '../theme';
 
+export const INPUT_MIN_HEIGHT = 40;
+
 export const getCommonStyles = (
   Colors?: ThemeColors,
   _required: boolean = false,
