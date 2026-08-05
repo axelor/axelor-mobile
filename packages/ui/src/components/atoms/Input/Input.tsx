@@ -21,12 +21,12 @@ import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
   TextInput,
-  TextInputContentSizeChangeEventData,
+  TextInputContentSizeChangeEvent,
   TextStyle,
 } from 'react-native';
+import {checkNullString, INPUT_MIN_HEIGHT} from '../../../utils';
 import {useThemeColor, useWritingType} from '../../../theme';
-import {useConfig} from '../../../config/ConfigContext';
-import {checkNullString} from '../../../utils';
+import {useConfig} from '../../../config';
 import {Keyboard} from '../../../types';
 
 interface InputProps {
@@ -45,7 +45,7 @@ interface InputProps {
   isFocus?: boolean;
   writingType?: 'title' | 'subtitle' | 'important' | 'details' | undefined;
   onContentSizeChange?: (
-    e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
+    e: NativeSyntheticEvent<TextInputContentSizeChangeEvent>,
   ) => void;
   isScannableInput?: boolean;
   testID?: string;
@@ -78,6 +78,8 @@ const Input = ({
     return {
       ...writingStyle,
       color: Colors.text,
+      minHeight: INPUT_MIN_HEIGHT,
+      paddingVertical: 0,
       textAlignVertical: multiline ? 'top' : 'center',
     };
   }, [Colors.text, multiline, writingStyle]);

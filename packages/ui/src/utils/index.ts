@@ -17,7 +17,7 @@
  */
 
 export {replace, indexOfElement} from './arrays';
-export {getCommonStyles} from './commons-styles';
+export {getCommonStyles, INPUT_MIN_HEIGHT} from './commons-styles';
 export {formatNumber, unformatNumber} from './formatters';
 export {getFromList, getItemsFromList} from './list';
 export {isHalf, getIntegerPart, roundHalf, roundInteger} from './number';
