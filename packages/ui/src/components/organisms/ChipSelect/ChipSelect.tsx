@@ -194,10 +194,11 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     alignItems: 'stretch',
+    flexGrow: 1,
   },
   clearButton: {
     marginRight: 2,
-    flex: 1,
+    flexShrink: 0,
   },
 });
 

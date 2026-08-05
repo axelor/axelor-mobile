@@ -16,11 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactElement, useRef, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useOutsideClickHandler} from '../../../hooks';
+import React, {
+  ReactElement,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
+
+interface Anchor {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
 
 interface DropdownMenuProps {
   style?: any;
@@ -38,14 +56,40 @@ const DropdownMenu = ({
   const Colors = useThemeColor();
 
   const [visible, setVisible] = useState(false);
+  const [anchor, setAnchor] = useState<Anchor | null>(null);
 
-  const wrapperRef = useRef(null);
-  const dropdownWrapperRef = useRef(null);
-  useOutsideClickHandler({
-    wrapperRef: [wrapperRef, dropdownWrapperRef],
-    handleOutsideClick: () => setVisible(false),
-    activationCondition: visible,
-  });
+  const wrapperRef = useRef<View>(null);
+
+  const closeMenu = useCallback(() => {
+    setVisible(false);
+    setAnchor(null);
+  }, []);
+
+  const openMenu = useCallback(() => {
+    wrapperRef.current?.measureInWindow?.((left, top, width, height) =>
+      setAnchor({left, top, width, height}),
+    );
+    setVisible(true);
+  }, []);
+
+  const menuItems = useMemo(
+    () =>
+      React.Children.map(children, child => {
+        if (!React.isValidElement<any>(child)) return child;
+
+        const onPress = child.props?.onPress;
+
+        if (typeof onPress !== 'function') return child;
+
+        return React.cloneElement(child, {
+          onPress: () => {
+            closeMenu();
+            requestAnimationFrame(onPress);
+          },
+        });
+      }),
+    [children, closeMenu],
+  );
 
   const icon = (
     <Icon
@@ -59,23 +103,45 @@ const DropdownMenu = ({
     <View style={style} ref={wrapperRef} testID="dropdownMenuContainer">
       <TouchableOpacity
         style={iconWrapper == null ? styles.action : undefined}
-        onPress={() => setVisible(!visible)}
+        onPress={visible ? closeMenu : openMenu}
         testID="dropdownMenuTouchable"
         activeOpacity={0.9}>
         {iconWrapper != null ? iconWrapper(icon) : icon}
       </TouchableOpacity>
-      {visible && (
-        <Card
-          wrapperRef={dropdownWrapperRef}
-          style={[styles.menuContainer, styleMenu]}>
-          {children}
-        </Card>
-      )}
+      <Modal
+        visible={visible}
+        transparent={true}
+        animationType="none"
+        onRequestClose={closeMenu}>
+        <Pressable
+          style={styles.backdrop}
+          onPress={closeMenu}
+          testID="dropdownMenuBackdrop"
+        />
+        <View
+          pointerEvents="box-none"
+          style={[
+            styles.anchor,
+            anchor,
+            anchor == null && styles.notPositioned,
+          ]}>
+          <Card style={[styles.menuContainer, styleMenu]}>{menuItems}</Card>
+        </View>
+      </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  anchor: {
+    position: 'absolute',
+  },
+  notPositioned: {
+    opacity: 0,
+  },
   menuContainer: {
     width: 255,
     top: 45,

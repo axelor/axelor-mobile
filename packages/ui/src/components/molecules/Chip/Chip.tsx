@@ -88,7 +88,9 @@ const Chip = ({
 const getStyles = (chipColor: Color) =>
   StyleSheet.create({
     container: {
-      flex: 1,
+      flexGrow: 1,
+      flexShrink: 0,
+      flexBasis: 'auto',
       justifyContent: 'center',
       alignItems: 'center',
       paddingVertical: 5,
