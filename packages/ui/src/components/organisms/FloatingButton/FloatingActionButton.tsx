@@ -36,9 +36,9 @@ const FloatingActionButton = ({
   translator,
   useCircleStyle = false,
 }: {
-  title: string;
+  title?: string;
   iconName: string;
-  color: Color;
+  color?: Color;
   size: number;
   margin?: number;
   disabled?: boolean;
@@ -66,10 +66,7 @@ const FloatingActionButton = ({
       {title != null ? (
         <View style={[styles.actionTitleContainer, {right: size + margin * 2}]}>
           <View style={styles.actionTitle}>
-            <Text
-              fontSize={16}
-              style={styles.actionTitleText}
-              numberOfLines={2}>
+            <Text style={styles.actionTitleText} numberOfLines={2}>
               {translator(title)}
             </Text>
           </View>
@@ -99,6 +96,7 @@ const getStyles = (Colors: ThemeColors) =>
       backgroundColor: Colors.backgroundColor,
       borderRadius: 7,
       paddingHorizontal: 10,
+      paddingVertical: 2,
       elevation: 3,
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
