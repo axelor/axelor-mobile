@@ -24,7 +24,13 @@ import {formConfigsProvider, mapStudioFields} from '../../../forms';
 
 const FORM_KEY = 'AOPField-form';
 
-const PhantomComponent = ({objectState, onChange}) => {
+const PhantomComponent = ({
+  objectState,
+  onChange,
+}: {
+  objectState: any;
+  onChange: (_v?: any) => void;
+}) => {
   useEffect(() => {
     onChange(objectState);
   }, [objectState, onChange]);
@@ -33,29 +39,37 @@ const PhantomComponent = ({objectState, onChange}) => {
 };
 
 const formatChartFields = (data: any[]): any[] => {
-  return data.map(_field => {
-    return {
-      name: _field.name,
-      title: _field.title,
-      type: _field.type ?? 'string',
-      required: _field.widgetAttrs?.required === 'true',
-      isSelectionField: _field.selectionList?.length > 0,
-      selectionList: _field.selectionList,
-      widgetAttrs: JSON.stringify(_field.widgetAttrs ?? {}),
-      targetModel: _field.target,
-    };
-  });
+  return data.map(_field => ({
+    name: _field.name,
+    title: _field.title,
+    type: _field.type ?? 'string',
+    required: _field.widgetAttrs?.required === 'true',
+    isSelectionField: _field.selectionList?.length > 0,
+    selectionList: _field.selectionList,
+    widgetAttrs: JSON.stringify(_field.widgetAttrs ?? {}),
+    targetModel: _field.target,
+  }));
 };
 
-const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
+const DynamicSearchForm = ({
+  fields,
+  values,
+  actionViewName,
+  onChange,
+}: {
+  fields: any[];
+  values: any;
+  actionViewName?: string;
+  onChange: (_v?: any) => void;
+}) => {
   const Colors = useThemeColor();
 
   const [showOptionalFields, setShowOptionalFields] = useState(false);
 
   const renderPhantomComponent = useCallback(
-    ({objectState = {}}) => {
-      return <PhantomComponent onChange={onChange} objectState={objectState} />;
-    },
+    ({objectState = {}}) => (
+      <PhantomComponent onChange={onChange} objectState={objectState} />
+    ),
     [onChange],
   );
 
@@ -73,11 +87,13 @@ const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
 
     const {fields: _fields} = mapStudioFields(updatedFields, Colors);
 
-    _fields.phantomComponent = {
-      type: 'object',
-      widget: 'custom',
-      customComponent: renderPhantomComponent,
-    };
+    if (Object.keys(_fields ?? {}).length > 0) {
+      _fields.phantomComponent = {
+        type: 'object',
+        widget: 'custom',
+        customComponent: renderPhantomComponent,
+      };
+    }
 
     return _fields;
   }, [Colors, chartFields, renderPhantomComponent, showOptionalFields]);
@@ -97,6 +113,8 @@ const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
       {replaceOld: true},
     );
   }, [formattedFields, _formKey]);
+
+  if (Object.keys(formattedFields ?? {}).length === 0) return null;
 
   return (
     <>
@@ -121,7 +139,7 @@ const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
 
 const styles = StyleSheet.create({
   form: {
-    paddingBottom: 0,
+    marginBottom: 0,
   },
   screen: {
     backgroundColor: undefined,

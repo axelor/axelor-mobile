@@ -80,21 +80,15 @@ const CatalogCard = ({
           {displayText: description, hideIfNull: true},
         ],
       }}
-      sideBadges={{
-        items: [
-          {
-            displayText: category,
-            color: badgeColor,
-          },
-        ],
+      upperBadges={{
+        fixedOnRightSide: true,
+        items: [{displayText: category, color: badgeColor}],
       }}
       lowerBadges={{
-        items: [
-          {
-            customComponent: <Icon name="box-arrow-up-right" size={10} />,
-          },
-        ],
         fixedOnRightSide: true,
+        items: [
+          {customComponent: <Icon name="box-arrow-up-right" size={10} />},
+        ],
       }}
     />
   );

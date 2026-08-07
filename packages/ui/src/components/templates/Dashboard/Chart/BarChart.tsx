@@ -19,9 +19,9 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
 import {BarChart as RNBarChart} from 'react-native-gifted-charts';
+import {checkNullString} from '../../../../utils';
 import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
-import {checkNullString} from '../../../../utils';
 import {Data} from '../dashboard.helper';
 import {
   MARGIN,
@@ -60,7 +60,7 @@ const BarChart = ({
   const [modalVisible, setModalVisible] = useState(false);
 
   const barChartData = useMemo(() => {
-    return initBarData(datasets, rotateLabel, spacing, Colors);
+    return initBarData(datasets, rotateLabel, spacing!, Colors);
   }, [Colors, datasets, rotateLabel, spacing]);
 
   const styles = useMemo(() => {
@@ -89,7 +89,7 @@ const BarChart = ({
 
   const Container = hideCardBackground ? View : Card;
 
-  const handleBarPress = useCallback(barData => {
+  const handleBarPress = useCallback((barData: any) => {
     setSelectedBar(barData);
     setModalVisible(true);
   }, []);
@@ -133,7 +133,7 @@ const BarChart = ({
   );
 };
 
-const getStyles = rotateLabel =>
+const getStyles = (rotateLabel: boolean) =>
   StyleSheet.create({
     container: {
       margin: MARGIN,
