@@ -3,6 +3,20 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.16] (2026-08-07)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Header: hide the saved filters action on screens that do not declare it, so a form used for both creation and edition shows no generic action in creation mode
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- ControlEntry: sort lines by plan line priority instead of id
+
 ## [9.0.15] (2026-07-31)
 
 ### @axelor/aos-mobile-core
@@ -376,6 +390,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.16]: https://github.com/axelor/axelor-mobile/compare/9.0.15...9.0.16
 [9.0.15]: https://github.com/axelor/axelor-mobile/compare/9.0.14...9.0.15
 [9.0.14]: https://github.com/axelor/axelor-mobile/compare/9.0.13...9.0.14
 [9.0.13]: https://github.com/axelor/axelor-mobile/compare/9.0.12...9.0.13
