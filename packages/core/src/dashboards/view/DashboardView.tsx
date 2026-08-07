@@ -79,7 +79,7 @@ export const DashboardView = ({
             {
               key: 'refreshConfig',
               order: 10,
-              showInHeader: false,
+              showInHeader: true,
               iconName: 'arrow-repeat',
               title: I18n.t('Base_Dashboard_RefreshConfig'),
               onPress: refresh,
