@@ -3,6 +3,20 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.21] (2026-08-07)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Header: hide the saved filters action on screens that do not declare it, so a form used for both creation and edition shows no generic action in creation mode
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- ControlEntry: sort lines by plan line priority instead of id
+
 ## [8.5.20] (2026-07-31)
 
 ### @axelor/aos-mobile-core
@@ -600,6 +614,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.21]: https://github.com/axelor/axelor-mobile/compare/8.5.20...8.5.21
 [8.5.20]: https://github.com/axelor/axelor-mobile/compare/8.5.19...8.5.20
 [8.5.19]: https://github.com/axelor/axelor-mobile/compare/8.5.18...8.5.19
 [8.5.18]: https://github.com/axelor/axelor-mobile/compare/8.5.17...8.5.18
