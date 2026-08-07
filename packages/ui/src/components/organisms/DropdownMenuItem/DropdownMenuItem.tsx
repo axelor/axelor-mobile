@@ -92,7 +92,7 @@ const DropdownMenuItem = ({
           />
         )}
       </IconTile>
-      <Text style={styleText} fontSize={16} numberOfLines={numberOfLines}>
+      <Text style={[styles.title, styleText]} numberOfLines={numberOfLines}>
         {placeholder}
       </Text>
     </TouchableOpacity>
@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontSize: Math.ceil(BADGE_SIZE / 1.8),
+  },
+  title: {
+    flex: 1,
   },
 });
 

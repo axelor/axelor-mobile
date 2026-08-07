@@ -45,9 +45,7 @@ export const getActiveTheme = (
 };
 
 export function formatColor(color: string) {
-  if (color == null) {
-    return null;
-  }
+  if (color == null) return undefined;
 
   if (color.includes('#')) {
     if (color.length === 4) {
@@ -61,19 +59,17 @@ export function formatColor(color: string) {
     return color;
   }
 
-  if (color.includes('rgb')) {
-    return rgbaStringToHex(color);
-  }
+  if (color.includes('rgb')) return rgbaStringToHex(color);
 
-  return null;
+  return undefined;
 }
 
 const extendColor = (color: string): Color => {
-  const _hexColor = formatColor(color);
+  const _hexColor = formatColor(color) as string;
 
   return {
     background: _hexColor,
-    background_light: addOpacityToHex(_hexColor, 0.7),
+    background_light: addOpacityToHex(_hexColor, 0.2),
     foreground: getBestForegroundColor(_hexColor),
   };
 };

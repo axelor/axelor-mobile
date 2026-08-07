@@ -76,10 +76,11 @@ const TourListScreen = ({navigation}: any) => {
             />
             <DateInput
               style={styles.dateInput}
-              nullable={true}
+              defaultDate={dateFilter}
               onDateChange={setDateFilter}
               mode="date"
               popup
+              nullable
             />
           </View>
         }
