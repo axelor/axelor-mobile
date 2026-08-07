@@ -3,6 +3,20 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.3] (2026-08-07)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Header: hide the saved filters action on screens that do not declare it, so a form used for both creation and edition shows no generic action in creation mode
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- ControlEntry: sort lines by plan line priority instead of id
+
 ## [9.1.2] (2026-07-31)
 
 ### @axelor/aos-mobile-core
@@ -245,6 +259,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.3]: https://github.com/axelor/axelor-mobile/compare/9.1.2...9.1.3
 [9.1.2]: https://github.com/axelor/axelor-mobile/compare/9.1.1...9.1.2
 [9.1.1]: https://github.com/axelor/axelor-mobile/compare/9.1.0...9.1.1
 [9.1.0]: https://github.com/axelor/axelor-mobile/compare/9.0.13...9.1.0
