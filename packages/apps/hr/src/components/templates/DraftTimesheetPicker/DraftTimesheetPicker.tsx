@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   formatDate,
   useSelector,
@@ -58,16 +58,22 @@ const DraftTimesheetPicker = ({
     );
   }, [dispatch, user.activeCompany?.id, user.id]);
 
-  const displayValue = (item: any) => {
-    return `${formatDate(
-      item.fromDate,
-      I18n.t('Base_DateFormat'),
-    )} - ${formatDate(item.toDate, I18n.t('Base_DateFormat'))}`;
-  };
+  const displayValue = useCallback(
+    (item: any) => {
+      if (item != null) {
+        return `${formatDate(
+          item.fromDate,
+          I18n.t('Base_DateFormat'),
+        )} - ${formatDate(item.toDate, I18n.t('Base_DateFormat'))}`;
+      }
 
-  if (!Array.isArray(draftTimesheetList) || draftTimesheetList.length === 0) {
+      return '';
+    },
+    [I18n],
+  );
+
+  if (!Array.isArray(draftTimesheetList) || draftTimesheetList.length === 0)
     return null;
-  }
 
   return (
     <Picker
@@ -78,11 +84,11 @@ const DraftTimesheetPicker = ({
       displayValue={displayValue}
       labelField="id"
       valueField="id"
-      emptyValue={false}
       onValueChange={onChange}
       required={required}
       readonly={readonly}
-      isValueItem={true}
+      isValueItem
+      emptyValue
     />
   );
 };
