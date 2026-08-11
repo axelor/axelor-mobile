@@ -34,6 +34,7 @@ interface DropdownMenuItemProps {
   disableIf?: boolean;
   customComponent?: ReactElement<any>;
   onPress: () => void;
+  iconTileConfig?: any;
 }
 
 const BADGE_SIZE = 16;
@@ -50,6 +51,7 @@ const DropdownMenuItem = ({
   disableIf = false,
   customComponent,
   onPress,
+  iconTileConfig,
 }: DropdownMenuItemProps) => {
   const Colors = useThemeColor();
 
@@ -76,12 +78,12 @@ const DropdownMenuItem = ({
       activeOpacity={0.9}
       testID="dropdownMenuItemTouchable">
       <IconTile
-        style={styles.iconContainer}
         icon={React.isValidElement(customComponent) ? undefined : icon}
         iconSize={18}
         color={_color}
         padding={10}
-        borderRadius={10}>
+        borderRadius={10}
+        {...(iconTileConfig ?? {})}>
         {customComponent}
         {indicator > 0 && (
           <Badge
@@ -104,9 +106,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 5,
-  },
-  iconContainer: {
-    marginRight: 10,
+    gap: 5,
   },
   badge: {
     width: BADGE_SIZE,

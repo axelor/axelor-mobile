@@ -19,10 +19,11 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  getCommonStyles,
   HtmlInput,
-  Icon,
+  IconTile,
+  INPUT_MIN_HEIGHT,
   NumberBubble,
+  ThemeColors,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 
@@ -38,82 +39,95 @@ interface MessageBoxProps {
 
 const MessageBox = ({
   placeholder,
-  disabled,
+  disabled = false,
   value,
   onChange,
   onSend,
   onLinkFiles,
-  numberLinkedFiles,
+  numberLinkedFiles = 0,
 }: MessageBoxProps) => {
   const Colors = useThemeColor();
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <View style={styles.container}>
-      <HtmlInput
-        defaultInput={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        containerStyle={[commonStyles.filter, styles.htlmInput]}
-        styleToolbar={styles.htmlToolBar}
-      />
+      <View style={styles.inputCard}>
+        <HtmlInput
+          defaultInput={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          editorBackgroundColor="transparent"
+          style={styles.htmlInput}
+          styleToolbar={styles.htmlToolbar}
+        />
+      </View>
       <View style={styles.iconsContainer}>
-        {onSend && (
-          <Icon
-            style={[commonStyles.filter, styles.action]}
-            name="send-fill"
-            color={disabled && Colors.secondaryColor.background_light}
-            size={24}
-            touchable={!disabled}
+        {onSend != null && (
+          <IconTile
+            icon="send-fill"
+            iconSize={16}
+            color={disabled ? Colors.secondaryColor : Colors.primaryColor}
+            disabled={disabled}
             onPress={onSend}
           />
         )}
-        {onLinkFiles && (
-          <View style={[commonStyles.filter, styles.action]}>
-            <Icon name="paperclip" size={24} touchable onPress={onLinkFiles} />
+        {onLinkFiles != null && (
+          <IconTile
+            icon="paperclip"
+            iconSize={16}
+            color={Colors.infoColor}
+            onPress={onLinkFiles}>
             {numberLinkedFiles > 0 && (
               <NumberBubble
-                style={styles.number}
-                number={numberLinkedFiles}
+                style={styles.badge}
                 color={Colors.primaryColor}
-                isNeutralBackground
-                size={18}
+                number={numberLinkedFiles}
+                isNeutralBackground={false}
+                size={15}
               />
             )}
-          </View>
+          </IconTile>
         )}
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: 5,
-    gap: 5,
-  },
-  htlmInput: {
-    paddingHorizontal: 0,
-    paddingTop: 10,
-  },
-  htmlToolBar: {
-    backgroundColor: null,
-    marginLeft: -5,
-  },
-  iconsContainer: {
-    width: '10%',
-  },
-  action: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  number: {
-    position: 'absolute',
-    top: 2,
-    right: 2,
-  },
-});
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 5,
+      gap: 5,
+    },
+    inputCard: {
+      flex: 1,
+      backgroundColor: Colors.backgroundColor,
+      borderColor: Colors.secondaryColor.background_light,
+      borderWidth: 1,
+      borderRadius: 12,
+      paddingHorizontal: 4,
+      marginVertical: 4,
+    },
+    htmlInput: {
+      width: '100%',
+      minHeight: INPUT_MIN_HEIGHT,
+    },
+    htmlToolbar: {
+      backgroundColor: undefined,
+      height: 36,
+      marginLeft: -5,
+    },
+    iconsContainer: {
+      gap: 5,
+    },
+    badge: {
+      position: 'absolute',
+      top: 2,
+      right: 2,
+    },
+  });
 
 export default MessageBox;

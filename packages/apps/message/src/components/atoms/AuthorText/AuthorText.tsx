@@ -37,13 +37,13 @@ const AuthorText = ({author, eventText, eventTime}: AuthorTextProps) => {
   const I18n = useTranslator();
 
   return (
-    <Text style={styles.author} fontSize={12}>
-      <Text writingType="important" fontSize={12}>
+    <Text style={styles.author} fontSize={10}>
+      <Text writingType="important" fontSize={10}>
         {author}{' '}
       </Text>
       {translateMailMessageText(eventText, I18n)}
       {' - '}
-      <Text writingType="details" fontSize={12}>
+      <Text writingType="details" fontSize={10}>
         {getFromNowDate(eventTime, user?.localization?.language?.code)}
       </Text>
     </Text>

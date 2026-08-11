@@ -43,6 +43,7 @@ interface Anchor {
 interface DropdownMenuProps {
   style?: any;
   styleMenu?: any;
+  iconSize?: number;
   iconWrapper?: (icon: ReactElement) => ReactElement;
   children: any;
 }
@@ -50,6 +51,7 @@ interface DropdownMenuProps {
 const DropdownMenu = ({
   style,
   styleMenu,
+  iconSize = 18,
   iconWrapper,
   children,
 }: DropdownMenuProps) => {
@@ -91,22 +93,27 @@ const DropdownMenu = ({
     [children, closeMenu],
   );
 
-  const icon = (
-    <Icon
-      name="three-dots-vertical"
-      color={Colors.primaryColor.background}
-      size={18}
-    />
-  );
-
   return (
     <View style={style} ref={wrapperRef} testID="dropdownMenuContainer">
       <TouchableOpacity
-        style={iconWrapper == null ? styles.action : undefined}
         onPress={visible ? closeMenu : openMenu}
         testID="dropdownMenuTouchable"
         activeOpacity={0.9}>
-        {iconWrapper != null ? iconWrapper(icon) : icon}
+        {iconWrapper != null ? (
+          iconWrapper(
+            <Icon
+              name="three-dots-vertical"
+              color={Colors.primaryColor.background}
+              size={iconSize}
+            />,
+          )
+        ) : (
+          <Icon
+            name="three-dots-vertical"
+            color={Colors.primaryColor.background}
+            size={iconSize}
+          />
+        )}
       </TouchableOpacity>
       <Modal
         visible={visible}
@@ -151,10 +158,6 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingVertical: 5,
     position: 'absolute',
-  },
-  action: {
-    padding: 5,
-    paddingLeft: 15,
   },
 });
 
