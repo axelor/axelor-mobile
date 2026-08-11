@@ -117,6 +117,17 @@ export async function searchSubProject({page = 0, projectId, companyId}) {
   });
 }
 
+export async function initProjectActivity({projectId}) {
+  return axiosApiProvider.post({
+    url: 'ws/action/',
+    data: {
+      action: 'action-project-activity-dashboard-method-on-new',
+      data: {context: {id: projectId}},
+      model: 'com.axelor.apps.project.db.Project',
+    },
+  });
+}
+
 export async function previousProjectActivity({projectId, startDate}) {
   return axiosApiProvider.post({
     url: 'ws/action/',

@@ -65,7 +65,7 @@ const ActivityCard = ({
   );
 
   const formatTime = useCallback(
-    data => _formatTime(data, I18n.t('Base_TimeFormat')),
+    (data: string) => _formatTime(data, I18n.t('Base_TimeFormat')),
     [I18n],
   );
 
@@ -76,7 +76,7 @@ const ActivityCard = ({
           generalStyle={styles.avatar}
           defaultIconSize={25}
           resizeMode="contain"
-          source={formatImage(userId, null, 'com.axelor.auth.db.User')}
+          source={formatImage(userId, undefined, 'com.axelor.auth.db.User')}
         />
       </View>
       <View style={styles.cardContainer}>

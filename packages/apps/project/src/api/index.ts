@@ -25,6 +25,7 @@ export {
 export {
   fetchProjectStatus as fetchProjectStatusApi,
   fetchProjectById as fetchProjectByIdApi,
+  initProjectActivity as initProjectActivityApi,
   previousProjectActivity as previousProjectActivityApi,
   searchProject as searchProjectApi,
   searchSubProject as searchSubProjectApi,
