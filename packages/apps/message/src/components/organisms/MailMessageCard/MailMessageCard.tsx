@@ -30,11 +30,12 @@ import {
   useClickOutsideContext,
   useOutsideClickHandler,
   useThemeColor,
+  VerticalRule,
 } from '@axelor/aos-mobile-ui';
-import {Avatar, AVATAR_SIZE, AVATAR_PADDING, AuthorText} from '../../atoms';
-import {CommentCard, NotificationCard, SendMessageBox} from '../../molecules';
-import {fetchRepliesApi} from '../../../api';
 import {MailMessageType} from '../../../types';
+import {fetchRepliesApi} from '../../../api';
+import {CommentCard, NotificationCard, SendMessageBox} from '../../molecules';
+import {Avatar, AVATAR_SIZE, AuthorText} from '../../atoms';
 
 interface MailMessageCardProps {
   messageId?: number;
@@ -80,21 +81,23 @@ const MailMessageCard = ({
   const isFocused = useIsFocused();
 
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
-  const [replies, setReplies] = useState([]);
+  const [replies, setReplies] = useState<any[]>([]);
   const [numberReplies, setNumberReplies] = useState(0);
   const [isMessageBoxVisible, setIsMessageBoxVisible] = useState(false);
   const [isToggleMBDisabled, setIsToggleMBDisabled] = useState(false);
 
   const getReplies = useCallback(
     (newMessage?: any) =>
-      fetchRepliesApi({messageId})
+      fetchRepliesApi({messageId: messageId!})
         .then(res => {
           const _replies = res?.data?.data;
           setAreRepliesVisible(current => {
             if (current || newMessage == null) {
               setReplies(_replies);
             } else {
-              const newReply = _replies.find(msg => msg.id === newMessage.id);
+              const newReply = _replies.find(
+                (msg: any) => msg.id === newMessage.id,
+              );
               setReplies([newReply]);
             }
             setNumberReplies(_replies.length);
@@ -104,11 +107,6 @@ const MailMessageCard = ({
         })
         .catch(() => setReplies([])),
     [messageId],
-  );
-
-  const styles = useMemo(
-    () => getStyles(Colors.secondaryColor.background),
-    [Colors.secondaryColor.background],
   );
 
   const wrapperRef = useRef(null);
@@ -132,27 +130,30 @@ const MailMessageCard = ({
 
   return (
     <View style={[styles.container, style]}>
-      <View>
-        <Avatar style={styles.avatar} avatar={avatar} />
-        {(numberReplies > 0 || numReplies > 0) && (
+      <View style={styles.leftWrapper}>
+        <Avatar avatar={avatar} />
+        {(numberReplies > 0 || numReplies! > 0) && (
           <TouchableOpacity
             style={styles.displayRepliesContainer}
             activeOpacity={0.9}
             onPress={() => {
               setAreRepliesVisible(current => {
-                if (!current) {
-                  getReplies();
-                }
+                if (!current) getReplies();
                 return !current;
               });
             }}>
             <Text textColor={Colors.secondaryColor_dark.background}>
               {numberReplies > 0 ? numberReplies : numReplies}
             </Text>
-            <Icon name="chat-dots" />
+            <Icon name="chat-dots" size={12} />
           </TouchableOpacity>
         )}
-        {areRepliesVisible && <View style={styles.verticalRule} />}
+        {areRepliesVisible && (
+          <VerticalRule
+            style={styles.verticalRule}
+            color={Colors.secondaryColor.background_light}
+          />
+        )}
       </View>
       <View style={styles.flexOne}>
         <View style={styles.flexOne}>
@@ -192,9 +193,7 @@ const MailMessageCard = ({
               activeOpacity={0.9}
               onPress={() => setIsMessageBoxVisible(true)}>
               <Icon name="arrow-90deg-left" size={12} />
-              <Text style={styles.replyText} fontSize={12}>
-                {I18n.t('Message_Respond')}
-              </Text>
+              <Text style={styles.replyText}>{I18n.t('Message_Respond')}</Text>
             </TouchableOpacity>
           )}
           <SendMessageBox
@@ -247,41 +246,47 @@ const MailMessageCard = ({
   );
 };
 
-const getStyles = (verticalRuleColor: string) =>
-  StyleSheet.create({
-    container: {flexDirection: 'row', marginTop: 10},
-    avatar: {paddingBottom: 5},
-    displayRepliesContainer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      gap: 5,
-      paddingVertical: 5,
-    },
-    verticalRule: {
-      flex: 1,
-      alignSelf: 'center',
-      width: 1,
-      marginTop: 5,
-      backgroundColor: verticalRuleColor,
-    },
-    flexOne: {flex: 1},
-    card: {
-      flex: 1,
-      width: '100%',
-      marginTop: 2,
-      paddingHorizontal: 5,
-      zIndex: 5,
-    },
-    replyContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      gap: 5,
-      paddingTop: 3,
-      paddingHorizontal: 10,
-    },
-    replyText: {textDecorationLine: 'underline'},
-    messageBox: {width: null},
-    replyCard: {marginLeft: -((AVATAR_SIZE + AVATAR_PADDING) / 2)},
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  leftWrapper: {
+    gap: 10,
+  },
+  displayRepliesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 5,
+  },
+  verticalRule: {
+    flex: 1,
+    alignSelf: 'center',
+  },
+  flexOne: {
+    flex: 1,
+  },
+  card: {
+    flex: 1,
+    width: '100%',
+    paddingRight: 5,
+  },
+  replyContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 5,
+    paddingTop: 3,
+    paddingHorizontal: 10,
+  },
+  replyText: {
+    textDecorationLine: 'underline',
+  },
+  messageBox: {
+    width: null,
+  },
+  replyCard: {
+    marginLeft: -(AVATAR_SIZE / 2),
+  },
+});
 
 export default MailMessageCard;

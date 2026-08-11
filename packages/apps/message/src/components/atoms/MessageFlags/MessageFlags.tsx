@@ -83,37 +83,33 @@ const MessageFlags = ({
   );
 
   return (
-    <DropdownMenu style={styles.container} styleMenu={styles.menuContainer}>
-      {menuItemList.map((menuItem, index) => (
-        <DropdownMenuItem
-          style={styles.itemContainer}
-          styleText={styles.itemText}
-          numberOfLines={1}
-          icon={
-            flags?.[menuItem.flag] ? menuItem.cancelIcon : menuItem.confirmIcon
-          }
-          placeholder={I18n.t(
-            flags?.[menuItem.flag] ? menuItem.cancelKey : menuItem.confirmKey,
-          )}
-          onPress={() =>
-            handleModifyMailMessageFlags(menuItem.flag, !flags?.[menuItem.flag])
-          }
-          key={index}
-        />
-      ))}
+    <DropdownMenu styleMenu={styles.menuContainer}>
+      {menuItemList.map(
+        ({flag, cancelIcon, cancelKey, confirmIcon, confirmKey}, index) => {
+          const isValidated = flags?.[flag];
+
+          return (
+            <DropdownMenuItem
+              key={index}
+              iconTileConfig={{iconSize: 14, padding: 6, borderRadius: 7}}
+              numberOfLines={1}
+              icon={isValidated ? cancelIcon : confirmIcon}
+              placeholder={I18n.t(isValidated ? cancelKey : confirmKey)}
+              onPress={() => handleModifyMailMessageFlags(flag, !isValidated)}
+            />
+          );
+        },
+      )}
     </DropdownMenu>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {zIndex: 15},
   menuContainer: {
     width: Dimensions.get('window').width * 0.8,
     top: -15,
-    right: 30,
+    right: 20,
   },
-  itemContainer: {marginVertical: 0},
-  itemText: {fontSize: 16},
 });
 
 export default MessageFlags;

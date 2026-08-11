@@ -62,7 +62,7 @@ const useBinaryFieldUri = (field: string, requireVersion: boolean) => {
   );
 
   return useCallback(
-    (id: number, version: number, model: string) => {
+    (id: number, version: number | undefined, model: string) => {
       if (id == null || model == null || (requireVersion && version == null)) {
         return undefined;
       }
@@ -70,7 +70,7 @@ const useBinaryFieldUri = (field: string, requireVersion: boolean) => {
       if (key in cache) {
         return cache[key] != null ? {uri: cache[key]} : undefined;
       }
-      resolve(key, {model, id, version});
+      resolve(key, {model, id, version: version!});
       return undefined;
     },
     [cache, resolve, field, requireVersion],

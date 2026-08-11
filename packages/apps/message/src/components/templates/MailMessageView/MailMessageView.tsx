@@ -47,7 +47,7 @@ const MailMessageView = ({
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState<any[]>([]);
 
   const {loading, moreLoading, isListEnd, mailMessagesList} = useSelector(
     state => state.mailMessages,

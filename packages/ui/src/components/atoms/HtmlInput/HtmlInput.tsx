@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
 import {useOutsideClickHandler} from '../../../hooks';
@@ -30,6 +30,8 @@ interface HtmlInputProps {
   styleToolbar?: any;
   containerStyle?: any;
   editorBackgroundColor?: string;
+  editorFontSize?: number;
+  toolbarIconSize?: number;
   title?: string;
   placeholder?: string;
   onChange?: (value: string) => void;
@@ -45,6 +47,8 @@ const HtmlInput = ({
   styleToolbar,
   containerStyle,
   editorBackgroundColor,
+  editorFontSize = 12,
+  toolbarIconSize = 15,
   title,
   placeholder,
   onChange,
@@ -71,6 +75,16 @@ const HtmlInput = ({
   const editorInitializedCallback = () => {
     setEditorAttached(true);
   };
+
+  const contentCSSText = useMemo(() => {
+    const rules = ['word-wrap: break-word'];
+
+    if (editorFontSize != null) {
+      rules.push(`font-size: ${editorFontSize}px`);
+    }
+
+    return rules.join('; ');
+  }, [editorFontSize]);
 
   const handleFocus = useCallback(() => {
     setIsFocused(true);
@@ -113,13 +127,12 @@ const HtmlInput = ({
             initialContentHTML={defaultInput}
             onChange={onChange}
             disabled={readonly}
-            // eslint-disable-next-line react-native/no-inline-styles
             editorStyle={{
               backgroundColor:
                 editorBackgroundColor ?? Colors.screenBackgroundColor,
               color: Colors.text,
               placeholderColor: Colors.placeholderTextColor,
-              contentCSSText: 'word-wrap: break-word',
+              contentCSSText,
             }}
             onHeightChange={onHeightChange}
             onFocus={handleFocus}
@@ -132,6 +145,7 @@ const HtmlInput = ({
         <RichToolbar
           style={styleToolbar}
           editor={editor}
+          iconSize={toolbarIconSize}
           selectedIconTint={Colors.primaryColor.background}
           iconTint={Colors.text}
           actions={[

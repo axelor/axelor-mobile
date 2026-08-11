@@ -54,22 +54,22 @@ const SendMessageBox = ({
 }: SendMessageBoxProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState<string>('');
 
   const {linkFiles} = useSelector(state => state.mailMessages);
 
   const handleSendComment = useCallback(() => {
-    (dispatch as any)(
+    dispatch(
       (sendMailMessageComment as any)({
         model,
         modelId,
         comment,
         parentId,
-        files: linkFiles?.map(file => file?.metaFile?.id) ?? [],
+        files: linkFiles?.map((file: any) => file?.metaFile?.id) ?? [],
       }),
-    ).then(res => onSend?.(res.payload));
+    ).then((res: any) => onSend?.(res.payload));
     Keyboard.dismiss();
     setComment('');
     linkFiles?.length > 0 && dispatch(saveLinkFiles([]));
@@ -80,9 +80,7 @@ const SendMessageBox = ({
     navigation.navigate('MailMessageLinkFilesScreen');
   }, [navigation, onLinkFiles]);
 
-  if (hideMessageBox) {
-    return null;
-  }
+  if (hideMessageBox) return null;
 
   return (
     <View style={[styles.messageBox, style]} ref={wrapperRef}>

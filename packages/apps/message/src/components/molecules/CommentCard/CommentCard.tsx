@@ -73,11 +73,8 @@ const CommentCard = ({
         <View style={styles.headerContainer}>
           <LabelText
             iconName="chat-fill"
-            size={18}
             value={subject || I18n.t('Base_Comment')}
             style={styles.flexOne}
-            textStyle={styles.flexOne}
-            textSize={16}
             color={Colors.primaryColor.background}
           />
           {flags != null && (
@@ -96,16 +93,21 @@ const CommentCard = ({
 };
 
 const styles = StyleSheet.create({
-  card: {flex: 1, paddingHorizontal: 15, paddingRight: 15, paddingVertical: 10},
+  card: {
+    flex: 1,
+    paddingHorizontal: 15,
+    paddingRight: 15,
+    paddingVertical: 10,
+  },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 5,
     zIndex: 10,
   },
-  flexOne: {flex: 1},
-  floatingButtonContainer: {position: 'relative'},
-  floatingButton: {width: 20, height: 20},
+  flexOne: {
+    flex: 1,
+  },
 });
 
 export default CommentCard;
