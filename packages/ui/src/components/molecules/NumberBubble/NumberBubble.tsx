@@ -56,7 +56,10 @@ const NumberBubble = ({
 
   return (
     <View style={[styles.bubble, style]} testID="numberBubbleContainer">
-      <Text textColor={_color.foreground} adjustsFontSizeToFit>
+      <Text
+        textColor={_color.foreground}
+        adjustsFontSizeToFit
+        fontSize={size * 0.4}>
         {number}
       </Text>
     </View>

@@ -27,10 +27,10 @@ import {
   Badge,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {MessageFlags, TrackItem} from '../../atoms';
 import {MailMessageNotificationType} from '../../../types';
-import {useTrackFieldTitles} from '../../../hooks';
 import {translateMailMessageText} from '../../../utils';
+import {useTrackFieldTitles} from '../../../hooks';
+import {MessageFlags, TrackItem} from '../../atoms';
 
 const MAX_TRACK_ITEMS = 5;
 
@@ -66,8 +66,9 @@ const NotificationCard = ({
 }: NotificationCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const [moreItems, setMoreItems] = useState(false);
   const fieldMeta = useTrackFieldTitles(relatedModel);
+
+  const [moreItems, setMoreItems] = useState(false);
 
   const displayFlags = useMemo(
     () => relatedModel != null && relatedId != null && flags != null,
@@ -84,35 +85,31 @@ const NotificationCard = ({
         <View style={styles.cardHeader}>
           <LabelText
             iconName="info-circle-fill"
-            size={18}
             title={relatedName}
             value={translateMailMessageText(subject, I18n)}
             style={styles.flexOne}
-            textStyle={styles.flexOne}
-            textSize={16}
             color={Colors.primaryColor.background}
           />
-          {customTopComponent && React.cloneElement(customTopComponent)}
-          {tag && (
-            <View style={styles.tagContainer}>
+          <View style={styles.tagContainer}>
+            {customTopComponent && React.cloneElement(customTopComponent)}
+            {tag && (
               <Badge
                 title={tag.title}
                 color={MailMessageNotificationType.getTagColor(
                   tag.style,
                   Colors,
                 )}
-                txtStyle={styles.tagTxt}
               />
-            </View>
-          )}
-          {displayFlags && (
-            <MessageFlags
-              flags={flags}
-              model={relatedModel!}
-              modelId={relatedId!}
-              isInbox={isInbox}
-            />
-          )}
+            )}
+            {displayFlags && (
+              <MessageFlags
+                flags={flags}
+                model={relatedModel!}
+                modelId={relatedId!}
+                isInbox={isInbox}
+              />
+            )}
+          </View>
         </View>
         {tracks && (
           <>
@@ -156,17 +153,28 @@ const NotificationCard = ({
 };
 
 const styles = StyleSheet.create({
-  card: {flex: 1, paddingHorizontal: 15, paddingRight: 15, paddingVertical: 10},
+  card: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
+  },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 5,
-    zIndex: 10,
+    gap: 2,
   },
-  moreIcon: {alignSelf: 'center'},
-  tagContainer: {width: '30%', flexDirection: 'row-reverse'},
-  tagTxt: {fontSize: 12},
-  flexOne: {flex: 1},
+  moreIcon: {
+    alignSelf: 'center',
+  },
+  tagContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  flexOne: {
+    flex: 1,
+  },
 });
 
 export default NotificationCard;

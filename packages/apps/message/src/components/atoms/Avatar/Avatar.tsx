@@ -17,12 +17,11 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {Image, ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
 
-export const AVATAR_SIZE = Dimensions.get('window').width * 0.12;
-export const AVATAR_PADDING = 10;
+export const AVATAR_SIZE = 50;
 
 interface AvatarProps {
   style?: any;
@@ -38,8 +37,9 @@ const Avatar = ({style, avatar}: AvatarProps) => {
   return (
     <View style={[styles.avatarContainer, style]}>
       <Image
-        generalStyle={styles.avatar}
-        defaultIconSize={25}
+        generalStyle={styles.avatarWrapper}
+        imageSize={styles.avatar}
+        defaultIconSize={AVATAR_SIZE}
         resizeMode="contain"
         source={{uri: baseUrl + avatar}}
       />
@@ -50,16 +50,20 @@ const Avatar = ({style, avatar}: AvatarProps) => {
 const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     avatarContainer: {
-      padding: AVATAR_PADDING,
+      padding: 5,
       alignItems: 'center',
       justifyContent: 'flex-start',
     },
-    avatar: {
+    avatarWrapper: {
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: Colors.backgroundColor,
-      borderRadius: AVATAR_SIZE / 2,
+      borderColor: Colors.secondaryColor.background_light,
+      borderWidth: 1,
+      borderRadius: AVATAR_SIZE / 4,
+    },
+    avatar: {
       width: AVATAR_SIZE,
       height: AVATAR_SIZE,
     },
