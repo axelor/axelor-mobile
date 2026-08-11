@@ -68,7 +68,7 @@ const TimerListAlert = ({
   } = useSelector(state => state.hr_timer);
   const {user} = useSelector(state => state.user);
 
-  const [timesheet, setTimesheet] = useState<any>();
+  const [timesheet, setTimesheet] = useState<any>(null);
   const [fromDate, setFromDate] = useState<Date | undefined>();
   const [toDate, setToDate] = useState<Date | undefined>(new Date());
   const [errorKey, setErrorKey] = useState<string | undefined>();
@@ -191,6 +191,7 @@ const TimerListAlert = ({
       {(timesheet || !(fromDate && toDate)) && (
         <DraftTimesheetPicker
           style={styles.picker}
+          defaultValue={timesheet}
           onChange={_timesheet => {
             !defaultTimerId && setSelectedTimers([]);
             setTimesheet(_timesheet);
