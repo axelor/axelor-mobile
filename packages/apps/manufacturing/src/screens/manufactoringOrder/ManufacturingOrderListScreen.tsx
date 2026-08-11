@@ -107,7 +107,6 @@ const ManufacturingOrderListScreen = ({navigation}: any) => {
             mode="multi"
             onChangeValue={setSelectedStatus}
             selectionItems={statusList}
-            width={100}
           />
         }
         headerChildren={
