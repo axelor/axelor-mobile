@@ -17,3 +17,4 @@
  */
 
 export {default as TeamTaskFilters} from './TeamTaskFilters/TeamTaskFilters';
+export {default as TeamTaskListView} from './TeamTaskListView/TeamTaskListView';
