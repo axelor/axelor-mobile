@@ -70,11 +70,13 @@ const InventorySelectProductScreen = ({navigation, route}: any) => {
           />
         }
       />
-      <ProductCardInfo
-        product={product}
-        trackingNumber={inventoryLine?.trackingNumber}
-        locker={inventoryLine?.locker}
-      />
+      {product != null && (
+        <ProductCardInfo
+          product={product}
+          trackingNumber={inventoryLine?.trackingNumber}
+          locker={inventoryLine?.locker}
+        />
+      )}
       <ProductSearchBar
         scanKey={productScanKey}
         onChange={handleProductSelection}
