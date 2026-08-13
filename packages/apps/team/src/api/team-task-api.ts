@@ -24,7 +24,7 @@ import {
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
-import {TeamTaskScope} from '../types';
+import {TeamTaskScopeFilter} from '../types';
 
 const MODEL = 'com.axelor.team.db.TeamTask';
 
@@ -32,14 +32,12 @@ const createTeamTaskCriterias = ({
   searchValue,
   selectedStatus,
   selectedPriority,
-  selectedScope,
-  userId,
+  scopeFilter,
 }: {
   searchValue?: string;
   selectedStatus?: any[];
   selectedPriority?: any[];
-  selectedScope?: string;
-  userId?: number;
+  scopeFilter?: TeamTaskScopeFilter;
 }) => {
   const criteria: Criteria[] = [
     getSearchCriterias('team_teamTask', searchValue!),
@@ -67,30 +65,10 @@ const createTeamTaskCriterias = ({
     });
   }
 
-  if (userId != null) {
-    if (selectedScope === TeamTaskScope.scope.AssignedToMe) {
-      criteria.push({
-        fieldName: 'assignedTo.id',
-        operator: '=',
-        value: userId,
-      });
-    }
+  const scopeCriteria = scopeFilter?.criteria;
 
-    if (selectedScope === TeamTaskScope.scope.Delegated) {
-      criteria.push({
-        operator: 'and',
-        criteria: [
-          {fieldName: 'createdBy.id', operator: '=', value: userId},
-          {
-            operator: 'or',
-            criteria: [
-              {fieldName: 'assignedTo.id', operator: '!=', value: userId},
-              {fieldName: 'assignedTo', operator: 'isNull'},
-            ],
-          },
-        ],
-      });
-    }
+  if (Array.isArray(scopeCriteria) && scopeCriteria.length > 0) {
+    criteria.push(...scopeCriteria);
   }
 
   return criteria;
@@ -100,27 +78,18 @@ export async function searchTeamTasks({
   searchValue,
   selectedStatus,
   selectedPriority,
-  selectedScope,
-  userId,
+  scopeFilter,
   page = 0,
   filterDomain,
 }: {
   searchValue?: string;
   selectedStatus?: any[];
   selectedPriority?: any[];
-  selectedScope?: string;
-  userId?: number;
+  scopeFilter?: TeamTaskScopeFilter;
   page?: number;
   filterDomain?: any;
 }) {
-  const domainData: any =
-    selectedScope === TeamTaskScope.scope.Observed && userId != null
-      ? {
-          domain:
-            "EXISTS (SELECT 1 FROM MailFollower f WHERE f.relatedModel = 'com.axelor.team.db.TeamTask' AND f.relatedId = self.id AND f.user.id = :userId)",
-          domainContext: {userId},
-        }
-      : {};
+  const {domain, domainContext} = scopeFilter ?? {};
 
   return createStandardSearch({
     model: MODEL,
@@ -128,10 +97,9 @@ export async function searchTeamTasks({
       searchValue,
       selectedStatus,
       selectedPriority,
-      selectedScope,
-      userId,
+      scopeFilter,
     }),
-    ...domainData,
+    ...(domain != null ? {domain, domainContext} : {}),
     fieldKey: 'team_teamTask',
     sortKey: 'team_teamTask',
     page,
