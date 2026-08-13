@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {animationUtil, ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  animationUtil,
+  useThemeColor,
+  VerticalRule,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {MenuWithSubMenus} from '../../../app';
 import {DrawerState, getMenuTitle, resolveSubMenus, Route} from '../../helpers';
@@ -43,8 +47,6 @@ const SubMenuItemList = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
   const [dropdown, setDropdown] = useState(false);
 
   const handleDropdownPress = useCallback(() => {
@@ -67,7 +69,10 @@ const SubMenuItemList = ({
       />
       {dropdown && (
         <View style={styles.subMenuList}>
-          <View style={styles.connector} />
+          <VerticalRule
+            style={styles.connector}
+            color={Colors.secondaryColor.background_light}
+          />
           <View style={styles.subMenuItems}>
             {_subMenus.map((subMenu, i) => {
               const subRoute = subRoutes[i];
@@ -93,19 +98,16 @@ const SubMenuItemList = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    subMenuList: {
-      flexDirection: 'row',
-    },
-    connector: {
-      width: 1,
-      marginLeft: 36,
-      backgroundColor: Colors.secondaryColor.background,
-    },
-    subMenuItems: {
-      flex: 1,
-    },
-  });
+const styles = StyleSheet.create({
+  subMenuList: {
+    flexDirection: 'row',
+  },
+  connector: {
+    marginLeft: 20,
+  },
+  subMenuItems: {
+    flex: 1,
+  },
+});
 
 export default SubMenuItemList;
