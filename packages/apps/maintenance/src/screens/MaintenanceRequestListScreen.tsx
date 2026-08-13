@@ -46,26 +46,9 @@ const MaintenanceRequestListScreen = () => {
   const [selectedMachine, setSelectedMachine] = useState<any>();
   const [isAssignedToMe, setIsAssignedToMe] = useState<boolean>(true);
 
-  const availableStatus = useMemo(
-    () => [
-      MaintenanceRequest?.statusSelect.Planned,
-      MaintenanceRequest?.statusSelect.InProgress,
-    ],
-    [MaintenanceRequest?.statusSelect],
-  );
-
   const statusList = useMemo(
-    () =>
-      getSelectionItems(
-        MaintenanceRequest?.statusSelect,
-        selectedStatus,
-      ).filter(({value}) => availableStatus.includes(value as number)),
-    [
-      MaintenanceRequest?.statusSelect,
-      availableStatus,
-      getSelectionItems,
-      selectedStatus,
-    ],
+    () => getSelectionItems(MaintenanceRequest?.statusSelect, selectedStatus),
+    [MaintenanceRequest?.statusSelect, getSelectionItems, selectedStatus],
   );
 
   const sliceFunctionData = useMemo(
