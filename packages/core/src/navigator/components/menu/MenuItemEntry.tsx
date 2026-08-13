@@ -28,7 +28,7 @@ interface MenuItemEntryProps {
   style?: any;
   icon: string;
   title: string;
-  compatibility: Compatibility;
+  compatibility?: Compatibility;
   onPress: () => void;
   isActive?: boolean;
   disabled?: boolean;
