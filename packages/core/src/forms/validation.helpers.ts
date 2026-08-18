@@ -23,10 +23,8 @@ import {DisplayField, Form} from './types';
 export const updateRequiredFieldsOfConfig = (
   config: Form,
   {objectState, storeState}: {objectState: any; storeState: any},
-): Form => {
-  if (config == null) {
-    return null;
-  }
+): Form | undefined => {
+  if (config == null) return undefined;
 
   const fields = getFields(config);
 
@@ -35,7 +33,7 @@ export const updateRequiredFieldsOfConfig = (
   fields.forEach(_item => {
     result[_item.key] = {
       ..._item,
-      required: _item.required || _item.requiredIf({objectState, storeState}),
+      required: _item.required || _item.requiredIf?.({objectState, storeState}),
     };
   });
 
@@ -46,13 +44,8 @@ export const isObjectMissingRequiredField = (
   content: any,
   config: Form,
 ): boolean => {
-  if (config == null) {
-    return false;
-  }
-
-  if (content == null) {
-    return true;
-  }
+  if (config == null) return false;
+  if (content == null) return true;
 
   const fields = getFields(config);
 
@@ -145,7 +138,7 @@ export const mapErrorWithTranslationKey = () => {
 const createValidationSchema = (config: Form): Schema => {
   const fields = getFields(config);
 
-  let schemaConfig = {};
+  let schemaConfig: any = {};
 
   fields
     .filter(_field => !_field.readonly)
@@ -158,15 +151,13 @@ const createValidationSchema = (config: Form): Schema => {
 };
 
 const getRequiredCondition = (schema: Schema, _field: DisplayField): Schema => {
-  if (_field.required) {
-    return schema.required();
-  }
+  if (_field.required) return schema.required();
 
   return schema.nullable();
 };
 
 const getFieldSchema = (field: DisplayField): Schema => {
-  let schema = null;
+  let schema: any;
 
   switch (field.type) {
     case 'string':
@@ -248,20 +239,30 @@ const getFieldSchema = (field: DisplayField): Schema => {
 };
 
 export async function validateSchema(content: Form, value: any): Promise<any> {
-  return createValidationSchema(content).validate(value, {
-    abortEarly: false,
-  });
+  return createValidationSchema(content).validate(value, {abortEarly: false});
 }
+
+const fieldSchemas = new WeakMap<DisplayField, Schema>();
+const getCachedFieldSchema = (field: DisplayField): Schema => {
+  const cached = fieldSchemas.get(field);
+
+  if (cached != null) return cached;
+
+  const schema = getFieldSchema(field);
+  fieldSchemas.set(field, schema);
+
+  return schema;
+};
 
 export async function validateFieldSchema(
   field: DisplayField,
   value: any,
 ): Promise<any> {
-  return getFieldSchema(field).validate(value);
+  return getCachedFieldSchema(field).validate(value);
 }
 
 export function getValidationErrors(err: any): any[] {
-  return err.inner?.map(e => {
+  return err.inner?.map((e: any) => {
     const message = typeof e.message === 'object' ? e.message?.key : e.message;
 
     return {

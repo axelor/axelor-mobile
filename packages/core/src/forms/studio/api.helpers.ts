@@ -16,59 +16,131 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {checkNullString} from '../../utils';
 import {
   axiosApiProvider,
   createStandardSearch,
+  Criteria,
   getActionApi,
   getModelApi,
 } from '../../apiProviders';
+import {JSONObject} from '../types';
+
+const CACHE_KEY_SEPARATOR = '#';
+const modelMetaCaches = new Map<string, Map<string, Promise<any>>>();
+
+/**
+ * Model metadata only changes when the instance is redeployed, so each request is
+ * sent once per key for the whole session and every caller shares its result.
+ * Storing the promise also deduplicates concurrent callers, and a failed request
+ * is dropped from the cache to stay retryable.
+ */
+const cachedRequest = (
+  cacheName: string,
+  key: string,
+  request: () => Promise<any>,
+): Promise<any> => {
+  let cache = modelMetaCaches.get(cacheName);
+
+  if (cache == null) {
+    cache = new Map();
+    modelMetaCaches.set(cacheName, cache);
+  }
+
+  const cached = cache.get(key);
+
+  if (cached != null) return cached;
+
+  const _cache = cache;
+
+  const pending = request().catch(error => {
+    _cache.delete(key);
+    console.warn(error);
+    return undefined;
+  });
+
+  cache.set(key, pending);
+
+  return pending;
+};
+
+/**
+ * Drops the cached metadata of the given model, or of every model when none is
+ * given. Called on logout so that a new session never reads the metadata of the
+ * previous one, and available to force a refresh after a studio update.
+ */
+export function clearModelMetaCaches(modelName?: string) {
+  modelMetaCaches.forEach(cache => {
+    if (modelName == null) {
+      cache.clear();
+      return;
+    }
+
+    cache.forEach((_, key) => {
+      if (
+        key === modelName ||
+        key.startsWith(modelName + CACHE_KEY_SEPARATOR)
+      ) {
+        cache.delete(key);
+      }
+    });
+  });
+}
 
 const createJsonFieldsOfModelCriteria = (modelName: string, type?: string) => {
-  const criteria = [
-    {
-      fieldName: 'model',
-      operator: '=',
-      value: modelName,
-    },
-    {
-      fieldName: 'isVisibleInMobileApp',
-      operator: '=',
-      value: true,
-    },
+  const criteria: Criteria[] = [
+    {fieldName: 'model', operator: '=', value: modelName},
+    {fieldName: 'isVisibleInMobileApp', operator: '=', value: true},
   ];
 
   if (type != null) {
-    criteria.push({
-      fieldName: 'modelField',
-      operator: '=',
-      value: type,
-    });
+    criteria.push({fieldName: 'modelField', operator: '=', value: type});
   }
 
   return criteria;
 };
 
+const EMPTY_ROLES_DOMAIN = 'self.roles IS EMPTY';
+const ROLES_DOMAIN =
+  `${EMPTY_ROLES_DOMAIN} OR EXISTS (SELECT 1 FROM MetaJsonField _field ` +
+  'JOIN _field.roles _role WHERE _field.id = self.id ' +
+  'AND _role.id IN (:userRoleIds))';
+
 export async function fetchJsonFieldsOfModel({
   modelName,
   type,
+  userRoleIds,
 }: {
   modelName: string;
   type?: string;
+  userRoleIds?: number[] | null;
 }) {
-  if (modelName == null) {
-    return null;
-  }
+  if (modelName == null) return null;
 
-  return axiosApiProvider.post({
-    url: 'ws/rest/com.axelor.meta.db.MetaJsonField/search',
-    data: {
-      data: {
-        operator: 'and',
+  const isFiltered = Array.isArray(userRoleIds);
+  const hasRoles = isFiltered && userRoleIds.length > 0;
+
+  return cachedRequest(
+    'jsonFieldsOfModel',
+    [modelName, type ?? '', isFiltered ? userRoleIds.join('-') : 'all'].join(
+      CACHE_KEY_SEPARATOR,
+    ),
+    () =>
+      createStandardSearch({
+        model: 'com.axelor.meta.db.MetaJsonField',
         criteria: createJsonFieldsOfModelCriteria(modelName, type),
-      },
-      limit: null,
-    },
-  });
+        domain: !isFiltered
+          ? undefined
+          : hasRoles
+            ? ROLES_DOMAIN
+            : EMPTY_ROLES_DOMAIN,
+        domainContext: hasRoles ? {userRoleIds} : undefined,
+        fieldKey: 'core_metaJsonField',
+        page: 0,
+        numberElementsByPage: null as any,
+        provider: 'model',
+      }),
+  );
 }
 
 export async function fetchObject({
@@ -78,41 +150,27 @@ export async function fetchObject({
   modelName: string;
   id: number;
 }) {
-  if (modelName == null || id == null) {
-    return null;
-  }
+  if (modelName == null || id == null) return null;
 
-  return axiosApiProvider.get({
-    url: `ws/rest/${modelName}/${id}`,
-  });
+  return axiosApiProvider.get({url: `ws/rest/${modelName}/${id}`});
 }
 
 export async function fetchObjectModelTypes({modelName}: {modelName: string}) {
-  if (modelName == null) {
-    return null;
-  }
+  if (modelName == null) return null;
 
-  return axiosApiProvider.post({
-    url: 'ws/rest/com.axelor.meta.db.MetaField/search',
-    data: {
-      data: {
-        operator: 'and',
-        criteria: [
-          {
-            fieldName: 'metaModel.fullName',
-            operator: '=',
-            value: modelName,
-          },
-          {
-            fieldName: 'json',
-            operator: '=',
-            value: true,
-          },
-        ],
-      },
-      limit: null,
-    },
-  });
+  return cachedRequest('objectModelTypes', modelName, () =>
+    createStandardSearch({
+      model: 'com.axelor.meta.db.MetaField',
+      criteria: [
+        {fieldName: 'metaModel.fullName', operator: '=', value: modelName},
+        {fieldName: 'json', operator: '=', value: true},
+      ],
+      fieldKey: 'core_metaField',
+      page: 0,
+      numberElementsByPage: null as any,
+      provider: 'model',
+    }),
+  );
 }
 
 export async function updateJsonFieldsObject({
@@ -126,19 +184,11 @@ export async function updateJsonFieldsObject({
   version: number;
   values: any;
 }) {
-  if (modelName == null || id == null) {
-    return null;
-  }
+  if (modelName == null || id == null) return null;
 
   return axiosApiProvider.post({
     url: `ws/rest/${modelName}`,
-    data: {
-      data: {
-        id: id,
-        version: version,
-        ...values,
-      },
-    },
+    data: {data: {id, version, ...values}},
   });
 }
 
@@ -189,7 +239,9 @@ export async function fetchMetaConfig({
 }): Promise<any> {
   if (modelName == null) return undefined;
 
-  return getModelApi().getFields({modelName}).catch(console.warn);
+  return cachedRequest('metaConfig', modelName, () =>
+    getModelApi().getFields({modelName}),
+  );
 }
 
 export async function fetchModelFields({
@@ -203,9 +255,7 @@ export async function fetchModelFields({
     .then(res => res?.data?.data)
     .then(res => res?.fields)
     .then(_fields => {
-      if (!Array.isArray(_fields)) {
-        return [];
-      }
+      if (!Array.isArray(_fields)) return [];
 
       return _fields.filter(_item => _item.nameColumn);
     })
@@ -218,6 +268,73 @@ interface SelectionItem {
   value: string;
 }
 
+const buildSelectionMap = (items: any[]): JSONObject<SelectionItem[]> => {
+  const mapOfSelection = new Map<string, Map<string, any>>();
+
+  if (!Array.isArray(items)) return {};
+
+  items.forEach(_item => {
+    const selectionName = _item?.select?.name;
+
+    if (selectionName == null) return;
+
+    let options = mapOfSelection.get(selectionName);
+
+    if (options == null) {
+      options = new Map();
+      mapOfSelection.set(selectionName, options);
+    }
+
+    if (_item.hidden === true) {
+      options.delete(_item.value);
+    } else {
+      options.set(_item.value, _item);
+    }
+  });
+
+  const result: JSONObject<SelectionItem[]> = {};
+
+  mapOfSelection.forEach((_options, _selectionName) => {
+    result[_selectionName] = [..._options.values()]
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      .map(_option => ({
+        title: _option?.title as string,
+        value: _option?.value as string,
+      }));
+  });
+
+  return result;
+};
+
+export async function fetchSelectionMap({
+  modelName,
+  selections,
+}: {
+  modelName: string;
+  selections: string[];
+}): Promise<JSONObject<SelectionItem[]>> {
+  if (modelName == null || !Array.isArray(selections)) return {};
+
+  const names = selections.filter(
+    (_name, _index, _self) =>
+      !checkNullString(_name) && _self.indexOf(_name) === _index,
+  );
+
+  if (names.length === 0) return {};
+
+  return cachedRequest('selectionMap', modelName, () =>
+    createStandardSearch({
+      model: 'com.axelor.meta.db.MetaSelectItem',
+      criteria: [{fieldName: 'select.name', operator: 'in', value: names}],
+      fieldKey: 'core_metaSelectItem',
+      sortKey: ['select.priority', 'order'],
+      page: 0,
+      numberElementsByPage: null as any,
+      provider: 'model',
+    }),
+  ).then(res => buildSelectionMap(res?.data?.data));
+}
+
 export async function fetchSelectionOptions({
   modelName,
   attrsPanelName,
@@ -226,10 +343,8 @@ export async function fetchSelectionOptions({
   modelName: string;
   attrsPanelName: string;
   fieldName: string;
-}): Promise<SelectionItem[] | null> {
-  if (modelName == null) {
-    return null;
-  }
+}): Promise<SelectionItem[]> {
+  if (modelName == null) return [];
 
   return fetchMetaConfig({modelName})
     .then(res => res?.data?.data)
@@ -238,9 +353,7 @@ export async function fetchSelectionOptions({
     .then(_panel => _panel?.[fieldName])
     .then(_field => _field?.selectionList)
     .then(_selection => {
-      if (!Array.isArray(_selection)) {
-        return [];
-      }
+      if (!Array.isArray(_selection)) return [];
 
       return _selection
         .sort((a, b) => a.order - b.order)

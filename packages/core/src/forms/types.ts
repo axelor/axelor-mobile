@@ -39,6 +39,7 @@ export interface customComponentOptions {
   objectState?: any;
   required?: boolean;
   readonly?: boolean;
+  [key: string]: any;
 }
 
 export interface Field {
@@ -57,7 +58,7 @@ export interface Field {
   };
   widget?: Widget;
   customComponent?: (
-    options?: customComponentOptions,
+    options: customComponentOptions,
   ) => ReactElement | React.JSX.Element;
   options?: {
     [propsKey: string]: any;

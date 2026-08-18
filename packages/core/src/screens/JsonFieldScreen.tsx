@@ -16,16 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
-import {CustomFieldForm} from '../components';
+import React, {useCallback, useEffect, useState} from 'react';
 import {headerActionsProvider} from '../header';
+import {CustomFieldForm} from '../components';
+import {clearModelMetaCaches} from '../forms';
 import {useTranslator} from '../i18n';
 
-const JsonFieldScreen = ({route}) => {
-  const {model, modelId} = route.params;
+const JsonFieldScreen = ({route}: any) => {
+  const {model, modelId} = route?.params ?? {};
   const I18n = useTranslator();
 
   const [refreshKey, setRefreshKey] = useState(0);
+
+  const refreshConfig = useCallback(() => {
+    clearModelMetaCaches(model);
+    setRefreshKey(_current => _current + 1);
+  }, [model]);
 
   useEffect(() => {
     headerActionsProvider.registerModel('core_metaJsonFields_details', {
@@ -36,17 +42,18 @@ const JsonFieldScreen = ({route}) => {
           showInHeader: false,
           iconName: 'arrow-repeat',
           title: I18n.t('Base_Studio_RefreshConfig'),
-          onPress: () => setRefreshKey(_current => _current + 1),
+          onPress: refreshConfig,
         },
       ],
     });
-  }, [I18n]);
+  }, [I18n, refreshConfig]);
 
   return (
     <CustomFieldForm
+      key={refreshKey}
       model={model}
       modelId={modelId}
-      readonlyButton={true}
+      readonlyButton
       additionalActions={[
         {
           key: 'validateChanges',
@@ -55,7 +62,6 @@ const JsonFieldScreen = ({route}) => {
           readonlyAfterAction: true,
         },
       ]}
-      key={refreshKey}
     />
   );
 };

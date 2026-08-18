@@ -27,7 +27,7 @@ import {
 
 export const fetchJsonFieldsOfModel = createAsyncThunk(
   'metaJsonField/fetchJsonFieldsOfModel',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchJsonFieldsOfModel,
       data: data,
@@ -40,7 +40,7 @@ export const fetchJsonFieldsOfModel = createAsyncThunk(
 
 export const fetchObjectModelTypes = createAsyncThunk(
   'metaJsonField/fetchObjectModelTypes',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchObjectModelTypes,
       data: data,
@@ -53,7 +53,7 @@ export const fetchObjectModelTypes = createAsyncThunk(
 
 export const fetchObject = createAsyncThunk(
   'metaJsonField/fetchObject',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchObject,
       data: data,
@@ -66,7 +66,7 @@ export const fetchObject = createAsyncThunk(
 
 export const updateJsonFieldsObject = createAsyncThunk(
   'metaJsonField/updateJsonFieldsObject',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _updateJsonFieldsObject,
       data: data,
@@ -79,19 +79,25 @@ export const updateJsonFieldsObject = createAsyncThunk(
 
 const initialState = {
   fields: [],
-  modelTypes: [],
+  modelTypes: {},
   object: {},
 };
 
 const metaJsonFieldSlice = createSlice({
   name: 'metaJsonField',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchJsonFieldsOfModel.fulfilled, (state, action) => {
       state.fields = action.payload;
     });
     builder.addCase(fetchObjectModelTypes.fulfilled, (state, action) => {
-      state.modelTypes = (action.payload ?? []).map(_item => _item.name);
+      state.modelTypes = {
+        ...state.modelTypes,
+        [action.meta.arg.modelName]: ((action.payload as any[]) ?? []).map(
+          _item => _item.name,
+        ),
+      };
     });
     builder.addCase(fetchObject.fulfilled, (state, action) => {
       state.object = action.payload;

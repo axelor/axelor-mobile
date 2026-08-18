@@ -27,19 +27,15 @@ interface SelectionItem {
 }
 
 interface props extends customComponentOptions {
-  item: any;
-  style?: any;
-  title?: string;
-  defaultValue?: any;
-  onChange: () => any;
-  required?: boolean;
-  readonly?: boolean;
+  item?: any;
+  selection?: SelectionItem[];
   showTitle?: boolean;
   isScrollViewContainer?: boolean;
 }
 
 const CustomPickerAux = ({
   item,
+  selection: resolvedSelection,
   style,
   title,
   defaultValue,
@@ -49,10 +45,19 @@ const CustomPickerAux = ({
   showTitle = true,
   isScrollViewContainer = true,
 }: props) => {
-  const [selection, setSelection] = useState<SelectionItem[]>([]);
+  const [selection, setSelection] = useState<SelectionItem[]>(
+    Array.isArray(resolvedSelection) ? resolvedSelection : [],
+  );
 
   useEffect(() => {
-    if (Array.isArray(item.selectionList) && item.selectionList.length > 0) {
+    if (Array.isArray(resolvedSelection)) {
+      setSelection(_current =>
+        _current === resolvedSelection ? _current : resolvedSelection,
+      );
+    } else if (
+      Array.isArray(item.selectionList) &&
+      item.selectionList.length > 0
+    ) {
       setSelection(item.selectionList);
     } else {
       fetchSelectionOptions({
@@ -61,12 +66,12 @@ const CustomPickerAux = ({
         fieldName: item.name,
       }).then(setSelection);
     }
-  }, [item]);
+  }, [item, resolvedSelection]);
 
   return (
     <Picker
       style={style}
-      title={showTitle && title}
+      title={showTitle ? title : undefined}
       placeholder={title}
       onValueChange={onChange}
       listItems={selection}

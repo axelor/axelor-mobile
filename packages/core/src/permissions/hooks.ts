@@ -88,10 +88,11 @@ export const usePermitted = ({
       : hasPermission(permissions, modelName);
 
     return {
-      hidden: !modelPerms?.canRead,
-      readonly: !modelPerms?.canWrite,
-      canCreate: modelPerms?.canCreate,
-      canDelete: modelPerms?.canRemove,
+      key: modelName,
+      hidden: !modelPerms.canRead,
+      readonly: !modelPerms.canWrite,
+      canCreate: modelPerms.canCreate ?? false,
+      canDelete: modelPerms.canRemove ?? false,
     };
   }, [_isAdmin, modelName, permissions]);
 };
@@ -113,6 +114,7 @@ export const useFieldPermitted = ({
       : hasFieldPermission(metaPermissions, modelName, fieldName);
 
     return {
+      key: fieldName,
       hidden: hidden || !fieldPerms?.canRead,
       readonly: readonly || !fieldPerms?.canWrite,
     };

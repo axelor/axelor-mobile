@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {memo, useCallback, useState, useMemo} from 'react';
 import {Dimensions, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {
   Checkbox,
@@ -29,52 +29,42 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../../i18n';
 import {
   DisplayField,
-  DisplayPanel,
   getKeyboardType,
   getWidget,
-  getZIndex,
   getZIndexStyle,
   validateFieldSchema,
 } from '../../../../forms';
-import {useTranslator} from '../../../../i18n';
-import {useSelector} from '../../../../redux/hooks';
-import {UploadFileInput} from '../../../molecules';
 import {DateInput, SignatureInput} from '../../../organisms';
+import {UploadFileInput} from '../../../molecules';
 import {CustomPasswordInput} from '../Custom';
-import {useFieldPermitted} from '../../../../permissions';
 
 interface FieldProps {
   handleFieldChange: (newValue: any, fieldName?: string) => void;
   _field: DisplayField;
   object: any;
+  storeState: any;
+  permission?: {hidden?: boolean; readonly?: boolean};
   parentReadonly?: boolean;
-  formContent: (DisplayPanel | DisplayField)[];
-  modelName: string;
+  zIndex: number;
 }
 
 const Field = ({
   handleFieldChange,
   _field,
   object,
+  storeState,
+  permission,
   parentReadonly = false,
-  formContent,
-  modelName,
+  zIndex,
 }: FieldProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const value = object?.[_field.key];
 
-  const storeState = useSelector((state: any) => state);
-  const {hidden, readonly} = useFieldPermitted({
-    modelName,
-    fieldName: _field.key,
-  });
-
-  const zIndex: number = useMemo(() => {
-    return getZIndex(formContent, _field.key);
-  }, [_field.key, formContent]);
+  const {hidden, readonly} = permission ?? {};
 
   const [error, setError] = useState<any>();
 
@@ -100,13 +90,13 @@ const Field = ({
   );
 
   const isHidden = useMemo(
-    () => hidden || _field.hideIf({objectState: object, storeState}),
+    () => hidden || _field.hideIf?.({objectState: object, storeState}),
     [_field, hidden, object, storeState],
   );
 
   const isRequired = useMemo(
     () =>
-      _field.required || _field.requiredIf({objectState: object, storeState}),
+      _field.required || _field.requiredIf?.({objectState: object, storeState}),
     [_field, object, storeState],
   );
 
@@ -115,7 +105,7 @@ const Field = ({
       readonly ||
       parentReadonly ||
       _field.readonly ||
-      _field.readonlyIf({objectState: object, storeState}),
+      _field.readonlyIf?.({objectState: object, storeState}),
     [_field, object, parentReadonly, readonly, storeState],
   );
 
@@ -193,7 +183,7 @@ const Field = ({
             style={fieldStyle}
             title={I18n.t(_field.titleKey)}
             mode={_field.type as 'date' | 'datetime' | 'time'}
-            defaultDate={value ? new Date(value) : null}
+            defaultDate={value ? new Date(value) : undefined}
             onDateChange={_date => {
               if (_date) {
                 const isoDate = _date.toISOString();
@@ -332,4 +322,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Field;
+/**
+ * Every prop but `object` and `parentReadonly` keeps a stable reference for a
+ * given form configuration, so the comparison lets the field skip the renders
+ * of the form which do not change its own data.
+ */
+export default memo(Field);

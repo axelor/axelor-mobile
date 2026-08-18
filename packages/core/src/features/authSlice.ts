@@ -19,18 +19,19 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getActiveUserInfo, loginApi, logoutApi} from '../api/login-api';
 import {ejectAxios} from '../api/axios-init';
-import {apiProviderConfig, getFileApi} from '../apiProviders';
 import {MfaVerifyErrorCode, saveUrlInStorage, verifyMfaApi} from '../sessions';
+import {apiProviderConfig, getFileApi} from '../apiProviders';
 import {checkNullString, testUrl} from '../utils';
-import {modulesProvider} from '../app';
 import {webSocketProvider} from '../websocket';
-import {resetConfigs} from './appConfigSlice';
+import {clearModelMetaCaches} from '../forms/studio/api.helpers';
 import {userProvider} from '../config';
+import {modulesProvider} from '../app';
+import {resetConfigs} from './appConfigSlice';
 
 async function finalizeLogin(
-  {token, jsessionId, requestInterceptorId, responseInterceptorId},
-  url,
-  dispatch,
+  {token, jsessionId, requestInterceptorId, responseInterceptorId}: any,
+  url: string,
+  dispatch: any,
 ) {
   const {userId, applicationMode} = await getActiveUserInfo();
 
@@ -63,9 +64,9 @@ async function finalizeLogin(
 
 export const login = createAsyncThunk(
   'auth/login',
-  async ({url, username, password, closePopup}, {dispatch}) => {
+  async ({url, username, password, closePopup}: any, {dispatch}) => {
     const urlWithProtocol = await testUrl(url);
-    const result = await loginApi(urlWithProtocol, username, password);
+    const result = await loginApi(urlWithProtocol!, username, password);
 
     if (result.kind === 'mfa') {
       closePopup?.();
@@ -81,14 +82,14 @@ export const login = createAsyncThunk(
     }
 
     closePopup?.();
-    return finalizeLogin(result, urlWithProtocol, dispatch);
+    return finalizeLogin(result, urlWithProtocol!, dispatch);
   },
 );
 
 export const verifyMfa = createAsyncThunk(
   'auth/verifyMfa',
-  async ({mfaCode, mfaMethod}, {getState, dispatch, rejectWithValue}) => {
-    const {baseUrl, mfaState} = getState()?.auth ?? {};
+  async ({mfaCode, mfaMethod}: any, {getState, dispatch, rejectWithValue}) => {
+    const {baseUrl, mfaState} = (getState() as any)?.auth ?? {};
 
     if (!baseUrl || !mfaState?.username) {
       return rejectWithValue({code: MfaVerifyErrorCode.SESSION_LOST});
@@ -101,7 +102,7 @@ export const verifyMfa = createAsyncThunk(
         mfaMethod,
       });
       return finalizeLogin(result, baseUrl, dispatch);
-    } catch (e) {
+    } catch (e: any) {
       if (
         e?.code === MfaVerifyErrorCode.INVALID_CODE ||
         e?.code === MfaVerifyErrorCode.SESSION_LOST
@@ -113,32 +114,37 @@ export const verifyMfa = createAsyncThunk(
   },
 );
 
-export const isUrlValid = createAsyncThunk('auth/isUrlValid', async ({url}) => {
-  if (!checkNullString(url)) {
-    const urlWithProtocol = await testUrl(url);
-    return urlWithProtocol;
-  }
+export const isUrlValid = createAsyncThunk(
+  'auth/isUrlValid',
+  async ({url}: {url: string}) => {
+    if (!checkNullString(url)) {
+      const urlWithProtocol = await testUrl(url);
+      return urlWithProtocol;
+    }
 
-  return url;
-});
+    return url;
+  },
+);
 
 export const logout = createAsyncThunk(
   'auth/logout',
   async function (_, {getState}) {
     await logoutApi();
 
-    const {requestInterceptorId, responseInterceptorId} = getState()?.auth;
+    const {requestInterceptorId, responseInterceptorId} = (getState() as any)
+      ?.auth;
     ejectAxios({requestInterceptorId, responseInterceptorId});
 
     getFileApi()?.reset();
     webSocketProvider.closeWebSocket();
     userProvider.clear();
+    clearModelMetaCaches();
 
     return;
   },
 );
 
-const initialState = {
+const initialState: any = {
   loading: false,
   logged: false,
   mfaPending: false,
@@ -186,7 +192,7 @@ export const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      const payload = action.payload ?? {};
+      const payload: any = action.payload ?? {};
       state.loading = false;
       state.error = null;
 
@@ -218,7 +224,7 @@ export const authSlice = createSlice({
       state.responseInterceptorId = responseInterceptorId;
       state.applicationMode = applicationMode;
     });
-    builder.addCase(login.rejected, (state, action) => {
+    builder.addCase(login.rejected, (state, action: any) => {
       state.loading = false;
       state.mfaPending = false;
       state.mfaState = null;
@@ -253,7 +259,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(verifyMfa.rejected, (state, action) => {
       state.loading = false;
-      const code = action.payload?.code;
+      const code = (action.payload as any)?.code;
 
       if (code === MfaVerifyErrorCode.SESSION_LOST) {
         state.mfaPending = false;
@@ -269,10 +275,10 @@ export const authSlice = createSlice({
 
       state.error = {...action.error};
     });
-    builder.addCase(isUrlValid.fulfilled, (state, action) => {
+    builder.addCase(isUrlValid.fulfilled, state => {
       state.error = null;
     });
-    builder.addCase(isUrlValid.rejected, (state, action) => {
+    builder.addCase(isUrlValid.rejected, (state, action: any) => {
       state.error = {...action.error, url: action.meta?.arg?.url};
     });
     builder.addCase(logout.fulfilled, state => {
