@@ -22,7 +22,14 @@ import {
   Label,
   ThemeColors,
 } from '@axelor/aos-mobile-ui';
-import {Field, InputType, JSONObject, Panel, Widget} from '../types';
+import {
+  DEFAULT_COLSPAN,
+  Field,
+  InputType,
+  JSONObject,
+  Panel,
+  Widget,
+} from '../types';
 import {
   CustomButton,
   CustomPicker,
@@ -154,6 +161,18 @@ const getWidgetAttrs = (item: any): any => {
   return item?.widgetAttrs == null ? null : JSON.parse(item.widgetAttrs);
 };
 
+const getColSpan = (widgetAttrs: any): number | undefined => {
+  const colSpan = parseInt(widgetAttrs?.colSpan, 10);
+
+  if (Number.isNaN(colSpan) || colSpan <= 0) return undefined;
+
+  return Math.min(colSpan, DEFAULT_COLSPAN);
+};
+
+const isNarrowColSpan = (colSpan?: number): boolean => {
+  return colSpan != null && colSpan < DEFAULT_COLSPAN;
+};
+
 const BootstrapMapper = {
   error: ['warning'],
   danger: ['danger'],
@@ -232,8 +251,8 @@ const manageContentOfModel = (
           formPanels[item.name] = {
             titleKey: hasPanelTitle(widgetAttrs) ? item.title : null,
             order: item.sequence,
-            colSpan: 12,
-            direction: 'column',
+            colSpan: getColSpan(widgetAttrs) ?? DEFAULT_COLSPAN,
+            direction: 'row',
             isCollapsible: isPanelCollapsible(widgetAttrs),
             hideIf: item.hidden
               ? () => true
@@ -250,8 +269,8 @@ const manageContentOfModel = (
           formPanels[item.name] = {
             titleKey: item.title,
             order: item.sequence,
-            colSpan: 12,
-            direction: 'column',
+            colSpan: getColSpan(widgetAttrs) ?? DEFAULT_COLSPAN,
+            direction: 'row',
           };
           break;
         case 'label':
@@ -259,6 +278,7 @@ const manageContentOfModel = (
             titleKey: item.title,
             type: 'string',
             order: item.sequence,
+            colSpan: getColSpan(widgetAttrs),
             parentPanel: lastPanel,
             widget: 'custom',
             hideIf: () => item.hidden,
@@ -293,6 +313,7 @@ const manageContentOfModel = (
             titleKey: item.title,
             type: 'object',
             order: item.sequence,
+            colSpan: getColSpan(widgetAttrs),
             parentPanel: lastPanel,
             widget: 'custom',
             hideIf: () => item.hidden,
@@ -326,6 +347,7 @@ const manageContentOfModel = (
                   ),
                 ),
             order: item.sequence,
+            colSpan: getColSpan(widgetAttrs),
             parentPanel: lastPanel,
             widget: widget,
           };
@@ -348,10 +370,16 @@ const manageContentOfModel = (
           if (item.isSelectionField || !checkNullString(item.selection)) {
             config.widget = 'custom';
             config.customComponent = CustomPicker;
-            config.options = {item, selection: selectionMap?.[item.selection]};
+            config.options = {
+              item,
+              selection: selectionMap?.[item.selection],
+              multiLineLabels: isNarrowColSpan(config.colSpan),
+              popup: isNarrowColSpan(config.colSpan),
+            };
           }
 
           if (fieldType === 'array') {
+            config.colSpan = undefined;
             config.widget = 'custom';
             config.customComponent = CustomTagList;
             config.options = {
@@ -361,8 +389,10 @@ const manageContentOfModel = (
 
           if (fieldType === 'object') {
             if (widget === 'signature') {
+              config.colSpan = undefined;
               config.options = {popup: true};
             } else if (widget === 'file') {
+              config.colSpan = undefined;
               config.options = {returnBase64String: false};
             } else {
               config.widget = 'custom';

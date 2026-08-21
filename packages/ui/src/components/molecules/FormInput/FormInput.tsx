@@ -23,7 +23,7 @@ import {getCommonStyles, checkNullString} from '../../../utils';
 import {Input, Text} from '../../atoms';
 
 interface FormInputProps {
-  title: string;
+  title?: string;
   defaultValue?: string;
   readOnly?: boolean;
   style?: any;
@@ -60,7 +60,7 @@ const FormInput = ({
   );
 
   const onValueChange = useCallback(
-    (_value: string) => {
+    (_value?: string) => {
       setValue(_value);
       onChange?.(_value);
     },
@@ -111,7 +111,7 @@ const FormInput = ({
           onSelection={handleSelection}
           onEndFocus={handleEndFocus}
           keyboardType={keyboardType}
-          numberOfLines={null}
+          numberOfLines={null as any}
           readOnly={readOnly}
           multiline={multiline}
         />

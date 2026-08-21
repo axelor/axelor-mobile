@@ -24,6 +24,7 @@ import {
   DEFAULT_COLSPAN,
   DisplayField,
   DisplayPanel,
+  getColSpanWidth,
   getZIndexStyle,
 } from '../../../../forms';
 
@@ -80,6 +81,23 @@ const Panel = ({
     [_panel],
   );
 
+  const contentStyle: StyleProp<ViewStyle> = useMemo(() => {
+    const flexDirection = _panel.direction ?? 'row';
+
+    return {
+      flexDirection,
+      flexWrap: flexDirection === 'row' ? 'wrap' : 'nowrap',
+    };
+  }, [_panel.direction]);
+
+  const collapsibleStyle: StyleProp<ViewStyle> = useMemo(() => {
+    const colSpanWidth = getColSpanWidth(_panel.colSpan);
+
+    return colSpanWidth == null
+      ? {marginHorizontal: 'auto'}
+      : {width: colSpanWidth};
+  }, [_panel.colSpan]);
+
   const renderContent = useCallback(() => {
     return _panel.content?.map(_i => renderItem(_i, isReadonly));
   }, [_panel.content, isReadonly, renderItem]);
@@ -95,13 +113,9 @@ const Panel = ({
       <DropdownCard
         key={_panel.key}
         title={I18n.t(_panel.titleKey!)}
-        styleContainer={getZIndexStyle(zIndex)}>
+        styleContainer={[collapsibleStyle, getZIndexStyle(zIndex)]}>
         <View
-          style={[
-            styles.content,
-            {flexDirection: panelStyle.flexDirection},
-            getZIndexStyle(zIndex + 1),
-          ]}>
+          style={[styles.content, contentStyle, getZIndexStyle(zIndex + 1)]}>
           {renderContent()}
         </View>
       </DropdownCard>
@@ -116,11 +130,7 @@ const Panel = ({
         <Text style={styles.title}>{I18n.t(_panel.titleKey)}</Text>
         <HorizontalRule style={styles.line} />
         <View
-          style={[
-            styles.content,
-            {flexDirection: panelStyle.flexDirection},
-            getZIndexStyle(zIndex + 1),
-          ]}>
+          style={[styles.content, contentStyle, getZIndexStyle(zIndex + 1)]}>
           {renderContent()}
         </View>
       </View>
@@ -128,7 +138,9 @@ const Panel = ({
   }
 
   return (
-    <View key={_panel.key} style={[panelStyle, getZIndexStyle(zIndex)]}>
+    <View
+      key={_panel.key}
+      style={[panelStyle, contentStyle, getZIndexStyle(zIndex)]}>
       {renderContent()}
     </View>
   );

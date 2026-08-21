@@ -212,6 +212,7 @@ const DateInput = ({
       ]}>
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <RightIconButton
+        numberOfLines={1}
         onPress={togglePicker}
         icon={
           !readonly && (
@@ -292,6 +293,7 @@ const getStyles = (
         : Colors.secondaryColor.background,
       borderWidth: 1,
       marginLeft: 0,
+      marginRight: 0,
       width: '100%',
     },
     dropdownContainer: {

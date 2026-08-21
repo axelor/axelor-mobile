@@ -232,6 +232,7 @@ const getStyles = (Colors: ThemeColors) =>
     container_increment: {
       flexDirection: 'row',
       alignItems: 'center',
+      gap: 2,
     },
     input: {
       fontSize: 23,
@@ -244,6 +245,7 @@ const getStyles = (Colors: ThemeColors) =>
       borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 0.7,
       marginBottom: 9,
+      flexShrink: 1,
     },
     fixedInputWidth: {
       width: '40%',

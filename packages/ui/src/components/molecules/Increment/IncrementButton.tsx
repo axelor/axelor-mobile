@@ -84,7 +84,6 @@ const getStyles = (Colors: ThemeColors, buttonSize: number) =>
       shadowOffset: {width: 0, height: 0},
       justifyContent: 'center',
       alignItems: 'center',
-      marginHorizontal: 8,
       padding: 2,
       paddingHorizontal: 5,
       borderColor: Colors.secondaryColor.background,
@@ -92,6 +91,7 @@ const getStyles = (Colors: ThemeColors, buttonSize: number) =>
       borderRadius: 10,
       width: buttonSize ?? DEFAULT_BUTTON_SIZE,
       height: buttonSize ?? DEFAULT_BUTTON_SIZE,
+      flexShrink: 1,
     },
   });
 
