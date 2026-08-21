@@ -32,6 +32,7 @@ import {
 import {useTranslator} from '../../../../i18n';
 import {
   DisplayField,
+  getColSpanWidth,
   getKeyboardType,
   getWidget,
   getZIndexStyle,
@@ -109,12 +110,28 @@ const Field = ({
     [_field, object, parentReadonly, readonly, storeState],
   );
 
+  const colSpanWidth = useMemo(
+    () => getColSpanWidth(_field.colSpan),
+    [_field.colSpan],
+  );
+
+  const containerStyle: StyleProp<ViewStyle> = useMemo(
+    () =>
+      colSpanWidth == null
+        ? null
+        : [styles.colSpanContainer, {width: colSpanWidth}],
+    [colSpanWidth],
+  );
+
   const fieldStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
-      width: `${_field.parentPanel != null ? 100 : 90}%`,
+      width:
+        colSpanWidth != null
+          ? '100%'
+          : `${_field.parentPanel != null ? 100 : 90}%`,
       alignSelf: 'center',
     }),
-    [_field],
+    [_field.parentPanel, colSpanWidth],
   );
 
   const getComponent = () => {
@@ -133,7 +150,11 @@ const Field = ({
       case 'checkbox':
         return (
           <Checkbox
-            style={[fieldStyle, styles.checkbox]}
+            style={[
+              fieldStyle,
+              styles.checkbox,
+              colSpanWidth != null && styles.checkboxColSpan,
+            ]}
             title={I18n.t(_field.titleKey)}
             isDefaultChecked={value}
             onChange={handleChange}
@@ -271,7 +292,7 @@ const Field = ({
   }
 
   return (
-    <View style={[styles.container, getZIndexStyle(zIndex)]}>
+    <View style={[styles.container, containerStyle, getZIndexStyle(zIndex)]}>
       {_field.helperKey != null && (
         <InfoBubble
           iconName="info-lg"
@@ -300,9 +321,16 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginLeft: 15,
   },
+  checkboxColSpan: {
+    marginLeft: 0,
+  },
   container: {
     alignSelf: 'center',
     width: '100%',
+  },
+  colSpanContainer: {
+    paddingHorizontal: 2,
+    paddingBottom: 2,
   },
   info: {
     position: 'absolute',

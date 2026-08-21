@@ -79,6 +79,7 @@ Defining a configuration corresponds to associating a key with a set of **fields
 interface Field {
   parentPanel?: string;
   order?: number;
+  colSpan?: number;
   titleKey?: string;
   helperKey?: string;
   type: InputType;
@@ -110,6 +111,7 @@ A field is defined by several attributes:
 
 - _parentPanel_: the name of the panel in which the field is to be displayed
 - _order_: order of the field in the view/panel.
+- _colSpan_: width of the field in its container, on a scale of 12 columns (`6` for a half, `4` for a third, and so on), following the same logic as the colSpan of the web. The items of a container are placed one after the other on its 12 columns, and the next one moves to a new line when the line is full. A colSpan of `12`, or no colSpan at all, leaves the field with the whole width of its container, so it keeps a line of its own.
 - _titleKey_: translation key for field title.
 - _helperKey_: translation key for the helper that will be displayed next to the field. This helper is used to explain the purpose of the field to the user, if necessary.
 - _type_: definition of field typing to define default display but also to enable form data integrity checking. The types accepted in the form view are :
@@ -221,7 +223,7 @@ A panel is defined by several attributes:
 - _titleKey_: translation key for the panel title.
 - _isCollapsible_: defines whether a panel should be collapsible.
 - _order_: panel order in the view.
-- _colSpan_: panel width in the view. By default, the panel takes up the entire width of the view.
+- _colSpan_: panel width in its container, on a scale of 12 columns, following the same logic as the colSpan of a field. By default, the panel takes up the entire width of its container. A panel in `column` direction stacks its items whatever their colSpan.
 - _direction_: element display direction (`'row'` displays elements in rows, `'column'` displays elements in columns).
 - _parent_: name of parent panel.
 
