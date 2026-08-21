@@ -19,13 +19,11 @@
 import React, {ReactNode, useCallback, useMemo} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {DropdownCard, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
-import {useSelector} from '../../../../redux/hooks';
 import {useTranslator} from '../../../../i18n';
 import {
   DEFAULT_COLSPAN,
   DisplayField,
   DisplayPanel,
-  getZIndex,
   getZIndexStyle,
 } from '../../../../forms';
 
@@ -34,25 +32,25 @@ interface PanelProps {
     item: DisplayPanel | DisplayField,
     readonly?: boolean,
   ) => ReactNode;
-  formContent: (DisplayPanel | DisplayField)[];
   _panel: DisplayPanel;
   object: any;
+  storeState: any;
   parentReadonly?: boolean;
+  zIndex: number;
 }
 
 const Panel = ({
   renderItem,
-  formContent,
   _panel,
   object,
+  storeState,
   parentReadonly = false,
+  zIndex,
 }: PanelProps) => {
   const I18n = useTranslator();
 
-  const storeState = useSelector(state => state);
-
   const isHidden = useMemo(
-    () => _panel.hideIf?.({objectState: object, storeState}),
+    () => _panel.hideIf?.({objectState: object, storeState}) ?? false,
     [_panel, object, storeState],
   );
 
@@ -62,11 +60,6 @@ const Panel = ({
       _panel.readonly ||
       _panel.readonlyIf?.({objectState: object, storeState}),
     [_panel, object, parentReadonly, storeState],
-  );
-
-  const zIndex: number = useMemo(
-    () => getZIndex(formContent, _panel.key),
-    [_panel.key, formContent],
   );
 
   const panelStyle: StyleProp<ViewStyle> = useMemo(

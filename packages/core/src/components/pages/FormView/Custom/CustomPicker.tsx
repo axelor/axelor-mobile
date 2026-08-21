@@ -27,17 +27,13 @@ interface SelectionItem {
 }
 
 interface props extends customComponentOptions {
-  item: any;
-  style?: any;
-  title?: string;
-  defaultValue?: any;
-  onChange: () => any;
-  required?: boolean;
-  readonly?: boolean;
+  item?: any;
+  selection?: SelectionItem[];
 }
 
 const CustomPicker = ({
   item,
+  selection: resolvedSelection,
   style,
   title,
   defaultValue,
@@ -45,10 +41,19 @@ const CustomPicker = ({
   required,
   readonly,
 }: props) => {
-  const [selection, setSelection] = useState<SelectionItem[]>([]);
+  const [selection, setSelection] = useState<SelectionItem[]>(
+    Array.isArray(resolvedSelection) ? resolvedSelection : [],
+  );
 
   useEffect(() => {
-    if (Array.isArray(item.selectionList) && item.selectionList.length > 0) {
+    if (Array.isArray(resolvedSelection)) {
+      setSelection(_current =>
+        _current === resolvedSelection ? _current : resolvedSelection,
+      );
+    } else if (
+      Array.isArray(item.selectionList) &&
+      item.selectionList.length > 0
+    ) {
       setSelection(item.selectionList);
     } else {
       fetchSelectionOptions({
@@ -57,12 +62,13 @@ const CustomPicker = ({
         fieldName: item.name,
       }).then(setSelection);
     }
-  }, [item]);
+  }, [item, resolvedSelection]);
 
   return (
     <Picker
       style={style}
       title={title}
+      placeholder={title}
       onValueChange={onChange}
       listItems={selection}
       labelField="title"

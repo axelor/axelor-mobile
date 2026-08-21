@@ -24,6 +24,7 @@ import {MfaVerifyErrorCode, saveUrlInStorage, verifyMfaApi} from '../sessions';
 import {checkNullString, testUrl} from '../utils';
 import {modulesProvider} from '../app';
 import {webSocketProvider} from '../websocket';
+import {clearModelMetaCaches} from '../forms/studio/api.helpers';
 import {resetConfigs} from './appConfigSlice';
 
 async function finalizeLogin(
@@ -129,6 +130,7 @@ export const logout = createAsyncThunk(
     ejectAxios({requestInterceptorId, responseInterceptorId});
 
     webSocketProvider.closeWebSocket();
+    clearModelMetaCaches();
 
     return;
   },
