@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
+import {
+  checkNullString,
+  HorizontalRule,
+  Label,
+  ThemeColors,
+} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel, Widget} from '../types';
 import {
   CustomButton,
@@ -34,7 +39,7 @@ import {
 export const mapStudioFields = (
   items: any[],
   Colors: ThemeColors,
-  removeUnauthorizedFields: (item: any) => any = _i => _i,
+  selectionMap: JSONObject<any[]> = {},
 ): {panels: JSONObject<Panel>; fields: JSONObject<Field>; defaults: any} => {
   let formFields: JSONObject<Field> = {};
   let formPanels: JSONObject<Panel> = {};
@@ -52,7 +57,7 @@ export const mapStudioFields = (
         metaJsonFields,
         modelField,
         Colors,
-        removeUnauthorizedFields,
+        selectionMap,
       );
 
       formFields = {...formFields, ..._fields};
@@ -78,7 +83,7 @@ export const mapFormToStudioFields = (
       .sort();
 
     for (const modelField of modelFields) {
-      let panelValues = {};
+      let panelValues: any = {};
       const keys = Object.keys(formValues);
 
       metaJsonFields
@@ -116,8 +121,8 @@ const mapStudioTypeToInputType = (type: string): InputType => {
 
 const mapStudioWidgetToWidget = (
   widget: any,
-): {widget: Widget; inputType: InputType} => {
-  let result = {widget: undefined, inputType: undefined};
+): {widget?: Widget; inputType?: InputType} => {
+  let result: {widget?: Widget; inputType?: InputType} = {};
 
   switch (widget) {
     case 'Email':
@@ -158,10 +163,15 @@ const BootstrapMapper = {
   dark: ['dark'],
 };
 
-const mapStudioCSSToLabelOptions = (item: any, Colors: ThemeColors): any => {
-  const css: string = getWidgetAttrs(item)?.css as string;
+const mapStudioCSSToLabelOptions = (
+  widgetAttrs: any,
+  Colors: ThemeColors,
+): any => {
+  const css: string = widgetAttrs?.css as string;
 
   let result: any = {};
+
+  if (checkNullString(css)) return result;
 
   Object.entries(BootstrapMapper).forEach(([key, values]) => {
     if (Array.isArray(values) && values.some(_item => css.includes(_item))) {
@@ -178,23 +188,23 @@ const mapStudioCSSToLabelOptions = (item: any, Colors: ThemeColors): any => {
   return result;
 };
 
-const isPanelCollapsible = (item: any): boolean => {
-  return getWidgetAttrs(item)?.canCollapse;
+const isPanelCollapsible = (widgetAttrs: any): boolean => {
+  return widgetAttrs?.canCollapse;
 };
 
-const isPanelTab = (item: any): boolean => {
-  return getWidgetAttrs(item)?.tab;
+const isPanelTab = (widgetAttrs: any): boolean => {
+  return widgetAttrs?.tab;
 };
 
-const isMultiLinesInput = (item: any): boolean => {
-  return getWidgetAttrs(item)?.multiline;
+const isMultiLinesInput = (widgetAttrs: any): boolean => {
+  return widgetAttrs?.multiline;
 };
 
-const hasPanelTitle = (item: any): boolean => {
+const hasPanelTitle = (widgetAttrs: any): boolean => {
   return (
-    isPanelCollapsible(item) ||
-    isPanelTab(item) ||
-    !getWidgetAttrs(item)?.showTitle
+    isPanelCollapsible(widgetAttrs) ||
+    isPanelTab(widgetAttrs) ||
+    !widgetAttrs?.showTitle
   );
 };
 
@@ -202,7 +212,7 @@ const manageContentOfModel = (
   metaJsonFields: any[],
   modelField: string,
   Colors: ThemeColors,
-  removeUnauthorizedFields: (item: any) => any,
+  selectionMap: JSONObject<any[]>,
 ): {_panels: JSONObject<Panel>; _fields: JSONObject<Field>; _defaults: any} => {
   const formFields: JSONObject<Field> = {};
   const formPanels: JSONObject<Panel> = {};
@@ -210,20 +220,21 @@ const manageContentOfModel = (
   let lastPanel: string | undefined;
 
   metaJsonFields
-    .sort((a, b) => a.sequence - b.sequence)
     .filter(_item => _item.modelField === modelField)
-    .map(removeUnauthorizedFields)
+    .sort((a, b) => a.sequence - b.sequence)
     .forEach(item => {
+      const widgetAttrs = getWidgetAttrs(item);
+
       switch (item.type) {
         case 'panel':
           lastPanel = item.name;
 
           formPanels[item.name] = {
-            titleKey: hasPanelTitle(item) ? item.title : null,
+            titleKey: hasPanelTitle(widgetAttrs) ? item.title : null,
             order: item.sequence,
             colSpan: 12,
             direction: 'column',
-            isCollapsible: isPanelCollapsible(item),
+            isCollapsible: isPanelCollapsible(widgetAttrs),
             hideIf: item.hidden
               ? () => true
               : createFormulaFunction(
@@ -255,7 +266,7 @@ const manageContentOfModel = (
               Label({
                 message: item.title,
                 type: 'info',
-                ...mapStudioCSSToLabelOptions(item, Colors),
+                ...mapStudioCSSToLabelOptions(widgetAttrs, Colors),
               }),
           };
           break;
@@ -330,14 +341,14 @@ const manageContentOfModel = (
             config.options = {scale: item.scale};
           }
 
-          if (isMultiLinesInput(item)) {
+          if (isMultiLinesInput(widgetAttrs)) {
             config.options = {multiline: true, adjustHeightWithLines: true};
           }
 
-          if (item.isSelectionField) {
+          if (item.isSelectionField || !checkNullString(item.selection)) {
             config.widget = 'custom';
             config.customComponent = CustomPicker;
-            config.options = {item};
+            config.options = {item, selection: selectionMap?.[item.selection]};
           }
 
           if (fieldType === 'array') {

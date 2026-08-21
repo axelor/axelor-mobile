@@ -34,7 +34,7 @@ export const getZIndexStyle = (zIndex: number) => {
 
 const getItem = (key: string, formContent: (DisplayPanel | DisplayField)[]) => {
   const _item = formContent.find(_i => _i.key === key);
-  const _index = formContent.indexOf(_item);
+  const _index = formContent.indexOf(_item!);
 
   return {item: _item, index: _index};
 };
@@ -42,47 +42,41 @@ const getItem = (key: string, formContent: (DisplayPanel | DisplayField)[]) => {
 export const getNumberOfParent = (
   key: string,
   formContent: (DisplayPanel | DisplayField)[],
-) => {
+): number => {
   const {item: _item} = getItem(key, formContent);
 
-  if (checkNullString((_item as DisplayPanel).parent)) {
-    return 0;
-  }
+  if (checkNullString((_item as DisplayPanel).parent)) return 0;
 
-  return getNumberOfParent((_item as DisplayPanel).parent, formContent) + 1;
+  return getNumberOfParent((_item as DisplayPanel).parent!, formContent) + 1;
 };
 
 export const getRootParentIndex = (
   key: string,
   formContent: (DisplayPanel | DisplayField)[],
-) => {
+): number => {
   const {item: _item, index: _index} = getItem(key, formContent);
 
-  if (checkNullString((_item as DisplayPanel).parent)) {
-    return _index;
-  }
+  if (checkNullString((_item as DisplayPanel).parent)) return _index;
 
-  return getRootParentIndex((_item as DisplayPanel).parent, formContent);
+  return getRootParentIndex((_item as DisplayPanel).parent!, formContent);
+};
+
+const getItemParentKey = (
+  item: DisplayPanel | DisplayField,
+): string | undefined => {
+  return isField(item)
+    ? (item as DisplayField)?.parentPanel
+    : (item as DisplayPanel)?.parent;
 };
 
 export const getParentKey = (
   key: string,
   formContent: (DisplayPanel | DisplayField)[],
-): string => {
+): string | undefined => {
   const {item: _item} = getItem(key, formContent);
+  if (!_item) return undefined;
 
-  if (
-    checkNullString((_item as DisplayPanel).parent) &&
-    checkNullString((_item as DisplayField).parentPanel)
-  ) {
-    return null;
-  }
-
-  if (isField(_item)) {
-    return (_item as DisplayField).parentPanel;
-  } else {
-    return (_item as DisplayPanel).parent;
-  }
+  return getItemParentKey(_item);
 };
 
 export const getIndexOfItemInParent = (
@@ -101,7 +95,7 @@ export const getIndexOfItemInParent = (
         (_i as DisplayPanel).parent === parentKey ||
         (_i as DisplayField).parentPanel === parentKey,
     )
-    .sort((a, b) => b.order - a.order);
+    .sort((a, b) => b.order! - a.order!);
 
   return childrenOfParent.findIndex(_i => _i.key === key);
 };
@@ -109,25 +103,91 @@ export const getIndexOfItemInParent = (
 export const getZIndex = (
   formContent: (DisplayPanel | DisplayField)[],
   key: string,
-) => {
+): number => {
   const {item: _item, index: _index} = getItem(key, formContent);
 
-  if (_item == null) {
-    return 0;
-  }
+  if (_item == null) return 0;
 
   const parentKey = getParentKey(key, formContent);
 
-  if (
-    checkNullString((_item as DisplayField).parentPanel) &&
-    checkNullString((_item as DisplayPanel).parent)
-  ) {
+  if (checkNullString(parentKey)) {
     return DEFAULT_ZINDEX - _index;
   } else {
     const indexInParent = getIndexOfItemInParent(key, formContent);
 
-    return getZIndex(formContent, parentKey) + 2 + indexInParent;
+    return getZIndex(formContent, parentKey!) + 2 + indexInParent;
   }
+};
+
+export const getZIndexMap = (
+  formContent: (DisplayPanel | DisplayField)[],
+): {[key: string]: number} => {
+  const zIndexOfKey: {[key: string]: number} = {};
+
+  if (!Array.isArray(formContent)) return zIndexOfKey;
+
+  const itemOfKey: {[key: string]: DisplayPanel | DisplayField} = {};
+  const indexOfKey: {[key: string]: number} = {};
+  const childrenOfKey: {[key: string]: (DisplayPanel | DisplayField)[]} = {};
+
+  formContent.forEach((_item, _index) => {
+    itemOfKey[_item.key] = _item;
+    indexOfKey[_item.key] = _index;
+  });
+
+  formContent.forEach(_item => {
+    const parentKeys = [
+      (_item as DisplayPanel).parent,
+      (_item as DisplayField).parentPanel,
+    ].filter(
+      (_key, _index, _self) =>
+        !checkNullString(_key) && _self.indexOf(_key) === _index,
+    );
+
+    parentKeys.forEach(_parentKey => {
+      if (childrenOfKey[_parentKey!] == null) {
+        childrenOfKey[_parentKey!] = [];
+      }
+
+      childrenOfKey[_parentKey!].push(_item);
+    });
+  });
+
+  const indexInParent: {[parentKey: string]: {[key: string]: number}} = {};
+
+  Object.entries(childrenOfKey).forEach(([_parentKey, _children]) => {
+    indexInParent[_parentKey] = {};
+
+    [..._children]
+      .sort((a, b) => b.order! - a.order!)
+      .forEach((_child, _index) => {
+        indexInParent[_parentKey][_child.key] = _index;
+      });
+  });
+
+  const resolve = (key: string, pending: string[]): number => {
+    if (zIndexOfKey[key] != null) return zIndexOfKey[key];
+
+    const item = itemOfKey[key];
+
+    if (item == null || pending.includes(key)) return 0;
+
+    const parentKey = getItemParentKey(item);
+
+    const zIndex = checkNullString(parentKey)
+      ? DEFAULT_ZINDEX - indexOfKey[key]
+      : resolve(parentKey!, [...pending, key]) +
+        2 +
+        (indexInParent[parentKey!]?.[key] ?? 0);
+
+    zIndexOfKey[key] = zIndex;
+
+    return zIndex;
+  };
+
+  formContent.forEach(_item => resolve(_item.key, []));
+
+  return zIndexOfKey;
 };
 
 export const isField = (_object: DisplayPanel | DisplayField): boolean => {
@@ -135,9 +195,7 @@ export const isField = (_object: DisplayPanel | DisplayField): boolean => {
 };
 
 export const getFields = (config: Form): DisplayField[] => {
-  if (config.fields == null) {
-    return [];
-  }
+  if (config.fields == null) return [];
 
   return Object.entries(config.fields)
     .map(([fieldName, _field], index) => ({
@@ -152,9 +210,7 @@ export const getFields = (config: Form): DisplayField[] => {
 };
 
 export const getPanels = (config: Form): DisplayPanel[] => {
-  if (config.panels == null) {
-    return [];
-  }
+  if (config.panels == null) return [];
 
   return Object.entries(config.panels)
     .map(([panelKey, _panel], index) => ({
@@ -175,27 +231,22 @@ export const getConfigItems = (
 
   const result = [...fields, ...panels];
 
-  return result.sort((a, b) => a.order - b.order);
+  return result.sort((a, b) => a.order! - b.order!);
 };
 
 export const sortContent = (config: Form): (DisplayPanel | DisplayField)[] => {
-  if (config == null) {
-    return [];
-  }
+  if (config == null) return [];
 
   const fields: DisplayField[] = getFields(config);
 
-  if (config.panels == null || Object.keys(config.panels).length === 0) {
+  if (config.panels == null || Object.keys(config.panels).length === 0)
     return fields;
-  }
 
   const panels: DisplayPanel[] = getPanels(config);
 
   const rootPanels = panels.filter(_item => checkNullString(_item.parent));
 
-  if (rootPanels.length === 0) {
-    return fields;
-  }
+  if (rootPanels.length === 0) return fields;
 
   const result: (DisplayPanel | DisplayField)[] = fields.filter(_item =>
     checkNullString(_item.parentPanel),
@@ -208,7 +259,7 @@ export const sortContent = (config: Form): (DisplayPanel | DisplayField)[] => {
     });
   });
 
-  return result.sort((a, b) => a.order - b.order);
+  return result.sort((a, b) => a.order! - b.order!);
 };
 
 const getContentOfPanel = (
@@ -216,17 +267,13 @@ const getContentOfPanel = (
   fields: DisplayField[],
   panels: DisplayPanel[],
 ): (DisplayPanel | DisplayField)[] => {
-  if (fields.length === 0) {
-    return [];
-  }
+  if (fields.length === 0) return [];
 
   let result: (DisplayPanel | DisplayField)[] = fields.filter(
     _item => _item.parentPanel === panelKey,
   );
 
-  if (panels.length === 0) {
-    return result;
-  }
+  if (panels.length === 0) return result;
 
   panels
     .filter(_item => _item.parent === panelKey)
@@ -242,7 +289,7 @@ const getContentOfPanel = (
       });
     });
 
-  return result.sort((a, b) => a.order - b.order);
+  return result.sort((a, b) => a.order! - b.order!);
 };
 
 export const getWidget = (_field: DisplayField): Widget => {

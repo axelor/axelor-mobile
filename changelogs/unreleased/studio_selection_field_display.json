@@ -1,0 +1,5 @@
+{
+  "title": "Custom fields form: display a selection field as a picker even when it is not flagged as a selection field",
+  "type": "fix",
+  "packages": "core"
+}

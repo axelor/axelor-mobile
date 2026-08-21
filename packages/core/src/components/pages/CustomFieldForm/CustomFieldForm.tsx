@@ -18,14 +18,14 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useSelector} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {FormView} from '../../pages';
 import {handlerApiCall} from '../../../apiProviders';
+import {useSelector} from '../../../redux/hooks';
 import {
   Action,
   fetchJsonFieldsOfModel,
   fetchObject,
+  fetchSelectionMap,
   formConfigsProvider,
   getAttrsValue,
   mapFormToStudioFields,
@@ -33,7 +33,9 @@ import {
   mapStudioFieldsWithFormula,
   updateJsonFieldsObject,
   useFieldPermitter,
+  useRoleFilter,
 } from '../../../forms';
+import {FormView} from '../../pages';
 
 const FORM_KEY = 'customField-form';
 
@@ -57,9 +59,9 @@ interface CustomFieldFormProps {
 
 const CustomFieldForm = ({
   style,
-  model,
+  model: modelName,
   modelId,
-  fieldType = null,
+  fieldType,
   additionalActions = [],
   readonly = false,
   readonlyButton = false,
@@ -68,40 +70,50 @@ const CustomFieldForm = ({
 }: CustomFieldFormProps) => {
   const Colors = useThemeColor();
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {userId} = useSelector(state => state.auth);
 
-  const [_fields, setFields] = useState(null);
-  const [object, setObject] = useState(null);
+  const [_fields, setFields] = useState<any>();
+  const [object, setObject] = useState<any>();
+  const [selectionMap, setSelectionMap] = useState<any>();
 
-  const removeUnauthorizedFields = useFieldPermitter({modelName: model});
+  const userRoleIds = useRoleFilter();
+  const removeUnauthorizedFields = useFieldPermitter({modelName});
 
   useEffect(() => {
-    fetchJsonFieldsOfModel({modelName: model, type: fieldType})
-      .then(res => {
-        setFields(res?.data?.data);
-      })
-      .catch(() => {
-        setFields(null);
-      });
+    fetchJsonFieldsOfModel({modelName, type: fieldType, userRoleIds})
+      .then(res => setFields(res?.data?.data))
+      .catch(() => setFields(undefined));
 
-    fetchObject({modelName: model, id: modelId})
-      .then(res => {
-        setObject(res?.data?.data?.[0]);
-      })
-      .catch(() => {
-        setObject(null);
-      });
-  }, [model, modelId, fieldType]);
+    fetchObject({modelName, id: modelId})
+      .then(res => setObject(res?.data?.data?.[0]))
+      .catch(() => setObject(undefined));
+  }, [modelName, modelId, fieldType, userRoleIds]);
 
-  const {fields, panels, defaults} = useMemo(
-    () =>
-      mapStudioFields(
-        mapStudioFieldsWithFormula(_fields, object),
-        Colors,
-        removeUnauthorizedFields,
-      ),
-    [Colors, _fields, object, removeUnauthorizedFields],
-  );
+  useEffect(() => {
+    if (!Array.isArray(_fields)) return;
+
+    fetchSelectionMap({
+      modelName,
+      selections: _fields.map(_item => _item.selection),
+    })
+      .then(res => setSelectionMap(res))
+      .catch(() => setSelectionMap({}));
+  }, [_fields, modelName]);
+
+  const {fields, panels, defaults} = useMemo(() => {
+    if (_fields != null && selectionMap == null)
+      return {fields: {}, panels: {}, defaults: {}};
+
+    const authorizedFields = Array.isArray(_fields)
+      ? _fields.map(removeUnauthorizedFields)
+      : _fields;
+
+    return mapStudioFields(
+      mapStudioFieldsWithFormula(authorizedFields, object),
+      Colors,
+      selectionMap,
+    );
+  }, [Colors, _fields, object, removeUnauthorizedFields, selectionMap]);
 
   const formKey = useMemo(
     () => `${FORM_KEY}_${fieldType}_${readonly}`,
@@ -111,15 +123,10 @@ const CustomFieldForm = ({
   useEffect(() => {
     formConfigsProvider.registerForm(
       formKey,
-      {
-        readonlyIf: () => readonly,
-        fields,
-        panels,
-        modelName: model,
-      },
+      {readonlyIf: () => readonly, fields, panels, modelName},
       {replaceOld: true},
     );
-  }, [fields, formKey, model, panels, readonly]);
+  }, [fields, formKey, modelName, panels, readonly]);
 
   const attrsValues = useMemo(
     () => (object?.id !== modelId ? null : getAttrsValue(object, fieldType)),
@@ -136,7 +143,7 @@ const CustomFieldForm = ({
               handlerApiCall({
                 fetchFunction: updateJsonFieldsObject,
                 data: {
-                  modelName: model,
+                  modelName,
                   id: object?.id,
                   version: object?.version,
                   values: mapFormToStudioFields(_fields, objectState),
@@ -154,11 +161,16 @@ const CustomFieldForm = ({
               });
             },
           };
-        } else {
-          return _action;
-        }
+        } else return _action;
       }),
-    [_fields, additionalActions, model, object?.id, object?.version, userId],
+    [
+      _fields,
+      additionalActions,
+      modelName,
+      object?.id,
+      object?.version,
+      userId,
+    ],
   );
 
   return (
@@ -180,7 +192,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   screen: {
-    backgroundColor: null,
+    backgroundColor: undefined,
   },
 });
 

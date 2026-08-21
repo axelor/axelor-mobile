@@ -19,14 +19,18 @@
 import {useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 
+type TranslatorFct = (key?: string, values?: any) => string;
 export interface TranslatorProps {
-  t: (key: string, values?: any) => string;
+  t: TranslatorFct;
 }
 
 function useTranslator(): TranslatorProps {
   const {t} = useTranslation();
 
-  return useMemo(() => ({t: t != null ? t : value => value}), [t]);
+  return useMemo(
+    () => ({t: (t != null ? t : value => value) as TranslatorFct}),
+    [t],
+  );
 }
 
 export default useTranslator;

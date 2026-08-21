@@ -25,13 +25,7 @@ import {
 } from '../../../../forms/studio/api.helpers';
 
 interface props extends customComponentOptions {
-  item: any;
-  style?: any;
-  title?: string;
-  defaultValue?: any;
-  onChange: () => any;
-  required?: boolean;
-  readonly?: boolean;
+  item?: any;
   showTitle?: boolean;
   oneFilter?: boolean;
 }
@@ -59,6 +53,8 @@ const CustomSearchBarAux = ({
 
   const searchDataAPI = useCallback(
     ({page = 0, searchValue}: {page: number; searchValue?: string}) => {
+      if (searchFields == null) return;
+
       if (page == null || page === 0) {
         setLoading(true);
       } else {

@@ -24,9 +24,11 @@ import {
   Screen,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '../../../redux/hooks';
+import {useDispatch, useSelector, useStoreState} from '../../../redux/hooks';
+import {useFieldsPermissions, usePermitted} from '../../../permissions';
+import {areObjectsEquals, isEmpty} from '../../../utils';
+import {clearRecord} from '../../../features/formSlice';
 import {useTranslator} from '../../../i18n';
-import {usePermitted} from '../../../permissions';
 import {
   Action,
   DisplayField,
@@ -35,6 +37,7 @@ import {
   getActionConfig,
   getConfigItems,
   getFields,
+  getZIndexMap,
   getValidationErrors,
   getZIndexStyle,
   isField,
@@ -45,8 +48,6 @@ import {
 } from '../../../forms';
 import {Field as FieldComponent, Panel as PanelComponent} from './Components';
 import {ConstraintsValidatorPopup} from './Alerts';
-import {clearRecord} from '../../../features/formSlice';
-import {areObjectsEquals, isEmpty} from '../../../utils';
 import {FloatingTools} from './Buttons';
 
 interface FormProps {
@@ -79,13 +80,13 @@ const FormView = ({
 
   const {config} = useFormConfig(formKey);
 
-  const storeState = useSelector((state: any) => state);
-  const {record} = useSelector((state: any) => state.form);
+  const storeState = useStoreState();
+  const {record} = useSelector(state => state.form);
   const {canCreate, canDelete, readonly} = usePermitted({
     modelName: config?.modelName,
   });
 
-  const [object, setObject] = useState(
+  const [object, setObject] = useState<any>(
     defaultValue ?? creationDefaultValue ?? {},
   );
   const [errors, setErrors] = useState<any[]>();
@@ -99,18 +100,50 @@ const FormView = ({
     [config],
   );
 
+  const configItems: (DisplayPanel | DisplayField)[] = useMemo(
+    () => (config == null ? [] : getConfigItems(config)),
+    [config],
+  );
+
+  const configFields: DisplayField[] = useMemo(
+    () => (config == null ? [] : getFields(config)),
+    [config],
+  );
+
+  const zIndexMap: {[key: string]: number} = useMemo(
+    () => getZIndexMap(configItems),
+    [configItems],
+  );
+
+  const fieldKeys: string[] = useMemo(
+    () => configFields.map(_field => _field.key),
+    [configFields],
+  );
+
+  const fieldPermissions = useFieldsPermissions({
+    modelName: config?.modelName,
+    fieldNames: fieldKeys,
+  });
+
+  const permissionOfKey = useMemo(
+    () => Object.fromEntries(fieldPermissions.map(_p => [_p.key, _p])),
+    [fieldPermissions],
+  );
+
+  const dependentFields: DisplayField[] = useMemo(
+    () => configFields.filter(_field => _field.dependsOn != null),
+    [configFields],
+  );
+
   const isCreation = useMemo(
     () => !isCustom && object?.id == null,
     [isCustom, object?.id],
   );
 
-  const isDirty = useMemo(() => {
-    if (isCreation) {
-      return true;
-    }
-
-    return !areObjectsEquals(defaultValue, object);
-  }, [defaultValue, isCreation, object]);
+  const isDirty = useMemo(
+    () => isCreation || !areObjectsEquals(defaultValue, object),
+    [defaultValue, isCreation, object],
+  );
 
   useEffect(() => {
     mapErrorWithTranslationKey();
@@ -139,33 +172,34 @@ const FormView = ({
     });
   }, [creationDefaultValue, defaultValue, isCreation, record]);
 
-  const handleFieldChange = (newValue: any, fieldName?: string) => {
-    setObject((_current: any) => {
-      if (fieldName != null && _current?.[fieldName] === newValue) {
-        return _current;
-      }
+  const handleFieldChange = useCallback(
+    (newValue: any, fieldName?: string) => {
+      setObject((_current: any) => {
+        if (fieldName != null && _current?.[fieldName] === newValue)
+          return _current;
 
-      const _value = fieldName != null ? {[fieldName]: newValue} : newValue;
+        const _value = fieldName != null ? {[fieldName]: newValue} : newValue;
 
-      let updatedObject = {...(_current ?? {}), ...(_value ?? {})};
+        let updatedObject = {...(_current ?? {}), ...(_value ?? {})};
 
-      Object.entries(_value).forEach(([_f, _v]) => {
-        getFields(config)
-          .filter(_field => _field.dependsOn != null)
-          .filter(_field => Object.keys(_field.dependsOn!).includes(_f))
-          .forEach(_field => {
-            updatedObject[_field.key] = _field.dependsOn![_f]({
-              newValue: _v,
-              storeState,
-              objectState: updatedObject,
-              dispatch,
+        Object.entries(_value).forEach(([_f, _v]) => {
+          dependentFields
+            .filter(_field => Object.keys(_field.dependsOn!).includes(_f))
+            .forEach(_field => {
+              updatedObject[_field.key] = _field.dependsOn![_f]({
+                newValue: _v,
+                storeState,
+                objectState: updatedObject,
+                dispatch,
+              });
             });
-          });
-      });
+        });
 
-      return updatedObject;
-    });
-  };
+        return updatedObject;
+      });
+    },
+    [dependentFields, dispatch, storeState],
+  );
 
   const isButtonAuthorized = useCallback(
     (_action: Action) => {
@@ -191,27 +225,26 @@ const FormView = ({
     setObject((isCreation ? creationDefaultValue : defaultValue) ?? {});
   }, [creationDefaultValue, defaultValue, isCreation]);
 
-  const handleValidate = (_action, needValidation) => {
-    if (needValidation) {
-      return validateSchema(config, object)
-        .then(() => {
-          _action(object);
-        })
-        .catch(_error => {
-          setErrors(getValidationErrors(_error));
-        });
-    }
+  const handleValidate = useCallback(
+    (_action: (_v: any) => void, needValidation: boolean = false) => {
+      if (needValidation) {
+        return validateSchema(config, object)
+          .then(() => _action(object))
+          .catch(_error => {
+            setErrors(getValidationErrors(_error));
+          });
+      }
 
-    return new Promise<void>(resolve => {
-      _action(object);
-      resolve();
-    });
-  };
+      return new Promise<void>(resolve => {
+        _action(object);
+        resolve();
+      });
+    },
+    [config, object],
+  );
 
   const actions: FormatedAction[] = useMemo(() => {
-    if (!Array.isArray(_actions) || _actions.length === 0) {
-      return [];
-    }
+    if (!Array.isArray(_actions) || _actions.length === 0) return [];
 
     return _actions
       .filter(
@@ -248,9 +281,7 @@ const FormView = ({
     const onPress = () =>
       handleValidate(() => {
         _action.onPress();
-        if (_action.readonlyAfterAction) {
-          toggleReadonlyMode();
-        }
+        if (_action.readonlyAfterAction) toggleReadonlyMode();
       }, _action.needValidation);
 
     if (_action.customComponent) {
@@ -287,15 +318,25 @@ const FormView = ({
     parentReadonly: boolean = false,
   ) => {
     if (isField(item)) {
+      const _field = item as DisplayField;
+      const permission = permissionOfKey[_field.key];
+
+      if (
+        permission?.hidden ||
+        _field.hideIf?.({objectState: object, storeState})
+      )
+        return null;
+
       return (
         <FieldComponent
-          key={`${item.key} - ${item.order}`}
+          key={`${_field.key} - ${_field.order}`}
           handleFieldChange={handleFieldChange}
-          _field={item as DisplayField}
+          _field={_field}
           object={object}
-          modelName={config.modelName}
+          storeState={storeState}
+          permission={permission}
           parentReadonly={parentReadonly}
-          formContent={getConfigItems(config)}
+          zIndex={zIndexMap[_field.key] ?? 0}
         />
       );
     }
@@ -304,29 +345,28 @@ const FormView = ({
       <PanelComponent
         key={`${item.key} - ${item.order}`}
         renderItem={renderItem}
-        formContent={getConfigItems(config)}
         _panel={item as DisplayPanel}
         object={object}
+        storeState={storeState}
         parentReadonly={parentReadonly}
+        zIndex={zIndexMap[item.key] ?? 0}
       />
     );
   };
 
-  if (config == null) {
+  if (config == null)
     return (
       <View>
         <WarningCard errorMessage={I18n.t('Base_FormNotFound')} />
       </View>
     );
-  }
 
-  if (!isCustom && object?.id == null && !canCreate) {
+  if (!isCustom && object?.id == null && !canCreate)
     return (
       <View>
         <WarningCard errorMessage={I18n.t('Base_FormMissingCreateAccess')} />
       </View>
     );
-  }
 
   return (
     <Screen
@@ -350,7 +390,7 @@ const FormView = ({
         style={styles.scroll}>
         {Array.isArray(errors) && (
           <ConstraintsValidatorPopup
-            onContinue={() => setErrors(null)}
+            onContinue={() => setErrors(undefined)}
             errors={errors}
           />
         )}

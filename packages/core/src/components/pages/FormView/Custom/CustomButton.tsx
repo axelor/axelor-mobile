@@ -22,7 +22,7 @@ import {customComponentOptions} from '../../../../forms/types';
 import {executeButtonAction} from '../../../../forms/studio/api.helpers';
 
 interface props extends customComponentOptions {
-  item: any;
+  item?: any;
 }
 
 const CustomButton = ({
