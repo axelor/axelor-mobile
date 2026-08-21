@@ -1,6 +1,0 @@
-{
-  "title": "Forms: place fields and panels on the 12 columns grid with their colSpan",
-  "type": "feat",
-  "packages": "core",
-  "description": "Custom fields and custom panels configured in the studio now follow the colSpan defined on the ERP, on the same scale of 12 columns as the web: several fields share a line when their colSpan allow it, and the next one moves to a new line when the line is full. Fields and panels without any colSpan keep their current full width display, so existing forms are unchanged. The colSpan can also be set on the fields of the forms written in the applications, where it was previously only available on the panels."
-}

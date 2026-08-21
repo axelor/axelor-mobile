@@ -3,6 +3,42 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.4] (2026-08-21)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Forms: place fields and panels on the 12 columns grid with their colSpan
+
+<details>
+Custom fields and custom panels configured in the studio now follow the colSpan defined on the ERP, on the same scale of 12 columns as the web: several fields share a line when their colSpan allow it, and the next one moves to a new line when the line is full. Fields and panels without any colSpan keep their current full width display, so existing forms are unchanged. The colSpan can also be set on the fields of the forms written in the applications, where it was previously only available on the panels.
+</details>
+
+#### Changes
+
+- Custom fields form: improve display and input performances on forms with a high number of fields
+
+<details>
+The metadata of a model (field configuration, selection values, field types) is now fetched once per session and shared by every form of that model, so reopening a form no longer waits for them. Selection values are also resolved before the form is displayed, which avoids the fields being filled in a second time after the form appears.
+</details>
+
+#### Fixes
+
+- Forms: fix the widgets which were overflowing when a field does not take the whole width
+- Custom fields form: display a selection field as a picker even when it is not flagged as a selection field
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Forms: fix the widgets which were overflowing when a field does not take the whole width
+- Picker: improve the display and the selection when the field is narrow
+
+<details>
+On a narrow picker, the title kept its full width and pushed the icon onto the border of the button. The title now gives its space back to the icon, and displays on several lines instead of being truncated. The selection of such a field also opens in a modal rather than in a dropdown under the field, as the date input already did: the list no longer covers the neighbour fields, the options are readable in full, and the field no longer grows to make room for the list when it opens. A picker taking the whole width keeps its dropdown.
+</details>
+
 ## [9.1.3] (2026-08-07)
 
 ### @axelor/aos-mobile-core
@@ -38,7 +74,6 @@ A condition referencing a field that was still empty could not be evaluated and 
 <details>
 Panels configured as hidden, or with a display or hide condition, were always visible on mobile. They now follow the same visibility rules as the fields they contain.
 </details>
-
 
 ### @axelor/aos-mobile-quality
 
@@ -259,6 +294,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.4]: https://github.com/axelor/axelor-mobile/compare/9.1.3...9.1.4
 [9.1.3]: https://github.com/axelor/axelor-mobile/compare/9.1.2...9.1.3
 [9.1.2]: https://github.com/axelor/axelor-mobile/compare/9.1.1...9.1.2
 [9.1.1]: https://github.com/axelor/axelor-mobile/compare/9.1.0...9.1.1
