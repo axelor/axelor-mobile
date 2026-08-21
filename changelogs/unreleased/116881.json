@@ -1,6 +1,0 @@
-{
-  "title": "Custom fields form: improve display and input performances on forms with a high number of fields",
-  "type": "refactor",
-  "packages": "core",
-  "description": "The metadata of a model (field configuration, selection values, field types) is now fetched once per session and shared by every form of that model, so reopening a form no longer waits for them. Selection values are also resolved before the form is displayed, which avoids the fields being filled in a second time after the form appears."
-}

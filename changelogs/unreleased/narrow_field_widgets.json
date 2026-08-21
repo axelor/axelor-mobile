@@ -1,5 +1,0 @@
-{
-  "title": "Forms: fix the widgets which were overflowing when a field does not take the whole width",
-  "type": "fix",
-  "packages": ["core", "ui"]
-}
