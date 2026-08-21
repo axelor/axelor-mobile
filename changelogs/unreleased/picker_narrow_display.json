@@ -1,6 +1,0 @@
-{
-  "title": "Picker: improve the display and the selection when the field is narrow",
-  "type": "fix",
-  "packages": ["core", "ui"],
-  "description": "On a narrow picker, the title kept its full width and pushed the icon onto the border of the button. The title now gives its space back to the icon, and displays on several lines instead of being truncated. The selection of such a field also opens in a modal rather than in a dropdown under the field, as the date input already did: the list no longer covers the neighbour fields, the options are readable in full, and the field no longer grows to make room for the list when it opens. A picker taking the whole width keeps its dropdown."
-}

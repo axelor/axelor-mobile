@@ -3,6 +3,42 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.17] (2026-08-21)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Forms: place fields and panels on the 12 columns grid with their colSpan
+
+<details>
+Custom fields and custom panels configured in the studio now follow the colSpan defined on the ERP, on the same scale of 12 columns as the web: several fields share a line when their colSpan allow it, and the next one moves to a new line when the line is full. Fields and panels without any colSpan keep their current full width display, so existing forms are unchanged. The colSpan can also be set on the fields of the forms written in the applications, where it was previously only available on the panels.
+</details>
+
+#### Changes
+
+- Custom fields form: improve display and input performances on forms with a high number of fields
+
+<details>
+The metadata of a model (field configuration, selection values, field types) is now fetched once per session and shared by every form of that model, so reopening a form no longer waits for them. Selection values are also resolved before the form is displayed, which avoids the fields being filled in a second time after the form appears.
+</details>
+
+#### Fixes
+
+- Forms: fix the widgets which were overflowing when a field does not take the whole width
+- Custom fields form: display a selection field as a picker even when it is not flagged as a selection field
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Forms: fix the widgets which were overflowing when a field does not take the whole width
+- Picker: improve the display and the selection when the field is narrow
+
+<details>
+On a narrow picker, the title kept its full width and pushed the icon onto the border of the button. The title now gives its space back to the icon, and displays on several lines instead of being truncated. The selection of such a field also opens in a modal rather than in a dropdown under the field, as the date input already did: the list no longer covers the neighbour fields, the options are readable in full, and the field no longer grows to make room for the list when it opens. A picker taking the whole width keeps its dropdown.
+</details>
+
 ## [9.0.16] (2026-08-07)
 
 ### @axelor/aos-mobile-core
@@ -42,7 +78,6 @@ A condition referencing a field that was still empty could not be evaluated and 
 <details>
 Panels configured as hidden or readonly, or with a display, hide or readonly condition, were always visible and editable on mobile. They now follow the same rules as the fields they contain, and a panel displayed as readonly applies to its whole content.
 </details>
-
 
 ### @axelor/aos-mobile-quality
 
@@ -115,7 +150,6 @@ Panels configured as hidden or readonly, or with a display, hide or readonly con
 Array fields declared inside a sub-object schema (e.g. task.project.projectTaskCategorySet) were included in the fields list sent to search endpoints. The backend does not support fetching nested collection fields through a search request, which can cause errors or unexpected empty results. Those fields are now automatically excluded from search requests while still being requested on fetch requests. Developers who relied on the previous behaviour can opt back in by passing includeNestedArrayFields: true to createStandardSearch.
 </details>
 
-
 ### @axelor/aos-mobile-message
 
 #### Fixes
@@ -140,7 +174,6 @@ Array fields declared inside a sub-object schema (e.g. task.project.projectTaskC
 A collapsible 'Shipment details' section is now visible on the supplier arrival details screen, showing the supplier shipment reference and date. An edit button inside this section allows users to fill in or update these fields (with barcode scan support for the reference) at any time before realizing the move.
 </details>
 
-
 #### Fixes
 
 - Supplier arrival: block realization when required shipment details are missing
@@ -148,7 +181,6 @@ A collapsible 'Shipment details' section is now visible on the supplier arrival 
 <details>
 When the AppStock configuration 'isRequiredShipmentSupplierDetails' is enabled, attempting to realize a supplier arrival with a missing shipment reference or date no longer results in a server error. A popup is now displayed to let the user fill in the missing information before proceeding with the realization.
 </details>
-
 
 ## [9.0.9] (2026-04-22)
 
@@ -168,7 +200,6 @@ When the AppStock configuration 'isRequiredShipmentSupplierDetails' is enabled, 
 <details>
 Stock move line lists (customer deliveries, supplier arrivals, internal moves) now fetch rack information for all lines in a single request instead of one request per line. Only the rack field is retrieved, reducing both the number of requests and the size of each response.
 </details>
-
 
 #### Fixes
 
@@ -210,7 +241,6 @@ Stock move line lists (customer deliveries, supplier arrivals, internal moves) n
 <details>
 When several screens had a filter or print action enabled, navigating between them caused all popups to open at once when pressing the action on any screen. Popup visibility is now managed per screen.
 </details>
-
 
 ### @axelor/aos-mobile-maintenance
 
@@ -390,6 +420,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.17]: https://github.com/axelor/axelor-mobile/compare/9.0.16...9.0.17
 [9.0.16]: https://github.com/axelor/axelor-mobile/compare/9.0.15...9.0.16
 [9.0.15]: https://github.com/axelor/axelor-mobile/compare/9.0.14...9.0.15
 [9.0.14]: https://github.com/axelor/axelor-mobile/compare/9.0.13...9.0.14
