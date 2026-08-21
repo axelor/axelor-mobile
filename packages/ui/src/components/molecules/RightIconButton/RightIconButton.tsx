@@ -23,7 +23,7 @@ import {Card, Text} from '../../atoms';
 interface RightIconProps {
   style?: any;
   styleText?: any;
-  onPress: (any) => void;
+  onPress: () => void;
   title?: string;
   icon: React.ReactNode;
   numberOfLines?: number;
@@ -32,8 +32,8 @@ interface RightIconProps {
 const RightIconButton = ({
   style,
   styleText,
-  onPress = () => {},
-  title = null,
+  onPress,
+  title,
   icon,
   numberOfLines = 2,
 }: RightIconProps) => {
@@ -44,7 +44,7 @@ const RightIconButton = ({
       testID="rightIconButtonContainer">
       <Card style={[styles.container, style]}>
         <Text style={[styleText, styles.text]} numberOfLines={numberOfLines}>
-          {title != null ? title : ''}
+          {title ?? ''}
         </Text>
         {icon}
       </Card>
@@ -59,15 +59,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: 12,
-    paddingRight: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
     paddingVertical: 5,
     marginVertical: 4,
-    marginRight: 16,
     borderRadius: 7,
+    gap: 2,
   },
   text: {
     textAlign: 'center',
+    flexShrink: 1,
   },
 });
 

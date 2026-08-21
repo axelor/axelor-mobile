@@ -135,6 +135,7 @@ const getStyles = (Colors: ThemeColors, required: boolean) =>
         : Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
+      paddingHorizontal: 5,
     },
     containerInput: {
       fontSize: 15,

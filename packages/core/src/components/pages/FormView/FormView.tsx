@@ -420,6 +420,8 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     paddingBottom: 125,
   },
 });
