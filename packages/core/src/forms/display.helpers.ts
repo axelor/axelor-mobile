@@ -194,6 +194,14 @@ export const isField = (_object: DisplayPanel | DisplayField): boolean => {
   return (_object as any).type != null;
 };
 
+export const getColSpanWidth = (colSpan?: number): `${number}%` | undefined => {
+  if (colSpan == null || colSpan <= 0 || colSpan >= DEFAULT_COLSPAN) {
+    return undefined;
+  }
+
+  return `${(colSpan / DEFAULT_COLSPAN) * 100}%`;
+};
+
 export const getFields = (config: Form): DisplayField[] => {
   if (config.fields == null) return [];
 

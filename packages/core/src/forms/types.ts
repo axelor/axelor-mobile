@@ -45,6 +45,7 @@ export interface customComponentOptions {
 export interface Field {
   parentPanel?: string;
   order?: number;
+  colSpan?: number;
   titleKey?: string;
   helperKey?: string;
   type: InputType;

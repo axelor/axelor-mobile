@@ -22,7 +22,12 @@ import {ThemeColors, useThemeColor} from '../../../theme';
 import {checkNullString, getCommonStyles, getFromList} from '../../../utils';
 import {useOutsideClickHandler} from '../../../hooks';
 import {Icon, Text} from '../../atoms';
-import {FormInput, SelectionContainer, RightIconButton} from '../../molecules';
+import {
+  Alert,
+  FormInput,
+  SelectionContainer,
+  RightIconButton,
+} from '../../molecules';
 
 const ITEM_HEIGHT = 40;
 
@@ -32,7 +37,7 @@ interface PickerProps {
   styleTxt?: any;
   title?: string;
   placeholder?: string;
-  onValueChange: (any) => void;
+  onValueChange: (_v?: any) => void;
   defaultValue?: string | number;
   listItems: any[];
   displayValue?: (item: any) => string;
@@ -44,6 +49,7 @@ interface PickerProps {
   required?: boolean;
   isScrollViewContainer?: boolean;
   multiLineLabels?: boolean;
+  popup?: boolean;
   translator?: (key: string, values?: Object) => string;
 }
 
@@ -65,6 +71,7 @@ const Picker = ({
   required = false,
   isScrollViewContainer = false,
   multiLineLabels = false,
+  popup = false,
   translator,
 }: PickerProps) => {
   const Colors = useThemeColor();
@@ -85,7 +92,7 @@ const Picker = ({
       setIsOpen(false);
       setIsFocused(false);
     },
-    activationCondition: isOpen,
+    activationCondition: isOpen && !popup,
   });
 
   useEffect(() => {
@@ -99,6 +106,11 @@ const Picker = ({
   const togglePicker = useCallback(() => {
     setIsOpen(_current => !_current);
     setIsFocused(_current => !_current);
+  }, []);
+
+  const closePicker = useCallback(() => {
+    setIsOpen(false);
+    setIsFocused(false);
   }, []);
 
   const handleValueChange = useCallback(
@@ -118,7 +130,7 @@ const Picker = ({
   );
 
   const marginBottom = useMemo(() => {
-    if (isScrollViewContainer && isOpen) {
+    if (isScrollViewContainer && isOpen && !popup) {
       const visibleListLength =
         !Array.isArray(listItems) || listItems?.length === 0
           ? 1
@@ -130,7 +142,7 @@ const Picker = ({
     }
 
     return null;
-  }, [emptyValue, isScrollViewContainer, listItems, isOpen]);
+  }, [emptyValue, isScrollViewContainer, listItems, isOpen, popup]);
 
   const _required = useMemo(
     () => required && selectedItem == null,
@@ -143,10 +155,8 @@ const Picker = ({
   );
 
   const _displayValue = useCallback(
-    item => {
-      if (item == null) {
-        return '';
-      }
+    (item: any) => {
+      if (item == null) return '';
 
       if (displayValue) {
         return displayValue(item);
@@ -183,6 +193,23 @@ const Picker = ({
     );
   }
 
+  const renderSelection = () => (
+    <SelectionContainer
+      style={popup ? styles.popupSelection : pickerStyle}
+      wrapperRef={selectionWrapperRef}
+      emptyValue={emptyValue}
+      objectList={listItems}
+      keyField={valueField}
+      displayValue={_displayValue}
+      handleSelect={handleValueChange}
+      isPicker={true}
+      selectedItem={[selectedItem]}
+      title={title}
+      multiLineLabels={multiLineLabels && !popup}
+      translator={translator}
+    />
+  );
+
   return (
     <View
       ref={wrapperRef}
@@ -196,7 +223,7 @@ const Picker = ({
         <Text style={[styles.title, styleTxt]}>{title}</Text>
       )}
       <RightIconButton
-        numberOfLines={multiLineLabels ? null : 1}
+        numberOfLines={multiLineLabels ? (null as any) : 1}
         onPress={togglePicker}
         icon={
           <Icon
@@ -216,21 +243,16 @@ const Picker = ({
           pickerStyle,
         ]}
       />
-      {isOpen && (
-        <SelectionContainer
-          style={pickerStyle}
-          wrapperRef={selectionWrapperRef}
-          emptyValue={emptyValue}
-          objectList={listItems}
-          keyField={valueField}
-          displayValue={_displayValue}
-          handleSelect={handleValueChange}
-          isPicker={true}
-          selectedItem={[selectedItem]}
+      {popup ? (
+        <Alert
+          visible={isOpen}
           title={title}
-          multiLineLabels={multiLineLabels}
-          translator={translator}
-        />
+          cancelButtonConfig={{showInHeader: true, onPress: closePicker}}
+          translator={translator}>
+          {renderSelection()}
+        </Alert>
+      ) : (
+        isOpen && renderSelection()
       )}
     </View>
   );
@@ -239,7 +261,7 @@ const Picker = ({
 const getStyles = (
   Colors: ThemeColors,
   _required: boolean,
-  marginBottom: number,
+  marginBottom: number | null,
   isOpen: boolean,
   displayPlaceholder: boolean,
 ) =>
@@ -267,10 +289,16 @@ const getStyles = (
     },
     textPicker: {
       color: displayPlaceholder ? Colors.placeholderTextColor : Colors.text,
-      fontSize: displayPlaceholder ? 15 : 16,
     },
     title: {
       marginLeft: 10,
+    },
+    popupSelection: {
+      position: 'relative',
+      top: 0,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderRadius: 7,
     },
   });
 

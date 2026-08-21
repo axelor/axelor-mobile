@@ -79,6 +79,7 @@ Définir une configuration correspond à associer une clé à un ensemble de **f
 interface Field {
   parentPanel?: string;
   order?: number;
+  colSpan?: number;
   titleKey?: string;
   helperKey?: string;
   type: InputType;
@@ -110,6 +111,7 @@ Un field est défini à travers plusieurs attribut :
 
 - _parentPanel_ : le nom du panel dans lequel le champs doit s’afficher
 - _order_ : ordre du champs dans la vue / le panel.
+- _colSpan_ : largeur du champs dans son conteneur, sur une échelle de 12 colonnes (`6` pour la moitié, `4` pour un tiers, etc.), suivant la même logique que le colSpan du web. Les éléments d’un conteneur sont placés les uns après les autres sur ses 12 colonnes, et le suivant passe à la ligne lorsque la ligne est pleine. Un colSpan de `12`, ou l’absence de colSpan, laisse au champs toute la largeur de son conteneur, il garde donc une ligne pour lui seul.
 - _titleKey_ : clé de traduction pour le titre du champs.
 - _helperKey_ : clé de traduction pour le helper qui sera affiché à côté du champs. Ce helper permet d’expliquer l’utilité du champs à l’utilisateur si cela est nécessaire.
 - _type_ : définition du typage du champs pour définir l’affichage par défaut mais aussi permettre la vérification de l’intégrité des données du formulaire. Les typages acceptés dans la vue formulaire sont :
@@ -225,7 +227,7 @@ Un panel est défini à travers plusieurs attributs :
 - _titleKey_ : clé de traduction pour le titre du panel.
 - _isCollapsible_ : permet de définir si un panel doit pouvoir être collapsible.
 - _order_ : ordre du panel dans la vue.
-- _colSpan_ : largeur du panel sur la vue. Par défaut, le panel prend toute la largeur de la vue.
+- _colSpan_ : largeur du panel dans son conteneur, sur une échelle de 12 colonnes, suivant la même logique que le colSpan d’un champs. Par défaut, le panel prend toute la largeur de son conteneur. Un panel en direction `column` empile ses éléments quel que soit leur colSpan.
 - _direction_ : direction d’affichage des éléments (`’row’` affiche les éléments en ligne, `‘column’` affiche les éléments en colonne)
 - _parent_ : nom du panel parent.
 

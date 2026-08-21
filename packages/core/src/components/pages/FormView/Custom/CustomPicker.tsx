@@ -29,6 +29,10 @@ interface SelectionItem {
 interface props extends customComponentOptions {
   item?: any;
   selection?: SelectionItem[];
+  showTitle?: boolean;
+  isScrollViewContainer?: boolean;
+  multiLineLabels?: boolean;
+  popup?: boolean;
 }
 
 const CustomPicker = ({
@@ -40,6 +44,10 @@ const CustomPicker = ({
   onChange,
   required,
   readonly,
+  showTitle = true,
+  isScrollViewContainer = true,
+  multiLineLabels = false,
+  popup = false,
 }: props) => {
   const [selection, setSelection] = useState<SelectionItem[]>(
     Array.isArray(resolvedSelection) ? resolvedSelection : [],
@@ -67,7 +75,7 @@ const CustomPicker = ({
   return (
     <Picker
       style={style}
-      title={title}
+      title={showTitle ? title : undefined}
       placeholder={title}
       onValueChange={onChange}
       listItems={selection}
@@ -76,7 +84,9 @@ const CustomPicker = ({
       defaultValue={defaultValue}
       required={required}
       readonly={readonly}
-      isScrollViewContainer={true}
+      isScrollViewContainer={isScrollViewContainer}
+      multiLineLabels={multiLineLabels}
+      popup={popup}
     />
   );
 };
