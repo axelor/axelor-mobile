@@ -20,4 +20,6 @@ import {SortFields} from '../app';
 
 export const core_sortFields: SortFields = {
   core_user: ['fullName'],
+  // Order of the merge of a selection assembled by several modules.
+  core_metaSelectItem: ['select.priority', 'order'],
 };

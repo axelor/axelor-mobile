@@ -17,6 +17,7 @@
  */
 
 import React, {
+  useRef,
   createContext,
   useCallback,
   useContext,
@@ -150,9 +151,20 @@ export const useClickOutside = ({
     [isInsideRef],
   );
 
+  /**
+   * The refs are read through a ref of their own: callers pass them as an inline
+   * array, whose identity changes on every render. The effect was therefore
+   * replayed on each one, and each replay costs two native `measure` calls per
+   * component - three hundred of them on a form holding a hundred and fifty
+   * pickers, at every keystroke. It now only runs on mount and when the touched
+   * element of the context changes, which is what it is meant to follow.
+   */
+  const wrapperRefs = useRef(wrapperRef);
+  wrapperRefs.current = wrapperRef;
+
   useEffect(() => {
-    handleClickOutside(wrapperRef, _ref);
-  }, [handleClickOutside, wrapperRef, _ref]);
+    handleClickOutside(wrapperRefs.current, _ref);
+  }, [handleClickOutside, _ref]);
 
   return useMemo(() => state, [state]);
 };

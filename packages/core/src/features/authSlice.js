@@ -28,6 +28,7 @@ import {saveUrlInStorage} from '../sessions';
 import {checkNullString, testUrl} from '../utils';
 import {modulesProvider} from '../app';
 import {webSocketProvider} from '../websocket';
+import {clearModelMetaCaches} from '../forms/studio/api.helpers';
 import {resetConfigs} from './appConfigSlice';
 
 export const login = createAsyncThunk(
@@ -84,6 +85,7 @@ export const logout = createAsyncThunk(
     ejectAxios({requestInterceptorId, responseInterceptorId});
 
     webSocketProvider.closeWebSocket();
+    clearModelMetaCaches();
 
     return;
   },

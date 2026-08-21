@@ -121,14 +121,13 @@ export const mapStudioFieldsWithFormula = (
   }));
 };
 
-export const getAttrsValue = (object: Object, fieldType?: string) => {
-  if (isEmpty(object)) {
-    return {};
-  }
+export const getAttrsValue = (
+  object: {[key: string]: string},
+  fieldType?: string,
+) => {
+  if (isEmpty(object)) return {};
 
-  if (fieldType != null) {
-    return object[fieldType] != null ? JSON.parse(object[fieldType]) : {};
-  }
+  if (fieldType != null) return JSON.parse(object[fieldType] ?? '{}');
 
   let result = {};
 
@@ -141,26 +140,145 @@ export const getAttrsValue = (object: Object, fieldType?: string) => {
   return result;
 };
 
+const sortedStateKeys = new WeakMap<object, string[]>();
+
+/**
+ * The keys of the state have to be walked from the longest to the shortest, so
+ * that `firstName` is substituted before `name`. Sorting them again for every
+ * formula of the form is the dominant cost on a form with a thousand fields, so
+ * the result is kept per state.
+ *
+ * The length of the key list is checked because the state is completed in place
+ * while the `dependsOn` formulas are resolved: a new field means a new sort.
+ */
+const getSortedStateKeys = (objectState: any): string[] => {
+  if (objectState == null) return [];
+
+  const keys = Object.keys(objectState);
+  const cached = sortedStateKeys.get(objectState);
+
+  if (cached != null && cached.length === keys.length) return cached;
+
+  const sorted = sortFieldsByLength(keys);
+  sortedStateKeys.set(objectState, sorted);
+
+  return sorted;
+};
+
+const sortedFieldNames = new WeakMap<any[], string[]>();
+
+/**
+ * Same reasoning for the field names, which were mapped and sorted again for
+ * every field carrying a `valueExpr`.
+ */
+const getSortedFieldNames = (fields: any[]): string[] => {
+  const cached = sortedFieldNames.get(fields);
+
+  if (cached != null) return cached;
+
+  const sorted = sortFieldsByLength(fields.map(item => item.name));
+  sortedFieldNames.set(fields, sorted);
+
+  return sorted;
+};
+
+const MAX_CACHED_EXPRESSIONS = 5000;
+const evaluatedExpressions = new Map<string, any>();
+
+const evaluateExpression = (expr: string): any => {
+  if (evaluatedExpressions.has(expr)) {
+    return evaluatedExpressions.get(expr);
+  }
+
+  let result: any;
+
+  try {
+    // eslint-disable-next-line no-eval
+    result = eval(nullifyUnresolvedFields(expr));
+  } catch (error) {
+    console.warn('error while evaluating formula', error);
+    result = false;
+  }
+
+  if (evaluatedExpressions.size >= MAX_CACHED_EXPRESSIONS) {
+    const keys = [...evaluatedExpressions.keys()];
+
+    keys.slice(0, Math.floor(keys.length / 2)).forEach(_key => {
+      evaluatedExpressions.delete(_key);
+    });
+  }
+
+  evaluatedExpressions.set(expr, result);
+
+  return result;
+};
+
+const NO_CACHED_STATE = Symbol('formula-no-cached-state');
+
 export const createFormulaFunction = (formula: string | undefined) => {
   if (checkNullString(formula)) return undefined;
 
+  /**
+   * The expression is resolved from the object state only, so two calls sharing
+   * the same state reference always give the same result. Keeping the last one
+   * avoids replaying the substitutions and the evaluation on every render which
+   * is not caused by a form value change.
+   */
+  let cachedState: any = NO_CACHED_STATE;
+  let cachedResult: any;
+
+  /**
+   * Keys of the state the formula mentions, and their value at the last real
+   * evaluation. Every keystroke gives a new state object, which invalidates the
+   * cache above for all the formulas of the form: comparing only the values which
+   * can change the result avoids replaying the substitutions and the compilation
+   * for the formulas the change does not concern.
+   */
+  let usedKeys: string[] | null = null;
+  let usedValues: any[] = [];
+  let knownKeyCount = -1;
+
   return ({objectState}: any) => {
+    if (cachedState === objectState) return cachedResult;
+
+    const stateKeys = getSortedStateKeys(objectState);
+
+    if (
+      usedKeys != null &&
+      knownKeyCount === stateKeys.length &&
+      usedKeys.every(
+        (_key, _index) => objectState?.[_key] === usedValues[_index],
+      )
+    ) {
+      cachedState = objectState;
+
+      return cachedResult;
+    }
+
     let expr = `${formula}`;
 
-    sortFieldsByLength(Object.keys(objectState ?? {})).forEach(_key => {
+    // The used keys are collected by the substitution itself rather than by a
+    // second scan of the state, which would double its cost.
+    const nextUsedKeys: string[] = [];
+    const nextUsedValues: any[] = [];
+
+    stateKeys.forEach(_key => {
       if (expr.includes(_key)) {
+        nextUsedKeys.push(_key);
+        nextUsedValues.push(objectState[_key]);
         expr = manageDottedFields(expr, _key, objectState[_key]);
       }
     });
 
-    expr = nullifyUnresolvedFields(expr);
+    const result = evaluateExpression(expr);
 
-    try {
-      // eslint-disable-next-line no-eval
-      return eval(expr);
-    } catch (error) {
-      return false;
-    }
+    usedKeys = nextUsedKeys;
+    usedValues = nextUsedValues;
+    knownKeyCount = stateKeys.length;
+    cachedState = objectState;
+    cachedResult = result;
+
+    return result;
   };
 };
 
@@ -185,9 +303,7 @@ const getSubString = (formula: string, startIndex: number) => {
 };
 
 const getStringWithoutFirstSeparator = (string: string) => {
-  if (checkNullString(string)) {
-    return null;
-  }
+  if (checkNullString(string)) return null;
 
   return string.replace(SEPARATOR_REGEX, '');
 };
@@ -204,9 +320,8 @@ const manageDottedFields = (formula: string, startKey: string, object: any) => {
       SEPARATOR_REGEX.test(getSubString(formula, currentIndex)) &&
       !isEmpty(objectValue)
     ) {
-      const separator = getSubString(formula, currentIndex).match(
-        SEPARATOR_REGEX,
-      )[0];
+      const separator =
+        getSubString(formula, currentIndex)?.match(SEPARATOR_REGEX)?.[0] ?? '';
       const subString = getSubString(formula, currentIndex + separator.length);
       const fieldKey = findField(subString, objectValue);
 
@@ -216,8 +331,8 @@ const manageDottedFields = (formula: string, startKey: string, object: any) => {
       }
 
       fieldToReplace += separator + fieldKey;
-      objectValue = objectValue[fieldKey];
-      currentIndex += fieldKey.length + 1;
+      objectValue = objectValue[fieldKey!];
+      currentIndex += fieldKey!.length + 1;
     }
 
     return formula.replaceAll(
@@ -225,7 +340,7 @@ const manageDottedFields = (formula: string, startKey: string, object: any) => {
         ? startKey
         : startKey + fieldToReplace,
       manageFieldValue(
-        fetchJsonField(object, getStringWithoutFirstSeparator(fieldToReplace)),
+        fetchJsonField(object, getStringWithoutFirstSeparator(fieldToReplace)!),
       ),
     );
   }
@@ -326,9 +441,9 @@ export const manageDependsOnFormula = (formula: string, fields: any[]) => {
     return undefined;
   }
 
-  let dependsOn = {};
+  let dependsOn: {[key: string]: any} = {};
 
-  sortFieldsByLength(fields.map(item => item.name)).forEach(name => {
+  getSortedFieldNames(fields).forEach(name => {
     if (formula.includes(name)) {
       dependsOn[name] = createFormulaFunction(formula);
     }
