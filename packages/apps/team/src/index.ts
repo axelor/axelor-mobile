@@ -42,6 +42,7 @@ export const TeamModule: Module = {
       title: 'Team_Tasks',
       icon: 'card-list',
       screen: 'TeamTaskListScreen',
+      hideIf: store => !store.base?.teamManagement,
     },
   },
   screens: TeamScreens,
