@@ -66,6 +66,7 @@ export interface ThemeColors {
 export interface Theme {
   key: string;
   name: string;
+  translationKey?: string;
   colors: ThemeColors;
   isCustom?: boolean;
 }

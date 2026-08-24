@@ -62,6 +62,18 @@ const usePickerSettings = () => {
     [Theme.isColorBlind, Theme.themes?.length],
   );
 
+  const themeList = useMemo(
+    () =>
+      Theme.themes?.map(_theme => ({
+        ..._theme,
+        name:
+          _theme.translationKey != null
+            ? I18n.t(_theme.translationKey)
+            : _theme.name,
+      })),
+    [I18n, Theme.themes],
+  );
+
   const keyboardVisibilityList = useMemo(() => {
     return Object.entries(Keyboard.visibility).map(([key, value]) => ({
       visibility: value,
@@ -99,12 +111,12 @@ const usePickerSettings = () => {
       showIf: isThemePicker,
       title: I18n.t('User_Theme'),
       defaultValue: Theme.activeTheme?.key,
-      listItems: Theme.themes,
+      listItems: themeList,
       labelField: 'name',
       valueField: 'key',
       onValueChange: (_theme: string) => Theme.changeTheme(_theme),
     });
-  }, [I18n, Theme, isThemePicker]);
+  }, [I18n, Theme, isThemePicker, themeList]);
 
   useEffect(() => {
     settingsProvider.registerPickerItem({
