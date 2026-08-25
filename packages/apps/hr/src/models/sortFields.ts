@@ -35,4 +35,5 @@ export const hr_sortFields: SortFields = {
   hr_timesheet: ['-fromDate', '-toDate'],
   hr_timesheetLine: ['-date', '-duration'],
   hr_leave: ['-fromDateT', '-startOnSelect'],
+  hr_leaveLine: ['leaveReason.name'],
 };

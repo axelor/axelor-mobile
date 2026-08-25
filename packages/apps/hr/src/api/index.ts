@@ -47,13 +47,16 @@ export {
   updateExpenseLine as updateExpenseLineApi,
 } from './expense-line-api';
 export {searchExpenseType as searchExpenseTypeApi} from './expense-type-api';
+export {fetchNonWorkingDays as fetchNonWorkingDaysApi} from './hr-planning-api';
 export {searchKilometricAllowParam as searchKilometricAllowParamApi} from './kilometric-allow-param-api';
 export {
   cancelLeave as cancelLeaveApi,
   createLeaveRequest as createLeaveRequestApi,
   deleteLeave as deleteLeaveApi,
   fetchLeave as fetchLeaveApi,
+  fetchLeaveBalances as fetchLeaveBalancesApi,
   fetchLeaveById as fetchLeaveByIdApi,
+  fetchLeaveByPeriod as fetchLeaveByPeriodApi,
   fetchLeaveReason as fetchLeaveReasonApi,
   fetchLeaveReasonAvailability as fetchLeaveReasonAvailabilityApi,
   fetchLeaveToValidate as fetchLeaveToValidateApi,

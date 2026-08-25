@@ -23,6 +23,7 @@ export {default as ExpenseLineValidationButton} from './ExpenseLineValidationBut
 export {default as LeaveActionCard} from './LeaveActionCard/LeaveActionCard';
 export {default as LeaveDetailsButtons} from './LeaveDetailsButtons/LeaveDetailsButtons';
 export {default as LeaveDetailsHeader} from './LeaveDetailsHeader/LeaveDetailsHeader';
+export {default as LeaveSelectionCard} from './LeaveSelectionCard/LeaveSelectionCard';
 export {default as RefusalPopup} from './RefusalPopup/RefusalPopup';
 export {default as TimeDetailCard} from './TimeDetailCard/TimeDetailCard';
 export {default as TimerDeclareButton} from './TimerDeclareButton/TimerDeclareButton';

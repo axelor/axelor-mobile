@@ -38,6 +38,7 @@ export {default as ExpenseTypeSearchBar} from './ExpenseTypeSearchBar/ExpenseTyp
 export {default as InvitedCollaboratorViewAllList} from './InvitedCollaboratorViewAllList/InvitedCollaboratorViewAllList';
 export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSearchBar/KilometricAllowParamSearchBar';
 export {default as KilometricTypeSelectPicker} from './KilometricTypeSelectPicker/KilometricTypeSelectPicker';
+export {default as LeaveBalanceSheet} from './LeaveBalanceSheet/LeaveBalanceSheet';
 export {default as LeaveFilters} from './LeaveFilters/LeaveFilters';
 export {default as LeaveReasonSearchBar} from './LeaveReasonSearchBar/LeaveReasonSearchBar';
 export {default as LeaveRefusalPopup} from './LeaveRefusalPopup/LeaveRefusalPopup';

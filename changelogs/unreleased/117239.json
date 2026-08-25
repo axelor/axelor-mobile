@@ -1,0 +1,6 @@
+{
+  "title": "Leave requests: replace the date pickers of the request screen with a calendar where the period is selected visually, showing existing leaves with their status, week-ends and public holidays",
+  "type": "feat",
+  "packages": "hr",
+  "description": "The calendar opens from the leave request menu and hands the selected period over to the existing request screen. Existing leaves are displayed with the colour of their status and can be opened from the calendar to reach their details. Week-ends and public holidays are greyed out with two distinct colours and cannot be selected; when the planning cannot be read from the server, week-ends are still shown."
+}

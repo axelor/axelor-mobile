@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import LeaveCalendarScreen from './LeaveCalendarScreen';
 import LeaveDetailsScreen from './LeaveDetailsScreen';
 import LeaveFormScreen from './LeaveFormScreen';
 import LeaveListScreen from './LeaveListScreen';
@@ -33,6 +34,12 @@ export default {
     component: LeaveDetailsScreen,
     actionID: 'hr_leave_details',
   },
+  LeaveCalendarScreen: {
+    title: 'Hr_CompleteRequest',
+    actionID: 'hr_leave_calendar',
+    component: LeaveCalendarScreen,
+    isUsableOnShortcut: true,
+  },
   CompleteRequestScreen: {
     title: 'Hr_CompleteRequest',
     component: CompleteRequestScreen,
@@ -44,6 +51,7 @@ export default {
   },
 };
 
+export {LeaveCalendarScreen};
 export {LeaveDetailsScreen};
 export {LeaveFormScreen};
 export {LeaveListScreen};

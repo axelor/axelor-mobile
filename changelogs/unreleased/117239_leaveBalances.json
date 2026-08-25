@@ -1,0 +1,5 @@
+{
+  "title": "Leave requests: add an action on the leave calendar to display the available leave balances of the employee, with the acquired, remaining and waiting quantities of each leave reason",
+  "type": "feat",
+  "packages": "hr"
+}

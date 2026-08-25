@@ -194,6 +194,18 @@ export const hr_modelAPI: ObjectFields = {
     refusalDateTime: schemaContructor.string(),
     refusedBy: schemaContructor.subObject('name'),
   }),
+  hr_leaveLine: schemaContructor.object({
+    quantity: schemaContructor.number(),
+    totalQuantity: schemaContructor.number(),
+    daysToValidate: schemaContructor.number(),
+    daysValidated: schemaContructor.number(),
+    leaveReason: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        unitSelect: schemaContructor.number(),
+      }),
+    ),
+  }),
   hr_leaveReason: schemaContructor.object({
     name: schemaContructor.string(),
     unitSelect: schemaContructor.number(),

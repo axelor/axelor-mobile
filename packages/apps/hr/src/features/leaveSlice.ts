@@ -20,6 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   handlerApiCall,
   generateInifiniteScrollCases,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   cancelLeave as _cancelLeave,
@@ -27,6 +28,8 @@ import {
   deleteLeave as _deleteLeave,
   fetchLeave as _fetchLeave,
   fetchLeaveById as _fetchLeaveById,
+  fetchLeaveBalances as _fetchLeaveBalances,
+  fetchLeaveByPeriod as _fetchLeaveByPeriod,
   fetchLeaveReason as _fetchLeaveReason,
   fetchLeaveToValidate as _fetchLeaveToValidate,
   rejectLeave as _rejectLeave,
@@ -34,10 +37,15 @@ import {
   updateLeave as _updateLeave,
   validateLeave as _validateLeave,
 } from '../api/leave-api';
+import {fetchNonWorkingDays as _fetchNonWorkingDays} from '../api/hr-planning-api';
+import {
+  computeWeekEnds,
+  mapPlanningToNonWorkingDays,
+} from '../utils/non-working-days.helper';
 
 export const fetchLeave = createAsyncThunk(
   'hr_leave/fetchLeave',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchLeave,
       data,
@@ -50,7 +58,7 @@ export const fetchLeave = createAsyncThunk(
 
 export const fetchLeaveToValidate = createAsyncThunk(
   'hr_leave/fetchLeaveToValidate',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchLeaveToValidate,
       data,
@@ -61,9 +69,51 @@ export const fetchLeaveToValidate = createAsyncThunk(
   },
 );
 
+export const fetchLeaveByPeriod = createAsyncThunk(
+  'hr_leave/fetchLeaveByPeriod',
+  async function (data: any, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchLeaveByPeriod,
+      data,
+      action: 'Hr_SliceAction_FetchLeaveByPeriod',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchLeaveBalances = createAsyncThunk(
+  'hr_leave/fetchLeaveBalances',
+  async function (data: any, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchLeaveBalances,
+      data,
+      action: 'Hr_SliceAction_FetchLeaveBalances',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchNonWorkingDays = createAsyncThunk(
+  'hr_leave/fetchNonWorkingDays',
+  async function (data: any, {getState}) {
+    if (data?.employeeId == null) return null;
+
+    return handlerApiCall({
+      fetchFunction: _fetchNonWorkingDays,
+      data,
+      action: 'Hr_SliceAction_FetchNonWorkingDays',
+      getState,
+      responseOptions: {isArrayResponse: false},
+      errorOptions: {showErrorToast: false, errorTracing: false},
+    });
+  },
+);
+
 export const fetchLeaveById = createAsyncThunk(
   'hr_leave/fetchLeaveById',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchLeaveById,
       data,
@@ -76,7 +126,7 @@ export const fetchLeaveById = createAsyncThunk(
 
 export const fetchLeaveReason = createAsyncThunk(
   'hr_leave/fetchLeaveReason',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchLeaveReason,
       data,
@@ -89,7 +139,7 @@ export const fetchLeaveReason = createAsyncThunk(
 
 export const sendLeave = createAsyncThunk(
   'hr_leave/sendLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _sendLeave,
       data,
@@ -108,7 +158,7 @@ export const sendLeave = createAsyncThunk(
 
 export const validateLeave = createAsyncThunk(
   'hr_leave/validateLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _validateLeave,
       data,
@@ -127,7 +177,7 @@ export const validateLeave = createAsyncThunk(
 
 export const cancelLeave = createAsyncThunk(
   'hr_leave/cancelLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _cancelLeave,
       data,
@@ -146,7 +196,7 @@ export const cancelLeave = createAsyncThunk(
 
 export const rejectLeave = createAsyncThunk(
   'hr_leave/rejectLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _rejectLeave,
       data,
@@ -165,7 +215,7 @@ export const rejectLeave = createAsyncThunk(
 
 export const deleteLeave = createAsyncThunk(
   'hr_leave/deleteLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _deleteLeave,
       data,
@@ -180,7 +230,7 @@ export const deleteLeave = createAsyncThunk(
 
 export const createLeaveRequest = createAsyncThunk(
   'hr_leave/createLeaveRequest',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _createLeaveRequest,
       data,
@@ -193,7 +243,7 @@ export const createLeaveRequest = createAsyncThunk(
 
 export const updateLeave = createAsyncThunk(
   'hr_leave/updateLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateLeave,
       data,
@@ -207,7 +257,7 @@ export const updateLeave = createAsyncThunk(
   },
 );
 
-const initialState = {
+const initialState: any = {
   loadingMyLeave: true,
   moreLoadingMyLeave: false,
   isListEndMyLeave: false,
@@ -222,6 +272,13 @@ const initialState = {
   loadingLeave: true,
   leave: {},
 
+  loadingLeaveBalances: true,
+  leaveBalanceList: [],
+
+  loadingLeaveByPeriod: true,
+  leaveListByPeriod: [],
+  nonWorkingDays: {},
+
   loadingLeaveReason: true,
   moreLoadingLeaveReason: false,
   isListEndLeaveReason: false,
@@ -231,6 +288,7 @@ const initialState = {
 const leaveSlice = createSlice({
   name: 'hr_leave',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchLeave, {
       loading: 'loadingMyLeave',
@@ -264,6 +322,37 @@ const leaveSlice = createSlice({
     builder.addCase(fetchLeaveById.fulfilled, (state, action) => {
       state.loadingLeave = false;
       state.leave = action.payload;
+    });
+    builder.addCase(fetchLeaveByPeriod.pending, state => {
+      state.loadingLeaveByPeriod = true;
+    });
+    builder.addCase(fetchLeaveByPeriod.fulfilled, (state, action) => {
+      const {fromDate, toDate} = action.meta.arg;
+
+      state.loadingLeaveByPeriod = false;
+      state.leaveListByPeriod = updateAgendaItems(
+        state.leaveListByPeriod,
+        action.payload,
+        {searchDates: {fromDate, toDate, fieldName: 'fromDateT'}},
+      );
+    });
+    builder.addCase(fetchLeaveBalances.pending, state => {
+      state.loadingLeaveBalances = true;
+    });
+    builder.addCase(fetchLeaveBalances.fulfilled, (state, action) => {
+      state.loadingLeaveBalances = false;
+      state.leaveBalanceList = action.payload;
+    });
+    builder.addCase(fetchNonWorkingDays.fulfilled, (state, action) => {
+      const {employeeId, fromDate, toDate} = action.meta.arg;
+
+      // Periods are accumulated so that scrolling back does not refetch.
+      state.nonWorkingDays = {
+        ...state.nonWorkingDays,
+        ...(action.payload != null
+          ? mapPlanningToNonWorkingDays(action.payload, employeeId)
+          : computeWeekEnds(fromDate, toDate)),
+      };
     });
   },
 });

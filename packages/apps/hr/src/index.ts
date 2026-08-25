@@ -113,7 +113,7 @@ export const HrModule: Module = {
     hr_menu_completeRequest: {
       title: 'Hr_CompleteRequest',
       icon: 'plus-lg',
-      screen: 'CompleteRequestScreen',
+      screen: 'LeaveCalendarScreen',
       compatibilityAOS: {
         moduleName: 'axelor-human-resource',
         downToVersion: '8.3.0',
