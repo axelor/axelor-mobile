@@ -16,36 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {fromDateString, isWeekEnd, toDateString} from '../../../utils';
 import {Color} from '../../../theme';
 
 export const DAY_ROW_HEIGHT = 46;
 export const MONTH_TITLE_HEIGHT = 44;
 export const WEEK_DAYS_ROW_HEIGHT = 26;
-
-const MONTH_LONG_KEYS = [
-  'Base_MonthLong_January',
-  'Base_MonthLong_February',
-  'Base_MonthLong_March',
-  'Base_MonthLong_April',
-  'Base_MonthLong_May',
-  'Base_MonthLong_June',
-  'Base_MonthLong_July',
-  'Base_MonthLong_August',
-  'Base_MonthLong_September',
-  'Base_MonthLong_October',
-  'Base_MonthLong_November',
-  'Base_MonthLong_December',
-];
-
-const DAY_SHORT_KEYS = [
-  'Base_Day_Sun',
-  'Base_Day_Mon',
-  'Base_Day_Tue',
-  'Base_Day_Wed',
-  'Base_Day_Thu',
-  'Base_Day_Fri',
-  'Base_Day_Sat',
-];
 
 export interface CalendarDay {
   dateString: string;
@@ -73,48 +49,14 @@ export interface DateRange {
   endDate?: string;
 }
 
-const pad = (value: number): string => (value < 10 ? `0${value}` : `${value}`);
-
-export const toDateString = (date: Date): string =>
-  `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-
-export const fromDateString = (dateString: string): Date => {
-  const [year, month, day] = dateString.split('-').map(Number);
-
-  return new Date(year, month - 1, day);
-};
-
 export const isDayFull = (mark?: DayMark): boolean =>
   mark?.morningColor != null && mark?.afternoonColor != null;
 
 export const hasEvents = (mark?: DayMark): boolean =>
   Array.isArray(mark?.events) && mark.events.length > 0;
 
-export const formatDateString = (
-  dateString: string,
-  format: string,
-): string => {
-  if (dateString == null || format == null) return '';
-
-  const [year, month, day] = dateString.split('-');
-
-  return format
-    .replace('DD', day)
-    .replace('MM', month)
-    .replace('YYYY', year)
-    .replace('YY', year?.slice(2));
-};
-
 export const getMonthKey = (year: number, monthIndex: number): string =>
-  `${year}-${pad(monthIndex + 1)}`;
-
-export const getMonthTitleKey = (monthIndex: number): string =>
-  MONTH_LONG_KEYS[monthIndex];
-
-export const getWeekDayKeys = (firstDayOfWeek: number): string[] =>
-  DAY_SHORT_KEYS.map(
-    (_, index) => DAY_SHORT_KEYS[(index + firstDayOfWeek) % 7],
-  );
+  toDateString(new Date(year, monthIndex, 1)).slice(0, 7);
 
 export const getMonthHeight = (numberOfWeeks: number): number =>
   MONTH_TITLE_HEIGHT + WEEK_DAYS_ROW_HEIGHT + numberOfWeeks * DAY_ROW_HEIGHT;
@@ -133,12 +75,12 @@ const buildMonth = (
   const cells: (CalendarDay | null)[] = new Array(leadingEmptyCells).fill(null);
 
   for (let dayNumber = 1; dayNumber <= numberOfDays; dayNumber++) {
-    const dayOfWeek = new Date(_year, _monthIndex, dayNumber).getDay();
+    const day = new Date(_year, _monthIndex, dayNumber);
 
     cells.push({
-      dateString: `${_year}-${pad(_monthIndex + 1)}-${pad(dayNumber)}`,
+      dateString: toDateString(day),
       dayNumber,
-      isWeekEnd: dayOfWeek === 0 || dayOfWeek === 6,
+      isWeekEnd: isWeekEnd(day),
     });
   }
 

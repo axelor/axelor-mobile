@@ -87,7 +87,9 @@ export {
 export {
   createTimesheetLine,
   deleteTimesheetLine,
+  fetchAllTimesheetLines,
   fetchTimesheetLine,
+  fetchTimesheetLineCount,
   updateTimesheetLine,
 } from './timesheetLineSlice';
 export {

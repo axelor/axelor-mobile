@@ -74,6 +74,15 @@ export const HrModule: Module = {
         !store.timesheet?.isMultipleTimerEnabled ||
         !store.timesheet?.enableTimer,
     },
+    hr_menu_timeEntry: {
+      title: 'Hr_TimeEntry',
+      icon: 'calendar-week',
+      screen: 'TimesheetDayScreen',
+      compatibilityAOS: {
+        moduleName: 'hr-enterprise',
+        downToVersion: '2.1.4',
+      },
+    },
     hr_menu_timesheets: {
       title: 'Hr_Timesheets',
       icon: 'clock-history',

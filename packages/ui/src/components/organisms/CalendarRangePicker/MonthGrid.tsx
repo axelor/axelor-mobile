@@ -18,6 +18,7 @@
 
 import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {getMonthTitleKey, getWeekDayKeys} from '../../../utils';
 import {Color, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
 import DayCell from './DayCell';
@@ -25,8 +26,6 @@ import {
   CalendarMonth,
   DayMark,
   DAY_ROW_HEIGHT,
-  getMonthTitleKey,
-  getWeekDayKeys,
   hasEvents,
   isInRange,
   MONTH_TITLE_HEIGHT,

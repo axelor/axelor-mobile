@@ -99,6 +99,8 @@ export {
 export {
   createTimesheetLine as createTimesheetLineApi,
   deleteTimesheetLine as deleteTimesheetLineApi,
+  fetchAllTimesheetLines as fetchAllTimesheetLinesApi,
   fetchTimesheetLine as fetchTimesheetLineApi,
+  fetchTimesheetLineCount as fetchTimesheetLineCountApi,
   updateTimesheetLine as updateTimesheetLineApi,
 } from './timesheet-line-api';

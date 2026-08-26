@@ -18,6 +18,8 @@
 
 export {replace, indexOfElement} from './arrays';
 export {getCommonStyles, INPUT_MIN_HEIGHT} from './commons-styles';
+export * from './commons-utlis';
+export * from './dates';
 export {formatNumber, unformatNumber} from './formatters';
 export {getFromList, getItemsFromList} from './list';
 export {isHalf, getIntegerPart, roundHalf, roundInteger} from './number';
@@ -28,4 +30,3 @@ export {
   capitalizeFirstLetter,
   sliceString,
 } from './strings';
-export * from './commons-utlis';

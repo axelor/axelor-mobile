@@ -17,4 +17,5 @@
  */
 
 export * from './use-managed-employees';
+export * from './use-timesheet-day';
 export * from './use-total-currency';

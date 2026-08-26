@@ -18,10 +18,10 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {formatDateString} from '../../../utils';
 import {useThemeColor} from '../../../theme';
 import {BottomSheet, Button} from '../../molecules';
 import {Text} from '../../atoms';
-import {formatDateString} from './calendar-range.helpers';
 
 interface CalendarDaySheetProps {
   dateString?: string;

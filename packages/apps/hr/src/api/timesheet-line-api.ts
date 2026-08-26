@@ -17,12 +17,32 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardSearch,
+  Criteria,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createTimesheetLineCriteria = (searchValue, timesheetId) => {
+export interface TimesheetLineCount {
+  duration?: number;
+  hoursDuration?: number;
+  weeklyPlanningDuration?: number;
+  weeklyPlanningHoursDuration?: number;
+  leaveDuration?: number;
+  leaveHoursDuration?: number;
+  leaveReason?: string;
+}
+
+export type TimesheetLineCountMap = Record<string, TimesheetLineCount>;
+
+const createTimesheetLineCriteria = ({
+  searchValue,
+  timesheetId,
+}: {
+  searchValue?: string;
+  timesheetId: number;
+}): Criteria[] => {
   return [
     {
       fieldName: 'timesheet.id',
@@ -34,13 +54,17 @@ const createTimesheetLineCriteria = (searchValue, timesheetId) => {
 };
 
 export async function fetchTimesheetLine({
-  searchValue = null,
+  searchValue,
   timesheetId,
   page = 0,
+}: {
+  searchValue?: string;
+  timesheetId: number;
+  page?: number;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.TimesheetLine',
-    criteria: createTimesheetLineCriteria(searchValue, timesheetId),
+    criteria: createTimesheetLineCriteria({searchValue, timesheetId}),
     fieldKey: 'hr_timesheetLine',
     sortKey: 'hr_timesheetLine',
     page,
@@ -48,7 +72,37 @@ export async function fetchTimesheetLine({
   });
 }
 
-export async function createTimesheetLine({timesheetLine}) {
+export async function fetchAllTimesheetLines({
+  timesheetId,
+}: {
+  timesheetId: number;
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.TimesheetLine',
+    criteria: createTimesheetLineCriteria({timesheetId}),
+    fieldKey: 'hr_timesheetLine',
+    sortKey: 'hr_timesheetLine',
+    page: 0,
+    numberElementsByPage: null as any,
+    provider: 'model',
+  });
+}
+
+export async function fetchTimesheetLineCount({
+  timesheetId,
+}: {
+  timesheetId: number;
+}): Promise<{data: {object: TimesheetLineCountMap}}> {
+  return axiosApiProvider
+    .get({url: `ws/aos/timesheet-line/count/${timesheetId}`})
+    .then(response => ({...response, data: {object: response?.data}}));
+}
+
+export async function createTimesheetLine({
+  timesheetLine,
+}: {
+  timesheetLine: any;
+}) {
   return getActionApi()
     .send({
       url: 'ws/aos/business/timesheet-line',
@@ -70,7 +124,13 @@ export async function createTimesheetLine({timesheetLine}) {
     });
 }
 
-export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
+export async function updateTimesheetLine({
+  timesheetLineId,
+  timesheetLine,
+}: {
+  timesheetLineId: number;
+  timesheetLine: any;
+}) {
   return getActionApi()
     .send({
       url: `ws/aos/business/timesheet-line/update/${timesheetLineId}`,
@@ -92,14 +152,20 @@ export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
     });
 }
 
-export async function deleteTimesheetLine({timesheetLineId}) {
+export async function deleteTimesheetLine({
+  timesheetLineId,
+}: {
+  timesheetLineId: number;
+}) {
   return getActionApi().send({
     url: `ws/rest/com.axelor.apps.hr.db.TimesheetLine/${timesheetLineId}`,
     method: 'delete',
+    body: {},
     description: 'delete timesheet line',
     matchers: {
       modelName: 'com.axelor.apps.hr.db.TimesheetLine',
       id: timesheetLineId,
+      fields: {},
     },
   });
 }

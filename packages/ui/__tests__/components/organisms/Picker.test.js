@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
+import {Text} from 'react-native';
 import {fireEvent} from '@testing-library/react-native';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors, setup} from '../../tools';
@@ -50,6 +52,16 @@ describe('Picker Component', () => {
     const {getByText, props} = setupPicker({placeholder: 'Select an item'});
 
     expect(getByText(props.placeholder)).toBeTruthy();
+  });
+
+  it('renders the given node for the selected value', () => {
+    const {getByTestId, queryByText} = setupPicker({
+      renderItem: item => <Text testID="custom-value">{item.name}</Text>,
+      defaultValue: 2,
+    });
+
+    expect(getByTestId('custom-value')).toBeTruthy();
+    expect(queryByText('Select an item')).toBeNull();
   });
 
   it('should give listItems to SelectionContainer', () => {

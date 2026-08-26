@@ -21,8 +21,6 @@ export {
   CalendarMonth,
   DateRange,
   DayMark,
-  fromDateString,
-  toDateString,
 } from './calendar-range.helpers';
 export {CalendarLegendItem} from './CalendarLegend';
 export {default as CalendarRangePicker} from './CalendarRangePicker';

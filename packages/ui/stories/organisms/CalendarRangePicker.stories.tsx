@@ -23,9 +23,9 @@ import {
   CalendarRangePicker as Component,
   DateRange,
   Text,
-  toDateString,
 } from '../../src/components';
 import {useThemeColor} from '../../src/theme';
+import {toDateString} from '../../src/utils';
 import {Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {

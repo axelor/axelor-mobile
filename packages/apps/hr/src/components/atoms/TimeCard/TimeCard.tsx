@@ -38,7 +38,7 @@ interface TimeCardProps {
   comments?: string;
   date: string;
   duration: number | string;
-  durationUnit: string;
+  durationUnit?: string;
   isBorderColor?: boolean;
   isSmallCard?: boolean;
   style?: any;

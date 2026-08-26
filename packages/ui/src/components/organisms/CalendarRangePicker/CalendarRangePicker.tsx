@@ -18,6 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {FlatList, StyleSheet, View, ViewToken} from 'react-native';
+import {toDateString} from '../../../utils';
 import {Color} from '../../../theme';
 import CalendarLegend, {CalendarLegendItem} from './CalendarLegend';
 import CalendarDaySheet from './CalendarDaySheet';
@@ -34,7 +35,6 @@ import {
   isDayFull,
   sliceDisabledByMonth,
   sliceMarksByMonth,
-  toDateString,
 } from './calendar-range.helpers';
 
 interface CalendarRangePickerProps {
