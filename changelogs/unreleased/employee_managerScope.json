@@ -1,0 +1,6 @@
+{
+  "title": "Employees: allow a list of employees to be restricted to the ones a given user manages",
+  "type": "feat",
+  "packages": "hr",
+  "description": "The employee search accepts a manager, so a screen can show only the employees a user is responsible for. The same rule already applied to the leave requests waiting for validation, where a user who is not an HR manager only sees the requests of the employees they manage, and both lists now share it."
+}
