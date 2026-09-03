@@ -1,0 +1,6 @@
+{
+  "title": "WeekDayPicker: add a new week strip to browse a period day by day, each day showing at a glance how much of it is taken",
+  "type": "feat",
+  "packages": "ui",
+  "description": "The strip shows one week at a time and is swiped from week to week, the selection following along so the details below always describe a visible day. Each day carries a circular gauge whose inner disc grows with the share of the day already taken; a day on which nothing is expected shows a coloured dot instead, so several kinds of day off can be told apart. Days falling outside the period are still shown, greyed out and inert, which keeps a period starting mid-week readable. The strip carries its own navigation: the week being browsed is named above it and can be changed one week at a time without swiping, and a shortcut brings the selection back to today whenever today falls inside the period and is not already shown."
+}
