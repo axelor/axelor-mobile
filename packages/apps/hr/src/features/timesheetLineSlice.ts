@@ -31,7 +31,7 @@ import {fetchTimesheetById} from './timesheetSlice';
 
 export const fetchTimesheetLine = createAsyncThunk(
   'timesheetLine/fetchTimesheetLine',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchTimesheetLine,
       data,
@@ -42,56 +42,52 @@ export const fetchTimesheetLine = createAsyncThunk(
   },
 );
 
+const refreshTimesheet = (dispatch: any, timesheetId: number) => {
+  if (timesheetId == null) return;
+
+  dispatch((fetchTimesheetById as any)({timesheetId}));
+};
+
 export const createTimesheetLine = createAsyncThunk(
   'timesheetLine/createTimesheetLine',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _createTimesheetLine,
       data,
       action: 'Hr_SliceAction_CreateTimesheetLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      if (data?.timesheetLine?.timesheetId != null) {
-        dispatch(
-          fetchTimesheetById({timesheetId: data.timesheetLine.timesheetId}),
-        );
-      }
-    });
+    }).then(() => refreshTimesheet(dispatch, data?.timesheetLine?.timesheetId));
   },
 );
 
 export const updateTimesheetLine = createAsyncThunk(
   'timesheetLine/updateTimesheetLine',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateTimesheetLine,
       data,
       action: 'Hr_SliceAction_UpdateTimesheetLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() =>
-      dispatch(fetchTimesheetById({timesheetId: data.timesheetId})),
-    );
+    }).then(() => refreshTimesheet(dispatch, data.timesheetId));
   },
 );
 
 export const deleteTimesheetLine = createAsyncThunk(
   'timesheet/deleteTimesheetLine',
-  async function (data = {}, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _deleteTimesheetLine,
       data,
       action: 'Hr_SliceAction_DeleteTimesheetLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      dispatch(fetchTimesheetById({timesheetId: data.timesheetId}));
-    });
+    }).then(() => refreshTimesheet(dispatch, data.timesheetId));
   },
 );
 
-const initialState = {
+const initialState: any = {
   loadingTimesheetLine: true,
   moreLoading: false,
   isListEnd: false,
@@ -101,6 +97,7 @@ const initialState = {
 const timesheetLineSlice = createSlice({
   name: 'timesheetLine',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchTimesheetLine, {
       loading: 'loadingTimesheetLine',
