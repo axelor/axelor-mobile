@@ -1,0 +1,6 @@
+{
+  "title": "Leave requests: keep the filled request on screen when its creation fails",
+  "type": "fix",
+  "packages": "hr",
+  "description": "The creation screen emptied itself as soon as the request was sent, without waiting for the answer. A request refused by the server therefore left an empty form and no way to know what had been asked, which forced the whole request to be typed again."
+}

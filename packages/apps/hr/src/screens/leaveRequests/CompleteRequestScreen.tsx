@@ -149,14 +149,16 @@ const CompleteRequestScreen = ({route}: any) => {
         lines,
       }),
     ).then((res: any) => {
+      if (res?.payload == null) return;
+
       if (eventName) {
         DeviceEventEmitter.emit(eventName, {fromDate, toDate});
         navigation.pop();
       } else {
         navigateToCreatedLeaves(res?.payload?.leaveRequestResponseList ?? []);
+        resetDefaultStates();
       }
     });
-    resetDefaultStates();
   }, [
     dispatch,
     eventName,
