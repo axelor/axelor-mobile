@@ -83,7 +83,7 @@ const Panel = ({
       paddingHorizontal: _panel.parent != null ? null : 17,
       paddingLeft: _panel.parent != null ? 5 : null,
       paddingRight: _panel.parent != null ? 5 : null,
-      gap: 2,
+      rowGap: 2,
     }),
     [_panel],
   );

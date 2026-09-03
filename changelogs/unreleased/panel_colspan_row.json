@@ -1,0 +1,5 @@
+{
+  "title": "Form view: panels with colspans summing to 12 are displayed on the same row again",
+  "type": "fix",
+  "packages": ["core"]
+}
