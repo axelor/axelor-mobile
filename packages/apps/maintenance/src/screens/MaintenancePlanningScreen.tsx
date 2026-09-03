@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
   filterChip,
   PlanningView,
@@ -108,9 +108,8 @@ function MaintenancePlanningScreen() {
 
   return (
     <Screen>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
+      <PlanningView
+        filters={
           <MaintenancePlanningFilters
             selectedStatus={selectedStatus}
             onChangeStatus={setSelectedStatus}
@@ -118,8 +117,6 @@ function MaintenancePlanningScreen() {
             onChangeMachine={setSelectedMachine}
           />
         }
-      />
-      <PlanningView
         loading={loadingPlanning}
         itemList={filteredList}
         renderItem={renderItem}

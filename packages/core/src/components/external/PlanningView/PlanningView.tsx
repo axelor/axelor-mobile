@@ -17,14 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {
-  Agenda,
-  AgendaEntry,
-  DateData,
-  LocaleConfig,
-} from 'react-native-calendars';
-import {SwitchCard, useThemeColor} from '@axelor/aos-mobile-ui';
+  AgendaView,
+  SwitchCard,
+  Text,
+  toDateString,
+} from '@axelor/aos-mobile-ui';
 import {useSelector} from '../../../redux/hooks';
 import {useTranslator} from '../../../i18n';
 import {useIsFocused} from '../../../hooks/use-navigation';
@@ -32,21 +30,15 @@ import {
   AgendaEvent,
   AgendaItem,
   createAgendaItems,
-  createAgendaSchedule,
-  DAYS,
-  filterMarkedDates,
-  mapEntryToItem,
-  MONTHS,
+  groupItemsByDate,
   shouldRenderDetailsCard,
 } from './agenda.helpers';
-import MonthDisplay from './MonthDisplay';
-import DayDisplay from './DayDisplay';
-import AgendaItemDisplay from './AgendaItemDisplay';
-import NavigationButton from './NavigationButton';
+import {StyleSheet} from 'react-native';
 
 interface PlanningProps {
   numberMonthsAroundToday?: number;
   loading?: boolean;
+  filters?: React.ReactNode;
   itemList?: AgendaEvent[];
   fetchbyMonth: (params: {date: Date; isAssigned?: boolean}) => void;
   renderItem?: (item: AgendaItem) => React.ReactNode;
@@ -60,6 +52,7 @@ interface PlanningProps {
 const PlanningView = ({
   numberMonthsAroundToday = 12,
   loading = false,
+  filters,
   itemList = [],
   fetchbyMonth,
   renderItem,
@@ -69,14 +62,17 @@ const PlanningView = ({
   manageAssignment = false,
   computeAssignmentLocally = true,
 }: PlanningProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const isFocused = useIsFocused();
 
   const {userId} = useSelector(state => state.auth);
 
-  const [fetchDate, setFetchDate] = useState(new Date());
-  const [currentDate, setCurrentDate] = useState(new Date().toISOString());
+  const [selectedDate, setSelectedDate] = useState(() =>
+    toDateString(new Date()),
+  );
+  const [fetchMonthKey, setFetchMonthKey] = useState(() =>
+    selectedDate.slice(0, 7),
+  );
   const [assigned, setAssigned] = useState(true);
 
   const filterOnUserAssigned = useCallback(
@@ -92,213 +88,76 @@ const PlanningView = ({
     [assigned, computeAssignmentLocally, manageAssignment, userId],
   );
 
-  useEffect(() => {
-    LocaleConfig.locales = {
-      default: {
-        monthNames: MONTHS.map(_m => I18n.t(_m)),
-        monthNamesShort: MONTHS.map(_m => I18n.t(_m)),
-        dayNames: DAYS.map(_d => I18n.t(_d)),
-        dayNamesShort: DAYS.map(_d => I18n.t(_d)),
-        today: I18n.t('Base_Calendar_Today'),
-      },
-    };
-
-    LocaleConfig.defaultLocale = 'default';
-  }, [I18n]);
-
-  const _agendaItems = useMemo(
-    () => createAgendaItems(filterOnUserAssigned(itemList), I18n),
+  const itemsByDate = useMemo(
+    () =>
+      groupItemsByDate(createAgendaItems(filterOnUserAssigned(itemList), I18n)),
     [filterOnUserAssigned, itemList, I18n],
   );
 
-  const agendaItems = useMemo(
-    () => createAgendaSchedule(_agendaItems, numberMonthsAroundToday),
-    [_agendaItems, numberMonthsAroundToday],
-  );
-
-  const styles = useMemo(() => getStyles(manageAssignment), [manageAssignment]);
-
-  const markedDots = useMemo(
-    () => filterMarkedDates(agendaItems),
-    [agendaItems],
-  );
-
-  const renderDate = useCallback(
-    (date: Date) => <DayDisplay date={date} />,
-    [],
-  );
-
-  const renderEmptyDate = useCallback(
-    () => <View style={styles.emptyDate} />,
-    [styles.emptyDate],
-  );
-
-  const renderDayItem = (item: AgendaEntry, isFirst: boolean) => {
-    const agendaItem: AgendaItem = mapEntryToItem(item, _agendaItems);
-
-    if (agendaItem == null) return null;
-
-    const {id, date, isNewMonth} = agendaItem;
-
-    if (isNewMonth) {
-      return <MonthDisplay key={id} date={date} isFirst={isFirst} />;
-    }
-
-    const _renderComponent = shouldRenderDetailsCard(agendaItem)
-      ? renderItem
-      : renderFullDayItem;
-
-    return (
-      <AgendaItemDisplay
-        key={id}
-        isFirst={isFirst}
-        agendaItem={agendaItem}
-        renderComponent={_renderComponent}
-      />
-    );
-  };
-
-  const handleLoadItemsForMonth = useCallback((date: DateData) => {
-    setFetchDate(new Date(date.dateString));
-  }, []);
-
   const loadItemsWithAPI = useCallback(() => {
-    fetchbyMonth({date: fetchDate, isAssigned: assigned});
-  }, [assigned, fetchDate, fetchbyMonth]);
+    fetchbyMonth({date: new Date(`${fetchMonthKey}-01`), isAssigned: assigned});
+  }, [assigned, fetchMonthKey, fetchbyMonth]);
 
   useEffect(() => {
     if (isFocused) loadItemsWithAPI();
   }, [isFocused, loadItemsWithAPI]);
 
-  const handleMonthChange = useCallback((months: DateData[]) => {
-    setFetchDate(new Date(months?.[0]?.dateString));
-  }, []);
+  const handleVisibleMonthChange = useCallback(
+    (monthKey: string) => setFetchMonthKey(monthKey),
+    [],
+  );
 
-  const todayBtnOnPress = useCallback(() => {
-    setFetchDate(new Date());
-    setCurrentDate(new Date().toISOString());
-  }, []);
+  const renderAgendaItem = useCallback(
+    (item: AgendaItem) => {
+      const renderComponent = shouldRenderDetailsCard(item)
+        ? renderItem
+        : renderFullDayItem;
 
-  const nextWeekBtnOnPress = useCallback(() => {
-    setCurrentDate(_current => {
-      var firstDay = new Date(_current);
-      var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-      setFetchDate(nextWeek);
+      return renderComponent?.(item) ?? <Text>{item.id}</Text>;
+    },
+    [renderItem, renderFullDayItem],
+  );
 
-      return nextWeek.toISOString();
-    });
-  }, []);
-
-  const lastWeekBtnOnPress = useCallback(() => {
-    setCurrentDate(_current => {
-      var firstDay = new Date(_current);
-      var lastWeek = new Date(firstDay.getTime() - 7 * 24 * 60 * 60 * 1000);
-      setFetchDate(lastWeek);
-
-      return lastWeek.toISOString();
-    });
-  }, []);
+  const getItemHours = useCallback(
+    ({startHour, endHour, isFullDayEvent}: AgendaItem) =>
+      isFullDayEvent ? {} : {startHour, endHour},
+    [],
+  );
 
   return (
-    <View
-      style={[
-        styles.agendaContainer,
-        {backgroundColor: Colors.backgroundColor},
-      ]}>
-      <View style={styles.headerPlanning}>
-        {manageAssignment && (
+    <AgendaView
+      filters={filters}
+      itemsByDate={itemsByDate}
+      selectedDate={selectedDate}
+      onDateChange={setSelectedDate}
+      onVisibleMonthChange={handleVisibleMonthChange}
+      renderItem={renderAgendaItem}
+      getItemHours={getItemHours}
+      monthsBefore={numberMonthsAroundToday}
+      monthsAfter={numberMonthsAroundToday}
+      showNavigation={changeWeekButton}
+      showTodayButton={returnToDayButton}
+      headerLeft={
+        manageAssignment ? (
           <SwitchCard
+            style={styles.switch}
             title={I18n.t('Base_AssignedToMe')}
-            style={styles.switchCard}
             defaultValue={assigned}
             onToggle={() => setAssigned(!assigned)}
           />
-        )}
-        <View style={styles.headerButton}>
-          <NavigationButton
-            visible={changeWeekButton}
-            icon="arrow-left"
-            onPress={lastWeekBtnOnPress}
-          />
-          <NavigationButton
-            visible={returnToDayButton}
-            icon="calendar-event"
-            onPress={todayBtnOnPress}
-          />
-          <NavigationButton
-            visible={changeWeekButton}
-            icon="arrow-right"
-            onPress={nextWeekBtnOnPress}
-          />
-        </View>
-      </View>
-      <Agenda
-        onDayPress={date => setCurrentDate(date.dateString)}
-        selected={currentDate}
-        onVisibleMonthsChange={handleMonthChange}
-        items={agendaItems}
-        markedDates={markedDots}
-        firstDay={1}
-        loadItemsForMonth={handleLoadItemsForMonth}
-        pastScrollRange={numberMonthsAroundToday}
-        futureScrollRange={numberMonthsAroundToday}
-        renderItem={renderDayItem}
-        renderDay={renderDate}
-        renderEmptyDate={renderEmptyDate}
-        onRefresh={loadItemsWithAPI}
-        refreshing={loading}
-        theme={{
-          todayTextColor: Colors.text,
-          calendarBackground: Colors.backgroundColor,
-          indicatorColor: Colors.primaryColor.background,
-          textSectionTitleColor: Colors.placeholderTextColor,
-          dayTextColor: Colors.text,
-          selectedDayTextColor: Colors.text,
-          monthTextColor: Colors.text,
-          selectedDayBackgroundColor: Colors.primaryColor.background_light,
-          backgroundColor: Colors.screenBackgroundColor,
-          dotColor: Colors.primaryColor.background,
-          selectedDotColor: Colors.text,
-          agendaDayTextColor: Colors.text,
-          agendaDayNumColor: Colors.text,
-          agendaTodayColor: Colors.primaryColor.background_light,
-          agendaKnobColor: Colors.secondaryColor.background,
-          todayBackgroundColor: Colors.secondaryColor.background_light,
-        }}
-        current={currentDate}
-        key={currentDate}
-      />
-    </View>
+        ) : undefined
+      }
+      refreshing={loading}
+      onRefresh={loadItemsWithAPI}
+      translator={I18n.t}
+    />
   );
 };
 
-const getStyles = (manageAssignment: boolean) =>
-  StyleSheet.create({
-    agendaContainer: {
-      height: '100%',
-      borderTopLeftRadius: 12,
-      borderTopRightRadius: 12,
-      paddingTop: 8,
-    },
-    emptyDate: {
-      flex: 1,
-    },
-    headerPlanning: {
-      flexDirection: 'row',
-      justifyContent: manageAssignment ? 'space-between' : 'flex-end',
-      alignItems: 'center',
-      gap: 10,
-      paddingHorizontal: 10,
-    },
-    headerButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 5,
-    },
-    switchCard: {
-      flex: 1,
-      marginLeft: 5,
-    },
-  });
+const styles = StyleSheet.create({
+  switch: {
+    width: '100%',
+  },
+});
 
 export default PlanningView;

@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AgendaEntry, AgendaSchedule} from 'react-native-calendars';
+import {toDateString} from '@axelor/aos-mobile-ui';
 import {TranslatorProps} from '../../../i18n';
 import {
   formatTime,
-  diffDate,
   sameDate,
   incrementDate,
   isMidnightDate,
@@ -28,32 +27,27 @@ import {
 } from '../../../utils';
 
 export const EMPTY_TIME = '-';
-const START_OF_MONTH_DOTS = 'startOfMonth';
 
-export const MONTHS = [
-  'Base_MonthLong_January',
-  'Base_MonthLong_February',
-  'Base_MonthLong_March',
-  'Base_MonthLong_April',
-  'Base_MonthLong_May',
-  'Base_MonthLong_June',
-  'Base_MonthLong_July',
-  'Base_MonthLong_August',
-  'Base_MonthLong_September',
-  'Base_MonthLong_October',
-  'Base_MonthLong_November',
-  'Base_MonthLong_December',
-];
+const MS_IN_DAY = 24 * 60 * 60 * 1000;
+const MINUTES_IN_DAY = 24 * 60;
 
-export const DAYS = [
-  'Base_Day_Sun',
-  'Base_Day_Mon',
-  'Base_Day_Tue',
-  'Base_Day_Wed',
-  'Base_Day_Thu',
-  'Base_Day_Fri',
-  'Base_Day_Sat',
-];
+const atMidnight = (date: Date): Date =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+const calendarDayCount = (startDate: Date, endDate: Date): number =>
+  Math.round(
+    (atMidnight(endDate).getTime() - atMidnight(startDate).getTime()) /
+      MS_IN_DAY,
+  ) + 1;
+
+const coversFullDay = (startDate: string, endDate: string): boolean => {
+  if (!isMidnightDate(startDate)) return false;
+
+  const minutes =
+    (new Date(endDate).getTime() - new Date(startDate).getTime()) / 60_000;
+
+  return minutes >= MINUTES_IN_DAY - 1;
+};
 
 export interface AgendaEvent {
   id: string;
@@ -65,136 +59,10 @@ export interface AgendaEvent {
 export interface AgendaItem {
   id: string;
   date: string | Date;
-  isNewMonth?: boolean;
-  startHour?: string | Date;
-  endHour?: string | Date;
-  isFullDayEvent?: Boolean;
+  startHour?: string;
+  endHour?: string;
+  isFullDayEvent?: boolean;
   data: object | string | number;
-}
-
-export function mapEntryToItem(
-  agendaItem: AgendaEntry,
-  itemList: AgendaItem[],
-): AgendaItem {
-  const _item = itemList.find(
-    (item: AgendaItem) => item.id === agendaItem.name,
-  );
-
-  return {
-    id: agendaItem.name,
-    date: agendaItem.day,
-    data: {},
-    ...(_item ?? {}),
-    isNewMonth: agendaItem.name.includes(START_OF_MONTH_DOTS),
-  };
-}
-
-function mapItemToEntry(item: AgendaItem): AgendaEntry {
-  return {
-    name: '' + item?.id,
-    height: 80,
-    day: new Date(item?.date).toISOString(),
-  };
-}
-
-function mapItemListToEntryList(items: AgendaItem[]): AgendaEntry[] {
-  return items.map(mapItemToEntry);
-}
-
-function formatDate(date: Date) {
-  return `${date.getFullYear()}-${(date.getMonth() + 1)
-    .toString()
-    .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-}
-
-function addDays(originDate: string | Date, days: number, resetTime = false) {
-  var date = new Date(originDate);
-  date.setDate(date.getDate() + days);
-
-  if (resetTime) date.setHours(23, 59, 59, 999);
-
-  return date;
-}
-
-function addMonths(originDate, months) {
-  var date = new Date(originDate);
-  date.setMonth(date.getMonth() + months);
-  return date;
-}
-
-function getAllDates(startDate, stopDate) {
-  var dateArray = [];
-  const endDate = new Date(stopDate);
-  var currentDate = new Date(startDate);
-  while (currentDate <= endDate) {
-    dateArray.push(new Date(currentDate));
-    currentDate = addDays(currentDate, 1);
-  }
-  return dateArray;
-}
-
-function getAllDatesFromDate(monthsAroundDate: number, date: Date) {
-  const startDate = addMonths(date, -monthsAroundDate);
-  const stopDate = addMonths(date, monthsAroundDate);
-  return getAllDates(startDate, stopDate);
-}
-
-function generateAgendaItems(monthsAroundDate): AgendaSchedule {
-  const todayDate = new Date();
-  const dateArray = getAllDatesFromDate(monthsAroundDate, todayDate);
-  const agendaItems = {};
-
-  dateArray.forEach((date: Date) => {
-    if (isStartOfMonth(date)) {
-      const _d = addDays(date, -1, true);
-
-      agendaItems[formatDate(_d)] = [
-        {
-          day: _d,
-          name: `${_d.getFullYear()}-${
-            _d.getMonth() + 1
-          }-${START_OF_MONTH_DOTS}`,
-          height: undefined,
-        },
-      ];
-    }
-
-    agendaItems[formatDate(date)] = [];
-  });
-
-  return agendaItems;
-}
-
-export function createAgendaSchedule(
-  items: AgendaItem[],
-  monthsAroundDate: number,
-) {
-  const agendaSchedule = generateAgendaItems(monthsAroundDate);
-  const agendaItems = mapItemListToEntryList(items);
-
-  agendaItems.forEach((item: AgendaEntry) => {
-    const itemDate = formatDate(new Date(item.day));
-    return (agendaSchedule[itemDate] = [
-      ...(agendaSchedule[itemDate] ?? []),
-      item,
-    ]).sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
-  });
-
-  return agendaSchedule;
-}
-
-export function getShortName(date: Date) {
-  return DAYS[date.getDay()];
-}
-
-export function getMonthName(date: string | Date): string {
-  const _d = addDays(date, 1);
-  return MONTHS[_d.getMonth()];
-}
-
-export function isStartOfMonth(date: Date | string): boolean {
-  const d = new Date(date);
-  return d.getDate() === 1;
 }
 
 export const createAgendaItems = (
@@ -205,7 +73,7 @@ export const createAgendaItems = (
     return [];
   }
 
-  const agendaItems = [];
+  const agendaItems: any[] = [];
 
   list.forEach(_e => {
     const items = createAgendaItem(_e, I18n);
@@ -235,8 +103,7 @@ const createAgendaItem = (
         date: _endDate,
         startHour: formatTime(event.startDate, I18n.t('Base_TimeFormat')),
         endHour: formatTime(event.endDate, I18n.t('Base_TimeFormat')),
-        isFullDayEvent:
-          isMidnightDate(event.startDate) && isMidnightDate(event.endDate),
+        isFullDayEvent: coversFullDay(event.startDate, event.endDate),
         data: event.data,
       },
     ];
@@ -261,9 +128,9 @@ const createMultiDayAgendaItems = (
     endHour: EMPTY_TIME,
   });
 
-  const diffDays = diffDate(startDate, endDate);
+  const dayCount = calendarDayCount(startDate, endDate);
 
-  for (let d = 1; d < diffDays - 1; d++) {
+  for (let d = 1; d <= dayCount - 2; d++) {
     agendaItems.push({
       id: `${event.id}_${d + 1}`,
       date: incrementDate(startDate, d).toISOString(),
@@ -273,7 +140,7 @@ const createMultiDayAgendaItems = (
   }
 
   agendaItems.push({
-    id: `${event.id}_${diffDays + 1}`,
+    id: `${event.id}_${dayCount}`,
     date: endDate,
     data: event.data,
     startHour: EMPTY_TIME,
@@ -301,12 +168,26 @@ export const shouldRenderDetailsCard = (event: AgendaItem) => {
   );
 };
 
-export const filterMarkedDates = (agendaItems: AgendaSchedule) => {
-  const nonTechnicalDates = Object.entries(agendaItems).map(([_d, items]) => {
-    const _list = items.filter(({name}) => !name.includes(START_OF_MONTH_DOTS));
+export const groupItemsByDate = (
+  items: AgendaItem[],
+): Record<string, AgendaItem[]> => {
+  const result: Record<string, AgendaItem[]> = {};
 
-    return [_d, {marked: _list.length > 0}];
+  items.forEach(item => {
+    const dateString = toDateString(new Date(item.date));
+
+    if (result[dateString] == null) {
+      result[dateString] = [];
+    }
+
+    result[dateString].push(item);
   });
 
-  return Object.fromEntries(nonTechnicalDates);
+  Object.values(result).forEach(dayItems =>
+    dayItems.sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    ),
+  );
+
+  return result;
 };

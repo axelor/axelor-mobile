@@ -66,12 +66,6 @@ jest.mock('react-native-blob-util', () => ({
   DocumentDir: 'FAKE-DIRECTORY-PATH',
 }));
 
-jest.mock('react-native-calendars', () => ({
-  Agenda: jest.fn(),
-  AgendaEntry: jest.fn(),
-  DateData: jest.fn(),
-}));
-
 jest.mock('@react-native-clipboard/clipboard', () => ({default: jest.fn()}));
 
 jest.mock('@react-native-community/slider', () => 'RNSlider');
