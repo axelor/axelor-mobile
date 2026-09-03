@@ -16,18 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {replace, indexOfElement} from './arrays';
-export * from './calendar';
-export {getCommonStyles, INPUT_MIN_HEIGHT} from './commons-styles';
-export * from './commons-utlis';
-export * from './dates';
-export {formatNumber, unformatNumber} from './formatters';
-export {getFromList, getItemsFromList} from './list';
-export {isHalf, getIntegerPart, roundHalf, roundInteger} from './number';
-export {deepCopy} from './objects';
-export {
-  splitInTwo,
-  checkNullString,
-  capitalizeFirstLetter,
-  sliceString,
-} from './strings';
+export {default as CalendarMonthGrid} from './CalendarMonthGrid';
+export {default as CalendarMonthTitle} from './CalendarMonthTitle';
+export {default as CalendarWeekDays} from './CalendarWeekDays';
