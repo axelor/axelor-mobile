@@ -18,11 +18,18 @@
 
 import {
   createStandardSearch,
+  Criteria,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createTimesheetLineCriteria = (searchValue, timesheetId) => {
+const createTimesheetLineCriteria = ({
+  searchValue,
+  timesheetId,
+}: {
+  searchValue?: string;
+  timesheetId: number;
+}): Criteria[] => {
   return [
     {
       fieldName: 'timesheet.id',
@@ -34,13 +41,17 @@ const createTimesheetLineCriteria = (searchValue, timesheetId) => {
 };
 
 export async function fetchTimesheetLine({
-  searchValue = null,
+  searchValue,
   timesheetId,
   page = 0,
+}: {
+  searchValue?: string;
+  timesheetId: number;
+  page?: number;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.TimesheetLine',
-    criteria: createTimesheetLineCriteria(searchValue, timesheetId),
+    criteria: createTimesheetLineCriteria({searchValue, timesheetId}),
     fieldKey: 'hr_timesheetLine',
     sortKey: 'hr_timesheetLine',
     page,
@@ -48,7 +59,11 @@ export async function fetchTimesheetLine({
   });
 }
 
-export async function createTimesheetLine({timesheetLine}) {
+export async function createTimesheetLine({
+  timesheetLine,
+}: {
+  timesheetLine: any;
+}) {
   return getActionApi()
     .send({
       url: 'ws/aos/business/timesheet-line',
@@ -70,7 +85,13 @@ export async function createTimesheetLine({timesheetLine}) {
     });
 }
 
-export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
+export async function updateTimesheetLine({
+  timesheetLineId,
+  timesheetLine,
+}: {
+  timesheetLineId: number;
+  timesheetLine: any;
+}) {
   return getActionApi()
     .send({
       url: `ws/aos/business/timesheet-line/update/${timesheetLineId}`,
@@ -92,14 +113,20 @@ export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
     });
 }
 
-export async function deleteTimesheetLine({timesheetLineId}) {
+export async function deleteTimesheetLine({
+  timesheetLineId,
+}: {
+  timesheetLineId: number;
+}) {
   return getActionApi().send({
     url: `ws/rest/com.axelor.apps.hr.db.TimesheetLine/${timesheetLineId}`,
     method: 'delete',
+    body: {},
     description: 'delete timesheet line',
     matchers: {
       modelName: 'com.axelor.apps.hr.db.TimesheetLine',
       id: timesheetLineId,
+      fields: {},
     },
   });
 }

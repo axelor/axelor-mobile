@@ -43,7 +43,7 @@ const useExpenseListAction = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.Expense',
   });
@@ -65,8 +65,8 @@ const useExpenseListAction = () => {
           hideIf:
             !mobileSettings?.isManualCreationOfExpenseAllowed || !canCreate,
           onPress: () =>
-            dispatch(quickCreateExpense({userId})).then(
-              res =>
+            dispatch((quickCreateExpense as any)({userId})).then(
+              (res: any) =>
                 mobileSettings?.isLineCreationOfExpenseDetailsAllowed &&
                 navigation.navigate('ExpenseDetailsScreen', {
                   idExpense: res.payload.expenseId,
@@ -100,7 +100,7 @@ const useExpenseDetailsAction = () => {
           title: I18n.t('Hr_RefreshExpenseDetails'),
           iconColor: Colors.primaryColor.background,
           onPress: () => {
-            dispatch(fetchExpenseById({ExpenseId: expense?.id}));
+            dispatch((fetchExpenseById as any)({ExpenseId: expense?.id}));
           },
           showInHeader: true,
         },
@@ -186,7 +186,7 @@ const useTimesheetDetailsAction = () => {
       model: 'com.axelor.apps.hr.db.Timesheet',
       modelId: timesheet?.id,
     });
-  }, [timesheet]);
+  }, [timesheet?.id]);
 };
 
 const useLeaveListAction = () => {

@@ -136,7 +136,7 @@ class ObjectFieldsProvider {
 
   getSearchCriterias(
     objectKey: string | string[],
-    searchValue: string,
+    searchValue?: string,
   ): CriteriaGroup {
     const searchFields: string[] = Array.isArray(objectKey)
       ? objectKey
@@ -172,7 +172,7 @@ export function getSortFields(objectKey: string): string[] {
 
 export function getSearchCriterias(
   objectKey: string | string[],
-  searchValue: string,
+  searchValue?: string,
 ): CriteriaGroup {
   return objectFieldsProvider.getSearchCriterias(objectKey, searchValue);
 }
