@@ -1,0 +1,6 @@
+{
+  "title": "Themes: make the text laid over a light coloured background readable again",
+  "type": "fix",
+  "packages": "ui",
+  "description": "Coloured buttons, labels, chips, number bubbles and info bubbles paint a light shade of their colour as background and write over it. The text was still using the shade meant for a solid background, which on most colours was white and therefore almost invisible - a contrast of 1.1 to 1 on a success or an error colour. Every theme now writes in black over a light background. A theme configured on the server keeps deciding on its own, but the decision is now taken on the light shade as it is actually drawn rather than on the plain colour, which also fixes the reverse case of black text over a light shade in dark mode."
+}
