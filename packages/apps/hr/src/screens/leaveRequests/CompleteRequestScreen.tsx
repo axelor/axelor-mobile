@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {DeviceEventEmitter, StyleSheet, View} from 'react-native';
 import {
   PeriodInput,
   useDispatch,
@@ -28,6 +28,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   FormInput,
+  fromDateString,
   KeyboardAvoidingScrollView,
   Label,
   Screen,
@@ -43,18 +44,28 @@ import {
 import {createLeaveRequest} from '../../features/leaveSlice';
 import {fetchMissingDuration} from '../../api/leave-api';
 
-const CompleteRequestScreen = ({}) => {
+const CompleteRequestScreen = ({route, navigation}: any) => {
+  const {eventName} = route?.params ?? {};
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {LeaveReason, LeaveRequest} = useTypes();
   const {getItemTitle} = useTypeHelpers();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.LeaveRequest',
   });
 
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState<Date | undefined>();
+  const {routeFromDate, routeToDate} = useMemo(() => {
+    const {fromDate: _from, toDate: _to} = route?.params ?? {};
+
+    return {
+      routeFromDate: _from == null ? undefined : fromDateString(_from),
+      routeToDate: _to == null ? undefined : fromDateString(_to),
+    };
+  }, [route?.params]);
+
+  const [fromDate, setFromDate] = useState(routeFromDate ?? new Date());
+  const [toDate, setToDate] = useState<Date | undefined>(routeToDate);
   const [startOn, setStartOn] = useState<number>(
     LeaveRequest?.startOnSelect?.Morning,
   );
@@ -68,8 +79,8 @@ const CompleteRequestScreen = ({}) => {
   const [missingQty, setMissingQty] = useState(0);
 
   const resetDefaultStates = useCallback(() => {
-    setFromDate(new Date());
-    setToDate(undefined);
+    setFromDate(routeFromDate ?? new Date());
+    setToDate(routeToDate);
     setStartOn(LeaveRequest?.startOnSelect?.Morning);
     setEndOn(LeaveRequest?.endOnSelect?.Afternoon);
     setLines([]);
@@ -80,6 +91,8 @@ const CompleteRequestScreen = ({}) => {
   }, [
     LeaveRequest?.endOnSelect?.Afternoon,
     LeaveRequest?.startOnSelect?.Morning,
+    routeFromDate,
+    routeToDate,
   ]);
 
   const handleReset = useCallback(() => {
@@ -140,6 +153,32 @@ const CompleteRequestScreen = ({}) => {
     }
   }, [currentDuration, endOn, fromDate, startOn, toDate]);
 
+  const handleCreate = useCallback(() => {
+    dispatch(
+      (createLeaveRequest as any)({
+        fromDate,
+        startOnSelect: startOn,
+        lines,
+      }),
+    ).then(() => {
+      if (eventName) {
+        DeviceEventEmitter.emit(eventName, {fromDate, toDate});
+        navigation.pop();
+      } else {
+        resetDefaultStates();
+      }
+    });
+  }, [
+    dispatch,
+    eventName,
+    fromDate,
+    lines,
+    navigation,
+    resetDefaultStates,
+    startOn,
+    toDate,
+  ]);
+
   if (!canCreate) {
     return (
       <Label
@@ -161,16 +200,7 @@ const CompleteRequestScreen = ({}) => {
             !fromDate || !toDate || !startOn || !endOn || missingQty !== 0
           }
           onAddPress={handleAddLine}
-          onFinishPress={() => {
-            dispatch(
-              (createLeaveRequest as any)({
-                fromDate,
-                startOnSelect: startOn,
-                lines,
-              }),
-            );
-            resetDefaultStates();
-          }}
+          onFinishPress={handleCreate}
         />
       }>
       <KeyboardAvoidingScrollView
@@ -208,7 +238,9 @@ const CompleteRequestScreen = ({}) => {
           {missingQty !== 0 && (
             <Label
               style={styles.label}
-              message={`${I18n.t(missingQty > 0 ? 'Hr_MissingQuantity' : 'Hr_ExceedingQuantity')} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
+              message={`${I18n.t(
+                missingQty > 0 ? 'Hr_MissingQuantity' : 'Hr_ExceedingQuantity',
+              )} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
               type="error"
             />
           )}
