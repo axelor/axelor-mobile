@@ -1,0 +1,5 @@
+{
+  "title": "Maintenance request form: the selected equipment card no longer stretches to fill the screen",
+  "type": "fix",
+  "packages": ["maintenance"]
+}
