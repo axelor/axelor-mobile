@@ -202,7 +202,7 @@ describe('WeekDayPicker Component', () => {
 
       expect(
         getByTestId('weekDayFill-2026-08-07').props.style.backgroundColor,
-      ).toBe(addOpacityToHex(Colors.successColor.background, 0.5));
+      ).toBe(addOpacityToHex(Colors.successColor.background, 0.2));
     });
 
     it('highlights the column of the selected day', () => {
