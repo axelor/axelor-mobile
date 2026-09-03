@@ -1,0 +1,6 @@
+{
+  "title": "CalendarRangePicker: add a new scrollable multi-month calendar to pick a date range visually, with coloured day marks, a collapsible legend and a shortcut back to today",
+  "type": "feat",
+  "packages": "ui",
+  "description": "Days can be marked by half, morning and afternoon carrying their own colour, so a day shared between two records stays readable. Days that cannot be picked are shown as a round badge above the marks and can carry their own colour to tell several kinds apart. Pressing a day that already holds records opens a sheet listing them, from which the free half of the day can still be taken, and a range is shortened so that it never spans a day that is already full."
+}
