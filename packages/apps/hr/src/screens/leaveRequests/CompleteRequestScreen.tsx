@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {DeviceEventEmitter, StyleSheet, View} from 'react-native';
 import {
   PeriodInput,
   useDispatch,
@@ -29,6 +29,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   FormInput,
+  fromDateString,
   KeyboardAvoidingScrollView,
   Label,
   Screen,
@@ -44,10 +45,11 @@ import {
 import {createLeaveRequest} from '../../features/leaveSlice';
 import {fetchMissingDuration} from '../../api/leave-api';
 
-const CompleteRequestScreen = ({}) => {
+const CompleteRequestScreen = ({route}: any) => {
+  const {eventName} = route?.params ?? {};
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {LeaveReason, LeaveRequest} = useTypes();
   const {getItemTitle} = useTypeHelpers();
   const navigation = useNavigation();
@@ -55,8 +57,17 @@ const CompleteRequestScreen = ({}) => {
     modelName: 'com.axelor.apps.hr.db.LeaveRequest',
   });
 
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState<Date | undefined>();
+  const {routeFromDate, routeToDate} = useMemo(() => {
+    const {fromDate: _from, toDate: _to} = route?.params ?? {};
+
+    return {
+      routeFromDate: _from == null ? undefined : fromDateString(_from),
+      routeToDate: _to == null ? undefined : fromDateString(_to),
+    };
+  }, [route?.params]);
+
+  const [fromDate, setFromDate] = useState(routeFromDate ?? new Date());
+  const [toDate, setToDate] = useState<Date | undefined>(routeToDate);
   const [startOn, setStartOn] = useState<number>(
     LeaveRequest?.startOnSelect?.Morning,
   );
@@ -70,8 +81,8 @@ const CompleteRequestScreen = ({}) => {
   const [missingQty, setMissingQty] = useState(0);
 
   const resetDefaultStates = useCallback(() => {
-    setFromDate(new Date());
-    setToDate(undefined);
+    setFromDate(routeFromDate ?? new Date());
+    setToDate(routeToDate);
     setStartOn(LeaveRequest?.startOnSelect?.Morning);
     setEndOn(LeaveRequest?.endOnSelect?.Afternoon);
     setLines([]);
@@ -82,6 +93,8 @@ const CompleteRequestScreen = ({}) => {
   }, [
     LeaveRequest?.endOnSelect?.Afternoon,
     LeaveRequest?.startOnSelect?.Morning,
+    routeFromDate,
+    routeToDate,
   ]);
 
   const handleReset = useCallback(() => {
@@ -135,17 +148,25 @@ const CompleteRequestScreen = ({}) => {
         startOnSelect: startOn,
         lines,
       }),
-    ).then(res =>
-      navigateToCreatedLeaves(res?.payload?.leaveRequestResponseList ?? []),
-    );
+    ).then((res: any) => {
+      if (eventName) {
+        DeviceEventEmitter.emit(eventName, {fromDate, toDate});
+        navigation.pop();
+      } else {
+        navigateToCreatedLeaves(res?.payload?.leaveRequestResponseList ?? []);
+      }
+    });
     resetDefaultStates();
   }, [
     dispatch,
+    eventName,
     fromDate,
     lines,
     navigateToCreatedLeaves,
+    navigation,
     resetDefaultStates,
     startOn,
+    toDate,
   ]);
 
   const handleEditLine = useCallback((line: any) => {
@@ -236,7 +257,9 @@ const CompleteRequestScreen = ({}) => {
           {missingQty !== 0 && (
             <Label
               style={styles.label}
-              message={`${I18n.t(missingQty > 0 ? 'Hr_NeededQuantity' : 'Hr_ExceedingQuantity')} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
+              message={`${I18n.t(
+                missingQty > 0 ? 'Hr_NeededQuantity' : 'Hr_ExceedingQuantity',
+              )} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
               type="error"
             />
           )}
