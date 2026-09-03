@@ -147,7 +147,7 @@ export const cancelLeave = createAsyncThunk(
 
 export const returnToDraftStatusLeave = createAsyncThunk(
   'hr_leave/returnToDraftStatusLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _returnToDraftStatusLeave,
       data,
