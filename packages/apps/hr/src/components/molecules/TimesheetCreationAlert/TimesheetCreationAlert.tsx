@@ -31,11 +31,13 @@ import {createTimesheet} from '../../../features/timesheetSlice';
 interface TimesheetCreationAlertProps {
   isOpen: boolean;
   onCancel: () => void;
+  onCreated?: (timesheetId: number) => void;
 }
 
 const TimesheetCreationAlert = ({
   isOpen,
   onCancel,
+  onCreated,
 }: TimesheetCreationAlertProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
@@ -61,11 +63,17 @@ const TimesheetCreationAlert = ({
         userId,
       }),
     ).then((res: any) => {
-      mobileSettings?.isLineCreationOfTimesheetDetailsAllowed &&
+      const timesheetId = res?.payload?.timesheetId;
+
+      if (onCreated != null) {
+        onCreated(timesheetId);
+      } else if (mobileSettings?.isLineCreationOfTimesheetDetailsAllowed) {
         navigation.navigate('TimesheetDetailsScreen', {
-          timesheetId: res.payload.timesheetId,
+          timesheetId,
           isManualCreation: true,
         });
+      }
+
       handleCancel();
     });
   }, [
@@ -74,6 +82,7 @@ const TimesheetCreationAlert = ({
     handleCancel,
     mobileSettings,
     navigation,
+    onCreated,
     toDate,
     userId,
   ]);
