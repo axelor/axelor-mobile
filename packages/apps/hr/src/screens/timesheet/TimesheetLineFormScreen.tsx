@@ -46,9 +46,7 @@ const TimesheetLineFormScreen = ({route, navigation}: any) => {
             productId: objectState.product?.id,
           },
         }),
-      );
-
-      navigation.goBack();
+      ).then(() => navigation.goBack());
     },
     [navigation, timesheetId],
   );
@@ -68,9 +66,7 @@ const TimesheetLineFormScreen = ({route, navigation}: any) => {
             productId: objectState.product?.id,
           },
         }),
-      );
-
-      navigation.goBack();
+      ).then(() => navigation.goBack());
     },
     [navigation, timesheetId],
   );
