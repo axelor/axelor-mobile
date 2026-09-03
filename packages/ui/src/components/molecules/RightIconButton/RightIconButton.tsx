@@ -26,6 +26,7 @@ interface RightIconProps {
   onPress: () => void;
   title?: string;
   titleColor?: string;
+  content?: React.ReactNode;
   icon: React.ReactNode;
   numberOfLines?: number;
   showWrapper?: boolean;
@@ -37,6 +38,7 @@ const RightIconButton = ({
   onPress,
   title,
   titleColor,
+  content,
   icon,
   numberOfLines = 2,
   showWrapper = true,
@@ -51,12 +53,14 @@ const RightIconButton = ({
       <Container
         style={[styles.container, style]}
         testID={showWrapper ? undefined : 'rightIconButtonContent'}>
-        <Text
-          style={[styles.text, styleText]}
-          numberOfLines={numberOfLines}
-          textColor={titleColor}>
-          {title ?? ''}
-        </Text>
+        {content ?? (
+          <Text
+            style={[styles.text, styleText]}
+            numberOfLines={numberOfLines}
+            textColor={titleColor}>
+            {title ?? ''}
+          </Text>
+        )}
         {icon}
       </Container>
     </TouchableOpacity>

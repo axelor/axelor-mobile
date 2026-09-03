@@ -27,6 +27,7 @@ const MAX_LIST_LENGTH = 5;
 interface SelectionItemProps {
   style?: any;
   content: string;
+  renderContent?: React.ReactNode;
   onPress: () => void;
   isPicker?: boolean;
   itemColor?: Color;
@@ -39,6 +40,7 @@ interface SelectionItemProps {
 const SelectionItem = ({
   style,
   content,
+  renderContent,
   onPress,
   isPicker = false,
   itemColor,
@@ -72,16 +74,18 @@ const SelectionItem = ({
         />
       )}
       <View style={itemStyles.textContainer}>
-        <Text
-          style={[
-            itemStyles.text,
-            isMoreResultsItem ? itemStyles.alignText : undefined,
-          ]}
-          numberOfLines={multiLineLabels ? undefined : 1}
-          writingType={isMoreResultsItem ? 'title' : undefined}
-          textColor={isMoreResultsItem ? _itemColor.background : undefined}>
-          {content}
-        </Text>
+        {renderContent ?? (
+          <Text
+            style={[
+              itemStyles.text,
+              isMoreResultsItem ? itemStyles.alignText : undefined,
+            ]}
+            numberOfLines={multiLineLabels ? undefined : 1}
+            writingType={isMoreResultsItem ? 'title' : undefined}
+            textColor={isMoreResultsItem ? _itemColor.background : undefined}>
+            {content}
+          </Text>
+        )}
         {itemColor != null && (
           <BorderBar
             style={itemStyles.selectedItem}
@@ -131,6 +135,7 @@ interface SelectionContainerProps {
   style?: any;
   objectList: any[];
   displayValue?: (item: any) => string;
+  renderItem?: (item: any) => React.ReactNode;
   handleSelect?: (item: any) => void;
   handleMoreResult?: () => void;
   keyField?: string;
@@ -148,6 +153,7 @@ const SelectionContainer = ({
   style,
   objectList,
   displayValue,
+  renderItem,
   handleSelect,
   handleMoreResult,
   keyField = 'id',
@@ -229,6 +235,7 @@ const SelectionContainer = ({
             <SelectionItem
               key={item[keyField]?.toString()}
               content={displayValue?.(item) ?? ''}
+              renderContent={renderItem?.(item)}
               onPress={() => handleSelect?.(item)}
               itemColor={item?.color}
               isPicker={isPicker}
@@ -273,6 +280,7 @@ const SelectionContainer = ({
     handleMoreResult,
     keyField,
     displayValue,
+    renderItem,
     selectedKeys,
     readonly,
     multiLineLabels,

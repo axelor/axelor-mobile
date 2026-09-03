@@ -41,6 +41,7 @@ interface PickerProps {
   defaultValue?: string | number;
   listItems: any[];
   displayValue?: (item: any) => string;
+  renderItem?: (item: any) => React.ReactNode;
   labelField?: string;
   valueField: string;
   emptyValue?: boolean;
@@ -63,6 +64,7 @@ const Picker = ({
   defaultValue = '',
   listItems,
   displayValue,
+  renderItem,
   labelField,
   valueField,
   emptyValue = true,
@@ -194,6 +196,7 @@ const Picker = ({
       objectList={listItems}
       keyField={valueField}
       displayValue={_displayValue}
+      renderItem={renderItem}
       handleSelect={handleValueChange}
       isPicker={true}
       selectedItem={[selectedItem]}
@@ -227,6 +230,11 @@ const Picker = ({
         title={displayPlaceholder ? placeholder : _displayValue(selectedItem)}
         titleColor={
           displayPlaceholder ? Colors.placeholderTextColor : Colors.text
+        }
+        content={
+          displayPlaceholder || selectedItem == null
+            ? undefined
+            : renderItem?.(selectedItem)
         }
         styleText={styles.text}
         style={[

@@ -59,6 +59,15 @@ describe('RightIconButton Component', () => {
     expect(props.onPress).toHaveBeenCalled();
   });
 
+  it('displays the given content in place of the title', () => {
+    const {getByTestId, queryByText, props} = setupRightIconButton({
+      content: <View testID="mocked_content" />,
+    });
+
+    expect(getByTestId('mocked_content')).toBeTruthy();
+    expect(queryByText(props.title)).toBeNull();
+  });
+
   it('applies custom style when provided', () => {
     const {getByTestId, props} = setupRightIconButton({style: {width: 200}});
 

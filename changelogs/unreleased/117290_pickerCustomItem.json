@@ -1,0 +1,6 @@
+{
+  "title": "Picker: allow a picker to display more than plain text for the selected value and for each option",
+  "type": "feat",
+  "packages": "ui",
+  "description": "A picker can now be given a way to render its items, so an option can carry a coloured badge or any other indication beside its label. The rendering applies both to the value shown once the picker is closed and to every option in the list, which lets a choice be made on more than the label alone. Pickers that were not given one keep displaying plain text exactly as before."
+}

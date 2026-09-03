@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
+import {Text} from 'react-native';
 import {fireEvent, within} from '@testing-library/react-native';
 import {SelectionContainer} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
@@ -53,6 +55,15 @@ describe('SelectionContainer Component', () => {
         within(_itemElts.at(idx)).getByText(props.displayValue(_i)),
       ).toBeTruthy();
     });
+  });
+
+  it('renders the given node for each item in place of its label', () => {
+    const {getAllByTestId, queryByText, props} = setupSelectionContainer({
+      renderItem: item => <Text testID={`custom-${item.id}`}>{item.id}</Text>,
+    });
+
+    expect(getAllByTestId(/^custom-/)).toHaveLength(props.objectList.length);
+    expect(queryByText('Item 1')).toBeNull();
   });
 
   it('should call handleSelect with the right item on press', () => {
