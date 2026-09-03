@@ -17,10 +17,12 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {EquipementMaintenanceCard} from '../../atoms';
+
+const CARD_HEIGHT = 84;
 
 interface EquipementMaintenanceActionCardProps {
   style?: any;
@@ -37,16 +39,22 @@ const EquipementMaintenanceActionCard = ({
 }: EquipementMaintenanceActionCardProps) => {
   const I18n = useTranslator();
   return (
-    <ActionCard
-      style={[styles.card, style]}
-      actionList={[{iconName: 'x-lg', onPress, hidden: readonly}]}
-      translator={I18n.t}>
-      <EquipementMaintenanceCard {...item} />
-    </ActionCard>
+    <View style={styles.container}>
+      <ActionCard
+        style={[styles.card, style]}
+        actionList={[{iconName: 'x-lg', onPress, hidden: readonly}]}
+        translator={I18n.t}>
+        <EquipementMaintenanceCard {...item} />
+      </ActionCard>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    height: CARD_HEIGHT,
+    width: '100%',
+  },
   card: {
     width: '90%',
     alignSelf: 'center',
