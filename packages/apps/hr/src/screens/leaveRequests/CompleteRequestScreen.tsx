@@ -160,7 +160,9 @@ const CompleteRequestScreen = ({route, navigation}: any) => {
         startOnSelect: startOn,
         lines,
       }),
-    ).then(() => {
+    ).then((response: any) => {
+      if (response?.payload == null) return;
+
       if (eventName) {
         DeviceEventEmitter.emit(eventName, {fromDate, toDate});
         navigation.pop();
