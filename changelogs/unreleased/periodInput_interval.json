@@ -1,0 +1,6 @@
+{
+  "title": "PeriodInput: fix the crash raised when changing a date on a period without a default interval",
+  "type": "fix",
+  "packages": "core",
+  "description": "The default interval was computed from the defaultIntervalHours property with a check excluding null only, so an absent property produced a NaN interval. That interval was then considered as provided, and changing the start date derived an end date from it, which was an invalid date crashing the date input as soon as it was displayed. No caller provides that property, so every period input was affected."
+}
