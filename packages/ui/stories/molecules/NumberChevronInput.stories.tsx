@@ -34,6 +34,7 @@ export const NumberChevronInput: Story<typeof Component> = {
     minValue: 0,
     maxValue: 9,
     readonly: false,
+    keyboardDisabled: false,
     required: false,
   },
   argTypes: {
