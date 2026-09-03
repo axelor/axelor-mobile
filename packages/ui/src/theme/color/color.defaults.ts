@@ -102,7 +102,7 @@ export const bootstrapColors = {
   brown: {
     background: '#795548',
     background_light: '#EEE9E7',
-    foreground: '#FFFFFF',
+    foreground: '#000000',
   },
   grey: {
     background: '#6C757D',
@@ -117,7 +117,7 @@ export const bootstrapColors = {
   black: {
     background: '#000000',
     background_light: '#DEDEDE',
-    foreground: '#FFFFFF',
+    foreground: '#000000',
   },
 };
 

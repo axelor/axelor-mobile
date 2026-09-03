@@ -18,6 +18,7 @@
 
 import {
   addOpacityToHex,
+  blendHex,
   deepCopy,
   getBestForegroundColor,
   rgbaStringToHex,
@@ -64,13 +65,17 @@ export function formatColor(color: string) {
   return undefined;
 }
 
-const extendColor = (color: string): Color => {
+const LIGHT_SHADE_OPACITY = 0.2;
+
+const extendColor = (color: string, surface: string): Color => {
   const _hexColor = formatColor(color) as string;
 
   return {
     background: _hexColor,
-    background_light: addOpacityToHex(_hexColor, 0.2),
-    foreground: getBestForegroundColor(_hexColor),
+    background_light: addOpacityToHex(_hexColor, LIGHT_SHADE_OPACITY),
+    foreground: getBestForegroundColor(
+      blendHex(_hexColor, formatColor(surface) as string, LIGHT_SHADE_OPACITY),
+    ),
   };
 };
 
@@ -123,38 +128,41 @@ function mapPaletteColors(theme: ConfigurableTheme): ThemeColors {
     JSON.parse(theme.content),
   );
 
+  const _extendColor = (_color: string) =>
+    extendColor(_color, _content.body.background);
+
   return {
     ...bootstrapColors,
     screenBackgroundColor: _content.body.sidebar,
     backgroundColor: _content.body.background,
     text: _content.body.color,
     placeholderTextColor: _content.body.placeholder,
-    primaryColor: extendColor(_content.colors.primary),
-    secondaryColor: extendColor(_content.colors.secondary),
-    secondaryColor_dark: extendColor(_content.colors.dark),
-    errorColor: extendColor(_content.colors.danger),
-    cautionColor: extendColor(_content.colors.warning),
-    plannedColor: extendColor(_content.web.purple),
-    progressColor: extendColor(_content.web.yellow),
-    priorityColor: extendColor(_content.colors.info),
-    defaultColor: extendColor(_content.web.grey),
-    importantColor: extendColor(_content.colors.danger),
-    successColor: extendColor(_content.colors.success),
-    warningColor: extendColor(_content.colors.warning),
-    inverseColor: extendColor(_content.web.grey),
-    infoColor: extendColor(_content.colors.info),
-    red: extendColor(_content.web.red),
-    pink: extendColor(_content.web.pink),
-    purple: extendColor(_content.web.purple),
-    indigo: extendColor(_content.web.indigo),
-    blue: extendColor(_content.web.blue),
-    cyan: extendColor(_content.web.cyan),
-    teal: extendColor(_content.web.teal),
-    green: extendColor(_content.web.green),
-    yellow: extendColor(_content.web.yellow),
-    orange: extendColor(_content.web.orange),
-    grey: extendColor(_content.web.grey),
-    black: extendColor(_content.web.black),
+    primaryColor: _extendColor(_content.colors.primary),
+    secondaryColor: _extendColor(_content.colors.secondary),
+    secondaryColor_dark: _extendColor(_content.colors.dark),
+    errorColor: _extendColor(_content.colors.danger),
+    cautionColor: _extendColor(_content.colors.warning),
+    plannedColor: _extendColor(_content.web.purple),
+    progressColor: _extendColor(_content.web.yellow),
+    priorityColor: _extendColor(_content.colors.info),
+    defaultColor: _extendColor(_content.web.grey),
+    importantColor: _extendColor(_content.colors.danger),
+    successColor: _extendColor(_content.colors.success),
+    warningColor: _extendColor(_content.colors.warning),
+    inverseColor: _extendColor(_content.web.grey),
+    infoColor: _extendColor(_content.colors.info),
+    red: _extendColor(_content.web.red),
+    pink: _extendColor(_content.web.pink),
+    purple: _extendColor(_content.web.purple),
+    indigo: _extendColor(_content.web.indigo),
+    blue: _extendColor(_content.web.blue),
+    cyan: _extendColor(_content.web.cyan),
+    teal: _extendColor(_content.web.teal),
+    green: _extendColor(_content.web.green),
+    yellow: _extendColor(_content.web.yellow),
+    orange: _extendColor(_content.web.orange),
+    grey: _extendColor(_content.web.grey),
+    black: _extendColor(_content.web.black),
   };
 }
 
