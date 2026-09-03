@@ -1,0 +1,5 @@
+{
+  "title": "NumberChevronInput: add inputStyle prop to customize the inner input style",
+  "type": "feat",
+  "packages": "ui"
+}
