@@ -1,0 +1,6 @@
+{
+  "title": "Timesheet: wait for a line to be saved before leaving its form",
+  "type": "fix",
+  "packages": "hr",
+  "description": "The form closed as soon as the creation or the update was sent, so the timesheet it returned to was refreshed before the line was actually saved and could show the previous state of the line."
+}
