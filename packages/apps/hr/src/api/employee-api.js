@@ -33,7 +33,12 @@ const createManagedEmployeeCriteria = userId => {
   return criteria;
 };
 
-const createEmployeeCriteria = (searchValue, hireDate, payCompany) => {
+const createEmployeeCriteria = (
+  searchValue,
+  hireDate,
+  payCompany,
+  managerUserId,
+) => {
   const criteria = [
     getSearchCriterias('hr_employee', searchValue),
     {fieldName: 'user.blocked', operator: '=', value: false},
@@ -62,6 +67,14 @@ const createEmployeeCriteria = (searchValue, hireDate, payCompany) => {
     });
   }
 
+  if (managerUserId != null) {
+    criteria.push({
+      fieldName: 'managerUser.id',
+      operator: '=',
+      value: managerUserId,
+    });
+  }
+
   return criteria;
 };
 
@@ -81,10 +94,16 @@ export async function searchEmployee({
   searchValue = null,
   hireDate,
   payCompany,
+  managerUserId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Employee',
-    criteria: createEmployeeCriteria(searchValue, hireDate, payCompany),
+    criteria: createEmployeeCriteria(
+      searchValue,
+      hireDate,
+      payCompany,
+      managerUserId,
+    ),
     fieldKey: 'hr_employee',
     sortKey: 'hr_employee',
     page,
