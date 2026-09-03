@@ -16,21 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {CircleButton} from '@axelor/aos-mobile-ui';
+export interface AgendaDay {
+  dateString: string;
+  dayNumber: number;
+  dayIndex: number;
+  monthKey: string;
+  isWeekEnd: boolean;
+  isFirstOfMonth: boolean;
+}
 
-const NavigationButton = ({
-  visible = true,
-  icon,
-  onPress,
-}: {
-  visible?: boolean;
-  icon: string;
-  onPress: () => void;
-}) => {
-  if (!visible) return null;
-
-  return <CircleButton iconName={icon} onPress={onPress} size={30} />;
-};
-
-export default NavigationButton;
+export interface ItemHours {
+  startHour?: string;
+  endHour?: string;
+}

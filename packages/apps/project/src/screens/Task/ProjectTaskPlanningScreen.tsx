@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {PlanningView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   fetchPlannedProjectTasks,
@@ -119,9 +119,8 @@ function ProjectTaskPlanningScreen() {
 
   return (
     <Screen>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
+      <PlanningView
+        filters={
           <ProjectPlanningFilters
             selectedProject={selectedProject}
             onChangeProject={setSelectedProject}
@@ -129,8 +128,6 @@ function ProjectTaskPlanningScreen() {
             onChangeStatus={setSelectedStatus}
           />
         }
-      />
-      <PlanningView
         loading={loadingPlanning}
         itemList={filteredList}
         renderItem={renderItem}

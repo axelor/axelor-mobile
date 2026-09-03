@@ -21,6 +21,7 @@ export {
   Action as ActionCardType,
 } from './ActionCard/ActionCard';
 export {default as ActionSheet} from './ActionSheet/ActionSheet';
+export * from './AgendaView';
 export {default as AutoCompleteSearch} from './AutoCompleteSearch/AutoCompleteSearch';
 export * from './CalendarRangePicker';
 export {default as CheckboxScrollList} from './CheckboxScrollList/CheckboxScrollList';
