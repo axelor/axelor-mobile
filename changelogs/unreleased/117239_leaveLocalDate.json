@@ -1,0 +1,6 @@
+{
+  "title": "Leave requests: send the period of a request as a date instead of a UTC instant, which shifted it to the day before",
+  "type": "fix",
+  "packages": "hr",
+  "description": "The endpoints computing the duration, computing the available days and creating a request all expect a date without time. A Date was sent instead, serialized as a UTC instant: for any timezone east of UTC, the date read by the server was the day before as soon as the time of day was earlier than the offset. The period is now formatted as a plain date before being sent."
+}
