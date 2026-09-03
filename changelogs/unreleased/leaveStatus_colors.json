@@ -1,0 +1,6 @@
+{
+  "title": "Leave requests: tell the draft, refused and cancelled statuses apart more clearly",
+  "type": "refactor",
+  "packages": "hr",
+  "description": "The three statuses were painted with colours that the new design uses for other meanings. A draft request now carries the information colour, a refused one the error colour and a cancelled one the secondary colour, which also keeps them readable when a request is shown as a mark on a calendar."
+}

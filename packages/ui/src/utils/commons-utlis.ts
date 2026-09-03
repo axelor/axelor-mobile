@@ -31,6 +31,18 @@ export function addOpacityToHex(hexColor: string, opacity = 1) {
   return `${hexColor}${alpha}`;
 }
 
+export function blendHex(hexColor: string, surface: string, opacity = 1) {
+  const [r, g, b] = hexToRgb(hexColor).split(', ').map(Number);
+  const [sr, sg, sb] = hexToRgb(surface).split(', ').map(Number);
+
+  const mix = (channel: number, surfaceChannel: number) =>
+    Math.round(channel * opacity + surfaceChannel * (1 - opacity));
+
+  const toHex = (value: number) => value.toString(16).padStart(2, '0');
+
+  return `#${toHex(mix(r, sr))}${toHex(mix(g, sg))}${toHex(mix(b, sb))}`;
+}
+
 export function rgbaToHex(r: number, g: number, b: number, a: number = 1) {
   const toHex = (value: number) => value.toString(16).padStart(2, '0');
   return addOpacityToHex(`#${toHex(r)}${toHex(g)}${toHex(b)}`, a);

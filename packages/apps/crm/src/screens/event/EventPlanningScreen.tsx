@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
   filterChip,
   headerActionsProvider,
@@ -163,9 +163,8 @@ function EventPlanningScreen({navigation}: any) {
 
   return (
     <Screen>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
+      <PlanningView
+        filters={
           <EventPlanningFilters
             setSearchValue={setSearchValue}
             setSelectedStatus={setSelectedStatus}
@@ -173,8 +172,6 @@ function EventPlanningScreen({navigation}: any) {
             fetchData={fetchData}
           />
         }
-      />
-      <PlanningView
         loading={loadingEventList}
         itemList={filteredList}
         renderItem={renderDayEventDetails}

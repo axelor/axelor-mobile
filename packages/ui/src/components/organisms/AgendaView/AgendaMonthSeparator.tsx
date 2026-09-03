@@ -16,29 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../i18n';
-import {getMonthName} from './agenda.helpers';
+import {getMonthTitleKey} from '../../../utils';
+import {useThemeColor} from '../../../theme';
+import {Text} from '../../atoms';
 
-const MonthDisplay = ({
-  date,
-  isFirst = false,
-}: {
-  date: string | Date;
-  isFirst?: boolean;
-}) => {
+interface AgendaMonthSeparatorProps {
+  monthKey: string;
+  translator: (key: string) => string;
+}
+
+const AgendaMonthSeparator = ({
+  monthKey,
+  translator,
+}: AgendaMonthSeparatorProps) => {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
+  const [year, month] = monthKey.split('-');
 
   return (
-    <View style={[styles.container, isFirst ? styles.margin : undefined]}>
+    <View style={styles.container}>
       <Text
         style={styles.text}
         textColor={Colors.secondaryColor.background}
         fontSize={20}>
-        {I18n.t(getMonthName(date))}
+        {`${translator(getMonthTitleKey(Number(month) - 1))} ${year}`}
       </Text>
     </View>
   );
@@ -46,16 +48,11 @@ const MonthDisplay = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-  },
-  margin: {
-    height: 120,
+    paddingVertical: 12,
   },
   text: {
     alignSelf: 'center',
   },
 });
 
-export default MonthDisplay;
+export default memo(AgendaMonthSeparator);

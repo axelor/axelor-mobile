@@ -66,7 +66,7 @@ const PeriodInput = ({
   const [endDate, setEndDate] = useState<Date | undefined>(endDateConfig.date);
   const [isPeriodError, setIsPeriodError] = useState<boolean>(false);
   const [interval, setInterval] = useState<number | undefined>(
-    defaultIntervalHours !== null
+    defaultIntervalHours != null
       ? hoursToMilliseconds(defaultIntervalHours)
       : undefined,
   );

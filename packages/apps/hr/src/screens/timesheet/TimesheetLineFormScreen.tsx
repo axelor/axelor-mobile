@@ -28,7 +28,7 @@ import {
 } from '../../features/timesheetLineSlice';
 
 const TimesheetLineFormScreen = ({route, navigation}: any) => {
-  const {timesheetId, timesheetLine} = route?.params ?? {};
+  const {timesheetId, timesheetLine, date} = route?.params ?? {};
 
   const {user} = useSelector(state => state.user);
 
@@ -46,9 +46,7 @@ const TimesheetLineFormScreen = ({route, navigation}: any) => {
             productId: objectState.product?.id,
           },
         }),
-      );
-
-      navigation.goBack();
+      ).then(() => navigation.goBack());
     },
     [navigation, timesheetId],
   );
@@ -68,9 +66,7 @@ const TimesheetLineFormScreen = ({route, navigation}: any) => {
             productId: objectState.product?.id,
           },
         }),
-      );
-
-      navigation.goBack();
+      ).then(() => navigation.goBack());
     },
     [navigation, timesheetId],
   );
@@ -83,11 +79,11 @@ const TimesheetLineFormScreen = ({route, navigation}: any) => {
 
   const creationDefaultValue = useMemo(
     () => ({
-      date: new Date().toISOString().split('T')[0],
+      date: date ?? new Date().toISOString().split('T')[0],
       product: user?.employee?.product,
       useDuration: true,
     }),
-    [user],
+    [date, user],
   );
 
   useEffect(() => {

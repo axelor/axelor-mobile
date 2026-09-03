@@ -1,0 +1,6 @@
+{
+  "title": "Timesheet: allow another screen to create a timesheet and to add a line on a given day",
+  "type": "feat",
+  "packages": "hr",
+  "description": "The timesheet creation can now report the timesheet it created to the screen that asked for it instead of always opening the timesheet details, and the line form accepts the day the line has to be created on. A screen browsing a timesheet day by day can therefore create the timesheet it needs and fill it without ever leaving its own flow."
+}

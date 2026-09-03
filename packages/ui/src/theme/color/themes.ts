@@ -34,17 +34,17 @@ export const lightTheme: Theme = {
     },
     secondaryColor: {
       background_light: '#DCE4DF',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#6B7B73',
     },
     secondaryColor_dark: {
       background_light: '#c5c3c3',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#424242',
     },
     errorColor: {
       background_light: '#FCEAE8',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#E0564B',
     },
     cautionColor: {
@@ -54,7 +54,7 @@ export const lightTheme: Theme = {
     },
     plannedColor: {
       background_light: '#ECE4FA',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#6443B0',
     },
     progressColor: {
@@ -64,22 +64,22 @@ export const lightTheme: Theme = {
     },
     priorityColor: {
       background_light: '#E3F0FB',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#2E78C4',
     },
     defaultColor: {
       background_light: '#DCE4DF',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#6B7B73',
     },
     importantColor: {
       background_light: '#FCEAE8',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#E0564B',
     },
     successColor: {
       background_light: '#E4F6EC',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#1F9D57',
     },
     warningColor: {
@@ -89,12 +89,12 @@ export const lightTheme: Theme = {
     },
     inverseColor: {
       background_light: '#DCE4DF',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#6B7B73',
     },
     infoColor: {
       background_light: '#E3F0FB',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#2E78C4',
     },
     ...bootstrapColors,
@@ -123,12 +123,12 @@ export const purpleTheme: Theme = {
     },
     secondaryColor_dark: {
       background_light: '#E4E4E4',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#5A5A7C',
     },
     errorColor: {
       background_light: '#FBE7E6',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#DD514C',
     },
     cautionColor: {
@@ -138,7 +138,7 @@ export const purpleTheme: Theme = {
     },
     plannedColor: {
       background_light: '#F6E7FC',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#C354F2',
     },
     progressColor: {
@@ -148,7 +148,7 @@ export const purpleTheme: Theme = {
     },
     priorityColor: {
       background_light: '#DDF3FC',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#26C6F9',
     },
     defaultColor: {
@@ -158,12 +158,12 @@ export const purpleTheme: Theme = {
     },
     importantColor: {
       background_light: '#FBE7E6',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#DD514C',
     },
     successColor: {
       background_light: '#E1F7ED',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#3ECF8E',
     },
     warningColor: {
@@ -173,12 +173,12 @@ export const purpleTheme: Theme = {
     },
     inverseColor: {
       background_light: '#EAEAEA',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#606060',
     },
     infoColor: {
       background_light: '#DDF3FC',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#26C6F9',
     },
     ...bootstrapColors,
@@ -197,22 +197,22 @@ export const colorBlindTheme: Theme = {
     backgroundColor: '#FAFBFC',
     primaryColor: {
       background_light: '#DCEAF3',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#0072B2',
     },
     secondaryColor: {
       background_light: '#DCE4DF',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#6B7B73',
     },
     secondaryColor_dark: {
       background_light: '#c5c3c3',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#424242',
     },
     errorColor: {
       background_light: '#FBE6D9',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#D55E00',
     },
     cautionColor: {
@@ -222,7 +222,7 @@ export const colorBlindTheme: Theme = {
     },
     plannedColor: {
       background_light: '#F8E9F1',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#CC79A7',
     },
     progressColor: {
@@ -237,17 +237,17 @@ export const colorBlindTheme: Theme = {
     },
     defaultColor: {
       background_light: '#DCE4DF',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#6B7B73',
     },
     importantColor: {
       background_light: '#FBE6D9',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#D55E00',
     },
     successColor: {
       background_light: '#DCF3EC',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#009E73',
     },
     warningColor: {
@@ -257,7 +257,7 @@ export const colorBlindTheme: Theme = {
     },
     inverseColor: {
       background_light: '#DCE4DF',
-      foreground: '#FFFFFF',
+      foreground: '#000000',
       background: '#6B7B73',
     },
     infoColor: {

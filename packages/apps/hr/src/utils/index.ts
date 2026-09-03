@@ -17,5 +17,5 @@
  */
 
 export * from './employee';
-export * from './unit';
 export * from './time';
+export * from './unit';

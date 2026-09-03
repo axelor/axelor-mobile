@@ -19,14 +19,24 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  Criteria,
   formatRequestBody,
   getActionApi,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
+import {toDateString} from '@axelor/aos-mobile-ui';
 
-const createLeaveCriteria = (userId, selectedStatus) => {
-  const criteria = [
+type ApiDate = Date | string;
+
+const toApiDate = (date: ApiDate): string =>
+  typeof date === 'string' ? date : toDateString(date);
+
+const createLeaveCriteria = (
+  userId: number,
+  selectedStatus?: number,
+): Criteria[] => {
+  const criteria: Criteria[] = [
     {
       fieldName: 'employee.user.id',
       operator: '=',
@@ -50,27 +60,33 @@ const createLeaveCriteria = (userId, selectedStatus) => {
   return criteria;
 };
 
-const createLeaveToValidateCriteria = (searchValue, user) => {
+export const createLeaveManagerScopeCriteria = (user: any): Criteria[] => {
+  if (user?.employee?.hrManager) return [];
+
+  return [
+    {
+      fieldName: 'employee.managerUser.id',
+      operator: '=',
+      value: user?.id,
+    },
+  ];
+};
+
+const createLeaveToValidateCriteria = (
+  searchValue: string | undefined,
+  user: any,
+): Criteria[] => {
   const LeaveRequest = getTypes().LeaveRequest;
 
-  const criteria = [
+  return [
     getSearchCriterias('hr_leave', searchValue),
     {
       fieldName: 'statusSelect',
       operator: '=',
       value: LeaveRequest?.statusSelect.WaitingValidation,
     },
+    ...createLeaveManagerScopeCriteria(user),
   ];
-
-  if (!user?.employee?.hrManager) {
-    criteria.push({
-      fieldName: 'employee.managerUser.id',
-      operator: '=',
-      value: user?.id,
-    });
-  }
-
-  return criteria;
 };
 
 export async function fetchLeave({
@@ -79,6 +95,12 @@ export async function fetchLeave({
   page = 0,
   companyId,
   filterDomain,
+}: {
+  userId: number;
+  selectedStatus?: number;
+  page?: number;
+  companyId?: number;
+  filterDomain?: any;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.LeaveRequest',
@@ -98,6 +120,12 @@ export async function fetchLeaveToValidate({
   page = 0,
   companyId,
   filterDomain,
+}: {
+  searchValue?: string;
+  user: any;
+  page?: number;
+  companyId?: number;
+  filterDomain?: any;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.LeaveRequest',
@@ -111,7 +139,7 @@ export async function fetchLeaveToValidate({
   });
 }
 
-export async function fetchLeaveById({leaveId}) {
+export async function fetchLeaveById({leaveId}: {leaveId: number}) {
   return createStandardFetch({
     model: 'com.axelor.apps.hr.db.LeaveRequest',
     id: leaveId,
@@ -120,7 +148,15 @@ export async function fetchLeaveById({leaveId}) {
   });
 }
 
-export async function fetchLeaveReason({searchValue, employeeId, page = 0}) {
+export async function fetchLeaveReason({
+  searchValue,
+  employeeId,
+  page = 0,
+}: {
+  searchValue?: string;
+  employeeId: number;
+  page?: number;
+}) {
   const LeaveReason = getTypes().LeaveReason;
 
   return createStandardSearch({
@@ -143,14 +179,19 @@ export async function fetchMissingDuration({
   toDate,
   startOnSelect,
   endOnSelect,
-}) {
+}: {
+  fromDate: ApiDate;
+  toDate: ApiDate;
+  startOnSelect: number;
+  endOnSelect: number;
+}): Promise<number> {
   return getActionApi()
     .send({
       url: 'ws/aos/leave-request/compute-duration',
       method: 'post',
       body: {
-        fromDate,
-        toDate,
+        fromDate: toApiDate(fromDate),
+        toDate: toApiDate(toDate),
         startOnSelect,
         endOnSelect,
       },
@@ -159,7 +200,13 @@ export async function fetchMissingDuration({
     .then(res => Number(res?.data?.object?.duration));
 }
 
-export async function sendLeave({leaveRequestId, version}) {
+export async function sendLeave({
+  leaveRequestId,
+  version,
+}: {
+  leaveRequestId: number;
+  version: number;
+}) {
   return getActionApi().send({
     url: `ws/aos/leave-request/send/${leaveRequestId}`,
     method: 'put',
@@ -170,7 +217,13 @@ export async function sendLeave({leaveRequestId, version}) {
   });
 }
 
-export async function validateLeave({leaveRequestId, version}) {
+export async function validateLeave({
+  leaveRequestId,
+  version,
+}: {
+  leaveRequestId: number;
+  version: number;
+}) {
   return getActionApi().send({
     url: `ws/aos/leave-request/validate/${leaveRequestId}`,
     method: 'put',
@@ -181,7 +234,13 @@ export async function validateLeave({leaveRequestId, version}) {
   });
 }
 
-export async function cancelLeave({leaveRequestId, version}) {
+export async function cancelLeave({
+  leaveRequestId,
+  version,
+}: {
+  leaveRequestId: number;
+  version: number;
+}) {
   return getActionApi().send({
     url: `ws/aos/leave-request/cancel/${leaveRequestId}`,
     method: 'put',
@@ -192,7 +251,15 @@ export async function cancelLeave({leaveRequestId, version}) {
   });
 }
 
-export async function rejectLeave({leaveRequestId, version, groundForRefusal}) {
+export async function rejectLeave({
+  leaveRequestId,
+  version,
+  groundForRefusal,
+}: {
+  leaveRequestId: number;
+  version: number;
+  groundForRefusal?: string;
+}) {
   return getActionApi().send({
     url: `ws/aos/leave-request/reject/${leaveRequestId}`,
     method: 'put',
@@ -204,19 +271,21 @@ export async function rejectLeave({leaveRequestId, version, groundForRefusal}) {
   });
 }
 
-export async function deleteLeave({leaveRequestId}) {
+export async function deleteLeave({leaveRequestId}: {leaveRequestId: number}) {
   return getActionApi().send({
     url: `ws/rest/com.axelor.apps.hr.db.LeaveRequest/${leaveRequestId}`,
     method: 'delete',
+    body: {},
     description: 'delete leave request',
     matchers: {
       modelName: 'com.axelor.apps.hr.db.LeaveRequest',
       id: leaveRequestId,
+      fields: {},
     },
   });
 }
 
-export async function updateLeave({leave}) {
+export async function updateLeave({leave}: {leave: any}) {
   const {matchers, formattedData} = formatRequestBody(leave, 'data');
 
   return getActionApi().send({
@@ -234,7 +303,19 @@ export async function updateLeave({leave}) {
   });
 }
 
-export async function createLeaveRequest({fromDate, startOnSelect, lines}) {
+export async function createLeaveRequest({
+  fromDate,
+  startOnSelect,
+  lines,
+}: {
+  fromDate: ApiDate;
+  startOnSelect: number;
+  lines: {
+    id: number;
+    qty: number;
+    comment?: string;
+  }[];
+}) {
   const requests = lines.map(line => ({
     leaveReasonId: line.id,
     duration: line.qty,
@@ -245,7 +326,7 @@ export async function createLeaveRequest({fromDate, startOnSelect, lines}) {
     url: 'ws/aos/leave-request/',
     method: 'post',
     body: {
-      fromDate,
+      fromDate: toApiDate(fromDate),
       startOnSelect,
       requests,
     },
@@ -253,13 +334,19 @@ export async function createLeaveRequest({fromDate, startOnSelect, lines}) {
   });
 }
 
-export async function fetchLeaveReasonAvailability({toDate, leaveReasonId}) {
+export async function fetchLeaveReasonAvailability({
+  toDate,
+  leaveReasonId,
+}: {
+  toDate: ApiDate;
+  leaveReasonId: number;
+}): Promise<number> {
   return getActionApi()
     .send({
       url: 'ws/aos/leave-request/compute-leave-available',
       method: 'post',
       body: {
-        toDate,
+        toDate: toApiDate(toDate),
         leaveReasonId,
       },
       description: 'fetch leave reason availability',

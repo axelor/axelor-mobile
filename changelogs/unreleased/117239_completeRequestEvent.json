@@ -1,0 +1,6 @@
+{
+  "title": "Leave requests: allow the complete request screen to be opened on a given period and to report the creation to its caller",
+  "type": "feat",
+  "packages": "hr",
+  "description": "The screen now reads a fromDate and a toDate from its route to prefill the period, and an eventName on which it emits the created period before closing itself, so a screen offering its own way to pick a period can refresh itself afterwards. Opened from its own menu, without those parameters, the screen behaves exactly as before."
+}

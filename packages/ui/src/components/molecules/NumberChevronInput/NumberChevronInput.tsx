@@ -99,6 +99,7 @@ export const INPUT_CHANGE_TYPE = {
 
 interface NumberChevronInputProps {
   style?: any;
+  inputStyle?: any;
   inputRef?: Ref<TextInput>;
   defaultValue?: number;
   stepSize?: number;
@@ -108,10 +109,12 @@ interface NumberChevronInputProps {
   onEndFocus?: () => void;
   required?: boolean;
   readonly?: boolean;
+  keyboardDisabled?: boolean;
 }
 
 const NumberChevronInput = ({
   style,
+  inputStyle,
   inputRef,
   defaultValue = 0,
   stepSize = 1,
@@ -121,6 +124,7 @@ const NumberChevronInput = ({
   onEndFocus,
   required = false,
   readonly = false,
+  keyboardDisabled = false,
 }: NumberChevronInputProps) => {
   const Colors = useThemeColor();
 
@@ -214,13 +218,13 @@ const NumberChevronInput = ({
           styles.inputContainer,
         ]}>
         <Input
-          style={styles.input}
+          style={[styles.input, inputStyle]}
           inputRef={inputRef}
           value={inputValue?.toString()}
           onChange={handleInputChange}
           onSelection={handleSelection}
           onEndFocus={handleEndFocus}
-          readOnly={readonly}
+          readOnly={readonly || keyboardDisabled}
           keyboardType="numeric"
         />
       </View>
@@ -240,12 +244,14 @@ const NumberChevronInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: '17%',
+    width: 40,
     flexDirection: 'column',
+    alignItems: 'center',
   },
   inputContainer: {
     width: '100%',
     marginHorizontal: 0,
+    paddingHorizontal: 0,
   },
   input: {
     width: '100%',

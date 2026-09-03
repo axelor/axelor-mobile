@@ -37,7 +37,7 @@ import {
 
 export const fetchLeave = createAsyncThunk(
   'hr_leave/fetchLeave',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchLeave,
       data,
@@ -50,7 +50,7 @@ export const fetchLeave = createAsyncThunk(
 
 export const fetchLeaveToValidate = createAsyncThunk(
   'hr_leave/fetchLeaveToValidate',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchLeaveToValidate,
       data,
@@ -63,7 +63,7 @@ export const fetchLeaveToValidate = createAsyncThunk(
 
 export const fetchLeaveById = createAsyncThunk(
   'hr_leave/fetchLeaveById',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchLeaveById,
       data,
@@ -76,7 +76,7 @@ export const fetchLeaveById = createAsyncThunk(
 
 export const fetchLeaveReason = createAsyncThunk(
   'hr_leave/fetchLeaveReason',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchLeaveReason,
       data,
@@ -89,7 +89,7 @@ export const fetchLeaveReason = createAsyncThunk(
 
 export const sendLeave = createAsyncThunk(
   'hr_leave/sendLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _sendLeave,
       data,
@@ -108,7 +108,7 @@ export const sendLeave = createAsyncThunk(
 
 export const validateLeave = createAsyncThunk(
   'hr_leave/validateLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _validateLeave,
       data,
@@ -127,7 +127,7 @@ export const validateLeave = createAsyncThunk(
 
 export const cancelLeave = createAsyncThunk(
   'hr_leave/cancelLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _cancelLeave,
       data,
@@ -146,7 +146,7 @@ export const cancelLeave = createAsyncThunk(
 
 export const rejectLeave = createAsyncThunk(
   'hr_leave/rejectLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _rejectLeave,
       data,
@@ -165,7 +165,7 @@ export const rejectLeave = createAsyncThunk(
 
 export const deleteLeave = createAsyncThunk(
   'hr_leave/deleteLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _deleteLeave,
       data,
@@ -180,7 +180,7 @@ export const deleteLeave = createAsyncThunk(
 
 export const createLeaveRequest = createAsyncThunk(
   'hr_leave/createLeaveRequest',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _createLeaveRequest,
       data,
@@ -193,7 +193,7 @@ export const createLeaveRequest = createAsyncThunk(
 
 export const updateLeave = createAsyncThunk(
   'hr_leave/updateLeave',
-  async function (data, {getState, dispatch}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateLeave,
       data,
@@ -207,7 +207,7 @@ export const updateLeave = createAsyncThunk(
   },
 );
 
-const initialState = {
+const initialState: any = {
   loadingMyLeave: true,
   moreLoadingMyLeave: false,
   isListEndMyLeave: false,
@@ -231,6 +231,7 @@ const initialState = {
 const leaveSlice = createSlice({
   name: 'hr_leave',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchLeave, {
       loading: 'loadingMyLeave',
