@@ -60,30 +60,33 @@ const createLeaveCriteria = (
   return criteria;
 };
 
+export const createLeaveManagerScopeCriteria = (user: any): Criteria[] => {
+  if (user?.employee?.hrManager) return [];
+
+  return [
+    {
+      fieldName: 'employee.managerUser.id',
+      operator: '=',
+      value: user?.id,
+    },
+  ];
+};
+
 const createLeaveToValidateCriteria = (
   searchValue: string | undefined,
   user: any,
 ): Criteria[] => {
   const LeaveRequest = getTypes().LeaveRequest;
 
-  const criteria: Criteria[] = [
+  return [
     getSearchCriterias('hr_leave', searchValue),
     {
       fieldName: 'statusSelect',
       operator: '=',
       value: LeaveRequest?.statusSelect.WaitingValidation,
     },
+    ...createLeaveManagerScopeCriteria(user),
   ];
-
-  if (!user?.employee?.hrManager) {
-    criteria.push({
-      fieldName: 'employee.managerUser.id',
-      operator: '=',
-      value: user?.id,
-    });
-  }
-
-  return criteria;
 };
 
 export async function fetchLeave({
