@@ -1,0 +1,6 @@
+{
+  "title": "NumberChevronInput: allow the keyboard to be turned off so the value can only be changed with the chevrons",
+  "type": "feat",
+  "packages": "ui",
+  "description": "The input can now refuse the keyboard while staying usable, the value being taken from the chevrons above and below it. Each digit also keeps a fixed width and is centered instead of taking a share of the space available, so a duration keeps the same shape whatever the width it is given."
+}
