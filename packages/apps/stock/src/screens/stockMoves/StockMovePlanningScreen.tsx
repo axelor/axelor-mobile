@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
   filterChip,
   PlanningView,
@@ -109,9 +109,8 @@ function StockMovePlanningScreen() {
 
   return (
     <Screen>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
+      <PlanningView
+        filters={
           <StockMovePlanningFilters
             selectedType={selectedType}
             onChangeType={_v => {
@@ -130,8 +129,6 @@ function StockMovePlanningScreen() {
             onChangePartner={setPartner}
           />
         }
-      />
-      <PlanningView
         loading={loadingPlanning}
         itemList={filteredList}
         renderItem={renderItem}
