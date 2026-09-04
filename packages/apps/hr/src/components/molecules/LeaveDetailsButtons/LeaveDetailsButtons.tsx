@@ -30,9 +30,11 @@ import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   cancelLeave,
   deleteLeave,
+  returnToDraftStatusLeave,
   sendLeave,
   validateLeave,
 } from '../../../features/leaveSlice';
+import {useLeaveRequestRights} from '../../../hooks';
 import {LeaveRefusalPopup} from '../../templates';
 
 interface LeaveDetailsButtonsProps {
@@ -50,9 +52,11 @@ const LeaveDetailsButtons = ({
   const dispatch = useDispatch();
 
   const {LeaveRequest} = useTypes();
-  const {canDelete, readonly} = usePermitted({
+  const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.LeaveRequest',
   });
+  const {canValidate, canCancel, canDelete, canReturnToDraft} =
+    useLeaveRequestRights(leaveRequest);
 
   const [refusalPopupIsOpen, setRefusalPopupIsOpen] = useState(false);
 
@@ -81,14 +85,30 @@ const LeaveDetailsButtons = ({
     dispatch((cancelLeave as any)(leaveRequestParams));
   }, [dispatch, leaveRequestParams]);
 
+  const returnToDraftStatusLeaveAPI = useCallback(() => {
+    dispatch((returnToDraftStatusLeave as any)(leaveRequestParams));
+  }, [dispatch, leaveRequestParams]);
+
   const deleteLeaveAPI = useCallback(() => {
     dispatch((deleteLeave as any)(leaveRequestParams));
     navigation.pop();
   }, [dispatch, leaveRequestParams, navigation]);
 
-  if (readonly) {
-    return null;
-  }
+  const renderCancelButton = useCallback(
+    (width: any) =>
+      canCancel ? (
+        <Button
+          title={I18n.t('Hr_Cancel')}
+          onPress={cancelLeaveAPI}
+          width={width}
+          color={Colors.errorColor}
+          iconName="x-lg"
+        />
+      ) : null,
+    [Colors.errorColor, I18n, canCancel, cancelLeaveAPI],
+  );
+
+  if (readonly) return null;
 
   if (statusSelect === LeaveRequest?.statusSelect.Draft) {
     return (
@@ -102,10 +122,11 @@ const LeaveDetailsButtons = ({
             iconName="trash3-fill"
           />
         )}
+        {renderCancelButton('45%')}
         <Button
           title={I18n.t('Hr_Send')}
           onPress={sendLeaveAPI}
-          width="45%"
+          width={canDelete && canCancel ? '94%' : '45%'}
           iconName="send-fill"
         />
       </View>
@@ -113,42 +134,49 @@ const LeaveDetailsButtons = ({
   }
 
   if (statusSelect === LeaveRequest?.statusSelect.WaitingValidation) {
-    if (
-      user?.employee?.hrManager ||
-      leaveRequest.employee?.managerUser?.id === user.id
-    ) {
-      return (
-        <View style={styles.container}>
-          <Button
-            title={I18n.t('Hr_Refuse')}
-            onPress={() => setRefusalPopupIsOpen(true)}
-            width="45%"
-            color={Colors.errorColor}
-            iconName="x-lg"
-          />
-          <Button
-            title={I18n.t('Hr_Validate')}
-            onPress={validateLeaveAPI}
-            width="45%"
-            iconName="check-lg"
-          />
-          <LeaveRefusalPopup
-            isOpen={refusalPopupIsOpen}
-            leaveId={leaveRequest.id}
-            leaveVersion={leaveRequest.version}
-            handleClose={() => setRefusalPopupIsOpen(false)}
-          />
-        </View>
-      );
-    }
-
     return (
       <View style={styles.container}>
+        {canValidate && (
+          <>
+            <Button
+              title={I18n.t('Hr_Refuse')}
+              onPress={() => setRefusalPopupIsOpen(true)}
+              width="45%"
+              color={Colors.errorColor}
+              iconName="ban"
+            />
+            <Button
+              title={I18n.t('Hr_Validate')}
+              onPress={validateLeaveAPI}
+              width="45%"
+              iconName="check-lg"
+            />
+            <LeaveRefusalPopup
+              isOpen={refusalPopupIsOpen}
+              leaveId={leaveRequest.id}
+              leaveVersion={leaveRequest.version}
+              handleClose={() => setRefusalPopupIsOpen(false)}
+            />
+          </>
+        )}
+        {renderCancelButton('94%')}
+      </View>
+    );
+  }
+
+  if (statusSelect === LeaveRequest?.statusSelect.Validate) {
+    return <View style={styles.container}>{renderCancelButton('94%')}</View>;
+  }
+
+  if (canReturnToDraft) {
+    return (
+      <View style={styles.container}>
+        {renderCancelButton('45%')}
         <Button
-          title={I18n.t('Hr_Cancel')}
-          onPress={cancelLeaveAPI}
-          color={Colors.errorColor}
-          iconName="trash3-fill"
+          title={I18n.t('Hr_ReturnToDraftStatus')}
+          onPress={returnToDraftStatusLeaveAPI}
+          width={canCancel ? '45%' : '94%'}
+          iconName="reply-fill"
         />
       </View>
     );
@@ -159,6 +187,7 @@ const LeaveDetailsButtons = ({
 
 const styles = StyleSheet.create({
   container: {
+    flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },

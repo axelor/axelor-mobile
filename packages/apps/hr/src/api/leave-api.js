@@ -192,6 +192,31 @@ export async function cancelLeave({leaveRequestId, version}) {
   });
 }
 
+export async function returnToDraftStatusLeave({leaveRequestId, version}) {
+  const LeaveRequest = getTypes().LeaveRequest;
+
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      id: leaveRequestId,
+      version,
+      statusSelect: LeaveRequest?.statusSelect.Draft,
+    },
+    'data',
+  );
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.hr.db.LeaveRequest',
+    method: 'post',
+    body: {data: formattedData},
+    description: 'return leave to draft status',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+      id: leaveRequestId,
+      fields: matchers,
+    },
+  });
+}
+
 export async function rejectLeave({leaveRequestId, version, groundForRefusal}) {
   return getActionApi().send({
     url: `ws/aos/leave-request/reject/${leaveRequestId}`,

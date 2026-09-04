@@ -1,0 +1,6 @@
+{
+  "title": "Leave request: prevent the modification of a request once it has been sent for validation",
+  "type": "fix",
+  "packages": "hr",
+  "description": "Any leave request could be modified from the mobile application, including validated ones. As in the web application, a request can now be modified when it is in draft or canceled status, and when it is waiting validation by the user in charge of validating it. Validated and refused requests can no longer be modified."
+}
