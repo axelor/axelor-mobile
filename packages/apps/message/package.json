@@ -3,6 +3,11 @@
   "version": "8.5.22",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axelor/axelor-mobile.git",
+    "directory": "packages/apps/message"
+  },
   "publishConfig": {
     "access": "public"
   },
