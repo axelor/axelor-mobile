@@ -318,18 +318,31 @@ const ControlEntryFormScreen = ({navigation, route}) => {
                 useDefaultAction: true,
                 showToast: false,
                 postActions: async res => {
-                  await checkComformity({object: res}).then(result => {
+                  const {resultSelect, message} = await checkComformity({
+                    object: res,
+                  });
+
+                  if (message != null) {
                     showToastMessage({
-                      type: ControlEntryType.getSampleResultType(result),
+                      type: 'error',
+                      position: 'bottom',
+                      bottomOffset: 80,
+                      text1: I18n.t('Base_Error'),
+                      text2: message,
+                    });
+                  } else {
+                    showToastMessage({
+                      type: ControlEntryType.getSampleResultType(resultSelect),
                       position: 'bottom',
                       bottomOffset: 80,
                       text1: `${I18n.t('Quality_ConformityResult')}`,
                       text2: getItemTitle(
                         ControlEntrySample?.resultSelect,
-                        result,
+                        resultSelect,
                       ),
                     });
-                  });
+                  }
+
                   handleValidation();
                 },
                 customComponent: renderButtons(),
