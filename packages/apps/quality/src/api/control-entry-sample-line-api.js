@@ -20,6 +20,7 @@ import {
   createStandardSearch,
   createStandardFetch,
   getActionApi,
+  getActionMessage,
   getTypes,
 } from '@axelor/aos-mobile-core';
 
@@ -99,22 +100,24 @@ export async function checkComformity({object}) {
       },
       description: 'check conformity',
     })
-    .then(() =>
-      createStandardFetch({
+    .then(response => {
+      const actionMessage = getActionMessage(response);
+
+      if (actionMessage != null) return {message: actionMessage.message};
+
+      return createStandardFetch({
         model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
         id: object.id,
         fieldKey: 'quality_controlEntrySampleLine',
         provider: 'model',
-      }),
-    )
-    .then(({data: {data}}) => {
-      if (data?.[0] != null) {
-        return data[0].resultSelect;
-      } else {
-        return ControlEntrySample?.resultSelect.NotControlled;
-      }
+      }).then(({data: {data}}) => ({
+        resultSelect:
+          data?.[0] != null
+            ? data[0].resultSelect
+            : ControlEntrySample?.resultSelect.NotControlled,
+      }));
     })
-    .catch(() => {
-      return ControlEntrySample?.resultSelect.NotControlled;
-    });
+    .catch(() => ({
+      resultSelect: ControlEntrySample?.resultSelect.NotControlled,
+    }));
 }
