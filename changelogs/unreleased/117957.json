@@ -1,0 +1,6 @@
+{
+  "title": "Equipment: display the update action instead of the creation one when the form is opened on an existing equipment",
+  "type": "fix",
+  "packages": "intervention",
+  "description": "When duplicating an equipment, the form of the copy offered the creation action, so validating it added yet another equipment. The available action now depends on the equipment actually opened in the form."
+}
