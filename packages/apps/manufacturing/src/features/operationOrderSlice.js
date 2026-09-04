@@ -85,7 +85,7 @@ export const updateOperationOrder = createAsyncThunk(
           action: 'Manufacturing_SliceAction_UpdateOperationOrderStatus',
           getState: getState,
           responseOptions: {showToast: false, returnResponseMessage: true},
-          errorOptions: {showErrorToast: false},
+          errorOptions: {showErrorToast: true},
         }),
       )
       .then(async res => {
