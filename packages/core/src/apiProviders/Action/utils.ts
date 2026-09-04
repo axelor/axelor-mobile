@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {checkNullString} from '@axelor/aos-mobile-ui';
+
 type Method = 'put' | 'post' | 'delete' | 'get';
 
 export type ActionRequest = {
@@ -35,4 +37,27 @@ export type MatcherConfig = {
 
 export type FieldMatcher = {
   [requestFieldName: string]: string;
+};
+
+export type ActionMessageType = 'error' | 'alert' | 'info' | 'notify';
+
+const ACTION_MESSAGE_TYPES_BY_SEVERITY: ActionMessageType[] = [
+  'error',
+  'alert',
+  'info',
+  'notify',
+];
+
+export const getActionMessage = (
+  response: any,
+): {type: ActionMessageType; message: string} | null => {
+  const actionResult = response?.data?.data?.[0];
+
+  for (const type of ACTION_MESSAGE_TYPES_BY_SEVERITY) {
+    const message = actionResult?.[type]?.message;
+
+    if (!checkNullString(message)) return {type, message};
+  }
+
+  return null;
 };

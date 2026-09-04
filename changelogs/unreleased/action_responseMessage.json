@@ -1,0 +1,6 @@
+{
+  "title": "Action requests: add getActionMessage helper to retrieve the message returned by an action response",
+  "type": "feat",
+  "packages": "core",
+  "description": "An action can answer with a message instead of applying its changes. The helper reads that message from the response and returns it with its severity, so that a module can inform the user rather than silently treating the refusal as a result."
+}
