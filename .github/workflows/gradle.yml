@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
       - uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: yarn install
@@ -45,7 +45,7 @@ jobs:
           java-version: '17'
       - uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: yarn install
@@ -76,7 +76,7 @@ jobs:
           java-version: '17'
       - uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Test application
         run: yarn && yarn build && yarn test
@@ -92,8 +92,31 @@ jobs:
       - name: check-license
         run: deno run --allow-read https://deno.land/x/license_checker@v3.2.2/main.ts
 
-  create-tag-release:
+  publish-npm:
     needs: [format, build, check-license-lines]
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    name: Publish packages
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Upgrade npm
+        run: npm install --global npm@^12
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Check packages
+        run: yarn build
+      - name: Publish packages
+        run: yarn release
+
+  create-tag-release:
+    needs: [publish-npm]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     name: Release tag
     runs-on: ubuntu-22.04
@@ -119,16 +142,3 @@ jobs:
           asset_path: ./${{ github.head_ref || github.ref_name }}.apk
           asset_name: aom-${{ github.ref_name }}.apk
           asset_content_type: application/vnd.android.package-archive
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
-      - name: Install dependencies
-        run: yarn install
-      - name: Check packages
-        run: yarn build
-      - name: Publish packages
-        run: yarn release
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
