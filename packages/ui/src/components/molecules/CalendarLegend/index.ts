@@ -16,5 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CalendarRangePicker} from './CalendarRangePicker';
-export {DateRange, DayMark} from './types';
+export {default as CalendarLegend} from './CalendarLegend';
+export {CalendarLegendItem} from './types';
