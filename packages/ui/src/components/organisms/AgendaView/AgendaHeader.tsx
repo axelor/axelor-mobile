@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {CircleButton} from '../../molecules';
+import {PeriodNavigation} from '../../molecules';
 import {HeaderContainer} from '../../organisms';
 
 interface AgendaHeaderProps {
@@ -54,32 +54,11 @@ const AgendaHeader = ({
             {headerLeft != null && (
               <View style={styles.left}>{headerLeft}</View>
             )}
-            <View style={styles.buttons}>
-              {showNavigation && (
-                <CircleButton
-                  iconName="chevron-left"
-                  size={30}
-                  onPress={onPreviousWeek}
-                  testID="agendaPreviousWeek"
-                />
-              )}
-              {showTodayButton && (
-                <CircleButton
-                  iconName="calendar-event"
-                  size={30}
-                  onPress={onToday}
-                  testID="agendaToday"
-                />
-              )}
-              {showNavigation && (
-                <CircleButton
-                  iconName="chevron-right"
-                  size={30}
-                  onPress={onNextWeek}
-                  testID="agendaNextWeek"
-                />
-              )}
-            </View>
+            <PeriodNavigation
+              onPrevious={showNavigation ? onPreviousWeek : undefined}
+              onNext={showNavigation ? onNextWeek : undefined}
+              onToday={showTodayButton ? onToday : undefined}
+            />
           </View>
         )
       }
@@ -97,11 +76,6 @@ const styles = StyleSheet.create({
   },
   left: {
     flex: 1,
-  },
-  buttons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
   },
 });
 

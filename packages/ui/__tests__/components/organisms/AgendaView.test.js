@@ -204,10 +204,10 @@ describe('AgendaView Component', () => {
     const onDateChange = jest.fn();
     const {getByTestId} = setupAgenda({onDateChange});
 
-    fireEvent.press(getByTestId('agendaNextWeek'));
+    fireEvent.press(getByTestId('periodNavigationNext'));
     expect(onDateChange).toHaveBeenCalledWith('2026-08-13');
 
-    fireEvent.press(getByTestId('agendaPreviousWeek'));
+    fireEvent.press(getByTestId('periodNavigationPrevious'));
     expect(onDateChange).toHaveBeenCalledWith('2026-07-30');
   });
 
@@ -218,7 +218,7 @@ describe('AgendaView Component', () => {
       onDateChange,
     });
 
-    fireEvent.press(getByTestId('agendaToday'));
+    fireEvent.press(getByTestId('periodNavigationToday'));
 
     expect(onDateChange).toHaveBeenCalledWith(TODAY);
   });
@@ -231,7 +231,7 @@ describe('AgendaView Component', () => {
       onDateChange,
     });
 
-    fireEvent.press(getByTestId('agendaPreviousWeek'));
+    fireEvent.press(getByTestId('periodNavigationPrevious'));
 
     expect(onDateChange).not.toHaveBeenCalled();
   });
@@ -242,9 +242,9 @@ describe('AgendaView Component', () => {
       showTodayButton: false,
     });
 
-    expect(queryByTestId('agendaPreviousWeek')).toBeNull();
-    expect(queryByTestId('agendaNextWeek')).toBeNull();
-    expect(queryByTestId('agendaToday')).toBeNull();
+    expect(queryByTestId('periodNavigationPrevious')).toBeNull();
+    expect(queryByTestId('periodNavigationNext')).toBeNull();
+    expect(queryByTestId('periodNavigationToday')).toBeNull();
   });
 
   it('announces the visible month once the emission has settled', () => {
@@ -299,7 +299,7 @@ describe('AgendaView Component', () => {
     });
 
     fireEvent.press(getByTestId('agendaMonthPanelToggle'));
-    fireEvent.press(getByTestId('agendaToday'));
+    fireEvent.press(getByTestId('periodNavigationToday'));
 
     expect(queryByTestId('agendaMonthList')).toBeNull();
   });
@@ -323,7 +323,7 @@ describe('AgendaView Component', () => {
     fireEvent.press(getByTestId('agendaMonthPanelToggle'));
     browseToMonth(getByTestId, '2026-10');
 
-    fireEvent.press(getByTestId('agendaToday'));
+    fireEvent.press(getByTestId('periodNavigationToday'));
 
     expect(getByTestId(`agendaDay-${TODAY}`)).toBeTruthy();
     expect(queryByTestId('agendaDay-2026-10-01')).toBeNull();
@@ -340,7 +340,7 @@ describe('AgendaView Component', () => {
     expect(queryByText('filtersSlot')).toBeTruthy();
     expect(queryByText('assignedFilter')).toBeTruthy();
     expect(header).toBeTruthy();
-    expect(getByTestId('agendaToday')).toBeTruthy();
+    expect(getByTestId('periodNavigationToday')).toBeTruthy();
   });
 
   it('shows the days of the neighbouring months in the grid', () => {
