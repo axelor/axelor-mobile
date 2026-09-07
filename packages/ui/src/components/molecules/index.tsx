@@ -59,6 +59,7 @@ export {default as NotesCard} from './NotesCard/NotesCard';
 export {default as NumberBubble} from './NumberBubble/NumberBubble';
 export {default as NumberChevronInput} from './NumberChevronInput/NumberChevronInput';
 export {default as PanelTabs} from './PanelTabs/PanelTabs';
+export {default as PeriodNavigation} from './PeriodNavigation/PeriodNavigation';
 export {default as RadioSelect} from './RadioSelect/RadioSelect';
 export {default as RightIconButton} from './RightIconButton/RightIconButton';
 export {default as SelectionContainer} from './SelectionContainer/SelectionContainer';

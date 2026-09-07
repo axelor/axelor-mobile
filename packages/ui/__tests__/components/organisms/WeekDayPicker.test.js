@@ -264,7 +264,7 @@ describe('WeekDayPicker Component', () => {
       const {getByTestId, props} = setupPicker();
 
       // Thursday 6th -> Thursday 13th
-      fireEvent.press(getByTestId('weekDayPickerNext'));
+      fireEvent.press(getByTestId('periodNavigationNext'));
 
       expect(props.onDateChange).toHaveBeenCalledWith('2026-08-13');
     });
@@ -272,7 +272,7 @@ describe('WeekDayPicker Component', () => {
     it('moves the selection back to the previous week', () => {
       const {getByTestId, props} = setupPicker({selectedDate: '2026-08-13'});
 
-      fireEvent.press(getByTestId('weekDayPickerPrevious'));
+      fireEvent.press(getByTestId('periodNavigationPrevious'));
 
       expect(props.onDateChange).toHaveBeenCalledWith('2026-08-06');
     });
@@ -282,42 +282,55 @@ describe('WeekDayPicker Component', () => {
       const last = setupPicker({selectedDate: '2026-08-19'});
 
       expect(
-        first.getByTestId('weekDayPickerPrevious').props.accessibilityState
+        first.getByTestId('periodNavigationPrevious').props.accessibilityState
           .disabled,
       ).toBe(true);
       expect(
-        last.getByTestId('weekDayPickerNext').props.accessibilityState.disabled,
+        last.getByTestId('periodNavigationNext').props.accessibilityState
+          .disabled,
       ).toBe(true);
     });
 
     it('offers to come back to today from another week', () => {
       const {getByTestId, props} = setupPicker({selectedDate: '2026-08-13'});
 
-      fireEvent.press(getByTestId('weekDayPickerToday'));
+      fireEvent.press(getByTestId('periodNavigationToday'));
 
       expect(props.onDateChange).toHaveBeenCalledWith(TODAY);
     });
 
-    it('hides the shortcut when today is already selected', () => {
-      const {queryByTestId} = setupPicker();
+    it('disables the shortcut when today is already selected', () => {
+      const {getByTestId} = setupPicker();
 
-      expect(queryByTestId('weekDayPickerToday')).toBeNull();
+      expect(
+        getByTestId('periodNavigationToday').props.accessibilityState.disabled,
+      ).toBe(true);
     });
 
-    it('hides the shortcut when today is outside the period', () => {
-      const {queryByTestId} = setupPicker({
+    it('disables the shortcut when today is outside the period', () => {
+      const {getByTestId} = setupPicker({
         fromDate: '2026-09-01',
         toDate: '2026-09-30',
         selectedDate: '2026-09-10',
       });
 
-      expect(queryByTestId('weekDayPickerToday')).toBeNull();
+      expect(
+        getByTestId('periodNavigationToday').props.accessibilityState.disabled,
+      ).toBe(true);
+    });
+
+    it('enables the shortcut from another week', () => {
+      const {getByTestId} = setupPicker({selectedDate: '2026-08-13'});
+
+      expect(
+        getByTestId('periodNavigationToday').props.accessibilityState.disabled,
+      ).toBe(false);
     });
 
     it('renders no header when navigation is turned off', () => {
       const {queryByTestId} = setupPicker({showNavigation: false});
 
-      expect(queryByTestId('weekDayPickerPrevious')).toBeNull();
+      expect(queryByTestId('periodNavigationPrevious')).toBeNull();
     });
   });
 

@@ -32,8 +32,7 @@ import {
   toDateString,
 } from '../../../utils';
 import {Color, useThemeColor} from '../../../theme';
-import {CircleButton} from '../../molecules';
-import {Text} from '../../atoms';
+import {PeriodNavigation} from '../../molecules';
 import WeekRow from './WeekRow';
 import {
   buildWeeks,
@@ -229,40 +228,20 @@ const WeekDayPicker = ({
   return (
     <View style={style}>
       {showNavigation && visibleWeek != null && (
-        <View style={styles.header}>
-          <CircleButton
-            testID="weekDayPickerPrevious"
-            style={styles.headerButton}
-            iconName="chevron-left"
-            size={26}
-            disabled={visibleIndex <= 0}
-            onPress={goToPreviousWeek}
-          />
-          <Text style={styles.headerLabel} writingType="important">
-            {formatDateRange(
-              visibleWeek.days[0].dateString,
-              visibleWeek.days[6].dateString,
-              translator,
-            )}
-          </Text>
-          <CircleButton
-            testID="weekDayPickerNext"
-            style={styles.headerButton}
-            iconName="chevron-right"
-            size={26}
-            disabled={visibleIndex >= weeks.length - 1}
-            onPress={goToNextWeek}
-          />
-          {isTodayReachable && (
-            <CircleButton
-              testID="weekDayPickerToday"
-              style={styles.todayButton}
-              iconName="calendar-event"
-              size={26}
-              onPress={goToToday}
-            />
+        <PeriodNavigation
+          style={styles.header}
+          label={formatDateRange(
+            visibleWeek.days[0].dateString,
+            visibleWeek.days[6].dateString,
+            translator,
           )}
-        </View>
+          previousDisabled={visibleIndex <= 0}
+          onPrevious={goToPreviousWeek}
+          nextDisabled={visibleIndex >= weeks.length - 1}
+          onNext={goToNextWeek}
+          todayDisabled={!isTodayReachable}
+          onToday={goToToday}
+        />
       )}
       <FlatList
         ref={listRef}
@@ -284,22 +263,7 @@ const WeekDayPicker = ({
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: 8,
-    gap: 8,
-  },
-  headerButton: {
-    marginVertical: 0,
-  },
-  headerLabel: {
-    textAlign: 'center',
-  },
-  todayButton: {
-    marginVertical: 0,
-    position: 'absolute',
-    right: 8,
   },
 });
 
