@@ -23,8 +23,8 @@ export const DAY_ROW_HEIGHT = 46;
 export const MONTH_TITLE_HEIGHT = 44;
 export const WEEK_DAYS_ROW_HEIGHT = 26;
 
-export const CELL_INSET = 3;
-export const CELL_RADIUS = 8;
+const CELL_INSET = 3;
+const CELL_RADIUS = 8;
 
 export const MAX_WEEKS_IN_MONTH = 6;
 
