@@ -52,6 +52,8 @@ export const fromDateString = (dateString: string): Date => {
   return new Date(year, month - 1, day);
 };
 
+export const DAYS_IN_WEEK = 7;
+
 export const DEFAULT_FIRST_DAY_OF_WEEK = 1;
 
 export const startOfWeek = (date: Date, firstDayOfWeek: number): Date => {
