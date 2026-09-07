@@ -26,8 +26,8 @@ import {
   monthIndexOf,
   toDateString,
 } from '../../../utils';
-import {CalendarLegendItem, DateRange, DayMark} from './types';
-import CalendarLegend from './CalendarLegend';
+import {DateRange, DayMark} from './types';
+import {CalendarLegend, CalendarLegendItem} from '../../molecules';
 import CalendarDaySheet from './CalendarDaySheet';
 import RangeMonth from './RangeMonth';
 import {

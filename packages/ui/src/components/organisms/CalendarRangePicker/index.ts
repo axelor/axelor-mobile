@@ -17,4 +17,4 @@
  */
 
 export {default as CalendarRangePicker} from './CalendarRangePicker';
-export {CalendarLegendItem, DateRange, DayMark} from './types';
+export {DateRange, DayMark} from './types';

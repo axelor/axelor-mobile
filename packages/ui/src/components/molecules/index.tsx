@@ -22,6 +22,7 @@ export {default as BlockInteractionMessage} from './BlockInteractionMessage/Bloc
 export {default as BottomSheet} from './BottomSheet/BottomSheet';
 export {default as Breadcrumb} from './Breadcrumb/Breadcrumb';
 export {default as Button} from './Button/Button';
+export {CalendarLegend, CalendarLegendItem} from './CalendarLegend';
 export {
   CalendarMonthGrid,
   CalendarMonthTitle,

@@ -29,9 +29,3 @@ export interface DateRange {
   startDate?: string;
   endDate?: string;
 }
-
-export interface CalendarLegendItem {
-  key: string;
-  title: string;
-  color: Color;
-}

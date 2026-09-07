@@ -19,22 +19,28 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme';
+import {PeriodNavigation} from '../../molecules';
 import {Icon, Text} from '../../atoms';
-import {CircleButton} from '../../molecules';
 import {CalendarLegendItem} from './types';
 
 interface CalendarLegendProps {
+  style?: any;
   items?: CalendarLegendItem[];
   showTodayButton?: boolean;
   translator: (key: string) => string;
   onTodayPress: () => void;
+  onPreviousPress?: () => void;
+  onNextPress?: () => void;
 }
 
 const CalendarLegend = ({
+  style,
   items,
   showTodayButton = true,
   translator,
   onTodayPress,
+  onPreviousPress,
+  onNextPress,
 }: CalendarLegendProps) => {
   const Colors = useThemeColor();
 
@@ -50,11 +56,14 @@ const CalendarLegend = ({
   if (!hasItems && !showTodayButton) return null;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.header}>
         {hasItems ? (
           <Pressable style={styles.toggle} onPress={toggleVisibility}>
-            <Text writingType="details" textColor={Colors.placeholderTextColor}>
+            <Text
+              writingType="details"
+              textColor={Colors.placeholderTextColor}
+              fontSize={12}>
               {translator('Base_Legend')}
             </Text>
             <Icon
@@ -66,13 +75,11 @@ const CalendarLegend = ({
         ) : (
           <View />
         )}
-        {showTodayButton && (
-          <CircleButton
-            iconName="calendar-event"
-            size={30}
-            onPress={onTodayPress}
-          />
-        )}
+        <PeriodNavigation
+          onPrevious={onPreviousPress}
+          onNext={onNextPress}
+          onToday={showTodayButton ? onTodayPress : undefined}
+        />
       </View>
       {hasItems && isVisible && (
         <View style={styles.items}>
@@ -86,6 +93,7 @@ const CalendarLegend = ({
                     borderColor: color?.background,
                   },
                 ]}
+                testID={`calendarLegendSwatch-${key}`}
               />
               <Text>{title}</Text>
             </View>
@@ -100,7 +108,7 @@ const styles = StyleSheet.create({
   container: {
     width: '90%',
     alignSelf: 'center',
-    paddingVertical: 6,
+    paddingVertical: 2,
   },
   header: {
     flexDirection: 'row',
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
   toggle: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 8,
   },
   items: {
     flexDirection: 'row',
