@@ -1,0 +1,5 @@
+{
+  "title": "GanttView: add a new component to display a planning as a timeline, with collapsible groups, week and month zooms and non-working days",
+  "type": "feat",
+  "packages": "ui"
+}
