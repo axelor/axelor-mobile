@@ -32,6 +32,7 @@ export {default as DropdownCardSwitch} from './DropdownCardSwitch/DropdownCardSw
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
 export {default as DurationInput} from './DurationInput/DurationInput';
 export {default as FloatingButton} from './FloatingButton/FloatingButton';
+export * from './GanttView';
 export * from './GridView';
 export {default as GroupByScrollList} from './GroupByScrollList/GroupByScrollList';
 export {default as HeaderContainer} from './HeaderContainer/HeaderContainer';
