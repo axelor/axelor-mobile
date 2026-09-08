@@ -3,6 +3,59 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.23] (2026-09-08)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Action requests: add getActionMessage helper to retrieve the message returned by an action response
+
+<details>
+An action can answer with a message instead of applying its changes. The helper reads that message from the response and returns it with its severity, so that a module can inform the user rather than silently treating the refusal as a result.
+</details>
+
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Equipment: display the update action instead of the creation one when the form is opened on an existing equipment
+
+<details>
+When duplicating an equipment, the form of the copy offered the creation action, so validating it added yet another equipment. The available action now depends on the equipment actually opened in the form.
+</details>
+
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Control entry: display the message returned by the server when the conformity evaluation fails
+
+### @axelor/aos-mobile-hr
+
+#### Features
+
+- Leave request: allow the cancellation of a request on every status except canceled
+- Leave request: add the return to draft status action on refused and canceled requests
+
+#### Fixes
+
+- Leave request: recompute the duration when the period of the request is modified
+- Leave request: prevent the modification of a request once it has been sent for validation
+
+<details>
+Any leave request could be modified from the mobile application, including validated ones. As in the web application, a request can now be modified when it is in draft or canceled status, and when it is waiting validation by the user in charge of validating it. Validated and refused requests can no longer be modified.
+</details>
+
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Operation order: display the error returned by the server when the timer status update fails
+
 ## [8.5.22] (2026-08-21)
 
 ### @axelor/aos-mobile-core
@@ -644,6 +697,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.23]: https://github.com/axelor/axelor-mobile/compare/8.5.22...8.5.23
 [8.5.22]: https://github.com/axelor/axelor-mobile/compare/8.5.21...8.5.22
 [8.5.21]: https://github.com/axelor/axelor-mobile/compare/8.5.20...8.5.21
 [8.5.20]: https://github.com/axelor/axelor-mobile/compare/8.5.19...8.5.20
