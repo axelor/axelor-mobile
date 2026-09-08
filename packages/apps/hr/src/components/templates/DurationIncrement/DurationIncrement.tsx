@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {fetchMissingDuration} from '../../../api/leave-api';
@@ -25,7 +25,7 @@ interface DurationIncrementProps {
   style?: any;
   title?: string;
   defaultValue?: any;
-  onChange?: (value: number) => void;
+  onChange: (value: number) => void;
   readonly?: boolean;
   required?: boolean;
   objectState?: any;
@@ -33,46 +33,39 @@ interface DurationIncrementProps {
 
 const DurationIncrementAux = ({
   style,
-  title,
-  defaultValue = null,
-  onChange = () => {},
+  title = 'Hr_Duration',
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
-  objectState: leaveRequest,
+  objectState,
 }: DurationIncrementProps) => {
   const I18n = useTranslator();
 
-  const [value, setValue] = useState(defaultValue);
+  const {fromDate, toDate, startOnSelect, endOnSelect} = useMemo(
+    () => ({
+      fromDate: objectState?.perdiodDate?.fromDateT?.toISOString(),
+      toDate: objectState?.perdiodDate?.toDateT?.toISOString(),
+      startOnSelect: objectState?.perdiodDate?.startOnSelect,
+      endOnSelect: objectState?.perdiodDate?.endOnSelect,
+    }),
+    [objectState?.perdiodDate],
+  );
 
   useEffect(() => {
-    if (
-      leaveRequest?.fromDateT &&
-      leaveRequest?.toDateT &&
-      leaveRequest?.startOnSelect &&
-      leaveRequest?.endOnSelect
-    ) {
-      fetchMissingDuration({
-        fromDate: leaveRequest.fromDateT,
-        toDate: leaveRequest.toDateT,
-        startOnSelect: leaveRequest.startOnSelect,
-        endOnSelect: leaveRequest.endOnSelect,
-      })
-        .then(setValue)
-        .catch(() => setValue(0));
+    if (fromDate && toDate && startOnSelect && endOnSelect) {
+      fetchMissingDuration({fromDate, toDate, startOnSelect, endOnSelect})
+        .then(onChange)
+        .catch(() => onChange(0));
     } else {
-      setValue(0);
+      onChange(0);
     }
-  }, [
-    leaveRequest?.endOnSelect,
-    leaveRequest?.fromDateT,
-    leaveRequest?.startOnSelect,
-    leaveRequest?.toDateT,
-  ]);
+  }, [endOnSelect, fromDate, startOnSelect, toDate, onChange]);
 
   return (
     <FormIncrementInput
       style={style}
-      defaultValue={value}
+      defaultValue={defaultValue}
       onChange={onChange}
       title={title}
       readOnly={readonly}
