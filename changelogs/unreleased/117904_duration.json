@@ -1,5 +1,0 @@
-{
-  "title": "Leave request: recompute the duration when the period of the request is modified",
-  "type": "fix",
-  "packages": "hr"
-}

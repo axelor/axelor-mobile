@@ -3,6 +3,59 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.5] (2026-09-08)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Action requests: add getActionMessage helper to retrieve the message returned by an action response
+
+<details>
+An action can answer with a message instead of applying its changes. The helper reads that message from the response and returns it with its severity, so that a module can inform the user rather than silently treating the refusal as a result.
+</details>
+
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Equipment: display the update action instead of the creation one when the form is opened on an existing equipment
+
+<details>
+When duplicating an equipment, the form of the copy offered the creation action, so validating it added yet another equipment. The available action now depends on the equipment actually opened in the form.
+</details>
+
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Control entry: display the message returned by the server when the conformity evaluation fails
+
+### @axelor/aos-mobile-hr
+
+#### Features
+
+- Leave request: allow the cancellation of a request on every status except canceled
+- Leave request: add the return to draft status action on refused and canceled requests
+
+#### Fixes
+
+- Leave request: recompute the duration when the period of the request is modified
+- Leave request: prevent the modification of a request once it has been sent for validation
+
+<details>
+Any leave request could be modified from the mobile application, including validated ones. As in the web application, a request can now be modified when it is in draft or canceled status, and when it is waiting validation by the user in charge of validating it. Validated and refused requests can no longer be modified.
+</details>
+
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Operation order: display the error returned by the server when the timer status update fails
+
 ## [9.1.4] (2026-08-21)
 
 ### @axelor/aos-mobile-core
@@ -294,6 +347,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.5]: https://github.com/axelor/axelor-mobile/compare/9.1.4...9.1.5
 [9.1.4]: https://github.com/axelor/axelor-mobile/compare/9.1.3...9.1.4
 [9.1.3]: https://github.com/axelor/axelor-mobile/compare/9.1.2...9.1.3
 [9.1.2]: https://github.com/axelor/axelor-mobile/compare/9.1.1...9.1.2
