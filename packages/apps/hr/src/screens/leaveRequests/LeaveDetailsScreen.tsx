@@ -24,7 +24,6 @@ import {
   formatDateTime,
   useDispatch,
   useNavigation,
-  usePermitted,
   useSelector,
   useTranslator,
   useTypes,
@@ -44,18 +43,18 @@ import {
   LeaveDetailsHeader,
 } from '../../components';
 import {fetchLeaveById} from '../../features/leaveSlice';
+import {useLeaveRequestRights} from '../../hooks';
 
-const LeaveDetailsScreen = ({route}) => {
-  const {leaveId} = route.params;
+const LeaveDetailsScreen = ({route}: any) => {
+  const {leaveId} = route?.params ?? {};
   const I18n = useTranslator();
   const {LeaveRequest} = useTypes();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {readonly} = usePermitted({
-    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
-  });
 
   const {leave, loadingLeave} = useSelector(state => state.hr_leave);
+
+  const {canEdit} = useLeaveRequestRights(leave);
 
   const isLeaveValidated = useMemo(
     () => leave.statusSelect === LeaveRequest?.statusSelect.Validate,
@@ -130,7 +129,7 @@ const LeaveDetailsScreen = ({route}) => {
           data={leave.comments}
         />
       </ScrollView>
-      {!readonly && (
+      {canEdit && (
         <CircleButton
           style={styles.floatingButton}
           iconName="pencil-fill"

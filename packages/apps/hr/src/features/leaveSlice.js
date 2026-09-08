@@ -30,6 +30,7 @@ import {
   fetchLeaveReason as _fetchLeaveReason,
   fetchLeaveToValidate as _fetchLeaveToValidate,
   rejectLeave as _rejectLeave,
+  returnToDraftStatusLeave as _returnToDraftStatusLeave,
   sendLeave as _sendLeave,
   updateLeave as _updateLeave,
   validateLeave as _validateLeave,
@@ -132,6 +133,25 @@ export const cancelLeave = createAsyncThunk(
       fetchFunction: _cancelLeave,
       data,
       action: 'Hr_SliceAction_CancelLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave(data));
+      dispatch(
+        fetchLeaveToValidate({user: data.user, companyId: data.companyId}),
+      );
+      dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
+    });
+  },
+);
+
+export const returnToDraftStatusLeave = createAsyncThunk(
+  'hr_leave/returnToDraftStatusLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _returnToDraftStatusLeave,
+      data,
+      action: 'Hr_SliceAction_ReturnToDraftStatusLeave',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {

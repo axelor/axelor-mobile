@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export * from './use-leave-request-rights';
 export * from './use-managed-employees';

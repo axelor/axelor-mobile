@@ -16,14 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {
-  usePermitted,
-  useSelector,
-  useTranslator,
-  useTypes,
-} from '@axelor/aos-mobile-core';
+import React from 'react';
+import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
+import {useLeaveRequestRights} from '../../../hooks';
 import {LeaveCard} from '../../atoms';
 
 interface LeaveActionCardProps {
@@ -45,52 +41,34 @@ const LeaveActionCard = ({
 }: LeaveActionCardProps) => {
   const I18n = useTranslator();
   const {LeaveRequest} = useTypes();
-  const {readonly} = usePermitted({
-    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
-  });
-
-  const {user} = useSelector((state: any) => state.user);
-
-  const userCanValidate = useMemo(() => {
-    return (
-      (user.employee?.hrManager ||
-        leave.employee?.managerUser?.id === user.id) &&
-      leave.statusSelect === LeaveRequest?.statusSelect.WaitingValidation
-    );
-  }, [LeaveRequest?.statusSelect.WaitingValidation, leave, user]);
-
-  const isDefaultDisplay = useMemo(() => {
-    return (
-      readonly ||
-      (!userCanValidate &&
-        leave.statusSelect !== LeaveRequest?.statusSelect.Draft)
-    );
-  }, [LeaveRequest?.statusSelect, readonly, leave, userCanValidate]);
+  const {canValidate, canEdit} = useLeaveRequestRights(leave);
 
   return (
     <ActionCard
       translator={I18n.t}
       actionList={
-        !isDefaultDisplay && [
-          {
-            iconName: 'send-fill',
-            helper: I18n.t('Hr_Send'),
-            onPress: onSend,
-            hidden: leave.statusSelect !== LeaveRequest?.statusSelect.Draft,
-          },
-          {
-            iconName: 'pencil-fill',
-            helper: I18n.t('Hr_Edit'),
-            onPress: onEdit,
-            hidden: leave.statusSelect !== LeaveRequest?.statusSelect.Draft,
-          },
-          {
-            iconName: 'check-lg',
-            helper: I18n.t('Hr_Validate'),
-            onPress: onValidate,
-            hidden: leave.statusSelect === LeaveRequest?.statusSelect.Draft,
-          },
-        ]
+        canEdit || canValidate
+          ? [
+              {
+                iconName: 'send-fill',
+                helper: I18n.t('Hr_Send'),
+                onPress: onSend,
+                hidden: leave.statusSelect !== LeaveRequest?.statusSelect.Draft,
+              },
+              {
+                iconName: 'pencil-fill',
+                helper: I18n.t('Hr_Edit'),
+                onPress: onEdit,
+                hidden: !canEdit,
+              },
+              {
+                iconName: 'check-lg',
+                helper: I18n.t('Hr_Validate'),
+                onPress: onValidate,
+                hidden: !canValidate,
+              },
+            ]
+          : []
       }>
       <LeaveCard
         mode={mode}
