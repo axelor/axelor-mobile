@@ -1,0 +1,5 @@
+{
+  "title": "Leave request: allow the cancellation of a request on every status except canceled",
+  "type": "feat",
+  "packages": "hr"
+}
