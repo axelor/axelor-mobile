@@ -33,7 +33,7 @@ import {
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 
 function OperationOrderDetailsScreen({route}) {
-  const {operationOrderId} = route.params;
+  const {operationOrderId} = route?.params ?? {};
   const dispatch = useDispatch();
   useContextRegister({
     models: [
@@ -55,6 +55,8 @@ function OperationOrderDetailsScreen({route}) {
   useEffect(() => {
     getOperationOrder();
   }, [getOperationOrder]);
+
+  if (operationOrder?.id !== operationOrderId) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>

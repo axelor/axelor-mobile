@@ -45,7 +45,7 @@ import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
-  const {manufacturingOrderId} = route.params;
+  const {manufacturingOrderId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
   useContextRegister({
@@ -119,6 +119,8 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       manufOrder: manufOrder,
     });
   };
+
+  if (manufOrder?.id !== manufacturingOrderId) return null;
 
   return (
     <Screen removeSpaceOnTop={true} fixedItems={<ManufacturingOrderButtons />}>
