@@ -39,7 +39,7 @@ import {
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 
 function OperationOrderDetailsScreen({route, navigation}) {
-  const {operationOrderId} = route.params;
+  const {operationOrderId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -76,9 +76,11 @@ function OperationOrderDetailsScreen({route, navigation}) {
   const handleOpenConsumedProducts = useCallback(() => {
     navigation.navigate('ConsumedProductListScreen', {
       operationOrderId: operationOrderId,
-      manufOrder: operationOrder.manufOrder,
+      manufOrder: operationOrder?.manufOrder,
     });
-  }, [navigation, operationOrder.manufOrder, operationOrderId]);
+  }, [navigation, operationOrder?.manufOrder, operationOrderId]);
+
+  if (operationOrder?.id !== operationOrderId) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>
