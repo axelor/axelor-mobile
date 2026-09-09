@@ -48,8 +48,8 @@ import {fetchHazardPhrases} from '../../features/hazardPhraseSlice';
 
 const MODELS = {ManufOrder: 'com.axelor.apps.production.db.ManufOrder'};
 
-const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
-  const {manufacturingOrderId: manufOrderId} = route.params;
+const ManufacturingOrderDetailsScreen = ({route, navigation}: any) => {
+  const {manufacturingOrderId: manufOrderId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
   useContextRegister({models: [{model: MODELS.ManufOrder, id: manufOrderId}]});
@@ -105,6 +105,8 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const handleStart = useCallback(() => {
     if (hazardPhraseEnabled) setAlertVisible(true);
   }, [hazardPhraseEnabled]);
+
+  if (manufOrder?.id !== manufOrderId) return null;
 
   return (
     <Screen

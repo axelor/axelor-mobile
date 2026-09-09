@@ -45,8 +45,8 @@ const MODELS = {
   Machine: 'com.axelor.apps.production.db.Machine',
 };
 
-function OperationOrderDetailsScreen({route, navigation}) {
-  const {operationOrderId} = route.params;
+function OperationOrderDetailsScreen({route, navigation}: any) {
+  const {operationOrderId} = route?.params ?? {};
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -93,13 +93,15 @@ function OperationOrderDetailsScreen({route, navigation}) {
   const handleOpenConsumedProducts = useCallback(() => {
     navigation.navigate('ConsumedProductListScreen', {
       operationOrderId: operationOrderId,
-      manufOrder: operationOrder.manufOrder,
+      manufOrder: operationOrder?.manufOrder,
     });
-  }, [navigation, operationOrder.manufOrder, operationOrderId]);
+  }, [navigation, operationOrder?.manufOrder, operationOrderId]);
 
   const handleStart = useCallback(() => {
     if (hazardPhraseEnabled) setAlertVisible(true);
   }, [hazardPhraseEnabled]);
+
+  if (operationOrder?.id !== operationOrderId) return null;
 
   return (
     <Screen removeSpaceOnTop={true}>

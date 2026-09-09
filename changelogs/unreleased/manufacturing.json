@@ -1,0 +1,5 @@
+{
+  "title": "ManufOrder & OperationOrder: avoid undefined issues on details view",
+  "type": "fix",
+  "packages": "manufacturing"
+}
