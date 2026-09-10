@@ -48,12 +48,13 @@ class I18nProvider {
     this.initI18n(defaultLanguage);
   }
 
-  initI18n = defaultLanguage => {
+  initI18n = (defaultLanguage: string) => {
     this.i18next.use(initReactI18next).init({
       compatibilityJSON: 'v4',
       lng: defaultLanguage,
       fallbackLng: 'en',
       resources: this.resources,
+      interpolation: {escapeValue: false},
       react: {
         bindI18nStore: 'added',
       },
