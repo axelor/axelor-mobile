@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
+import {checkNullString} from '../../../utils';
 import {Icon, Text} from '../../atoms';
 
 type LabelType = 'info' | 'success' | 'danger' | 'error';
@@ -110,7 +111,12 @@ const Label = ({
 
   return (
     <View testID="labelContainer" style={[styles.container, style]}>
-      <Icon name={typeConfig?.iconName} color={typeConfig?.color?.foreground} />
+      {!checkNullString(typeConfig?.iconName) && (
+        <Icon
+          name={typeConfig?.iconName}
+          color={typeConfig?.color?.foreground}
+        />
+      )}
       <Text style={styles.text}>{message}</Text>
       {showClose && (
         <Icon

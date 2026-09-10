@@ -71,6 +71,13 @@ describe('Label Component', () => {
     expect(getByTestId('icon-exclamation-circle-fill')).toBeTruthy();
   });
 
+  it('renders no icon when the label has no icon to display', () => {
+    const {getByText, props, queryByTestId} = setupLabel({iconName: ''});
+
+    expect(queryByTestId('iconTouchable')).toBeNull();
+    expect(getByText(props.message)).toBeTruthy();
+  });
+
   it('renders a close icon only when showClose is true', () => {
     const {queryByTestId} = setupLabel();
 

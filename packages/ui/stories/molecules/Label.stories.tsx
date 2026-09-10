@@ -35,6 +35,7 @@ export const Label: Story<typeof Component> = {
   args: {
     type: 'info',
     message: 'This is an indication',
+    iconName: null,
     color: null,
     visible: true,
     showClose: false,
