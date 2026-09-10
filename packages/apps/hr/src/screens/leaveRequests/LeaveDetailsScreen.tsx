@@ -119,7 +119,6 @@ const LeaveDetailsScreen = ({route}: any) => {
               name: isLeaveValidated
                 ? leave.validatedBy?.name
                 : leave.refusedBy?.name,
-              interpolation: {escapeValue: false},
             })}
           </Text>
         )}
