@@ -60,6 +60,25 @@ describe('SwitchCard Component', () => {
     );
   });
 
+  it('displays the title on two lines by default', () => {
+    const {getByText, props} = setupSwitchCard();
+
+    expect(getByText(props.title).props.numberOfLines).toBe(2);
+  });
+
+  it('applies the requested number of lines, size and color to the title', () => {
+    const {getByText, props} = setupSwitchCard({
+      numberOfLines: 1,
+      textSize: 10,
+      textColor: '#FF0000',
+    });
+
+    const title = getByText(props.title);
+
+    expect(title.props.numberOfLines).toBe(1);
+    expect(title).toHaveStyle({fontSize: 10, color: '#FF0000'});
+  });
+
   it('applies custom style when provided', () => {
     const {getByTestId, props} = setupSwitchCard({style: {width: 200}});
 

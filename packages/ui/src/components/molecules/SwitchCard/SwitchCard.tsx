@@ -29,6 +29,9 @@ interface SwitchCardProps {
   readonly?: boolean;
   onToggle: (_v?: boolean) => void;
   showWrapper?: boolean;
+  numberOfLines?: number;
+  textColor?: string;
+  textSize?: number;
 }
 
 const SwitchCard = ({
@@ -38,6 +41,9 @@ const SwitchCard = ({
   readonly = false,
   onToggle,
   showWrapper = true,
+  numberOfLines = 2,
+  textColor,
+  textSize,
 }: SwitchCardProps) => {
   const Colors = useThemeColor();
 
@@ -52,7 +58,11 @@ const SwitchCard = ({
         style,
       ]}
       testID="switchCardContainer">
-      <Text numberOfLines={2} style={styles.text}>
+      <Text
+        numberOfLines={numberOfLines}
+        style={styles.text}
+        fontSize={textSize}
+        textColor={textColor}>
         {title}
       </Text>
       <Switch

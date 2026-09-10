@@ -1,0 +1,5 @@
+{
+  "title": "SwitchCard: allow the size, the colour and the number of lines of the title to be customized",
+  "type": "feat",
+  "packages": "ui"
+}
