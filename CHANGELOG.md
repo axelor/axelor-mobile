@@ -3,6 +3,14 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.24] (2026-09-10)
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- ManufOrder & OperationOrder: avoid undefined issues on details view
+
 ## [8.5.23] (2026-09-08)
 
 ### @axelor/aos-mobile-core
@@ -697,6 +705,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.24]: https://github.com/axelor/axelor-mobile/compare/8.5.23...8.5.24
 [8.5.23]: https://github.com/axelor/axelor-mobile/compare/8.5.22...8.5.23
 [8.5.22]: https://github.com/axelor/axelor-mobile/compare/8.5.21...8.5.22
 [8.5.21]: https://github.com/axelor/axelor-mobile/compare/8.5.20...8.5.21
