@@ -3,6 +3,14 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.19] (2026-09-10)
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- ManufOrder & OperationOrder: avoid undefined issues on details view
+
 ## [9.0.18] (2026-09-08)
 
 ### @axelor/aos-mobile-core
@@ -473,6 +481,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.19]: https://github.com/axelor/axelor-mobile/compare/9.0.18...9.0.19
 [9.0.18]: https://github.com/axelor/axelor-mobile/compare/9.0.17...9.0.18
 [9.0.17]: https://github.com/axelor/axelor-mobile/compare/9.0.16...9.0.17
 [9.0.16]: https://github.com/axelor/axelor-mobile/compare/9.0.15...9.0.16
