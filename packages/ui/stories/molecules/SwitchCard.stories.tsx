@@ -16,9 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import type {Meta} from '@storybook/react';
 import {SwitchCard as Component} from '../../src/components';
-import {disabledControl, Story} from '../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/SwitchCard',
@@ -32,8 +37,30 @@ export const SwitchCard: Story<typeof Component> = {
     title: 'Title',
     defaultValue: true,
     readonly: false,
+    numberOfLines: 2,
+    textSize: 14,
   },
   argTypes: {
+    numberOfLines: {
+      control: {
+        type: 'number',
+        min: 1,
+        max: 10,
+        step: 1,
+      },
+    },
+    textSize: {
+      control: {
+        type: 'number',
+        min: 10,
+        max: 50,
+        step: 1,
+      },
+    },
+    textColor: colorPicker,
     onToggle: disabledControl,
   },
+  render: args => (
+    <Component {...args} textColor={args.textColor?.background} />
+  ),
 };
