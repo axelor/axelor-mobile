@@ -3,6 +3,14 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.6] (2026-09-10)
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- ManufOrder & OperationOrder: avoid undefined issues on details view
+
 ## [9.1.5] (2026-09-08)
 
 ### @axelor/aos-mobile-core
@@ -347,6 +355,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.6]: https://github.com/axelor/axelor-mobile/compare/9.1.5...9.1.6
 [9.1.5]: https://github.com/axelor/axelor-mobile/compare/9.1.4...9.1.5
 [9.1.4]: https://github.com/axelor/axelor-mobile/compare/9.1.3...9.1.4
 [9.1.3]: https://github.com/axelor/axelor-mobile/compare/9.1.2...9.1.3
