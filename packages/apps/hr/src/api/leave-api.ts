@@ -258,27 +258,11 @@ export async function returnToDraftStatusLeave({
   leaveRequestId: number;
   version: number;
 }) {
-  const LeaveRequest = getTypes().LeaveRequest;
-
-  const {matchers, formattedData} = formatRequestBody(
-    {
-      id: leaveRequestId,
-      version,
-      statusSelect: LeaveRequest?.statusSelect.Draft,
-    },
-    'data',
-  );
-
   return getActionApi().send({
-    url: '/ws/rest/com.axelor.apps.hr.db.LeaveRequest',
-    method: 'post',
-    body: {data: formattedData},
+    url: `ws/aos/leave-request/draft/${leaveRequestId}`,
+    method: 'put',
+    body: {version},
     description: 'return leave to draft status',
-    matchers: {
-      modelName: 'com.axelor.apps.hr.db.LeaveRequest',
-      id: leaveRequestId,
-      fields: matchers,
-    },
   });
 }
 
