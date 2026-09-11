@@ -24,6 +24,7 @@ import GanttControls from './GanttControls';
 interface GanttHeaderProps {
   legendItems?: CalendarLegendItem[];
   filters?: React.ReactNode;
+  expandableFilter: boolean;
   showTodayButton: boolean;
   showNavigation: boolean;
   showExpandAll: boolean;
@@ -43,6 +44,7 @@ interface GanttHeaderProps {
 const GanttHeader = ({
   legendItems,
   filters,
+  expandableFilter,
   showTodayButton,
   showNavigation,
   showExpandAll,
@@ -60,10 +62,11 @@ const GanttHeader = ({
 }: GanttHeaderProps) => {
   return (
     <HeaderContainer
-      expandableFilter={false}
+      expandableFilter={expandableFilter}
+      topChildren={expandableFilter ? filters : null}
       fixedItems={
         <>
-          {filters}
+          {!expandableFilter && filters}
           <GanttControls
             showExpandAll={showExpandAll}
             showCollapseAll={showCollapseAll}
