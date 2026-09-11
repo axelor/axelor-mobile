@@ -16,10 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {Ref, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {
+  Ref,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import {useThemeColor} from '../../../theme';
-import {getCommonStyles} from '../../../utils';
+import {checkNullString, getCommonStyles} from '../../../utils';
 import {Icon, Input} from '../../atoms';
 
 type SetterFunction<T> = (value: T | ((_current: T) => T)) => void;
@@ -128,8 +135,17 @@ const NumberChevronInput = ({
 }: NumberChevronInputProps) => {
   const Colors = useThemeColor();
 
+  const defaultInputRef = useRef<TextInput>(null);
+  const _inputRef = inputRef ?? defaultInputRef;
+
   const [inputValue, setInputValue] = useState(defaultValue);
+  const [isCleared, setIsCleared] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+
+  const updateValue: SetterFunction<number> = useCallback(value => {
+    setIsCleared(false);
+    setInputValue(value);
+  }, []);
 
   const _required = useMemo(
     () => required && (inputValue == null || inputValue === 0),
@@ -175,9 +191,15 @@ const NumberChevronInput = ({
 
   const handleInputChange = useCallback(
     (value?: string) => {
+      if (checkNullString(value)) {
+        setIsCleared(true);
+        return;
+      }
+
       if (!Number.isNaN(Number(value))) {
         const {newValue, mode} = handleChange(value);
 
+        setIsCleared(false);
         setInputValue(newValue);
         onValueChange?.(newValue, mode);
       }
@@ -186,13 +208,14 @@ const NumberChevronInput = ({
   );
 
   const handleSelection = useCallback(() => {
-    if ((inputRef as any)?.current) {
-      (inputRef as any).current.setSelection(0, inputValue?.toString().length);
+    if ((_inputRef as any)?.current) {
+      (_inputRef as any).current.setSelection(0, inputValue?.toString().length);
     }
     setIsFocused(true);
-  }, [inputRef, inputValue]);
+  }, [_inputRef, inputValue]);
 
   const handleEndFocus = useCallback(() => {
+    setIsCleared(false);
     setIsFocused(false);
     onEndFocus?.();
   }, [onEndFocus]);
@@ -208,7 +231,7 @@ const NumberChevronInput = ({
         minValue={minValue}
         onValueChange={onValueChange}
         readonly={readonly}
-        setInputValue={setInputValue}
+        setInputValue={updateValue}
         stepSize={stepSize}
       />
       <View
@@ -219,8 +242,8 @@ const NumberChevronInput = ({
         ]}>
         <Input
           style={[styles.input, inputStyle]}
-          inputRef={inputRef}
-          value={inputValue?.toString()}
+          inputRef={_inputRef}
+          value={isCleared ? '' : inputValue?.toString()}
           onChange={handleInputChange}
           onSelection={handleSelection}
           onEndFocus={handleEndFocus}
@@ -235,7 +258,7 @@ const NumberChevronInput = ({
         minValue={minValue}
         onValueChange={onValueChange}
         readonly={readonly}
-        setInputValue={setInputValue}
+        setInputValue={updateValue}
         stepSize={stepSize}
       />
     </View>
