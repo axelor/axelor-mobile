@@ -16,9 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as GanttCellStrip} from './GanttCellStrip';
-export {default as GanttGridLines} from './GanttGridLines';
-export {default as GanttGroupHeader} from './GanttGroupHeader';
-export {default as GanttGroupLane} from './GanttGroupLane';
-export {default as GanttRowLane} from './GanttRowLane';
-export {default as GanttRowName} from './GanttRowName';
+export {default as GanttHeader} from './GanttHeader';

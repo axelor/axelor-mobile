@@ -25,10 +25,11 @@ import {GanttRow} from '../types';
 
 interface GanttRowNameProps {
   row: GanttRow;
+  height: number;
   onPress?: (row: GanttRow) => void;
 }
 
-const GanttRowName = ({row, onPress}: GanttRowNameProps) => {
+const GanttRowName = ({row, height, onPress}: GanttRowNameProps) => {
   const Colors = useThemeColor();
 
   const handlePress = useCallback(() => onPress?.(row), [onPress, row]);
@@ -37,7 +38,10 @@ const GanttRowName = ({row, onPress}: GanttRowNameProps) => {
     <Pressable
       style={[
         ganttStyles.nameRow,
-        {borderBottomColor: Colors.secondaryColor_dark.background_light},
+        {
+          height,
+          borderBottomColor: Colors.secondaryColor_dark.background_light,
+        },
       ]}
       onPress={handlePress}
       disabled={onPress == null}
