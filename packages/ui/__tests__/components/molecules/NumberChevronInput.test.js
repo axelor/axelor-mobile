@@ -130,6 +130,55 @@ describe('NumberChevronInput Component', () => {
     );
   });
 
+  it('empties the input when it is cleared, without reporting a value', () => {
+    const {getByDisplayValue, props, queryByDisplayValue} =
+      setupNumberChevronInput({onValueChange: jest.fn()});
+
+    fireEvent.changeText(getByDisplayValue('5'), '');
+
+    expect(queryByDisplayValue('5')).toBeNull();
+    expect(getByDisplayValue('')).toBeTruthy();
+    expect(props.onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('takes the digit typed after the input has been cleared', () => {
+    const {getByDisplayValue, props} = setupNumberChevronInput({
+      onValueChange: jest.fn(),
+    });
+
+    fireEvent.changeText(getByDisplayValue('5'), '');
+    fireEvent.changeText(getByDisplayValue(''), '3');
+
+    expect(props.onValueChange).toHaveBeenLastCalledWith(
+      3,
+      INPUT_CHANGE_TYPE.keyboard,
+    );
+    expect(getByDisplayValue('3')).toBeTruthy();
+  });
+
+  it('brings the value back when the input is left empty', () => {
+    const {getByDisplayValue, props} = setupNumberChevronInput({
+      onEndFocus: jest.fn(),
+    });
+
+    fireEvent.changeText(getByDisplayValue('5'), '');
+    fireEvent(getByDisplayValue(''), 'blur');
+
+    expect(getByDisplayValue('5')).toBeTruthy();
+    expect(props.onEndFocus).toHaveBeenCalled();
+  });
+
+  it('fills the cleared input again when a chevron is pressed', () => {
+    const {getAllByTestId, getByDisplayValue} = setupNumberChevronInput();
+
+    fireEvent.changeText(getByDisplayValue('5'), '');
+
+    const [increaseButton] = getAllByTestId('iconTouchable');
+    fireEvent.press(increaseButton);
+
+    expect(getByDisplayValue('6')).toBeTruthy();
+  });
+
   it('applies custom container style', () => {
     const {getByTestId, props} = setupNumberChevronInput({
       style: {height: 200},

@@ -1,0 +1,5 @@
+{
+  "title": "NumberChevronInput: let the input be emptied while typing instead of falling back to its lowest value",
+  "type": "fix",
+  "packages": "ui"
+}
