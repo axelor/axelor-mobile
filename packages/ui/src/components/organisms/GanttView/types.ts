@@ -66,12 +66,19 @@ export interface GanttItem {
   data?: any;
 }
 
+export interface GanttCell {
+  value: number;
+  label?: string;
+  color: Color;
+}
+
 export interface GanttRow {
   key: string;
   title: string;
   subtitle?: string;
   warning?: string;
   items?: GanttItem[];
+  cells?: Record<string, GanttCell>;
   nonWorkingDays?: Record<string, Color>;
   data?: any;
 }
@@ -79,7 +86,10 @@ export interface GanttRow {
 export interface GanttGroup {
   key: string;
   title: string;
+  collapsed?: boolean;
   rows: GanttRow[];
+  cells?: Record<string, GanttCell>;
+  nonWorkingDays?: Record<string, Color>;
 }
 
 export interface GanttRange {
@@ -92,6 +102,12 @@ export interface GanttFill {
   left: number;
   width: number;
   color: Color;
+}
+
+export interface GanttRowLayout {
+  laneCount: number;
+  laneIndexByItemId: Record<string, number>;
+  height: number;
 }
 
 export interface GanttBarGeometry {

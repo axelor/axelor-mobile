@@ -34,6 +34,29 @@ export const GANTT_BAR_RADIUS = 6;
 export const GANTT_BAR_MIN_WIDTH = 4;
 export const GANTT_BAR_INSET = (GANTT_ROW_HEIGHT - GANTT_BAR_HEIGHT) / 2;
 
+export const GANTT_BAR_GAP = 2;
+
+export const GANTT_CELL_HEIGHT = 14;
+export const GANTT_CELL_LABEL_MIN_WIDTH = 22;
+export const GANTT_BAR_INSET_WITH_CELLS =
+  (GANTT_ROW_HEIGHT - GANTT_CELL_HEIGHT - GANTT_BAR_HEIGHT) / 2;
+
+export const getBarInset = (hasCells: boolean): number =>
+  hasCells ? GANTT_BAR_INSET_WITH_CELLS : GANTT_BAR_INSET;
+
+export const getBarTop = (laneIndex: number, hasCells: boolean): number =>
+  getBarInset(hasCells) + laneIndex * (GANTT_BAR_HEIGHT + GANTT_BAR_GAP);
+
+export const getRowHeight = (laneCount: number, hasCells: boolean): number => {
+  const lanes = Math.max(laneCount, 1);
+  const barsHeight = lanes * GANTT_BAR_HEIGHT + (lanes - 1) * GANTT_BAR_GAP;
+
+  return Math.max(
+    GANTT_ROW_HEIGHT,
+    getBarInset(hasCells) * 2 + barsHeight + (hasCells ? GANTT_CELL_HEIGHT : 0),
+  );
+};
+
 export const GANTT_GRID_LINE_WIDTH = 1;
 
 export const GANTT_DAYS_PER_PAGE = {
@@ -96,7 +119,6 @@ export const ganttStyles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   nameRow: {
-    height: GANTT_ROW_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
@@ -106,7 +128,6 @@ export const ganttStyles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   lane: {
-    height: GANTT_ROW_HEIGHT,
     borderBottomWidth: 1,
   },
   fill: {
@@ -116,8 +137,22 @@ export const ganttStyles = StyleSheet.create({
   },
   bar: {
     position: 'absolute',
-    top: GANTT_BAR_INSET,
     height: GANTT_BAR_HEIGHT,
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  cellStrip: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: GANTT_CELL_HEIGHT,
+  },
+  cell: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },

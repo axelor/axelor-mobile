@@ -19,6 +19,7 @@
 export {default as GanttView} from './GanttView';
 export {
   GanttBarGeometry,
+  GanttCell,
   GanttDay,
   GanttFill,
   GanttGroup,
@@ -27,6 +28,7 @@ export {
   GanttPeriod,
   GanttRange,
   GanttRow,
+  GanttRowLayout,
   GanttScaleCell,
   GanttZoom,
 } from './types';
@@ -34,6 +36,7 @@ export {
   buildGanttDays,
   buildGanttPeriods,
   buildMonthBands,
+  buildRowLayout,
   computeBarGeometry,
   daysBetween,
   getIsoWeekNumber,

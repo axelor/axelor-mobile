@@ -36,11 +36,19 @@ import {
 } from '../../../utils';
 import {Text} from '../../atoms';
 import {CalendarLegendItem} from '../../molecules';
-import {GanttGroup, GanttItem, GanttRange, GanttRow, GanttZoom} from './types';
+import {
+  GanttGroup,
+  GanttItem,
+  GanttRange,
+  GanttRow,
+  GanttRowLayout,
+  GanttZoom,
+} from './types';
 import {
   buildGanttDays,
   buildGanttPeriods,
   buildMonthBands,
+  buildRowLayout,
   getSteppedScrollOffset,
   getVisibleRange,
   getWeekScrollOffset,
@@ -51,11 +59,12 @@ import {
   getDayWidth,
   getGridWidth,
 } from './gantt-view.styles';
-import GanttHeader from './GanttHeader';
+import {GanttHeader} from './header';
 import {GanttScaleHeader} from './scale';
 import {
   GanttGridLines,
   GanttGroupHeader,
+  GanttGroupLane,
   GanttRowLane,
   GanttRowName,
 } from './body';
@@ -71,6 +80,11 @@ interface GanttViewProps {
   showTodayButton?: boolean;
   showNavigation?: boolean;
   showBarTitles?: boolean;
+  showExpandAll?: boolean;
+  showCollapseAll?: boolean;
+  showFilledRowsFilter?: boolean;
+  filledRowsFilterTitle?: string;
+  filledRowsOnlyByDefault?: boolean;
   cornerTitle?: string;
   weekPrefix?: string;
   emptyMessage?: string;
@@ -100,6 +114,11 @@ const GanttView = ({
   showTodayButton = true,
   showNavigation = true,
   showBarTitles = true,
+  showExpandAll = false,
+  showCollapseAll = false,
+  showFilledRowsFilter = false,
+  filledRowsFilterTitle,
+  filledRowsOnlyByDefault = true,
   cornerTitle,
   weekPrefix,
   emptyMessage,
@@ -127,7 +146,12 @@ const GanttView = ({
   const [contentHeight, setContentHeight] = useState(0);
   const [bodyHeight, setBodyHeight] = useState(0);
   const [, setPage] = useState(0);
-  const [collapsedKeys, setCollapsedKeys] = useState<string[]>([]);
+  const [collapsedByKey, setCollapsedByKey] = useState<Record<string, boolean>>(
+    {},
+  );
+  const [filledRowsOnly, setFilledRowsOnly] = useState<boolean | undefined>(
+    filledRowsOnlyByDefault,
+  );
 
   const days = useMemo(
     () =>
@@ -317,28 +341,77 @@ const GanttView = ({
     [],
   );
 
-  const toggleGroup = useCallback(
-    (groupKey: string) =>
-      setCollapsedKeys(current =>
-        current.includes(groupKey)
-          ? current.filter(key => key !== groupKey)
-          : [...current, groupKey],
-      ),
-    [],
+  const isGroupCollapsed = useCallback(
+    (group: GanttGroup) =>
+      collapsedByKey[group.key] ?? group.collapsed ?? false,
+    [collapsedByKey],
   );
+
+  const toggleGroup = useCallback(
+    (groupKey: string) => {
+      const group = (groups ?? []).find(({key}) => key === groupKey);
+
+      setCollapsedByKey(current => ({
+        ...current,
+        [groupKey]: !(current[groupKey] ?? group?.collapsed ?? false),
+      }));
+    },
+    [groups],
+  );
+
+  const setAllGroups = useCallback(
+    (collapsed: boolean) =>
+      setCollapsedByKey(
+        Object.fromEntries((groups ?? []).map(({key}) => [key, collapsed])),
+      ),
+    [groups],
+  );
+
+  const expandAll = useCallback(() => setAllGroups(false), [setAllGroups]);
+
+  const collapseAll = useCallback(() => setAllGroups(true), [setAllGroups]);
+
+  const filteredGroups = useMemo(() => {
+    if (!showFilledRowsFilter || !filledRowsOnly) return groups ?? [];
+
+    return (groups ?? [])
+      .map(group => ({
+        ...group,
+        rows: (group.rows ?? []).filter(row => (row.items?.length ?? 0) > 0),
+      }))
+      .filter(group => group.rows.length > 0);
+  }, [filledRowsOnly, groups, showFilledRowsFilter]);
 
   const visibleGroups = useMemo(
     () =>
-      (groups ?? []).map(group => ({
+      filteredGroups.map(group => ({
         group,
-        collapsed: collapsedKeys.includes(group.key),
+        collapsed: isGroupCollapsed(group),
       })),
-    [collapsedKeys, groups],
+    [filteredGroups, isGroupCollapsed],
+  );
+
+  const rowLayouts = useMemo(() => {
+    const layouts = new Map<string, GanttRowLayout>();
+
+    filteredGroups.forEach(group =>
+      (group.rows ?? []).forEach(row =>
+        layouts.set(row.key, buildRowLayout(row)),
+      ),
+    );
+
+    return layouts;
+  }, [filteredGroups]);
+
+  const getRowLayout = useCallback(
+    (row: GanttRow): GanttRowLayout =>
+      rowLayouts.get(row.key) ?? buildRowLayout(row),
+    [rowLayouts],
   );
 
   const hasRows = useMemo(
-    () => (groups ?? []).some(({rows}) => rows.length > 0),
-    [groups],
+    () => filteredGroups.some(({rows}) => rows.length > 0),
+    [filteredGroups],
   );
 
   const refreshControl =
@@ -356,10 +429,18 @@ const GanttView = ({
         filters={filters}
         showTodayButton={showTodayButton}
         showNavigation={showNavigation}
+        showExpandAll={showExpandAll}
+        showCollapseAll={showCollapseAll}
+        showFilledRowsFilter={showFilledRowsFilter}
+        filledRowsFilterTitle={filledRowsFilterTitle}
+        filledRowsOnly={filledRowsOnly ?? false}
         translator={translator}
         onToday={scrollToToday}
         onPrevious={scrollToPrevious}
         onNext={scrollToNext}
+        onExpandAll={expandAll}
+        onCollapseAll={collapseAll}
+        onFilledRowsOnlyChange={setFilledRowsOnly}
       />
       {containerWidth > 0 && (
         <>
@@ -435,6 +516,7 @@ const GanttView = ({
                           <GanttRowName
                             key={row.key}
                             row={row}
+                            height={getRowLayout(row).height}
                             onPress={onRowPress}
                           />
                         ))}
@@ -464,21 +546,18 @@ const GanttView = ({
                     />
                     {visibleGroups.map(({group, collapsed}) => (
                       <React.Fragment key={group.key}>
-                        <View
-                          style={[
-                            ganttStyles.groupLane,
-                            {
-                              backgroundColor: Colors.screenBackgroundColor,
-                              borderBottomColor:
-                                Colors.secondaryColor_dark.background_light,
-                            },
-                          ]}
+                        <GanttGroupLane
+                          group={group}
+                          days={days}
+                          dayWidth={dayWidth}
+                          contentWidth={contentWidth}
                         />
                         {!collapsed &&
                           group.rows.map(row => (
                             <GanttRowLane
                               key={row.key}
                               row={row}
+                              layout={getRowLayout(row)}
                               days={days}
                               dayWidth={dayWidth}
                               contentWidth={contentWidth}

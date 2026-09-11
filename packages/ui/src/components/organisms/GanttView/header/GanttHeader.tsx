@@ -17,18 +17,27 @@
  */
 
 import React, {memo} from 'react';
-import {CalendarLegend, CalendarLegendItem} from '../../molecules';
-import HeaderContainer from '../HeaderContainer/HeaderContainer';
+import {CalendarLegend, CalendarLegendItem} from '../../../molecules';
+import {HeaderContainer} from '../../../organisms';
+import GanttControls from './GanttControls';
 
 interface GanttHeaderProps {
   legendItems?: CalendarLegendItem[];
   filters?: React.ReactNode;
   showTodayButton: boolean;
   showNavigation: boolean;
+  showExpandAll: boolean;
+  showCollapseAll: boolean;
+  showFilledRowsFilter: boolean;
+  filledRowsFilterTitle?: string;
+  filledRowsOnly: boolean;
   translator: (key: string) => string;
   onToday: () => void;
   onPrevious: () => void;
   onNext: () => void;
+  onExpandAll: () => void;
+  onCollapseAll: () => void;
+  onFilledRowsOnlyChange: (value?: boolean) => void;
 }
 
 const GanttHeader = ({
@@ -36,15 +45,37 @@ const GanttHeader = ({
   filters,
   showTodayButton,
   showNavigation,
+  showExpandAll,
+  showCollapseAll,
+  showFilledRowsFilter,
+  filledRowsFilterTitle,
+  filledRowsOnly,
   translator,
   onToday,
   onPrevious,
   onNext,
+  onExpandAll,
+  onCollapseAll,
+  onFilledRowsOnlyChange,
 }: GanttHeaderProps) => {
   return (
     <HeaderContainer
       expandableFilter={false}
-      fixedItems={filters}
+      fixedItems={
+        <>
+          {filters}
+          <GanttControls
+            showExpandAll={showExpandAll}
+            showCollapseAll={showCollapseAll}
+            showFilledRowsFilter={showFilledRowsFilter}
+            filledRowsFilterTitle={filledRowsFilterTitle}
+            filledRowsOnly={filledRowsOnly}
+            onExpandAll={onExpandAll}
+            onCollapseAll={onCollapseAll}
+            onFilledRowsOnlyChange={onFilledRowsOnlyChange}
+          />
+        </>
+      }
       chipComponent={
         <CalendarLegend
           items={legendItems}

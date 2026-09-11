@@ -19,17 +19,19 @@
 import React, {memo, useMemo} from 'react';
 import {View} from 'react-native';
 import {useThemeColor} from '../../../../theme';
-import {GanttDay, GanttItem, GanttRow} from '../types';
-import {ganttStyles} from '../gantt-view.styles';
+import {GanttDay, GanttItem, GanttRow, GanttRowLayout} from '../types';
+import {ganttStyles, getBarTop} from '../gantt-view.styles';
 import {
   buildNonWorkingFills,
   computeBarGeometry,
   sortItemsByPriority,
 } from '../gantt-view.helpers';
 import GanttBar from './GanttBar';
+import GanttCellStrip from './GanttCellStrip';
 
 interface GanttRowLaneProps {
   row: GanttRow;
+  layout: GanttRowLayout;
   days: GanttDay[];
   dayWidth: number;
   contentWidth: number;
@@ -39,6 +41,7 @@ interface GanttRowLaneProps {
 
 const GanttRowLane = ({
   row,
+  layout,
   days,
   dayWidth,
   contentWidth,
@@ -48,6 +51,8 @@ const GanttRowLane = ({
   const Colors = useThemeColor();
 
   const firstDateString = days[0]?.dateString;
+
+  const hasCells = row.cells != null;
 
   const fills = useMemo(
     () => buildNonWorkingFills(days, row.nonWorkingDays, dayWidth),
@@ -76,6 +81,7 @@ const GanttRowLane = ({
         ganttStyles.lane,
         {
           width: contentWidth,
+          height: layout.height,
           borderBottomColor: Colors.secondaryColor_dark.background_light,
         },
       ]}>
@@ -89,6 +95,9 @@ const GanttRowLane = ({
           pointerEvents="none"
         />
       ))}
+      {hasCells && (
+        <GanttCellStrip days={days} cells={row.cells!} dayWidth={dayWidth} />
+      )}
       {bars.map(({item, geometry}) => (
         <GanttBar
           key={item.id}
@@ -96,6 +105,7 @@ const GanttRowLane = ({
           row={row}
           geometry={geometry!}
           showTitle={showBarTitles}
+          top={getBarTop(layout.laneIndexByItemId[`${item.id}`] ?? 0, hasCells)}
           onPress={onItemPress}
         />
       ))}

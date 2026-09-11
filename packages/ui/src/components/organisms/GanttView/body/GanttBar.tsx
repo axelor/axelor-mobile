@@ -20,7 +20,11 @@ import React, {memo, useCallback, useMemo} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {Text} from '../../../atoms';
 import {GanttBarGeometry, GanttItem, GanttRow} from '../types';
-import {GANTT_BAR_RADIUS, ganttStyles} from '../gantt-view.styles';
+import {
+  GANTT_BAR_INSET,
+  GANTT_BAR_RADIUS,
+  ganttStyles,
+} from '../gantt-view.styles';
 
 const MIN_LABEL_WIDTH = 44;
 
@@ -29,10 +33,18 @@ interface GanttBarProps {
   row: GanttRow;
   geometry: GanttBarGeometry;
   showTitle: boolean;
+  top?: number;
   onPress?: (item: GanttItem, row: GanttRow) => void;
 }
 
-const GanttBar = ({item, row, geometry, showTitle, onPress}: GanttBarProps) => {
+const GanttBar = ({
+  item,
+  row,
+  geometry,
+  showTitle,
+  top = GANTT_BAR_INSET,
+  onPress,
+}: GanttBarProps) => {
   const {left, width, clipStart, clipEnd} = geometry;
 
   const handlePress = useCallback(
@@ -44,13 +56,14 @@ const GanttBar = ({item, row, geometry, showTitle, onPress}: GanttBarProps) => {
     () => ({
       left,
       width,
+      top,
       backgroundColor: item.color?.background_light,
       borderTopLeftRadius: clipStart ? 0 : GANTT_BAR_RADIUS,
       borderBottomLeftRadius: clipStart ? 0 : GANTT_BAR_RADIUS,
       borderTopRightRadius: clipEnd ? 0 : GANTT_BAR_RADIUS,
       borderBottomRightRadius: clipEnd ? 0 : GANTT_BAR_RADIUS,
     }),
-    [clipEnd, clipStart, item.color?.background_light, left, width],
+    [clipEnd, clipStart, item.color?.background_light, left, top, width],
   );
 
   const hasLabel = showTitle && item.title != null && width > MIN_LABEL_WIDTH;
