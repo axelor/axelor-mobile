@@ -23,6 +23,7 @@ import {
   GanttCell,
   GanttGroup,
   GanttView as Component,
+  Picker,
 } from '../../src/components';
 import {useThemeColor} from '../../src/theme';
 import {startOfWeek, toDateString} from '../../src/utils';
@@ -400,6 +401,7 @@ export const GanttViewWithLoadCells: Story<typeof Component> = {
     showFilledRowsFilter: true,
     filledRowsFilterTitle: 'Only planned projects',
     filledRowsOnlyByDefault: true,
+    expandableFilter: true,
     weekPrefix: 'W',
     cornerTitle: 'Project',
     showNavigation: true,
@@ -434,12 +436,29 @@ export const GanttViewWithLoadCells: Story<typeof Component> = {
       [Colors],
     );
 
+    const filters = useMemo(
+      () => (
+        <Picker
+          title="Team"
+          listItems={[
+            {id: 1, name: 'Development'},
+            {id: 2, name: 'Support'},
+          ]}
+          labelField="name"
+          valueField="id"
+          onValueChange={() => {}}
+        />
+      ),
+      [],
+    );
+
     return (
       <View style={{height: 600, width: '100%'}}>
         <Component
           {...args}
           groups={groups}
           legendItems={legendItems}
+          filters={filters}
           translator={translator}
         />
       </View>
