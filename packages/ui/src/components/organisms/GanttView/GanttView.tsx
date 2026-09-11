@@ -77,6 +77,7 @@ interface GanttViewProps {
   firstDayOfWeek?: number;
   legendItems?: CalendarLegendItem[];
   filters?: React.ReactNode;
+  expandableFilter?: boolean;
   showTodayButton?: boolean;
   showNavigation?: boolean;
   showBarTitles?: boolean;
@@ -111,6 +112,7 @@ const GanttView = ({
   firstDayOfWeek = DEFAULT_FIRST_DAY_OF_WEEK,
   legendItems,
   filters,
+  expandableFilter = false,
   showTodayButton = true,
   showNavigation = true,
   showBarTitles = true,
@@ -427,6 +429,7 @@ const GanttView = ({
       <GanttHeader
         legendItems={legendItems}
         filters={filters}
+        expandableFilter={expandableFilter}
         showTodayButton={showTodayButton}
         showNavigation={showNavigation}
         showExpandAll={showExpandAll}
@@ -444,7 +447,11 @@ const GanttView = ({
       />
       {containerWidth > 0 && (
         <>
-          <View style={ganttStyles.scaleRow}>
+          <View
+            style={[
+              ganttStyles.scaleRow,
+              expandableFilter && ganttStyles.expandableFilterGap,
+            ]}>
             <View
               style={[
                 ganttStyles.scaleCorner,

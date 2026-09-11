@@ -251,12 +251,26 @@ describe('GanttView Component', () => {
     expect(getByTestId('periodNavigationToday')).toBeTruthy();
   });
 
-  it('renders the filters given by the screen', () => {
-    const {getByText} = setupGanttView({
+  it('renders the filters given by the screen, always visible by default', () => {
+    const {getByText, queryByTestId} = setupGanttView({
       filters: <Text>All departments</Text>,
     });
 
     expect(getByText('All departments')).toBeTruthy();
+    expect(queryByTestId('headerContainerExpandableIcon')).toBeNull();
+  });
+
+  it('makes the filters collapsible on request', () => {
+    const {getByTestId, getByText, queryByText} = setupGanttView({
+      expandableFilter: true,
+      filters: <Text>All departments</Text>,
+    });
+
+    expect(getByText('All departments')).toBeTruthy();
+
+    fireEvent.press(getByTestId('headerContainerExpandableIcon'));
+
+    expect(queryByText('All departments')).toBeNull();
   });
 
   it('renders no group control by default', () => {
