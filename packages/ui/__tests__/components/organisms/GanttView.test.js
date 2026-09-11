@@ -56,6 +56,38 @@ describe('GanttView Component', () => {
     },
   ];
 
+  const SPACED_ITEMS = [
+    {
+      id: 1,
+      startDate: '2026-09-07',
+      endDate: '2026-09-08',
+      title: 'Paid leave',
+      color: Colors.successColor,
+    },
+    {
+      id: 2,
+      startDate: '2026-09-10',
+      endDate: '2026-09-11',
+      title: 'Training',
+      color: Colors.infoColor,
+    },
+  ];
+
+  const OVERLAPPING_ITEMS = [
+    SPACED_ITEMS[0],
+    {...SPACED_ITEMS[1], startDate: '2026-09-08', endDate: '2026-09-11'},
+  ];
+
+  const ROW_CELLS = {
+    '2026-09-07': {value: 100, label: '100%', color: Colors.successColor},
+  };
+
+  const buildGroup = (items, cells) => ({
+    key: 'dept-1',
+    title: 'Development',
+    rows: [{key: '10', title: 'Alice Ferrand', items, cells}],
+  });
+
   const setupGanttView = overrideProps =>
     setup({
       Component: GanttView,
@@ -225,5 +257,106 @@ describe('GanttView Component', () => {
     });
 
     expect(getByText('All departments')).toBeTruthy();
+  });
+
+  it('renders no group control by default', () => {
+    const {queryByTestId} = setupGanttView();
+
+    expect(queryByTestId('ganttExpandAllButton')).toBeNull();
+    expect(queryByTestId('ganttCollapseAllButton')).toBeNull();
+  });
+
+  it('collapses then expands every group at once', () => {
+    const {getByTestId, queryByTestId} = setupMeasured({
+      showExpandAll: true,
+      showCollapseAll: true,
+    });
+
+    fireEvent.press(getByTestId('ganttCollapseAllButton'));
+
+    expect(queryByTestId('ganttRowName-10')).toBeNull();
+    expect(queryByTestId('ganttRowName-12')).toBeNull();
+
+    fireEvent.press(getByTestId('ganttExpandAllButton'));
+
+    expect(getByTestId('ganttRowName-10')).toBeTruthy();
+    expect(getByTestId('ganttRowName-12')).toBeTruthy();
+  });
+
+  it('renders a group collapsed when it asks for it, and expands it on press', () => {
+    const {getByTestId, queryByTestId} = setupMeasured({
+      groups: [{...groups[0], collapsed: true}, groups[1]],
+    });
+
+    expect(queryByTestId('ganttRowName-10')).toBeNull();
+    expect(getByTestId('ganttRowName-12')).toBeTruthy();
+
+    fireEvent.press(getByTestId('ganttGroupHeader-dept-1'));
+
+    expect(getByTestId('ganttRowName-10')).toBeTruthy();
+  });
+
+  it('renders no rows filter without a title to display', () => {
+    const {queryByRole} = setupGanttView({showFilledRowsFilter: true});
+
+    expect(queryByRole('switch')).toBeNull();
+  });
+
+  it('keeps only the rows carrying items while the filter is on', () => {
+    const {getByRole, getByTestId, queryByTestId} = setupMeasured({
+      showFilledRowsFilter: true,
+      filledRowsFilterTitle: 'With leaves only',
+    });
+
+    expect(getByTestId('ganttRowName-10')).toBeTruthy();
+    expect(queryByTestId('ganttRowName-11')).toBeNull();
+    expect(queryByTestId('ganttGroupHeader-dept-2')).toBeNull();
+
+    fireEvent(getByRole('switch'), 'valueChange', false);
+
+    expect(getByTestId('ganttRowName-11')).toBeTruthy();
+    expect(getByTestId('ganttGroupHeader-dept-2')).toBeTruthy();
+  });
+
+  it('keeps items which do not overlap on the same line', () => {
+    const {getByTestId} = setupMeasured({groups: [buildGroup(SPACED_ITEMS)]});
+
+    expect(getByTestId('ganttBar-1')).toHaveStyle({top: 12});
+    expect(getByTestId('ganttBar-2')).toHaveStyle({top: 12});
+    expect(getByTestId('ganttRowName-10')).toHaveStyle({height: 46});
+  });
+
+  it('stacks overlapping items on separate lines and grows the row', () => {
+    const {getByTestId} = setupMeasured({
+      groups: [buildGroup(OVERLAPPING_ITEMS)],
+    });
+
+    expect(getByTestId('ganttBar-1')).toHaveStyle({top: 12});
+    expect(getByTestId('ganttBar-2')).toHaveStyle({top: 36});
+    expect(getByTestId('ganttRowName-10')).toHaveStyle({height: 70});
+  });
+
+  it('displays the daily cells of a row and of its group', () => {
+    const {getByText} = setupMeasured({
+      groups: [
+        {
+          ...buildGroup(SPACED_ITEMS, ROW_CELLS),
+          cells: {
+            '2026-09-08': {value: 50, label: '50%', color: Colors.cautionColor},
+          },
+        },
+      ],
+    });
+
+    expect(getByText('100%')).toBeTruthy();
+    expect(getByText('50%')).toBeTruthy();
+  });
+
+  it('lifts the items to leave room for the cells of the row', () => {
+    const {getByTestId} = setupMeasured({
+      groups: [buildGroup(SPACED_ITEMS, ROW_CELLS)],
+    });
+
+    expect(getByTestId('ganttBar-1')).toHaveStyle({top: 5});
   });
 });

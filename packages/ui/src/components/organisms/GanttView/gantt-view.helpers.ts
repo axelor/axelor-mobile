@@ -24,7 +24,7 @@ import {
   toDateString,
 } from '../../../utils';
 import {Color} from '../../../theme';
-import {GANTT_BAR_MIN_WIDTH} from './gantt-view.styles';
+import {GANTT_BAR_MIN_WIDTH, getRowHeight} from './gantt-view.styles';
 import {
   GanttBarGeometry,
   GanttDay,
@@ -33,6 +33,8 @@ import {
   GanttMonthBand,
   GanttPeriod,
   GanttRange,
+  GanttRow,
+  GanttRowLayout,
 } from './types';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -190,6 +192,70 @@ export const sortItemsByPriority = (items?: GanttItem[]): GanttItem[] =>
   Array.isArray(items)
     ? [...items].sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
     : [];
+
+const getItemSpan = (
+  item: GanttItem,
+  referenceDateString: string,
+): {start: number; end: number} => {
+  const startIndex = daysBetween(referenceDateString, item.startDate);
+  const endIndex = daysBetween(referenceDateString, item.endDate);
+
+  return {
+    start: startIndex + (item.startsAfternoon ? 0.5 : 0),
+    end: Math.max(endIndex + (item.endsMorning ? 0.5 : 1), startIndex + 0.5),
+  };
+};
+
+export const buildRowLayout = (row?: GanttRow): GanttRowLayout => {
+  const hasCells = row?.cells != null;
+  const items = (row?.items ?? []).filter(
+    item => item?.startDate != null && item?.endDate != null,
+  );
+
+  if (items.length === 0)
+    return {
+      laneCount: 1,
+      laneIndexByItemId: {},
+      height: getRowHeight(1, hasCells),
+    };
+
+  const referenceDateString = items.reduce(
+    (earliest, item) => (item.startDate < earliest ? item.startDate : earliest),
+    items[0].startDate,
+  );
+
+  const spans = items
+    .map(item => ({item, ...getItemSpan(item, referenceDateString)}))
+    .sort(
+      (a, b) =>
+        a.start - b.start ||
+        (a.item.priority ?? 0) - (b.item.priority ?? 0) ||
+        `${a.item.id}`.localeCompare(`${b.item.id}`),
+    );
+
+  const laneEnds: number[] = [];
+  const laneIndexByItemId: Record<string, number> = {};
+
+  spans.forEach(({item, start, end}) => {
+    const laneIndex = laneEnds.findIndex(laneEnd => laneEnd <= start);
+
+    if (laneIndex === -1) {
+      laneEnds.push(end);
+      laneIndexByItemId[`${item.id}`] = laneEnds.length - 1;
+
+      return;
+    }
+
+    laneEnds[laneIndex] = end;
+    laneIndexByItemId[`${item.id}`] = laneIndex;
+  });
+
+  return {
+    laneCount: laneEnds.length,
+    laneIndexByItemId,
+    height: getRowHeight(laneEnds.length, hasCells),
+  };
+};
 
 export const getVisibleRange = (
   days: GanttDay[],

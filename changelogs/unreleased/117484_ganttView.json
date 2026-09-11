@@ -1,5 +1,6 @@
 {
-  "title": "GanttView: add a new component to display a planning as a timeline, with collapsible groups, week and month zooms and non-working days",
+  "title": "GanttView: add a new component to display a planning as a timeline, with collapsible groups, week and month zooms, non-working days and a daily indicator per line",
   "type": "feat",
-  "packages": "ui"
+  "packages": "ui",
+  "description": "The timeline is browsed week by week or month by month, the scale naming the weeks and the months it spans, and the display can be brought back to today at any time. Lines are gathered in groups which can be collapsed one by one or all at once, a group being able to appear collapsed from the start, and a filter keeps only the lines which actually carry items. Items are drawn as bars over the days they span, halves of days included, and items which overlap are stacked on separate lines instead of hiding one another, the height of the line following the number of lines needed. Each line, and the line of its group, can carry a daily indicator under the bars, a coloured cell per day with its own label, to follow a value such as a load day by day. Non-working days are shaded both on the lines and on the line of their group, and the legend, the filters and the period navigation are gathered in a single header."
 }
