@@ -20,15 +20,23 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   FormView,
   headerActionsProvider,
+  useDispatch,
   useSelector,
 } from '@axelor/aos-mobile-core';
 import {
   createTimesheetLine,
   updateTimesheetLine,
 } from '../../features/timesheetLineSlice';
+import {updateProject} from '../../features/projectSlice';
 
 const TimesheetLineFormScreen = ({route, navigation}: any) => {
-  const {timesheetId, timesheetLine, date} = route?.params ?? {};
+  const {
+    timesheetId,
+    timesheetLine,
+    date,
+    creationDefaultValue: creationValues,
+  } = route?.params ?? {};
+  const _dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
 
@@ -82,9 +90,16 @@ const TimesheetLineFormScreen = ({route, navigation}: any) => {
       date: date ?? new Date().toISOString().split('T')[0],
       product: user?.employee?.product,
       useDuration: true,
+      ...creationValues,
     }),
-    [date, user],
+    [creationValues, date, user],
   );
+
+  useEffect(() => {
+    const project = timesheetLine?.project ?? creationValues?.project;
+
+    if (project != null) _dispatch(updateProject(project));
+  }, [creationValues?.project, _dispatch, timesheetLine?.project]);
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timesheetLine_details', {
