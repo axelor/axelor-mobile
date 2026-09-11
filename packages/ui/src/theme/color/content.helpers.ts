@@ -17,7 +17,6 @@
  */
 
 import {
-  addOpacityToHex,
   blendHex,
   deepCopy,
   getBestForegroundColor,
@@ -45,37 +44,42 @@ export const getActiveTheme = (
   return activeTheme;
 };
 
+const SHORT_HEX_REGEX = /^[0-9a-f]{3}$/i;
+const HEX_REGEX = /^[0-9a-f]{6}([0-9a-f]{2})?$/i;
+
 export function formatColor(color: string) {
   if (color == null) return undefined;
 
-  if (color.includes('#')) {
-    if (color.length === 4) {
-      return `#${color
-        .replace('#', '')
-        .split('')
-        .map(char => char + char)
-        .join('')}`;
-    }
+  if (color.includes('rgb')) return rgbaStringToHex(color);
 
-    return color;
+  const hex = color.replace('#', '');
+
+  if (SHORT_HEX_REGEX.test(hex)) {
+    return `#${hex
+      .split('')
+      .map(char => char + char)
+      .join('')}`;
   }
 
-  if (color.includes('rgb')) return rgbaStringToHex(color);
+  if (HEX_REGEX.test(hex)) return `#${hex.substring(0, 6)}`;
 
   return undefined;
 }
 
 const LIGHT_SHADE_OPACITY = 0.2;
 
-const extendColor = (color: string, surface: string): Color => {
+export const extendColor = (color: string, surface: string): Color => {
   const _hexColor = formatColor(color) as string;
+  const _lightShade = blendHex(
+    _hexColor,
+    formatColor(surface) as string,
+    LIGHT_SHADE_OPACITY,
+  );
 
   return {
     background: _hexColor,
-    background_light: addOpacityToHex(_hexColor, LIGHT_SHADE_OPACITY),
-    foreground: getBestForegroundColor(
-      blendHex(_hexColor, formatColor(surface) as string, LIGHT_SHADE_OPACITY),
-    ),
+    background_light: _lightShade,
+    foreground: getBestForegroundColor(_lightShade),
   };
 };
 

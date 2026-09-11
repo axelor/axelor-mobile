@@ -1,0 +1,5 @@
+{
+  "title": "Custom colours: ignore values which are not colours, accept colours defined with transparency and keep a solid light shade",
+  "type": "fix",
+  "packages": "ui"
+}
