@@ -57,7 +57,11 @@ export const createTimesheetLine = createAsyncThunk(
       action: 'Hr_SliceAction_CreateTimesheetLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => refreshTimesheet(dispatch, data?.timesheetLine?.timesheetId));
+    }).then(timesheetLine => {
+      refreshTimesheet(dispatch, data?.timesheetLine?.timesheetId);
+
+      return timesheetLine;
+    });
   },
 );
 
@@ -70,7 +74,11 @@ export const updateTimesheetLine = createAsyncThunk(
       action: 'Hr_SliceAction_UpdateTimesheetLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => refreshTimesheet(dispatch, data.timesheetId));
+    }).then(timesheetLine => {
+      refreshTimesheet(dispatch, data.timesheetId);
+
+      return timesheetLine;
+    });
   },
 );
 
