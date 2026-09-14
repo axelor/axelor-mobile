@@ -17,4 +17,16 @@
  */
 
 export {default as ControlEntry} from './controlEntry';
+export type {
+  ControlEntrySample,
+  ControlEntrySampleLine,
+  SampleLineControlResult,
+} from './controlEntry';
+export {default as ControlTypeField} from './controlTypeField';
+export type {
+  CharacteristicProperty,
+  ControlTypeFieldDefinition,
+  ControlTypeFieldFormValue,
+  ControlTypeFieldValue,
+} from './controlTypeField';
 export {default as QualityImprovement} from './qualityImprovement';
