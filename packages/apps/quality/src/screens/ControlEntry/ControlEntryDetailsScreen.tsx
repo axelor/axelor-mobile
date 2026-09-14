@@ -66,13 +66,7 @@ const ControlEntryDetailsScreen = ({route}: any) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         displaySearchBar={false}
-        renderListItem={({item}) => (
-          <ControlEntrySampleCard
-            controlEntrySampleId={item.id}
-            resultSelect={item.resultSelect}
-            samplefullName={item.fullName}
-          />
-        )}
+        renderListItem={({item}) => <ControlEntrySampleCard sample={item} />}
       />
     </Screen>
   );

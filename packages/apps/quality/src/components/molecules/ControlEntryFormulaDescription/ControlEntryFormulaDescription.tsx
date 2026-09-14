@@ -16,6 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ControlEntryValuesForm} from './ControlEntryValuesForm/ControlEntryValuesForm';
-export {default as DefectFilesManager} from './DefectFilesManager/DefectFilesManager';
-export {default as SampleNotFoundView} from './SampleNotFoundView/SampleNotFoundView';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {Label} from '@axelor/aos-mobile-ui';
+
+interface ControlEntryFormulaDescriptionProps {
+  style?: any;
+  description?: string;
+}
+
+const ControlEntryFormulaDescription = ({
+  style,
+  description,
+}: ControlEntryFormulaDescriptionProps) => {
+  return (
+    <Label type="info" message={description} style={[styles.label, style]} />
+  );
+};
+
+const styles = StyleSheet.create({
+  label: {
+    marginVertical: 4,
+  },
+});
+
+export default ControlEntryFormulaDescription;
