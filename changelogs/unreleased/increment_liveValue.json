@@ -1,6 +1,0 @@
-{
-  "title": "Increment: send the typed quantity to the parent on each keystroke",
-  "type": "fix",
-  "packages": "ui",
-  "description": "The input only propagated its value when it lost focus, so a quantity typed then validated straight from a save button was ignored and the previous value was submitted. The value is now propagated while typing, and the external value no longer overwrites the field while it is focused."
-}

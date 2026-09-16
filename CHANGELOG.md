@@ -3,6 +3,19 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.7] (2026-09-16)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: send the typed quantity to the parent on each keystroke
+
+<details>
+The input only propagated its value when it lost focus, so a quantity typed then validated straight from a save button was ignored and the previous value was submitted. The value is now propagated while typing, and the external value no longer overwrites the field while it is focused.
+</details>
+
+
 ## [9.1.6] (2026-09-10)
 
 ### @axelor/aos-mobile-manufacturing
@@ -355,6 +368,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.7]: https://github.com/axelor/axelor-mobile/compare/9.1.6...9.1.7
 [9.1.6]: https://github.com/axelor/axelor-mobile/compare/9.1.5...9.1.6
 [9.1.5]: https://github.com/axelor/axelor-mobile/compare/9.1.4...9.1.5
 [9.1.4]: https://github.com/axelor/axelor-mobile/compare/9.1.3...9.1.4
