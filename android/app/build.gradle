@@ -135,6 +135,27 @@ android {
             dimension "type"
         }
     }
+
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach { output ->
+            output.outputFileName = "aom-${variant.versionName}.apk"
+        }
+
+        def bundleDirectory = project.layout.buildDirectory.dir("outputs/bundle/${variant.name}")
+        tasks.matching { it.name == "bundle${variant.name.capitalize()}" }.configureEach {
+            doLast {
+                def directory = bundleDirectory.get().asFile
+                def bundles = directory.listFiles({ file -> file.name.endsWith(".aab") } as FileFilter)
+                bundles?.each { bundle ->
+                    def renamed = new File(directory, "aom-${variant.versionName}.aab")
+                    if (bundle.name != renamed.name) {
+                        renamed.delete()
+                        bundle.renameTo(renamed)
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
