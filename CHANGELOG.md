@@ -3,6 +3,19 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.20] (2026-09-16)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: send the typed quantity to the parent on each keystroke
+
+<details>
+The input only propagated its value when it lost focus, so a quantity typed then validated straight from a save button was ignored and the previous value was submitted. The value is now propagated while typing, and the external value no longer overwrites the field while it is focused.
+</details>
+
+
 ## [9.0.19] (2026-09-10)
 
 ### @axelor/aos-mobile-manufacturing
@@ -481,6 +494,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.20]: https://github.com/axelor/axelor-mobile/compare/9.0.19...9.0.20
 [9.0.19]: https://github.com/axelor/axelor-mobile/compare/9.0.18...9.0.19
 [9.0.18]: https://github.com/axelor/axelor-mobile/compare/9.0.17...9.0.18
 [9.0.17]: https://github.com/axelor/axelor-mobile/compare/9.0.16...9.0.17
