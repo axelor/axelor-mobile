@@ -3,6 +3,19 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.25] (2026-09-16)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: send the typed quantity to the parent on each keystroke
+
+<details>
+The input only propagated its value when it lost focus, so a quantity typed then validated straight from a save button was ignored and the previous value was submitted. The value is now propagated while typing, and the external value no longer overwrites the field while it is focused.
+</details>
+
+
 ## [8.5.24] (2026-09-10)
 
 ### @axelor/aos-mobile-manufacturing
@@ -705,6 +718,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.25]: https://github.com/axelor/axelor-mobile/compare/8.5.24...8.5.25
 [8.5.24]: https://github.com/axelor/axelor-mobile/compare/8.5.23...8.5.24
 [8.5.23]: https://github.com/axelor/axelor-mobile/compare/8.5.22...8.5.23
 [8.5.22]: https://github.com/axelor/axelor-mobile/compare/8.5.21...8.5.22
