@@ -24,12 +24,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useDigitFormat, useOutsideClickHandler} from '../../../hooks';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {
   formatNumber as _format,
   unformatNumber as _unformat,
-} from '../../../utils/formatters';
-import {useDigitFormat, useOutsideClickHandler} from '../../../hooks';
-import {ThemeColors, useThemeColor} from '../../../theme';
+} from '../../../utils';
 import {Input} from '../../atoms';
 import IncrementButton from './IncrementButton';
 
@@ -39,7 +39,7 @@ interface IncrementProps {
   value: string | undefined;
   decimalSpacer?: string;
   thousandSpacer?: string;
-  onValueChange: (any) => void;
+  onValueChange: (_v?: any) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   readonly?: boolean;
@@ -65,7 +65,7 @@ const Increment = ({
   defaultFormatting = true,
   stepSize = 1,
   minValue = 0,
-  maxValue = null,
+  maxValue,
   isBigButton = false,
   keyboardType = 'numeric',
   scale,
@@ -75,14 +75,12 @@ const Increment = ({
   const containerRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
 
-  const [valueQty, setValueQty] = useState<string>(value);
+  const [valueQty, setValueQty] = useState<string>(value!);
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const handleDecimal = useCallback(
     (numberToFormat: string | number) => {
-      if (scale == null) {
-        return cutDecimalExcess(numberToFormat);
-      }
+      if (scale == null) return cutDecimalExcess(numberToFormat);
 
       const _scale = Math.max(scale, 0);
       const _value =
@@ -96,16 +94,13 @@ const Increment = ({
   );
 
   const format = useCallback(
-    (number: number | string) => {
-      return _format(number, decimalSpacer, thousandSpacer, handleDecimal);
-    },
+    (number: number | string) =>
+      _format(number, decimalSpacer, thousandSpacer, handleDecimal),
     [handleDecimal, decimalSpacer, thousandSpacer],
   );
 
   const unformat = useCallback(
-    number => {
-      return _unformat(number, decimalSpacer, thousandSpacer);
-    },
+    (number: string) => _unformat(number, decimalSpacer, thousandSpacer),
     [decimalSpacer, thousandSpacer],
   );
 
@@ -120,26 +115,42 @@ const Increment = ({
     [defaultFormatting, format],
   );
 
+  const clampValue = useCallback(
+    (_value: number) => {
+      if (minValue != null && _value <= minValue) return minValue;
+      if (maxValue != null && _value >= maxValue) return maxValue;
+      return _value;
+    },
+    [maxValue, minValue],
+  );
+
   const handleResult = useCallback(
     (_value: number) => {
-      let resultValue;
-      if (minValue != null && _value <= minValue) {
-        resultValue = minValue;
-      } else if (maxValue != null && _value >= maxValue) {
-        resultValue = maxValue;
-      } else {
-        resultValue = _value;
-      }
+      const resultValue = clampValue(_value);
 
       handleValueFormatting(resultValue);
       onValueChange(resultValue);
     },
-    [handleValueFormatting, maxValue, minValue, onValueChange],
+    [clampValue, handleValueFormatting, onValueChange],
+  );
+
+  const handleInputChange = useCallback(
+    (_value: string) => {
+      setValueQty(_value);
+
+      const unformattedValue = defaultFormatting ? unformat(_value) : _value;
+      const parsedValue = parseFloat(unformattedValue);
+
+      onValueChange(isNaN(parsedValue) ? 0 : clampValue(parsedValue));
+    },
+    [clampValue, defaultFormatting, onValueChange, unformat],
   );
 
   useEffect(() => {
+    if (isFocused) return;
+
     handleValueFormatting(parseFloat(value || '0')?.toString());
-  }, [handleValueFormatting, value]);
+  }, [handleValueFormatting, isFocused, value]);
 
   const handlePlus = () => {
     const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
@@ -173,7 +184,7 @@ const Increment = ({
     setIsFocused(true);
 
     if (defaultFormatting) {
-      setValueQty(current => unformat(current).replace('.', decimalSpacer));
+      setValueQty(current => unformat(current).replace('.', decimalSpacer!));
     }
 
     if (inputRef.current?.setSelection) {
@@ -209,7 +220,7 @@ const Increment = ({
           inputRef={inputRef}
           style={[styles.input, inputStyle]}
           value={valueQty != null ? String(valueQty) : ''}
-          onChange={setValueQty}
+          onChange={handleInputChange}
           keyboardType={keyboardType}
           onSelection={handleFocus}
           onEndFocus={handleEndInput}
