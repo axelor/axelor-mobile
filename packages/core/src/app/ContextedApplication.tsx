@@ -39,6 +39,7 @@ import {setAppVersion} from '../features/authSlice';
 import {Module} from './modules';
 import {MaintenanceTrigger} from '../apiProviders';
 import {resetConfigs} from '../features/appConfigSlice';
+import WebViewPreloader from '../webViews/WebViewPreloader';
 
 interface instanceConfig {
   testInstanceConfig: proxy;
@@ -110,6 +111,7 @@ const ContextedApplication = ({
           <LoadingIndicator />
           <BlockInteractionMessage />
           <GlobalToolBox />
+          <WebViewPreloader />
           <RootNavigator
             modules={modules}
             mainMenu={mainMenu}
