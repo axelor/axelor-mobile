@@ -20,6 +20,7 @@ import {Menu, modulesProvider, Screen} from '../app';
 import {fetchWebViewConfigs} from './api.helpers';
 import {createWebViewActionID} from './display.helpers';
 import {WebViewScreen} from './view';
+import {WebViewConfig, webViewProvider} from './webView.provider';
 import {getRoles} from '../utils';
 
 type WebViewMenuConfig = {
@@ -34,65 +35,62 @@ type Screens = {
   [screenKey: string]: Screen;
 };
 
-const createScreenComponent = id => {
-  return props => WebViewScreen({...props, webViewId: id});
+const createScreenComponent = (webViewConfig: WebViewConfig) => {
+  return props =>
+    WebViewScreen({
+      ...props,
+      webViewId: webViewConfig.id,
+      defaultConfig: webViewConfig,
+    });
 };
 
 export const createWebViewScreens = (
-  webViewConfigs: {
-    id: number;
-    appName: string;
-    isAosWebView: boolean;
-    menuTitle?: string;
-    iconName?: string;
-    menuOrder?: number;
-    authorizedRoleSet: any[];
-  }[],
+  webViewConfigs: WebViewConfig[],
 ): {menus: WebViewMenuConfig; screens: Screens} => {
   const screens: Screens = {};
   const menus: WebViewMenuConfig = {};
 
   if (Array.isArray(webViewConfigs) && webViewConfigs.length > 0) {
-    webViewConfigs.forEach(
-      ({
+    webViewConfigs.forEach(webViewConfig => {
+      const {
         id,
         appName,
         menuTitle,
         iconName,
         menuOrder,
         authorizedRoleSet = [],
-      }) => {
-        const config = {
-          title: menuTitle ?? 'Base_WebView',
-          icon: iconName ?? 'layers',
-          order: menuOrder ?? 99,
-        };
-        const screenKey = `WebView_${appName}_${id}`;
+      } = webViewConfig;
 
-        screens[screenKey] = {
-          title: config.title,
-          component: createScreenComponent(id),
-          actionID: createWebViewActionID(id),
-        } as Screen;
+      const config = {
+        title: menuTitle ?? 'Base_WebView',
+        icon: iconName ?? 'layers',
+        order: menuOrder ?? 99,
+      };
+      const screenKey = `WebView_${appName}_${id}`;
 
-        const _menu: Menu = {
-          title: config.title,
-          icon: config.icon,
-          parent: appName,
-          order: config.order,
-          compatibilityAOS: {
-            moduleName: 'axelor-mobile-settings',
-            downToVersion: '8.1.0',
-          },
-          screen: screenKey,
-        };
+      screens[screenKey] = {
+        title: config.title,
+        component: createScreenComponent(webViewConfig),
+        actionID: createWebViewActionID(id),
+      } as Screen;
 
-        menus[`${appName}_menu_webView${id}`] = {
-          menu: _menu,
-          configRoles: authorizedRoleSet,
-        };
-      },
-    );
+      const _menu: Menu = {
+        title: config.title,
+        icon: config.icon,
+        parent: appName,
+        order: config.order,
+        compatibilityAOS: {
+          moduleName: 'axelor-mobile-settings',
+          downToVersion: '8.1.0',
+        },
+        screen: screenKey,
+      };
+
+      menus[`${appName}_menu_webView${id}`] = {
+        menu: _menu,
+        configRoles: authorizedRoleSet,
+      };
+    });
   }
 
   return {menus, screens};
@@ -127,6 +125,8 @@ export const registerWebViewModule = async (user: any) => {
   const webViewConfigs = await fetchWebViewConfigs()
     .then(res => res?.data?.data)
     .catch(() => []);
+
+  webViewProvider.registerConfigs(webViewConfigs);
 
   const {screens, menus} = createWebViewScreens(webViewConfigs);
   const userRoles = getRoles(user);
