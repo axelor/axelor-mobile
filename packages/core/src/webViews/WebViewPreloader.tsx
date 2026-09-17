@@ -53,7 +53,8 @@ true;
 const WebViewPreloader = () => {
   const configs = useWebViewConfigs();
   const {isConnected} = useOnline();
-  const {logged} = useSelector((state: any) => state.auth);
+
+  const {logged} = useSelector(state => state.auth);
 
   const [queue, setQueue] = useState<WebViewConfig[]>([]);
   const preloadedIds = useRef<number[]>([]);
@@ -66,9 +67,7 @@ const WebViewPreloader = () => {
       return;
     }
 
-    if (!isConnected) {
-      return;
-    }
+    if (!isConnected) return;
 
     setQueue(configs.filter(({id}) => !preloadedIds.current.includes(id)));
   }, [configs, isConnected, logged]);
@@ -92,9 +91,7 @@ const WebViewPreloader = () => {
   );
 
   useEffect(() => {
-    if (current == null) {
-      return;
-    }
+    if (current == null) return;
 
     fallbackTimeout.current = setTimeout(
       () => completeCurrent(false),
@@ -117,13 +114,12 @@ const WebViewPreloader = () => {
     [completeCurrent],
   );
 
-  const handleError = useCallback(() => completeCurrent(false), [
-    completeCurrent,
-  ]);
+  const handleError = useCallback(
+    () => completeCurrent(false),
+    [completeCurrent],
+  );
 
-  if (current == null) {
-    return null;
-  }
+  if (current == null) return null;
 
   return (
     <View style={styles.container} pointerEvents="none">
