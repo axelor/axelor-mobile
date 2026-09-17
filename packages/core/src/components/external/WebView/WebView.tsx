@@ -20,6 +20,7 @@ import React, {useMemo} from 'react';
 import {ActivityIndicator, StyleSheet} from 'react-native';
 import {WebView as RNWebView} from 'react-native-webview';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {useOnline} from '../../../features/onlineSlice';
 import {useSelector} from '../../../redux/hooks';
 import {checkNullString} from '../../../utils';
 
@@ -28,21 +29,37 @@ interface WebViewProps {
   baseUrl?: string;
   path?: string;
   queryParams?: Object;
+  injectedJavaScript?: string;
+  onMessage?: (event: any) => void;
+  onLoadEnd?: () => void;
+  onError?: () => void;
 }
 
-const WebView = ({style, baseUrl, path, queryParams}: WebViewProps) => {
+const WebView = ({
+  style,
+  baseUrl,
+  path,
+  queryParams,
+  injectedJavaScript,
+  onMessage,
+  onLoadEnd,
+  onError,
+}: WebViewProps) => {
   const Colors = useThemeColor();
+  const {isEnabled: isConnected} = useOnline();
 
-  const {baseUrl: AOSBaseUrl} = useSelector((state: any) => state.auth);
+  const {
+    baseUrl: AOSBaseUrl,
+    token,
+    jsessionId,
+  } = useSelector(state => state.auth);
 
   const formattedQueryParams = useMemo(() => {
     let _formattedQueryParams = '';
 
     if (queryParams != null) {
       Object.entries(queryParams).map(([key, value]) => {
-        if (value == null) {
-          return;
-        }
+        if (value == null) return;
 
         const separator = checkNullString(_formattedQueryParams) ? '?' : '&';
         const queryParam = key + '=' + value;
@@ -58,11 +75,33 @@ const WebView = ({style, baseUrl, path, queryParams}: WebViewProps) => {
     [AOSBaseUrl, baseUrl, formattedQueryParams, path],
   );
 
+  const targetsAOSInstance = useMemo(
+    () =>
+      !checkNullString(AOSBaseUrl) &&
+      (checkNullString(baseUrl) || baseUrl!.startsWith(AOSBaseUrl)),
+    [AOSBaseUrl, baseUrl],
+  );
+
+  const headers = useMemo(() => {
+    if (!targetsAOSInstance) return undefined;
+
+    return {Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`};
+  }, [jsessionId, targetsAOSInstance, token]);
+
   return (
     <RNWebView
-      geolocationEnabled={true}
       containerStyle={style}
-      source={{uri}}
+      source={{uri, headers}}
+      cacheEnabled
+      cacheMode={isConnected ? 'LOAD_DEFAULT' : 'LOAD_CACHE_ELSE_NETWORK'}
+      domStorageEnabled
+      sharedCookiesEnabled
+      thirdPartyCookiesEnabled
+      geolocationEnabled
+      injectedJavaScript={injectedJavaScript}
+      onMessage={onMessage}
+      onLoadEnd={onLoadEnd}
+      onError={onError}
       startInLoadingState
       renderLoading={() => (
         <ActivityIndicator

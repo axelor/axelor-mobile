@@ -1,0 +1,5 @@
+{
+  "title": "Web views: load them in the background after login so they stay available without connection",
+  "type": "fix",
+  "packages": "core"
+}
