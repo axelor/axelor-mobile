@@ -19,3 +19,11 @@
 export const createWebViewActionID = (id: number) => {
   return `core_webView${id}_details`;
 };
+
+export const createWebViewPath = (config: {
+  metaAction?: {name: string};
+}): string => {
+  return config?.metaAction?.name != null
+    ? `#/ds/${config.metaAction.name}`
+    : '';
+};
