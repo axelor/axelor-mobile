@@ -21,6 +21,7 @@ import {ActivityIndicator, StyleSheet} from 'react-native';
 import {WebView as RNWebView} from 'react-native-webview';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {useOnline} from '../../../features/onlineSlice';
+import {buildCookie} from '../../../apiProviders';
 import {useSelector} from '../../../redux/hooks';
 import {checkNullString} from '../../../utils';
 
@@ -48,7 +49,11 @@ const WebView = ({
   const Colors = useThemeColor();
   const {isConnected} = useOnline();
 
-  const {baseUrl: AOSBaseUrl} = useSelector(state => state.auth);
+  const {
+    baseUrl: AOSBaseUrl,
+    token,
+    jsessionId,
+  } = useSelector(state => state.auth);
 
   const formattedQueryParams = useMemo(() => {
     let _formattedQueryParams = '';
@@ -71,13 +76,28 @@ const WebView = ({
     [AOSBaseUrl, baseUrl, formattedQueryParams, path],
   );
 
+  const targetsAOSInstance = useMemo(
+    () =>
+      !checkNullString(AOSBaseUrl) &&
+      (checkNullString(baseUrl) || baseUrl!.startsWith(AOSBaseUrl)),
+    [AOSBaseUrl, baseUrl],
+  );
+
+  const headers = useMemo(() => {
+    if (!targetsAOSInstance) return undefined;
+
+    return {Cookie: buildCookie({baseUrl: AOSBaseUrl, token, jsessionId})};
+  }, [AOSBaseUrl, jsessionId, targetsAOSInstance, token]);
+
   return (
     <RNWebView
       containerStyle={style}
-      source={{uri}}
+      source={{uri, headers}}
       cacheEnabled
       cacheMode={isConnected ? 'LOAD_DEFAULT' : 'LOAD_CACHE_ELSE_NETWORK'}
       domStorageEnabled
+      sharedCookiesEnabled
+      thirdPartyCookiesEnabled
       geolocationEnabled
       injectedJavaScript={injectedJavaScript}
       onMessage={onMessage}
