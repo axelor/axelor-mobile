@@ -16,18 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ControlEntry} from './controlEntry';
-export type {
-  ControlEntrySample,
-  ControlEntrySampleLine,
-  SampleLineControlResult,
-} from './controlEntry';
-export {default as ControlTypeField} from './controlTypeField';
-export type {
-  CharacteristicProperty,
-  ControlTypeFieldDefinition,
-  ControlTypeFieldFormValue,
-  ControlTypeFieldValue,
-  ControlTypeFieldValueUpdate,
-} from './controlTypeField';
-export {default as QualityImprovement} from './qualityImprovement';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {Label} from '@axelor/aos-mobile-ui';
+
+interface ControlEntryFormulaDescriptionProps {
+  style?: any;
+  description?: string;
+}
+
+const ControlEntryFormulaDescription = ({
+  style,
+  description,
+}: ControlEntryFormulaDescriptionProps) => {
+  return (
+    <Label type="info" message={description} style={[styles.label, style]} />
+  );
+};
+
+const styles = StyleSheet.create({
+  label: {
+    marginVertical: 4,
+  },
+});
+
+export default ControlEntryFormulaDescription;

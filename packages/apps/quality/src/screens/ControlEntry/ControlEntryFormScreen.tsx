@@ -19,19 +19,16 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {
-  CustomFieldForm,
-  showToastMessage,
   useDispatch,
   usePermitted,
   useSelector,
-  useTranslator,
   useTypes,
-  useTypeHelpers,
   headerActionsProvider,
 } from '@axelor/aos-mobile-core';
 import {
   ControlEntryFormButtons,
   ControlEntryFormHeader,
+  ControlEntryValuesForm,
   SampleNotFoundView,
 } from '../../components';
 import {
@@ -40,17 +37,15 @@ import {
 } from '../../features/controlEntrySampleLineSlice';
 import {fetchControlPlanById} from '../../features/controlPlanSlice';
 import {ControlEntry as ControlEntryType} from '../../types';
-import {checkComformity, getProgressValuesApi} from '../../api';
+import {getProgressValuesApi} from '../../api';
 
 const ControlEntryFormScreen = ({navigation, route}: any) => {
   const {selectedMode, sampleId} = route?.params ?? {};
-  const I18n = useTranslator();
   const dispatch = useDispatch();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
   });
-  const {ControlEntry, ControlEntrySample} = useTypes();
-  const {getItemTitle} = useTypeHelpers();
+  const {ControlEntry} = useTypes();
 
   const {controlEntry} = useSelector(state => state.controlEntry);
   const {controlPlan} = useSelector(state => state.controlPlan);
@@ -298,47 +293,10 @@ const ControlEntryFormScreen = ({navigation, route}: any) => {
       />
       {categorySet[categoryIndex!] != null &&
         (itemSet[currentIndex!] != null ? (
-          <CustomFieldForm
-            model="com.axelor.apps.quality.db.ControlEntryPlanLine"
-            fieldType="entryAttrs"
-            modelId={itemSet[currentIndex!].id}
-            additionalActions={[
-              {
-                key: 'customAction',
-                type: 'custom',
-                useDefaultAction: true,
-                showToast: false,
-                postActions: async res => {
-                  const {resultSelect, message} = await checkComformity({
-                    object: res,
-                  });
-
-                  if (message != null) {
-                    showToastMessage({
-                      type: 'error',
-                      position: 'bottom',
-                      bottomOffset: 80,
-                      text1: I18n.t('Base_Error'),
-                      text2: message,
-                    });
-                  } else {
-                    showToastMessage({
-                      type: ControlEntryType.getSampleResultType(resultSelect),
-                      position: 'bottom',
-                      bottomOffset: 80,
-                      text1: `${I18n.t('Quality_ConformityResult')}`,
-                      text2: getItemTitle(
-                        ControlEntrySample?.resultSelect,
-                        resultSelect,
-                      ),
-                    });
-                  }
-
-                  handleValidation();
-                },
-                customComponent: renderButtons(),
-              },
-            ]}
+          <ControlEntryValuesForm
+            sampleLineId={itemSet[currentIndex!].id}
+            navigationButtons={renderButtons()}
+            onValidate={handleValidation}
             readonly={isReadonly}
             key={currentIndex}
           />
