@@ -10643,6 +10643,11 @@ react-native-mmkv@3.3.3:
   resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-3.3.3.tgz#1f0326f6314e23725af8145964343224d074e6cd"
   integrity sha512-GMsfOmNzx0p5+CtrCFRVtpOOMYNJXuksBVARSQrCFaZwjUyHJdQzcN900GGaFFNTxw2fs8s5Xje//RDKj9+PZA==
 
+react-native-orientation-director@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.npmjs.org/react-native-orientation-director/-/react-native-orientation-director-3.0.2.tgz#9804435dd41fec789d1df075593e8341be8ab081"
+  integrity sha512-SKtzDFkCSTnJJBPBY7L5+fhCAoqIDwxweZ9E3LHL9UhyTVVA9BwNx+h4uhMBSjhKZhrvrlDWgkEExcGwP3LNJQ==
+
 react-native-pell-rich-editor@1.10.0:
   version "1.10.0"
   resolved "https://registry.npmjs.org/react-native-pell-rich-editor/-/react-native-pell-rich-editor-1.10.0.tgz#5463f0af7bf641cd8de652efb45f2bedf8ceabde"

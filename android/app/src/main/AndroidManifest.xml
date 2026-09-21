@@ -27,7 +27,6 @@
       android:launchMode="singleTask"
       android:windowSoftInputMode="adjustResize"
       android:exported="true"
-      android:screenOrientation="portrait"
       android:immersive="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

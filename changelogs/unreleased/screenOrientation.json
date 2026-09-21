@@ -1,0 +1,6 @@
+{
+  "title": "Screens: allow each screen to choose the orientation in which it is displayed",
+  "type": "feat",
+  "packages": "core",
+  "description": "The application is no longer locked in portrait by the system itself: a screen now declares the orientation it wants through the orientation key of its definition, and the navigation applies it when the screen is opened. A screen can stay in portrait, which remains the behaviour when nothing is declared, be forced to landscape, or follow the device, in which case turning the phone turns the screen even when the automatic rotation of the system is disabled. Screens outside of the module navigation, such as the login and the session management, stay in portrait."
+}

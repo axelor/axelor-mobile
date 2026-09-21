@@ -1,4 +1,5 @@
 import UIKit
+import OrientationDirector
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
@@ -30,6 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     return true
+  }
+
+  func application(
+    _ application: UIApplication,
+    supportedInterfaceOrientationsFor window: UIWindow?
+  ) -> UIInterfaceOrientationMask {
+    return SharedOrientationDirectorImpl.shared.supportedInterfaceOrientations
   }
 }
 

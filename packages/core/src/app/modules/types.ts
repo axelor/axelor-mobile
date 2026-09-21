@@ -57,11 +57,14 @@ export interface RootMenuWithScreen extends MenuWithScreen {
 
 export type Menu = MenuWithSubMenus | RootMenuWithScreen | MenuSeparator;
 
+export type ScreenOrientation = 'portrait' | 'landscape' | 'device';
+
 export interface Screen {
   component: React.FC<any>;
   title: string;
   actionID?: string;
   isUsableOnShortcut?: boolean;
+  orientation?: ScreenOrientation;
 }
 
 export interface ObjectFields {
