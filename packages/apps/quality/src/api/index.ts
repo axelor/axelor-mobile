@@ -24,12 +24,18 @@ export {
 } from './control-entry-api';
 export {searchControlEntrySample as searchControlEntrySampleApi} from './control-entry-sample-api';
 export {
-  checkComformity,
   fetchControlEntrySampleLine as fetchControlEntrySampleLineApi,
   searchControlEntrySampleLine as searchControlEntrySampleLineApi,
   searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLineOfControlEntryApi,
+  updateSampleLineValues as updateSampleLineValuesApi,
 } from './control-entry-sample-line-api';
 export {fetchControlPlanById as fetchControlPlanByIdApi} from './control-plan-api';
+export {
+  searchCharacteristicProperty as searchCharacteristicPropertyApi,
+  searchControlTypeField as searchControlTypeFieldApi,
+  searchEntryValue as searchEntryValueApi,
+  searchPlanValue as searchPlanValueApi,
+} from './control-type-field-value-api';
 export {
   fetchManufOrder as fetchManufOrderApi,
   searchBoMLines as searchBoMLinesApi,

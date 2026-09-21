@@ -18,13 +18,38 @@
 
 import {getTypes, TranslatorProps} from '@axelor/aos-mobile-core';
 
+export interface ControlEntrySample {
+  id: number;
+  version?: number;
+  fullName?: string;
+  entrySampleNbr?: number;
+  resultSelect?: number;
+}
+
+export interface SampleLineControlResult {
+  id: number;
+  version: number;
+  resultSelect: number;
+  sampleResultSelect: number;
+}
+
+export interface ControlEntrySampleLine {
+  id: number;
+  version?: number;
+  name?: string;
+  resultSelect?: number;
+  controlPlanLine?: {id: number; name?: string};
+  controlEntrySample?: {id: number; fullName?: string};
+  controlType?: {id: number; name?: string; formulaDescription?: string};
+}
+
 class ControlEntry {
   static fillingMethod = {
     Sample: 'sample',
     Characteristic: 'characteristic',
   };
 
-  static getSampleResultType = (sampleResult: number): string => {
+  static getSampleResultType = (sampleResult?: number): string => {
     const ControlEntrySample = getTypes().ControlEntrySample;
 
     switch (sampleResult) {
@@ -59,7 +84,7 @@ class ControlEntry {
         console.warn(
           `Filling method provided with value ${fillingMethod} is not supported by control entry`,
         );
-        return null;
+        return null as any;
     }
   };
 
@@ -93,7 +118,7 @@ class ControlEntry {
         console.warn(
           `Filling method provided with value ${fillingMethod} is not supported by control entry`,
         );
-        return {categoryIcon: null, subCategoryIcon: null};
+        return {categoryIcon: null, subCategoryIcon: null} as any;
     }
   };
 }

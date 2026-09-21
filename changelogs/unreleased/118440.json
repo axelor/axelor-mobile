@@ -1,0 +1,6 @@
+{
+  "title": "Control entries: the values to fill on a sample now follow the fields configured on the control type",
+  "type": "refactor",
+  "packages": "quality",
+  "description": "The values measured on a sample are no longer free custom fields. Each control type carries its own list of fields, each one a decimal, a text, a yes/no or a choice among a list of allowed values, and the form of a sample line is built from that list, in the configured order and with the required ones marked as such. Two collapsed panels sit above the fields: the conformity criteria of the control type when one is described, and the values expected by the control plan line, so the operator can compare a measure to its target without leaving the entry. Validating a line records the measures and returns its conformity in a single step, and the result of the sample follows immediately. This requires the matching web version, on which the control entry configuration has been restructured and a migration script must be run before starting the application."
+}

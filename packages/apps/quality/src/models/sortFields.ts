@@ -25,6 +25,9 @@ export const quality_sortFields: SortFields = {
     'controlEntrySample.id',
     'controlPlanLine.priority',
   ],
+  quality_controlTypeFieldValue: ['sequence'],
+  quality_controlTypeField: ['name'],
+  quality_characteristicProperty: ['name'],
   quality_qualityImprovement: ['qiStatus.sequence', '-createdOn'],
   quality_qiStatus: ['sequence'],
 };

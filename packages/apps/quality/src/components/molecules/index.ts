@@ -20,6 +20,8 @@ export {default as ControlEntryDetailsButtons} from './ControlEntryDetailsButton
 export {default as ControlEntryDetailsHeader} from './ControlEntryDetailsHeader/ControlEntryDetailsHeader';
 export {default as ControlEntryFormButtons} from './ControlEntryFormButtons/ControlEntryFormButtons';
 export {default as ControlEntryFormHeader} from './ControlEntryFormHeader/ControlEntryFormHeader';
+export {default as ControlEntryFormulaDescription} from './ControlEntryFormulaDescription/ControlEntryFormulaDescription';
+export {default as ControlEntryReferenceValues} from './ControlEntryReferenceValues/ControlEntryReferenceValues';
 export {default as FileList} from './FileList/FileList';
 export {default as FillingMethodAlert} from './FillingMethodAlert/FillingMethodAlert';
 export {default as QIFormButton} from './QIFormButton/QIFormButton';

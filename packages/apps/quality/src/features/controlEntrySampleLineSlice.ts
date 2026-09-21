@@ -21,11 +21,12 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
   fetchControlEntrySampleLine as _fetchControlEntrySampleLine,
   searchControlEntrySampleLineOfControlEntry as _searchControlEntrySampleLineOfControlEntry,
+  updateSampleLineValues as _updateSampleLineValues,
 } from '../api/control-entry-sample-line-api';
 
 export const searchControlEntrySampleLineOfControlEntry = createAsyncThunk(
   'controlEntrySampleLine/searchControlEntrySampleLineOfControlEntry',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchControlEntrySampleLineOfControlEntry,
       data,
@@ -38,7 +39,7 @@ export const searchControlEntrySampleLineOfControlEntry = createAsyncThunk(
 
 export const fetchControlEntrySampleLine = createAsyncThunk(
   'controlEntrySampleLine/fetchControlEntrySampleLine',
-  async function (data, {getState}) {
+  async function (data: any, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchControlEntrySampleLine,
       data,
@@ -46,6 +47,19 @@ export const fetchControlEntrySampleLine = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
       errorOptions: {showErrorToast: false},
+    });
+  },
+);
+
+export const updateControlEntrySampleLineValues = createAsyncThunk(
+  'controlEntrySampleLine/updateControlEntrySampleLineValues',
+  async function (data: any, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateSampleLineValues,
+      data,
+      action: 'Quality_SliceAction_UpdateControlEntrySampleLineValues',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -61,6 +75,7 @@ const initialState = {
 const controlEntrySampleLineSlice = createSlice({
   name: 'controlEntrySampleLine',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchControlEntrySampleLine.pending, state => {
       state.loadingSampleLine = true;
@@ -69,6 +84,14 @@ const controlEntrySampleLineSlice = createSlice({
       state.loadingSampleLine = false;
       state.sampleLine = action.payload;
     });
+    builder.addCase(
+      updateControlEntrySampleLineValues.fulfilled,
+      (state: any, action) => {
+        if (action.payload?.id !== state.sampleLine?.id) return;
+
+        state.sampleLine = {...state.sampleLine, ...action.payload};
+      },
+    );
     builder.addCase(
       searchControlEntrySampleLineOfControlEntry.pending,
       state => {

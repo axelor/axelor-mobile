@@ -38,12 +38,43 @@ export const quality_modelAPI: ObjectFields = {
   quality_controlEntrySampleLine: schemaContructor.object({
     name: schemaContructor.string(),
     resultSelect: schemaContructor.number(),
-    controlPlanLine: schemaContructor.subObject().concat(
+    controlPlanLine: schemaContructor.subObject('name').concat(
       schemaContructor.object({
         characteristic: schemaContructor.subObject('name'),
       }),
     ),
     controlEntrySample: schemaContructor.subObject('fullName'),
+    controlType: schemaContructor.subObject('name').concat(
+      schemaContructor.object({
+        formulaDescription: schemaContructor.string(),
+      }),
+    ),
+  }),
+  quality_controlTypeFieldValue: schemaContructor.object({
+    sequence: schemaContructor.number(),
+    fieldTypeSelect: schemaContructor.number(),
+    decimalValue: schemaContructor.number(),
+    textValue: schemaContructor.string(),
+    booleanValue: schemaContructor.boolean(),
+    selectionValue: schemaContructor.subObject('name'),
+    displayValue: schemaContructor.string(),
+    controlTypeField: schemaContructor.subObject('name').concat(
+      schemaContructor.object({
+        code: schemaContructor.string(),
+        typeSelect: schemaContructor.number(),
+        isRequired: schemaContructor.boolean(),
+      }),
+    ),
+  }),
+  quality_controlTypeField: schemaContructor.object({
+    name: schemaContructor.string(),
+    code: schemaContructor.string(),
+    typeSelect: schemaContructor.number(),
+    isRequired: schemaContructor.boolean(),
+    valueSet: schemaContructor.array().of(schemaContructor.subObject('name')),
+  }),
+  quality_characteristicProperty: schemaContructor.object({
+    name: schemaContructor.string(),
   }),
   quality_controlPlan: schemaContructor.object({
     name: schemaContructor.string(),

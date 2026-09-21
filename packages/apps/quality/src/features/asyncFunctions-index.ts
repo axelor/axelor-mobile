@@ -19,6 +19,7 @@
 export {
   fetchControlEntrySampleLine,
   searchControlEntrySampleLineOfControlEntry,
+  updateControlEntrySampleLineValues,
 } from './controlEntrySampleLineSlice';
 export {searchControlEntrySample} from './controlEntrySampleSlice';
 export {
