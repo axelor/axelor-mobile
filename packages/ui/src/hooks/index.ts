@@ -24,4 +24,5 @@ export {
   OUTSIDE_INDICATOR,
 } from './use-click-outside';
 export {useDigitFormat} from './use-digit-format';
+export {useIsLandscape} from './use-orientation';
 export {usePriceFormat} from './use-price-format';

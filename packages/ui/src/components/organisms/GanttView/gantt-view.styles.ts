@@ -61,6 +61,10 @@ export const GANTT_GRID_LINE_WIDTH = 1;
 
 export const GANTT_EXPANDABLE_FILTER_GAP = 6;
 
+export const GANTT_SIDE_PANEL_WIDTH = 260;
+export const GANTT_SIDE_PANEL_HANDLE_WIDTH = 24;
+export const GANTT_SIDE_PANEL_RADIUS = 12;
+
 export const GANTT_DAYS_PER_PAGE = {
   week: DAYS_IN_WEEK,
   month: 30,
@@ -76,6 +80,12 @@ export const ganttStyles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
+  },
+  containerLandscape: {
+    flexDirection: 'row-reverse',
+  },
+  planning: {
+    flex: 1,
   },
   scaleRow: {
     flexDirection: 'row',

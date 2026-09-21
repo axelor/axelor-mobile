@@ -29,13 +29,14 @@ import {
   View,
 } from 'react-native';
 import {useThemeColor} from '../../../theme';
+import {useIsLandscape} from '../../../hooks';
 import {
   DAYS_IN_WEEK,
   DEFAULT_FIRST_DAY_OF_WEEK,
   toDateString,
 } from '../../../utils';
-import {Text} from '../../atoms';
 import {CalendarLegendItem} from '../../molecules';
+import {Text} from '../../atoms';
 import {
   GanttGroup,
   GanttItem,
@@ -60,6 +61,7 @@ import {
   getGridWidth,
 } from './gantt-view.styles';
 import {GanttHeader} from './header';
+import {useDefaultGanttZoom} from './use-default-zoom';
 import {GanttScaleHeader} from './scale';
 import {
   GanttGridLines,
@@ -106,7 +108,7 @@ const END_REACHED_THRESHOLD = 0.5;
 
 const GanttView = ({
   groups,
-  zoom = 'week',
+  zoom,
   weeksBefore = 26,
   weeksAfter = 26,
   firstDayOfWeek = DEFAULT_FIRST_DAY_OF_WEEK,
@@ -136,6 +138,10 @@ const GanttView = ({
   style,
 }: GanttViewProps) => {
   const Colors = useThemeColor();
+  const isLandscape = useIsLandscape();
+  const defaultZoom = useDefaultGanttZoom();
+
+  const activeZoom = zoom ?? defaultZoom;
 
   const referenceDate = useRef(new Date());
 
@@ -173,7 +179,7 @@ const GanttView = ({
   const firstDateString = days[0]?.dateString;
 
   const gridWidth = getGridWidth(containerWidth);
-  const daysPerPage = GANTT_DAYS_PER_PAGE[zoom];
+  const daysPerPage = GANTT_DAYS_PER_PAGE[activeZoom];
   const dayWidth = getDayWidth(gridWidth, daysPerPage);
   const contentWidth = days.length * dayWidth;
 
@@ -423,13 +429,17 @@ const GanttView = ({
 
   return (
     <View
-      style={[ganttStyles.container, style]}
-      onLayout={handleLayout}
+      style={[
+        ganttStyles.container,
+        isLandscape && ganttStyles.containerLandscape,
+        style,
+      ]}
       testID="ganttViewContainer">
       <GanttHeader
         legendItems={legendItems}
         filters={filters}
         expandableFilter={expandableFilter}
+        isLandscape={isLandscape}
         showTodayButton={showTodayButton}
         showNavigation={showNavigation}
         showExpandAll={showExpandAll}
@@ -445,160 +455,170 @@ const GanttView = ({
         onCollapseAll={collapseAll}
         onFilledRowsOnlyChange={setFilledRowsOnly}
       />
-      {containerWidth > 0 && (
-        <>
-          <View
-            style={[
-              ganttStyles.scaleRow,
-              expandableFilter && ganttStyles.expandableFilterGap,
-            ]}>
+      <View
+        style={ganttStyles.planning}
+        onLayout={handleLayout}
+        testID="ganttPlanning">
+        {containerWidth > 0 && (
+          <>
             <View
               style={[
-                ganttStyles.scaleCorner,
-                {
-                  backgroundColor: Colors.screenBackgroundColor,
-                  borderRightColor: Colors.secondaryColor_dark.background_light,
-                  borderBottomColor:
-                    Colors.secondaryColor_dark.background_light,
-                },
+                ganttStyles.scaleRow,
+                expandableFilter &&
+                  !isLandscape &&
+                  ganttStyles.expandableFilterGap,
               ]}>
-              {cornerTitle != null && (
-                <Text
-                  numberOfLines={1}
-                  fontSize={9}
-                  textColor={Colors.placeholderTextColor}>
-                  {cornerTitle}
-                </Text>
-              )}
+              <View
+                style={[
+                  ganttStyles.scaleCorner,
+                  {
+                    backgroundColor: Colors.screenBackgroundColor,
+                    borderRightColor:
+                      Colors.secondaryColor_dark.background_light,
+                    borderBottomColor:
+                      Colors.secondaryColor_dark.background_light,
+                  },
+                ]}>
+                {cornerTitle != null && (
+                  <Text
+                    numberOfLines={1}
+                    fontSize={9}
+                    textColor={Colors.placeholderTextColor}>
+                    {cornerTitle}
+                  </Text>
+                )}
+              </View>
+              <View style={ganttStyles.scaleClip}>
+                <Animated.View
+                  style={{transform: [{translateX: scaleTranslateX}]}}>
+                  <GanttScaleHeader
+                    days={days}
+                    periods={periods}
+                    monthBands={monthBands}
+                    dayWidth={dayWidth}
+                    contentWidth={contentWidth}
+                    todayDateString={todayDateString}
+                    showDays={activeZoom === 'week'}
+                    weekPrefix={weekPrefix}
+                    translator={translator}
+                  />
+                </Animated.View>
+              </View>
             </View>
-            <View style={ganttStyles.scaleClip}>
-              <Animated.View
-                style={{transform: [{translateX: scaleTranslateX}]}}>
-                <GanttScaleHeader
-                  days={days}
-                  periods={periods}
-                  monthBands={monthBands}
-                  dayWidth={dayWidth}
-                  contentWidth={contentWidth}
-                  todayDateString={todayDateString}
-                  showDays={zoom === 'week'}
-                  weekPrefix={weekPrefix}
-                  translator={translator}
-                />
-              </Animated.View>
-            </View>
-          </View>
-          {hasRows ? (
-            <ScrollView
-              style={ganttStyles.body}
-              onScroll={handleVerticalScroll}
-              onScrollEndDrag={handleVerticalScroll}
-              onMomentumScrollEnd={handleVerticalScroll}
-              scrollEventThrottle={200}
-              onContentSizeChange={(_, height) => setContentHeight(height)}
-              onLayout={({nativeEvent}) =>
-                setBodyHeight(nativeEvent.layout.height)
-              }
-              refreshControl={refreshControl}
-              testID="ganttVerticalScroll">
-              <View style={ganttStyles.bodyRow}>
-                <View
-                  style={[
-                    ganttStyles.nameColumn,
-                    {
-                      backgroundColor: Colors.backgroundColor,
-                      borderRightColor:
-                        Colors.secondaryColor_dark.background_light,
-                    },
-                  ]}>
-                  {visibleGroups.map(({group, collapsed}) => (
-                    <React.Fragment key={group.key}>
-                      <GanttGroupHeader
-                        group={group}
-                        collapsed={collapsed}
-                        onPress={toggleGroup}
-                      />
-                      {!collapsed &&
-                        group.rows.map(row => (
-                          <GanttRowName
-                            key={row.key}
-                            row={row}
-                            height={getRowLayout(row).height}
-                            onPress={onRowPress}
-                          />
-                        ))}
-                    </React.Fragment>
-                  ))}
-                </View>
-                <ScrollView
-                  ref={lanesScroll}
-                  style={ganttStyles.lanesClip}
-                  horizontal
-                  onScroll={handleHorizontalScroll}
-                  scrollEventThrottle={16}
-                  contentOffset={{x: todayScrollOffset ?? 0, y: 0}}
-                  snapToInterval={dayWidth * DAYS_IN_WEEK}
-                  decelerationRate="fast"
-                  showsHorizontalScrollIndicator={false}
-                  testID="ganttHorizontalScroll">
+            {hasRows ? (
+              <ScrollView
+                style={ganttStyles.body}
+                onScroll={handleVerticalScroll}
+                onScrollEndDrag={handleVerticalScroll}
+                onMomentumScrollEnd={handleVerticalScroll}
+                scrollEventThrottle={200}
+                onContentSizeChange={(_, height) => setContentHeight(height)}
+                onLayout={({nativeEvent}) =>
+                  setBodyHeight(nativeEvent.layout.height)
+                }
+                refreshControl={refreshControl}
+                testID="ganttVerticalScroll">
+                <View style={ganttStyles.bodyRow}>
                   <View
-                    style={{
-                      width: contentWidth,
-                      backgroundColor: Colors.backgroundColor,
-                    }}>
-                    <GanttGridLines
-                      days={days}
-                      dayWidth={dayWidth}
-                      showDayLines={zoom === 'week'}
-                    />
+                    style={[
+                      ganttStyles.nameColumn,
+                      {
+                        backgroundColor: Colors.backgroundColor,
+                        borderRightColor:
+                          Colors.secondaryColor_dark.background_light,
+                      },
+                    ]}>
                     {visibleGroups.map(({group, collapsed}) => (
                       <React.Fragment key={group.key}>
-                        <GanttGroupLane
+                        <GanttGroupHeader
                           group={group}
-                          days={days}
-                          dayWidth={dayWidth}
-                          contentWidth={contentWidth}
+                          collapsed={collapsed}
+                          onPress={toggleGroup}
                         />
                         {!collapsed &&
                           group.rows.map(row => (
-                            <GanttRowLane
+                            <GanttRowName
                               key={row.key}
                               row={row}
-                              layout={getRowLayout(row)}
-                              days={days}
-                              dayWidth={dayWidth}
-                              contentWidth={contentWidth}
-                              showBarTitles={showBarTitles && zoom === 'week'}
-                              onItemPress={onItemPress}
+                              height={getRowLayout(row).height}
+                              onPress={onRowPress}
                             />
                           ))}
                       </React.Fragment>
                     ))}
                   </View>
-                </ScrollView>
-              </View>
-              <View style={styles.footer}>
-                {moreLoading && <ActivityIndicator size="large" />}
-                {isListEnd && (
-                  <Text writingType="details" fontSize={10}>
-                    {translator('Base_NoMoreItems')}
-                  </Text>
-                )}
-              </View>
-            </ScrollView>
-          ) : (
-            <ScrollView
-              style={ganttStyles.body}
-              contentContainerStyle={styles.empty}
-              refreshControl={refreshControl}
-              testID="ganttEmptyScroll">
-              <Text writingType="details" fontSize={10}>
-                {emptyMessage ?? translator('Base_NoData')}
-              </Text>
-            </ScrollView>
-          )}
-        </>
-      )}
+                  <ScrollView
+                    ref={lanesScroll}
+                    style={ganttStyles.lanesClip}
+                    horizontal
+                    onScroll={handleHorizontalScroll}
+                    scrollEventThrottle={16}
+                    contentOffset={{x: todayScrollOffset ?? 0, y: 0}}
+                    snapToInterval={dayWidth * DAYS_IN_WEEK}
+                    decelerationRate="fast"
+                    showsHorizontalScrollIndicator={false}
+                    testID="ganttHorizontalScroll">
+                    <View
+                      style={{
+                        width: contentWidth,
+                        backgroundColor: Colors.backgroundColor,
+                      }}>
+                      <GanttGridLines
+                        days={days}
+                        dayWidth={dayWidth}
+                        showDayLines={activeZoom === 'week'}
+                      />
+                      {visibleGroups.map(({group, collapsed}) => (
+                        <React.Fragment key={group.key}>
+                          <GanttGroupLane
+                            group={group}
+                            days={days}
+                            dayWidth={dayWidth}
+                            contentWidth={contentWidth}
+                          />
+                          {!collapsed &&
+                            group.rows.map(row => (
+                              <GanttRowLane
+                                key={row.key}
+                                row={row}
+                                layout={getRowLayout(row)}
+                                days={days}
+                                dayWidth={dayWidth}
+                                contentWidth={contentWidth}
+                                showBarTitles={
+                                  showBarTitles && activeZoom === 'week'
+                                }
+                                onItemPress={onItemPress}
+                              />
+                            ))}
+                        </React.Fragment>
+                      ))}
+                    </View>
+                  </ScrollView>
+                </View>
+                <View style={styles.footer}>
+                  {moreLoading && <ActivityIndicator size="large" />}
+                  {isListEnd && (
+                    <Text writingType="details" fontSize={10}>
+                      {translator('Base_NoMoreItems')}
+                    </Text>
+                  )}
+                </View>
+              </ScrollView>
+            ) : (
+              <ScrollView
+                style={ganttStyles.body}
+                contentContainerStyle={styles.empty}
+                refreshControl={refreshControl}
+                testID="ganttEmptyScroll">
+                <Text writingType="details" fontSize={10}>
+                  {emptyMessage ?? translator('Base_NoData')}
+                </Text>
+              </ScrollView>
+            )}
+          </>
+        )}
+      </View>
     </View>
   );
 };

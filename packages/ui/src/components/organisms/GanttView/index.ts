@@ -16,6 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {
+  buildGanttDays,
+  buildGanttPeriods,
+  buildMonthBands,
+  buildRowLayout,
+  computeBarGeometry,
+  daysBetween,
+  getIsoWeekNumber,
+  sortItemsByPriority,
+} from './gantt-view.helpers';
 export {default as GanttView} from './GanttView';
 export {
   GanttBarGeometry,
@@ -32,13 +42,4 @@ export {
   GanttScaleCell,
   GanttZoom,
 } from './types';
-export {
-  buildGanttDays,
-  buildGanttPeriods,
-  buildMonthBands,
-  buildRowLayout,
-  computeBarGeometry,
-  daysBetween,
-  getIsoWeekNumber,
-  sortItemsByPriority,
-} from './gantt-view.helpers';
+export {useDefaultGanttZoom} from './use-default-zoom';
