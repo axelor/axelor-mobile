@@ -21,7 +21,7 @@ import {
   createStandardFetch,
   getActionApi,
 } from '@axelor/aos-mobile-core';
-import {ControlTypeFieldValue} from '../types';
+import {ControlTypeFieldValueUpdate} from '../types';
 
 const MODEL = 'com.axelor.apps.quality.db.ControlEntryPlanLine';
 
@@ -86,7 +86,7 @@ export async function updateSampleLineValues({
 }: {
   sampleLineId: number;
   version: number;
-  entryValueList: Partial<ControlTypeFieldValue>[];
+  entryValueList: Partial<ControlTypeFieldValueUpdate>[];
 }) {
   return getActionApi().send({
     url: `/ws/aos/control-entry-sample-line/${sampleLineId}`,

@@ -44,6 +44,13 @@ export interface ControlTypeFieldValue {
   controlTypeField?: ControlTypeFieldDefinition;
 }
 
+export interface ControlTypeFieldValueUpdate extends Omit<
+  ControlTypeFieldValue,
+  'selectionValue'
+> {
+  selectionValue?: number | null;
+}
+
 export type ControlTypeFieldFormValue = number | string | boolean | null;
 
 class ControlTypeField {
@@ -77,7 +84,7 @@ class ControlTypeField {
   static getSavedValue = (
     value: ControlTypeFieldValue,
     formValue: ControlTypeFieldFormValue,
-  ): Partial<ControlTypeFieldValue> => {
+  ): Partial<ControlTypeFieldValueUpdate> => {
     switch (value?.fieldTypeSelect) {
       case this.fieldType.Decimal:
         return {decimalValue: formValue as number};
@@ -86,9 +93,7 @@ class ControlTypeField {
       case this.fieldType.Boolean:
         return {booleanValue: formValue as boolean};
       case this.fieldType.Selection:
-        return {
-          selectionValue: formValue == null ? null : {id: formValue as number},
-        };
+        return {selectionValue: (formValue as number) ?? null};
       default:
         return {};
     }

@@ -27,6 +27,7 @@ import {
   ControlTypeFieldDefinition,
   ControlTypeFieldFormValue,
   ControlTypeFieldValue,
+  ControlTypeFieldValueUpdate,
 } from '../../../types';
 
 export const FORMULA_FIELD = '$formulaDescription';
@@ -143,7 +144,7 @@ export const getFormDefaults = (
 export const mapFormToEntryValues = (
   entryValues: ControlTypeFieldValue[],
   objectState: JSONObject<ControlTypeFieldFormValue>,
-): Partial<ControlTypeFieldValue>[] =>
+): Partial<ControlTypeFieldValueUpdate>[] =>
   entryValues.map(_value => {
     const code = _value.controlTypeField?.code;
 
