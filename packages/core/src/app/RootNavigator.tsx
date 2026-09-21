@@ -17,21 +17,23 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {default as CoreNavigator} from '../navigator/Navigator';
-import {getNetInfo, getTokenInfo} from '../api/net-info-utils';
-import {useHeaderRegisters} from '../hooks/use-header-registers';
-import {setConnected, useOnline} from '../features/onlineSlice';
-import LoginScreen from '../screens/LoginScreen';
 import SessionManagementScreen from '../screens/SessionManagementScreen';
+import LoginScreen from '../screens/LoginScreen';
+import {default as CoreNavigator} from '../navigator/Navigator';
+import {applyScreenOrientation} from '../navigator/helpers';
+import {getNetInfo, getTokenInfo} from '../api/net-info-utils';
+import {useDispatch, useSelector} from '../redux/hooks';
+import {showToastMessage} from '../utils';
 import {useHeaderBand} from '../header';
 import {useTranslator} from '../i18n';
-import {showToastMessage} from '../utils';
-import {logout} from '../features/authSlice';
 import {useSessionExpired} from '../apiProviders/config';
+import {useHeaderRegisters} from '../hooks/use-header-registers';
 import {useConfigUpdater} from '../hooks/use-storage-config';
+import {setConnected, useOnline} from '../features/onlineSlice';
+import {logout} from '../features/authSlice';
+import {Module} from './modules';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -41,13 +43,19 @@ const RootNavigator = ({
   onRefresh,
   configuration,
   customLoginPage: CustomLoginPage,
+}: {
+  modules: Module[];
+  mainMenu?: string;
+  onRefresh?: () => void;
+  configuration: any;
+  customLoginPage?: any;
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const tokenInterval = useRef(null);
-  const connectionInterval = useRef(null);
+  const tokenInterval = useRef<number>(undefined);
+  const connectionInterval = useRef<number>(undefined);
 
   const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();
@@ -56,11 +64,13 @@ const RootNavigator = ({
   const {logged} = useSelector(state => state.auth);
   const {isConnected} = useOnline();
 
-  const modulesHeaderRegisters = useMemo(() => {
-    return modules
-      .filter(_module => _module.models?.headerRegisters)
-      .map(_module => _module.models.headerRegisters);
-  }, [modules]);
+  const modulesHeaderRegisters = useMemo(
+    () =>
+      modules
+        .filter(_module => _module.models?.headerRegisters)
+        .map(_module => _module.models!.headerRegisters) as Function[],
+    [modules],
+  );
 
   useHeaderRegisters(modulesHeaderRegisters);
 
@@ -110,9 +120,7 @@ const RootNavigator = ({
       if (logged) {
         const {isTokenValid} = await getTokenInfo();
 
-        if (!isTokenValid) {
-          handleSessionExpired();
-        }
+        if (!isTokenValid) handleSessionExpired();
       }
     };
 
@@ -121,17 +129,19 @@ const RootNavigator = ({
   }, [handleSessionExpired, logged]);
 
   useEffect(() => {
-    if (sessionExpired) {
-      handleSessionExpired();
-    }
+    if (sessionExpired) handleSessionExpired();
   }, [handleSessionExpired, sessionExpired]);
 
   useEffect(() => {
     updateConfigFromStorage();
   }, [updateConfigFromStorage]);
 
+  useEffect(() => {
+    if (!logged) applyScreenOrientation();
+  }, [logged]);
+
   return (
-    <Navigator screenOptions={{headerShown: false}}>
+    <Navigator id={undefined} screenOptions={{headerShown: false}}>
       {!logged ? (
         CustomLoginPage ? (
           <Screen

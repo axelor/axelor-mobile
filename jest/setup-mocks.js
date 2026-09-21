@@ -107,6 +107,12 @@ jest.mock(
   {virtual: true},
 );
 
+jest.mock('react-native-orientation-director', () => ({
+  __esModule: true,
+  default: {lockTo: jest.fn(), unlock: jest.fn()},
+  Orientation: {portrait: 1, landscape: 5},
+}));
+
 jest.mock('react-native-pell-rich-editor', () => ({
   actions: jest.fn(),
   RichEditor: jest.fn(),

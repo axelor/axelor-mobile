@@ -43,5 +43,10 @@ export {
   moduleHasMenus,
   numberOfModules,
 } from './module.helper';
+export {
+  applyActiveScreenOrientation,
+  applyScreenOrientation,
+  DEFAULT_SCREEN_ORIENTATION,
+} from './screen-orientation.helper';
 export {addModuleTools, addToolDefaultValues} from './tool.helper';
 export * from './navigation-type';

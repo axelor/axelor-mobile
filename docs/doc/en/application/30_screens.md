@@ -14,11 +14,14 @@ In terms of architecture, in order to distinguish screens from standard componen
 The core library provides a typing scheme for the screen structure, with the information required to register the various screens in the navigation. A screen is defined by a key and various attributes:
 
 ```tsx
+export type ScreenOrientation = 'portrait' | 'landscape' | 'device';
+
 export interface Screen {
   component: React.FC<any>;
   title: string;
   actionID?: string;
   isUsableOnShortcut?: boolean;
+  orientation?: ScreenOrientation;
 }
 ```
 
@@ -26,6 +29,7 @@ export interface Screen {
 - the component corresponding to the screen content (_component_).
 - an _actionID_ key to link the screen to a configuration of actions to be displayed in the header.
 - an _isUsableOnShortcut_ tag to indicate whether the screen can be used as a shortcut on the home screen.
+- an _orientation_ key to choose the orientation in which the screen is displayed.
 
 Then simply export all the screens in this form:
 
@@ -56,6 +60,38 @@ Please note that all screens defined in the module must be exported, otherwise t
 :::
 
 When overloading a screen, simply create a new screen by modifying the elements to be changed on the basic screen. Then, once the component has been created, export it with the same key as in the original module. This way, when you save it in the navigation system, only the last screen with the same key will be taken into account.
+
+### Screen orientation
+
+The application supports both portrait and landscape, and the orientation is decided by the screen itself. Each time a screen of a module is opened, the navigation applies the orientation it declares:
+
+- `'portrait'`, the value used when the key is absent, locks the screen in portrait whatever the position of the device. No existing screen has to be changed.
+- `'landscape'` locks the screen in landscape and turns the device, even when the user has disabled the automatic rotation.
+- `'device'` follows the device, the screen turning with it, again even when the automatic rotation is disabled.
+
+```tsx
+export default {
+  ProjectPlanningScreen: {
+    title: 'Project_Planning',
+    component: ProjectPlanningScreen,
+    orientation: 'device' as const,
+  },
+};
+```
+
+:::caution
+The `as const` matters: without it the value widens to `string` and no longer matches the `Screen` type.
+:::
+
+The screens which live outside of the navigation of the modules, such as the login and the session management, always stay in portrait.
+
+On the UI side, a component which has to adapt its display to the orientation uses the `useIsLandscape` hook, which reads the real size of the window rather than the orientation of the device:
+
+```tsx
+import {useIsLandscape} from '@axelor/aos-mobile-ui';
+
+const isLandscape = useIsLandscape();
+```
 
 ## Creating a form view
 

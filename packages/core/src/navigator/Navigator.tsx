@@ -43,6 +43,7 @@ import {
 } from './providers';
 import {DrawerContent, Header} from './components';
 import {
+  applyActiveScreenOrientation,
   checkModulesMenusAccessibility,
   getDefaultModule,
   manageOverridingMenus,
@@ -100,7 +101,12 @@ const ModulesScreensStack = ({
       initialRouteName={initialRouteName}
       screenListeners={{
         state: e => {
-          activeScreenProvider.registerActiveScreen(e.data?.state);
+          const state = e.data?.state as any;
+          activeScreenProvider.registerActiveScreen(state);
+          applyActiveScreenOrientation(
+            modulesScreens,
+            state?.routes?.at(-1)?.name,
+          );
         },
       }}>
       {Object.entries(modulesScreens).map(

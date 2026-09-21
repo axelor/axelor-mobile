@@ -14,11 +14,14 @@ Au niveau de l’architecture, afin de bien distinguer les écrans des composant
 La librairie core fournit un typage pour la structure des écrans avec les informations nécessaires à l’enregistrement dans la navigation des différents écrans. Un écran est définit par une clé puis différents attributs :
 
 ```tsx
+export type ScreenOrientation = 'portrait' | 'landscape' | 'device';
+
 export interface Screen {
   component: React.FC<any>;
   title: string;
   actionID?: string;
   isUsableOnShortcut?: boolean;
+  orientation?: ScreenOrientation;
 }
 ```
 
@@ -26,6 +29,7 @@ export interface Screen {
 - le composant correspondant au contenu de l’écran (_component_)
 - une clé _actionID_ pour relier l'écran à une configuration d'actions à afficher dans le header.
 - un bouléen _isUsableOnShortcut_ pour indiquer si l'écran peut être utilisé dans un raccourci sur l'écran d'accueil.
+- une clé _orientation_ pour choisir l'orientation dans laquelle l'écran s'affiche.
 
 Il suffit ensuite d’exporter tous les écrans sous cette forme :
 
@@ -56,6 +60,38 @@ Tous les écrans définis dans le module doivent être exportés sinon l’appli
 :::
 
 Lors de la surcharge d’un écran, il suffit de venir créer un nouvel écran en modifiant les éléments à changer sur l’écran de base. Puis, une fois le composant créé, venir l’exporter avec la même clé que dans le module d’origine. Ainsi, lors de l’enregistrement dans la navigation, seul le dernier écran avec la même clé sera pris en compte.
+
+### Orientation de l’écran
+
+L’application supporte le portrait comme le paysage, et c’est l’écran qui décide de son orientation. À chaque ouverture d’un écran de module, la navigation applique l’orientation qu’il déclare :
+
+- `'portrait'`, la valeur utilisée lorsque la clé est absente, verrouille l’écran en portrait quelle que soit la position du téléphone. Aucun écran existant n’a besoin d’être modifié.
+- `'landscape'` verrouille l’écran en paysage et force la rotation, même lorsque l’utilisateur a désactivé la rotation automatique.
+- `'device'` suit le téléphone, l’écran tournant avec lui, là encore même lorsque la rotation automatique est désactivée.
+
+```tsx
+export default {
+  ProjectPlanningScreen: {
+    title: 'Project_Planning',
+    component: ProjectPlanningScreen,
+    orientation: 'device' as const,
+  },
+};
+```
+
+:::caution
+Le `as const` est nécessaire : sans lui, la valeur s’élargit en `string` et ne correspond plus au type `Screen`.
+:::
+
+Les écrans qui vivent en dehors de la navigation des modules, comme la connexion et la gestion des sessions, restent toujours en portrait.
+
+Côté UI, un composant qui doit adapter son affichage à l’orientation utilise le hook `useIsLandscape`, qui se base sur la taille réelle de la fenêtre plutôt que sur l’orientation du téléphone :
+
+```tsx
+import {useIsLandscape} from '@axelor/aos-mobile-ui';
+
+const isLandscape = useIsLandscape();
+```
 
 ## Création d’une vue formulaire
 
