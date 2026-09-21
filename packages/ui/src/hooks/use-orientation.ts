@@ -16,13 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {
-  OutsideAlerterProvider,
-  useClickOutside,
-  useClickOutsideContext,
-  useOutsideClickHandler,
-  OUTSIDE_INDICATOR,
-} from './use-click-outside';
-export {useDigitFormat} from './use-digit-format';
-export {useIsLandscape} from './use-orientation';
-export {usePriceFormat} from './use-price-format';
+import {useWindowDimensions} from 'react-native';
+
+export const useIsLandscape = (): boolean => {
+  const {width, height} = useWindowDimensions();
+
+  return width > height;
+};

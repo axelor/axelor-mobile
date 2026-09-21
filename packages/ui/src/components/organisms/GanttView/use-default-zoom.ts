@@ -16,13 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {
-  OutsideAlerterProvider,
-  useClickOutside,
-  useClickOutsideContext,
-  useOutsideClickHandler,
-  OUTSIDE_INDICATOR,
-} from './use-click-outside';
-export {useDigitFormat} from './use-digit-format';
-export {useIsLandscape} from './use-orientation';
-export {usePriceFormat} from './use-price-format';
+import {useIsLandscape} from '../../../hooks';
+import {GanttZoom} from './types';
+
+export const useDefaultGanttZoom = (): GanttZoom => {
+  const isLandscape = useIsLandscape();
+
+  return isLandscape ? 'month' : 'week';
+};

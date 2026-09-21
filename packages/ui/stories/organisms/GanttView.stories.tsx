@@ -29,6 +29,11 @@ import {useThemeColor} from '../../src/theme';
 import {startOfWeek, toDateString} from '../../src/utils';
 import {disabledControl, Story} from '../utils/control-type.helpers';
 
+const zoomPicker = {
+  control: {type: 'select'},
+  options: ['week', 'month', undefined],
+};
+
 const meta: Meta<typeof Component> = {
   title: 'ui/organisms/GanttView',
   component: Component,
@@ -196,6 +201,7 @@ export const GanttView: Story<typeof Component> = {
     isListEnd: true,
   },
   argTypes: {
+    zoom: zoomPicker,
     groups: disabledControl,
     legendItems: disabledControl,
     filters: disabledControl,
@@ -390,7 +396,7 @@ const useLoadSampleGroups = (): GanttGroup[] => {
 
 export const GanttViewWithLoadCells: Story<typeof Component> = {
   args: {
-    zoom: 'week',
+    zoom: undefined,
     weeksBefore: 12,
     weeksAfter: 12,
     firstDayOfWeek: 1,
@@ -408,6 +414,7 @@ export const GanttViewWithLoadCells: Story<typeof Component> = {
     isListEnd: true,
   },
   argTypes: {
+    zoom: zoomPicker,
     groups: disabledControl,
     legendItems: disabledControl,
     filters: disabledControl,

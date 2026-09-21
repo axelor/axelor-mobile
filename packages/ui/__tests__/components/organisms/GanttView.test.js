@@ -22,10 +22,24 @@ import {fireEvent} from '@testing-library/react-native';
 import {GanttView} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors, setup} from '../../tools';
 
+const PORTRAIT_WINDOW = {width: 390, height: 844, scale: 2, fontScale: 1};
+const LANDSCAPE_WINDOW = {width: 844, height: 390, scale: 2, fontScale: 1};
+
+let mockWindow = PORTRAIT_WINDOW;
+
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+  __esModule: true,
+  default: () => mockWindow,
+}));
+
 describe('GanttView Component', () => {
   const Colors = getDefaultThemeColors();
 
   const BODY_LAYOUT = {nativeEvent: {layout: {width: 390, height: 600}}};
+
+  beforeEach(() => {
+    mockWindow = PORTRAIT_WINDOW;
+  });
 
   const groups = [
     {
@@ -107,7 +121,7 @@ describe('GanttView Component', () => {
   const setupMeasured = overrideProps => {
     const utils = setupGanttView(overrideProps);
 
-    fireEvent(utils.getByTestId('ganttViewContainer'), 'layout', BODY_LAYOUT);
+    fireEvent(utils.getByTestId('ganttPlanning'), 'layout', BODY_LAYOUT);
 
     return utils;
   };
@@ -372,5 +386,60 @@ describe('GanttView Component', () => {
     });
 
     expect(getByTestId('ganttBar-1')).toHaveStyle({top: 5});
+  });
+
+  describe('landscape', () => {
+    beforeEach(() => {
+      mockWindow = LANDSCAPE_WINDOW;
+    });
+
+    it('moves the header into a side panel beside the planning', () => {
+      const {getByTestId, queryByTestId} = setupGanttView();
+
+      expect(getByTestId('ganttSidePanel')).toBeTruthy();
+      expect(queryByTestId('headerContainerExpandableIcon')).toBeNull();
+      expect(getByTestId('ganttViewContainer')).toHaveStyle({
+        flexDirection: 'row-reverse',
+      });
+    });
+
+    it('keeps the filters of the screen in the side panel, never collapsed', () => {
+      const {getByText, queryByTestId} = setupGanttView({
+        expandableFilter: true,
+        filters: <Text>All departments</Text>,
+      });
+
+      expect(getByText('All departments')).toBeTruthy();
+      expect(queryByTestId('headerContainerExpandableIcon')).toBeNull();
+    });
+
+    it('folds the side panel down to its handle, then opens it again', () => {
+      const {getByTestId, getByText, queryByText} = setupGanttView({
+        filters: <Text>All departments</Text>,
+      });
+
+      fireEvent.press(getByTestId('ganttSidePanelHandle'));
+
+      expect(queryByText('All departments')).toBeNull();
+      expect(getByTestId('ganttSidePanel')).toHaveStyle({width: 24});
+
+      fireEvent.press(getByTestId('ganttSidePanelHandle'));
+
+      expect(getByText('All departments')).toBeTruthy();
+      expect(getByTestId('ganttSidePanel')).toHaveStyle({width: 260});
+    });
+
+    it('falls back on the month zoom instead of the week one', () => {
+      const {getAllByText, queryAllByText} = setupMeasured({weekPrefix: 'W'});
+
+      expect(getAllByText(/^W\d+ \d+-\d+$/).length).toBeGreaterThan(0);
+      expect(queryAllByText(/^W\d+ \u00b7 /)).toHaveLength(0);
+    });
+
+    it('keeps the zoom given by the screen over the orientation default', () => {
+      const {getAllByText} = setupMeasured({zoom: 'week', weekPrefix: 'W'});
+
+      expect(getAllByText(/^W\d+ \u00b7 /).length).toBeGreaterThan(0);
+    });
   });
 });
