@@ -26,7 +26,7 @@ import React, {
   useReducer,
   useState,
 } from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 type RefObject = any;
 
@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,
+    left: 0,
     right: 0,
-    width: Dimensions.get('window').width,
     height: '100%',
     elevation: -1,
   },
