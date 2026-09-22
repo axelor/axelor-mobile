@@ -1,0 +1,5 @@
+{
+  "title": "Quality improvement: fill product & client when coming from a MO or operation",
+  "type": "fix",
+  "packages": "quality"
+}

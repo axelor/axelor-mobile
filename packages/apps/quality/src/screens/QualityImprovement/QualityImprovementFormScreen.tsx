@@ -35,7 +35,7 @@ import {fetchOperationOrder} from '../../features/operationOrderSlice';
 import {QualityImprovement as QualityImprovementType} from '../../types';
 import {fetchQIDetection} from '../../features/qiDetectionSlice';
 
-const QualityImprovementFormScreen = ({route}) => {
+const QualityImprovementFormScreen = ({route}: any) => {
   const {
     qualityImprovementId: qiId,
     stockMoveId,
@@ -97,11 +97,13 @@ const QualityImprovementFormScreen = ({route}) => {
     if (stockMoveId) {
       if (stockMove?.purchaseOrderSet) {
         baseValue.purchaseOrderIdList = stockMove?.purchaseOrderSet?.map(
-          ({id}) => id,
+          ({id}: any) => id,
         );
         baseValue.detectionOrigin = QIDetection?.origin.Supplier;
       } else if (stockMove?.saleOrderSet) {
-        baseValue.saleOrderIdList = stockMove?.saleOrderSet?.map(({id}) => id);
+        baseValue.saleOrderIdList = stockMove?.saleOrderSet?.map(
+          ({id}: any) => id,
+        );
         baseValue.detectionOrigin = QIDetection?.origin.Customer;
       }
     }
@@ -125,12 +127,16 @@ const QualityImprovementFormScreen = ({route}) => {
 
     if (manufOrderId) {
       baseValue.manufOrder = manufOrder;
+      baseValue.product = manufOrder?.product;
+      baseValue.customerPartner = manufOrder?.clientPartner;
       baseValue.detectionOrigin = QIDetection?.origin.Internal;
     }
 
     if (operationOrderId) {
       baseValue.operationOrder = operationOrder;
       baseValue.manufOrder = operationOrder?.manufOrder;
+      baseValue.product = operationOrder?.manufOrder?.product;
+      baseValue.customerPartner = operationOrder?.manufOrder?.clientPartner;
       baseValue.detectionOrigin = QIDetection?.origin.Internal;
     }
 
@@ -146,7 +152,7 @@ const QualityImprovementFormScreen = ({route}) => {
       ...qualityImprovement,
       qiResolutionDefaults:
         qiResolution?.qiResolutionDefaultsList?.map(
-          ({id, name, qiDefault, quantity, description}, idx: number) => ({
+          ({id, name, qiDefault, quantity, description}: any, idx: number) => ({
             id: `qiDefault-${qiDefault.id}.${idx}`,
             _id: id,
             name,
