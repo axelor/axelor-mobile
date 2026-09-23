@@ -141,7 +141,8 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_manufacturingOrder: schemaContructor.object({
     manufOrderSeq: schemaContructor.string(),
-    product: schemaContructor.subObject(),
+    product: schemaContructor.subObject('fullName'),
+    clientPartner: schemaContructor.subObject('simpleFullName'),
     billOfMaterial: schemaContructor.subObject(),
   }),
   quality_billOfMaterialLine: schemaContructor.object({
@@ -149,7 +150,12 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_operationOrder: schemaContructor.object({
     name: schemaContructor.string(),
-    manufOrder: schemaContructor.subObject('manufOrderSeq'),
+    manufOrder: schemaContructor.subObject('manufOrderSeq').concat(
+      schemaContructor.object({
+        product: schemaContructor.subObject('fullName'),
+        clientPartner: schemaContructor.subObject('simpleFullName'),
+      }),
+    ),
   }),
   quality_product: schemaContructor.object({
     fullName: schemaContructor.string(),
