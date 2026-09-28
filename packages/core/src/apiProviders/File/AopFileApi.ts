@@ -17,7 +17,8 @@
  */
 
 import RNFS from 'react-native-fs';
-import {sanitizeFileName} from '../../utils';
+import {sanitizeLocalFileName, showToastMessage} from '../../utils';
+import {i18nProvider} from '../../i18n';
 import {getNetInfo} from '../../api/net-info-utils';
 import {
   BinaryImageRef,
@@ -72,7 +73,7 @@ export class AopFileApi implements FileApi {
     if (this.credentials?.baseUrl == null) return null;
 
     const url = metaFileContentUrl(this.credentials.baseUrl, ref);
-    const path = `${RNFS.DocumentDirectoryPath}/${sanitizeFileName(
+    const path = `${RNFS.DocumentDirectoryPath}/${sanitizeLocalFileName(
       ref.fileName,
     )}`;
     const saved = await downloadUrlToPath(
@@ -86,7 +87,15 @@ export class AopFileApi implements FileApi {
 
   async openInExternalApp(ref: FileRef): Promise<void> {
     const local = await this.getLocalCopy(ref);
-    if (local == null) return;
+    if (local == null) {
+      showToastMessage({
+        type: 'error',
+        position: 'bottom',
+        text1: i18nProvider.i18n.t('Auth_Error'),
+        text2: i18nProvider.i18n.t('Auth_CannotOpenFile'),
+      });
+      return;
+    }
 
     await openLocalFile(local.path);
   }

@@ -18,7 +18,7 @@
 
 import RNFS from 'react-native-fs';
 import {TranslatorProps} from '../i18n/hooks/use-translator';
-import {showToastMessage} from '../utils/show-toast-message';
+import {sanitizeLocalFileName, showToastMessage} from '../utils';
 import {
   buildCookie,
   downloadUrlToPath,
@@ -40,7 +40,9 @@ export const openFileInExternalApp = async (
     return;
   }
 
-  const toFile = `${RNFS.DocumentDirectoryPath}/${file.fileName}`;
+  const toFile = `${RNFS.DocumentDirectoryPath}/${sanitizeLocalFileName(
+    file.fileName,
+  )}`;
   const saved = await downloadUrlToPath(
     `${credentials.baseUrl}${file.path}`,
     toFile,
