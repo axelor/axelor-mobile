@@ -43,10 +43,35 @@ import {
   reverseFormula,
 } from './formula.helpers';
 
+const getSortedModelFields = (
+  metaJsonFields: any[],
+  modelFieldsOrder: string[] = [],
+): string[] => {
+  const getRank = (modelField: string) => {
+    const rank = modelFieldsOrder.indexOf(modelField);
+
+    return rank === -1 ? modelFieldsOrder.length : rank;
+  };
+
+  return metaJsonFields
+    .map(_item => _item.modelField)
+    .filter((item, index, self) => self.indexOf(item) === index)
+    .sort((a, b) => getRank(a) - getRank(b) || a.localeCompare(b));
+};
+
+const getMaxSequence = (metaJsonFields: any[], modelField: string): number =>
+  Math.max(
+    0,
+    ...metaJsonFields
+      .filter(_item => _item.modelField === modelField)
+      .map(_item => _item.sequence ?? 0),
+  );
+
 export const mapStudioFields = (
   items: any[],
   Colors: ThemeColors,
   selectionMap: JSONObject<any[]> = {},
+  modelFieldsOrder?: string[],
 ): {panels: JSONObject<Panel>; fields: JSONObject<Field>; defaults: any} => {
   let formFields: JSONObject<Field> = {};
   let formPanels: JSONObject<Panel> = {};
@@ -54,10 +79,8 @@ export const mapStudioFields = (
 
   if (Array.isArray(items)) {
     const metaJsonFields = [...items];
-    const modelFields = metaJsonFields
-      .map(_item => _item.modelField)
-      .filter((item, index, self) => self.indexOf(item) === index)
-      .sort();
+    const modelFields = getSortedModelFields(metaJsonFields, modelFieldsOrder);
+    let orderOffset = 0;
 
     for (const modelField of modelFields) {
       const {_fields, _panels, _defaults} = manageContentOfModel(
@@ -65,20 +88,33 @@ export const mapStudioFields = (
         modelField,
         Colors,
         selectionMap,
+        orderOffset,
       );
 
       formFields = {...formFields, ..._fields};
       formPanels = {...formPanels, ..._panels};
       defaults = {...defaults, ..._defaults};
+      orderOffset += getMaxSequence(metaJsonFields, modelField) + 1;
     }
   }
 
   return {fields: formFields, panels: formPanels, defaults};
 };
 
+const parseStudioValues = (value: any): any => {
+  if (value == null || typeof value !== 'string') return value ?? {};
+
+  try {
+    return JSON.parse(value) ?? {};
+  } catch {
+    return {};
+  }
+};
+
 export const mapFormToStudioFields = (
   fields: any[],
   formValues: any,
+  object?: any,
 ): JSONObject<string> => {
   let items: JSONObject<string> = {};
 
@@ -103,7 +139,13 @@ export const mapFormToStudioFields = (
           }
         });
 
-      items = {...items, [modelField]: JSON.stringify(panelValues)};
+      items = {
+        ...items,
+        [modelField]: JSON.stringify({
+          ...parseStudioValues(object?.[modelField]),
+          ...panelValues,
+        }),
+      };
     }
   }
 
@@ -232,6 +274,7 @@ const manageContentOfModel = (
   modelField: string,
   Colors: ThemeColors,
   selectionMap: JSONObject<any[]>,
+  orderOffset: number = 0,
 ): {_panels: JSONObject<Panel>; _fields: JSONObject<Field>; _defaults: any} => {
   const formFields: JSONObject<Field> = {};
   const formPanels: JSONObject<Panel> = {};
@@ -243,6 +286,7 @@ const manageContentOfModel = (
     .sort((a, b) => a.sequence - b.sequence)
     .forEach(item => {
       const widgetAttrs = getWidgetAttrs(item);
+      const order = orderOffset + (item.sequence ?? 0);
 
       switch (item.type) {
         case 'panel':
@@ -250,7 +294,7 @@ const manageContentOfModel = (
 
           formPanels[item.name] = {
             titleKey: hasPanelTitle(widgetAttrs) ? item.title : null,
-            order: item.sequence,
+            order,
             colSpan: getColSpan(widgetAttrs) ?? DEFAULT_COLSPAN,
             direction: 'row',
             isCollapsible: isPanelCollapsible(widgetAttrs),
@@ -268,7 +312,7 @@ const manageContentOfModel = (
         case 'spacer':
           formPanels[item.name] = {
             titleKey: item.title,
-            order: item.sequence,
+            order,
             colSpan: getColSpan(widgetAttrs) ?? DEFAULT_COLSPAN,
             direction: 'row',
           };
@@ -277,7 +321,7 @@ const manageContentOfModel = (
           formFields[item.name] = {
             titleKey: item.title,
             type: 'string',
-            order: item.sequence,
+            order,
             colSpan: getColSpan(widgetAttrs),
             parentPanel: lastPanel,
             widget: 'custom',
@@ -294,7 +338,7 @@ const manageContentOfModel = (
           formFields[item.name] = {
             titleKey: item.title,
             type: 'string',
-            order: item.sequence,
+            order,
             parentPanel: lastPanel,
             widget: 'custom',
             hideIf: () => item.hidden,
@@ -312,7 +356,7 @@ const manageContentOfModel = (
           formFields[item.name] = {
             titleKey: item.title,
             type: 'object',
-            order: item.sequence,
+            order,
             colSpan: getColSpan(widgetAttrs),
             parentPanel: lastPanel,
             widget: 'custom',
@@ -346,7 +390,7 @@ const manageContentOfModel = (
                     reverseFormula(item.showIf),
                   ),
                 ),
-            order: item.sequence,
+            order,
             colSpan: getColSpan(widgetAttrs),
             parentPanel: lastPanel,
             widget: widget,

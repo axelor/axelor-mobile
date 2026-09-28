@@ -1,0 +1,5 @@
+{
+  "title": "CustomFieldForm: allow displaying several studio field types and keep values of fields not displayed on save",
+  "type": "fix",
+  "packages": "core"
+}
