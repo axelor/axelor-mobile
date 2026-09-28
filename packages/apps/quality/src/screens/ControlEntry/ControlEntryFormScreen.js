@@ -42,6 +42,8 @@ import {fetchControlPlanById} from '../../features/controlPlanSlice';
 import {ControlEntry as ControlEntryType} from '../../types';
 import {checkComformity, getProgressValuesApi} from '../../api';
 
+const CONTROL_ENTRY_FIELD_TYPES = ['entryAttrs', 'attrs'];
+
 const ControlEntryFormScreen = ({navigation, route}) => {
   const {selectedMode, sampleId} = route.params;
   const I18n = useTranslator();
@@ -310,7 +312,7 @@ const ControlEntryFormScreen = ({navigation, route}) => {
         (itemSet[currentIndex] != null ? (
           <CustomFieldForm
             model="com.axelor.apps.quality.db.ControlEntryPlanLine"
-            fieldType="entryAttrs"
+            fieldType={CONTROL_ENTRY_FIELD_TYPES}
             modelId={itemSet[currentIndex].id}
             additionalActions={[
               {

@@ -38,6 +38,7 @@ import {
 import {FormView} from '../../pages';
 
 const FORM_KEY = 'customField-form';
+const FIELD_TYPE_SEPARATOR = ',';
 
 interface JsonAction extends Action {
   useDefaultAction?: boolean;
@@ -49,7 +50,7 @@ interface CustomFieldFormProps {
   style?: any;
   model: string;
   modelId: number;
-  fieldType?: string;
+  fieldType?: string | string[];
   additionalActions?: JsonAction[];
   readonly?: boolean;
   readonlyButton?: boolean;
@@ -61,7 +62,7 @@ const CustomFieldForm = ({
   style,
   model: modelName,
   modelId,
-  fieldType,
+  fieldType: _fieldType,
   additionalActions = [],
   readonly = false,
   readonlyButton = false,
@@ -75,6 +76,18 @@ const CustomFieldForm = ({
   const [_fields, setFields] = useState<any>();
   const [object, setObject] = useState<any>();
   const [selectionMap, setSelectionMap] = useState<any>();
+
+  const fieldTypeKey = Array.isArray(_fieldType)
+    ? _fieldType.join(FIELD_TYPE_SEPARATOR)
+    : _fieldType;
+
+  const fieldType = useMemo(() => {
+    const fieldTypes = fieldTypeKey?.split(FIELD_TYPE_SEPARATOR);
+
+    return fieldTypes != null && fieldTypes.length > 1
+      ? fieldTypes
+      : fieldTypeKey;
+  }, [fieldTypeKey]);
 
   const userRoleIds = useRoleFilter();
   const removeUnauthorizedFields = useFieldPermitter({modelName});
@@ -112,12 +125,20 @@ const CustomFieldForm = ({
       mapStudioFieldsWithFormula(authorizedFields, object),
       Colors,
       selectionMap,
+      Array.isArray(fieldType) ? fieldType : undefined,
     );
-  }, [Colors, _fields, object, removeUnauthorizedFields, selectionMap]);
+  }, [
+    Colors,
+    _fields,
+    fieldType,
+    object,
+    removeUnauthorizedFields,
+    selectionMap,
+  ]);
 
   const formKey = useMemo(
-    () => `${FORM_KEY}_${fieldType}_${readonly}`,
-    [fieldType, readonly],
+    () => `${FORM_KEY}_${fieldTypeKey}_${readonly}`,
+    [fieldTypeKey, readonly],
   );
 
   useEffect(() => {
@@ -146,7 +167,7 @@ const CustomFieldForm = ({
                   modelName,
                   id: object?.id,
                   version: object?.version,
-                  values: mapFormToStudioFields(_fields, objectState),
+                  values: mapFormToStudioFields(_fields, objectState, object),
                 },
                 action: 'Base_SliceAction_UpdateJsonFieldsObject',
                 getState: () => ({auth: {userId}}),
@@ -163,14 +184,7 @@ const CustomFieldForm = ({
           };
         } else return _action;
       }),
-    [
-      _fields,
-      additionalActions,
-      modelName,
-      object?.id,
-      object?.version,
-      userId,
-    ],
+    [_fields, additionalActions, modelName, object, userId],
   );
 
   return (
