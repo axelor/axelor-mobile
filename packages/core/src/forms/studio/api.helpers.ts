@@ -87,13 +87,18 @@ export function clearModelMetaCaches(modelName?: string) {
   });
 }
 
-const createJsonFieldsOfModelCriteria = (modelName: string, type?: string) => {
+const createJsonFieldsOfModelCriteria = (
+  modelName: string,
+  type?: string | string[],
+) => {
   const criteria: Criteria[] = [
     {fieldName: 'model', operator: '=', value: modelName},
     {fieldName: 'isVisibleInMobileApp', operator: '=', value: true},
   ];
 
-  if (type != null) {
+  if (Array.isArray(type)) {
+    criteria.push({fieldName: 'modelField', operator: 'in', value: type});
+  } else if (type != null) {
     criteria.push({fieldName: 'modelField', operator: '=', value: type});
   }
 
@@ -112,7 +117,7 @@ export async function fetchJsonFieldsOfModel({
   userRoleIds,
 }: {
   modelName: string;
-  type?: string;
+  type?: string | string[];
   userRoleIds?: number[] | null;
 }) {
   if (modelName == null) return null;
@@ -122,9 +127,11 @@ export async function fetchJsonFieldsOfModel({
 
   return cachedRequest(
     'jsonFieldsOfModel',
-    [modelName, type ?? '', isFiltered ? userRoleIds.join('-') : 'all'].join(
-      CACHE_KEY_SEPARATOR,
-    ),
+    [
+      modelName,
+      [type ?? ''].flat().join('-'),
+      isFiltered ? userRoleIds.join('-') : 'all',
+    ].join(CACHE_KEY_SEPARATOR),
     () =>
       createStandardSearch({
         model: 'com.axelor.meta.db.MetaJsonField',

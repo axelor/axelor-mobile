@@ -123,19 +123,24 @@ export const mapStudioFieldsWithFormula = (
 
 export const getAttrsValue = (
   object: {[key: string]: string},
-  fieldType?: string,
+  fieldType?: string | string[],
 ) => {
   if (isEmpty(object)) return {};
 
-  if (fieldType != null) return JSON.parse(object[fieldType] ?? '{}');
+  if (typeof fieldType === 'string') {
+    return JSON.parse(object[fieldType] ?? '{}');
+  }
+
+  const priorityKeys = Array.isArray(fieldType) ? fieldType : [];
+  const attrsKeys = Object.keys(object).filter(
+    key => key.toLowerCase().includes('attrs') && !priorityKeys.includes(key),
+  );
 
   let result = {};
 
-  Object.entries(object)
-    .filter(([key]) => key.toLowerCase().includes('attrs'))
-    .forEach(([_, value]: [string, string]) => {
-      result = {...result, ...JSON.parse(value)};
-    });
+  [...attrsKeys, ...priorityKeys].forEach(key => {
+    result = {...result, ...JSON.parse(object[key] ?? '{}')};
+  });
 
   return result;
 };
