@@ -165,6 +165,7 @@
   "Sale_SliceAction_FetchSaleOrderLine": "récupération des lignes d'une commande client",
   "Sale_SliceAction_FetchProductById": "récupération du produit par id",
   "Sale_SliceAction_FetchProductCompanyConfig": "récupération de la configuration du produit lié à la la socitié",
+  "Sale_SliceAction_SearchProductCompanyConfig": "récupération des prix des produits liés à la société",
   "Sale_SliceAction_SearchCustomerCategory": "recherche sur les catégories de client",
   "Sale_SliceAction_FetchCustomerById": "récupération d'un client par id",
   "Sale_SliceAction_FetchSaleOrderLineById": "récupération d'une ligne de commande client par id",

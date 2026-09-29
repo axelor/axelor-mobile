@@ -28,6 +28,15 @@ import {
   searchCartLine as _searchCartLine,
   updateCartLine as _updateCartLine,
 } from '../api/cart-line-api';
+import {applyCompanyPrices} from '../utils';
+
+const applyCartLinesCompanyPrices = (list, getState) =>
+  applyCompanyPrices({
+    list,
+    getState,
+    getProduct: cartLine => cartLine?.product,
+    setProduct: (cartLine, product) => ({...cartLine, product}),
+  });
 
 export const searchCartLine = createAsyncThunk(
   'sale_cartLine/searchCartLine',
@@ -38,7 +47,7 @@ export const searchCartLine = createAsyncThunk(
       action: 'Sale_SliceAction_SearchCartLine',
       getState,
       responseOptions: {isArrayResponse: true},
-    });
+    }).then(list => applyCartLinesCompanyPrices(list, getState));
   },
 );
 
@@ -58,7 +67,7 @@ export const deleteCartLine = createAsyncThunk(
         action: 'Sale_SliceAction_SearchCartLine',
         getState,
         responseOptions: {isArrayResponse: true},
-      });
+      }).then(list => applyCartLinesCompanyPrices(list, getState));
     });
   },
 );
@@ -79,7 +88,7 @@ export const updateCartLine = createAsyncThunk(
         action: 'Sale_SliceAction_SearchCartLine',
         getState,
         responseOptions: {isArrayResponse: true},
-      });
+      }).then(list => applyCartLinesCompanyPrices(list, getState));
     });
   },
 );
@@ -93,7 +102,13 @@ export const fetchCartLineById = createAsyncThunk(
       action: 'Sale_SliceAction_Fetch cartLineById',
       getState,
       responseOptions: {isArrayResponse: false},
-    });
+    }).then(cartLine =>
+      cartLine == null
+        ? cartLine
+        : applyCartLinesCompanyPrices([cartLine], getState).then(
+            ([_cartLine]) => _cartLine,
+          ),
+    );
   },
 );
 
