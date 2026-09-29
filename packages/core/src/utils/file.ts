@@ -21,3 +21,6 @@ export const sanitizeFileName = (name: string) =>
     ?.normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[ :*?"<>|\\]/g, '_');
+
+export const sanitizeLocalFileName = (name: string) =>
+  sanitizeFileName(name)?.replace(/[^a-zA-Z0-9._\-()]/g, '_');

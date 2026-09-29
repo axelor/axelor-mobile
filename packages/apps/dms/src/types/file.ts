@@ -47,7 +47,7 @@ class File {
     if (fileName == null) {
       return fileName;
     }
-    return fileName.split('.').pop();
+    return fileName.split('.').pop()?.toLowerCase();
   };
 
   static getFileIcon = (fileName: string) => {

@@ -17,9 +17,10 @@
  */
 
 import FileViewer from 'react-native-file-viewer';
+import RNFetchBlob from 'react-native-blob-util';
 import RNFS from 'react-native-fs';
 import {TranslatorProps} from '../i18n/hooks/use-translator';
-import {showToastMessage} from '../utils/show-toast-message';
+import {sanitizeLocalFileName, showToastMessage} from '../utils';
 
 interface FileItem {
   fileName: string;
@@ -47,7 +48,9 @@ export const openFileInExternalApp = async (
     return;
   }
 
-  const localFile = `${RNFS.DocumentDirectoryPath}/${file.fileName}`;
+  const localFile = `${RNFS.DocumentDirectoryPath}/${sanitizeLocalFileName(
+    file.fileName,
+  )}`;
 
   const fromUrl =
     (file as PathItem).path != null
@@ -58,27 +61,29 @@ export const openFileInExternalApp = async (
           }/content/download`
         : `${authentification.baseUrl}ws/dms/inline/${(file as FileItem).id}`;
 
-  const options = {
-    fromUrl: fromUrl,
-    toFile: localFile,
-    headers: {
-      Cookie: `CSRF-TOKEN=${authentification.token}; ${authentification.jsessionId}`,
-    },
-  };
+  try {
+    const res = await RNFetchBlob.config({path: localFile}).fetch(
+      'GET',
+      fromUrl,
+      {
+        Cookie: `CSRF-TOKEN=${authentification.token}; ${authentification.jsessionId}`,
+      },
+    );
+    const {status} = res.info();
 
-  RNFS.downloadFile(options)
-    .promise.then(() => FileViewer.open(localFile, {showOpenWithDialog: true}))
-    .then(() => {
-      // success
-    })
-    .catch(error => {
-      // error
-      showToastMessage({
-        type: 'error',
-        position: 'bottom',
-        text1: I18n.t('Auth_Error'),
-        text2: I18n.t('Auth_CannotOpenFile'),
-      });
-      console.log(error);
+    if (status < 200 || status >= 300) {
+      await RNFS.unlink(localFile).catch(() => {});
+      throw new Error(`Download failed with status ${status}`);
+    }
+
+    await FileViewer.open(localFile, {showOpenWithDialog: true});
+  } catch (error) {
+    showToastMessage({
+      type: 'error',
+      position: 'bottom',
+      text1: I18n.t('Auth_Error'),
+      text2: I18n.t('Auth_CannotOpenFile'),
     });
+    console.log(error);
+  }
 };
