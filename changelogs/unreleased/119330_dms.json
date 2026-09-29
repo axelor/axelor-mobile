@@ -1,0 +1,5 @@
+{
+  "title": "DMS: recognize uppercase file extensions for the document icon, color and type filters",
+  "type": "fix",
+  "packages": "dms"
+}

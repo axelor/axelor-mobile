@@ -122,9 +122,15 @@ export async function downloadUrlToPath(
   cookie: string,
 ): Promise<string | null> {
   try {
-    await RNFS.downloadFile({fromUrl: url, toFile, headers: {Cookie: cookie}})
-      .promise;
-    return toFile;
+    const res = await RNFetchBlob.config({path: toFile}).fetch('GET', url, {
+      Cookie: cookie,
+    });
+    const {status} = res.info();
+
+    if (status >= 200 && status < 300) return toFile;
+
+    await RNFS.unlink(toFile).catch(() => {});
+    return null;
   } catch {
     return null;
   }
