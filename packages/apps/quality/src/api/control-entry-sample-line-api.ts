@@ -20,6 +20,8 @@ import {
   createStandardSearch,
   createStandardFetch,
   getActionApi,
+  getActionMessage,
+  getTypes,
 } from '@axelor/aos-mobile-core';
 import {ControlTypeFieldValueUpdate} from '../types';
 
@@ -94,4 +96,73 @@ export async function updateSampleLineValues({
     body: {version, entryValueList},
     description: 'update control entry sample line values',
   });
+}
+
+interface ConformityResult {
+  resultSelect?: number;
+  message?: string;
+}
+
+const getActionValue = (response: any, fieldName: string): any => {
+  const items: any[] = response?.data?.data ?? [];
+
+  return items.find(_item => _item?.values?.[fieldName] != null)?.values?.[
+    fieldName
+  ];
+};
+
+async function saveResult({
+  id,
+  version,
+  resultSelect,
+}: {
+  id: number;
+  version: number;
+  resultSelect: number;
+}) {
+  return getActionApi().send({
+    url: `ws/rest/${MODEL}`,
+    method: 'post',
+    body: {data: {id, version, resultSelect}},
+    description: 'save control entry sample line result',
+  });
+}
+
+export async function checkConformity({
+  object,
+}: {
+  object: any;
+}): Promise<ConformityResult> {
+  const ControlEntrySample = getTypes().ControlEntrySample;
+  const notControlled = {
+    resultSelect: ControlEntrySample?.resultSelect.NotControlled,
+  };
+
+  return getActionApi()
+    .send({
+      url: 'ws/action',
+      method: 'post',
+      body: {
+        action: 'action-quality-control-entry-line-method-control-conformity',
+        data: {context: {...object, _model: MODEL}},
+        model: MODEL,
+      },
+      description: 'check conformity',
+    })
+    .then((response): ConformityResult | Promise<ConformityResult> => {
+      const actionMessage = getActionMessage(response);
+
+      if (actionMessage != null) return {message: actionMessage.message};
+
+      const resultSelect = getActionValue(response, 'resultSelect');
+
+      if (resultSelect == null) return notControlled;
+
+      return saveResult({
+        id: object.id,
+        version: object.version,
+        resultSelect,
+      }).then(() => ({resultSelect}));
+    })
+    .catch(() => notControlled);
 }

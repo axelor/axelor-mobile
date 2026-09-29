@@ -24,6 +24,7 @@ export {
 } from './control-entry-api';
 export {searchControlEntrySample as searchControlEntrySampleApi} from './control-entry-sample-api';
 export {
+  checkConformity as checkConformityApi,
   fetchControlEntrySampleLine as fetchControlEntrySampleLineApi,
   searchControlEntrySampleLine as searchControlEntrySampleLineApi,
   searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLineOfControlEntryApi,
