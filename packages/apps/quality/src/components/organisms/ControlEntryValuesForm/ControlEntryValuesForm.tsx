@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   Action,
+  CustomFieldForm,
   Field,
   FormView,
   formConfigsProvider,
@@ -31,6 +32,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
+  checkConformityApi,
   searchCharacteristicPropertyApi,
   searchControlTypeFieldApi,
   searchEntryValueApi,
@@ -55,6 +57,7 @@ import {
 
 const MODEL = 'com.axelor.apps.quality.db.ControlEntryPlanLine';
 const FORM_KEY = 'quality_controlEntryValues-form';
+const STUDIO_FIELD_TYPE = 'attrs';
 
 interface ControlEntryValuesFormProps {
   sampleLineId: number;
@@ -78,6 +81,7 @@ const ControlEntryValuesForm = ({
     state => state.controlEntrySampleLine,
   );
 
+  const [loadingEntryValues, setLoadingEntryValues] = useState<boolean>(true);
   const [entryValues, setEntryValues] = useState<ControlTypeFieldValue[]>([]);
   const [planValues, setPlanValues] = useState<ControlTypeFieldValue[]>([]);
   const [selectionOfField, setSelectionOfField] = useState<
@@ -92,7 +96,8 @@ const ControlEntryValuesForm = ({
   useEffect(() => {
     searchEntryValueApi({entryLineId: sampleLineId})
       .then(({data}) => setEntryValues(data?.data ?? []))
-      .catch(() => setEntryValues([]));
+      .catch(() => setEntryValues([]))
+      .finally(() => setLoadingEntryValues(false));
   }, [sampleLineId]);
 
   useEffect(() => {
@@ -178,6 +183,36 @@ const ControlEntryValuesForm = ({
     );
   }, [fields, formKey, readonly]);
 
+  const showConformityResult = useCallback(
+    (resultSelect: number) => {
+      showToastMessage({
+        type: ControlEntryType.getSampleResultType(resultSelect),
+        position: 'bottom',
+        bottomOffset: 80,
+        text1: I18n.t('Quality_ConformityResult'),
+        text2: getItemTitle(ControlEntrySample?.resultSelect, resultSelect),
+      });
+
+      onValidate();
+    },
+    [ControlEntrySample?.resultSelect, I18n, getItemTitle, onValidate],
+  );
+
+  const showConformityError = useCallback(
+    (message: string) => {
+      showToastMessage({
+        type: 'error',
+        position: 'bottom',
+        bottomOffset: 80,
+        text1: I18n.t('Base_Error'),
+        text2: message,
+      });
+
+      onValidate();
+    },
+    [I18n, onValidate],
+  );
+
   const actions: Action[] = useMemo(
     () => [
       {
@@ -192,36 +227,53 @@ const ControlEntryValuesForm = ({
               entryValueList: mapFormToEntryValues(entryValues, objectState),
             }),
           ).then(({payload}: {payload: SampleLineControlResult}) => {
-            if (payload == null) return;
-
-            showToastMessage({
-              type: ControlEntryType.getSampleResultType(payload.resultSelect),
-              position: 'bottom',
-              bottomOffset: 80,
-              text1: I18n.t('Quality_ConformityResult'),
-              text2: getItemTitle(
-                ControlEntrySample?.resultSelect,
-                payload.resultSelect,
-              ),
-            });
-
-            onValidate();
+            if (payload != null) showConformityResult(payload.resultSelect);
           });
         },
       },
     ],
     [
-      ControlEntrySample?.resultSelect,
-      I18n,
       dispatch,
       entryValues,
-      getItemTitle,
       navigationButtons,
-      onValidate,
       sampleLine?.version,
       sampleLineId,
+      showConformityResult,
     ],
   );
+
+  const studioActions = useMemo(
+    () => [
+      {
+        key: 'controlEntryStudioValues-save',
+        type: 'custom' as const,
+        useDefaultAction: true,
+        showToast: false,
+        customComponent: navigationButtons,
+        postActions: (res: any) =>
+          checkConformityApi({object: res}).then(({resultSelect, message}) =>
+            message != null
+              ? showConformityError(message)
+              : showConformityResult(resultSelect!),
+          ),
+      },
+    ],
+    [navigationButtons, showConformityError, showConformityResult],
+  );
+
+  if (loadingEntryValues) return null;
+
+  if (entryValues.length === 0) {
+    return (
+      <CustomFieldForm
+        model={MODEL}
+        modelId={sampleLineId}
+        fieldType={STUDIO_FIELD_TYPE}
+        additionalActions={studioActions}
+        readonly={readonly}
+      />
+    );
+  }
 
   return (
     <FormView
