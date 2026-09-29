@@ -31,6 +31,7 @@ import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
 interface CartLineCardProps {
   style?: any;
   product: any;
+  price?: number;
   isAvailable?: boolean;
   qty?: number;
   unit?: string;
@@ -41,6 +42,7 @@ interface CartLineCardProps {
 const CartLineCard = ({
   style,
   product,
+  price,
   isAvailable = true,
   qty,
   unit,
@@ -97,7 +99,7 @@ const CartLineCard = ({
               customComponent: (
                 <TextUnit
                   unit={product?.saleCurrency?.symbol}
-                  value={priceFormat(product?.salePrice)}
+                  value={priceFormat(price ?? product?.salePrice)}
                   fontSize={20}
                   numberOfLines={1}
                 />
