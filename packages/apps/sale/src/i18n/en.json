@@ -158,6 +158,7 @@
   "Sale_SliceAction_FetchSaleOrderLine": "fetch sale order lines",
   "Sale_SliceAction_FetchProductById": "fetch product by id",
   "Sale_SliceAction_FetchProductCompanyConfig": "search product company config",
+  "Sale_SliceAction_SearchProductCompanyConfig": "search product company prices",
   "Sale_SliceAction_SearchCustomerCategory": "search customer categories",
   "Sale_SliceAction_FetchCustomerById": "fetch customer by id",
   "Sale_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id",

@@ -30,6 +30,7 @@ import {
   fetchProductVariantConfig as _fetchProductVariantConfig,
   fetchMatchingProduct as _fetchMatchingProduct,
 } from '../api/product-api';
+import {applyCompanyPrices} from '../utils';
 
 export const searchProduct = createAsyncThunk(
   'sale_product/searchProduct',
@@ -40,7 +41,7 @@ export const searchProduct = createAsyncThunk(
       action: 'Sale_SliceAction_SearchProduct',
       getState,
       responseOptions: {isArrayResponse: true},
-    });
+    }).then(list => applyCompanyPrices({list, getState}));
   },
 );
 
@@ -118,7 +119,7 @@ export const fetchVariantProduct = createAsyncThunk(
       action: 'Sale_SliceAction_FetchVariantProduct',
       getState,
       responseOptions: {isArrayResponse: true},
-    });
+    }).then(list => applyCompanyPrices({list, getState}));
   },
 );
 
