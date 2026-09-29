@@ -42,7 +42,7 @@ export {
   displayItemFullname,
   displayItemTitle,
 } from './displayers';
-export {sanitizeFileName} from './file';
+export {sanitizeFileName, sanitizeLocalFileName} from './file';
 export {
   formatDate,
   formatDateTime,
