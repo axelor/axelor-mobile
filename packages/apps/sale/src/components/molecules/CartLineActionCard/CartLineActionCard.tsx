@@ -142,6 +142,7 @@ const CartLineActionCard = ({
         translator={I18n.t}>
         <CartLineCard
           product={cartLine.product}
+          price={cartLine.price}
           qty={parseInt(cartLine.qty, 10) + diffQty}
           unit={cartLine.unit?.name}
           hideBadgeInformation={hideBadgeInformation}

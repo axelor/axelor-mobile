@@ -35,9 +35,15 @@ const CartLinePriceDetails = ({
   const I18n = useTranslator();
   const formatPrice = usePriceFormat();
 
-  const totalPrice = useMemo(() => {
-    return qty * parseInt(cartLine?.product?.salePrice, 10);
-  }, [qty, cartLine?.product?.salePrice]);
+  const unitPrice = useMemo(
+    () => cartLine?.price ?? cartLine?.product?.salePrice,
+    [cartLine?.price, cartLine?.product?.salePrice],
+  );
+
+  const totalPrice = useMemo(
+    () => qty * parseFloat(unitPrice ?? 0),
+    [qty, unitPrice],
+  );
 
   const priceList = useMemo(
     () => [
@@ -48,19 +54,19 @@ const CartLinePriceDetails = ({
       },
       {
         title: I18n.t('Sale_UnitPrice'),
-        value: formatPrice(cartLine?.product?.salePrice),
+        value: formatPrice(unitPrice),
         unit: cartLine?.product?.saleCurrency?.symbol,
       },
       {
         title: I18n.t(
           cartLine?.product?.inAti ? 'Sale_TotalATI' : 'Sale_TotalWT',
         ),
-        value: totalPrice,
+        value: formatPrice(totalPrice),
         unit: cartLine?.product?.saleCurrency?.symbol,
         showLine: true,
       },
     ],
-    [I18n, formatPrice, qty, cartLine, totalPrice],
+    [I18n, formatPrice, qty, cartLine, unitPrice, totalPrice],
   );
 
   return <PriceDetails style={style} lineList={priceList} />;
