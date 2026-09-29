@@ -17,6 +17,7 @@
  */
 
 import {useCallback, useEffect, useMemo, useRef} from 'react';
+import {Vibration} from 'react-native';
 import {useDispatch} from '../redux/hooks';
 import {
   useCameraScannerValueByKey,
@@ -29,6 +30,8 @@ import {
 } from '../features/scannerSlice';
 import {useScanActivator} from './use-scan-activator';
 import {useIsFocused} from './use-navigation';
+
+const ERROR_VIBRATION_PATTERN = [0, 200, 100, 200, 100, 200];
 
 interface UseMassScannerParams {
   scanKey: string;
@@ -76,6 +79,7 @@ export const useMassScanner = ({
         isProcessingRef.current = true;
         await backgroundAction(value, {disableScan});
       } catch (error) {
+        Vibration.vibrate(ERROR_VIBRATION_PATTERN);
         if (disableOnError) disableScan();
         setTimeout(() => fallbackAction?.(error), 50);
       } finally {
