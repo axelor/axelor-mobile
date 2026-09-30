@@ -28,17 +28,36 @@ import {
   useCameraScannerSelector,
   useCameraScannerValueByKey,
 } from '../features/cameraScannerSlice';
+import {
+  clearPhoto,
+  enableCamera,
+  useCameraSelector,
+  useCameraValueByKey,
+} from '../features/cameraSlice';
 import {useScannedValueByKey} from '../features/scannerSlice';
 import {useOnline} from '../features/onlineSlice';
 import {useNavigation} from '../hooks/use-navigation';
 import {useScanActivator} from '../hooks/use-scan-activator';
-import {useSelector} from '../redux/hooks';
+import {useDispatch, useSelector} from '../redux/hooks';
 import {storage} from '../storage/Storage';
 import {axiosApiProvider} from '../apiProviders/Standard';
 import {showToastMessage} from '../utils/show-toast-message';
-import type {HostTheme} from '@axelor/app-bridge';
-import {EmbeddedBundle} from './bundles';
-import {getAppBridgeMethods, runAppBridgeHandler} from './data-handlers';
+import type {HostTheme, UploadRequest} from '@axelor/app-bridge';
+import {EmbeddedBundle, appFolderUrl} from './bundles';
+import {
+  getAppBridgeMethods,
+  requireOnline,
+  runAppBridgeHandler,
+} from './data-handlers';
+import {
+  PickedFile,
+  cachedFileUrl,
+  deleteTemporaryFiles,
+  pickDocuments,
+  savePhoto,
+  toHandle,
+  uploadPickedFile,
+} from './files';
 import {
   Bootstrap,
   HostCall,
@@ -69,9 +88,11 @@ export interface EmbeddedAppViewProps {
 
 const SCAN_KEY = 'embedded-app_scan';
 
+const PHOTO_KEY = 'embedded-app_photo';
+
 const TRANSLATIONS_KEY = 'app-bridge_translations';
 
-/* Methods this view handles itself, because they need navigation, alerts or the scanner */
+/* Methods this view handles itself, because they need navigation, alerts, the scanner, the camera or picked files */
 const VIEW_METHODS = [
   'ui.toast',
   'ui.confirm',
@@ -80,9 +101,14 @@ const VIEW_METHODS = [
   'nav.close',
   'nav.setTitle',
   'device.scan',
+  'files.pick',
+  'files.upload',
+  'files.url',
 ];
 
 type PendingScan = {id: string; sawScanner: boolean};
+
+type PendingPhoto = {id: string; sawCamera: boolean};
 
 type LoggedUser = {
   id?: number;
@@ -94,12 +120,15 @@ type LoggedUser = {
 };
 
 type HostState = {
-  auth?: {baseUrl?: string | null};
+  auth?: {baseUrl?: string | null; token?: string | null};
   user?: {user?: LoggedUser | null};
 };
 
 const selectBaseUrl = (state: HostState): string | null =>
   state.auth?.baseUrl ?? null;
+
+const selectCsrfToken = (state: HostState): string | null =>
+  state.auth?.token ?? null;
 
 const selectLoggedUser = (state: HostState): LoggedUser | null =>
   state.user?.user ?? null;
@@ -225,8 +254,14 @@ const EmbeddedAppView = ({
   const navigation = useNavigation();
   const webViewRef = useRef<WebView>(null);
   const pendingScanRef = useRef<PendingScan | null>(null);
+  const pendingPhotoRef = useRef<PendingPhoto | null>(null);
+  /* Files picked by this page, by handle ref; the content never leaves the host */
+  const pickedFilesRef = useRef(new Map<string, PickedFile>());
+  const pickCounterRef = useRef(0);
 
+  const dispatch = useDispatch();
   const baseUrl: string | null = useSelector(selectBaseUrl);
+  const csrfToken: string | null = useSelector(selectCsrfToken);
   const user: LoggedUser | null = useSelector(selectLoggedUser);
   const {isEnabled: onlineModeEnabled} = useOnline();
 
@@ -234,6 +269,8 @@ const EmbeddedAppView = ({
   const cameraBarcode = useCameraScannerValueByKey(SCAN_KEY);
   const deviceScanValue = useScannedValueByKey(SCAN_KEY);
   const {isEnabled: isCameraEnabled} = useCameraScannerSelector();
+  const photo = useCameraValueByKey(PHOTO_KEY);
+  const {isEnabled: isPhotoCameraEnabled} = useCameraSelector();
 
   const bundleDir = bundle?.dir ?? null;
 
@@ -389,6 +426,14 @@ const EmbeddedAppView = ({
     }
   }, [cameraBarcode, deviceScanValue, disableScan, resolveCall]);
 
+  /* Camera photos written for this page are removed with it */
+  useEffect(() => {
+    const pickedFiles = pickedFilesRef.current;
+    return () => {
+      deleteTemporaryFiles(pickedFiles.values());
+    };
+  }, []);
+
   /* A ref, so the cleanup only runs on unmount and not when disableScan changes */
   const disableScanRef = useRef(disableScan);
   disableScanRef.current = disableScan;
@@ -415,6 +460,42 @@ const EmbeddedAppView = ({
       resolveCall(pending.id, null);
     }
   }, [isCameraEnabled, resolveCall]);
+
+  const registerPickedFiles = useCallback((files: PickedFile[]) => {
+    return files.map(file => {
+      pickCounterRef.current += 1;
+      const ref = `file-${pickCounterRef.current}`;
+      pickedFilesRef.current.set(ref, file);
+      return toHandle(ref, file);
+    });
+  }, []);
+
+  /* A photo from files.pick with capture: "camera"; closing the camera without one cancels */
+  useEffect(() => {
+    const pending = pendingPhotoRef.current;
+    if (pending == null) {
+      return;
+    }
+    if (photo != null) {
+      pendingPhotoRef.current = null;
+      dispatch(clearPhoto());
+      savePhoto(photo)
+        .then(file => resolveCall(pending.id, registerPickedFiles([file])))
+        .catch(error => rejectCall(pending.id, error));
+    } else if (isPhotoCameraEnabled) {
+      pending.sawCamera = true;
+    } else if (pending.sawCamera) {
+      pendingPhotoRef.current = null;
+      resolveCall(pending.id, null);
+    }
+  }, [
+    dispatch,
+    isPhotoCameraEnabled,
+    photo,
+    registerPickedFiles,
+    rejectCall,
+    resolveCall,
+  ]);
 
   useEffect(() => {
     deliver({type: 'event', name: 'network', payload: {online}});
@@ -521,6 +602,56 @@ const EmbeddedAppView = ({
             navigation.goBack();
           }
           return null;
+        case 'files.pick': {
+          const accept = Array.isArray(callParams.accept)
+            ? (callParams.accept as string[])
+            : undefined;
+          const files = await pickDocuments(
+            accept,
+            callParams.multiple === true,
+          );
+          return files == null ? null : registerPickedFiles(files);
+        }
+        case 'files.url': {
+          if (bundle == null) {
+            throw new HostError(
+              'unsupported',
+              'files.url needs an app loaded from the device',
+            );
+          }
+          return cachedFileUrl(bundle.id, String(callParams.path ?? ''), {
+            baseUrl,
+            refresh: callParams.refresh === true,
+            ensureOnline: () => requireOnline({online}, 'files.url'),
+          });
+        }
+        case 'files.upload': {
+          const {ref, progressToken, ...request} = callParams as {
+            ref?: string;
+            progressToken?: string;
+          } & UploadRequest;
+          const file = ref != null ? pickedFilesRef.current.get(ref) : null;
+          if (file == null) {
+            throw new HostError('not_found', `No picked file for ${ref}`);
+          }
+          await requireOnline({online}, 'files.upload');
+          if (baseUrl == null) {
+            throw new HostError('offline', 'Not connected to a server');
+          }
+          return uploadPickedFile(file, request, {
+            baseUrl,
+            csrfToken,
+            onProgress:
+              progressToken == null
+                ? undefined
+                : (sent, total) =>
+                    deliver({
+                      type: 'event',
+                      name: 'files.progress',
+                      payload: {token: progressToken, sent, total},
+                    }),
+          });
+        }
         case 'nav.setTitle':
           navigation.setOptions({title: String(callParams.title ?? '')});
           return null;
@@ -528,7 +659,18 @@ const EmbeddedAppView = ({
           return runAppBridgeHandler(method, callParams, {online});
       }
     },
-    [alert, bootstrap, navigation, online, recordScreens],
+    [
+      alert,
+      baseUrl,
+      bootstrap,
+      bundle,
+      csrfToken,
+      deliver,
+      navigation,
+      online,
+      recordScreens,
+      registerPickedFiles,
+    ],
   );
 
   const handleMessage = useCallback(
@@ -560,6 +702,22 @@ const EmbeddedAppView = ({
         return;
       }
 
+      if (
+        message.method === 'files.pick' &&
+        message.params.capture === 'camera'
+      ) {
+        const earlier = pendingPhotoRef.current;
+        if (earlier != null) {
+          resolveCall(earlier.id, null);
+        }
+        pendingPhotoRef.current = {
+          id: message.id,
+          sawCamera: isPhotoCameraEnabled,
+        };
+        dispatch(enableCamera(PHOTO_KEY));
+        return;
+      }
+
       if (message.method === 'device.scan') {
         /* Only one scan at a time: an earlier one that is still open resolves as cancelled */
         const earlier = pendingScanRef.current;
@@ -579,9 +737,11 @@ const EmbeddedAppView = ({
         .catch(error => rejectCall(message.id, error));
     },
     [
+      dispatch,
       enableScan,
       isAllowedSource,
       isCameraEnabled,
+      isPhotoCameraEnabled,
       rejectCall,
       resolveCall,
       runHostCall,
@@ -605,7 +765,9 @@ const EmbeddedAppView = ({
       style={styles.webView}
       originWhitelist={['*']}
       allowFileAccess={bundleDir != null}
-      allowingReadAccessToURL={bundleDir ?? undefined}
+      allowingReadAccessToURL={
+        bundle != null ? appFolderUrl(bundle.id) : undefined
+      }
       sharedCookiesEnabled={true}
       injectedJavaScriptBeforeContentLoaded={bootstrapScript}
       onMessage={handleMessage}

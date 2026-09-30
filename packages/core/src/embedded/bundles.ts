@@ -105,6 +105,18 @@ function appRoot(appId: string): string {
   return `${RNFS.DocumentDirectoryPath}/embedded/${appId}`;
 }
 
+/* Files the app displays (files.url) are kept next to its versions, so the WebView can read them */
+const FILES_CACHE = '.files';
+
+export function filesCacheDir(appId: string): string {
+  return `${appRoot(appId)}/${FILES_CACHE}`;
+}
+
+/* file:// URL of everything the app's WebView may read: its versions and its file cache */
+export function appFolderUrl(appId: string): string {
+  return `file://${appRoot(appId)}/`;
+}
+
 function toBundle(appId: string, version: string): EmbeddedBundle {
   return {
     id: appId,
@@ -143,7 +155,10 @@ async function removeOtherVersions(appId: string, keepVersions: string[]) {
   await Promise.all(
     entries
       .filter(
-        entry => entry.isDirectory() && !keepVersions.includes(entry.name),
+        entry =>
+          entry.isDirectory() &&
+          entry.name !== FILES_CACHE &&
+          !keepVersions.includes(entry.name),
       )
       .map(entry => RNFS.unlink(entry.path)),
   );
@@ -195,9 +210,39 @@ function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-async function downloadToFile(url: string, target: string) {
+export type DownloadedFile = {
+  contentType: string | null;
+  /* From Content-Disposition, when the server names the file */
+  fileName: string | null;
+};
+
+function readFileName(disposition: unknown): string | null {
+  if (typeof disposition !== 'string') {
+    return null;
+  }
+  const encoded = disposition.match(/filename\*\s*=\s*[^']*''([^;]+)/i);
+  if (encoded != null) {
+    try {
+      return decodeURIComponent(encoded[1].trim());
+    } catch {
+      return null;
+    }
+  }
+  const plain = disposition.match(/filename\s*=\s*"?([^";]+)"?/i);
+  return plain != null ? plain[1].trim() : null;
+}
+
+export async function downloadToFile(
+  url: string,
+  target: string,
+): Promise<DownloadedFile> {
   const response = await fileClient.get(url, {responseType: 'blob'});
   await RNFS.writeFile(target, await blobToBase64(response.data), 'base64');
+  const contentType = response.headers?.['content-type'];
+  return {
+    contentType: typeof contentType === 'string' ? contentType : null,
+    fileName: readFileName(response.headers?.['content-disposition']),
+  };
 }
 
 /*

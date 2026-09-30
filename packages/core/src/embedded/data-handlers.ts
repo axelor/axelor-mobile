@@ -75,7 +75,10 @@ function readNumber(params: Params, key: string): number {
 }
 
 /* Same check AopModelApi makes: online mode on and AOS reachable */
-async function requireOnline(context: BridgeHandlerContext, method: string) {
+export async function requireOnline(
+  context: BridgeHandlerContext,
+  method: string,
+) {
   const reachable =
     context.online &&
     AopModelApi.isOnlineAvailable &&
