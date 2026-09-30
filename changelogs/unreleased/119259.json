@@ -1,5 +1,0 @@
-{
-  "title": "Control entry: display the attrs fields of the line alongside the entryAttrs ones",
-  "type": "fix",
-  "packages": "quality"
-}
