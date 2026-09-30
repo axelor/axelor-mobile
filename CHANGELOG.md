@@ -3,6 +3,37 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.26] (2026-09-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- CustomFieldForm: allow displaying several studio field types and keep values of fields not displayed on save
+- Files: keep the session when opening a file behind a server redirect
+- Files: allow opening files whose name contains special characters
+- Web views: load them in the background after login so they stay available without connection
+- Web views: carry over the ERP session on iOS instead of asking the user to sign in again
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- DMS: recognize uppercase file extensions for the document icon, color and type filters
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Catalog & cart: display the sale price and currency of the active company when they are managed per company
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Quality improvement: fill product & client when coming from a MO or operation
+- Control entry: display the attrs fields of the line alongside the entryAttrs ones
+
 ## [8.5.25] (2026-09-16)
 
 ### @axelor/aos-mobile-ui
@@ -14,7 +45,6 @@ tags: Changelog
 <details>
 The input only propagated its value when it lost focus, so a quantity typed then validated straight from a save button was ignored and the previous value was submitted. The value is now propagated while typing, and the external value no longer overwrites the field while it is focused.
 </details>
-
 
 ## [8.5.24] (2026-09-10)
 
@@ -36,7 +66,6 @@ The input only propagated its value when it lost focus, so a quantity typed then
 An action can answer with a message instead of applying its changes. The helper reads that message from the response and returns it with its severity, so that a module can inform the user rather than silently treating the refusal as a result.
 </details>
 
-
 ### @axelor/aos-mobile-intervention
 
 #### Fixes
@@ -46,7 +75,6 @@ An action can answer with a message instead of applying its changes. The helper 
 <details>
 When duplicating an equipment, the form of the copy offered the creation action, so validating it added yet another equipment. The available action now depends on the equipment actually opened in the form.
 </details>
-
 
 ### @axelor/aos-mobile-quality
 
@@ -69,7 +97,6 @@ When duplicating an equipment, the form of the copy offered the creation action,
 <details>
 Any leave request could be modified from the mobile application, including validated ones. As in the web application, a request can now be modified when it is in draft or canceled status, and when it is waiting validation by the user in charge of validating it. Validated and refused requests can no longer be modified.
 </details>
-
 
 ### @axelor/aos-mobile-manufacturing
 
@@ -718,6 +745,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.26]: https://github.com/axelor/axelor-mobile/compare/8.5.25...8.5.26
 [8.5.25]: https://github.com/axelor/axelor-mobile/compare/8.5.24...8.5.25
 [8.5.24]: https://github.com/axelor/axelor-mobile/compare/8.5.23...8.5.24
 [8.5.23]: https://github.com/axelor/axelor-mobile/compare/8.5.22...8.5.23
