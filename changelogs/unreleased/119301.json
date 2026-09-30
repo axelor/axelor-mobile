@@ -1,5 +1,0 @@
-{
-  "title": "Catalog & cart: display the sale price and currency of the active company when they are managed per company",
-  "type": "fix",
-  "packages": "sale"
-}

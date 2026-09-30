@@ -3,6 +3,37 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.21] (2026-09-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- CustomFieldForm: allow displaying several studio field types and keep values of fields not displayed on save
+- Files: keep the session when opening a file behind a server redirect
+- Files: allow opening files whose name contains special characters
+- Web views: load them in the background after login so they stay available without connection
+- Web views: carry over the ERP session on iOS instead of asking the user to sign in again
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- DMS: recognize uppercase file extensions for the document icon, color and type filters
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Catalog & cart: display the sale price and currency of the active company when they are managed per company
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Quality improvement: fill product & client when coming from a MO or operation
+- Control entry: display the attrs fields of the line alongside the entryAttrs ones
+
 ## [9.0.20] (2026-09-16)
 
 ### @axelor/aos-mobile-ui
@@ -494,6 +525,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.21]: https://github.com/axelor/axelor-mobile/compare/9.0.20...9.0.21
 [9.0.20]: https://github.com/axelor/axelor-mobile/compare/9.0.19...9.0.20
 [9.0.19]: https://github.com/axelor/axelor-mobile/compare/9.0.18...9.0.19
 [9.0.18]: https://github.com/axelor/axelor-mobile/compare/9.0.17...9.0.18
