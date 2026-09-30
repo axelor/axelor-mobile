@@ -24,6 +24,7 @@ export * from './components';
 export * from './config';
 export * from './dashboards';
 export * from './features/asyncFunctions-index';
+export * from './embedded';
 export * from './forms';
 export * from './header';
 export * from './hooks';

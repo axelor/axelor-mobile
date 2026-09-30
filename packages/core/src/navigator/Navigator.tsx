@@ -29,6 +29,7 @@ import {fetchAllCurrencies} from '../features/currencySlice';
 import {fetchRequiredConfig} from '../features/appConfigSlice';
 import {usePermissionsFetcher} from '../permissions';
 import {registerTypes} from '../selections';
+import {usePrefetchEmbeddedApps} from '../embedded/use-embedded-bundle';
 import {
   Menu,
   MenuWithSubMenus,
@@ -87,6 +88,13 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   useEffect(() => {
     activeScreenProvider.registerScreenTools(enabledModule);
   }, [enabledModule]);
+
+  const embeddedApps = useMemo(
+    () => enabledModule.flatMap(_module => _module.embeddedApps ?? []),
+    [enabledModule],
+  );
+
+  usePrefetchEmbeddedApps(embeddedApps);
 
   const [activeModule, setActiveModule] = useState(
     getDefaultModule(enabledModule, mainMenu),

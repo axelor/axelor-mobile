@@ -1,0 +1,6 @@
+{
+  "title": "Embedded apps: open web apps provided by AOS modules inside the mobile app",
+  "type": "feat",
+  "packages": "core",
+  "description": "Apps are downloaded after login and kept on the device, so they also open offline. Features that need the server show a message when the device is offline."
+}

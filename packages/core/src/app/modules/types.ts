@@ -125,6 +125,13 @@ export interface Compatibility {
   upToVersion?: version;
 }
 
+export type EmbeddedAppDefinition = {
+  /** Id in the app's manifest.json */
+  id: string;
+  /** Folder of the app inside the AOS module webapp */
+  path: string;
+};
+
 export interface Module {
   name: string;
   title?: string;
@@ -157,5 +164,7 @@ export interface Module {
   requiredConfig?: string[];
   /** Function which will be executed once after user login to create modules/menus based on data */
   moduleRegister?: Function;
+  /** Embedded apps served by AOS modules, downloaded after login so they open offline */
+  embeddedApps?: EmbeddedAppDefinition[];
   globalTools?: Tool[];
 }
