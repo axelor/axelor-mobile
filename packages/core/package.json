@@ -14,7 +14,9 @@
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "files": [
-    "lib"
+    "lib",
+    "android",
+    "!android/build"
   ],
   "scripts": {
     "clean": "rm -rf lib/",
