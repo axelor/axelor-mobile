@@ -128,5 +128,10 @@
   },
   "engines": {
     "node": ">= 22.11.0"
+  },
+  "reanimated": {
+    "staticFeatureFlags": {
+      "USE_SYNCHRONIZABLE_FOR_MUTABLES": false
+    }
   }
 }

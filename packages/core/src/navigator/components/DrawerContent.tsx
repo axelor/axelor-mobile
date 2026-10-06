@@ -84,37 +84,41 @@ const DrawerContent = ({
   );
 
   useEffect(() => {
-    const orderedRoutes = orderedMenuKeys
-      .map(_key => state.routes.find(_route => _route.name === _key))
-      .filter(_route => _route != null);
+    const getOrderedRoutes = (routes: DrawerState['routes']) =>
+      orderedMenuKeys
+        .map(_key => routes.find(_route => _route.name === _key))
+        .filter(_route => _route != null);
+
+    const orderedRoutesOnRender = getOrderedRoutes(state.routes);
 
     const isAlreadyOrdered =
-      orderedRoutes.length === state.routes.length &&
-      orderedRoutes.every((_route, _index) => {
+      orderedRoutesOnRender.length === state.routes.length &&
+      orderedRoutesOnRender.every((_route, _index) => {
         return _route.key === state.routes[_index].key;
       });
 
-    if (orderedRoutes.length === 0 || isAlreadyOrdered) {
+    if (orderedRoutesOnRender.length === 0 || isAlreadyOrdered) {
       return;
     }
 
-    const focusedKey = state.routes[state.index]?.key;
-    const orderedKeys = new Set(orderedRoutes.map(_route => _route.key));
+    navigation.dispatch((currentState: DrawerState) => {
+      const orderedRoutes = getOrderedRoutes(currentState.routes);
+      const focusedKey = currentState.routes[currentState.index]?.key;
+      const orderedKeys = new Set(orderedRoutes.map(_route => _route.key));
 
-    navigation.dispatch(
-      CommonActions.reset({
-        ...state,
+      return CommonActions.reset({
+        ...currentState,
         routes: orderedRoutes,
         index: Math.max(
           orderedRoutes.findIndex(_route => _route.key === focusedKey),
           0,
         ),
-        history: state.history?.filter(
+        history: currentState.history?.filter(
           _entry => _entry.type !== 'route' || orderedKeys.has(_entry.key),
         ),
-      }),
-    );
-  }, [navigation, orderedMenuKeys, state]);
+      });
+    });
+  }, [navigation, orderedMenuKeys, state.routes]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
