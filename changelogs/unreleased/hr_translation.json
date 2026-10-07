@@ -1,0 +1,5 @@
+{
+  "title": "Leave Request: Rename \"Missing quantity\" to \"Quantity to be filled\" to make it easier to understand",
+  "type": "fix",
+  "packages": "hr"
+}

@@ -199,7 +199,7 @@ const CompleteRequestScreen = ({}) => {
         {missingQty !== 0 && (
           <Label
             style={styles.label}
-            message={`${I18n.t(missingQty > 0 ? 'Hr_MissingQuantity' : 'Hr_ExceedingQuantity')} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
+            message={`${I18n.t(missingQty > 0 ? 'Hr_NeededQuantity' : 'Hr_ExceedingQuantity')} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
             type="error"
           />
         )}

@@ -100,7 +100,7 @@
   "Hr_LeaveReason": "Leave reason",
   "Hr_Quantity": "Quantity",
   "Hr_AvailableQty": "Available quantity : {{availableQty}}",
-  "Hr_MissingQuantity": "Missing quantity",
+  "Hr_NeededQuantity": "Quantity to be filled",
   "Hr_ExceedingQuantity": "Exceeding quantity",
   "Hr_ReturnToDraftStatus": "Return to draft status",
   "Hr_InvalidHalfDaySelection": "For a single-day leave, the 'endOn' value must be greater than the 'startOn' value.",
