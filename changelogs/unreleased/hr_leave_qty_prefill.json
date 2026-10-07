@@ -1,0 +1,5 @@
+{
+  "title": "Leave Request: prefill the quantity with the minimum between the available quantity and the quantity to be filled when selecting a leave reason",
+  "type": "fix",
+  "packages": "hr"
+}
