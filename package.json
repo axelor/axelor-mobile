@@ -131,6 +131,8 @@
   },
   "reanimated": {
     "staticFeatureFlags": {
+      "USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": false,
+      "FORCE_REACT_RENDER_FOR_SETTLED_ANIMATIONS": false,
       "USE_SYNCHRONIZABLE_FOR_MUTABLES": false
     }
   }
