@@ -228,6 +228,7 @@ const CompleteRequestScreen = ({}) => {
             cancelLeave={handleReset}
             newLine={newLine}
             toDate={toDate as any}
+            missingQty={missingQty}
           />
         )}
         {newLine && (

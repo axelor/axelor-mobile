@@ -27,6 +27,7 @@ interface CompleteRequestQuantityCardProps {
   cancelLeave: () => void;
   newLine: any;
   toDate: string;
+  missingQty: number;
 }
 
 const CompleteRequestQuantityCard = ({
@@ -35,6 +36,7 @@ const CompleteRequestQuantityCard = ({
   cancelLeave,
   newLine,
   toDate,
+  missingQty,
 }: CompleteRequestQuantityCardProps) => {
   const I18n = useTranslator();
   const {LeaveReason} = useTypes();
@@ -58,10 +60,23 @@ const CompleteRequestQuantityCard = ({
         toDate,
         leaveReasonId: newLine.id,
       })
-        .then(setAvailableQty)
+        .then(qty => {
+          setAvailableQty(qty);
+          const isNewSelection = newLine.qty == null;
+          if (isNewSelection && qty > 0 && missingQty > 0) {
+            setLeaveQty(Math.min(qty, missingQty));
+          }
+        })
         .catch(() => setAvailableQty(0));
     }
-  }, [formatNumber, isExceptionalLeave, newLine.id, toDate]);
+  }, [
+    isExceptionalLeave,
+    missingQty,
+    newLine.id,
+    newLine.qty,
+    setLeaveQty,
+    toDate,
+  ]);
 
   return (
     <QuantityCard
