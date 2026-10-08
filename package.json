@@ -47,35 +47,35 @@
     "@axelor/aos-mobile-team": "9.2.0",
     "@axelor/aos-mobile-ui": "9.2.0",
     "@react-native-clipboard/clipboard": "1.16.3",
-    "@react-native-community/slider": "5.1.2",
+    "@react-native-community/slider": "5.2.1",
     "@react-native-documents/picker": "12.0.2",
     "bootstrap-icons": "1.13.1",
     "react": "19.2.3",
-    "react-native": "0.85.3",
-    "react-native-blob-util": "0.24.6",
-    "react-native-contacts": "8.0.7",
+    "react-native": "0.86.3",
+    "react-native-blob-util": "0.24.12",
+    "react-native-contacts": "8.0.10",
     "react-native-datawedge-intents": "^0.1.8",
     "react-native-date-picker": "5.0.13",
-    "react-native-device-info": "15.0.1",
+    "react-native-device-info": "15.0.2",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
-    "react-native-gesture-handler": "3.0.1",
-    "react-native-gifted-charts": "1.4.70",
+    "react-native-gesture-handler": "3.3.0",
+    "react-native-gifted-charts": "1.4.81",
     "react-native-linear-gradient": "2.8.3",
     "react-native-mmkv": "3.3.3",
     "react-native-orientation-director": "3.0.2",
     "react-native-pell-rich-editor": "1.10.0",
-    "react-native-reanimated": "4.4.1",
-    "react-native-safe-area-context": "5.6.2",
+    "react-native-reanimated": "4.7.1",
+    "react-native-safe-area-context": "5.10.1",
     "react-native-screens": "4.28.0",
-    "react-native-share": "12.2.1",
+    "react-native-share": "12.3.1",
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-svg": "15.15.5",
     "react-native-system-navigation-bar": "2.8.0",
-    "react-native-toast-message": "2.3.3",
-    "react-native-vision-camera": "4.7.2",
-    "react-native-webview": "13.16.0",
-    "react-native-worklets": "0.9.2"
+    "react-native-toast-message": "2.5.2",
+    "react-native-vision-camera": "4.7.3",
+    "react-native-webview": "13.17.0",
+    "react-native-worklets": "0.13.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -86,11 +86,11 @@
     "@react-native-community/cli": "20.1.0",
     "@react-native-community/cli-platform-android": "20.1.0",
     "@react-native-community/cli-platform-ios": "20.1.0",
-    "@react-native/babel-preset": "0.85.3",
-    "@react-native/eslint-config": "0.85.3",
-    "@react-native/jest-preset": "0.85.3",
-    "@react-native/metro-config": "0.85.3",
-    "@react-native/typescript-config": "0.85.3",
+    "@react-native/babel-preset": "0.86.3",
+    "@react-native/eslint-config": "0.86.3",
+    "@react-native/jest-preset": "0.86.3",
+    "@react-native/metro-config": "0.86.3",
+    "@react-native/typescript-config": "0.86.3",
     "@storybook/addon-essentials": "7.6.20",
     "@storybook/addon-react-native-web": "0.0.29",
     "@storybook/builder-webpack5": "7.6.20",
@@ -125,7 +125,7 @@
     "@types/react": "^19.2.0",
     "cheerio": "1.0.0-rc.12",
     "react-native-is-edge-to-edge": "1.1.7",
-    "react-native-safe-area-context": "5.6.2"
+    "react-native-safe-area-context": "5.10.1"
   },
   "engines": {
     "node": ">= 22.11.0"
@@ -133,8 +133,7 @@
   "reanimated": {
     "staticFeatureFlags": {
       "USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": false,
-      "FORCE_REACT_RENDER_FOR_SETTLED_ANIMATIONS": false,
-      "USE_SYNCHRONIZABLE_FOR_MUTABLES": false
+      "FORCE_REACT_RENDER_FOR_SETTLED_ANIMATIONS": false
     }
   }
 }
