@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useRef} from 'react';
-import {FlatList, StyleSheet, View, ViewToken} from 'react-native';
+import {FlatList, ListViewToken, StyleSheet, View} from 'react-native';
 import {
   buildMonthLayout,
   CalendarMonth,
@@ -90,11 +90,11 @@ const MonthList = ({
 
   const keyExtractor = useCallback((item: CalendarMonth) => item.key, []);
 
-  const emitVisibleMonth = useRef<((items: ViewToken[]) => void) | undefined>(
-    undefined,
-  );
+  const emitVisibleMonth = useRef<
+    ((items: ListViewToken[]) => void) | undefined
+  >(undefined);
 
-  emitVisibleMonth.current = (viewableItems: ViewToken[]) => {
+  emitVisibleMonth.current = (viewableItems: ListViewToken[]) => {
     const monthKey = (viewableItems[0]?.item as CalendarMonth)?.monthKey;
 
     if (monthKey != null && monthKey !== visibleMonthKey) {
@@ -105,8 +105,11 @@ const MonthList = ({
   const viewabilityConfigCallbackPairs = useRef([
     {
       viewabilityConfig,
-      onViewableItemsChanged: ({viewableItems}: {viewableItems: ViewToken[]}) =>
-        emitVisibleMonth.current?.(viewableItems),
+      onViewableItemsChanged: ({
+        viewableItems,
+      }: {
+        viewableItems: ListViewToken[];
+      }) => emitVisibleMonth.current?.(viewableItems),
     },
   ]);
 

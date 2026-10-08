@@ -17,14 +17,19 @@
  */
 
 import React, {Ref, useCallback, useMemo, useState} from 'react';
-import {KeyboardTypeOptions, StyleSheet, TextInput, View} from 'react-native';
+import {
+  KeyboardTypeOptions,
+  StyleSheet,
+  TextInputInstance,
+  View,
+} from 'react-native';
 import {checkNullString, getCommonStyles} from '../../../utils';
 import {useThemeColor} from '../../../theme';
 import {Input, VerticalRule} from '../../atoms';
 
 interface IconInputProps {
   style?: any;
-  inputRef?: Ref<TextInput>;
+  inputRef?: Ref<TextInputInstance>;
   value?: string;
   onChange?: (_v?: string) => void;
   placeholder?: string;
