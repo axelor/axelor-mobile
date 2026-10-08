@@ -85,7 +85,7 @@ const GanttCellStrip = ({
 
 const styles = StyleSheet.create({
   full: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
 });
 

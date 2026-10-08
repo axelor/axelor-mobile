@@ -18,7 +18,7 @@
 /* eslint-disable no-undef */
 
 import 'react-native-gesture-handler/jestSetup';
-import 'react-native/jest/setup';
+import '@react-native/jest-preset/jest/setup';
 
 jest.useFakeTimers();
 

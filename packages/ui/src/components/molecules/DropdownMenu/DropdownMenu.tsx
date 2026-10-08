@@ -141,7 +141,7 @@ const DropdownMenu = ({
 
 const styles = StyleSheet.create({
   backdrop: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
   anchor: {
     position: 'absolute',
