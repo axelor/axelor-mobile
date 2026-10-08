@@ -145,13 +145,15 @@ const BottomBar = ({
 
   const renderItem = useCallback(
     (item: BottomBarItem) => {
+      const {key, ...itemProps} = item;
+
       return (
         <View
-          key={item.key}
-          onLayout={event => onItemLayout(event, item.key)}
+          key={key}
+          onLayout={event => onItemLayout(event, key)}
           testID={`bar-item-${(item as any).testID}`}>
           <BarItem
-            {...item}
+            {...itemProps}
             title={manageActiveTitle ? undefined : item.title}
             size={itemSize}
             onPress={() => handleItemPress(item)}
