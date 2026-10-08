@@ -17,7 +17,7 @@
  */
 
 import {useEffect, useRef, useState} from 'react';
-import {Animated, PanResponder} from 'react-native';
+import {Animated, PanResponder, PanResponderInstance} from 'react-native';
 
 const ANIMATION_DURATION = 250;
 const DRAG_VELOCITY = 0.5;
@@ -29,11 +29,17 @@ interface MonthPanelDragProps {
   onToggle: () => void;
 }
 
+interface MonthPanelDrag {
+  progress: Animated.Value;
+  isDragging: boolean;
+  panHandlers: PanResponderInstance['panHandlers'];
+}
+
 export const useMonthPanelDrag = ({
   isExpanded,
   travel,
   onToggle,
-}: MonthPanelDragProps) => {
+}: MonthPanelDragProps): MonthPanelDrag => {
   const progress = useRef(new Animated.Value(isExpanded ? 1 : 0)).current;
   const [isDragging, setIsDragging] = useState(false);
 

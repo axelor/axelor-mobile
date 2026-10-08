@@ -24,7 +24,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, TextInputInstance, View} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {checkNullString, getCommonStyles} from '../../../utils';
 import {Icon, Input} from '../../atoms';
@@ -107,7 +107,7 @@ export const INPUT_CHANGE_TYPE = {
 interface NumberChevronInputProps {
   style?: any;
   inputStyle?: any;
-  inputRef?: Ref<TextInput>;
+  inputRef?: Ref<TextInputInstance>;
   defaultValue?: number;
   stepSize?: number;
   minValue?: number;
@@ -135,7 +135,7 @@ const NumberChevronInput = ({
 }: NumberChevronInputProps) => {
   const Colors = useThemeColor();
 
-  const defaultInputRef = useRef<TextInput>(null);
+  const defaultInputRef = useRef<TextInputInstance>(null);
   const _inputRef = inputRef ?? defaultInputRef;
 
   const [inputValue, setInputValue] = useState(defaultValue);

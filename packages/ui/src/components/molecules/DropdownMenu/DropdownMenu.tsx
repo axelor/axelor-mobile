@@ -29,6 +29,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  ViewInstance,
 } from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
@@ -60,7 +61,7 @@ const DropdownMenu = ({
   const [visible, setVisible] = useState(false);
   const [anchor, setAnchor] = useState<Anchor | null>(null);
 
-  const wrapperRef = useRef<View>(null);
+  const wrapperRef = useRef<ViewInstance>(null);
 
   const closeMenu = useCallback(() => {
     setVisible(false);

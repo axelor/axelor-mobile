@@ -21,6 +21,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
+  ScrollViewInstance,
   StyleSheet,
   View,
 } from 'react-native';
@@ -53,7 +54,7 @@ const BottomBar = ({
 
   const itemPositions = useRef<any>({});
   const animatedX = useSharedValue(0);
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<ScrollViewInstance>(null);
   const viewportWidthRef = useRef<number>(0);
   const contentWidthRef = useRef<number>(0);
   const offsetRef = useRef<number>(0);

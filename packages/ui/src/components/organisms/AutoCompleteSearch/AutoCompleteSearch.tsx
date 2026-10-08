@@ -17,7 +17,7 @@
  */
 
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
-import {Platform, StyleSheet, TextInput, View} from 'react-native';
+import {Platform, StyleSheet, TextInputInstance, View} from 'react-native';
 import {useOutsideClickHandler} from '../../../hooks';
 import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
@@ -100,7 +100,7 @@ const AutoCompleteSearch = ({
   );
   let timeOutRequestCall = useRef<number>(null);
   let intervalRequestCall = useRef<number>(null);
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<TextInputInstance>(null);
 
   const wrapperRef = useRef(null);
   const selectionWrapperRef = useRef(null);

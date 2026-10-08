@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {FlatList, StyleSheet, View, ViewToken} from 'react-native';
+import {FlatList, ListViewToken, StyleSheet, View} from 'react-native';
 import {
   buildMonths,
   DEFAULT_FIRST_DAY_OF_WEEK,
@@ -228,11 +228,11 @@ const AgendaView = ({
 
   const keyExtractor = useCallback((item: AgendaDay) => item.dateString, []);
 
-  const emitVisibleDay = useRef<((items: ViewToken[]) => void) | undefined>(
+  const emitVisibleDay = useRef<((items: ListViewToken[]) => void) | undefined>(
     undefined,
   );
 
-  emitVisibleDay.current = (viewableItems: ViewToken[]) => {
+  emitVisibleDay.current = (viewableItems: ListViewToken[]) => {
     const dateString = (viewableItems[0]?.item as AgendaDay)?.dateString;
 
     if (dateString == null || dateString === visibleDate) return;
@@ -247,8 +247,11 @@ const AgendaView = ({
   const viewabilityConfigCallbackPairs = useRef([
     {
       viewabilityConfig,
-      onViewableItemsChanged: ({viewableItems}: {viewableItems: ViewToken[]}) =>
-        emitVisibleDay.current?.(viewableItems),
+      onViewableItemsChanged: ({
+        viewableItems,
+      }: {
+        viewableItems: ListViewToken[];
+      }) => emitVisibleDay.current?.(viewableItems),
     },
   ]);
 
