@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: Dimensions.get('window').height - SAFE_AREA_PADDING.paddingBottom * 2,
     left: Dimensions.get('window').width / 2 - SAFE_AREA_PADDING.paddingLeft,
-    zIndex: 850,
+    zIndex: 950,
   },
   flexOne: {
     flex: 1,

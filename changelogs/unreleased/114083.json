@@ -1,0 +1,6 @@
+{
+  "title": "Application: upgrade to React Native 0.84",
+  "type": "refactor",
+  "packages": "core",
+  "description": "The application now runs on React Native 0.84.1 with Reanimated 4.4.1, Worklets 0.9.2 and Gesture Handler 3.0.1, and requires Node 22.11 or later. With Reanimated 4.4.1, the side menu could randomly stay open on Android and stop closing when selecting an entry or tapping outside of it. Applications built from these packages must disable the corresponding Reanimated options by adding the following block to the root package.json, then rebuild the native application (and run pod install on iOS): \"reanimated\": {\"staticFeatureFlags\": {\"USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS\": false, \"FORCE_REACT_RENDER_FOR_SETTLED_ANIMATIONS\": false, \"USE_SYNCHRONIZABLE_FOR_MUTABLES\": false}}"
+}

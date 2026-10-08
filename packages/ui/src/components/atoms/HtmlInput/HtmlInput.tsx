@@ -143,6 +143,7 @@ const HtmlInput = ({
       </ScrollView>
       {!readonly && editorAttached && (
         <RichToolbar
+          key={key}
           style={styleToolbar}
           editor={editor}
           iconSize={toolbarIconSize}

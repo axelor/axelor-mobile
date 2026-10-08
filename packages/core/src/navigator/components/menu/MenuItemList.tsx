@@ -43,7 +43,7 @@ const MenuItemList = ({
   onItemClick,
   disabled,
 }: MenuItemListProps) => {
-  const generateSubRoutes = menuItem => {
+  const generateSubRoutes = (menuItem: any) => {
     if (hasSubMenus(menuItem)) {
       const {subMenus} = menuItem;
       return state.routes.filter(subRoute => subRoute.name in subMenus);
@@ -53,16 +53,14 @@ const MenuItemList = ({
 
   const moduleEntries = useMemo(() => {
     return state.routes
-      .filter(_route => activeModule.menus[_route.name] != null)
-      .map(route => ({...activeModule.menus[route.name], key: route.name}))
+      .filter(_route => activeModule.menus?.[_route.name] != null)
+      .map(route => ({...activeModule.menus![route.name], key: route.name}))
       .map((item, index) => {
-        if (item.order != null) {
-          return item;
-        }
+        if (item.order != null) return item;
 
         return {...item, order: index * 10};
       })
-      .sort((a, b) => a.order - b.order);
+      .sort((a, b) => a.order! - b.order!);
   }, [activeModule, state.routes]);
 
   return moduleEntries.map(menuItem => {
@@ -72,12 +70,11 @@ const MenuItemList = ({
     );
 
     const focused =
-      i === state.index && Object.keys(activeModule.menus).includes(route.name);
+      i === state.index &&
+      Object.keys(activeModule?.menus ?? {}).includes(route!.name);
 
     const onPress = (_route: Route) => {
-      if (_route == null) {
-        return null;
-      }
+      if (_route == null) return null;
 
       onItemClick();
 
@@ -88,10 +85,15 @@ const MenuItemList = ({
       } as any);
 
       if (!event.defaultPrevented) {
+        if (!focused) {
+          navigation.dispatch({
+            ...CommonActions.navigate(_route.name, undefined, {merge: true}),
+            target: state.key,
+          });
+        }
+
         navigation.dispatch({
-          ...(focused
-            ? DrawerActions.closeDrawer()
-            : CommonActions.navigate({name: _route.name, merge: true})),
+          ...DrawerActions.closeDrawer(),
           target: state.key,
         });
       }
@@ -101,9 +103,9 @@ const MenuItemList = ({
 
     return (
       <MenuItem
-        key={route.key}
+        key={route!.key}
         state={state}
-        route={route}
+        route={route!}
         menuItem={menuItem}
         subRoutes={subRoutes}
         onPress={onPress}

@@ -24,8 +24,8 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import {GestureHandlerRootView, RectButton} from 'react-native-gesture-handler';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {GestureHandlerRootView, Touchable} from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import {
   useThemeColor,
   Card,
@@ -108,15 +108,13 @@ const SessionCard = ({
   }, [handleRemove, scaleAnim, session, translateXAnim, translateYAnim]);
 
   const renderActionButton = (
-    trans: any,
     iconName: string,
     color: string,
     onPress: () => void,
   ) => {
     return (
-      <Animated.View
-        style={[styles.actionView, {transform: [{translateX: trans}]}]}>
-        <RectButton onPress={onPress}>
+      <View style={styles.actionView}>
+        <Touchable onPress={onPress}>
           <View
             style={[
               styles.action,
@@ -124,27 +122,20 @@ const SessionCard = ({
             ]}>
             <Icon name={iconName} color={color} size={18} />
           </View>
-        </RectButton>
-      </Animated.View>
+        </Touchable>
+      </View>
     );
   };
 
-  const renderRightActions = (_: any, dragX: any) => {
-    const trans = dragX.interpolate({
-      inputRange: [0, 100],
-      outputRange: [0, 1],
-    });
-
+  const renderRightActions = () => {
     return (
       <View style={styles.actionsContainer}>
         {renderActionButton(
-          trans,
           'pencil-fill',
           Colors.primaryColor.background,
           handleEdition,
         )}
         {renderActionButton(
-          trans,
           'trash3-fill',
           Colors.errorColor.background,
           animateRemoval,

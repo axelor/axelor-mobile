@@ -63,31 +63,62 @@ const DrawerContent = ({
   const I18n = useTranslator();
   const {isOutdated} = useOutdatedVersion(versionCheckConfig);
 
-  useEffect(() => {
-    navigation.dispatch(_state =>
-      CommonActions.reset({
-        ..._state,
-        routes: modules
-          ?.filter(_module => _module.menus)
-          ?.flatMap(_module => {
-            const result = [];
+  const orderedMenuKeys = useMemo(
+    () =>
+      modules
+        ?.filter(_module => _module.menus)
+        ?.flatMap(_module => {
+          const result = [];
 
-            for (const [key, menu] of Object.entries(_module.menus ?? {})) {
-              result.push(key);
+          for (const [key, menu] of Object.entries(_module.menus ?? {})) {
+            result.push(key);
 
-              if (hasSubMenus(menu)) {
-                result.push(
-                  ...Object.keys((menu as MenuWithSubMenus).subMenus),
-                );
-              }
+            if (hasSubMenus(menu)) {
+              result.push(...Object.keys((menu as MenuWithSubMenus).subMenus));
             }
+          }
 
-            return result;
-          })
-          .map(_key => _state.routes.find(_item => _item.name === _key)) as any,
-      }),
-    );
-  }, [modules, navigation]);
+          return result;
+        }) ?? [],
+    [modules],
+  );
+
+  useEffect(() => {
+    const getOrderedRoutes = (routes: DrawerState['routes']) =>
+      orderedMenuKeys
+        .map(_key => routes.find(_route => _route.name === _key))
+        .filter(_route => _route != null);
+
+    const orderedRoutesOnRender = getOrderedRoutes(state.routes);
+
+    const isAlreadyOrdered =
+      orderedRoutesOnRender.length === state.routes.length &&
+      orderedRoutesOnRender.every((_route, _index) => {
+        return _route.key === state.routes[_index].key;
+      });
+
+    if (orderedRoutesOnRender.length === 0 || isAlreadyOrdered) {
+      return;
+    }
+
+    navigation.dispatch((currentState: DrawerState) => {
+      const orderedRoutes = getOrderedRoutes(currentState.routes);
+      const focusedKey = currentState.routes[currentState.index]?.key;
+      const orderedKeys = new Set(orderedRoutes.map(_route => _route.key));
+
+      return CommonActions.reset({
+        ...currentState,
+        routes: orderedRoutes,
+        index: Math.max(
+          orderedRoutes.findIndex(_route => _route.key === focusedKey),
+          0,
+        ),
+        history: currentState.history?.filter(
+          _entry => _entry.type !== 'route' || orderedKeys.has(_entry.key),
+        ),
+      });
+    });
+  }, [navigation, orderedMenuKeys, state.routes]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
@@ -95,8 +126,8 @@ const DrawerContent = ({
   const [innerMenuDisabled, setInnerMenuDisabled] = useState<boolean>(false);
 
   const innerMenuIsVisible = useMemo(
-    () => !innerMenuDisabled && activeModule.name !== authModule.name,
-    [activeModule.name, innerMenuDisabled],
+    () => !innerMenuDisabled && activeModule?.name !== authModule.name,
+    [activeModule?.name, innerMenuDisabled],
   );
 
   const drawerModules = useMemo(
@@ -166,7 +197,7 @@ const DrawerContent = ({
 
     const focused =
       state.routes.indexOf(route) === state.index &&
-      Object.keys(activeModule.menus ?? {}).includes(route.name);
+      Object.keys(activeModule?.menus ?? {}).includes(route.name);
 
     const event: any = navigation.emit({
       type: 'drawerItemPress' as never,
@@ -176,10 +207,15 @@ const DrawerContent = ({
     });
 
     if (!event.defaultPrevented) {
+      if (!focused) {
+        navigation.dispatch({
+          ...CommonActions.navigate(route.name, undefined, {merge: true}),
+          target: state.key,
+        });
+      }
+
       navigation.dispatch({
-        ...(focused
-          ? DrawerActions.closeDrawer()
-          : CommonActions.navigate({name: route.name, merge: true})),
+        ...DrawerActions.closeDrawer(),
         target: state.key,
       });
     }
@@ -230,7 +266,7 @@ const DrawerContent = ({
           style={[styles.secondaryMenusContainer, {left: innerMenuPosition}]}>
           <Menu
             activeModule={
-              externalMenuIsVisible ? activeModule : drawerModules[0]
+              externalMenuIsVisible ? activeModule! : drawerModules[0]
             }
             state={state}
             navigation={navigation}
