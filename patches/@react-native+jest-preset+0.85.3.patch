@@ -1,0 +1,12 @@
+diff --git a/node_modules/@react-native/jest-preset/jest/mocks/Modal.js b/node_modules/@react-native/jest-preset/jest/mocks/Modal.js
+index d8514d2..bd40214 100644
+--- a/node_modules/@react-native/jest-preset/jest/mocks/Modal.js
++++ b/node_modules/@react-native/jest-preset/jest/mocks/Modal.js
+@@ -8,6 +8,7 @@
+  * @format
+  */
+ 
++import React from 'react';
+ import typeof * as TmockComponent from '../mockComponent';
+ import type {ModalProps} from 'react-native/Libraries/Modal/Modal';
+ 
