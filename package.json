@@ -118,7 +118,6 @@
     "react-test-renderer": "19.2.3",
     "storybook": "7.6.17",
     "text-encoding": "^0.7.0",
-    "ts-jest": "^29.1.4",
     "typescript": "5.9.3"
   },
   "resolutions": {
