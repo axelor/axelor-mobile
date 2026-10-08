@@ -86,6 +86,59 @@ index 0ab796f..5f21b4c 100644
    /** Color of the android modal buttons */
    buttonColor?: string
  }
+diff --git a/node_modules/react-native-date-picker/ios/DatePicker.m b/node_modules/react-native-date-picker/ios/DatePicker.m
+index e747f3f..b5d891c 100644
+--- a/node_modules/react-native-date-picker/ios/DatePicker.m
++++ b/node_modules/react-native-date-picker/ios/DatePicker.m
+@@ -4,13 +4,13 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  */
+-#import "RCTComponent.h"
++#import <React/RCTComponent.h>
+ #import "DatePicker.h"
+ 
+-#import "RCTUtils.h"
+-#import "UIView+React.h"
+-#import "RCTConvert.h"
+-#import "RCTView.h"
++#import <React/RCTUtils.h>
++#import <React/UIView+React.h>
++#import <React/RCTConvert.h>
++#import <React/RCTView.h>
+ 
+ @interface DatePicker ()
+ 
+diff --git a/node_modules/react-native-date-picker/ios/RNDatePicker.mm b/node_modules/react-native-date-picker/ios/RNDatePicker.mm
+index 7ec2dd2..64e46d2 100644
+--- a/node_modules/react-native-date-picker/ios/RNDatePicker.mm
++++ b/node_modules/react-native-date-picker/ios/RNDatePicker.mm
+@@ -1,20 +1,20 @@
+ #import "RNDatePicker.h"
+ 
+ #ifdef RCT_NEW_ARCH_ENABLED
+-#import "RCTConvert.h"
++#import <React/RCTConvert.h>
+ #import <React/RCTConversions.h>
+ #import <react/renderer/components/RNDatePickerSpecs/ComponentDescriptors.h>
+ #import <react/renderer/components/RNDatePickerSpecs/EventEmitters.h>
+ #import <react/renderer/components/RNDatePickerSpecs/Props.h>
+ #import <react/renderer/components/RNDatePickerSpecs/RCTComponentViewHelpers.h>
+-#import "RCTFabricComponentsPlugins.h"
++#import <React/RCTFabricComponentsPlugins.h>
+ 
+ using namespace facebook::react;
+ 
+ #else
+-#import "RCTUtils.h"
+-#import "UIView+React.h"
+-#import "RCTComponent.h"
++#import <React/RCTUtils.h>
++#import <React/UIView+React.h>
++#import <React/RCTComponent.h>
+ #endif
+ 
+ 
 diff --git a/node_modules/react-native-date-picker/ios/RNDatePickerManager.h b/node_modules/react-native-date-picker/ios/RNDatePickerManager.h
 index 6a4f206..b6de05c 100644
 --- a/node_modules/react-native-date-picker/ios/RNDatePickerManager.h
@@ -106,10 +159,19 @@ index 6a4f206..b6de05c 100644
  @property (strong, nonatomic) UIViewController *topViewController;
  
 diff --git a/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm b/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm
-index da42873..77700f7 100644
+index da42873..2f3d897 100644
 --- a/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm
 +++ b/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm
-@@ -234,6 +234,22 @@ RCT_EXPORT_METHOD(closePicker)
+@@ -3,7 +3,7 @@
+ #import <React/RCTViewManager.h>
+ 
+ #import "RNDatePickerManager.h"
+-#import "RCTConvert.h"
++#import <React/RCTConvert.h>
+ #import "DatePicker.h"
+ #import "RNDatePicker.h"
+ 
+@@ -234,6 +234,22 @@ - (double) getPickerHeight :(UIView *) alertView
      return 216;
  }
  
