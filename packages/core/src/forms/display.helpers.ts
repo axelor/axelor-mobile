@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {KeyboardType, Platform} from 'react-native';
+import {KeyboardTypeOptions, Platform} from 'react-native';
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {
   DEFAULT_COLSPAN,
@@ -344,7 +344,7 @@ export const getWidget = (_field: DisplayField): Widget => {
   return 'default';
 };
 
-export const getKeyboardType = (_field: DisplayField): KeyboardType => {
+export const getKeyboardType = (_field: DisplayField): KeyboardTypeOptions => {
   switch (_field.type) {
     case 'number':
       if (

@@ -22,6 +22,7 @@ import {
   NativeSyntheticEvent,
   TextInput,
   TextInputContentSizeChangeEvent,
+  TextInputInstance,
   TextStyle,
 } from 'react-native';
 import {checkNullString, INPUT_MIN_HEIGHT} from '../../../utils';
@@ -31,7 +32,7 @@ import {Keyboard} from '../../../types';
 
 interface InputProps {
   style?: any;
-  inputRef?: Ref<TextInput>;
+  inputRef?: Ref<TextInputInstance>;
   value?: string;
   onChange?: (_v?: string) => void;
   placeholder?: string;

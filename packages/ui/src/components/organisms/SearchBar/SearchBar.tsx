@@ -17,7 +17,7 @@
  */
 
 import React, {Ref} from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, TextInputInstance, View} from 'react-native';
 import {checkNullString} from '../../../utils';
 import {useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
@@ -26,7 +26,7 @@ import {FormInput, IconInput} from '../../molecules';
 interface SearchBarProps {
   title?: string;
   style?: any;
-  inputRef?: Ref<TextInput>;
+  inputRef?: Ref<TextInputInstance>;
   valueTxt: string;
   placeholder: string;
   required?: boolean;

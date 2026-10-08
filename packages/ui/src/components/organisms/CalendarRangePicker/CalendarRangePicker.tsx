@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {FlatList, StyleSheet, View, ViewToken} from 'react-native';
+import {FlatList, ListViewToken, StyleSheet, View} from 'react-native';
 import {Color} from '../../../theme';
 import {
   buildMonthLayout,
@@ -239,11 +239,11 @@ const CalendarRangePicker = ({
 
   useEffect(() => () => clearTimeout(emitTimeout.current), []);
 
-  const emitVisibleRange = useRef<((items: ViewToken[]) => void) | undefined>(
-    undefined,
-  );
+  const emitVisibleRange = useRef<
+    ((items: ListViewToken[]) => void) | undefined
+  >(undefined);
 
-  emitVisibleRange.current = (viewableItems: ViewToken[]) => {
+  emitVisibleRange.current = (viewableItems: ListViewToken[]) => {
     if (onVisibleRangeChange == null || viewableItems.length === 0) return;
 
     const indexes = viewableItems
@@ -276,8 +276,11 @@ const CalendarRangePicker = ({
   const viewabilityConfigCallbackPairs = useRef([
     {
       viewabilityConfig,
-      onViewableItemsChanged: ({viewableItems}: {viewableItems: ViewToken[]}) =>
-        emitVisibleRange.current?.(viewableItems),
+      onViewableItemsChanged: ({
+        viewableItems,
+      }: {
+        viewableItems: ListViewToken[];
+      }) => emitVisibleRange.current?.(viewableItems),
     },
   ]);
 

@@ -25,6 +25,7 @@ import {
   NativeSyntheticEvent,
   RefreshControl,
   ScrollView,
+  ScrollViewInstance,
   StyleSheet,
   View,
 } from 'react-native';
@@ -186,7 +187,7 @@ const GanttView = ({
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollOffset = useRef(0);
   const scaleTranslateX = useRef(Animated.multiply(scrollX, -1)).current;
-  const lanesScroll = useRef<ScrollView>(null);
+  const lanesScroll = useRef<ScrollViewInstance>(null);
 
   const getOffsetForDate = useCallback(
     (dateString: string): number | undefined =>

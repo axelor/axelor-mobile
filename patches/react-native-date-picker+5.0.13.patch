@@ -1,31 +1,16 @@
-diff --git a/node_modules/react-native-date-picker/index.d.ts b/node_modules/react-native-date-picker/index.d.ts
-index 0ab796f..369b024 100644
---- a/node_modules/react-native-date-picker/index.d.ts
-+++ b/node_modules/react-native-date-picker/index.d.ts
-@@ -98,6 +98,9 @@ export interface DatePickerProps extends ViewProps {
-   /** Color of the divider on Android */
-   dividerColor?: string
- 
-+  /** Color of the date picker text */
-+  textColor?: string
-+
-   /** Color of the android modal buttons */
-   buttonColor?: string
+diff --git a/node_modules/react-native-date-picker/android/build.gradle b/node_modules/react-native-date-picker/android/build.gradle
+index b2803c4..ea10692 100644
+--- a/node_modules/react-native-date-picker/android/build.gradle
++++ b/node_modules/react-native-date-picker/android/build.gradle
+@@ -51,7 +51,7 @@ android {
+     buildTypes {
+         release {
+             minifyEnabled false
+-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
++            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+         }
+     }
  }
-diff --git a/node_modules/react-native-date-picker/src/index.js b/node_modules/react-native-date-picker/src/index.js
-index 90673e9..9207fd9 100644
---- a/node_modules/react-native-date-picker/src/index.js
-+++ b/node_modules/react-native-date-picker/src/index.js
-@@ -55,6 +55,9 @@ const getDividerColor = (props) => {
- 
- /** @param {Props} props **/
- const getTextColor = (props) => {
-+  const _textColor = props.textColor;
-+  if (_textColor != null) return _textColor;
-+  
-   const theme = getTheme(props)
-   if (theme === 'dark') return 'white'
-   if (theme === 'light') return 'black'
 diff --git a/node_modules/react-native-date-picker/android/src/main/java/com/henninghall/date_picker/DatePickerModuleImpl.java b/node_modules/react-native-date-picker/android/src/main/java/com/henninghall/date_picker/DatePickerModuleImpl.java
 index b8a2a80..736a20c 100644
 --- a/node_modules/react-native-date-picker/android/src/main/java/com/henninghall/date_picker/DatePickerModuleImpl.java
@@ -87,6 +72,20 @@ index 0fce9a7..d56b203 100644
      }
  
      @Override
+diff --git a/node_modules/react-native-date-picker/index.d.ts b/node_modules/react-native-date-picker/index.d.ts
+index 0ab796f..5f21b4c 100644
+--- a/node_modules/react-native-date-picker/index.d.ts
++++ b/node_modules/react-native-date-picker/index.d.ts
+@@ -98,6 +98,9 @@ export interface DatePickerProps extends ViewProps {
+   /** Color of the divider on Android */
+   dividerColor?: string
+ 
++  /** Color of the date picker text */
++  textColor?: string
++
+   /** Color of the android modal buttons */
+   buttonColor?: string
+ }
 diff --git a/node_modules/react-native-date-picker/ios/RNDatePickerManager.h b/node_modules/react-native-date-picker/ios/RNDatePickerManager.h
 index 6a4f206..b6de05c 100644
 --- a/node_modules/react-native-date-picker/ios/RNDatePickerManager.h
@@ -110,7 +109,7 @@ diff --git a/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm b/
 index da42873..77700f7 100644
 --- a/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm
 +++ b/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm
-@@ -234,6 +234,22 @@ - (double) getPickerHeight :(UIView *) alertView
+@@ -234,6 +234,22 @@ RCT_EXPORT_METHOD(closePicker)
      return 216;
  }
  
@@ -182,6 +181,20 @@ index 1633d7a..742c255 100644
    removeListeners(type: Double): void
    addListener(eventName: string): void
  }
+diff --git a/node_modules/react-native-date-picker/src/index.js b/node_modules/react-native-date-picker/src/index.js
+index 90673e9..9207fd9 100644
+--- a/node_modules/react-native-date-picker/src/index.js
++++ b/node_modules/react-native-date-picker/src/index.js
+@@ -55,6 +55,9 @@ const getDividerColor = (props) => {
+ 
+ /** @param {Props} props **/
+ const getTextColor = (props) => {
++  const _textColor = props.textColor;
++  if (_textColor != null) return _textColor;
++  
+   const theme = getTheme(props)
+   if (theme === 'dark') return 'white'
+   if (theme === 'light') return 'black'
 diff --git a/node_modules/react-native-date-picker/src/modal.js b/node_modules/react-native-date-picker/src/modal.js
 index fe02e33..b43747f 100644
 --- a/node_modules/react-native-date-picker/src/modal.js
