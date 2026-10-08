@@ -8,12 +8,14 @@ module.exports = {
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest',
+    'node_modules/.+\\.(ts|tsx)$': 'babel-jest',
     '^.+\\.(ts|tsx)?$': 'ts-jest',
   },
   transformIgnorePatterns: [
     'node_modules/(?!(@react-native|(jest-)?react-native|react-native-safe-area-context|react-native-toast-message|react-native-gesture-handler|react-clone-referenced-element|@react-native-community|rollbar-react-native|@react-native|@react-navigation|react-native-drawer-layout|react-native-pell-rich-editor|react-native-contacts|react-native-webview))/',
   ],
   moduleNameMapper: modulePackageNameMapping,
+  resolver: 'react-native-reanimated/jest/resolver',
   modulePathIgnorePatterns: ['__tests__/tools'],
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
 };

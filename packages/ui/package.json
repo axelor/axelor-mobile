@@ -30,23 +30,23 @@
     "icons:build": "npm run icons:clean && node scripts/icons-build.js"
   },
   "peerDependencies": {
-    "@react-native-community/slider": "5.1.2",
+    "@react-native-community/slider": "5.2.1",
     "bootstrap-icons": "1.13.1",
     "react": "*",
     "react-native": "*",
-    "react-native-gifted-charts": "1.4.70",
+    "react-native-gifted-charts": "1.4.81",
     "react-native-linear-gradient": "2.8.3",
     "react-native-pell-rich-editor": "1.10.0",
     "react-native-svg": "15.15.5",
     "react-native-system-navigation-bar": "2.8.0",
-    "react-native-webview": "13.16.0"
+    "react-native-webview": "13.17.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.25.0",
-    "@react-native-community/slider": "5.1.2",
-    "@react-native/babel-preset": "0.85.3",
-    "@react-native/eslint-config": "0.85.3",
-    "@react-native/typescript-config": "0.85.3",
+    "@react-native-community/slider": "5.2.1",
+    "@react-native/babel-preset": "0.86.3",
+    "@react-native/eslint-config": "0.86.3",
+    "@react-native/typescript-config": "0.86.3",
     "@svgr/core": "^6.5.1",
     "@svgr/plugin-jsx": "^6.5.1",
     "@svgr/plugin-prettier": "^6.5.1",
@@ -57,13 +57,13 @@
     "glob": "^8.1.0",
     "prettier": "^3.3.3",
     "react": "19.2.3",
-    "react-native": "0.85.3",
-    "react-native-gifted-charts": "1.4.70",
+    "react-native": "0.86.3",
+    "react-native-gifted-charts": "1.4.81",
     "react-native-linear-gradient": "2.8.3",
     "react-native-pell-rich-editor": "1.10.0",
     "react-native-svg": "15.15.5",
     "react-native-system-navigation-bar": "2.8.0",
-    "react-native-webview": "13.16.0"
+    "react-native-webview": "13.17.0"
   },
   "resolutions": {
     "@types/react": "^19.2.0"
