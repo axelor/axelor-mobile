@@ -184,7 +184,7 @@ const DateInput = ({
       setSelectedDate(defaultDate);
       setPickerIsOpen(false);
     },
-    activationCondition: pickerIsOpen,
+    activationCondition: pickerIsOpen && !popup,
   });
 
   const togglePicker = () => {
@@ -241,7 +241,10 @@ const DateInput = ({
             visible={pickerIsOpen}
             cancelButtonConfig={{
               showInHeader: true,
-              onPress: () => setPickerIsOpen(false),
+              onPress: () => {
+                setSelectedDate(defaultDate);
+                setPickerIsOpen(false);
+              },
             }}>
             <DateInputSelection
               mode={mode}
