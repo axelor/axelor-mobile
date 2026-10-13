@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {PermissionsAndroid, Platform} from 'react-native';
+import {Platform} from 'react-native';
 import Contacts from 'react-native-contacts';
 import {
   ContactData,
@@ -40,27 +40,29 @@ class ContactProvider {
               return PermissionResult.DENIED;
           }
         case 'android':
-          const _permAndroid = await PermissionsAndroid.requestMultiple([
-            PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-            PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
-          ]);
-
-          if (
-            Object.values(_permAndroid).every(
-              _perm => _perm === PermissionsAndroid.RESULTS.GRANTED,
-            )
-          ) {
-            return PermissionResult.GRANTED;
-          } else {
-            return PermissionResult.DENIED;
-          }
-
+          return PermissionResult.GRANTED;
         default:
           throw new Error('Unsupported device.');
       }
     } catch (error) {
       console.error('Error requesting contacts permission:', error);
       return PermissionResult.DENIED;
+    }
+  };
+
+  private _openContactForm = async (
+    contactData: ContactData,
+  ): Promise<string | null> => {
+    try {
+      const _contact = await Contacts.openContactForm(
+        parseContactData(contactData),
+      );
+      return _contact != null ? _contact.givenName : null;
+    } catch (error) {
+      if (Platform.OS === 'android') {
+        return contactData.firstName;
+      }
+      throw error;
     }
   };
 
@@ -84,22 +86,18 @@ class ContactProvider {
 
       switch (permissionResult) {
         case PermissionResult.GRANTED:
-          const contactAdded: boolean = await Contacts.openContactForm(
-            parseContactData(contactData),
-          ).then(_contact => {
-            if (_contact != null) {
-              this._showToast(
-                'success',
-                `Contact ${_contact.givenName} added successfully.`,
-              );
-              return true;
-            } else {
-              this._showToast('error', 'Contact addition was canceled.');
-              return false;
-            }
-          });
+          const addedContactName = await this._openContactForm(contactData);
 
-          return contactAdded;
+          if (addedContactName != null) {
+            this._showToast(
+              'success',
+              `Contact ${addedContactName} added successfully.`,
+            );
+            return true;
+          }
+
+          this._showToast('error', 'Contact addition was canceled.');
+          return false;
         case PermissionResult.DENIED:
           this._showToast('error', 'Contacts permission denied.');
           return false;

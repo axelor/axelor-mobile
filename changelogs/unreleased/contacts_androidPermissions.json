@@ -1,0 +1,6 @@
+{
+  "title": "Contacts: remove the contacts permissions on Android",
+  "type": "fix",
+  "packages": "core",
+  "description": "The READ_CONTACTS and WRITE_CONTACTS permissions are no longer declared nor requested on Android to comply with the Google Play contacts permission policy. Adding a contact still opens the native contact form, which saves the contact without requiring any permission from the application."
+}
