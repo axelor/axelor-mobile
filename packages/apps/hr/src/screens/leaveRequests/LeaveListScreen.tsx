@@ -35,7 +35,8 @@ import {
 } from '../../features/leaveSlice';
 import {Leave} from '../../types';
 
-const LeaveListScreen = ({}) => {
+const LeaveListScreen = ({route}) => {
+  const leaveIds = route?.params?.leaveIds;
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -62,13 +63,21 @@ const LeaveListScreen = ({}) => {
         (fetchLeave as any)({
           userId: user?.id,
           selectedStatus,
+          leaveIds,
           page,
           companyId: user.activeCompany?.id,
           filterDomain: activeFilter,
         }),
       );
     },
-    [activeFilter, dispatch, selectedStatus, user.activeCompany?.id, user?.id],
+    [
+      activeFilter,
+      dispatch,
+      leaveIds,
+      selectedStatus,
+      user.activeCompany?.id,
+      user?.id,
+    ],
   );
 
   const getActionParams = useCallback(
@@ -78,9 +87,10 @@ const LeaveListScreen = ({}) => {
       userId: user?.id,
       user: user,
       selectedStatus,
+      leaveIds,
       companyId: user.activeCompany?.id,
     }),
-    [selectedStatus, user],
+    [leaveIds, selectedStatus, user],
   );
 
   const sendLeaveAPI = useCallback(

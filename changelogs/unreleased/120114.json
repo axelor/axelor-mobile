@@ -1,0 +1,5 @@
+{
+  "title": "Leave Request: redirect to the created leave request, or to the list of the created leave requests when several were created, after finishing a request",
+  "type": "fix",
+  "packages": "hr"
+}
