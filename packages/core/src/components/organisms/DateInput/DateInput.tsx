@@ -183,11 +183,11 @@ const DateInput = ({
   });
 
   useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
+    if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen && !popup) {
       setSelectedDate(defaultDate);
       setPickerIsOpen(false);
     }
-  }, [clickOutside, defaultDate, pickerIsOpen]);
+  }, [clickOutside, defaultDate, pickerIsOpen, popup]);
 
   const togglePicker = () => {
     if (!readonly) {
@@ -242,7 +242,10 @@ const DateInput = ({
             visible={pickerIsOpen}
             cancelButtonConfig={{
               showInHeader: true,
-              onPress: () => setPickerIsOpen(false),
+              onPress: () => {
+                setSelectedDate(defaultDate);
+                setPickerIsOpen(false);
+              },
             }}>
             <DateInputSelection
               mode={mode}
