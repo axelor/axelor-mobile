@@ -139,7 +139,7 @@ class RequestBuilder {
     }
 
     if (provider === 'axios') {
-      axiosApiProvider.post({
+      return axiosApiProvider.post({
         url: `/ws/rest/${model}/search`,
         data: {
           data: data,
@@ -271,7 +271,7 @@ class RequestBuilder {
     }
 
     if (provider === 'axios') {
-      axiosApiProvider.post({
+      return axiosApiProvider.post({
         url: `/ws/rest/${model}/${id}/fetch`,
         data: {
           fields: getObjectFields(fieldKey),
