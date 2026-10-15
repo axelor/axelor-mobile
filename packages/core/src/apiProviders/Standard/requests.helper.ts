@@ -155,7 +155,7 @@ class RequestBuilder {
       : (getSortFields(sortKey ?? '') ?? ['id']);
 
     if (provider === 'axios') {
-      axiosApiProvider.post({
+      return axiosApiProvider.post({
         url: `/ws/rest/${model}/search`,
         data: {
           data: data,
@@ -291,7 +291,7 @@ class RequestBuilder {
       : getObjectFields(fieldKey);
 
     if (provider === 'axios') {
-      axiosApiProvider.post({
+      return axiosApiProvider.post({
         url: `/ws/rest/${model}/${id}/fetch`,
         data: {
           fields: fields,
