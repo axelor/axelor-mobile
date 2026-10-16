@@ -80,6 +80,19 @@ const LeaveListScreen = ({route}: any) => {
     [dispatch, getActionParams],
   );
 
+  const sliceFunctionData = useMemo(
+    () =>
+      mode === Leave.mode.myLeaves
+        ? {
+            userId: user?.id,
+            selectedStatus,
+            leaveIds,
+            companyId: user.activeCompany?.id,
+          }
+        : {user, companyId: user.activeCompany?.id},
+    [leaveIds, mode, selectedStatus, user],
+  );
+
   const listToDisplay = useMemo(() => {
     if (mode === Leave.mode.myLeaves) {
       return {
@@ -88,12 +101,6 @@ const LeaveListScreen = ({route}: any) => {
         moreLoading: moreLoadingMyLeave,
         isListEnd: isListEndMyLeave,
         sliceFunction: fetchLeave,
-        sliceFunctionData: {
-          userId: user?.id,
-          selectedStatus,
-          leaveIds,
-          companyId: user.activeCompany?.id,
-        },
       };
     } else {
       return {
@@ -102,10 +109,6 @@ const LeaveListScreen = ({route}: any) => {
         moreLoading: moreLoadingLeaveToValidate,
         isListEnd: isListEndLeaveToValidate,
         sliceFunction: fetchLeaveToValidate,
-        sliceFunctionData: {
-          user,
-          companyId: user.activeCompany?.id,
-        },
       };
     }
   }, [
@@ -114,9 +117,6 @@ const LeaveListScreen = ({route}: any) => {
     loadingMyLeave,
     moreLoadingMyLeave,
     isListEndMyLeave,
-    user,
-    selectedStatus,
-    leaveIds,
     leaveToValidateList,
     loadingLeaveToValidate,
     moreLoadingLeaveToValidate,
@@ -131,7 +131,7 @@ const LeaveListScreen = ({route}: any) => {
         moreLoading={listToDisplay.moreLoading}
         isListEnd={listToDisplay.isListEnd}
         sliceFunction={listToDisplay.sliceFunction}
-        sliceFunctionData={listToDisplay.sliceFunctionData}
+        sliceFunctionData={sliceFunctionData}
         displaySearchBar={false}
         expandableFilter={false}
         fixedItems={
