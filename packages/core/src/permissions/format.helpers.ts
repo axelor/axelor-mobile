@@ -58,12 +58,22 @@ export const formatMetaPermissions = (
 
   const permissions: MetaPermission = {};
 
-  permissionList.forEach(({field, canRead, canWrite, metaPermission}) => {
-    const modelPerms = permissions[metaPermission.object] ?? [];
+  permissionList.forEach(
+    ({field, canRead, canWrite, metaPermission, metaPermissionObject}) => {
+      // AOP REST search returns metaPermission.object, the AOS endpoint
+      // ws/aos/user/meta-permission-rules returns a flat metaPermissionObject
+      const object = metaPermission?.object ?? metaPermissionObject;
 
-    modelPerms.push({perms: {canRead, canWrite}, fieldName: field});
-    permissions[metaPermission.object] = modelPerms;
-  });
+      if (object == null) {
+        return;
+      }
+
+      const modelPerms = permissions[object] ?? [];
+
+      modelPerms.push({perms: {canRead, canWrite}, fieldName: field});
+      permissions[object] = modelPerms;
+    },
+  );
 
   return permissions;
 };
