@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   PeriodInput,
   useDispatch,
+  useNavigation,
   usePermitted,
   useTranslator,
   useTypeHelpers,
@@ -47,6 +48,7 @@ const CompleteRequestScreen = ({}) => {
   const {LeaveReason, LeaveRequest} = useTypes();
   const {getItemTitle} = useTypeHelpers();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.LeaveRequest',
   });
@@ -113,6 +115,41 @@ const CompleteRequestScreen = ({}) => {
     handleReset();
   };
 
+  const navigateToCreatedLeaves = useCallback(
+    (createdLeaves: any[]) => {
+      if (createdLeaves.length === 1) {
+        navigation.navigate('LeaveDetailsScreen', {
+          leaveId: createdLeaves[0].leaveRequestId,
+        });
+      } else if (createdLeaves.length > 1) {
+        navigation.navigate('LeaveListScreen', {
+          leaveIds: createdLeaves.map(({leaveRequestId}) => leaveRequestId),
+        });
+      }
+    },
+    [navigation],
+  );
+
+  const handleFinish = useCallback(() => {
+    (dispatch as any)(
+      (createLeaveRequest as any)({
+        fromDate,
+        startOnSelect: startOn,
+        lines,
+      }),
+    ).then(res =>
+      navigateToCreatedLeaves(res?.payload?.leaveRequestResponseList ?? []),
+    );
+    resetDefaultStates();
+  }, [
+    dispatch,
+    fromDate,
+    lines,
+    navigateToCreatedLeaves,
+    resetDefaultStates,
+    startOn,
+  ]);
+
   const handleEditLine = useCallback((line: any) => {
     setNewLine(line);
     setLeaveQty(line.qty);
@@ -163,16 +200,7 @@ const CompleteRequestScreen = ({}) => {
             !fromDate || !toDate || !startOn || !endOn || missingQty !== 0
           }
           onAddPress={handleAddLine}
-          onFinishPress={() => {
-            dispatch(
-              (createLeaveRequest as any)({
-                fromDate,
-                startOnSelect: startOn,
-                lines,
-              }),
-            );
-            resetDefaultStates();
-          }}
+          onFinishPress={handleFinish}
         />
       }>
       <KeyboardAvoidingScrollView
