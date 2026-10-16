@@ -25,7 +25,7 @@ import {
   getTypes,
 } from '@axelor/aos-mobile-core';
 
-const createLeaveCriteria = (userId, selectedStatus) => {
+const createLeaveCriteria = (userId, selectedStatus, leaveIds) => {
   const criteria = [
     {
       fieldName: 'employee.user.id',
@@ -44,6 +44,14 @@ const createLeaveCriteria = (userId, selectedStatus) => {
       fieldName: 'statusSelect',
       operator: '=',
       value: selectedStatus,
+    });
+  }
+
+  if (Array.isArray(leaveIds) && leaveIds.length > 0) {
+    criteria.push({
+      fieldName: 'id',
+      operator: 'in',
+      value: leaveIds,
     });
   }
 
@@ -76,13 +84,14 @@ const createLeaveToValidateCriteria = (searchValue, user) => {
 export async function fetchLeave({
   userId,
   selectedStatus,
+  leaveIds,
   page = 0,
   companyId,
   filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.LeaveRequest',
-    criteria: createLeaveCriteria(userId, selectedStatus),
+    criteria: createLeaveCriteria(userId, selectedStatus, leaveIds),
     fieldKey: 'hr_leave',
     sortKey: 'hr_leave',
     page,
