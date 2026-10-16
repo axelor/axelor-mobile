@@ -18,14 +18,12 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {
-  FilterContainer,
-  useActiveFilter,
+  SearchListView,
   useDispatch,
   useNavigation,
   useSelector,
-  useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {LeaveActionCard, LeaveFilters} from '../../components';
 import {
   fetchLeave,
@@ -35,11 +33,10 @@ import {
 } from '../../features/leaveSlice';
 import {Leave} from '../../types';
 
-const LeaveListScreen = ({}) => {
-  const I18n = useTranslator();
+const LeaveListScreen = ({route}: any) => {
+  const {leaveIds} = route?.params ?? {};
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {activeFilter} = useActiveFilter();
 
   const [mode, setMode] = useState(Leave.mode.myLeaves);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -56,21 +53,6 @@ const LeaveListScreen = ({}) => {
     leaveToValidateList,
   } = useSelector(state => state.hr_leave);
 
-  const fetchLeaveAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        (fetchLeave as any)({
-          userId: user?.id,
-          selectedStatus,
-          page,
-          companyId: user.activeCompany?.id,
-          filterDomain: activeFilter,
-        }),
-      );
-    },
-    [activeFilter, dispatch, selectedStatus, user.activeCompany?.id, user?.id],
-  );
-
   const getActionParams = useCallback(
     (item: any) => ({
       leaveRequestId: item.id,
@@ -78,9 +60,10 @@ const LeaveListScreen = ({}) => {
       userId: user?.id,
       user: user,
       selectedStatus,
+      leaveIds,
       companyId: user.activeCompany?.id,
     }),
-    [selectedStatus, user],
+    [leaveIds, selectedStatus, user],
   );
 
   const sendLeaveAPI = useCallback(
@@ -97,18 +80,17 @@ const LeaveListScreen = ({}) => {
     [dispatch, getActionParams],
   );
 
-  const fetchLeaveToValidateAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        (fetchLeaveToValidate as any)({
-          user,
-          page,
-          companyId: user.activeCompany?.id,
-          filterDomain: activeFilter,
-        }),
-      );
-    },
-    [activeFilter, dispatch, user],
+  const sliceFunctionData = useMemo(
+    () =>
+      mode === Leave.mode.myLeaves
+        ? {
+            userId: user?.id,
+            selectedStatus,
+            leaveIds,
+            companyId: user.activeCompany?.id,
+          }
+        : {user, companyId: user.activeCompany?.id},
+    [leaveIds, mode, selectedStatus, user],
   );
 
   const listToDisplay = useMemo(() => {
@@ -118,7 +100,7 @@ const LeaveListScreen = ({}) => {
         loading: loadingMyLeave,
         moreLoading: moreLoadingMyLeave,
         isListEnd: isListEndMyLeave,
-        functionApi: fetchLeaveAPI,
+        sliceFunction: fetchLeave,
       };
     } else {
       return {
@@ -126,7 +108,7 @@ const LeaveListScreen = ({}) => {
         loading: loadingLeaveToValidate,
         moreLoading: moreLoadingLeaveToValidate,
         isListEnd: isListEndLeaveToValidate,
-        functionApi: fetchLeaveToValidateAPI,
+        sliceFunction: fetchLeaveToValidate,
       };
     }
   }, [
@@ -135,17 +117,22 @@ const LeaveListScreen = ({}) => {
     loadingMyLeave,
     moreLoadingMyLeave,
     isListEndMyLeave,
-    fetchLeaveAPI,
     leaveToValidateList,
     loadingLeaveToValidate,
     moreLoadingLeaveToValidate,
     isListEndLeaveToValidate,
-    fetchLeaveToValidateAPI,
   ]);
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <FilterContainer
+      <SearchListView
+        list={listToDisplay.list}
+        loading={listToDisplay.loading}
+        moreLoading={listToDisplay.moreLoading}
+        isListEnd={listToDisplay.isListEnd}
+        sliceFunction={listToDisplay.sliceFunction}
+        sliceFunctionData={sliceFunctionData}
+        displaySearchBar={false}
         expandableFilter={false}
         fixedItems={
           <LeaveFilters
@@ -154,11 +141,7 @@ const LeaveListScreen = ({}) => {
             onChangeStatus={setSelectedStatus}
           />
         }
-      />
-      <ScrollList
-        loadingList={listToDisplay.loading}
-        data={listToDisplay.list}
-        renderItem={({item}) => (
+        renderListItem={({item}) => (
           <LeaveActionCard
             mode={mode}
             leave={item}
@@ -172,10 +155,6 @@ const LeaveListScreen = ({}) => {
             onValidate={() => validateLeaveApi(item)}
           />
         )}
-        fetchData={listToDisplay.functionApi}
-        moreLoading={listToDisplay.moreLoading}
-        isListEnd={listToDisplay.isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );
