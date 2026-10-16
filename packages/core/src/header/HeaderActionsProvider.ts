@@ -111,14 +111,16 @@ export const useHeaderActions = (
   );
 
   useEffect(() => {
-    headerActionsProvider.register(options => setHeaders({...options}));
-    headerActionsProvider.registerGeneric(functions =>
-      setGenericHeaders({...functions}),
-    );
+    const refreshHeaders = options => setHeaders({...options});
+    const refreshGenericHeaders = functions =>
+      setGenericHeaders({...functions});
+
+    headerActionsProvider.register(refreshHeaders);
+    headerActionsProvider.registerGeneric(refreshGenericHeaders);
 
     return () => {
-      headerActionsProvider.unregister(setHeaders);
-      headerActionsProvider.unregisterGeneric(setGenericHeaders);
+      headerActionsProvider.unregister(refreshHeaders);
+      headerActionsProvider.unregisterGeneric(refreshGenericHeaders);
     };
   }, []);
 
