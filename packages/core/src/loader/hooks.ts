@@ -54,6 +54,10 @@ export const useLoaderListener = () => {
 
   useEffect(() => {
     processStorage.register(refreshData);
+
+    return () => {
+      processStorage.unregister(refreshData);
+    };
   }, [refreshData]);
 
   return useMemo(() => {

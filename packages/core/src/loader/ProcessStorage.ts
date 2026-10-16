@@ -55,6 +55,12 @@ class ProcessStorage {
     this.updateState();
   }
 
+  unregister(callBack) {
+    this.refreshCallBacks = this.refreshCallBacks.filter(
+      _callBack => _callBack !== callBack,
+    );
+  }
+
   getNumberUnreadProcess(): number {
     if (this.numberUnreadProcess == null || this.numberUnreadProcess <= 0) {
       this.numberUnreadProcess =
