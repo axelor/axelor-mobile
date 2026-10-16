@@ -127,10 +127,12 @@ export function useTypeConfigs(): {typeConfigs: TypeConfig[]} {
   );
 
   useEffect(() => {
-    selectionProvider.registerCallback(options => setTypeConfigs([...options]));
+    const refreshTypeConfigs = options => setTypeConfigs([...options]);
+
+    selectionProvider.registerCallback(refreshTypeConfigs);
 
     return () => {
-      selectionProvider.unregisterCallback(setTypeConfigs);
+      selectionProvider.unregisterCallback(refreshTypeConfigs);
     };
   }, []);
 
