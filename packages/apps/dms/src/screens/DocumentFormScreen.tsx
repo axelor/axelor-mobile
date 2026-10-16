@@ -45,9 +45,9 @@ const DocumentFormScreen = ({navigation, route}) => {
       }
 
       const sliceFunction = isCreation ? createDocument : updateDocument;
-      dispatch((sliceFunction as any)({document: _document, model, modelId}));
-
-      navigation.pop();
+      dispatch(
+        (sliceFunction as any)({document: _document, model, modelId}),
+      ).then(() => navigation.pop());
     },
     [mobileSettings?.defaultDmsRoot, model, modelId, navigation, user.dmsRoot],
   );
