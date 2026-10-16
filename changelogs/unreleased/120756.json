@@ -1,0 +1,5 @@
+{
+  "title": "Field permissions: apply the hidden/read-only field rules configured in the ERP when connected to AOS 8.1 or later",
+  "type": "fix",
+  "packages": "core"
+}
