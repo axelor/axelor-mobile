@@ -30,6 +30,19 @@ class QualityImprovement {
       {titleKey: 'Quality_Defaults', value: this.Steps.defaults},
     ];
   };
+
+  static mergeDefectLine = (lines: any[], line: any): any[] => {
+    const _lines = lines ?? [];
+
+    if (line == null) return _lines;
+
+    if (_lines.some(_item => _item.id === line.id))
+      return _lines.map(_item =>
+        _item.id === line.id ? {..._item, ...line} : _item,
+      );
+
+    return [..._lines, line];
+  };
 }
 
 export default QualityImprovement;
