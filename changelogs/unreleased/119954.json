@@ -1,5 +1,0 @@
-{
-  "title": "Quality improvement: save the defect being filled in when validating the form",
-  "type": "fix",
-  "packages": "quality"
-}

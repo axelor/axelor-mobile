@@ -3,6 +3,47 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.27] (2026-10-20)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Mass scanner: vibrate and play an error sound when a scan fails
+
+#### Fixes
+
+- DateInput: prevent the popup from closing while selecting a date and restore the previous date on cancel
+- Search and record views: display translated values and avoid duplicate server requests
+- Field permissions: apply the hidden/read-only field rules configured in the ERP when using AOS endpoint
+- Providers: remove store listeners when components unmount
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- Attached files: wait for the document creation before going back to display the created file instead of the empty directory popup
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Quality improvement: save the defect being filled in when validating the form
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Leave Request: redirect to the created leave request, or to the list of the created leave requests when several were created, after finishing a request
+- Leave Request: prefill the quantity with the minimum between the available quantity and the quantity to be filled when selecting a leave reason
+- Leave Request: Rename "Missing quantity" to "Quantity to be filled" to make it easier to understand
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Internal move: disable the realize button while the request is pending to prevent multiple submissions
+
 ## [8.5.26] (2026-09-30)
 
 ### @axelor/aos-mobile-core
@@ -745,6 +786,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.27]: https://github.com/axelor/axelor-mobile/compare/8.5.26...8.5.27
 [8.5.26]: https://github.com/axelor/axelor-mobile/compare/8.5.25...8.5.26
 [8.5.25]: https://github.com/axelor/axelor-mobile/compare/8.5.24...8.5.25
 [8.5.24]: https://github.com/axelor/axelor-mobile/compare/8.5.23...8.5.24
