@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -28,6 +28,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {DefectSearchBar} from '../../templates';
 import {DefectFilesManager} from '../../organisms';
+import {QualityImprovement} from '../../../types';
 
 interface DefectViewAllListProps {
   title?: string;
@@ -46,12 +47,58 @@ const DefectViewAllListAux = ({
 }: DefectViewAllListProps) => {
   const I18n = useTranslator();
 
-  const [lines, setLines] = useState<any[]>(defaultValue ?? []);
-  const [editId, setEditId] = useState<number | undefined>();
-  const [defect, setDefect] = useState<any>();
-  const [qty, setQty] = useState<number>(1);
-  const [description, setDescription] = useState<string>('');
-  const [files, setFiles] = useState<any[]>([]);
+  const [initialPendingLine] = useState(() =>
+    defaultValue?.find(_item => _item.isPending),
+  );
+
+  const [lines, setLines] = useState<any[]>(() =>
+    (defaultValue ?? []).flatMap(_item => {
+      if (!_item.isPending) return [_item];
+      return _item.originalLine != null ? [_item.originalLine] : [];
+    }),
+  );
+  const [editId, setEditId] = useState<number | undefined>(
+    initialPendingLine?.originalLine != null
+      ? initialPendingLine.id
+      : undefined,
+  );
+  const [defect, setDefect] = useState<any>(initialPendingLine?.qiDefault);
+  const [qty, setQty] = useState<number>(initialPendingLine?.qty ?? 1);
+  const [description, setDescription] = useState<string>(
+    initialPendingLine?.description ?? '',
+  );
+  const [files, setFiles] = useState<any[]>(initialPendingLine?.files ?? []);
+
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+
+  const pendingLine = useMemo(
+    () =>
+      defect == null
+        ? null
+        : {
+            id: editId ?? `qiDefault-${defect.id}.${lines.length}`,
+            name: defect.name,
+            qiDefault: defect,
+            qty,
+            description,
+            files,
+          },
+    [defect, description, editId, files, lines.length, qty],
+  );
+
+  useEffect(() => {
+    onChangeRef.current(
+      QualityImprovement.mergeDefectLine(
+        lines,
+        pendingLine && {
+          ...pendingLine,
+          isPending: true,
+          originalLine: lines.find(_item => _item.id === pendingLine.id),
+        },
+      ),
+    );
+  }, [lines, pendingLine]);
 
   const handleEditLine = useCallback((line: any) => {
     setEditId(line.id);
@@ -61,45 +108,17 @@ const DefectViewAllListAux = ({
     setFiles(line.files ?? []);
   }, []);
 
-  const handleChange = useCallback(
-    (updated: any[]) => {
-      setLines(updated);
-      onChange(updated);
-    },
-    [onChange],
-  );
-
   const handleConfirm = useCallback(() => {
-    setLines(_current => {
-      const lineContent = {
-        id: editId ?? `qiDefault-${defect.id}.${_current.length}`,
-        name: defect.name,
-        qiDefault: defect,
-        qty,
-        description,
-        files,
-      };
+    setLines(_current =>
+      QualityImprovement.mergeDefectLine(_current, pendingLine),
+    );
 
-      let updatedLines: any[];
-      if (editId != null) {
-        updatedLines = _current.map(_item =>
-          _item.id === editId ? {..._item, ...lineContent} : _item,
-        );
-      } else {
-        updatedLines = [..._current, lineContent];
-      }
-
-      onChange(updatedLines);
-
-      return updatedLines;
-    });
-
-    setDefect(null);
+    setDefect(undefined);
     setQty(1);
     setDescription('');
     setFiles([]);
-    setEditId(null);
-  }, [defect, description, editId, onChange, qty, files]);
+    setEditId(undefined);
+  }, [pendingLine]);
 
   const currentDefectId = useMemo(
     () => lines?.find(l => l.id === editId)?._id,
@@ -111,8 +130,8 @@ const DefectViewAllListAux = ({
       <ViewAllEditList
         title={I18n.t(title)}
         lines={lines}
-        setLines={handleChange}
-        currentLineId={editId}
+        setLines={setLines}
+        currentLineId={editId!}
         handleEditLine={handleEditLine}
         translator={I18n.t}
       />
