@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
@@ -52,9 +52,11 @@ const InternalMoveCreationButtons = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
-  const {user} = useSelector((state: any) => state.user);
+  const {user} = useSelector(state => state.user);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFinishPress = () => {
     if (step === InternalMoveCreation.step.validateLine) {
@@ -64,6 +66,8 @@ const InternalMoveCreationButtons = ({
   };
 
   const handleRealizePress = () => {
+    setIsLoading(true);
+
     dispatch(
       (createInternalMove as any)({
         companyId: user?.activeCompany?.id,
@@ -71,8 +75,7 @@ const InternalMoveCreationButtons = ({
         toStockLocationId: toStockLocation.id,
         lineItems: lines,
       }),
-    );
-    navigation.popToTop();
+    ).then(() => navigation.popToTop());
   };
 
   if (
@@ -84,7 +87,7 @@ const InternalMoveCreationButtons = ({
         {step === InternalMoveCreation.step.validateLine && (
           <Button
             title={I18n.t(isEditionMode ? 'Base_Save' : 'Base_Add')}
-            iconName={isEditionMode ? null : 'plus-lg'}
+            iconName={isEditionMode ? undefined : 'plus-lg'}
             color={Colors.progressColor}
             width="45%"
             disabled={movedQty === 0}
@@ -111,6 +114,7 @@ const InternalMoveCreationButtons = ({
           iconName="arrow-left"
           color={Colors.progressColor}
           width={toStockLocation ? '45%' : '90%'}
+          disabled={isLoading}
           onPress={() => {
             setStep(InternalMoveCreation.step.addLine);
           }}
@@ -121,6 +125,7 @@ const InternalMoveCreationButtons = ({
             iconName="check"
             width="45%"
             onPress={handleRealizePress}
+            disabled={isLoading}
           />
         )}
       </View>
