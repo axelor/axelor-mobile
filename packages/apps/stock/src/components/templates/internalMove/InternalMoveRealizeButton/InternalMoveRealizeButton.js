@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   useTranslator,
   useDispatch,
@@ -36,15 +36,16 @@ const InternalMoveRealizeButton = ({internalMove}) => {
     modelName: 'com.axelor.apps.stock.db.StockMove',
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleRealizeStockMove = useCallback(() => {
+    setIsLoading(true);
     dispatch(
       realizeInternalMove({
         stockMoveId: internalMove.id,
         version: internalMove.version,
       }),
-    );
-
-    navigation.popToTop();
+    ).then(() => navigation.popToTop());
   }, [dispatch, internalMove, navigation]);
 
   if (
@@ -52,7 +53,11 @@ const InternalMoveRealizeButton = ({internalMove}) => {
     internalMove.statusSelect === StockMove?.statusSelect.Planned
   ) {
     return (
-      <Button title={I18n.t('Base_Realize')} onPress={handleRealizeStockMove} />
+      <Button
+        title={I18n.t('Base_Realize')}
+        onPress={handleRealizeStockMove}
+        disabled={isLoading}
+      />
     );
   }
 
