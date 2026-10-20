@@ -1,5 +1,0 @@
-{
-  "title": "Control entry: display the message returned by the server when the conformity evaluation fails",
-  "type": "fix",
-  "packages": "quality"
-}

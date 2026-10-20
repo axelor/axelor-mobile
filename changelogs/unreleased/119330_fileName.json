@@ -1,5 +1,0 @@
-{
-  "title": "Files: allow opening files whose name contains special characters",
-  "type": "fix",
-  "packages": "core"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Web views: carry over the ERP session on iOS instead of asking the user to sign in again",
-  "type": "fix",
-  "packages": "core"
-}

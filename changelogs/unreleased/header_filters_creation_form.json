@@ -1,5 +1,0 @@
-{
-  "title": "Header: hide the saved filters action on screens that do not declare it, so a form used for both creation and edition shows no generic action in creation mode",
-  "type": "fix",
-  "packages": "core"
-}

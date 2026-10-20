@@ -3,6 +3,132 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.25] (2026-10-20)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Action requests: add getActionMessage helper to retrieve the message returned by an action response
+
+<details>
+An action can answer with a message instead of applying its changes. The helper reads that message from the response and returns it with its severity, so that a module can inform the user rather than silently treating the refusal as a result.
+</details>
+
+- Form view: manage hidden and readonly conditions on panels
+
+#### Changes
+
+- Field parser: expose the entity version returned as $version by the API under the standard version field, on nested objects too
+
+#### Fixes
+
+- Files: keep the session when opening a file behind a server redirect
+- Files: allow opening files whose name contains special characters
+- DateInput: prevent the popup from closing while selecting a date and restore the previous date on cancel
+- Search and record views: display translated values and avoid duplicate server requests
+- Field permissions: apply the hidden/read-only field rules configured in the ERP when using AOS endpoint
+- Providers: remove store listeners when components unmount
+- Header: hide the saved filters action on screens that do not declare it, so a form used for both creation and edition shows no generic action in creation mode
+- Custom forms: correctly evaluate display conditions using fields which have no value yet
+
+<details>
+A condition referencing a field that was still empty could not be evaluated and was considered as not verified. Empty fields are now taken into account as empty values, so a condition such as 'this field is not filled' behaves as expected on a blank form.
+</details>
+
+- Custom forms: apply the visibility and readonly conditions configured on panels
+
+<details>
+Panels configured as hidden or readonly, or with a display, hide or readonly condition, were always visible and editable on mobile. They now follow the same rules as the fields they contain, and a panel displayed as readonly applies to its whole content.
+</details>
+
+- Web views: load them in the background after login so they stay available without connection
+- Web views: carry over the ERP session on iOS instead of asking the user to sign in again
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: send the typed quantity to the parent on each keystroke
+
+<details>
+The input only propagated its value when it lost focus, so a quantity typed then validated straight from a save button was ignored and the previous value was submitted. The value is now propagated while typing, and the external value no longer overwrites the field while it is focused.
+</details>
+
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- DMS: recognize uppercase file extensions for the document icon, color and type filters
+- Attached files: wait for the document creation before going back to display the created file instead of the empty directory popup
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Catalog & cart: display the sale price and currency of the active company when they are managed per company
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Equipment: display the update action instead of the creation one when the form is opened on an existing equipment
+
+<details>
+When duplicating an equipment, the form of the copy offered the creation action, so validating it added yet another equipment. The available action now depends on the equipment actually opened in the form.
+</details>
+
+
+### @axelor/aos-mobile-quality
+
+#### Changes
+
+- Control entry: harmonize the display of control entries and samples with the other lists of the application
+
+#### Fixes
+
+- ControlEntry: add missing screen config to get generic header actions on details and control filling views
+- ControlEntry: sort lines by plan line priority instead of id
+- Quality improvement: fill product & client when coming from a MO or operation
+- Control entry: display the message returned by the server when the conformity evaluation fails
+
+### @axelor/aos-mobile-hr
+
+#### Features
+
+- Leave request: allow the cancellation of a request on every status except canceled
+- Leave request: add the return to draft status action on refused and canceled requests
+
+#### Fixes
+
+- Leave request: recompute the duration when the period of the request is modified
+- Leave request: prevent the modification of a request once it has been sent for validation
+
+<details>
+Any leave request could be modified from the mobile application, including validated ones. As in the web application, a request can now be modified when it is in draft or canceled status, and when it is waiting validation by the user in charge of validating it. Validated and refused requests can no longer be modified.
+</details>
+
+- Leave Request: redirect to the created leave request, or to the list of the created leave requests when several were created, after finishing a request
+- Leave Request: prefill the quantity with the minimum between the available quantity and the quantity to be filled when selecting a leave reason
+- Leave Request: Rename "Missing quantity" to "Quantity to be filled" to make it easier to understand
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- ManufOrder & OperationOrder: avoid undefined issues on details view
+- Operation order: display the error returned by the server when the timer status update fails
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock move: refresh record before realize to avoid version conflict
+- Internal move: disable the realize button while the request is pending to prevent multiple submissions
+- Stock move lines: filter completed lines based on their status instead of quantity
+- Stock correction: fix the tracking number selection that prevented creating a correction
+
 ## [8.4.24] (2026-06-19)
 
 ### @axelor/aos-mobile-stock
@@ -783,6 +909,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.25]: https://github.com/axelor/axelor-mobile/compare/8.4.24...8.4.25
 [8.4.24]: https://github.com/axelor/axelor-mobile/compare/8.4.23...8.4.24
 [8.4.23]: https://github.com/axelor/axelor-mobile/compare/8.4.22...8.4.23
 [8.4.22]: https://github.com/axelor/axelor-mobile/compare/8.4.21...8.4.22

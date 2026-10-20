@@ -1,5 +1,0 @@
-{
-  "title": "ControlEntry: add missing screen config to get generic header actions on details and control filling views",
-  "type": "fix",
-  "packages": "quality"
-}

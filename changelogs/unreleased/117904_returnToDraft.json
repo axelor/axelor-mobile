@@ -1,5 +1,0 @@
-{
-  "title": "Leave request: add the return to draft status action on refused and canceled requests",
-  "type": "feat",
-  "packages": "hr"
-}

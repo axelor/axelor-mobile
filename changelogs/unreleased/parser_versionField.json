@@ -1,5 +1,0 @@
-{
-  "title": "Field parser: expose the entity version returned as $version by the API under the standard version field, on nested objects too",
-  "type": "refactor",
-  "packages": "core"
-}

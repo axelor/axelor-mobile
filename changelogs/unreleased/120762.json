@@ -1,5 +1,0 @@
-{
-  "title": "Providers: remove store listeners when components unmount",
-  "type": "fix",
-  "packages": "core"
-}

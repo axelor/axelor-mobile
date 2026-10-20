@@ -1,6 +1,0 @@
-{
-  "title": "Custom forms: correctly evaluate display conditions using fields which have no value yet",
-  "type": "fix",
-  "packages": "core",
-  "description": "A condition referencing a field that was still empty could not be evaluated and was considered as not verified. Empty fields are now taken into account as empty values, so a condition such as 'this field is not filled' behaves as expected on a blank form."
-}

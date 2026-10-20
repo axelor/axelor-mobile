@@ -1,5 +1,0 @@
-{
-  "title": "Files: keep the session when opening a file behind a server redirect",
-  "type": "fix",
-  "packages": "core"
-}

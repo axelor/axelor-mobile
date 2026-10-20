@@ -1,5 +1,0 @@
-{
-  "title": "Search and record views: display translated values and avoid duplicate server requests",
-  "type": "fix",
-  "packages": "core"
-}

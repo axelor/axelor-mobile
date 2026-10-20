@@ -1,5 +1,0 @@
-{
-  "title": "Field permissions: apply the hidden/read-only field rules configured in the ERP when using AOS endpoint",
-  "type": "fix",
-  "packages": "core"
-}
