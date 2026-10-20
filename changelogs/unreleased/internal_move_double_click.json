@@ -1,0 +1,5 @@
+{
+  "title": "Internal move: disable the realize button while the request is pending to prevent multiple submissions",
+  "type": "fix",
+  "packages": "stock"
+}
