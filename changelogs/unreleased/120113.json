@@ -1,5 +1,0 @@
-{
-  "title": "DateInput: prevent the popup from closing while selecting a date and restore the previous date on cancel",
-  "type": "fix",
-  "packages": "core"
-}
