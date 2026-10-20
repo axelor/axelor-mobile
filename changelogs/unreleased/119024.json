@@ -1,5 +1,0 @@
-{
-  "title": "Mass scanner: vibrate and play an error sound when a scan fails",
-  "type": "feat",
-  "packages": "core"
-}

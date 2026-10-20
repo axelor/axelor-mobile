@@ -1,5 +1,0 @@
-{
-  "title": "Attached files: wait for the document creation before going back to display the created file instead of the empty directory popup",
-  "type": "fix",
-  "packages": "dms"
-}

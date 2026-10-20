@@ -3,6 +3,47 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.22] (2026-10-20)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Mass scanner: vibrate and play an error sound when a scan fails
+
+#### Fixes
+
+- DateInput: prevent the popup from closing while selecting a date and restore the previous date on cancel
+- Search and record views: display translated values and avoid duplicate server requests
+- Field permissions: apply the hidden/read-only field rules configured in the ERP when using AOS endpoint
+- Providers: remove store listeners when components unmount
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- Attached files: wait for the document creation before going back to display the created file instead of the empty directory popup
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Quality improvement: save the defect being filled in when validating the form
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Leave Request: redirect to the created leave request, or to the list of the created leave requests when several were created, after finishing a request
+- Leave Request: prefill the quantity with the minimum between the available quantity and the quantity to be filled when selecting a leave reason
+- Leave Request: Rename "Missing quantity" to "Quantity to be filled" to make it easier to understand
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Internal move: disable the realize button while the request is pending to prevent multiple submissions
+
 ## [9.0.21] (2026-09-30)
 
 ### @axelor/aos-mobile-core
@@ -525,6 +566,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.22]: https://github.com/axelor/axelor-mobile/compare/9.0.21...9.0.22
 [9.0.21]: https://github.com/axelor/axelor-mobile/compare/9.0.20...9.0.21
 [9.0.20]: https://github.com/axelor/axelor-mobile/compare/9.0.19...9.0.20
 [9.0.19]: https://github.com/axelor/axelor-mobile/compare/9.0.18...9.0.19
