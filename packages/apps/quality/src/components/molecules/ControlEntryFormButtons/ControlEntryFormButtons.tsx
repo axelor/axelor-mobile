@@ -105,6 +105,7 @@ const ControlEntryFormButtons = ({
   return (
     <View style={styles.container}>
       <NavigationButton
+        style={styles.navigationButton}
         position="left"
         onPress={() => {
           handleNotControlled();
@@ -114,6 +115,7 @@ const ControlEntryFormButtons = ({
         disabled={!canPrevious}
       />
       <NavigationButton
+        style={styles.navigationButton}
         position="right"
         onPress={() => {
           handleNotControlled();
@@ -124,7 +126,7 @@ const ControlEntryFormButtons = ({
       />
       {isConformityButton && (
         <Button
-          style={styles.lastButton}
+          style={styles.validationButton}
           onPress={onPress}
           iconName="check-lg"
           color={Colors.successColor}
@@ -136,12 +138,17 @@ const ControlEntryFormButtons = ({
 
 const styles = StyleSheet.create({
   container: {
+    width: '90%',
+    alignSelf: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    marginHorizontal: 18,
+    alignItems: 'center',
+    gap: 5,
   },
-  lastButton: {
-    width: '15%',
+  navigationButton: {
+    flex: 1,
+  },
+  validationButton: {
+    flex: 2,
   },
 });
 

@@ -16,18 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Button,
-  checkNullString,
-  Icon,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface NavigationButtonProps {
   style?: any;
-  position: string;
+  position: 'left' | 'right';
   onPress: () => void;
   icon?: string;
   disabled?: boolean;
@@ -44,11 +39,6 @@ const NavigationButton = ({
 }: NavigationButtonProps) => {
   const Colors = useThemeColor();
 
-  const positionStyle = useMemo(
-    () => ({[position]: !checkNullString(title) ? '10%' : '15%'}),
-    [position, title],
-  );
-
   return (
     <View style={[styles.buttonContainer, style]}>
       <Button
@@ -56,11 +46,9 @@ const NavigationButton = ({
         onPress={onPress}
         color={Colors.priorityColor}
         disabled={disabled}
-        iconName={icon}
-      />
-      <Icon
-        name={`chevron-${position}`}
-        style={[styles.chevron, positionStyle]}
+        iconName={position === 'left' ? 'chevron-left' : icon}
+        rightIconName={position === 'right' ? 'chevron-right' : icon}
+        iconSize={18}
       />
     </View>
   );
@@ -68,12 +56,8 @@ const NavigationButton = ({
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: '45%',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  chevron: {
-    position: 'absolute',
   },
 });
 
