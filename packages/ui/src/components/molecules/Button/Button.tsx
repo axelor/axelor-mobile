@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {DimensionValue, StyleSheet, TouchableOpacity} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
 import {Color, useThemeColor} from '../../../theme';
+import {getCommonStyles} from '../../../utils';
 import {Icon, Text} from '../../atoms';
 
 export interface ButtonProps {
@@ -29,6 +29,7 @@ export interface ButtonProps {
   isNeutralBackground?: boolean;
   iconName?: string;
   iconSize?: number;
+  rightIconName?: string;
   title?: string;
   style?: any;
   styleIcon?: any;
@@ -46,13 +47,14 @@ const Button = ({
   isNeutralBackground = false,
   iconName,
   iconSize = 25,
+  rightIconName,
   title,
   style,
   styleIcon,
   styleTxt,
   onPress = () => {},
   disabled = false,
-  onDisabledPress = null,
+  onDisabledPress,
   numberOfLines = 2,
 }: ButtonProps) => {
   const Colors = useThemeColor();
@@ -83,7 +85,7 @@ const Button = ({
     return getCommonStyles(Colors);
   }, [Colors]);
 
-  if (!iconName && !title) {
+  if (!iconName && !title && !rightIconName) {
     return null;
   }
 
@@ -112,6 +114,14 @@ const Button = ({
           textColor={buttonColor.foreground}>
           {title}
         </Text>
+      )}
+      {!!rightIconName && (
+        <Icon
+          name={rightIconName}
+          size={iconSize}
+          color={buttonColor.foreground}
+          style={styleIcon}
+        />
       )}
     </TouchableOpacity>
   );
