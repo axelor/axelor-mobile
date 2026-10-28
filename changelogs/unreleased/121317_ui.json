@@ -1,0 +1,5 @@
+{
+  "title": "Button: add rightIconName prop to display an icon after the title",
+  "type": "feat",
+  "packages": "ui"
+}

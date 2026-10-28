@@ -35,6 +35,7 @@ export const Button: Story<typeof Component> = {
   args: {
     disabled: false,
     iconName: 'heart',
+    rightIconName: 'chevron-right',
     isNeutralBackground: false,
     color: 'primaryColor',
     title: 'Title',
