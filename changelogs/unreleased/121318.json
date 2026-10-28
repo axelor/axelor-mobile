@@ -1,0 +1,5 @@
+{
+  "title": "Period input: compare dates without time by default to avoid a wrong period error on single-day periods",
+  "type": "fix",
+  "packages": "core"
+}
