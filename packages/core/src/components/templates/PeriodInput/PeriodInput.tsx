@@ -20,7 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Label} from '@axelor/aos-mobile-ui';
 import {DateInput} from '../../organisms';
-import {getEndOfDay, getStartOfDay, hoursToMilliseconds} from '../../../utils';
+import {hoursToMilliseconds, incrementDate} from '../../../utils';
 import {useTranslator} from '../../../i18n';
 
 const DATE_INPUT_MODE = {
@@ -92,14 +92,16 @@ const PeriodInput = ({
   }, [startDate, endDate, interval, startDateConfig, endDateConfig]);
 
   useEffect(() => {
-    const _startDate =
-      startDateConfig.dateInputMode === 'date'
-        ? getStartOfDay(startDate)
-        : startDate;
-    const _endDate =
-      endDateConfig.dateInputMode === 'date' ? getEndOfDay(endDate) : endDate;
+    const getComparableDate = (
+      date: Date,
+      dateInputMode: dateInputConfig['dateInputMode'],
+    ) => ((dateInputMode ?? 'date') === 'date' ? incrementDate(date, 0) : date);
 
-    const isError = startDate && endDate && _startDate > _endDate;
+    const isError =
+      startDate &&
+      endDate &&
+      getComparableDate(startDate, startDateConfig.dateInputMode) >
+        getComparableDate(endDate, endDateConfig.dateInputMode);
     setIsPeriodError(!!isError);
     onPeriodErrorChange?.(!!isError);
   }, [
