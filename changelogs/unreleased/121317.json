@@ -1,0 +1,5 @@
+{
+  "title": "Control entry: reduce the size of the sample navigation buttons and enlarge the validation button",
+  "type": "fix",
+  "packages": "quality"
+}
