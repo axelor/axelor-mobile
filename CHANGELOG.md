@@ -3,6 +3,26 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.23] (2026-10-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Period input: compare dates without time by default to avoid a wrong period error on single-day periods
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add rightIconName prop to display an icon after the title
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Control entry: reduce the size of the sample navigation buttons and enlarge the validation button
+
 ## [9.0.22] (2026-10-20)
 
 ### @axelor/aos-mobile-core
@@ -566,6 +586,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.23]: https://github.com/axelor/axelor-mobile/compare/9.0.22...9.0.23
 [9.0.22]: https://github.com/axelor/axelor-mobile/compare/9.0.21...9.0.22
 [9.0.21]: https://github.com/axelor/axelor-mobile/compare/9.0.20...9.0.21
 [9.0.20]: https://github.com/axelor/axelor-mobile/compare/9.0.19...9.0.20
