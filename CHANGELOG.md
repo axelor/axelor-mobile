@@ -3,6 +3,26 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.28] (2026-10-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Period input: compare dates without time by default to avoid a wrong period error on single-day periods
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add rightIconName prop to display an icon after the title
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Control entry: reduce the size of the sample navigation buttons and enlarge the validation button
+
 ## [8.5.27] (2026-10-20)
 
 ### @axelor/aos-mobile-core
@@ -786,6 +806,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.28]: https://github.com/axelor/axelor-mobile/compare/8.5.27...8.5.28
 [8.5.27]: https://github.com/axelor/axelor-mobile/compare/8.5.26...8.5.27
 [8.5.26]: https://github.com/axelor/axelor-mobile/compare/8.5.25...8.5.26
 [8.5.25]: https://github.com/axelor/axelor-mobile/compare/8.5.24...8.5.25
