@@ -3,6 +3,26 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.26] (2026-10-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Period input: compare dates without time by default to avoid a wrong period error on single-day periods
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add rightIconName prop to display an icon after the title
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Control entry: reduce the size of the sample navigation buttons and enlarge the validation button
+
 ## [8.4.25] (2026-10-20)
 
 ### @axelor/aos-mobile-core
@@ -909,6 +929,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.26]: https://github.com/axelor/axelor-mobile/compare/8.4.25...8.4.26
 [8.4.25]: https://github.com/axelor/axelor-mobile/compare/8.4.24...8.4.25
 [8.4.24]: https://github.com/axelor/axelor-mobile/compare/8.4.23...8.4.24
 [8.4.23]: https://github.com/axelor/axelor-mobile/compare/8.4.22...8.4.23
