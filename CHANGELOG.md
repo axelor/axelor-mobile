@@ -3,6 +3,26 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.10] (2026-10-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Period input: compare dates without time by default to avoid a wrong period error on single-day periods
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Button: add rightIconName prop to display an icon after the title
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Control entry: reduce the size of the sample navigation buttons and enlarge the validation button
+
 ## [9.1.9] (2026-10-20)
 
 ### @axelor/aos-mobile-core
@@ -440,6 +460,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.10]: https://github.com/axelor/axelor-mobile/compare/9.1.9...9.1.10
 [9.1.9]: https://github.com/axelor/axelor-mobile/compare/9.1.8...9.1.9
 [9.1.8]: https://github.com/axelor/axelor-mobile/compare/9.1.7...9.1.8
 [9.1.7]: https://github.com/axelor/axelor-mobile/compare/9.1.6...9.1.7
