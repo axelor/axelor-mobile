@@ -1,0 +1,75 @@
+stages: [check, build, test]
+
+variables:
+  NODE_IMAGE: node:22.14.0
+  ANDROID_IMAGE: reactnativecommunity/react-native-android:v21.1
+  YARN_CACHE_FOLDER: "$CI_PROJECT_DIR/.yarn-cache"
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH =~ /^(main|dev|wip)$/
+    - if: $CI_COMMIT_BRANCH =~ /^\d+\.\d+$/
+
+default:
+  interruptible: true
+  cache:
+    key:
+      files: [yarn.lock]
+    paths: [.yarn-cache]
+
+format:
+  stage: check
+  image: $NODE_IMAGE
+  needs: []
+  script:
+    - yarn install --frozen-lockfile
+    - yarn format:check
+    - yarn lint
+
+license:
+  stage: check
+  image: denoland/deno:alpine-1.46.3
+  needs: []
+  cache: []
+  script:
+    - deno run --allow-read https://deno.land/x/license_checker@v3.2.2/main.ts
+
+build:
+  stage: build
+  image: $ANDROID_IMAGE
+  needs: [format]
+  tags: [heavy]
+  timeout: 1h
+  variables:
+    GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.console=plain"
+  cache:
+    - key:
+        files: [yarn.lock]
+      paths: [.yarn-cache]
+    - key: gradle-$CI_COMMIT_REF_SLUG
+      fallback_keys: [gradle-dev]
+      paths: [.gradle/wrapper, .gradle/caches]
+  script:
+    - yarn install --frozen-lockfile
+    - yarn build
+    - chmod +x android/gradlew
+    - cd android && ./gradlew app:assemblePipelineRelease
+    - mv app/build/outputs/apk/pipeline/release/app-pipeline-release.apk "$CI_PROJECT_DIR/aom-$CI_COMMIT_REF_SLUG.apk"
+  artifacts:
+    name: aom-$CI_COMMIT_REF_SLUG
+    paths: [aom-$CI_COMMIT_REF_SLUG.apk]
+    expire_in: 1 week
+
+test:
+  stage: test
+  image: $NODE_IMAGE
+  needs: [format]
+  script:
+    - yarn install --frozen-lockfile
+    - yarn build
+    - yarn test
