@@ -43,6 +43,7 @@ export {getNetInfo, getTokenInfo} from './net-info-utils';
 export {
   fetchActionPrint,
   fetchFileToPrint,
+  searchActivePrintingTemplates,
   searchPrintingTemplate as searchPrintingTemplateApi,
 } from './print-template-api';
 export {traceError} from './traceback-api';

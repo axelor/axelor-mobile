@@ -20,7 +20,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Alert} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {useSelector} from '../../../redux/hooks';
-import {fetchFileToPrint} from '../../../api/print-template-api';
+import {
+  fetchActionPrint,
+  fetchFileToPrint,
+} from '../../../api/print-template-api';
 import {openFileInExternalApp} from '../../../tools';
 import {PrintTemplateSearchBar} from '../../templates';
 import {showToastMessage} from '../../../utils';
@@ -30,8 +33,6 @@ interface PopupPrintTemplateProps {
   onClose: () => void;
   model: string;
   modelId: number;
-  templateSet?: any[];
-  fileName?: string;
 }
 
 const PopupPrintTemplate = ({
@@ -39,14 +40,13 @@ const PopupPrintTemplate = ({
   onClose,
   model,
   modelId,
-  templateSet,
-  fileName,
 }: PopupPrintTemplateProps) => {
   const I18n = useTranslator();
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [templateSet, setTemplateSet] = useState<any[]>(null);
   const [showPopup, setShowPopup] = useState(false);
 
   const handleShowFile = useCallback(
@@ -67,35 +67,47 @@ const PopupPrintTemplate = ({
     onClose();
   }, [onClose]);
 
-  useEffect(() => {
-    if (visible) {
-      if (Array.isArray(templateSet) && templateSet.length > 0) {
-        setShowPopup(true);
-      } else if (fileName) {
+  const handlePrintResult = useCallback(
+    ({error, fileName}: {error?: string; fileName?: string}) => {
+      if (fileName == null) {
+        showToastMessage({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Error',
+          text2: error,
+        });
+        handleCancel();
+      } else {
         handleShowFile(fileName);
       }
-    } else {
+    },
+    [handleCancel, handleShowFile],
+  );
+
+  useEffect(() => {
+    if (!visible) {
       setShowPopup(false);
+      return;
     }
-  }, [fileName, handleShowFile, templateSet, visible]);
+
+    fetchActionPrint({id: modelId, model}).then(
+      ({templateSet: _templateSet, fileName, error}: any) => {
+        if (Array.isArray(_templateSet) && _templateSet.length > 0) {
+          setTemplateSet(_templateSet);
+          setShowPopup(true);
+        } else {
+          handlePrintResult({error, fileName});
+        }
+      },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible]);
 
   const openFile = useCallback(() => {
     fetchFileToPrint({printingTemplate: selectedTemplate, id: modelId, model})
-      .then(({error, fileName: _file}) => {
-        if (_file == null) {
-          showToastMessage({
-            type: 'error',
-            position: 'bottom',
-            text1: 'Error',
-            text2: error,
-          });
-          handleCancel();
-        } else {
-          handleShowFile(_file);
-        }
-      })
+      .then(handlePrintResult)
       .catch(handleCancel);
-  }, [selectedTemplate, modelId, model, handleCancel, handleShowFile]);
+  }, [selectedTemplate, modelId, model, handlePrintResult, handleCancel]);
 
   return (
     <Alert

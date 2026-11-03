@@ -1,0 +1,5 @@
+{
+  "title": "Print generic action: only generate the print on demand instead of on each record opening",
+  "type": "fix",
+  "packages": "core"
+}
