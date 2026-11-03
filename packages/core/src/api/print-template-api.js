@@ -33,6 +33,25 @@ const createPrintingTemplateCriteria = ({searchValue, idList}) => {
   ];
 };
 
+const PRINTING_TEMPLATE_STATUS_ACTIVE = 2;
+
+export async function searchActivePrintingTemplates({model}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.PrintingTemplate',
+    criteria: [
+      {fieldName: 'metaModel.fullName', operator: '=', value: model},
+      {
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: PRINTING_TEMPLATE_STATUS_ACTIVE,
+      },
+    ],
+    fieldKey: 'core_printTemplate',
+    page: 0,
+    numberElementsByPage: 1,
+  });
+}
+
 export async function fetchActionPrint({id, model}) {
   return axiosApiProvider
     .post({
