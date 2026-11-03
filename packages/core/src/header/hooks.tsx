@@ -24,10 +24,10 @@ import {useNavigation} from '../hooks/use-navigation';
 import {fetchJsonFieldsOfModel} from '../forms';
 import {
   fetchModel,
-  fetchActionPrint,
   fetchDefaultFilters,
   fetchMetaFilters,
   fetchViewContext,
+  searchActivePrintingTemplates,
 } from '../api';
 import {PopupFilters, PopupPrintTemplate} from '../components';
 import {headerActionsProvider} from './HeaderActionsProvider';
@@ -221,27 +221,22 @@ const usePrintingGenericAction = (isConnected: boolean) => {
 
         if (modelId == null || model == null) return _defaultAction;
 
-        const {templateSet, fileName}: any = await fetchActionPrint({
+        const hasActiveTemplates = await searchActivePrintingTemplates({
           model,
-          id: modelId,
-        });
+        })
+          .then(res => res?.data?.total > 0)
+          .catch(() => false);
 
         return {
           ..._defaultAction,
           hideIf:
             options?.disablePrint ||
-            (templateSet == null && fileName == null) ||
+            !hasActiveTemplates ||
             !online.isEnabled ||
             !isConnected,
           onPress: () => {},
           popupComponent: props => (
-            <PopupPrintTemplate
-              {...props}
-              model={model}
-              modelId={modelId}
-              templateSet={templateSet}
-              fileName={fileName}
-            />
+            <PopupPrintTemplate {...props} model={model} modelId={modelId} />
           ),
         };
       },
