@@ -70,7 +70,7 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   const {base: baseConfig} = useSelector(state => state.appConfig);
 
   const [stockLocation, setStockLocation] = useState(
-    user?.workshopStockLocation,
+    user?.workshopStockLocation ?? user?.defaultStockLocation,
   );
   const [companyId, setCompany] = useState(user.activeCompany?.id);
 
