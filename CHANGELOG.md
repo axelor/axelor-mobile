@@ -3,6 +3,21 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.11] (2026-11-04)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Print generic action: only generate the print on demand instead of on each record opening
+- UploadFileInput: display an error message when the file could not be uploaded
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Product stock details: pre-fill the stock location with the user's default stock location when the workshop stock location is empty
+
 ## [9.1.10] (2026-10-30)
 
 ### @axelor/aos-mobile-core
@@ -460,6 +475,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.11]: https://github.com/axelor/axelor-mobile/compare/9.1.10...9.1.11
 [9.1.10]: https://github.com/axelor/axelor-mobile/compare/9.1.9...9.1.10
 [9.1.9]: https://github.com/axelor/axelor-mobile/compare/9.1.8...9.1.9
 [9.1.8]: https://github.com/axelor/axelor-mobile/compare/9.1.7...9.1.8
