@@ -3,6 +3,21 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.27] (2026-11-04)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Print generic action: only generate the print on demand instead of on each record opening
+- UploadFileInput: display an error message when the file could not be uploaded
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Product stock details: pre-fill the stock location with the user's default stock location when the workshop stock location is empty
+
 ## [8.4.26] (2026-10-30)
 
 ### @axelor/aos-mobile-core
@@ -929,6 +944,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.27]: https://github.com/axelor/axelor-mobile/compare/8.4.26...8.4.27
 [8.4.26]: https://github.com/axelor/axelor-mobile/compare/8.4.25...8.4.26
 [8.4.25]: https://github.com/axelor/axelor-mobile/compare/8.4.24...8.4.25
 [8.4.24]: https://github.com/axelor/axelor-mobile/compare/8.4.23...8.4.24

@@ -82,8 +82,8 @@ android {
         applicationId "com.aosmobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 76
-        versionName "8.4.26"
+        versionCode 77
+        versionName "8.4.27"
     }
     signingConfigs {
         debug {
