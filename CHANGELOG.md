@@ -3,6 +3,21 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.29] (2026-11-04)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Print generic action: only generate the print on demand instead of on each record opening
+- UploadFileInput: display an error message when the file could not be uploaded
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Product stock details: pre-fill the stock location with the user's default stock location when the workshop stock location is empty
+
 ## [8.5.28] (2026-10-30)
 
 ### @axelor/aos-mobile-core
@@ -806,6 +821,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.29]: https://github.com/axelor/axelor-mobile/compare/8.5.28...8.5.29
 [8.5.28]: https://github.com/axelor/axelor-mobile/compare/8.5.27...8.5.28
 [8.5.27]: https://github.com/axelor/axelor-mobile/compare/8.5.26...8.5.27
 [8.5.26]: https://github.com/axelor/axelor-mobile/compare/8.5.25...8.5.26

@@ -1,5 +1,0 @@
-{
-  "title": "UploadFileInput: display an error message when the file could not be uploaded",
-  "type": "fix",
-  "packages": "core"
-}
