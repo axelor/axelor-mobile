@@ -341,4 +341,7 @@ export const stock_modelAPI: ObjectFields = {
     ),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
+  auth_user: schemaContructor.object({
+    defaultStockLocation: schemaContructor.subObject(),
+  }),
 };
