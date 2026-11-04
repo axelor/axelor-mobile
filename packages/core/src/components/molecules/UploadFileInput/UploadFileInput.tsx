@@ -41,7 +41,7 @@ import {
 const DEFAULT_MAX_FILE_SIZE = 5000000;
 const BUTTON_SIZE = 28;
 
-const isMetaFile = file => {
+const isMetaFile = (file: any) => {
   return (
     file != null &&
     typeof file === 'object' &&
@@ -50,7 +50,7 @@ const isMetaFile = file => {
   );
 };
 
-const formatFileSize = (size: number): string => {
+const formatFileSize = (size: number): string | undefined => {
   const _size = Math.abs(size);
 
   const labels: string[] = ['octets', 'ko', 'Mo', 'Go', 'To'];
@@ -106,7 +106,7 @@ const UploadFileInput = ({
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [selectedFile, setSelectedFile] = useState(defaultValue);
-  const [sizeError, setSizeError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const _required = useMemo(
     () => required && selectedFile == null,
@@ -146,6 +146,8 @@ const UploadFileInput = ({
       size: number;
       base64: string;
     }) => {
+      setErrorMessage(null);
+
       try {
         if (returnBase64String) {
           manageFileLocally && setSelectedFile(file);
@@ -163,9 +165,11 @@ const UploadFileInput = ({
         onUpload(response);
       } catch (error) {
         console.log('Could not upload the file:', error);
+        setErrorMessage(I18n.t('Base_FileUploadError'));
       }
     },
     [
+      I18n,
       baseUrl,
       jsessionId,
       manageFileLocally,
@@ -185,13 +189,16 @@ const UploadFileInput = ({
       };
 
       if (_file.size < _maxFileSize) {
-        setSizeError(false);
         handleUpload(_file);
       } else {
-        setSizeError(true);
+        setErrorMessage(
+          I18n.t('Base_FileSizeUploadError', {
+            maxSize: formatFileSize(_maxFileSize),
+          }),
+        );
       }
     },
-    [_maxFileSize, handleUpload, returnBase64String],
+    [I18n, _maxFileSize, handleUpload, returnBase64String],
   );
 
   const handleCameraUpload = useCallback(
@@ -320,11 +327,9 @@ const UploadFileInput = ({
           )}
         </View>
       </View>
-      {sizeError && (
+      {!checkNullString(errorMessage) && (
         <Text textColor={Colors.errorColor.background} style={styles.error}>
-          {I18n.t('Base_FileSizeUploadError', {
-            maxSize: formatFileSize(_maxFileSize),
-          })}
+          {errorMessage}
         </Text>
       )}
     </View>
