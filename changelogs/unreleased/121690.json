@@ -1,5 +1,0 @@
-{
-  "title": "Product stock details: pre-fill the stock location with the user's default stock location when the workshop stock location is empty",
-  "type": "feat",
-  "packages": "stock"
-}

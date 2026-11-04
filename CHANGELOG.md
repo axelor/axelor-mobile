@@ -3,6 +3,21 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.24] (2026-11-04)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Print generic action: only generate the print on demand instead of on each record opening
+- UploadFileInput: display an error message when the file could not be uploaded
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Product stock details: pre-fill the stock location with the user's default stock location when the workshop stock location is empty
+
 ## [9.0.23] (2026-10-30)
 
 ### @axelor/aos-mobile-core
@@ -586,6 +601,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.24]: https://github.com/axelor/axelor-mobile/compare/9.0.23...9.0.24
 [9.0.23]: https://github.com/axelor/axelor-mobile/compare/9.0.22...9.0.23
 [9.0.22]: https://github.com/axelor/axelor-mobile/compare/9.0.21...9.0.22
 [9.0.21]: https://github.com/axelor/axelor-mobile/compare/9.0.20...9.0.21
