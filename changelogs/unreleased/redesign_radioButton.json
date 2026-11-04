@@ -1,5 +1,0 @@
-{
-  "title": "RadioButton: highlight the selected option with a filled background and a bold colored label",
-  "type": "refactor",
-  "packages": "ui"
-}

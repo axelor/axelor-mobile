@@ -1,5 +1,0 @@
-{
-  "title": "ViewAllContainer: flatten the design and add an isFormWrapper option to render without a card",
-  "type": "refactor",
-  "packages": "ui"
-}

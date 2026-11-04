@@ -1,5 +1,0 @@
-{
-  "title": "Header: redesign navigation bar with themed action buttons and improved dropdown menu",
-  "type": "refactor",
-  "packages": "core"
-}

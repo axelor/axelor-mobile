@@ -1,5 +1,0 @@
-{
-  "title": "ActionSheet: add headerChildren props to display a content recap above the action list",
-  "type": "feat",
-  "packages": "ui"
-}

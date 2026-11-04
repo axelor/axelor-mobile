@@ -1,5 +1,0 @@
-{
-  "title": "Stepper: redesign the dropdown layout, highlight the active step and drop the isCardBackground prop",
-  "type": "refactor",
-  "packages": "ui"
-}

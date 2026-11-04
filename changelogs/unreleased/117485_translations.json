@@ -1,5 +1,0 @@
-{
-  "title": "Translations: stop escaping special characters, such as apostrophes, in the values inserted into a translated message",
-  "type": "fix",
-  "packages": "core"
-}

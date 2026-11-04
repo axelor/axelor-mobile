@@ -1,5 +1,0 @@
-{
-  "title": "SettingsScreen: redesign user preferences as grouped cards with a connection footer",
-  "type": "refactor",
-  "packages": "core"
-}

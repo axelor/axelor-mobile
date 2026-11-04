@@ -1,5 +1,0 @@
-{
-  "title": "ToggleSwitch: redesign as a segmented control highlighting the active option with a bold colored label",
-  "type": "refactor",
-  "packages": "ui"
-}

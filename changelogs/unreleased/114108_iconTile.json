@@ -1,5 +1,0 @@
-{
-  "title": "IconTile: add a new component to display an icon inside a colored rounded tile",
-  "type": "feat",
-  "packages": "ui"
-}

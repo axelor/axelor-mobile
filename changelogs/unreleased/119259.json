@@ -1,5 +1,0 @@
-{
-  "title": "Control entry: display the studio fields of the line when its control type has no values to fill",
-  "type": "feat",
-  "packages": "quality"
-}

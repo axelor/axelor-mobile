@@ -1,5 +1,0 @@
-{
-  "title": "Inputs: restyle generic input components with new design",
-  "type": "refactor",
-  "packages": ["ui", "core"]
-}

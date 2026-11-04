@@ -1,5 +1,0 @@
-{
-  "title": "Planning: rework the design of the agenda view and improve its performance",
-  "type": "refactor",
-  "packages": "core"
-}

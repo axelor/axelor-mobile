@@ -1,5 +1,0 @@
-{
-  "title": "Stock correction: fix the tracking number selection that prevented creating a correction",
-  "type": "fix",
-  "packages": "stock"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Switch: use the full primary color when enabled for a stronger active state",
-  "type": "refactor",
-  "packages": "ui"
-}

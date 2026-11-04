@@ -1,5 +1,0 @@
-{
-  "title": "Alert: redesign the header with an icon tile close button and a cleaner spacing layout",
-  "type": "refactor",
-  "packages": "ui"
-}

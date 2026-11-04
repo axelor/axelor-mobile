@@ -1,489 +1,275 @@
 ---
-title: 9.1.0
+title: 9.2.0
 tags: Changelog
 ---
 
-## [9.1.11] (2026-11-04)
+## [9.2.0] (2026-11-04)
+
+This release brings a major update to the project’s dependencies, including React Native, now upgraded to version 0.87.x.
+
+<details>
+The application now runs on React Native 0.87.1 with Reanimated 4.4.1, Worklets 0.9.2 and Gesture Handler 3.0.1, and requires Node 22.11 or later. With Reanimated 4.4.1, the side menu could randomly stay open on Android and stop closing when selecting an entry or tapping outside of it. Applications built from these packages must disable the corresponding Reanimated options by adding the following block to the root package.json, then rebuild the native application (and run pod install on iOS): "reanimated": {"staticFeatureFlags": {"USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": false, "FORCE_REACT_RENDER_FOR_SETTLED_ANIMATIONS": false}}
+</details>
 
 ### @axelor/aos-mobile-core
-
-#### Fixes
-
-- Print generic action: only generate the print on demand instead of on each record opening
-- UploadFileInput: display an error message when the file could not be uploaded
-
-### @axelor/aos-mobile-stock
 
 #### Features
 
-- Product stock details: pre-fill the stock location with the user's default stock location when the workshop stock location is empty
+- FormView: display the form content on a rounded card background, with an option to hide it
+- Screens: allow each screen to choose the orientation in which it is displayed
 
-## [9.1.10] (2026-10-30)
+<details>
+The application is no longer locked in portrait by the system itself: a screen now declares the orientation it wants through the orientation key of its definition, and the navigation applies it when the screen is opened. A screen can stay in portrait, which remains the behaviour when nothing is declared, be forced to landscape, or follow the device, in which case turning the phone turns the screen even when the automatic rotation of the system is disabled. Screens outside of the module navigation, such as the login and the session management, stay in portrait.
+</details>
 
-### @axelor/aos-mobile-core
+- Settings: allow modules to register their own preferences (pickers, switches and buttons) on the settings screen
+
+<details>
+The settings screen now builds its content from registered settings items instead of a fixed layout. Each item can define its type, order and a condition to be displayed, so additional applications can contribute their own preferences without overriding the screen.
+</details>
+
+- User profile: allow modules to register their own elements on the user profile screen
+
+<details>
+The user profile screen now builds its content from registered items instead of expecting an application to replace the whole screen. Each item can define the zone it belongs to (inside the user card or as a standalone card), its order and a condition to be displayed, so several applications can contribute their own elements at the same time without depending on each other. The default stock location selector of the stock application is now registered this way and no longer overrides the user profile screen.
+</details>
+
+#### Changes
+
+- Header: redesign navigation bar with themed action buttons and improved dropdown menu
+- Screen: remove shaded header option to match new design
+- Drawer: redesign the side navigation menu with a cleaner module rail and menu panel
+- Session screen: redesign the connection selection screen with rounded session cards, a labelled add button and a cleaner footer
+- Inputs: restyle generic input components with new design
+- ShortcutsCard: redesign shortcuts with icon tiles and bold labels
+- Toast: redesign with a custom layout featuring a colored accent bar, a tinted icon tile and per-type icons
+- Planning: rework the design of the agenda view and improve its performance
+- Planning: group the filters, the assignation switch and the date navigation in a single header
+- FocusScreen: remove unused component
+
+<details>
+The FocusScreen component has been removed as it was not used anywhere. Screens needing to fetch data when they get the focus can combine Screen with the useIsFocused hook.
+</details>
+
+- SocialNetworkLinks: redesign the Google and LinkedIn shortcuts as icon tiles
+- Field parser: expose the entity version returned as $version by the API under the standard version field, on nested objects too
+- HeaderBand: restyle as a filled band with bold colored label
+- SettingsScreen: redesign user preferences as grouped cards with a connection footer
 
 #### Fixes
 
-- Period input: compare dates without time by default to avoid a wrong period error on single-day periods
+- Translations: stop escaping special characters, such as apostrophes, in the values inserted into a translated message
+- Contacts: remove the contacts permissions on Android
+
+<details>
+The READ_CONTACTS and WRITE_CONTACTS permissions are no longer declared nor requested on Android to comply with the Google Play contacts permission policy. Adding a contact still opens the native contact form, which saves the contact without requiring any permission from the application.
+</details>
+
+- Form view: panels with colspans summing to 12 are displayed on the same row again
+- PeriodInput: fix the crash raised when changing a date on a period without a default interval
+
+<details>
+The default interval was computed from the defaultIntervalHours property with a check excluding null only, so an absent property produced a NaN interval. That interval was then considered as provided, and changing the start date derived an end date from it, which was an invalid date crashing the date input as soon as it was displayed. No caller provides that property, so every period input was affected.
+</details>
 
 ### @axelor/aos-mobile-ui
 
 #### Features
 
-- Button: add rightIconName prop to display an icon after the title
-
-### @axelor/aos-mobile-quality
-
-#### Fixes
-
-- Control entry: reduce the size of the sample navigation buttons and enlarge the validation button
-
-## [9.1.9] (2026-10-20)
-
-### @axelor/aos-mobile-core
-
-#### Features
-
-- Mass scanner: vibrate and play an error sound when a scan fails
-
-#### Fixes
-
-- DateInput: prevent the popup from closing while selecting a date and restore the previous date on cancel
-- Search and record views: display translated values and avoid duplicate server requests
-- Field permissions: apply the hidden/read-only field rules configured in the ERP when using AOS endpoint
-- Providers: remove store listeners when components unmount
-
-### @axelor/aos-mobile-dms
-
-#### Fixes
-
-- Attached files: wait for the document creation before going back to display the created file instead of the empty directory popup
-
-### @axelor/aos-mobile-quality
-
-#### Fixes
-
-- Quality improvement: save the defect being filled in when validating the form
-
-### @axelor/aos-mobile-hr
-
-#### Fixes
-
-- Leave Request: redirect to the created leave request, or to the list of the created leave requests when several were created, after finishing a request
-- Leave Request: prefill the quantity with the minimum between the available quantity and the quantity to be filled when selecting a leave reason
-- Leave Request: Rename "Missing quantity" to "Quantity to be filled" to make it easier to understand
-
-### @axelor/aos-mobile-stock
-
-#### Fixes
-
-- Internal move: disable the realize button while the request is pending to prevent multiple submissions
-
-## [9.1.8] (2026-09-30)
-
-### @axelor/aos-mobile-core
-
-#### Fixes
-
-- CustomFieldForm: allow displaying several studio field types and keep values of fields not displayed on save
-- Files: keep the session when opening a file behind a server redirect
-- Files: allow opening files whose name contains special characters
-- Web views: load them in the background after login so they stay available without connection
-- Web views: carry over the ERP session on iOS instead of asking the user to sign in again
-
-### @axelor/aos-mobile-dms
-
-#### Fixes
-
-- DMS: recognize uppercase file extensions for the document icon, color and type filters
-
-### @axelor/aos-mobile-sale
-
-#### Fixes
-
-- Catalog & cart: display the sale price and currency of the active company when they are managed per company
-
-### @axelor/aos-mobile-quality
-
-#### Fixes
-
-- Quality improvement: fill product & client when coming from a MO or operation
-- Control entry: display the attrs fields of the line alongside the entryAttrs ones
-
-## [9.1.7] (2026-09-16)
-
-### @axelor/aos-mobile-ui
-
-#### Fixes
-
-- Increment: send the typed quantity to the parent on each keystroke
+- IconTile: add a new component to display an icon inside a colored rounded tile
+- ActionSheet: add headerChildren props to display a content recap above the action list
+- HtmlViewer: add a new component to display read-only HTML content, scrollable within a bounded height
+- CalendarRangePicker: add a new scrollable multi-month calendar to pick a date range visually, with coloured day marks, a collapsible legend and a shortcut back to today
 
 <details>
-The input only propagated its value when it lost focus, so a quantity typed then validated straight from a save button was ignored and the previous value was submitted. The value is now propagated while typing, and the external value no longer overwrites the field while it is focused.
+Days can be marked by half, morning and afternoon carrying their own colour, so a day shared between two records stays readable. Days that cannot be picked are shown as a round badge above the marks and can carry their own colour to tell several kinds apart. Pressing a day that already holds records opens a sheet listing them, from which the free half of the day can still be taken, and a range is shortened so that it never spans a day that is already full.
 </details>
 
+- Picker: allow a picker to display more than plain text for the selected value and for each option
 
-## [9.1.6] (2026-09-10)
+<details>
+A picker can now be given a way to render its items, so an option can carry a coloured badge or any other indication beside its label. The rendering applies both to the value shown once the picker is closed and to every option in the list, which lets a choice be made on more than the label alone. Pickers that were not given one keep displaying plain text exactly as before.
+</details>
 
-### @axelor/aos-mobile-manufacturing
+- WeekDayPicker: add a new week strip to browse a period day by day, each day showing at a glance how much of it is taken
+
+<details>
+The strip shows one week at a time and is swiped from week to week, the selection following along so the details below always describe a visible day. Each day carries a circular gauge whose inner disc grows with the share of the day already taken; a day on which nothing is expected shows a coloured dot instead, so several kinds of day off can be told apart. Days falling outside the period are still shown, greyed out and inert, which keeps a period starting mid-week readable. The strip carries its own navigation: the week being browsed is named above it and can be changed one week at a time without swiping, and a shortcut brings the selection back to today whenever today falls inside the period and is not already shown.
+</details>
+
+- NumberChevronInput: add inputStyle prop to customize the inner input style
+- GanttView: add a new component to display a planning as a timeline, with collapsible groups, week and month zooms, non-working days and a daily indicator per line
+
+<details>
+The timeline is browsed week by week or month by month, the scale naming the weeks and the months it spans, and the display can be brought back to today at any time. Lines are gathered in groups which can be collapsed one by one or all at once, a group being able to appear collapsed from the start, and a filter keeps only the lines which actually carry items. Items are drawn as bars over the days they span, halves of days included, and items which overlap are stacked on separate lines instead of hiding one another, the height of the line following the number of lines needed. Each line, and the line of its group, can carry a daily indicator under the bars, a coloured cell per day with its own label, to follow a value such as a load day by day. Non-working days are shaded both on the lines and on the line of their group, and the legend, the filters and the period navigation are gathered in a single header, the filters given by the screen being able to sit in a collapsible part of it. In landscape, the legend, the filters and the period navigation leave the header for a panel on the right of the screen, which can be folded down to a handle so that the whole width is left to the timeline, and the zoom, when the screen does not impose one, follows the orientation: the month in landscape, the week in portrait.
+</details>
+
+- SwitchCard: allow the size, the colour and the number of lines of the title to be customized
+- Badge: allow customizing the text size
+- GroupedCard: add a new component to group several items into a single card separated by horizontal rules
+- NumberChevronInput: allow the keyboard to be turned off so the value can only be changed with the chevrons
+
+<details>
+The input can now refuse the keyboard while staying usable, the value being taken from the chevrons above and below it. Each digit also keeps a fixed width and is centered instead of taking a share of the space available, so a duration keeps the same shape whatever the width it is given.
+</details>
+
+- RightIconButton: add a showWrapper option to display the button without its card background
+- SwitchCard: add a showWrapper option to display the switch without its card background
+
+#### Changes
+
+- Inputs: restyle generic input components with new design
+- HeaderContainer: redesign the filter header as a floating inset card with a circular expand button
+- Badge: restyle as a filled, content-hugging pill with bold colored label
+- ObjectCard: redesign cards with rounder corners and a rounded left accent bar
+- AutoCompleteSearch & Picker: restyle the results dropdown with thin dividers, a lighter border and no shadow
+- ScrollList: use the theme color for loading indicators and a muted color for the end-of-list message
+- SimpleIndicator: redesign as a row layout with a colored accent bar and centered value and title
+- DropdownCard: redesign as a single card with a leading icon tile and content separated by a horizontal rule
+- Alert: redesign the header with an icon tile close button and a cleaner spacing layout
+- Checkbox: redesign with a lighter layout and a smaller default icon
+- Theme: use the light theme as the default instead of the purple theme
+- HorizontalRuleText: restyle with gap-based spacing and pass the color directly to the rules
+- Label: restyle with a solid colored border and a softer background fill
+- Theme: redesign the light theme with a new color palette and white background
+- NumberBubble: thin the border and auto-fit the number font size
+- ProgressBar: flatten the design by removing the shadow and using a thinner border and a slimmer animated stripe
+- ProgressCircle: redesign with a smaller default size and a track tinted from the progress color
+- QuantityCard: redesign with a horizontal rule separator and an isFormWrapper option to render without a card
+- Screen: remove the top spacing option to match new design
+- StarScore: reduce the default star size and add spacing between stars
+- Stepper: redesign the dropdown layout, highlight the active step and drop the isCardBackground prop
+- ViewAllContainer: flatten the design and add an isFormWrapper option to render without a card
+- ViewAllEditList: redesign the lines with icon tile actions and add an isFormWrapper option
+- ChipSelect: redesign chips with uniform height and width based on the available space
+- RadioButton: highlight the selected option with a filled background and a bold colored label
+- ToggleSwitch: redesign as a segmented control highlighting the active option with a bold colored label
+- Switch: use the full primary color when enabled for a stronger active state
+- Theme: reduce the default text sizes to match the new design scale
 
 #### Fixes
 
-- ManufOrder & OperationOrder: avoid undefined issues on details view
-
-## [9.1.5] (2026-09-08)
-
-### @axelor/aos-mobile-core
-
-#### Features
-
-- Action requests: add getActionMessage helper to retrieve the message returned by an action response
+- Themes: make the text laid over a light coloured background readable again
 
 <details>
-An action can answer with a message instead of applying its changes. The helper reads that message from the response and returns it with its severity, so that a module can inform the user rather than silently treating the refusal as a result.
+Coloured buttons, labels, chips, number bubbles and info bubbles paint a light shade of their colour as background and write over it. The text was still using the shade meant for a solid background, which on most colours was white and therefore almost invisible - a contrast of 1.1 to 1 on a success or an error colour. Every theme now writes in black over a light background. A theme configured on the server keeps deciding on its own, but the decision is now taken on the light shade as it is actually drawn rather than on the plain colour, which also fixes the reverse case of black text over a light shade in dark mode.
 </details>
 
+- Custom colours: ignore values which are not colours, accept colours defined with transparency and keep a solid light shade
+- Label: hide the icon when the label has no icon to display
+- NumberChevronInput: let the input be emptied while typing instead of falling back to its lowest value
+
+### New package : @axelor/aos-mobile-team
+
+This package is compatible with AOS from version 9.2.0 and requires team management to be enabled in the base app configuration. It allows users to manage their team tasks from the mobile application: browse them with search and filters on status, priority and assignee, create or edit them, and follow their lifecycle (start, finish, reopen, cancel or delete).
+
+### @axelor/aos-mobile-maintenance
+
+#### Changes
+
+- Planning: group the filters, the assignation switch and the date navigation in a single header
+
+#### Fixes
+
+- Maintenance request form: the selected equipment card no longer stretches to fill the screen
+
+### @axelor/aos-mobile-project
+
+#### Changes
+
+- Planning: group the filters, the assignation switch and the date navigation in a single header
+
+#### Fixes
+
+- Project activities: resolve issue in history fetching
 
 ### @axelor/aos-mobile-intervention
 
-#### Fixes
+#### Changes
 
-- Equipment: display the update action instead of the creation one when the form is opened on an existing equipment
-
-<details>
-When duplicating an equipment, the form of the copy offered the creation action, so validating it added yet another equipment. The available action now depends on the equipment actually opened in the form.
-</details>
-
+- Planning: group the filters, the assignation switch and the date navigation in a single header
 
 ### @axelor/aos-mobile-quality
 
-#### Fixes
+#### Features
 
-- Control entry: display the message returned by the server when the conformity evaluation fails
+- Control entry: display the studio fields of the line when its control type has no values to fill
+
+#### Changes
+
+- Control entries: the values to fill on a sample now follow the fields configured on the control type
+
+<details>
+The values measured on a sample are no longer free custom fields. Each control type carries its own list of fields, each one a decimal, a text, a yes/no or a choice among a list of allowed values, and the form of a sample line is built from that list, in the configured order and with the required ones marked as such. Two collapsed panels sit above the fields: the conformity criteria of the control type when one is described, and the values expected by the control plan line, so the operator can compare a measure to its target without leaving the entry. Validating a line records the measures and returns its conformity in a single step, and the result of the sample follows immediately. This requires the matching web version, on which the control entry configuration has been restructured and a migration script must be run before starting the application.
+</details>
 
 ### @axelor/aos-mobile-hr
 
 #### Features
 
-- Leave request: allow the cancellation of a request on every status except canceled
-- Leave request: add the return to draft status action on refused and canceled requests
-
-#### Fixes
-
-- Leave request: recompute the duration when the period of the request is modified
-- Leave request: prevent the modification of a request once it has been sent for validation
+- Leave requests: allow the complete request screen to be opened on a given period and to report the creation to its caller
 
 <details>
-Any leave request could be modified from the mobile application, including validated ones. As in the web application, a request can now be modified when it is in draft or canceled status, and when it is waiting validation by the user in charge of validating it. Validated and refused requests can no longer be modified.
+The screen now reads a fromDate and a toDate from its route to prefill the period, and an eventName on which it emits the created period before closing itself, so a screen offering its own way to pick a period can refresh itself afterwards. Opened from its own menu, without those parameters, the screen behaves exactly as before.
 </details>
 
-
-### @axelor/aos-mobile-manufacturing
-
-#### Fixes
-
-- Operation order: display the error returned by the server when the timer status update fails
-
-## [9.1.4] (2026-08-21)
-
-### @axelor/aos-mobile-core
-
-#### Features
-
-- Forms: place fields and panels on the 12 columns grid with their colSpan
+- Employees: allow a list of employees to be restricted to the ones a given user manages
 
 <details>
-Custom fields and custom panels configured in the studio now follow the colSpan defined on the ERP, on the same scale of 12 columns as the web: several fields share a line when their colSpan allow it, and the next one moves to a new line when the line is full. Fields and panels without any colSpan keep their current full width display, so existing forms are unchanged. The colSpan can also be set on the fields of the forms written in the applications, where it was previously only available on the panels.
+The employee search accepts a manager, so a screen can show only the employees a user is responsible for. The same rule already applied to the leave requests waiting for validation, where a user who is not an HR manager only sees the requests of the employees they manage, and both lists now share it.
+</details>
+
+- Timesheet: allow another screen to create a timesheet and to add a line on a given day
+
+<details>
+The timesheet creation can now report the timesheet it created to the screen that asked for it instead of always opening the timesheet details, and the line form accepts the day the line has to be created on together with the values it has to open prefilled with, the project among them. A screen browsing a timesheet day by day can therefore create the timesheet it needs and fill it without ever leaving its own flow, the saved line being reported back to it.
 </details>
 
 #### Changes
 
-- Custom fields form: improve display and input performances on forms with a high number of fields
+- Leave request: use AOS request to return to draft status
+- Filters: display the field name as placeholder text inside status pickers instead of a separate title label
+- Leave requests: tell the draft, refused and cancelled statuses apart more clearly
 
 <details>
-The metadata of a model (field configuration, selection values, field types) is now fetched once per session and shared by every form of that model, so reopening a form no longer waits for them. Selection values are also resolved before the form is displayed, which avoids the fields being filled in a second time after the form appears.
+The three statuses were painted with colours that the new design uses for other meanings. A draft request now carries the information colour, a refused one the error colour and a cancelled one the secondary colour, which also keeps them readable when a request is shown as a mark on a calendar.
 </details>
 
 #### Fixes
 
-- Forms: fix the widgets which were overflowing when a field does not take the whole width
-- Custom fields form: display a selection field as a picker even when it is not flagged as a selection field
-
-### @axelor/aos-mobile-ui
-
-#### Fixes
-
-- Forms: fix the widgets which were overflowing when a field does not take the whole width
-- Picker: improve the display and the selection when the field is narrow
+- Leave requests: send the period of a request as a date instead of a UTC instant, which shifted it to the day before
 
 <details>
-On a narrow picker, the title kept its full width and pushed the icon onto the border of the button. The title now gives its space back to the icon, and displays on several lines instead of being truncated. The selection of such a field also opens in a modal rather than in a dropdown under the field, as the date input already did: the list no longer covers the neighbour fields, the options are readable in full, and the field no longer grows to make room for the list when it opens. A picker taking the whole width keeps its dropdown.
+The endpoints computing the duration, computing the available days and creating a request all expect a date without time. A Date was sent instead, serialized as a UTC instant: for any timezone east of UTC, the date read by the server was the day before as soon as the time of day was earlier than the offset. The period is now formatted as a plain date before being sent.
 </details>
 
-## [9.1.3] (2026-08-07)
+- Leave requests: keep the filled request on screen when its creation fails
 
-### @axelor/aos-mobile-core
+<details>
+The creation screen emptied itself as soon as the request was sent, without waiting for the answer. A request refused by the server therefore left an empty form and no way to know what had been asked, which forced the whole request to be typed again.
+</details>
 
-#### Fixes
+- Timesheet: wait for a line to be saved before leaving its form
 
-- Header: hide the saved filters action on screens that do not declare it, so a form used for both creation and edition shows no generic action in creation mode
+<details>
+The form closed as soon as the creation or the update was sent, so the timesheet it returned to was refreshed before the line was actually saved and could show the previous state of the line.
+</details>
 
-### @axelor/aos-mobile-quality
-
-#### Fixes
-
-- ControlEntry: sort lines by plan line priority instead of id
-
-## [9.1.2] (2026-07-31)
-
-### @axelor/aos-mobile-core
+### @axelor/aos-mobile-crm
 
 #### Changes
 
-- Field parser: expose the entity version returned as $version by the API under the standard version field, on nested objects too
-
-#### Fixes
-
-- Custom forms: correctly evaluate display conditions using fields which have no value yet
-
-<details>
-A condition referencing a field that was still empty could not be evaluated and was considered as not verified. Empty fields are now taken into account as empty values, so a condition such as 'this field is not filled' behaves as expected on a blank form.
-</details>
-
-- Custom forms: apply the visibility conditions configured on panels
-
-<details>
-Panels configured as hidden, or with a display or hide condition, were always visible on mobile. They now follow the same visibility rules as the fields they contain.
-</details>
-
-### @axelor/aos-mobile-quality
-
-#### Changes
-
-- Control entry: harmonize the display of control entries and samples with the other lists of the application
-
-#### Fixes
-
-- ControlEntry: add missing screen config to get generic header actions on details and control filling views
+- Planning: group the filters, the assignation switch and the date navigation in a single header
+- Filters: display the field name as placeholder text inside status pickers instead of a separate title label
 
 ### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Planning: group the filters, the assignation switch and the date navigation in a single header
 
 #### Fixes
 
 - Stock correction: fix the tracking number selection that prevented creating a correction
 
-## [9.1.1] (2026-07-22)
-
-### @axelor/aos-mobile-stock
-
-#### Fixes
-
-- Stock move: refresh record before realize to avoid version conflict
-- Stock move lines: filter completed lines based on their status instead of quantity
-
-## [9.1.0] (2026-06-22)
-
-### @axelor/aos-mobile-core
-
-#### Features
-
-- Global tools: allow use of async function to define hideIf condition
-- Scan helpers: improve activation hook to provide clear function
-- SearchListView: add possibility to hide search bar
-- SearchListView: add possibility to disabled scroll behavior through a simplified mode option
-- SearchListView: add possibility to provide style to container
-- SearchListView: add possibility to hide header container
-- ModelApi: add getFields method to retrieve model field definitions
-- Slice helpers: add helper to generate fetch record cases
-- Panels: add dynamic hide and readonly management
-- Slice helpers: add key-based sub-state support to generateInifiniteScrollCases
-- Studio buttons: improve management of action call and manage state refresh
-- FormView: add possibility to modify multiple values at once with onChange on custom components
-- GridListView: add new redux-connected grid list view template
-- Standard requests: add support for array sortKey in search helper
-- Grouping middleware: automatically merge duplicated records from flattened API responses
-- Files: add a configurable file provider to centralize file opening, download and preview
-
-<details>
-File actions can now go through a single file provider obtained with getFileApi()/useFileApi() instead of building meta-file URLs and passing connection data manually. A default online provider (AopFileApi) is registered out of the box, and a GatewayFileApi allows chaining several providers with automatic fallback to the first available one, laying the groundwork for offline file handling (new AppMobileOffline app config).
-</details>
-
-- User: expose the active user and active company through a user provider accessible outside React components
-
-<details>
-A userProvider singleton now keeps the active user in sync with the user store and exposes getUser() and getActiveCompany(), allowing access to the connected user and active company from non-React code. It is populated when the active user is fetched and cleared on logout.
-</details>
-
-- Module: add quick navigation option to skip inner menu and open the first accessible menu directly
-- Menus: add ERP access entry to open the web ERP from the mobile application
-- Custom components: add a new component CustomMultiPicker to manage multi selection
-- Custom components: add more props on custom SearchBar & Picker components
-- API helpers: add possiblity to provide string array instead of key to define model fields
-- API helpers: add possiblity to provide string array instead of key to define search fields
-- Navigation: add navigateAndReset method to remove screens from stack
-
-#### Changes
-
-- Files: open, download and preview files through the file provider in existing components
-
-<details>
-openFileInExternalApp and downloadFileOnPhone now take a simple file reference {id, fileName} and no longer require auth credentials, delegating to the shared file utils. Components displaying or downloading files (documents, images, attachments, upload input...) have been migrated to use fileApi.openInExternalApp / fileApi.saveToDevice, and image URIs are now resolved through the file provider.
-</details>
-
-- Connection: centralize the network connection state so the whole application shares a single source of truth
-
-<details>
-The internet connection status is now stored once and shared across the application instead of being checked independently in several places. This keeps the "No connection" banner and connection-dependent features in sync and prepares the ground for offline handling.
-</details>
-
-#### Fixes
-
-- Custom form views: resolve relational search fields from the model and avoid failures when none are defined
-
-<details>
-Custom form view search bars now build their request through the standard search builder and only filter on search fields when they are actually defined, instead of assuming a hardcoded 'name' field. When no search field is returned for the target model, the displayed value falls back to fullName or name, preventing empty or broken search results.
-</details>
-
-### @axelor/aos-mobile-ui
-
-#### Features
-
-- CardIconButton: add possibility to use component without the card wrapper
-- GridHeader: extract and export grid header as a standalone component
-- GridView: scale columns to fill available container width
-- GridView: export Column type as GridViewColumn
-- GridView: improve dynamic width calculation
-- GridView: add containerWidth prop to support rendering in non-fullscreen containers
-- GridView: add option to hide the header row
-- GridView: add custom cell renderer support on columns
-- GridView: add custom header renderer support on columns
-- GridView: add row press support
-- GridView: add sortable column header support
-- GridView: add transparent mode to render without card wrapper
-- IconButton: add possibility to use component without the card wrapper
-- ScrollGridView: add new paginated grid view component
-- ActionSheet: add a new component to present a list of actions inside a bottom sheet
-- BottomSheet: add a new bottom sheet component with drag-to-dismiss and animated backdrop
-- ObjectCard: export content interfaces
-
-#### Changes
-
-- UnorderedList: enable nested scroll management
-- UnorderedList: add scrollEnabled prop to control scroll behavior
-- ViewAllContainer: make children prop optional
-
-#### Fixes
-
-- IconInput: improve props management by adding optionnals
-- MultiValuePicker: improve style of component
-- KeyboardAvoidingScrollView: allow nested scroll
-- ScrollList: allow nested scroll
-
-### @axelor/aos-mobile-maintenance
-
-#### Features
-
-- Maintenance requests: add planning view with machine unavailability
-
-### @axelor/aos-mobile-dms
-
-#### Features
-
-- Documents: let other modules contribute their own actions to the document action sheet
-
-<details>
-Document actions (favorites, download, rename, delete...) are now exposed through a shared document actions provider, so any module can register its own actions for files and folders instead of passing them as a prop. The document card can disable all its actions at once or hide specific ones by key.
-</details>
-
-- Documents: pressing a document now opens an action sheet (open, add to favorites, download, rename, delete)
-
-<details>
-The document card no longer relies on swipe actions: pressing a document opens a contextual action sheet listing the available actions, including a new "Open" action to view the file directly. When a single action is available it is triggered immediately.
-</details>
-
-### @axelor/aos-mobile-sale
-
-#### Features
-
-- Product: add quick access to stock details when stock application is installed
-- Client: add managed by and for display on details view
-
-#### Changes
-
-- Alternatives barcodes: remove double search bars in favor of simpler search param
-
-### @axelor/aos-mobile-project
-
-#### Features
-
-- Project tasks: add planning menu entry
-
-### @axelor/aos-mobile-intervention
-
-#### Features
-
-- Question: add swap management between questions
-- Question: handle navigation to next question after validation
-- Intervention: add planning menu entry
-
-#### Changes
-
-- Question list: simplify selected range management
-
-### @axelor/aos-mobile-quality
-
-#### Features
-
-- Control entries: add quick access from operation order view
-
-### @axelor/aos-mobile-manufacturing
-
-#### Features
-
-- Operation order: add hazard phrase management
-- Manufacturing order: add hazard phrase management
-
-#### Changes
-
-- Manufacturing order: gives certain components more functionnal autonomy
-
-<details>
-ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and ManufacturingOrderProductionOrderSetView no longer receive navigation callbacks as props. They now handle their own navigation and state internally via useNavigation and useSelector, reducing coupling with ManufacturingOrderDetailsScreen.
-</details>
-
-### @axelor/aos-mobile-stock
-
-#### Features
-
-- Customer delivery: add management of alternatives barcodes on line search
-- Customer delivery: add management of simplified display mode configuration
-- Customer delivery: add possibility to scan carrier tracking number on validation
-- Customer delivery line: add possibility to go to next line on validation
-- Internal move: add management of alternatives barcodes on line search
-- Internal move: add management of simplified display mode configuration
-- Inventories: add management of alternatives barcodes on line search
-- Inventories: add management of simplified display mode configuration
-- Supplier arrival: add management of alternatives barcodes on line search
-- Supplier arrival: add management of simplified display mode configuration
-- Mass picking: add management of alternatives barcodes on line/product search
-- StockMove: add scan management
-- StockMove: add planning menu entry
-- Line navigation: add replace option to remove screens from stack on navigation
-
-#### Changes
-
-- Alternatives barcodes: remove double search bars in favor of simpler search param
-- Customer delivery line: improve refresh management on validation
-
-[9.1.11]: https://github.com/axelor/axelor-mobile/compare/9.1.10...9.1.11
-[9.1.10]: https://github.com/axelor/axelor-mobile/compare/9.1.9...9.1.10
-[9.1.9]: https://github.com/axelor/axelor-mobile/compare/9.1.8...9.1.9
-[9.1.8]: https://github.com/axelor/axelor-mobile/compare/9.1.7...9.1.8
-[9.1.7]: https://github.com/axelor/axelor-mobile/compare/9.1.6...9.1.7
-[9.1.6]: https://github.com/axelor/axelor-mobile/compare/9.1.5...9.1.6
-[9.1.5]: https://github.com/axelor/axelor-mobile/compare/9.1.4...9.1.5
-[9.1.4]: https://github.com/axelor/axelor-mobile/compare/9.1.3...9.1.4
-[9.1.3]: https://github.com/axelor/axelor-mobile/compare/9.1.2...9.1.3
-[9.1.2]: https://github.com/axelor/axelor-mobile/compare/9.1.1...9.1.2
-[9.1.1]: https://github.com/axelor/axelor-mobile/compare/9.1.0...9.1.1
-[9.1.0]: https://github.com/axelor/axelor-mobile/compare/9.0.13...9.1.0
+  [9.2.0]: https://github.com/axelor/axelor-mobile/compare/9.1.11...9.2.0

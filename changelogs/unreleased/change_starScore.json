@@ -1,5 +1,0 @@
-{
-  "title": "StarScore: reduce the default star size and add spacing between stars",
-  "type": "refactor",
-  "packages": "ui"
-}

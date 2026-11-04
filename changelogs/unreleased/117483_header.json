@@ -1,5 +1,0 @@
-{
-  "title": "Planning: group the filters, the assignation switch and the date navigation in a single header",
-  "type": "refactor",
-  "packages": ["core", "crm", "project", "stock", "maintenance", "intervention"]
-}

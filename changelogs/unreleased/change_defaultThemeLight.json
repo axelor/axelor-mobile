@@ -1,5 +1,0 @@
-{
-  "title": "Theme: use the light theme as the default instead of the purple theme",
-  "type": "refactor",
-  "packages": "ui"
-}

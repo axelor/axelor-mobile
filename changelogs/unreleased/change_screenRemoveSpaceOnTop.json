@@ -1,5 +1,0 @@
-{
-  "title": "Screen: remove the top spacing option to match new design",
-  "type": "refactor",
-  "packages": "ui"
-}
