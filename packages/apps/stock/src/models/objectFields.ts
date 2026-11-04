@@ -442,6 +442,7 @@ export const stock_modelAPI: ObjectFields = {
     ),
   }),
   auth_user: schemaContructor.object({
+    defaultStockLocation: schemaContructor.subObject(),
     activeCompany: schemaContructor.subObject().concat(
       schemaContructor.object({
         stockConfig: schemaContructor.subObject().concat(
