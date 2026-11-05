@@ -17,7 +17,7 @@
     "android:bundle": "cd android && ./gradlew app:bundleStoreRelease",
     "android:apk": "cd android && ./gradlew app:assemblePipelineRelease",
     "ios": "react-native run-ios --simulator 'iPhone SE (3rd generation)'",
-    "release": "nx run-many --target=npm-publish --verbose",
+    "release": "bash scripts/publish-packages.sh",
     "test": "jest --silent --updateSnapshot",
     "lint": "nx run-many --target=lint",
     "format": "nx run-many --target=format",
