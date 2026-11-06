@@ -3,6 +3,14 @@ title: 9.2.0
 tags: Changelog
 ---
 
+## [9.2.1] (2026-11-06)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- SelectionContainer: allow scrolling the list on Android when it overflows its parent container
+
 ## [9.2.0] (2026-11-04)
 
 This release brings a major update to the project’s dependencies, including React Native, now upgraded to version 0.87.x.
@@ -272,4 +280,5 @@ The form closed as soon as the creation or the update was sent, so the timesheet
 
 - Stock correction: fix the tracking number selection that prevented creating a correction
 
-  [9.2.0]: https://github.com/axelor/axelor-mobile/compare/9.1.11...9.2.0
+  [9.2.1]: https://github.com/axelor/axelor-mobile/compare/9.2.0...9.2.1
+[9.2.0]: https://github.com/axelor/axelor-mobile/compare/9.1.11...9.2.0
