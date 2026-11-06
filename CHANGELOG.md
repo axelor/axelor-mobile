@@ -3,6 +3,14 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.25] (2026-11-06)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- SelectionContainer: allow scrolling the list on Android when it overflows its parent container
+
 ## [9.0.24] (2026-11-04)
 
 ### @axelor/aos-mobile-core
@@ -601,6 +609,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.25]: https://github.com/axelor/axelor-mobile/compare/9.0.24...9.0.25
 [9.0.24]: https://github.com/axelor/axelor-mobile/compare/9.0.23...9.0.24
 [9.0.23]: https://github.com/axelor/axelor-mobile/compare/9.0.22...9.0.23
 [9.0.22]: https://github.com/axelor/axelor-mobile/compare/9.0.21...9.0.22
