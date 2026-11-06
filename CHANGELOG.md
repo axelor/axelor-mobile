@@ -3,6 +3,14 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.28] (2026-11-06)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- SelectionContainer: allow scrolling the list on Android when it overflows its parent container
+
 ## [8.4.27] (2026-11-04)
 
 ### @axelor/aos-mobile-core
@@ -90,7 +98,6 @@ Panels configured as hidden or readonly, or with a display, hide or readonly con
 The input only propagated its value when it lost focus, so a quantity typed then validated straight from a save button was ignored and the previous value was submitted. The value is now propagated while typing, and the external value no longer overwrites the field while it is focused.
 </details>
 
-
 ### @axelor/aos-mobile-dms
 
 #### Fixes
@@ -113,7 +120,6 @@ The input only propagated its value when it lost focus, so a quantity typed then
 <details>
 When duplicating an equipment, the form of the copy offered the creation action, so validating it added yet another equipment. The available action now depends on the equipment actually opened in the form.
 </details>
-
 
 ### @axelor/aos-mobile-quality
 
@@ -205,7 +211,6 @@ Any leave request could be modified from the mobile application, including valid
 A collapsible 'Shipment details' section is now visible on the supplier arrival details screen, showing the supplier shipment reference and date. An edit button inside this section allows users to fill in or update these fields (with barcode scan support for the reference) at any time before realizing the move.
 </details>
 
-
 #### Fixes
 
 - Supplier arrival: block realization when required shipment details are missing
@@ -213,7 +218,6 @@ A collapsible 'Shipment details' section is now visible on the supplier arrival 
 <details>
 When the AppStock configuration 'isRequiredShipmentSupplierDetails' is enabled, attempting to realize a supplier arrival with a missing shipment reference or date no longer results in a server error. A popup is now displayed to let the user fill in the missing information before proceeding with the realization.
 </details>
-
 
 ## [8.4.21] (2026-04-22)
 
@@ -233,7 +237,6 @@ When the AppStock configuration 'isRequiredShipmentSupplierDetails' is enabled, 
 <details>
 Stock move line lists (customer deliveries, supplier arrivals, internal moves) now fetch rack information for all lines in a single request instead of one request per line. Only the rack field is retrieved, reducing both the number of requests and the size of each response.
 </details>
-
 
 #### Fixes
 
@@ -275,7 +278,6 @@ Stock move line lists (customer deliveries, supplier arrivals, internal moves) n
 <details>
 When several screens had a filter or print action enabled, navigating between them caused all popups to open at once when pressing the action on any screen. Popup visibility is now managed per screen.
 </details>
-
 
 ### @axelor/aos-mobile-purchase
 
@@ -500,7 +502,6 @@ When several screens had a filter or print action enabled, navigating between th
 <details>
 Popup mode has been activate for signature type fields to avoid conflicts with scroll behavior. This value can be overriden by adding options.popup false value on the field configuration.
 </details>
-
 
 ## [8.4.9] (2025-11-13)
 
