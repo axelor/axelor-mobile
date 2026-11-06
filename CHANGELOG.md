@@ -3,6 +3,14 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.12] (2026-11-06)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- SelectionContainer: allow scrolling the list on Android when it overflows its parent container
+
 ## [9.1.11] (2026-11-04)
 
 ### @axelor/aos-mobile-core
@@ -475,6 +483,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.12]: https://github.com/axelor/axelor-mobile/compare/9.1.11...9.1.12
 [9.1.11]: https://github.com/axelor/axelor-mobile/compare/9.1.10...9.1.11
 [9.1.10]: https://github.com/axelor/axelor-mobile/compare/9.1.9...9.1.10
 [9.1.9]: https://github.com/axelor/axelor-mobile/compare/9.1.8...9.1.9
