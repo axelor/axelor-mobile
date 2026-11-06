@@ -3,6 +3,14 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.30] (2026-11-06)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- SelectionContainer: allow scrolling the list on Android when it overflows its parent container
+
 ## [8.5.29] (2026-11-04)
 
 ### @axelor/aos-mobile-core
@@ -821,6 +829,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.30]: https://github.com/axelor/axelor-mobile/compare/8.5.29...8.5.30
 [8.5.29]: https://github.com/axelor/axelor-mobile/compare/8.5.28...8.5.29
 [8.5.28]: https://github.com/axelor/axelor-mobile/compare/8.5.27...8.5.28
 [8.5.27]: https://github.com/axelor/axelor-mobile/compare/8.5.26...8.5.27

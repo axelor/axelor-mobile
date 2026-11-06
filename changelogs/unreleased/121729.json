@@ -1,5 +1,0 @@
-{
-  "title": "SelectionContainer: allow scrolling the list on Android when it overflows its parent container",
-  "type": "fix",
-  "packages": "ui"
-}
