@@ -17,7 +17,8 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {GestureHandlerRootView, ScrollView} from 'react-native-gesture-handler';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
 import {checkNullString} from '../../../utils';
@@ -308,9 +309,15 @@ const SelectionContainer = ({
 
   return (
     <View style={[styles.flatListContainer, style]}>
-      <ScrollView keyboardShouldPersistTaps="always" nestedScrollEnabled={true}>
-        {isPicker ? renderListItemContainerPicker() : renderListItemContainer()}
-      </ScrollView>
+      <GestureHandlerRootView style={styles.gestureRoot}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          nestedScrollEnabled={true}>
+          {isPicker
+            ? renderListItemContainerPicker()
+            : renderListItemContainer()}
+        </ScrollView>
+      </GestureHandlerRootView>
     </View>
   );
 };
@@ -331,6 +338,9 @@ const getStyles = (Colors: ThemeColors, height: number) =>
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
+    },
+    gestureRoot: {
+      flex: 1,
     },
     border: {
       borderBottomColor: Colors.secondaryColor.background,
