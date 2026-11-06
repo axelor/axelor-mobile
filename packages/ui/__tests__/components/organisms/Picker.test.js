@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {Text} from 'react-native';
+import {Keyboard, Text} from 'react-native';
 import {fireEvent} from '@testing-library/react-native';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors, setup} from '../../tools';
@@ -41,6 +41,12 @@ describe('Picker Component', () => {
       },
       overrideProps,
     });
+
+  beforeEach(() => {
+    jest
+      .spyOn(Keyboard, 'addListener')
+      .mockImplementation(() => ({remove: jest.fn()}));
+  });
 
   it('renders without crashing', () => {
     const {getByTestId} = setupPicker();

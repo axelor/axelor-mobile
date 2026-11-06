@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import {Keyboard} from 'react-native';
 import {MultiValuePicker} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors, setup} from '../../tools';
 import {fireEvent, within} from '@testing-library/react-native';
@@ -36,6 +37,12 @@ describe('MultiValuePicker Component', () => {
       baseProps: {listItems: ITEMS},
       overrideProps,
     });
+
+  beforeEach(() => {
+    jest
+      .spyOn(Keyboard, 'addListener')
+      .mockImplementation(() => ({remove: jest.fn()}));
+  });
 
   it('renders without crashing', () => {
     const {getByTestId} = setupMultiValuePicker();

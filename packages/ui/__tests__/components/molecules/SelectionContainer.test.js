@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {Text} from 'react-native';
+import {Keyboard, Text} from 'react-native';
 import {fireEvent, within} from '@testing-library/react-native';
 import {SelectionContainer} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
@@ -36,6 +36,12 @@ describe('SelectionContainer Component', () => {
       },
       overrideProps,
     });
+
+  beforeEach(() => {
+    jest
+      .spyOn(Keyboard, 'addListener')
+      .mockImplementation(() => ({remove: jest.fn()}));
+  });
 
   it('renders without crashing', () => {
     const {getByTestId} = setupSelectionContainer();

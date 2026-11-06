@@ -17,7 +17,8 @@
  */
 
 import React, {RefObject, useCallback, useMemo, useState} from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {GestureHandlerRootView, ScrollView} from 'react-native-gesture-handler';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {checkNullString} from '../../../utils';
 import {BorderBar, HorizontalRule, Icon, Text} from '../../atoms';
@@ -328,9 +329,15 @@ const SelectionContainer = ({
       ref={wrapperRef}
       style={[styles.flatListContainer, style]}
       testID="selectionContainerWrapper">
-      <ScrollView keyboardShouldPersistTaps="always" nestedScrollEnabled={true}>
-        {isPicker ? renderListItemContainerPicker() : renderListItemContainer()}
-      </ScrollView>
+      <GestureHandlerRootView style={styles.gestureRoot}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          nestedScrollEnabled={true}>
+          {isPicker
+            ? renderListItemContainerPicker()
+            : renderListItemContainer()}
+        </ScrollView>
+      </GestureHandlerRootView>
     </View>
   );
 };
@@ -347,6 +354,9 @@ const getStyles = (Colors: ThemeColors, height: number) =>
       borderRadius: 12,
       borderColor: Colors.secondaryColor.background_light,
       borderWidth: 1,
+    },
+    gestureRoot: {
+      flex: 1,
     },
     border: {
       zIndex: 115,
