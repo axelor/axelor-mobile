@@ -33,7 +33,6 @@ import {useConfig} from '../../../config/ConfigContext';
 
 const DISPLAY_LOADING_DELAY_MILLISECONDS = 1500;
 const BUTTON_SIZE = 40;
-const SCREEN_WIDTH_50_PERCENT = Dimensions.get('window').width * 0.5;
 const SCREEN_HEIGHT_50_PERCENT = Dimensions.get('window').height * 0.5;
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -226,7 +225,9 @@ const ScrollList = ({
 
   return (
     <View style={styles.container} testID="scrollListContainer">
-      <Animated.View style={[styles.buttonContainer, animatedButtonStyle]}>
+      <Animated.View
+        style={[styles.buttonContainer, animatedButtonStyle]}
+        testID="scrollListTopButton">
         <CircleButton
           square={false}
           iconName="arrow-up"
@@ -264,7 +265,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     position: 'absolute',
     top: 8,
-    left: SCREEN_WIDTH_50_PERCENT - BUTTON_SIZE / 2,
+    right: 8,
     zIndex: 1,
   },
   loadingContainer: {

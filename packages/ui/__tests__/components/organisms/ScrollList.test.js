@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {fireEvent, within} from '@testing-library/react-native';
 import {ScrollList} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
@@ -81,5 +81,16 @@ describe('ScrollList Component', () => {
     const {queryByTestId} = setupScrollList({actionList: []});
 
     expect(queryByTestId('topActionsContainer')).toBeFalsy();
+  });
+
+  it('places the scroll-to-top button in the top-right corner of the list', () => {
+    const {getByTestId} = setupScrollList();
+
+    const buttonStyle = StyleSheet.flatten(
+      getByTestId('scrollListTopButton').props.style,
+    );
+
+    expect(buttonStyle).toMatchObject({position: 'absolute', top: 8, right: 8});
+    expect(buttonStyle.left).toBeUndefined();
   });
 });
