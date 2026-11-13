@@ -260,7 +260,7 @@ const equipmentSlice = createSlice({
     });
     builder.addCase(getEquipmentById.fulfilled, (state, action) => {
       state.loading = false;
-      state.equipment = action.payload;
+      state.equipment = action.payload ?? {};
     });
     generateInifiniteScrollCases(builder, searchEquipmentToLink, {
       loading: 'loadingListEquipToLink',

@@ -17,8 +17,14 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {useDispatch, useSelector, useTypes} from '@axelor/aos-mobile-core';
-import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActivityIndicator, StyleSheet} from 'react-native';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
+import {BottomBar, Label, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   EquipmentView,
   GeneralInformationView,
@@ -41,10 +47,13 @@ const InterventionDetailsScreen = ({
 }: InterventionDetailsScreenProps) => {
   const _interventionId = route?.params?.interventionId || interventionId;
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
   const {Intervention} = useTypes();
 
-  const {intervention} = useSelector(state => state.intervention_intervention);
+  const {intervention, loadingIntervention} = useSelector(
+    state => state.intervention_intervention,
+  );
   const {totalNumberInterventionEquipment} = useSelector(
     state => state.intervention_equipment,
   );
@@ -84,7 +93,7 @@ const InterventionDetailsScreen = ({
         viewComponent: <SurveyView />,
         color: Colors.progressColor,
         disabled:
-          intervention.statusSelect < Intervention?.statusSelect.Started,
+          intervention?.statusSelect < Intervention?.statusSelect.Started,
       },
       {
         iconName: 'cart3',
@@ -106,13 +115,37 @@ const InterventionDetailsScreen = ({
     [
       Colors,
       Intervention?.statusSelect.Started,
-      intervention.statusSelect,
+      intervention?.statusSelect,
       totalNumberInterventionEquipment,
     ],
   );
 
   if (intervention?.id !== _interventionId) {
-    return null;
+    /*
+     * Read from the store, so that a reload started elsewhere (refresh, status
+     * change) that brings nothing back also shows the message.
+     */
+    const isNotLoaded = !loadingIntervention && intervention?.id == null;
+
+    if (!isNotLoaded) {
+      return (
+        <ActivityIndicator
+          style={styles.activityIndicator}
+          size="large"
+          color={Colors.inverseColor.background}
+        />
+      );
+    }
+
+    return (
+      <Screen removeSpaceOnTop={true}>
+        <Label
+          style={styles.label}
+          message={I18n.t('Intervention_InterventionNotLoaded')}
+          type="info"
+        />
+      </Screen>
+    );
   }
 
   return (
@@ -121,5 +154,18 @@ const InterventionDetailsScreen = ({
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  activityIndicator: {
+    width: '100%',
+    height: '100%',
+    alignSelf: 'center',
+  },
+  label: {
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+});
 
 export default InterventionDetailsScreen;

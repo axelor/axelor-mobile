@@ -114,6 +114,7 @@ const useInterventionDetailsActions = () => {
           iconName: 'arrow-repeat',
           title: I18n.t('Intervention_RefreshIntervention'),
           iconColor: Colors.primaryColor.background,
+          hideIf: intervention?.id == null,
           onPress: () => {
             dispatch(
               (fetchInterventionById as any)({interventionId: intervention.id}),
