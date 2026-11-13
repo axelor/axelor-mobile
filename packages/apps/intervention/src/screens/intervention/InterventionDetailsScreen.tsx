@@ -17,8 +17,14 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {useDispatch, useSelector, useTypes} from '@axelor/aos-mobile-core';
-import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActivityIndicator, StyleSheet} from 'react-native';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
+import {BottomBar, Label, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   EquipmentView,
   GeneralInformationView,
@@ -41,12 +47,13 @@ const InterventionDetailsScreen = ({
 }: InterventionDetailsScreenProps) => {
   const _interventionId = route?.params?.interventionId || interventionId;
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
   const {Intervention} = useTypes();
 
   const [selectedRangeId, setSelectedRangeId] = useState(null);
 
-  const {intervention} = useSelector(
+  const {intervention, loadingIntervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
   const {totalNumberInterventionEquipment} = useSelector(
@@ -66,7 +73,7 @@ const InterventionDetailsScreen = ({
     intervention?.id &&
       (dispatch as any)(
         (fetchRange as any)({interventionId: intervention?.id}),
-      ).then(res => setSelectedRangeId(res.payload[0].id));
+      ).then(res => setSelectedRangeId(res?.payload?.[0]?.id ?? null));
   }, [dispatch, intervention?.id]);
 
   useEffect(() => {
@@ -94,7 +101,7 @@ const InterventionDetailsScreen = ({
         ),
         color: Colors.progressColor,
         disabled:
-          intervention.statusSelect < Intervention?.statusSelect.Started,
+          intervention?.statusSelect < Intervention?.statusSelect.Started,
       },
       {
         iconName: 'cart3',
@@ -116,14 +123,38 @@ const InterventionDetailsScreen = ({
     [
       Colors,
       Intervention?.statusSelect.Started,
-      intervention.statusSelect,
+      intervention?.statusSelect,
       selectedRangeId,
       totalNumberInterventionEquipment,
     ],
   );
 
   if (intervention?.id !== _interventionId) {
-    return null;
+    /*
+     * Read from the store, so that a reload started elsewhere (refresh, status
+     * change) that brings nothing back also shows the message.
+     */
+    const isNotLoaded = !loadingIntervention && intervention?.id == null;
+
+    if (!isNotLoaded) {
+      return (
+        <ActivityIndicator
+          style={styles.activityIndicator}
+          size="large"
+          color={Colors.inverseColor.background}
+        />
+      );
+    }
+
+    return (
+      <Screen removeSpaceOnTop={true}>
+        <Label
+          style={styles.label}
+          message={I18n.t('Intervention_InterventionNotLoaded')}
+          type="info"
+        />
+      </Screen>
+    );
   }
 
   return (
@@ -132,5 +163,18 @@ const InterventionDetailsScreen = ({
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  activityIndicator: {
+    width: '100%',
+    height: '100%',
+    alignSelf: 'center',
+  },
+  label: {
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+});
 
 export default InterventionDetailsScreen;

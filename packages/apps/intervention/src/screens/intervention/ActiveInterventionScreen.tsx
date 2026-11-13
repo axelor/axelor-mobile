@@ -26,10 +26,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Label, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {
-  fetchActiveIntervention,
-  fetchInterventionById,
-} from '../../features/interventionSlice';
+import {fetchActiveIntervention} from '../../features/interventionSlice';
 import InterventionDetailsScreen from './InterventionDetailsScreen';
 
 const LoadingComponent = () => {
@@ -50,8 +47,9 @@ const ActiveInterventionScreen = ({}) => {
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
-  const {loadingActiveIntervention, activeIntervention, intervention} =
-    useSelector((state: any) => state.intervention_intervention);
+  const {loadingActiveIntervention, activeIntervention} = useSelector(
+    (state: any) => state.intervention_intervention,
+  );
 
   useEffect(() => {
     isFocused &&
@@ -63,22 +61,8 @@ const ActiveInterventionScreen = ({}) => {
       );
   }, [dispatch, isFocused, user]);
 
-  useEffect(() => {
-    if (activeIntervention?.id != null) {
-      dispatch(
-        (fetchInterventionById as any)({interventionId: activeIntervention.id}),
-      );
-    }
-  }, [activeIntervention?.id, dispatch]);
-
   if (!isEmpty(activeIntervention)) {
-    if (activeIntervention.id !== intervention?.id) {
-      return <LoadingComponent />;
-    } else {
-      return (
-        <InterventionDetailsScreen interventionId={activeIntervention?.id} />
-      );
-    }
+    return <InterventionDetailsScreen interventionId={activeIntervention.id} />;
   } else if (loadingActiveIntervention) {
     return <LoadingComponent />;
   } else {

@@ -171,7 +171,11 @@ const interventionSlice = createSlice({
     });
     builder.addCase(fetchInterventionById.fulfilled, (state, action) => {
       state.loadingIntervention = false;
-      state.intervention = action.payload;
+      state.intervention = action.payload ?? {};
+    });
+    builder.addCase(fetchInterventionById.rejected, state => {
+      state.loadingIntervention = false;
+      state.intervention = {};
     });
     builder.addCase(fetchActiveIntervention.pending, state => {
       state.loadingActiveIntervention = true;
