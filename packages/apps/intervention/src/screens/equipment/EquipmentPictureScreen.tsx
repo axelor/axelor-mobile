@@ -24,8 +24,8 @@ import {
   useTranslator,
   enableCamera,
   handleDocumentSelection,
-  uploadBase64,
   showToastMessage,
+  useActionApi,
   useCameraValueByKey,
   usePermitted,
 } from '@axelor/aos-mobile-core';
@@ -49,7 +49,8 @@ const EquipmentPictureScreen = ({}) => {
     modelName: 'com.axelor.apps.intervention.db.Picture',
   });
 
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
+  const actionApi = useActionApi();
+
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
   const {equipmentPictureList, loadingList, moreLoading, isListEnd} =
     useSelector((state: any) => state.intervention_equipmentPicture);
@@ -96,11 +97,7 @@ const EquipmentPictureScreen = ({}) => {
   const handleUpload = useCallback(
     async (file: any) => {
       try {
-        const metaFile = await uploadBase64(file, {
-          baseUrl,
-          token,
-          jsessionId,
-        });
+        const metaFile = await actionApi.upload(file);
 
         dispatch(
           (createEquipmentPicture as any)({
@@ -119,7 +116,7 @@ const EquipmentPictureScreen = ({}) => {
         });
       }
     },
-    [baseUrl, dispatch, equipment, jsessionId, token],
+    [actionApi, dispatch, equipment],
   );
 
   useEffect(() => {

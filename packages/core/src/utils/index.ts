@@ -42,7 +42,14 @@ export {
   displayItemFullname,
   displayItemTitle,
 } from './displayers';
-export {sanitizeFileName, sanitizeLocalFileName} from './file';
+export type {LocalFileLookup, LocalFileResolver} from './file';
+export {
+  getLocalFilePath,
+  getServerFileId,
+  registerLocalFileResolver,
+  sanitizeFileName,
+  sanitizeLocalFileName,
+} from './file';
 export {
   formatDate,
   formatDateTime,

@@ -27,6 +27,7 @@ import {Image} from '@axelor/aos-mobile-ui';
 import {useSelector} from 'react-redux';
 import {openFileInExternalApp} from '../../../tools/FileViewer';
 import useTranslator from '../../../i18n/hooks/use-translator';
+import {useMetafileUri} from '../../../utils/image';
 
 interface MetaFileProps {
   id: number;
@@ -52,6 +53,7 @@ const AOSImage = ({
 }: AOSImageProps) => {
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
   const I18n = useTranslator();
+  const formatMetafileURI = useMetafileUri();
 
   const handleShowFile = async () => {
     await openFileInExternalApp(
@@ -71,9 +73,7 @@ const AOSImage = ({
         imageSize={imageSize}
         generalStyle={generalStyle}
         resizeMode={resizeMode}
-        source={{
-          uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${metaFile?.id}/content/download`,
-        }}
+        source={formatMetafileURI(metaFile?.id)}
         defaultIconSize={defaultIconSize}
       />
     </TouchableOpacity>

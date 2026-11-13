@@ -24,6 +24,7 @@ import {
   logoutApi,
 } from '../api/login-api';
 import {apiProviderConfig} from '../apiProviders/config';
+import {getActionApi} from '../apiProviders';
 import {saveUrlInStorage} from '../sessions';
 import {checkNullString, testUrl} from '../utils';
 import {modulesProvider} from '../app';
@@ -52,6 +53,7 @@ export const login = createAsyncThunk(
       token,
       jsessionId,
     });
+    getActionApi()?.init({baseUrl: urlWithProtocol, token, jsessionId});
 
     dispatch(resetConfigs());
 
@@ -84,6 +86,7 @@ export const logout = createAsyncThunk(
     const {requestInterceptorId, responseInterceptorId} = getState()?.auth;
     ejectAxios({requestInterceptorId, responseInterceptorId});
 
+    getActionApi()?.reset();
     webSocketProvider.closeWebSocket();
     clearModelMetaCaches();
 

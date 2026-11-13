@@ -16,37 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 
 interface ApiCallProps {
   url: string;
   data?: any;
+  // Options given to axios for this call only, such as a timeout.
+  config?: AxiosRequestConfig;
 }
 
 export interface ApiProvider {
-  post({url, data}): Promise<any>;
-  put({url, data}): Promise<any>;
-  get({url}): Promise<any>;
-  delete({url}): Promise<any>;
+  post({url, data, config}: ApiCallProps): Promise<any>;
+  put({url, data, config}: ApiCallProps): Promise<any>;
+  get({url, config}: ApiCallProps): Promise<any>;
+  delete({url, config}: ApiCallProps): Promise<any>;
 }
 
 class AxiosApiProvider implements ApiProvider {
   constructor() {}
 
-  post({url, data}: ApiCallProps): Promise<any> {
-    return axios.post(url, data);
+  post({url, data, config}: ApiCallProps): Promise<any> {
+    return axios.post(url, data, config);
   }
 
-  put({url, data}: ApiCallProps): Promise<any> {
-    return axios.put(url, data);
+  put({url, data, config}: ApiCallProps): Promise<any> {
+    return axios.put(url, data, config);
   }
 
-  get({url}: ApiCallProps): Promise<any> {
-    return axios.get(url);
+  get({url, config}: ApiCallProps): Promise<any> {
+    return axios.get(url, config);
   }
 
-  delete({url}: ApiCallProps): Promise<any> {
-    return axios.delete(url);
+  delete({url, config}: ApiCallProps): Promise<any> {
+    return axios.delete(url, config);
   }
 }
 

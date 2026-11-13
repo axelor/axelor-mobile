@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {ImageBubble} from '@axelor/aos-mobile-ui';
-import {useSelector} from 'react-redux';
+import {useMetafileUri} from '../../../utils/image';
 
 interface AOSImageBubbleProps {
   imageSize?: number;
@@ -35,18 +35,12 @@ const AOSImageBubble = ({
   defaultIconSize = 60,
   listComponent = [],
 }: AOSImageBubbleProps) => {
-  const {baseUrl} = useSelector((state: any) => state.auth);
+  const formatMetafileURI = useMetafileUri();
 
   return (
     <ImageBubble
       style={style}
-      source={
-        metaFileId
-          ? {
-              uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${metaFileId}/content/download`,
-            }
-          : null
-      }
+      source={metaFileId ? formatMetafileURI(metaFileId) : null}
       listComponent={listComponent}
       imageSize={imageSize}
       defaultIconSize={defaultIconSize}

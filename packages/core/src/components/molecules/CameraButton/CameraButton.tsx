@@ -26,7 +26,7 @@ import {
   enableCamera,
   useCameraValueByKey,
 } from '../../../features/cameraSlice';
-import {uploadBase64} from '../../../api/metafile-api';
+import {useActionApi} from '../../../apiProviders';
 
 const CameraButton = ({
   size = 70,
@@ -47,11 +47,11 @@ const CameraButton = ({
 }) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const actionApi = useActionApi();
 
   const {setActivityIndicator} = useConfig();
 
   const cameraPicture = useCameraValueByKey(cameraKey);
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
   const {user} = useSelector((state: any) => state.user);
 
   const styles = useMemo(() => getStyles(Colors, size), [Colors, size]);
@@ -89,18 +89,14 @@ const CameraButton = ({
           return;
         }
 
-        const response = await uploadBase64(_file, {
-          baseUrl,
-          token,
-          jsessionId,
-        });
+        const response = await actionApi.upload(_file);
 
         handleNext(response);
       } catch (error) {
         console.log('Could not upload the file:', error);
       }
     },
-    [baseUrl, getFileName, handleNext, jsessionId, returnBase64, token, user],
+    [actionApi, getFileName, handleNext, returnBase64, user],
   );
 
   useEffect(() => {

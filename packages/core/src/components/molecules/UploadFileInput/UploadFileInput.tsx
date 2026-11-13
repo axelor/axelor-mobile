@@ -27,7 +27,8 @@ import {
   Image,
   Icon,
 } from '@axelor/aos-mobile-ui';
-import {deleteMetaFile, uploadBase64} from '../../../api/metafile-api';
+import {deleteMetaFile} from '../../../api/metafile-api';
+import {useActionApi} from '../../../apiProviders';
 import {useTranslator} from '../../../i18n';
 import {handleDocumentSelection, openFileInExternalApp} from '../../../tools';
 import {checkNullString, useMetafileUri} from '../../../utils';
@@ -104,6 +105,7 @@ const UploadFileInput = ({
 
   const cameraPicture = useCameraValueByKey(cameraKey);
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
+  const actionApi = useActionApi();
 
   const [selectedFile, setSelectedFile] = useState(defaultValue);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -155,11 +157,7 @@ const UploadFileInput = ({
           return;
         }
 
-        const response = await uploadBase64(file, {
-          baseUrl,
-          token,
-          jsessionId,
-        });
+        const response = await actionApi.upload(file);
 
         manageFileLocally && setSelectedFile({...file, ...response});
         onUpload(response);
@@ -168,15 +166,7 @@ const UploadFileInput = ({
         setErrorMessage(I18n.t('Base_FileUploadError'));
       }
     },
-    [
-      I18n,
-      baseUrl,
-      jsessionId,
-      manageFileLocally,
-      onUpload,
-      returnBase64String,
-      token,
-    ],
+    [I18n, actionApi, manageFileLocally, onUpload, returnBase64String],
   );
 
   const handleDocumentPick = useCallback(

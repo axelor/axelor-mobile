@@ -18,7 +18,12 @@
 
 export {AosActionApi} from './AosActionApi';
 export {GatewayActionApi} from './GatewayActionApi';
-export {ActionApi} from './ActionApiProvider';
+export {
+  ActionApi,
+  ActionApiCredentials,
+  UploadedMetaFile,
+  UploadFile,
+} from './ActionApiProvider';
 export {
   getActionApi,
   actionProvider,
@@ -30,5 +35,6 @@ export {
   ActionRequest,
   FieldMatcher,
   MatcherConfig,
+  MatcherParent,
   getActionMessage,
 } from './utils';
