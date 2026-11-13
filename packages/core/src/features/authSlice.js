@@ -20,6 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getActiveUserInfo, loginApi, logoutApi} from '../api/login-api';
 import {ejectAxios} from '../api/axios-init';
 import {apiProviderConfig} from '../apiProviders/config';
+import {getActionApi} from '../apiProviders';
 import {MfaVerifyErrorCode, saveUrlInStorage, verifyMfaApi} from '../sessions';
 import {checkNullString, testUrl} from '../utils';
 import {modulesProvider} from '../app';
@@ -45,6 +46,7 @@ async function finalizeLogin(
     token,
     jsessionId,
   });
+  getActionApi()?.init({baseUrl: url, token, jsessionId});
 
   dispatch(resetConfigs());
 
@@ -129,6 +131,7 @@ export const logout = createAsyncThunk(
     const {requestInterceptorId, responseInterceptorId} = getState()?.auth;
     ejectAxios({requestInterceptorId, responseInterceptorId});
 
+    getActionApi()?.reset();
     webSocketProvider.closeWebSocket();
     clearModelMetaCaches();
 

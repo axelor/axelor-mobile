@@ -18,17 +18,26 @@
 
 import {useCallback} from 'react';
 import {useSelector} from 'react-redux';
+import {getLocalFilePath, getServerFileId} from './file';
 
 export const useMetafileUri = () => {
   const {baseUrl} = useSelector((state: any) => state.auth);
 
   return useCallback(
-    (metafileId: number) =>
-      metafileId != null
-        ? {
-            uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${metafileId}/content/download`,
-          }
-        : null,
+    (metafileId: number) => {
+      if (metafileId == null) return null;
+
+      const localPath = getLocalFilePath(metafileId);
+
+      return {
+        uri:
+          localPath != null
+            ? `file://${localPath}`
+            : `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${getServerFileId(
+                metafileId,
+              )}/content/download`,
+      };
+    },
     [baseUrl],
   );
 };

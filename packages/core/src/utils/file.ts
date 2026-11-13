@@ -24,3 +24,38 @@ export const sanitizeFileName = (name: string) =>
 
 export const sanitizeLocalFileName = (name: string) =>
   sanitizeFileName(name)?.replace(/[^a-zA-Z0-9._\-()]/g, '_');
+
+/*
+ * What a module knows about a file id it gave out, such as the temporary id
+ * of a file picked offline: `path` while the file is only on the device
+ * (absolute, without `file://`), then `serverId` once the server has it.
+ */
+export type LocalFileLookup = {path: string} | {serverId: number};
+
+export type LocalFileResolver = (fileId: number) => LocalFileLookup | null;
+
+let localFileResolver: LocalFileResolver | null = null;
+
+export const registerLocalFileResolver = (
+  resolver: LocalFileResolver | null,
+) => {
+  localFileResolver = resolver;
+};
+
+const resolveLocalFile = (fileId: number): LocalFileLookup | null =>
+  fileId != null ? (localFileResolver?.(fileId) ?? null) : null;
+
+export const getLocalFilePath = (fileId: number): string | null => {
+  const localFile = resolveLocalFile(fileId);
+
+  return localFile != null && 'path' in localFile ? localFile.path : null;
+};
+
+// The id to ask the server for: the real id of a file uploaded under another id.
+export const getServerFileId = (fileId: number): number => {
+  const localFile = resolveLocalFile(fileId);
+
+  return localFile != null && 'serverId' in localFile
+    ? localFile.serverId
+    : fileId;
+};

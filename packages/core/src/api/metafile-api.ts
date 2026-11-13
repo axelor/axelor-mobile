@@ -17,9 +17,12 @@
  */
 
 import {
-  axiosApiProvider,
+  ActionApiCredentials,
   createStandardSearch,
   Criteria,
+  getActionApi,
+  UploadedMetaFile,
+  UploadFile,
 } from '../apiProviders';
 import {DocumentPickerResponse} from '@react-native-documents/picker';
 import RNFS from 'react-native-fs';
@@ -78,14 +81,14 @@ export async function uploadFile(
 }
 
 export async function uploadBase64(
-  file: {base64: string; name: string; size: number; type: string},
-  {baseUrl, jsessionId, token},
-) {
+  file: UploadFile,
+  {baseUrl, jsessionId, token}: ActionApiCredentials,
+): Promise<UploadedMetaFile> {
   if (file == null) {
-    return;
+    throw new Error('No file to upload.');
   }
 
-  return new Promise<any>(async (resolve, reject) => {
+  return new Promise<UploadedMetaFile>(async (resolve, reject) => {
     try {
       const headers = {
         'Content-Type': 'application/octet-stream',
@@ -119,7 +122,10 @@ export async function uploadBase64(
 }
 
 export async function deleteMetaFile(fileId: number) {
-  return axiosApiProvider.delete({
+  return getActionApi().send({
     url: `ws/rest/com.axelor.meta.db.MetaFile/${fileId}`,
+    method: 'delete',
+    body: undefined,
+    description: 'delete file',
   });
 }

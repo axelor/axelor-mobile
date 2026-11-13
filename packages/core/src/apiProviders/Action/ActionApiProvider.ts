@@ -18,8 +18,40 @@
 
 import {ActionRequest} from './utils';
 
+export interface ActionApiCredentials {
+  baseUrl: string;
+  token: string;
+  jsessionId?: string;
+}
+
+export interface UploadFile {
+  base64: string;
+  name: string;
+  size: number;
+  type: string;
+}
+
+export type UploadedMetaFile = {
+  id: number;
+  fileName: string;
+} & Record<string, unknown>;
+
 export interface ActionApi {
+  // Receives the session of the user once the login is complete.
+  init(credentials: ActionApiCredentials): void;
+  // Forgets the session when the user logs out.
+  reset(): void;
   isAvailable(): Promise<boolean>;
+  /*
+   * Called on every provider before a request is sent. Returns the request
+   * with the data this provider still holds (such as files waiting to be
+   * uploaded) replaced by their server values, the request unchanged when it
+   * holds nothing, or null when that data cannot be sent yet: the request is
+   * then given to this provider to keep.
+   */
+  resolvePending(request: ActionRequest): Promise<ActionRequest | null>;
   send(request: ActionRequest): Promise<any>;
+  // Creates a MetaFile from the given file and returns it.
+  upload(file: UploadFile): Promise<UploadedMetaFile>;
   synchronize(onEnd?: () => void): Promise<void>;
 }

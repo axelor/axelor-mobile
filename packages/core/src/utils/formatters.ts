@@ -155,6 +155,38 @@ export const getDateZonesISOString = (dateString: string) => {
 const isValidObject = (value: any) =>
   value != null && typeof value === 'object';
 
+const isPrimitive = (value: unknown): value is string | number | boolean =>
+  typeof value === 'string' ||
+  typeof value === 'number' ||
+  typeof value === 'boolean';
+
+/*
+ * A linked record is sent with its id and its plain values, such as its name.
+ * The server reads a link without version as a reference and ignores the
+ * other values, while the offline copy of the record keeps them to display
+ * the link. The version is never sent: with it, the server would update the
+ * linked record.
+ */
+const formatLinkedRecord = (record: Record<string, unknown>) => {
+  const linkedRecord: Record<string, unknown> = {id: record.id};
+
+  if (record.id == null) {
+    return linkedRecord;
+  }
+
+  Object.entries(record).forEach(([fieldName, value]) => {
+    if (
+      fieldName !== 'version' &&
+      !fieldName.startsWith('$') &&
+      isPrimitive(value)
+    ) {
+      linkedRecord[fieldName] = value;
+    }
+  });
+
+  return linkedRecord;
+};
+
 export const formatRequestBody = (
   data: object,
   matcherPrefix: string = null,
@@ -171,9 +203,11 @@ export const formatRequestBody = (
     matchers[matcherKey] = _key;
 
     if (Array.isArray(_value)) {
-      _data[_key] = _value.map(_i => (isValidObject(_i) ? {id: _i.id} : _i));
+      _data[_key] = _value.map(_i =>
+        isValidObject(_i) ? formatLinkedRecord(_i) : _i,
+      );
     } else if (isValidObject(_value)) {
-      _data[_key] = {id: _value.id};
+      _data[_key] = formatLinkedRecord(_value);
     } else {
       _data[_key] = _value;
     }

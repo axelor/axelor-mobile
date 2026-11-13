@@ -18,13 +18,29 @@
 
 import axios from 'axios';
 import {getNetInfo} from '../../api/net-info-utils';
-import {ActionApi} from './ActionApiProvider';
+import {uploadBase64} from '../../api/metafile-api';
+import {
+  ActionApi,
+  ActionApiCredentials,
+  UploadedMetaFile,
+  UploadFile,
+} from './ActionApiProvider';
 import {ActionRequest} from './utils';
 
 export class AosActionApi implements ActionApi {
+  private credentials: ActionApiCredentials | undefined;
+
   constructor() {}
 
   static isOnlineAvailable = true;
+
+  init(credentials: ActionApiCredentials): void {
+    this.credentials = credentials;
+  }
+
+  reset(): void {
+    this.credentials = undefined;
+  }
 
   async isAvailable(): Promise<boolean> {
     const {isConnected} = await getNetInfo();
@@ -38,8 +54,22 @@ export class AosActionApi implements ActionApi {
     });
   }
 
+  resolvePending(request: ActionRequest): Promise<ActionRequest | null> {
+    return Promise.resolve(request);
+  }
+
   send(request: ActionRequest): Promise<any> {
     return axios[request.method](request.url, request.body);
+  }
+
+  upload(file: UploadFile): Promise<UploadedMetaFile> {
+    if (this.credentials == null) {
+      return Promise.reject(
+        new Error('Cannot upload a file before the user is logged in.'),
+      );
+    }
+
+    return uploadBase64(file, this.credentials);
   }
 
   synchronize(): Promise<void> {
