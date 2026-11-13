@@ -28,7 +28,10 @@ export const useMetafileUri = () => {
     pending.current.add(id);
     getFileApi()
       .getDisplayUri({id, fileName: '', isMetaFile: true})
-      .then(uri => setCache(prev => ({...prev, [id]: uri})))
+      // Unchanged answers keep the same state, so checking again never loops.
+      .then(uri =>
+        setCache(prev => (prev[id] === uri ? prev : {...prev, [id]: uri})),
+      )
       .finally(() => pending.current.delete(id));
   }, []);
 
@@ -36,7 +39,15 @@ export const useMetafileUri = () => {
     (metafileId: number) => {
       if (metafileId == null) return undefined;
       if (metafileId in cache) {
-        return cache[metafileId] != null ? {uri: cache[metafileId]} : undefined;
+        const uri = cache[metafileId];
+
+        /*
+         * A temporary id points to a file picked offline: its device copy goes
+         * away once uploaded, so ask again until the server has it.
+         */
+        if (metafileId < 0 && uri?.startsWith('file://')) resolve(metafileId);
+
+        return uri != null ? {uri} : undefined;
       }
       resolve(metafileId);
       return undefined;

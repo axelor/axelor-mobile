@@ -193,9 +193,21 @@ export async function updateJsonFieldsObject({
 }) {
   if (modelName == null || id == null) return null;
 
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `ws/rest/${modelName}`,
-    data: {data: {id, version, ...values}},
+    method: 'post',
+    body: {data: {id, version, ...values}},
+    description: `update custom fields of ${modelName}`,
+    matchers: {
+      modelName,
+      id,
+      fields: Object.fromEntries(
+        Object.keys(values ?? {}).map(fieldName => [
+          `data.${fieldName}`,
+          fieldName,
+        ]),
+      ),
+    },
   });
 }
 

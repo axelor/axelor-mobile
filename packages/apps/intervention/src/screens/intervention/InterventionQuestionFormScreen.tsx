@@ -98,6 +98,7 @@ const InterventionQuestionFormScreen = ({route, navigation}: any) => {
       dispatch(
         (updateQuestion as any)({
           question: objectState,
+          interventionId: intervention?.id,
         }),
       );
 
@@ -107,7 +108,13 @@ const InterventionQuestionFormScreen = ({route, navigation}: any) => {
         navigation.pop();
       }
     },
-    [dispatch, handleNavigateNext, navigation, nextQuestionId],
+    [
+      dispatch,
+      handleNavigateNext,
+      intervention?.id,
+      navigation,
+      nextQuestionId,
+    ],
   );
 
   return (

@@ -20,7 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getActiveUserInfo, loginApi, logoutApi} from '../api/login-api';
 import {ejectAxios} from '../api/axios-init';
 import {MfaVerifyErrorCode, saveUrlInStorage, verifyMfaApi} from '../sessions';
-import {apiProviderConfig, getFileApi} from '../apiProviders';
+import {apiProviderConfig, getActionApi, getFileApi} from '../apiProviders';
 import {checkNullString, testUrl} from '../utils';
 import {webSocketProvider} from '../websocket';
 import {clearModelMetaCaches} from '../forms/studio/api.helpers';
@@ -47,6 +47,7 @@ async function finalizeLogin(
     jsessionId,
   });
   getFileApi()?.init({baseUrl: url, token, jsessionId, userId});
+  getActionApi()?.init({baseUrl: url, token, jsessionId});
 
   dispatch(resetConfigs());
 
@@ -136,6 +137,7 @@ export const logout = createAsyncThunk(
     ejectAxios({requestInterceptorId, responseInterceptorId});
 
     getFileApi()?.reset();
+    getActionApi()?.reset();
     webSocketProvider.closeWebSocket();
     userProvider.clear();
     clearModelMetaCaches();

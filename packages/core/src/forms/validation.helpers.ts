@@ -179,8 +179,15 @@ const getFieldSchema = (field: DisplayField): Schema => {
       schema = array().of(object());
       break;
     case 'object':
+      /*
+       * A record picked or created on the device before it reaches the
+       * server can carry a temporary negative id, so only 0 is refused.
+       */
       schema = object().shape({
-        id: getRequiredCondition(number().positive().integer(), field),
+        id: getRequiredCondition(
+          number().integer().notOneOf([0], 'Base_FormValidation_Object'),
+          field,
+        ),
         version: number().min(0).integer().nullable(),
       });
       break;

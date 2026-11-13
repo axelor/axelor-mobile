@@ -32,6 +32,30 @@ async function getAvailableFileApi(fileApis: FileApi[]): Promise<FileApi> {
   throw new Error('No provider available, please check your configuration.');
 }
 
+/*
+ * Picks the provider for a file: the one that holds it when a provider says
+ * so, otherwise the first available one, with the reference resolved by
+ * every provider on the way.
+ */
+async function getFileApiForRef(
+  fileApis: FileApi[],
+  ref: FileRef,
+): Promise<{fileApi: FileApi; resolvedRef: FileRef}> {
+  let resolvedRef = ref;
+
+  for (const _fileApi of fileApis) {
+    const result = await _fileApi.resolvePending(resolvedRef);
+
+    if (result == null) {
+      return {fileApi: _fileApi, resolvedRef};
+    }
+
+    resolvedRef = result;
+  }
+
+  return {fileApi: await getAvailableFileApi(fileApis), resolvedRef};
+}
+
 export class GatewayFileApi implements FileApi {
   private fileApis: FileApi[];
 
@@ -52,9 +76,23 @@ export class GatewayFileApi implements FileApi {
     return _fileApi.isAvailable();
   }
 
+  async resolvePending(ref: FileRef): Promise<FileRef | null> {
+    let resolvedRef: FileRef | null = ref;
+
+    for (const _fileApi of this.fileApis) {
+      resolvedRef = await _fileApi.resolvePending(resolvedRef);
+
+      if (resolvedRef == null) {
+        return null;
+      }
+    }
+
+    return resolvedRef;
+  }
+
   async getDisplayUri(ref: FileRef): Promise<string | null> {
-    const _fileApi = await getAvailableFileApi(this.fileApis);
-    return _fileApi.getDisplayUri(ref);
+    const {fileApi, resolvedRef} = await getFileApiForRef(this.fileApis, ref);
+    return fileApi.getDisplayUri(resolvedRef);
   }
 
   async getBinaryImageUri(ref: BinaryImageRef): Promise<string | null> {
@@ -63,17 +101,17 @@ export class GatewayFileApi implements FileApi {
   }
 
   async getLocalCopy(ref: FileRef): Promise<LocalFile | null> {
-    const _fileApi = await getAvailableFileApi(this.fileApis);
-    return _fileApi.getLocalCopy(ref);
+    const {fileApi, resolvedRef} = await getFileApiForRef(this.fileApis, ref);
+    return fileApi.getLocalCopy(resolvedRef);
   }
 
   async openInExternalApp(ref: FileRef): Promise<void> {
-    const _fileApi = await getAvailableFileApi(this.fileApis);
-    return _fileApi.openInExternalApp(ref);
+    const {fileApi, resolvedRef} = await getFileApiForRef(this.fileApis, ref);
+    return fileApi.openInExternalApp(resolvedRef);
   }
 
   async saveToDevice(ref: FileRef): Promise<boolean> {
-    const _fileApi = await getAvailableFileApi(this.fileApis);
-    return _fileApi.saveToDevice(ref);
+    const {fileApi, resolvedRef} = await getFileApiForRef(this.fileApis, ref);
+    return fileApi.saveToDevice(resolvedRef);
   }
 }

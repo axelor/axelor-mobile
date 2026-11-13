@@ -112,7 +112,7 @@ export async function fetchQuestionById({questionId}) {
   });
 }
 
-export async function updateQuestion({question}) {
+export async function updateQuestion({question, interventionId}) {
   const {matchers, formattedData} = formatRequestBody(question, 'data');
 
   return getActionApi().send({
@@ -126,6 +126,13 @@ export async function updateQuestion({question}) {
       modelName: 'com.axelor.apps.intervention.db.InterventionQuestion',
       id: question.id,
       fields: matchers,
+      parent:
+        interventionId != null
+          ? {
+              modelName: 'com.axelor.apps.intervention.db.Intervention',
+              id: interventionId,
+            }
+          : undefined,
     },
   });
 }

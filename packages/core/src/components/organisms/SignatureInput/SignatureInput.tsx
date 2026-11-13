@@ -27,8 +27,8 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {handleDocumentSelection} from '../../../tools';
-import {deleteMetaFile, uploadBase64} from '../../../api/metafile-api';
-import {useSelector} from '../../../redux/hooks';
+import {deleteMetaFile} from '../../../api/metafile-api';
+import {useActionApi} from '../../../apiProviders';
 import {showToastMessage} from '../../../utils';
 import {AOSImage} from '../../organisms';
 import PictureIcon from './PictureIcon';
@@ -74,7 +74,7 @@ const SignatureInput = ({
   const ref = useRef<SignatureViewRef>(null);
   const Colors = useThemeColor();
 
-  const {baseUrl, jsessionId, token} = useSelector(state => state.auth);
+  const actionApi = useActionApi();
 
   const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
   const [editSignature, setEditSignature] = useState<boolean>(false);
@@ -144,11 +144,7 @@ const SignatureInput = ({
           return;
         }
 
-        const response = await uploadBase64(file, {
-          baseUrl,
-          token,
-          jsessionId,
-        });
+        const response = await actionApi.upload(file);
 
         onChange(response);
       } catch (error) {
@@ -161,15 +157,7 @@ const SignatureInput = ({
         });
       }
     },
-    [
-      baseUrl,
-      handleClose,
-      handleFileDelete,
-      jsessionId,
-      onChange,
-      returnBase64String,
-      token,
-    ],
+    [actionApi, handleClose, handleFileDelete, onChange, returnBase64String],
   );
 
   const handleSignature = useCallback(
