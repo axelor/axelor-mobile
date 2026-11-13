@@ -56,7 +56,15 @@ export function formatNumber(
   }
 
   const decimalPart = splitInTwo(number)[1];
-  const integerPart = splitInTwo(number)[0];
+  const signedIntegerPart = splitInTwo(number)[0];
+
+  /*
+   * The sign is put back in front once the digits are grouped, otherwise it is
+   * counted as a digit ("- 123"). A value rounded to zero is shown unsigned.
+   */
+  const isNegative =
+    signedIntegerPart.startsWith('-') && parseFloat(number) !== 0;
+  const integerPart = signedIntegerPart.replace('-', '');
 
   let result = '';
   let counter = 0;
@@ -69,9 +77,18 @@ export function formatNumber(
     counter++;
   }
 
+  if (isNegative) {
+    result = `-${result}`;
+  }
+
   return decimalPart ? `${result}${decimalSpacer}${decimalPart}` : result;
 }
 
+/**
+ * @deprecated Does not read back every value formatted by formatNumber: without
+ * a decimal part, "1 000" (or "1,000" in English) gives 1. Keep the number
+ * itself instead of reading it back from the formatted text.
+ */
 export function unformatNumber(
   number: string,
   decimalSpacer: string = '.',
