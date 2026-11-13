@@ -27,6 +27,8 @@ import {Color, useThemeColor} from '../../../theme';
 import {Button, NumberBubble} from '../../molecules';
 import ItemTitle from './ItemTitle';
 
+const INDICATOR_SIZE_RATIO = 0.5;
+
 const BarItem = ({
   iconName,
   color,
@@ -79,11 +81,14 @@ const BarItem = ({
         />
       </Animated.View>
       {indicator > 0 && (
-        <Animated.View style={[animatedStyle, styles.indicator]}>
+        <Animated.View
+          style={[animatedStyle, styles.indicator]}
+          pointerEvents="none">
           <NumberBubble
             number={indicator}
             color={buttonColor}
             isNeutralBackground={true}
+            size={size * INDICATOR_SIZE_RATIO}
           />
         </Animated.View>
       )}
