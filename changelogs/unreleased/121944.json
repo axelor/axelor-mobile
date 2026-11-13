@@ -1,5 +1,0 @@
-{
-  "title": "BottomBar: keep the item indicator in the button corner and let taps through on tablets",
-  "type": "fix",
-  "packages": "ui"
-}
