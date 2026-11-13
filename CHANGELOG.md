@@ -3,6 +3,82 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.26] (2026-11-13)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Files: upload and delete files through the action provider so registered providers can handle them
+
+<details>
+Files are now uploaded and deleted through the action provider, so the offline package can handle them.
+- File inputs, signatures, the camera button and equipment pictures upload with useActionApi().upload().
+- deleteMetaFile and custom field saves go through the action provider.
+- A file picked offline and not uploaded yet can be shown and opened from the device, once a module registers a resolver with registerLocalFileResolver (useMetafileUri, AOSImage, openFileInExternalApp).
+- Object fields in forms accept negative ids, used for files picked offline; only 0 is refused.
+- Intervention answers name their intervention (matchers.parent), so finishing an intervention waits for its answers.
+- Linked records keep their plain values, such as their name, and never their version, so a record saved offline keeps showing its links.
+- The post, put, get and delete calls of axiosApiProvider accept an optional axios config, such as a timeout.
+- uploadBase64 rejects when no file is given.
+
+Migration: custom ActionApi implementations must add init(credentials), reset(), upload(file) and resolvePending(request).
+</details>
+
+#### Fixes
+
+- Intervention details: show a message instead of crashing when the intervention is not available
+
+<details>
+When the intervention cannot be loaded, for example offline when it was not downloaded, the details screen shows a message instead of crashing, also after a refresh or a status change that brings nothing back, and the refresh button is hidden.
+The user already loaded in the session is kept when it cannot be fetched again, for example offline, so the blocking popup saying that the user could not be retrieved no longer appears.
+</details>
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- BottomBar: keep the item indicator in the button corner and let taps through on tablets
+- Increment: keep the value when tapping into the field and leaving it, or using the + and - buttons, on values of 1 000 or more without decimals
+
+<details>
+Tapping into the field and leaving it without typing no longer changes the value.
+The value saved is rounded to the decimals shown.
+When the typed text is not a number, the field keeps the last valid number typed.
+A typed value above the maximum is replaced by the maximum.
+Negative numbers are shown with the minus sign in front ("-1 500" instead of "- 1 500").
+Migration: unformatNumber is deprecated because it does not read back every value formatted by formatNumber; keep the number instead of reading it back from the text.
+</details>
+
+### @axelor/aos-mobile-intervention
+
+#### Features
+
+- Files: upload and delete files through the action provider so registered providers can handle them
+
+<details>
+Files are now uploaded and deleted through the action provider, so the offline package can handle them.
+- File inputs, signatures, the camera button and equipment pictures upload with useActionApi().upload().
+- deleteMetaFile and custom field saves go through the action provider.
+- A file picked offline and not uploaded yet can be shown and opened from the device, once a module registers a resolver with registerLocalFileResolver (useMetafileUri, AOSImage, openFileInExternalApp).
+- Object fields in forms accept negative ids, used for files picked offline; only 0 is refused.
+- Intervention answers name their intervention (matchers.parent), so finishing an intervention waits for its answers.
+- Linked records keep their plain values, such as their name, and never their version, so a record saved offline keeps showing its links.
+- The post, put, get and delete calls of axiosApiProvider accept an optional axios config, such as a timeout.
+- uploadBase64 rejects when no file is given.
+
+Migration: custom ActionApi implementations must add init(credentials), reset(), upload(file) and resolvePending(request).
+</details>
+
+#### Fixes
+
+- Intervention details: show a message instead of crashing when the intervention is not available
+
+<details>
+When the intervention cannot be loaded, for example offline when it was not downloaded, the details screen shows a message instead of crashing, also after a refresh or a status change that brings nothing back, and the refresh button is hidden.
+The user already loaded in the session is kept when it cannot be fetched again, for example offline, so the blocking popup saying that the user could not be retrieved no longer appears.
+</details>
+
 ## [9.0.25] (2026-11-06)
 
 ### @axelor/aos-mobile-ui
@@ -609,6 +685,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.26]: https://github.com/axelor/axelor-mobile/compare/9.0.25...9.0.26
 [9.0.25]: https://github.com/axelor/axelor-mobile/compare/9.0.24...9.0.25
 [9.0.24]: https://github.com/axelor/axelor-mobile/compare/9.0.23...9.0.24
 [9.0.23]: https://github.com/axelor/axelor-mobile/compare/9.0.22...9.0.23

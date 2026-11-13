@@ -1,6 +1,0 @@
-{
-  "title": "Increment: keep the value when tapping into the field and leaving it, or using the + and - buttons, on values of 1 000 or more without decimals",
-  "type": "fix",
-  "packages": "ui",
-  "description": "Tapping into the field and leaving it without typing no longer changes the value.\nThe value saved is rounded to the decimals shown.\nWhen the typed text is not a number, the field keeps the last valid number typed.\nA typed value above the maximum is replaced by the maximum.\nNegative numbers are shown with the minus sign in front (\"-1 500\" instead of \"- 1 500\").\nMigration: unformatNumber is deprecated because it does not read back every value formatted by formatNumber; keep the number instead of reading it back from the text."
-}
