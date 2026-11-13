@@ -1,0 +1,6 @@
+{
+  "title": "Files: upload and delete files through the action provider so registered providers can handle them",
+  "type": "feat",
+  "packages": ["core", "intervention"],
+  "description": "Files are now uploaded and deleted through the action provider, so the offline package can handle them.\n- File inputs, signatures, the camera button and equipment pictures upload with useActionApi().upload().\n- deleteMetaFile and custom field saves go through the action provider.\n- The FileApi interface gains resolvePending(ref), so the provider that holds a file not uploaded yet can serve it.\n- Object fields in forms accept negative ids, used for files picked offline; only 0 is refused.\n- Intervention answers name their intervention (matchers.parent), so finishing an intervention waits for its answers.\n- Linked records keep their plain values, such as their name, and never their version, so a record saved offline keeps showing its links.\n- The post, put, get and delete calls of axiosApiProvider accept an optional axios config, such as a timeout.\n- uploadBase64 rejects when no file is given.\n\nMigration: custom ActionApi implementations must add init(credentials), reset(), upload(file) and resolvePending(request), and custom FileApi implementations must add resolvePending(ref)."
+}

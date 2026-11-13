@@ -29,10 +29,17 @@ export type ActionRequest = {
   ignoreRequest?: boolean;
 };
 
+export type MatcherParent = {
+  modelName: string;
+  id: number;
+};
+
 export type MatcherConfig = {
   modelName: string;
   id: number;
   fields: FieldMatcher;
+  // Record this one belongs to: a request kept on the parent waits for it.
+  parent?: MatcherParent;
 };
 
 export type FieldMatcher = {

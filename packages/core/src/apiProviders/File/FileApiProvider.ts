@@ -49,6 +49,13 @@ export interface FileApi {
   init(data: FileInitData): void;
   reset(ref?: FileRef): void;
   isAvailable(): Promise<boolean>;
+  /*
+   * Called on every provider before a file is read. Returns the reference
+   * with its server id when this provider knows it under another id, the
+   * reference unchanged otherwise, or null when only this provider holds the
+   * file (such as a file waiting to be uploaded): it then serves the read.
+   */
+  resolvePending(ref: FileRef): Promise<FileRef | null>;
   getDisplayUri(ref: FileRef): Promise<string | null>;
   getBinaryImageUri(ref: BinaryImageRef): Promise<string | null>;
   getLocalCopy(ref: FileRef): Promise<LocalFile | null>;

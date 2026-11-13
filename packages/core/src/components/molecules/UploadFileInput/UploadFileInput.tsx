@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {
   Text,
   getCommonStyles,
@@ -27,8 +27,8 @@ import {
   Image,
   Icon,
 } from '@axelor/aos-mobile-ui';
-import {deleteMetaFile, uploadBase64} from '../../../api/metafile-api';
-import {useFileApi} from '../../../apiProviders';
+import {deleteMetaFile} from '../../../api/metafile-api';
+import {useActionApi, useFileApi} from '../../../apiProviders';
 import {useTranslator} from '../../../i18n';
 import {handleDocumentSelection} from '../../../tools';
 import {checkNullString, useMetafileUri} from '../../../utils';
@@ -99,13 +99,13 @@ const UploadFileInput = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const fileApi = useFileApi();
+  const actionApi = useActionApi();
   const formatMetafileURI = useMetafileUri();
   const dispatch = useDispatch();
 
   const cameraKey = useMemo(() => `${title}camera_upload`, [title]);
 
   const cameraPicture = useCameraValueByKey(cameraKey);
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [selectedFile, setSelectedFile] = useState(defaultValue);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -157,11 +157,7 @@ const UploadFileInput = ({
           return;
         }
 
-        const response = await uploadBase64(file, {
-          baseUrl,
-          token,
-          jsessionId,
-        });
+        const response = await actionApi.upload(file);
 
         manageFileLocally && setSelectedFile({...file, ...response});
         onUpload(response);
@@ -170,15 +166,7 @@ const UploadFileInput = ({
         setErrorMessage(I18n.t('Base_FileUploadError'));
       }
     },
-    [
-      I18n,
-      baseUrl,
-      jsessionId,
-      manageFileLocally,
-      onUpload,
-      returnBase64String,
-      token,
-    ],
+    [I18n, actionApi, manageFileLocally, onUpload, returnBase64String],
   );
 
   const handleDocumentPick = useCallback(

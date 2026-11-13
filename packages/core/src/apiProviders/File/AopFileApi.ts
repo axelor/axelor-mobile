@@ -59,6 +59,10 @@ export class AopFileApi implements FileApi {
     return !!isConnected;
   }
 
+  resolvePending(ref: FileRef): Promise<FileRef | null> {
+    return Promise.resolve(ref);
+  }
+
   async getDisplayUri(ref: FileRef): Promise<string | null> {
     if (this.credentials?.baseUrl == null) return null;
     return metaFileContentUrl(this.credentials.baseUrl, ref);
