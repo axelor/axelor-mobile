@@ -1,0 +1,6 @@
+{
+  "title": "Intervention details: show a message instead of crashing when the intervention is not available",
+  "type": "fix",
+  "packages": ["intervention", "core"],
+  "description": "The user already loaded in the session is kept when it cannot be fetched again, for example offline, so the blocking popup saying that the user could not be retrieved no longer appears."
+}

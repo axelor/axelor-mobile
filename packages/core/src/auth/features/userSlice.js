@@ -78,6 +78,15 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchActiveUser.fulfilled, (state, action) => {
       state.loadingUser = false;
+
+      /*
+       * Nothing came back for the user already loaded in this session, for
+       * example offline: keep it instead of reporting a missing user.
+       */
+      if (action.payload == null && state.user?.id === action.meta.arg) {
+        return;
+      }
+
       state.user = action.payload ?? {};
       state.isUser = action.payload != null;
       state.canModifyCompany = action.payload?.companySet?.length > 1;
@@ -87,6 +96,14 @@ const userSlice = createSlice({
       state.isUser = false;
     });
     builder.addCase(updateActiveUser.fulfilled, (state, action) => {
+      /*
+       * Nothing came back from the update, for example offline: keep the user
+       * of the session instead of erasing it.
+       */
+      if (action.payload == null) {
+        return;
+      }
+
       state.user = action.payload;
       state.canModifyCompany = action.payload?.companySet?.length > 1;
     });

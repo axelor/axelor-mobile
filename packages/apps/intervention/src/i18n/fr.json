@@ -63,6 +63,7 @@
   "Intervention_AdvancedMonitoringAnswerNextIntervention": "Intervention suivante",
   "Intervention_DesiredUnit": "Unité attendue : {{unit}}",
   "Intervention_NoActiveIntervention": "Pas d'intervention active",
+  "Intervention_InterventionNotLoaded": "Cette intervention n'a pas pu être chargée. Si vous êtes hors ligne, elle n'a peut-être pas été téléchargée.",
   "Intervention_QuestionRequired": "Requise",
   "Intervention_QuestionConditional": "Conditionnelle",
   "Intervention_PrivateQuestion": "Question privée",
