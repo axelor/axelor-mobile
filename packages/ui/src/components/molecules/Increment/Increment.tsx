@@ -26,12 +26,15 @@ import {
 } from 'react-native';
 import {useDigitFormat, useOutsideClickHandler} from '../../../hooks';
 import {ThemeColors, useThemeColor} from '../../../theme';
-import {
-  formatNumber as _format,
-  unformatNumber as _unformat,
-} from '../../../utils';
+import {formatNumber} from '../../../utils';
 import {Input} from '../../atoms';
 import IncrementButton from './IncrementButton';
+import {
+  NumberSeparators,
+  parseTypedNumber,
+  toEditText,
+  toNumber,
+} from './number.helper';
 
 interface IncrementProps {
   style?: any;
@@ -75,44 +78,33 @@ const Increment = ({
   const containerRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
 
-  const [valueQty, setValueQty] = useState<any>(value);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+  /*
+   * The value given by the parent is the source of truth. The draft is the text
+   * typed while the field is being edited; it is null the rest of the time.
+   * The ref copy lets blur and outside click commit the draft only once.
+   */
+  const [draft, setDraft] = useState<string | null>(null);
+  const draftRef = useRef<string | null>(null);
+  const isEditedRef = useRef<boolean>(false);
+  const isSelectionPendingRef = useRef<boolean>(false);
 
-  const handleDecimal = useCallback(
-    (numberToFormat: string | number) => {
-      if (scale == null) return cutDecimalExcess(numberToFormat);
-
-      const _scale = Math.max(scale, 0);
-      const _value =
-        typeof numberToFormat === 'string'
-          ? parseFloat(numberToFormat)
-          : numberToFormat;
-
-      return _value.toFixed(_scale);
-    },
-    [cutDecimalExcess, scale],
-  );
-
-  const format = useCallback(
-    (number: number | string) =>
-      _format(number, decimalSpacer, thousandSpacer, handleDecimal),
-    [handleDecimal, decimalSpacer, thousandSpacer],
-  );
-
-  const unformat = useCallback(
-    (number: string) => _unformat(number, decimalSpacer, thousandSpacer),
+  const separators: NumberSeparators = useMemo(
+    () => ({
+      decimalSpacer: decimalSpacer ?? '.',
+      thousandSpacer: thousandSpacer ?? ' ',
+    }),
     [decimalSpacer, thousandSpacer],
   );
 
-  const handleValueFormatting = useCallback(
-    (_value: number | string) => {
-      if (defaultFormatting) {
-        setValueQty(format(_value));
-      } else {
-        setValueQty(typeof _value === 'string' ? _value : _value.toString());
-      }
+  const committedNumber = useMemo(() => toNumber(value), [value]);
+
+  const roundToText = useCallback(
+    (numberToRound: number | string): string => {
+      if (scale == null) return cutDecimalExcess(numberToRound);
+
+      return toNumber(numberToRound).toFixed(Math.max(scale, 0));
     },
-    [defaultFormatting, format],
+    [cutDecimalExcess, scale],
   );
 
   const clampValue = useCallback(
@@ -124,82 +116,153 @@ const Increment = ({
     [maxValue, minValue],
   );
 
-  const handleResult = useCallback(
-    (_value: number) => {
-      const resultValue = clampValue(_value);
-
-      handleValueFormatting(resultValue);
-      onValueChange(resultValue);
-    },
-    [clampValue, handleValueFormatting, onValueChange],
+  const isInRange = useCallback(
+    (_value: number) =>
+      (minValue == null || _value >= minValue) &&
+      (maxValue == null || _value <= maxValue),
+    [maxValue, minValue],
   );
 
-  const handleInputChange = useCallback(
-    (_value: string) => {
-      setValueQty(_value);
-
-      const unformattedValue = defaultFormatting ? unformat(_value) : _value;
-      const parsedValue = parseFloat(unformattedValue);
-
-      onValueChange(isNaN(parsedValue) ? 0 : clampValue(parsedValue));
-    },
-    [clampValue, defaultFormatting, onValueChange, unformat],
+  /* The value sent is rounded like the value shown, then kept within limits. */
+  const normalize = useCallback(
+    (_value: number) => clampValue(parseFloat(roundToText(_value))),
+    [clampValue, roundToText],
   );
 
+  const getDisplayText = useCallback(
+    (_value: number) =>
+      defaultFormatting
+        ? formatNumber(
+            _value,
+            separators.decimalSpacer,
+            separators.thousandSpacer,
+            roundToText,
+          )
+        : _value.toString(),
+    [defaultFormatting, roundToText, separators],
+  );
+
+  const getEditText = useCallback(
+    (_value: number) =>
+      defaultFormatting
+        ? toEditText(_value, separators, roundToText)
+        : _value.toString(),
+    [defaultFormatting, roundToText, separators],
+  );
+
+  const updateDraft = useCallback((text: string | null) => {
+    draftRef.current = text;
+    setDraft(text);
+  }, []);
+
+  const getCurrentNumber = useCallback(() => {
+    if (draftRef.current == null) return committedNumber;
+
+    return parseTypedNumber(draftRef.current, separators) ?? committedNumber;
+  }, [committedNumber, separators]);
+
+  const handleFocus = () => {
+    if (draftRef.current == null) {
+      isEditedRef.current = false;
+      isSelectionPendingRef.current = true;
+      updateDraft(getEditText(committedNumber));
+    }
+
+    onFocus?.();
+  };
+
+  /*
+   * The whole text to edit is selected once it is shown: selecting it in the
+   * focus handler would apply to the formatted text that it replaces.
+   */
   useEffect(() => {
-    if (isFocused) return;
+    if (draft == null || !isSelectionPendingRef.current) return;
 
-    handleValueFormatting(parseFloat(value || '0')?.toString());
-  }, [handleValueFormatting, isFocused, value]);
+    isSelectionPendingRef.current = false;
+    inputRef.current?.setSelection?.(0, draft.length);
+  }, [draft]);
 
-  const handlePlus = () => {
-    const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
-    const newValue: number = parseFloat(unformattedValue ?? '0') + stepSize;
+  const handleInputChange = (text: string | null) => {
+    const typedText = text ?? '';
+    isEditedRef.current = true;
+    updateDraft(typedText);
 
-    handleResult(newValue);
+    // Text that is not a number yet, like "-" or "12,3,", sends nothing.
+    const typedNumber = parseTypedNumber(typedText, separators);
+    if (typedNumber == null) return;
+
+    const roundedNumber = parseFloat(roundToText(typedNumber));
+    if (maxValue != null && roundedNumber > maxValue && roundedNumber >= 0) {
+      // More digits cannot bring a positive value back under the maximum.
+      onValueChange(maxValue);
+    } else if (isInRange(roundedNumber)) {
+      // A value under the minimum may still be typed, like "1" for "12".
+      onValueChange(roundedNumber);
+    }
   };
 
-  const handleMinus = () => {
-    const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
-    const newValue: number = parseFloat(unformattedValue ?? '0') - stepSize;
+  const commitDraft = useCallback(() => {
+    const typedText = draftRef.current;
+    if (typedText == null) return;
 
-    handleResult(newValue);
-  };
+    const isEdited = isEditedRef.current;
+    isEditedRef.current = false;
+    isSelectionPendingRef.current = false;
+    updateDraft(null);
 
-  const handleEndInput = useCallback(() => {
-    setIsFocused(false);
+    if (isEdited) {
+      let nextNumber = committedNumber;
 
-    const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
+      if (typedText.trim() === '') {
+        nextNumber = normalize(0);
+      } else {
+        /*
+         * Text that is not a number keeps the last valid number typed, which
+         * was already sent to the parent while typing.
+         */
+        const typedNumber = parseTypedNumber(typedText, separators);
+        if (typedNumber != null) {
+          nextNumber = normalize(typedNumber);
+        }
+      }
 
-    if (unformattedValue === '' || unformattedValue == null) {
-      handleResult(0);
-    } else {
-      handleResult(parseFloat(unformattedValue));
+      if (nextNumber !== committedNumber) {
+        onValueChange(nextNumber);
+      }
     }
 
     onBlur?.();
-  }, [defaultFormatting, handleResult, onBlur, unformat, valueQty]);
+  }, [
+    committedNumber,
+    normalize,
+    onBlur,
+    onValueChange,
+    separators,
+    updateDraft,
+  ]);
 
-  const handleFocus = () => {
-    setIsFocused(true);
+  const handleOutsideClick = useCallback(() => {
+    commitDraft();
+    inputRef.current?.blur?.();
+  }, [commitDraft]);
 
-    if (defaultFormatting) {
-      setValueQty((current: any) =>
-        unformat(current).replace('.', decimalSpacer!),
-      );
+  const handleStep = (step: number) => {
+    const nextNumber = normalize(getCurrentNumber() + step);
+    onValueChange(nextNumber);
+
+    if (draftRef.current != null) {
+      updateDraft(getEditText(nextNumber));
     }
-
-    if (inputRef.current?.setSelection) {
-      inputRef.current.setSelection(0, valueQty.length);
-    }
-    onFocus?.();
   };
+
+  const currentNumber = getCurrentNumber();
+  const displayedText = draft ?? getDisplayText(committedNumber);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   useOutsideClickHandler({
     wrapperRef: containerRef,
-    handleOutsideClick: handleEndInput,
-    activationCondition: isFocused,
+    handleOutsideClick,
+    activationCondition: draft != null,
   });
 
   return (
@@ -211,9 +274,9 @@ const Increment = ({
       testID="incrementContainer">
       <IncrementButton
         iconName="dash-lg"
-        onPress={handleMinus}
+        onPress={() => handleStep(-stepSize)}
         readonly={readonly}
-        disabled={minValue != null && parseFloat(valueQty) <= minValue}
+        disabled={minValue != null && currentNumber <= minValue}
         isBigButton={isBigButton}
       />
       <View
@@ -221,19 +284,19 @@ const Increment = ({
         <Input
           inputRef={inputRef}
           style={[styles.input, inputStyle]}
-          value={valueQty != null ? String(valueQty) : ''}
+          value={displayedText}
           onChange={handleInputChange}
           keyboardType={keyboardType}
           onSelection={handleFocus}
-          onEndFocus={handleEndInput}
+          onEndFocus={commitDraft}
           readOnly={readonly}
         />
       </View>
       <IncrementButton
         iconName="plus-lg"
-        onPress={handlePlus}
+        onPress={() => handleStep(stepSize)}
         readonly={readonly}
-        disabled={maxValue != null && parseFloat(valueQty) >= maxValue}
+        disabled={maxValue != null && currentNumber >= maxValue}
         isBigButton={isBigButton}
       />
     </TouchableOpacity>
