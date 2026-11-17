@@ -53,7 +53,7 @@ const GtCard = ({
       if (interventionStatus < gtStatus) {
         const todayDate = new Date();
         const nearlyExpiredDate = new Date(
-          Date.now() - DURATION_NEARLY_EXPIRED_IN_HOURS * 60 * 60 * 1000,
+          Date.now() + DURATION_NEARLY_EXPIRED_IN_HOURS * 60 * 60 * 1000,
         );
 
         if (_maxDate < todayDate) {
