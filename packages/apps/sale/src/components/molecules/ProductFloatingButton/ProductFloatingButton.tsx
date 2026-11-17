@@ -58,7 +58,7 @@ const ProductFloatingButton = ({}) => {
           iconName: 'palette2',
           color: Colors.priorityColor,
           hideIf:
-            !product?.productVariant == null && !product?.productVariantConfig,
+            product?.productVariant == null && !product?.productVariantConfig,
         },
       ]}
     />
