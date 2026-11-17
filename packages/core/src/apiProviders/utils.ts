@@ -121,12 +121,13 @@ const manageSucess = (
   const total = getApiResponseTotal(response);
 
   if (showToast) {
+    const text = message ? message : i18nProvider.i18n.t(action);
     showToastMessage({
       type: 'success',
       position: 'bottom',
       bottomOffset: 20,
       text1: i18nProvider.i18n.t('Base_Success'),
-      text2: `${message ? message : i18nProvider.i18n.t(action)}.`,
+      text2: text.endsWith('.') ? text : `${text}.`,
     });
   }
 
