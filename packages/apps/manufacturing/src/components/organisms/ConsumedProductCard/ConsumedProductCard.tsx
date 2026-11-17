@@ -62,8 +62,8 @@ const ConsumedProductCard = ({
       return getBorderStyles(Colors.errorColor.background)?.border;
     } else if (
       consumedQty == null ||
-      consumedQty === 0 ||
-      plannedQty > consumedQty
+      Number(consumedQty) === 0 ||
+      Number(plannedQty) > Number(consumedQty)
     ) {
       return getBorderStyles(Colors.plannedColor.background)?.border;
     } else {
