@@ -62,8 +62,8 @@ const ConsumedProductCard = ({
       return Colors.errorColor.background;
     } else if (
       consumedQty == null ||
-      consumedQty === 0 ||
-      plannedQty > consumedQty
+      Number(consumedQty) === 0 ||
+      Number(plannedQty) > Number(consumedQty)
     ) {
       return Colors.plannedColor.background;
     } else {

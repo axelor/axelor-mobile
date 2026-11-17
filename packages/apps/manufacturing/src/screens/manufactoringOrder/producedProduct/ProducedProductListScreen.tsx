@@ -79,9 +79,9 @@ const ProducedProductListScreen = ({navigation, route}: any) => {
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
         return list.filter(item => {
           if (selectedStatus[0].key === 'plannedStatus') {
-            return item?.plannedQty > item?.realQty;
+            return Number(item?.plannedQty) > Number(item?.realQty);
           } else if (selectedStatus[0].key === 'realizedStatus') {
-            return item?.plannedQty <= item?.realQty;
+            return Number(item?.plannedQty) <= Number(item?.realQty);
           } else {
             return item;
           }

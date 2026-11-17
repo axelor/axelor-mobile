@@ -45,7 +45,7 @@ const ProducedProductCard = ({
 
   const cardColor = useMemo(
     () =>
-      plannedQty > producedQty!
+      Number(plannedQty) > Number(producedQty)
         ? Colors.plannedColor.background
         : Colors.successColor.background,
     [Colors, plannedQty, producedQty],
