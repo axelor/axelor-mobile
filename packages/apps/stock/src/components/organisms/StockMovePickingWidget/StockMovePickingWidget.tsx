@@ -49,7 +49,7 @@ const StockMovePickingWidget = ({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
 
-  const [validatedLines, setValidatedLines] = useState(4);
+  const [validatedLines, setValidatedLines] = useState(0);
 
   const getValidatedLines = useCallback(async () => {
     if (!stockMoveId) return;
@@ -58,7 +58,7 @@ const StockMovePickingWidget = ({
       stockMoveId,
       checkValidated: true,
     })
-      .then(res => Number(res?.data?.total) ?? 0)
+      .then(res => Number(res?.data?.total) || 0)
       .catch(() => 0);
 
     setValidatedLines(total);
