@@ -39,7 +39,7 @@ export default {
   MailMessageLinkFilesScreen: {
     title: 'Message_LinkFiles',
     component: MailMessageLinkFilesScreen,
-    acionID: 'dms_all_documents',
+    actionID: 'dms_all_documents',
   },
 };
 
