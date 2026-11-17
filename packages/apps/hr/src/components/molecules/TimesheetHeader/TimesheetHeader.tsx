@@ -101,7 +101,7 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
       <View style={styles.rowContainer}>
         <View>
           <Text>
-            {I18n.t('User_Company')} : {timesheet.company.name}
+            {I18n.t('User_Company')} : {timesheet.company?.name}
           </Text>
           <Text>
             {I18n.t('Hr_TotalDuration')} :
