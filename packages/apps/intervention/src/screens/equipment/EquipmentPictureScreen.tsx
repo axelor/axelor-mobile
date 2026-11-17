@@ -107,16 +107,17 @@ const EquipmentPictureScreen = ({}) => {
           }),
         );
       } catch (error) {
+        console.log('Could not upload the file:', error);
         showToastMessage({
           type: 'error',
           position: 'bottom',
-          text1: 'Error',
-          text2: `Could not upload the file.\n${error}`,
+          text1: I18n.t('Base_Error'),
+          text2: I18n.t('Base_FileUploadError'),
           onPress: () => {},
         });
       }
     },
-    [actionApi, dispatch, equipment],
+    [I18n, actionApi, dispatch, equipment],
   );
 
   useEffect(() => {
