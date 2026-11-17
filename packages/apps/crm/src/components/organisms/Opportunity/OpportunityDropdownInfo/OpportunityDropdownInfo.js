@@ -69,10 +69,10 @@ const OpportunityDropdownInfo = ({}) => {
                     value={_expectedCloseDate}
                   />
                 )}
-                {opportunity.assignedTo && (
+                {opportunity.user?.fullName && (
                   <LabelText
                     title={I18n.t('Crm_Opportunity_AssignedTo')}
-                    value={opportunity.assignedTo}
+                    value={opportunity.user.fullName}
                   />
                 )}
                 {opportunity.amount && (
