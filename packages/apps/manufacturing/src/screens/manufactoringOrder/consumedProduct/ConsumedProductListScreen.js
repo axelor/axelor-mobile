@@ -138,9 +138,9 @@ const ConsumedProductListScreen = ({route, navigation}) => {
           if (selectedStatus[0].key === 'missingStatus') {
             return item.missingQty > 0;
           } else if (selectedStatus[0].key === 'partiallyStatus') {
-            return item.plannedQty > item.realQty;
+            return Number(item.plannedQty) > Number(item.realQty);
           } else if (selectedStatus[0].key === 'finishedStatus') {
-            return item.plannedQty <= item.realQty;
+            return Number(item.plannedQty) <= Number(item.realQty);
           } else {
             return item;
           }

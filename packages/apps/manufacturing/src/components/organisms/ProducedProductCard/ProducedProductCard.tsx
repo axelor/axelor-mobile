@@ -45,7 +45,7 @@ const ProducedProductCard = ({
   const formatNumber = useDigitFormat();
 
   const borderStyles = useMemo(() => {
-    if (plannedQty > producedQty) {
+    if (Number(plannedQty) > Number(producedQty)) {
       return getStyles(Colors.plannedColor.background)?.border;
     }
     return getStyles(Colors.successColor.background)?.border;
