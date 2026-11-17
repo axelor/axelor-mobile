@@ -1,0 +1,5 @@
+{
+  "title": "Picking widget: no longer show a wrong progress while loading",
+  "type": "fix",
+  "packages": ["stock"]
+}
