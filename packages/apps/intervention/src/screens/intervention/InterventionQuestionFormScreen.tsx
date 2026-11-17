@@ -29,6 +29,7 @@ import {
 import {
   Badge,
   HeaderContainer,
+  HtmlInput,
   Screen,
   Text,
   useThemeColor,
@@ -134,7 +135,11 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
           )}
         </View>
         {question.indication && (
-          <Text writingType="details">{question.indication}</Text>
+          <HtmlInput
+            defaultInput={question.indication}
+            readonly
+            editorBackgroundColor={Colors.screenBackgroundColor}
+          />
         )}
       </View>
       <FormView
