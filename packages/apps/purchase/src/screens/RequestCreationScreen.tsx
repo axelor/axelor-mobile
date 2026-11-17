@@ -164,7 +164,7 @@ const RequestCreationScreen = () => {
           isValidateButtonDisabled={quantity === 0 || unit == null}
           isEditionMode={isEditionMode}
           addLine={handleAddLine}
-          companyId={company.id}
+          companyId={company?.id}
           description={description}
           resetDefaultStates={resetDefaultStates}
         />

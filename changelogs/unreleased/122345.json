@@ -1,0 +1,5 @@
+{
+  "title": "Purchase request creation: no longer crash when no company is selected",
+  "type": "fix",
+  "packages": ["purchase"]
+}
