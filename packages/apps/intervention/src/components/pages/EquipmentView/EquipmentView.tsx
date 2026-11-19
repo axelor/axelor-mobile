@@ -199,7 +199,7 @@ const EquipmentView = ({}) => {
         {...ObjectToDisplay}
         searchPlaceholder={I18n.t('Base_Search')}
         headerTopChildren={<InterventionHeader intervention={intervention} />}
-        headerChildren={<EquipmentModeSwitch setMode={setMode} />}
+        fixedItems={<EquipmentModeSwitch setMode={setMode} />}
         chipComponent={
           <ChipSelect
             mode="switch"

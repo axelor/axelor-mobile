@@ -106,6 +106,7 @@ const EquipmentActionCard = ({
           onPress: () =>
             navigation.navigate('EquipmentFormView', {
               idEquipment,
+              openInReadMode: !canEdit,
             }),
         },
         {
@@ -128,6 +129,12 @@ const EquipmentActionCard = ({
         code={code}
         equipmentFamily={equipmentFamily}
         inService={inService}
+        onPress={() =>
+          navigation.navigate('EquipmentFormView', {
+            idEquipment,
+            openInReadMode: true,
+          })
+        }
       />
     </ActionCard>
   );
