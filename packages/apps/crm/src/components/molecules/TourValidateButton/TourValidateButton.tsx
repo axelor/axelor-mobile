@@ -18,7 +18,12 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useDispatch,
+  useSelector,
+  usePermitted,
+} from '@axelor/aos-mobile-core';
 import {validateTour} from '../../../features/tourSlice';
 import {searchTourLineApi} from '../../../api';
 
@@ -26,6 +31,9 @@ const TourValidateButton = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.crm.db.Tour',
+  });
 
   const isMounted = useRef(true);
 
@@ -57,7 +65,7 @@ const TourValidateButton = ({}) => {
     };
   }, [tour]);
 
-  if (numberUnValidated === 0) {
+  if (readonly || numberUnValidated === 0) {
     return null;
   }
 

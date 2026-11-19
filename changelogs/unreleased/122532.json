@@ -1,0 +1,5 @@
+{
+  "title": "Tour: hide the validation of the tour and of its steps for users without write access",
+  "type": "fix",
+  "packages": ["crm"]
+}
