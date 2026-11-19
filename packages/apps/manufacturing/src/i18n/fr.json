@@ -32,7 +32,7 @@
   "Manufacturing_TrackingNumber": "Numéro de suivi",
   "Manufacturing_RefClient": "Références commandes client",
   "Manufacturing_NotesOnSaleOrder": "Commentaire de la commande client",
-  "Manufacturing_NotesOnSaleOrderLine": "Commantaire sur la ligne de commande",
+  "Manufacturing_NotesOnSaleOrderLine": "Commentaire sur la ligne de commande",
   "Manufacturing_WasteQty": "Quantité de rebut",
   "Manufacturing_WasteDeclaration": "Déclaration de rebut",
   "Manufacturing_ConfirmWasteDeclaration": "Êtes-vous sûr de vouloir déclarer ces produits en tant que rebuts ? Cette action ne sera plus disponible ensuite.",
