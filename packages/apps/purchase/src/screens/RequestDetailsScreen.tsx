@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
   useTypes,
@@ -47,6 +48,9 @@ const RequestDetailsScreen = ({route}) => {
   const I18n = useTranslator();
   const {PurchaseRequest} = useTypes();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
+  });
 
   const {loadingPurchaseRequest, purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
@@ -92,10 +96,11 @@ const RequestDetailsScreen = ({route}) => {
           placeholder={I18n.t('Base_Description')}
           defaultValue={purchaseRequest.description}
           readonly={
-            purchaseRequest.statusSelect !==
+            readonly ||
+            (purchaseRequest.statusSelect !==
               PurchaseRequest.statusSelect.Draft &&
-            purchaseRequest.statusSelect !==
-              PurchaseRequest.statusSelect.Requested
+              purchaseRequest.statusSelect !==
+                PurchaseRequest.statusSelect.Requested)
           }
           onValidate={handleDescriptionChange}
         />
