@@ -1,0 +1,5 @@
+{
+  "title": "Sale: hide the cart line validation without create permission and no longer crash on order details without address",
+  "type": "fix",
+  "packages": ["sale"]
+}
