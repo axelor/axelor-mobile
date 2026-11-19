@@ -104,7 +104,10 @@ const EquipmentActionCard = ({
           iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
           helper: I18n.t('Intervention_Edit'),
           onPress: () =>
-            navigation.navigate('EquipmentFormView', {idEquipment}),
+            navigation.navigate('EquipmentFormView', {
+              idEquipment,
+              openInReadMode: !canEdit,
+            }),
         },
         {
           iconName: 'archive-fill',
@@ -126,6 +129,12 @@ const EquipmentActionCard = ({
         code={code}
         equipmentFamily={equipmentFamily}
         inService={inService}
+        onPress={() =>
+          navigation.navigate('EquipmentFormView', {
+            idEquipment,
+            openInReadMode: true,
+          })
+        }
       />
     </ActionCard>
   );

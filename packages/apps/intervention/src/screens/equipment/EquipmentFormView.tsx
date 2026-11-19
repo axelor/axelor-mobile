@@ -32,7 +32,7 @@ import {
 } from '../../features/equipmentSlice';
 
 const EquipmentFormView = ({navigation, route}: any) => {
-  const {idEquipment, isCreation} = route?.params ?? {};
+  const {idEquipment, isCreation, openInReadMode} = route?.params ?? {};
   const Colors = useThemeColor();
   const _dispatch: any = useDispatch();
   const {Equipment} = useTypes();
@@ -97,7 +97,7 @@ const EquipmentFormView = ({navigation, route}: any) => {
       formKey="intervention_equipment"
       defaultValue={_defaultValue}
       creationDefaultValue={_creationDefaultValue}
-      defaultEditMode
+      defaultEditMode={!openInReadMode}
       actions={[
         {
           key: 'create-equipment',

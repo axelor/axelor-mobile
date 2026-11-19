@@ -28,6 +28,7 @@ interface EquipmentCardProps {
   code: string;
   equipmentFamily: string;
   inService: boolean;
+  onPress?: () => void;
 }
 
 const EquipmentCard = ({
@@ -37,13 +38,16 @@ const EquipmentCard = ({
   code,
   equipmentFamily,
   inService = false,
+  onPress,
 }: EquipmentCardProps) => {
   const {Equipment} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
   return (
     <ObjectCard
-      showArrow={false}
+      onPress={onPress}
+      touchable={onPress != null}
+      showArrow={onPress != null}
       borderLeftColor={
         getItemColor(Equipment?.serviceSelect, inService)?.background
       }
