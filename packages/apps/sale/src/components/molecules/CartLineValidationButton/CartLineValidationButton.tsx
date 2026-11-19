@@ -100,7 +100,7 @@ const CartLineValidationButton = ({
   );
 
   const displaySaveBtn = useMemo(
-    () => (isCreation && canCreate) || !readonly,
+    () => (isCreation ? canCreate : !readonly),
     [canCreate, isCreation, readonly],
   );
 
