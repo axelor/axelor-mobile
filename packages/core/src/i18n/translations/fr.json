@@ -63,6 +63,7 @@
   "Base_TimeFormat": "HH:mm",
   "Base_ConnectedOn": "Connecté à",
   "Base_Version": "Version {{appVersion}}",
+  "Base_Copyright": "© 2005 - {{year}} Axelor. Tous droits réservés.",
   "Base_Status": "Statut",
   "Base_Error": "Erreur",
   "Base_Success": "Succès",

@@ -21,6 +21,7 @@ import {Dimensions, KeyboardAvoidingView, StyleSheet, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import {Text, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '../redux/hooks';
+import {useTranslator} from '../i18n';
 import {login} from '../features/authSlice';
 import {
   sessionStorage,
@@ -34,6 +35,7 @@ import {
 const LoginScreen = ({route}: any) => {
   const {testInstanceConfig, releaseInstanceConfig, logoFile} =
     route?.params ?? {};
+  const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch: any = useDispatch();
 
@@ -145,9 +147,9 @@ const LoginScreen = ({route}: any) => {
           </View>
           <View style={styles.copyrightContainer}>
             <Text writingType="important" fontSize={12}>
-              {`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}
+              {I18n.t('Base_Copyright', {year: new Date().getFullYear()})}
             </Text>
-            <Text fontSize={12}>{`Version ${appVersion}`}</Text>
+            <Text fontSize={12}>{I18n.t('Base_Version', {appVersion})}</Text>
           </View>
         </View>
       </KeyboardAvoidingView>

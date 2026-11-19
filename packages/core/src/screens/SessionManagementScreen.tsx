@@ -20,6 +20,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
 import {Text, Screen} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '../redux/hooks';
+import {useTranslator} from '../i18n';
 import {clearError} from '../features/authSlice';
 import {
   LogoImage,
@@ -35,6 +36,7 @@ import {
 const SessionManagementScreen = ({route}: any) => {
   const {testInstanceConfig, releaseInstanceConfig, logoFile} =
     route?.params ?? {};
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const modeDebug = useMemo(() => __DEV__, []);
@@ -97,9 +99,9 @@ const SessionManagementScreen = ({route}: any) => {
           />
           <View style={styles.copyrightContainer}>
             <Text writingType="important" fontSize={12}>
-              {`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}
+              {I18n.t('Base_Copyright', {year: new Date().getFullYear()})}
             </Text>
-            <Text fontSize={12}>{`Version ${appVersion}`}</Text>
+            <Text fontSize={12}>{I18n.t('Base_Version', {appVersion})}</Text>
           </View>
         </View>
         <PopupCreateSession
