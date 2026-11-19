@@ -58,7 +58,11 @@ const parseResponse = (res: any) => {
         title: _title,
         date: getSectionDate(_content),
         data: _content,
-      })),
+      }))
+      .sort(
+        (a, b) =>
+          new Date(b.date ?? 0).getTime() - new Date(a.date ?? 0).getTime(),
+      ),
   };
 };
 
