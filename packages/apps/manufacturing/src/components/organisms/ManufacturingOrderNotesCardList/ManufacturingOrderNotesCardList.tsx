@@ -33,11 +33,11 @@ const ManufacturingOrderNotesCardList = ({
     <>
       <NotesCard title={I18n.t('Manufacturing_Notes')} data={manufOrder.note} />
       <NotesCard
-        title={I18n.t('Manufacturing_Notes')}
+        title={I18n.t('Manufacturing_NotesOnSaleOrder')}
         data={manufOrder.moCommentFromSaleOrder}
       />
       <NotesCard
-        title={I18n.t('Manufacturing_Notes')}
+        title={I18n.t('Manufacturing_NotesOnSaleOrderLine')}
         data={manufOrder.moCommentFromSaleOrderLine}
       />
     </>
