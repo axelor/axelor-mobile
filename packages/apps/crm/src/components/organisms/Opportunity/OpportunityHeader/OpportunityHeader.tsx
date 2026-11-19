@@ -23,12 +23,16 @@ import {
   useSelector,
   useDispatch,
   useTypeHelpers,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {updateOpportunityScore} from '../../../../features/opportunitySlice';
 
 const OpportunityHeader = ({}) => {
   const dispatch = useDispatch();
   const {getItemColorFromIndex} = useTypeHelpers();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.crm.db.Opportunity',
+  });
 
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
@@ -56,7 +60,7 @@ const OpportunityHeader = ({}) => {
           score={opportunity.opportunityRating}
           showMissingStar={true}
           onPress={updateOpportunityAPI}
-          editMode={true}
+          editMode={!readonly}
         />
       </View>
       <View>

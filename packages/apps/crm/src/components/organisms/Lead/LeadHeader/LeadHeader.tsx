@@ -35,6 +35,7 @@ import {
   SocialNetworkLinks,
   useTypeHelpers,
   useBinaryPictureUri,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {updateLeadScore} from '../../../../features/leadSlice';
 
@@ -44,6 +45,9 @@ const LeadHeader = () => {
   const dispatch = useDispatch();
   const {getItemColorFromIndex} = useTypeHelpers();
   const formatURI = useBinaryPictureUri();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.crm.db.Lead',
+  });
 
   const {lead, leadStatusList} = useSelector(state => state.lead);
 
@@ -127,7 +131,7 @@ const LeadHeader = () => {
             score={lead.leadScoringSelect}
             showMissingStar={true}
             onPress={updateScoreLeadAPI}
-            editMode={true}
+            editMode={!readonly}
           />
         </View>
       </View>

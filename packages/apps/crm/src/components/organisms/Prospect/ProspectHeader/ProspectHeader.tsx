@@ -32,6 +32,7 @@ import {
   useSelector,
   useTypes,
   useTypeHelpers,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {updateProspectScore} from '../../../../features/prospectSlice';
 
@@ -40,6 +41,9 @@ const ProspectHeader = ({}) => {
   const dispatch = useDispatch();
   const {Partner} = useTypes();
   const {getItemColorFromIndex} = useTypeHelpers();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
 
   const {prospect, prospectStatusList} = useSelector(state => state.prospect);
   const {crm: crmConfig} = useSelector(state => state.appConfig);
@@ -67,7 +71,7 @@ const ProspectHeader = ({}) => {
             score={prospect.leadScoringSelect}
             showMissingStar={true}
             onPress={updateScoreProspectAPI}
-            editMode={true}
+            editMode={!readonly}
           />
         </View>
         <View style={styles.columnWrapper}>
