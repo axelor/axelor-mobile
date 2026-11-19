@@ -1,0 +1,5 @@
+{
+  "title": "Purchase request: make the description read-only for users without write access",
+  "type": "fix",
+  "packages": ["purchase"]
+}
