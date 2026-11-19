@@ -81,7 +81,7 @@ const EquipmentView = ({}) => {
   const actionList = useMemo(() => {
     const _actionList: any[] = [];
 
-    if (interventionReadonly && isInterventionMode) _actionList;
+    if (interventionReadonly && isInterventionMode) return _actionList;
 
     if (canCreate) {
       _actionList.push({
