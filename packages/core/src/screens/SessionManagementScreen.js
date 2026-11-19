@@ -31,11 +31,13 @@ import {
 } from '../sessions';
 import {clearError} from '../features/authSlice';
 import {useSelector} from '../redux/hooks';
+import {useTranslator} from '../i18n';
 
 const SessionManagementScreen = ({route}) => {
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const logoFile = route?.params?.logoFile;
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const modeDebug = useMemo(() => __DEV__, []);
@@ -106,8 +108,10 @@ const SessionManagementScreen = ({route}) => {
             session={session}
           />
           <View style={styles.copyrightContainer}>
-            <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
-            <Text>{`Version ${appVersion}`}</Text>
+            <Text>
+              {I18n.t('Base_Copyright', {year: new Date().getFullYear()})}
+            </Text>
+            <Text>{I18n.t('Base_Version', {appVersion})}</Text>
           </View>
         </View>
         <PopupCreateSession
