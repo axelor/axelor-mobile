@@ -1,7 +1,7 @@
 {
   "Stock_Stock": "Stock",
   "Stock_StockLocation": "Emplacement de stock",
-  "Stock_OriginalStockLocation": "Emplacement de stock inital",
+  "Stock_OriginalStockLocation": "Emplacement de stock initial",
   "Stock_DestinationStockLocation": "Emplacement de stock final",
   "Stock_Product": "Produit",
   "Stock_NewStockCorrection": "Nouvelle correction de stock",
