@@ -22,6 +22,7 @@ import {
   linkingProvider,
   useDispatch,
   useNavigation,
+  usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {validateTourLine} from '../../../features/tourLineSlice';
@@ -53,6 +54,9 @@ const TourLineActionCard = ({
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.crm.db.TourLine',
+  });
 
   const [addPopupIsVisible, setAddPopupIsVisible] = useState(false);
 
@@ -93,7 +97,7 @@ const TourLineActionCard = ({
                   tourId: tourId,
                 }),
               ),
-            hidden: isValidated,
+            hidden: readonly || isValidated,
           },
         ]}>
         <TourLineCard
