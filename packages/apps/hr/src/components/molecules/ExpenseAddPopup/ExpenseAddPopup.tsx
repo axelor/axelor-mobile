@@ -24,6 +24,7 @@ import {
   useSelector,
   useDispatch,
   useNavigation,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {createExpense, updateExpense} from '../../../features/expenseSlice';
 import {DraftExpensePicker} from '../../templates';
@@ -43,6 +44,9 @@ const ExpenseAddPopup = ({
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {canCreate, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.Expense',
+  });
 
   const {user} = useSelector(state => state.user);
 
@@ -85,22 +89,24 @@ const ExpenseAddPopup = ({
       confirmButtonConfig={{
         title: I18n.t('Base_Add'),
         onPress: updateExpenseAPI,
-        disabled: expenseSelected == null,
+        disabled: readonly || expenseSelected == null,
       }}
       translator={I18n.t}>
       <View style={styles.container}>
         <DraftExpensePicker onChange={setExpenseSelected} />
-        <TouchableOpacity
-          onPress={createExpenseAPI}
-          style={styles.labelText}
-          activeOpacity={0.9}>
-          <LabelText
-            iconName="plus-lg"
-            color={Colors.primaryColor.background}
-            title={I18n.t('Hr_NewExpense')}
-            size={16}
-          />
-        </TouchableOpacity>
+        {canCreate && (
+          <TouchableOpacity
+            onPress={createExpenseAPI}
+            style={styles.labelText}
+            activeOpacity={0.9}>
+            <LabelText
+              iconName="plus-lg"
+              color={Colors.primaryColor.background}
+              title={I18n.t('Hr_NewExpense')}
+              size={16}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </Alert>
   );

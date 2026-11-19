@@ -1,0 +1,5 @@
+{
+  "title": "Expense lines: respect the create and write permissions on expenses when adding lines to an expense",
+  "type": "fix",
+  "packages": ["hr"]
+}
