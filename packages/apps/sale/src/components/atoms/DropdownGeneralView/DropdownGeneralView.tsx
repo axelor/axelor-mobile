@@ -95,14 +95,18 @@ const DropdownGeneralView = ({
           value={invoicedPartnerName}
         />
       )}
-      <AdressLine address={mainInvoicingAddress} />
+      {!checkNullString(mainInvoicingAddress) && (
+        <AdressLine address={mainInvoicingAddress} />
+      )}
       {!checkNullString(deliveredPartnerName) && (
         <LabelText
           title={I18n.t('Sale_DeliveredPartner')}
           value={deliveredPartnerName}
         />
       )}
-      <AdressLine address={deliveryAddress} />
+      {!checkNullString(deliveryAddress) && (
+        <AdressLine address={deliveryAddress} />
+      )}
     </View>
   );
 };
