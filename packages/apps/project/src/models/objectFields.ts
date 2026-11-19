@@ -23,6 +23,7 @@ export const project_modelAPI: ObjectFields = {
     createdOn: schemaContructor.string(),
     projectStatus: schemaContructor.subObject('name'),
     name: schemaContructor.string(),
+    fullName: schemaContructor.string(),
     code: schemaContructor.string(),
     clientPartner: schemaContructor.subObject().concat(
       schemaContructor.object({

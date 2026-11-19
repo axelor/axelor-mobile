@@ -28,6 +28,17 @@ import {Label} from '@axelor/aos-mobile-ui';
 import {previousProjectActivity} from '../../../api/project-api';
 import {ActivityCard} from '../../molecules';
 
+const getSectionDate = (titleMapList: any[]): string | undefined => {
+  for (const _titleMap of titleMapList ?? []) {
+    const _activities: any[] = _titleMap?.[Object.keys(_titleMap)[0]] ?? [];
+    const _time = _activities.find(_activity => _activity?.time != null)?.time;
+
+    if (_time != null && !isNaN(new Date(_time).getTime())) return _time;
+  }
+
+  return undefined;
+};
+
 const ActivityListView = () => {
   const I18n = useTranslator();
 
@@ -64,9 +75,16 @@ const ActivityListView = () => {
         });
 
         const activityList = res.data.data[0]?.values?.$activityList?.[0] || {};
-        const formattedData = Object.entries(activityList).map(
-          ([_date, _content]) => ({title: _date, data: _content}),
-        );
+        const formattedData = Object.entries(activityList)
+          .filter((entry): entry is [string, unknown[]] =>
+            Array.isArray(entry[1]),
+          )
+          .map(([_date, _content]) => ({title: _date, data: _content}))
+          .sort(
+            (a, b) =>
+              new Date(getSectionDate(b.data) ?? 0).getTime() -
+              new Date(getSectionDate(a.data) ?? 0).getTime(),
+          );
 
         if (formattedData.length === 0 && _startDate >= dateLimit) {
           handlePreviousActivity();
