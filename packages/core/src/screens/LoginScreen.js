@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
 import {Text, Screen, KeyboardAvoidingScrollView} from '@axelor/aos-mobile-ui';
 import {login} from '../features/authSlice';
+import {useTranslator} from '../i18n';
 import {
   sessionStorage,
   getStorageUrl,
@@ -34,6 +35,7 @@ const LoginScreen = ({route}) => {
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const logoFile = route?.params?.logoFile;
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {appVersion, loading, error, baseUrl} = useSelector(
@@ -143,8 +145,10 @@ const LoginScreen = ({route}) => {
             onValidation={onPressLogin}
           />
           <View style={styles.copyright}>
-            <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
-            <Text>{`Version ${appVersion}`}</Text>
+            <Text>
+              {I18n.t('Base_Copyright', {year: new Date().getFullYear()})}
+            </Text>
+            <Text>{I18n.t('Base_Version', {appVersion})}</Text>
           </View>
         </View>
       </KeyboardAvoidingScrollView>

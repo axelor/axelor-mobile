@@ -1,0 +1,5 @@
+{
+  "title": "Login: translate the copyright and version lines of the login and session screens",
+  "type": "fix",
+  "packages": ["core"]
+}
