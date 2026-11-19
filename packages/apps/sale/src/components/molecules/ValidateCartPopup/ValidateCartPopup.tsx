@@ -27,6 +27,7 @@ import {Alert, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useNavigation,
+  usePermitted,
   useSelector,
   useDispatch,
 } from '@axelor/aos-mobile-core';
@@ -52,6 +53,9 @@ const ValidateCartPopup = ({
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch: any = useDispatch();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
 
   const {activeCart} = useSelector(state => state.sale_cart);
   const {userId} = useSelector(state => state.auth);
@@ -110,14 +114,16 @@ const ValidateCartPopup = ({
           defaultValue={customerSelected}
           companyId={activeCart?.company?.id}
         />
-        <TouchableOpacity activeOpacity={0.9} onPress={handleClientCreation}>
-          <LabelText
-            iconName="plus-lg"
-            color={Colors.primaryColor.background}
-            title={I18n.t('Sale_CreateNewCustomer')}
-            size={16}
-          />
-        </TouchableOpacity>
+        {canCreate && (
+          <TouchableOpacity activeOpacity={0.9} onPress={handleClientCreation}>
+            <LabelText
+              iconName="plus-lg"
+              color={Colors.primaryColor.background}
+              title={I18n.t('Sale_CreateNewCustomer')}
+              size={16}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </Alert>
   );
