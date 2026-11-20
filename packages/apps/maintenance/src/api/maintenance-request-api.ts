@@ -181,7 +181,7 @@ export async function fetchPlannedMaintenanceRequests({
     ),
     fieldKey: 'maintenance_maintenanceRequest',
     sortKey: 'maintenance_maintenanceRequest',
-    numberElementsByPage: undefined,
+    numberElementsByPage: null,
     page: 0,
     provider: 'model',
   });
