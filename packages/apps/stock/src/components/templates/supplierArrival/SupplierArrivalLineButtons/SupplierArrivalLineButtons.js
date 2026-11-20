@@ -76,7 +76,7 @@ const SupplierArrivalLineButtons = ({
         stockMoveLineId: supplierArrivalLine.id,
         version: supplierArrivalLine.version,
         realQty: realQty,
-        conformity: conformity?.id,
+        conformity: conformity?.value,
         toStockLocationId: toStockLocation?.id,
         description: description,
       }),

@@ -279,7 +279,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         <Picker
           title={I18n.t('Stock_Conformity')}
           onValueChange={item => handleConformityChange(item)}
-          defaultValue={conformity?.id}
+          defaultValue={conformity?.value}
           listItems={conformityList}
           labelField="title"
           valueField="value"
