@@ -1,5 +1,0 @@
-{
-  "title": "Intervention equipment: open an equipment by tapping its card and always show the Intervention / Customer switch",
-  "type": "fix",
-  "packages": ["intervention"]
-}
