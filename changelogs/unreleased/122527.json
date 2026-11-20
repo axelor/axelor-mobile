@@ -1,5 +1,0 @@
-{
-  "title": "Intervention equipment: hide the create and link actions when the intervention is read-only",
-  "type": "fix",
-  "packages": ["intervention"]
-}

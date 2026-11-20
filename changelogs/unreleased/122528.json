@@ -1,5 +1,0 @@
-{
-  "title": "Cart validation: show \"Create new customer\" only to users allowed to create partners",
-  "type": "fix",
-  "packages": ["sale"]
-}

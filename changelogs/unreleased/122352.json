@@ -1,5 +1,0 @@
-{
-  "title": "Opportunity details: show the assigned user",
-  "type": "fix",
-  "packages": ["crm"]
-}
