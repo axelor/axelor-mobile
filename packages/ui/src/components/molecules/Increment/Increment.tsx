@@ -136,6 +136,11 @@ const Increment = ({
     [clampValue, roundToText],
   );
 
+  const getEmptyNumber = useCallback(
+    (): number | null => (nullable ? null : normalize(0)),
+    [nullable, normalize],
+  );
+
   const getDisplayText = useCallback(
     (_value: number) =>
       defaultFormatting
@@ -194,6 +199,13 @@ const Increment = ({
     isEditedRef.current = true;
     updateDraft(typedText);
 
+    // An emptied field sends at once the value a blur would commit.
+    if (isEmptyValue(typedText)) {
+      const emptyNumber = getEmptyNumber();
+      if (emptyNumber !== committedNumber) onValueChange(emptyNumber);
+      return;
+    }
+
     // Text that is not a number yet, like "-" or "12,3,", sends nothing.
     const typedNumber = parseTypedNumber(typedText, separators);
     if (typedNumber == null) return;
@@ -220,8 +232,8 @@ const Increment = ({
     if (isEdited) {
       let nextNumber: number | null = committedNumber;
 
-      if (typedText.trim() === '') {
-        nextNumber = nullable ? null : normalize(0);
+      if (isEmptyValue(typedText)) {
+        nextNumber = getEmptyNumber();
       } else {
         /*
          * Text that is not a number keeps the last valid number typed, which
@@ -241,8 +253,8 @@ const Increment = ({
     onBlur?.();
   }, [
     committedNumber,
+    getEmptyNumber,
     normalize,
-    nullable,
     onBlur,
     onValueChange,
     separators,
