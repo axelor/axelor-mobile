@@ -3,6 +3,105 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.27] (2026-11-20)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Translations: fix misspelled, untranslated and missing labels
+- Login: translate the copyright and version lines of the login and session screens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: show an unanswered measure question empty instead of 0, and save a cleared value even when the form is saved before leaving the field
+
+<details>
+Increment and FormIncrementInput take a new `nullable` prop. With it, an empty value is shown empty, and clearing the field sends null instead of 0. A number field that is emptied now sends its cleared value right away (null, or 0 or its minimum), so a form saved while the field is still being edited keeps the cleared value.
+</details>
+
+### @axelor/aos-mobile-message
+
+#### Fixes
+
+- Link files: show the header actions of the documents list
+
+### @axelor/aos-mobile-purchase
+
+#### Fixes
+
+- Purchase request creation: no longer crash when no company is selected
+- Purchase request: make the description read-only for users without write access
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Translations: fix misspelled, untranslated and missing labels
+- Product details: show the variant products action only on products with variants
+- Sale: hide the cart line validation without create permission and no longer crash on order details without address
+- Cart validation: show "Create new customer" only to users allowed to create partners
+
+### @axelor/aos-mobile-project
+
+#### Fixes
+
+- Project: show the project when logging time from a project and list the activity days newest first
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Intervention: show the caution colour when a guaranteed time deadline is less than 7 days away
+- Equipment pictures: translate the upload error message
+- Intervention questions: display the question indication as formatted text
+- Intervention equipment: open an equipment by tapping its card and always show the Intervention / Customer switch
+- Increment: show an unanswered measure question empty instead of 0, and save a cleared value even when the form is saved before leaving the field
+
+<details>
+Increment and FormIncrementInput take a new `nullable` prop. With it, an empty value is shown empty, and clearing the field sends null instead of 0. A number field that is emptied now sends its cleared value right away (null, or 0 or its minimum), so a form saved while the field is still being edited keeps the cleared value.
+</details>
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Translations: fix misspelled, untranslated and missing labels
+- Timesheets: no longer crash when a timesheet has no company
+- Expense lines: respect the create and write permissions on expenses when adding lines to an expense
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+- Translations: fix misspelled, untranslated and missing labels
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity details: show the assigned user
+- CRM: make the score stars of leads, opportunities and prospects read-only for users without write access
+- Tour: hide the validation of the tour and of its steps for users without write access
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Translations: fix misspelled, untranslated and missing labels
+- Consumed and produced products: compare quantities as numbers for the card colour and the status filters
+- Manufacturing order: give their own title to the notes from the sale order and from the sale order line
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Translations: fix misspelled, untranslated and missing labels
+- Stock: save the supplier arrival line conformity, hide Save on lines of realized internal moves and of customer deliveries that are no longer planned and register the supplier arrival list header on stock moves
+- Picking widget: no longer show a wrong progress while loading
+
 ## [9.0.26] (2026-11-13)
 
 ### @axelor/aos-mobile-core
@@ -685,6 +784,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.27]: https://github.com/axelor/axelor-mobile/compare/9.0.26...9.0.27
 [9.0.26]: https://github.com/axelor/axelor-mobile/compare/9.0.25...9.0.26
 [9.0.25]: https://github.com/axelor/axelor-mobile/compare/9.0.24...9.0.25
 [9.0.24]: https://github.com/axelor/axelor-mobile/compare/9.0.23...9.0.24

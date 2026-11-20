@@ -1,5 +1,0 @@
-{
-  "title": "Intervention: show the caution colour when a guaranteed time deadline is less than 7 days away",
-  "type": "fix",
-  "packages": ["intervention"]
-}

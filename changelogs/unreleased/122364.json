@@ -1,5 +1,0 @@
-{
-  "title": "Intervention questions: display the question indication as formatted text",
-  "type": "fix",
-  "packages": ["intervention"]
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Product details: show the variant products action only on products with variants",
-  "type": "fix",
-  "packages": ["sale"]
-}

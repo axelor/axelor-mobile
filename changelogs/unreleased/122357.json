@@ -1,5 +1,0 @@
-{
-  "title": "Stock: save the supplier arrival line conformity, hide Save on lines of realized internal moves and of customer deliveries that are no longer planned and register the supplier arrival list header on stock moves",
-  "type": "fix",
-  "packages": ["stock"]
-}
