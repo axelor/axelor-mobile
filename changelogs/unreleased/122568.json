@@ -1,0 +1,6 @@
+{
+  "title": "Intervention: show an unanswered measure question empty instead of 0",
+  "type": "fix",
+  "packages": ["ui", "intervention"],
+  "description": "Increment and FormIncrementInput take a new `nullable` prop. With it, an empty value is shown empty, and clearing the field sends null instead of 0."
+}

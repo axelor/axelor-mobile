@@ -454,4 +454,107 @@ describe('Increment component', () => {
       expect(getByDisplayValue('-123,456.00')).toBeTruthy();
     });
   });
+
+  describe('nullable', () => {
+    const setupNullable = props => {
+      const onValueChange = jest.fn();
+      const Parent = () => {
+        const [value, setValue] = React.useState(props.value);
+        return (
+          <Increment
+            {...props}
+            nullable
+            value={value}
+            onValueChange={newValue => {
+              onValueChange(newValue);
+              setValue(newValue == null ? undefined : newValue.toString());
+            }}
+          />
+        );
+      };
+
+      return {...render(<Parent />), onValueChange};
+    };
+
+    it.each([undefined, null, ''])(
+      'shows an empty field for the value %p',
+      value => {
+        const {getByDisplayValue} = setupNullable({value});
+
+        expect(getByDisplayValue('')).toBeTruthy();
+      },
+    );
+
+    it('shows 0 when the value is 0', () => {
+      const {getByDisplayValue} = setupNullable({value: '0'});
+
+      expect(getByDisplayValue('0.00')).toBeTruthy();
+    });
+
+    it('sends nothing on focus and blur without typing', () => {
+      const onBlur = jest.fn();
+      const {getByDisplayValue, onValueChange} = setupNullable({onBlur});
+
+      fireEvent(getByDisplayValue(''), 'focus');
+      fireEvent(getByDisplayValue(''), 'blur');
+
+      expect(onValueChange).not.toHaveBeenCalled();
+      expect(onBlur).toHaveBeenCalledTimes(1);
+      expect(getByDisplayValue('')).toBeTruthy();
+    });
+
+    it('sends 0 when 0 is typed', () => {
+      const {getByDisplayValue, onValueChange} = setupNullable({});
+
+      fireEvent(getByDisplayValue(''), 'focus');
+      fireEvent.changeText(getByDisplayValue(''), '0');
+      fireEvent(getByDisplayValue('0'), 'blur');
+
+      expect(onValueChange).toHaveBeenLastCalledWith(0);
+      expect(getByDisplayValue('0.00')).toBeTruthy();
+    });
+
+    it('sends null when an existing value is cleared', () => {
+      const {getByDisplayValue, onValueChange} = setupNullable({value: '12'});
+
+      fireEvent(getByDisplayValue('12.00'), 'focus');
+      fireEvent.changeText(getByDisplayValue('12.00'), '');
+      fireEvent(getByDisplayValue(''), 'blur');
+
+      expect(onValueChange).toHaveBeenLastCalledWith(null);
+      expect(getByDisplayValue('')).toBeTruthy();
+    });
+
+    it('starts the plus button from 0', () => {
+      const {getAllByTestId, getByDisplayValue, onValueChange} = setupNullable(
+        {},
+      );
+
+      fireEvent.press(getAllByTestId('iconTouchable')[1]);
+
+      expect(onValueChange).toHaveBeenCalledWith(1);
+      expect(getByDisplayValue('1.00')).toBeTruthy();
+    });
+
+    it('does not send 0 from the minus button when empty', () => {
+      const {getAllByTestId, onValueChange} = setupNullable({});
+
+      fireEvent.press(getAllByTestId('iconTouchable')[0]);
+
+      expect(onValueChange).not.toHaveBeenCalled();
+    });
+  });
+
+  it('still sends 0 when an existing value is cleared without nullable', () => {
+    const {getByDisplayValue, props} = setupIncrement({
+      value: '12',
+      onValueChange: jest.fn(),
+    });
+
+    fireEvent(getByDisplayValue('12.00'), 'focus');
+    fireEvent.changeText(getByDisplayValue('12.00'), '');
+    fireEvent(getByDisplayValue(''), 'blur');
+
+    expect(props.onValueChange).toHaveBeenLastCalledWith(0);
+  });
 });
