@@ -50,6 +50,7 @@ const QuestionMeasureAux = ({
       readOnly={readonly}
       required={required}
       onChange={onChange}
+      nullable
     />
   );
 };
