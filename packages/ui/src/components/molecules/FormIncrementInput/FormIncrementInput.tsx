@@ -39,6 +39,7 @@ interface FormIncrementInputProps {
   isBigButton?: boolean;
   keyboardType?: KeyboardTypeOptions;
   scale?: number;
+  nullable?: boolean;
 }
 
 const FormIncrementInput = ({
@@ -57,6 +58,7 @@ const FormIncrementInput = ({
   isBigButton = false,
   keyboardType,
   scale,
+  nullable,
 }: FormIncrementInputProps) => {
   const Colors = useThemeColor();
 
@@ -98,6 +100,7 @@ const FormIncrementInput = ({
           isBigButton={isBigButton}
           keyboardType={keyboardType}
           scale={scale}
+          nullable={nullable}
         />
       </View>
     </View>

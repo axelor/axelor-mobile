@@ -27,6 +27,10 @@ const WHITE_SPACE_REGEX = /\s/g;
 const escapeRegex = (text: string): string =>
   text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+export const isEmptyValue = (
+  value: string | number | null | undefined,
+): boolean => value == null || String(value).trim() === '';
+
 /* Reads the value given to the field: anything that is not a number gives 0. */
 export const toNumber = (value: string | number | null | undefined): number => {
   const parsedValue =

@@ -30,6 +30,7 @@ import {formatNumber} from '../../../utils';
 import {Input} from '../../atoms';
 import IncrementButton from './IncrementButton';
 import {
+  isEmptyValue,
   NumberSeparators,
   parseTypedNumber,
   toEditText,
@@ -39,7 +40,7 @@ import {
 interface IncrementProps {
   style?: any;
   inputStyle?: any;
-  value: string | undefined;
+  value: string | null | undefined;
   decimalSpacer?: string;
   thousandSpacer?: string;
   onValueChange: (_v?: string | number) => void;
@@ -53,6 +54,7 @@ interface IncrementProps {
   isBigButton?: boolean;
   keyboardType?: KeyboardTypeOptions;
   scale?: number;
+  nullable?: boolean;
 }
 
 const Increment = ({
@@ -72,6 +74,7 @@ const Increment = ({
   isBigButton = false,
   keyboardType = 'numeric',
   scale,
+  nullable = false,
 }: IncrementProps) => {
   const Colors = useThemeColor();
   const cutDecimalExcess = useDigitFormat();
@@ -96,7 +99,11 @@ const Increment = ({
     [decimalSpacer, thousandSpacer],
   );
 
-  const committedNumber = useMemo(() => toNumber(value), [value]);
+  /* A nullable field keeps an empty value empty instead of showing 0. */
+  const committedNumber: number | null = useMemo(
+    () => (nullable && isEmptyValue(value) ? null : toNumber(value)),
+    [nullable, value],
+  );
 
   const roundToText = useCallback(
     (numberToRound: number | string): string => {
@@ -165,7 +172,7 @@ const Increment = ({
     if (draftRef.current == null) {
       isEditedRef.current = false;
       isSelectionPendingRef.current = true;
-      updateDraft(getEditText(committedNumber));
+      updateDraft(committedNumber == null ? '' : getEditText(committedNumber));
     }
 
     onFocus?.();
@@ -211,10 +218,10 @@ const Increment = ({
     updateDraft(null);
 
     if (isEdited) {
-      let nextNumber = committedNumber;
+      let nextNumber: number | null = committedNumber;
 
       if (typedText.trim() === '') {
-        nextNumber = normalize(0);
+        nextNumber = nullable ? null : normalize(0);
       } else {
         /*
          * Text that is not a number keeps the last valid number typed, which
@@ -235,6 +242,7 @@ const Increment = ({
   }, [
     committedNumber,
     normalize,
+    nullable,
     onBlur,
     onValueChange,
     separators,
@@ -247,7 +255,7 @@ const Increment = ({
   }, [commitDraft]);
 
   const handleStep = (step: number) => {
-    const nextNumber = normalize(getCurrentNumber() + step);
+    const nextNumber = normalize((getCurrentNumber() ?? 0) + step);
     onValueChange(nextNumber);
 
     if (draftRef.current != null) {
@@ -255,8 +263,9 @@ const Increment = ({
     }
   };
 
-  const currentNumber = getCurrentNumber();
-  const displayedText = draft ?? getDisplayText(committedNumber);
+  const currentNumber = getCurrentNumber() ?? 0;
+  const displayedText =
+    draft ?? (committedNumber == null ? '' : getDisplayText(committedNumber));
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   useOutsideClickHandler({
