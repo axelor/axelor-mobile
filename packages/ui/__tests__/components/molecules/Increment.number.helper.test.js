@@ -17,6 +17,7 @@
  */
 
 import {
+  isEmptyValue,
   parseTypedNumber,
   toEditText,
   toNumber,
@@ -27,6 +28,16 @@ const english = {decimalSpacer: '.', thousandSpacer: ','};
 const toFixedText = decimals => value => value.toFixed(decimals);
 
 describe('Increment number helpers', () => {
+  describe('isEmptyValue', () => {
+    it.each([null, undefined, '', '  '])('treats %p as empty', value => {
+      expect(isEmptyValue(value)).toBe(true);
+    });
+
+    it.each([0, '0', '12.5', -1])('treats %p as a value', value => {
+      expect(isEmptyValue(value)).toBe(false);
+    });
+  });
+
   describe('toNumber', () => {
     it.each([
       ['5', 5],
