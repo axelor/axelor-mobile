@@ -376,7 +376,7 @@ describe('Increment component', () => {
       ['English', english, '1,234,56', 1234, '1,234.00'],
       ['French', french, '1,2,3', 1.2, '1,20'],
       ['French', french, '12abc', 12, '12,00'],
-      ['French', french, '-', 5, '5,00'],
+      ['French', french, '-', 0, '0,00'],
     ])(
       'keeps the last valid number when %s text %p is left',
       (_language, separators, typedText, expectedNumber, shownText) => {
@@ -390,15 +390,21 @@ describe('Increment component', () => {
         fireEvent(getByDisplayValue(typedText), 'blur');
 
         expect(onValueChange).not.toHaveBeenCalledWith(NaN);
-        if (expectedNumber === 5) {
-          // Nothing valid was typed, so the value given at the start stays.
-          expect(onValueChange).not.toHaveBeenCalled();
-        } else {
-          expect(onValueChange).toHaveBeenLastCalledWith(expectedNumber);
-        }
+        expect(onValueChange).toHaveBeenLastCalledWith(expectedNumber);
         expect(getByDisplayValue(shownText)).toBeTruthy();
       },
     );
+
+    it('keeps the value when text that is not a number replaces it directly', () => {
+      const {getByDisplayValue, onValueChange} = setupWithParent({});
+
+      fireEvent(getByDisplayValue('5.00'), 'focus');
+      fireEvent.changeText(getByDisplayValue('5.00'), '-');
+      fireEvent(getByDisplayValue('-'), 'blur');
+
+      expect(onValueChange).not.toHaveBeenCalled();
+      expect(getByDisplayValue('5.00')).toBeTruthy();
+    });
 
     it('sends the typed value even when it matches the text shown at focus', () => {
       const {getByDisplayValue, onValueChange} = setupWithParent({
@@ -525,6 +531,30 @@ describe('Increment component', () => {
       expect(getByDisplayValue('')).toBeTruthy();
     });
 
+    it('sends null as soon as an existing value is cleared, before blur', () => {
+      const {getByDisplayValue, onValueChange} = setupNullable({value: '12'});
+
+      fireEvent(getByDisplayValue('12.00'), 'focus');
+      fireEvent.changeText(getByDisplayValue('12.00'), '');
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange).toHaveBeenLastCalledWith(null);
+
+      fireEvent(getByDisplayValue(''), 'blur');
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+    });
+
+    it('sends nothing when an empty field is cleared again', () => {
+      const {getByDisplayValue, onValueChange} = setupNullable({});
+
+      fireEvent(getByDisplayValue(''), 'focus');
+      fireEvent.changeText(getByDisplayValue(''), '');
+      fireEvent(getByDisplayValue(''), 'blur');
+
+      expect(onValueChange).not.toHaveBeenCalled();
+    });
+
     it('starts the plus button from 0', () => {
       const {getAllByTestId, getByDisplayValue, onValueChange} = setupNullable(
         {},
@@ -556,5 +586,32 @@ describe('Increment component', () => {
     fireEvent(getByDisplayValue(''), 'blur');
 
     expect(props.onValueChange).toHaveBeenLastCalledWith(0);
+  });
+
+  it('sends 0 as soon as an existing value is cleared without nullable, before blur', () => {
+    const {getByDisplayValue, props} = setupIncrement({
+      value: '12',
+      onValueChange: jest.fn(),
+    });
+
+    fireEvent(getByDisplayValue('12.00'), 'focus');
+    fireEvent.changeText(getByDisplayValue('12.00'), '');
+
+    expect(props.onValueChange).toHaveBeenCalledTimes(1);
+    expect(props.onValueChange).toHaveBeenLastCalledWith(0);
+  });
+
+  it('sends the minimum when a field with minValue is cleared', () => {
+    const {getByDisplayValue, props} = setupIncrement({
+      value: '12',
+      minValue: 1,
+      onValueChange: jest.fn(),
+    });
+
+    fireEvent(getByDisplayValue('12.00'), 'focus');
+    fireEvent.changeText(getByDisplayValue('12.00'), '');
+
+    expect(props.onValueChange).toHaveBeenCalledTimes(1);
+    expect(props.onValueChange).toHaveBeenLastCalledWith(1);
   });
 });
