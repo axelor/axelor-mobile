@@ -1,5 +1,0 @@
-{
-  "title": "CRM: make the score stars of leads, opportunities and prospects read-only for users without write access",
-  "type": "fix",
-  "packages": ["crm"]
-}

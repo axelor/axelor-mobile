@@ -1,5 +1,0 @@
-{
-  "title": "Manufacturing order: give their own title to the notes from the sale order and from the sale order line",
-  "type": "fix",
-  "packages": ["manufacturing"]
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Project: show the project when logging time from a project and list the activity days newest first",
-  "type": "fix",
-  "packages": ["project"]
-}

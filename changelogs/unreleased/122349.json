@@ -1,5 +1,0 @@
-{
-  "title": "Timesheets: no longer crash when a timesheet has no company",
-  "type": "fix",
-  "packages": ["hr"]
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Link files: show the header actions of the documents list",
-  "type": "fix",
-  "packages": ["message"]
-}

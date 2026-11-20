@@ -1,5 +1,0 @@
-{
-  "title": "Consumed and produced products: compare quantities as numbers for the card colour and the status filters",
-  "type": "fix",
-  "packages": ["manufacturing"]
-}
