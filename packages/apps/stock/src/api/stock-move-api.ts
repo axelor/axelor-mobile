@@ -292,7 +292,7 @@ export async function fetchPlannedStockMoves({
     ),
     fieldKey: 'stock_stockMove',
     sortKey: 'stock_stockMove',
-    numberElementsByPage: undefined,
+    numberElementsByPage: null,
     page: 0,
     provider: 'model',
   });

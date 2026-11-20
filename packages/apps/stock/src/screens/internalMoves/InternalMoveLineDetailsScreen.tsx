@@ -161,7 +161,7 @@ const InternalMoveLineDetailsScreen = ({route}: any) => {
           unit={unit}
           fromStockLocation={fromStockLocation}
           toStockLocation={toStockLocation}
-          visible={!readonly && !isTrackingNumberSelectVisible}
+          visible={!isReadonly && !isTrackingNumberSelectVisible}
           description={description}
         />
       }>

@@ -137,7 +137,7 @@ const CustomerDeliveryLineDetailScreen = ({route}: any) => {
           customerDeliveryLine={customerDeliveryLine}
           realQty={realQty}
           fromStockLocation={fromStockLocation}
-          visible={!readonly && !isTrackingNumberSelectVisible}
+          visible={!isReadonly && !isTrackingNumberSelectVisible}
           description={description}
         />
       }
