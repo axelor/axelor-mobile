@@ -370,7 +370,7 @@ const useSupplierArrivalDetailsActions = () => {
 const useSupplierArrivalListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('stock_supplierArrival_list', {
-      model: 'com.axelor.apps.stock.db.StockMoveLine',
+      model: 'com.axelor.apps.stock.db.StockMove',
       options: {
         core_modelFilters: {
           name: 'supplier-arrivals-filters',

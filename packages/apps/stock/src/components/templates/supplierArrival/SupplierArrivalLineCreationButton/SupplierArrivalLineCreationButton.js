@@ -55,7 +55,7 @@ const SupplierArrivalLineCreationButton = ({
         trackingNumberId: trackingNumber != null ? trackingNumber.id : null,
         expectedQty: 0,
         realQty: realQty,
-        conformity: conformity?.id,
+        conformity: conformity?.value,
         toStockLocationId: toStockLocation?.id,
         description,
       }),

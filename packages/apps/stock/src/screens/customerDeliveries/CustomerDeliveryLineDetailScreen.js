@@ -139,7 +139,12 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           customerDeliveryLine={customerDeliveryLine}
           realQty={realQty}
           fromStockLocation={fromStockLocation}
-          visible={!readonly && !isTrackingNumberSelectVisible}
+          visible={
+            !readonly &&
+            customerDelivery?.statusSelect ===
+              StockMove?.statusSelect.Planned &&
+            !isTrackingNumberSelectVisible
+          }
           description={description}
         />
       }

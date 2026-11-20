@@ -174,7 +174,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           unit={unit}
           fromStockLocation={fromStockLocation}
           toStockLocation={toStockLocation}
-          visible={!readonly && !isTrackingNumberSelectVisible}
+          visible={
+            !readonly &&
+            internalMove.statusSelect === StockMove?.statusSelect.Planned &&
+            !isTrackingNumberSelectVisible
+          }
           description={description}
         />
       }>
