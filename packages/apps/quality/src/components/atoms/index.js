@@ -23,3 +23,4 @@ export {default as ControlEntrySampleLineHeader} from './ControlEntrySampleLineH
 export {default as DefectAttachedFilesButton} from './DefectAttachedFilesButton/DefectAttachedFilesButton';
 export {default as NavigationButton} from './NavigationButton/NavigationButton';
 export {default as QualityImprovementCard} from './QualityImprovementCard/QualityImprovementCard';
+export {default as QualityImprovementLineCard} from './QualityImprovementLineCard/QualityImprovementLineCard';

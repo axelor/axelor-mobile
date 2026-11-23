@@ -24,6 +24,10 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
+export const QUALITY_IMPROVEMENT_MODEL =
+  'com.axelor.apps.quality.db.QualityImprovement';
+export const QI_RESOLUTION_MODEL = 'com.axelor.apps.quality.db.QIResolution';
+
 const createQualityImprovementCriteria = ({
   searchValue,
   userId,
@@ -77,7 +81,7 @@ export async function searchQualityImprovement({
   selectedGravity,
 }) {
   return createStandardSearch({
-    model: 'com.axelor.apps.quality.db.QualityImprovement',
+    model: QUALITY_IMPROVEMENT_MODEL,
     criteria: createQualityImprovementCriteria({
       searchValue,
       userId,
@@ -106,7 +110,7 @@ export async function fetchQualityImprovementStatus() {
 
 export async function fetchQualityImprovement({id}) {
   return createStandardFetch({
-    model: 'com.axelor.apps.quality.db.QualityImprovement',
+    model: QUALITY_IMPROVEMENT_MODEL,
     id,
     fieldKey: 'quality_qualityImprovement',
     provider: 'model',
@@ -115,11 +119,14 @@ export async function fetchQualityImprovement({id}) {
 
 export async function fetchQiResolution({id}) {
   return createStandardFetch({
-    model: 'com.axelor.apps.quality.db.QIResolution',
+    model: QI_RESOLUTION_MODEL,
     id,
     fieldKey: 'quality_qiResolution',
     relatedFields: {
       qiResolutionDefaultsList: getObjectFields('quality_qiResolutionDefault'),
+      qiResolutionDecisionsList: getObjectFields(
+        'quality_qiResolutionDecision',
+      ),
     },
     provider: 'model',
   });
