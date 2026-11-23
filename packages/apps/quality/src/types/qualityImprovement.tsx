@@ -16,6 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* A QIResolutionDefault (defect) or QIResolutionDecision line, as fetched with
+   the quality_qiResolutionDefault / quality_qiResolutionDecision object fields. */
+export interface QualityImprovementLine {
+  id: number;
+  name?: string | null;
+  quantity?: number | string | null;
+  description?: string | null;
+  qiDefault?: {name?: string | null} | null;
+  qiDecision?: {name?: string | null} | null;
+  responsiblePartner?: {fullName?: string | null} | null;
+}
+
 class QualityImprovement {
   static Steps = {
     detection: 0,

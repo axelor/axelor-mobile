@@ -58,7 +58,8 @@ export const fetchQualityImprovementStatus = createAsyncThunk(
 
 export const fetchQualityImprovement = createAsyncThunk(
   'quality_qualityImprovement/fetchQualityImprovement',
-  async function (data, {getState}) {
+  /** @param {{id: number, withResolution?: boolean}} arg */
+  async function ({withResolution = true, ...data}, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchQualityImprovement,
       data,
@@ -68,6 +69,10 @@ export const fetchQualityImprovement = createAsyncThunk(
     }).then(async res => {
       if (!res?.id) {
         return undefined;
+      }
+
+      if (!withResolution || res.qiResolution?.id == null) {
+        return res;
       }
 
       const qiResolution = await handlerApiCall({
@@ -117,6 +122,7 @@ const initialState = {
 
   qiStatusList: [],
 
+  loadingQualityImprovement: false,
   qualityImprovement: {},
 };
 
@@ -136,8 +142,15 @@ const qualityImprovementSlice = createSlice({
         state.qiStatusList = action.payload;
       },
     );
+    builder.addCase(fetchQualityImprovement.pending, state => {
+      state.loadingQualityImprovement = true;
+    });
     builder.addCase(fetchQualityImprovement.fulfilled, (state, action) => {
+      state.loadingQualityImprovement = false;
       state.qualityImprovement = action.payload;
+    });
+    builder.addCase(fetchQualityImprovement.rejected, state => {
+      state.loadingQualityImprovement = false;
     });
   },
 });

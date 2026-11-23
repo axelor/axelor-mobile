@@ -18,3 +18,4 @@
 
 export {default as ControlEntry} from './controlEntry';
 export {default as QualityImprovement} from './qualityImprovement';
+export type {QualityImprovementLine} from './qualityImprovement';
