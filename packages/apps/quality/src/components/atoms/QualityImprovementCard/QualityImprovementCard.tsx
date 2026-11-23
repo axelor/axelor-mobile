@@ -32,6 +32,7 @@ interface QualityImprovementCardProps {
   qiDetection: string;
   status: any;
   gravityTypeSelect?: number;
+  manufOrderSeq?: string;
   onPress?: () => void;
 }
 
@@ -41,6 +42,7 @@ const QualityImprovementCard = ({
   qiDetection,
   status,
   gravityTypeSelect,
+  manufOrderSeq,
   onPress,
 }: QualityImprovementCardProps) => {
   const I18n = useTranslator();
@@ -63,7 +65,7 @@ const QualityImprovementCard = ({
       style={[styles.card, status && styles.border, style]}
       leftContainerFlex={2}
       touchable={!!onPress}
-      showArrow={false}
+      showArrow={!!onPress}
       upperTexts={{
         items: [
           {displayText: sequence, isTitle: true},
@@ -71,6 +73,13 @@ const QualityImprovementCard = ({
             indicatorText: I18n.t('Quality_Detection'),
             displayText: qiDetection,
             numberOfLines: 2,
+          },
+          {
+            iconName: 'gear-fill',
+            indicatorText: I18n.t('Quality_ManufOrder'),
+            displayText: manufOrderSeq,
+            numberOfLines: 2,
+            hideIf: manufOrderSeq == null,
           },
         ],
       }}

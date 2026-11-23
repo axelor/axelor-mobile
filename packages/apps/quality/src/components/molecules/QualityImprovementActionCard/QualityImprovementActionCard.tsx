@@ -33,6 +33,9 @@ interface QualityImprovement {
   qiDetection: any;
   qiStatus: any;
   gravityTypeSelect?: number;
+  qiIdentification?: {
+    manufOrder?: {manufOrderSeq?: string | null} | null;
+  } | null;
 }
 
 interface QualityImprovementActionCardProps {
@@ -80,6 +83,9 @@ const QualityImprovementActionCard = ({
         qiDetection={qualityImprovement.qiDetection?.name}
         status={qualityImprovement.qiStatus}
         gravityTypeSelect={qualityImprovement.gravityTypeSelect}
+        manufOrderSeq={
+          qualityImprovement.qiIdentification?.manufOrder?.manufOrderSeq
+        }
       />
     </ActionCard>
   );
