@@ -30,11 +30,9 @@ const LeadFormScreen = ({navigation, route}) => {
     (objectState, dispatch) => {
       dispatch(
         updateLead({
-          lead: {
-            ...objectState,
-            emailVersion: objectState.emailAddress?.version,
-            emailId: objectState.emailAddress?.id,
-          },
+          lead: objectState,
+          emailId: objectState.emailAddress?.id,
+          emailVersion: objectState.emailAddress?.version,
         }),
       );
 
@@ -61,7 +59,8 @@ const LeadFormScreen = ({navigation, route}) => {
   );
 
   const _defaultValue = useMemo(
-    () => (idLead != null ? {...lead} : null),
+    () =>
+      idLead != null ? {...lead, email: lead?.emailAddress?.address} : null,
     [idLead, lead],
   );
 
