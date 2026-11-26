@@ -19,6 +19,7 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useNavigation,
   usePermitted,
@@ -89,7 +90,12 @@ const TimesheetDetailsButtons = ({
               isEmpty && !isManualCreation ? 'Hr_Delete' : 'Base_Cancel',
             )}
             onPress={() => {
-              isEmpty ? deleteAPI() : updateStatusAPI('cancel');
+              isEmpty
+                ? askDeleteConfirmation({
+                    translator: I18n.t,
+                    onConfirm: deleteAPI,
+                  })
+                : updateStatusAPI('cancel');
             }}
             width="45%"
             color={Colors.errorColor}
