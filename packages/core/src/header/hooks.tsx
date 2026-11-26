@@ -102,7 +102,11 @@ const useFilterGenericAction = () => {
 
             if (filterName) {
               _userFilters = await fetchMetaFilters({filterName, userId})
-                .then(metaRes => metaRes?.data?.data ?? [])
+                /* A refused search (no MetaFilter access) returns the
+                   error object in data: keep only a list. */
+                .then(metaRes =>
+                  Array.isArray(metaRes?.data?.data) ? metaRes.data.data : [],
+                )
                 .catch(() => []);
             }
 
