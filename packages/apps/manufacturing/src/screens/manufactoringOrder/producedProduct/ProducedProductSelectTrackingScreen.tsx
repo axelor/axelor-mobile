@@ -17,16 +17,7 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {
-  Icon,
-  Screen,
-  ScrollView,
-  HeaderContainer,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {Screen, ScrollView, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   ProductCardInfo,
   TrackingNumberSearchBar,
@@ -38,8 +29,6 @@ const trackingNumberScanKey =
 
 const ProducedProductSelectTrackingScreen = ({navigation, route}: any) => {
   const {manufOrder, product} = route?.params ?? {};
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   const handleTrackingNumberSelection = (item: any) => {
     if (item != null) {
@@ -66,16 +55,6 @@ const ProducedProductSelectTrackingScreen = ({navigation, route}: any) => {
       />
       <ScrollView>
         <ProductCardInfo product={product} />
-        <View style={styles.trackingNumber}>
-          <Text>{I18n.t('Stock_AddTrackingNumber')}</Text>
-          <Icon
-            name="plus-lg"
-            color={Colors.primaryColor.background}
-            size={20}
-            touchable
-            onPress={() => {}}
-          />
-        </View>
         <TrackingNumberSearchBar
           scanKey={trackingNumberScanKey}
           onChange={handleTrackingNumberSelection}
@@ -87,15 +66,5 @@ const ProducedProductSelectTrackingScreen = ({navigation, route}: any) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  trackingNumber: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginRight: 16,
-    gap: 5,
-  },
-});
 
 export default ProducedProductSelectTrackingScreen;
