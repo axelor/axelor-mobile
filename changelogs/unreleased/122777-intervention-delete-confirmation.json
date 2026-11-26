@@ -1,0 +1,5 @@
+{
+  "title": "Intervention: ask for confirmation before deleting a note or an equipment picture, and before unlinking or archiving an equipment",
+  "type": "fix",
+  "packages": ["core", "intervention"]
+}

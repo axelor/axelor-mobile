@@ -19,20 +19,25 @@
 import {confirmationProvider} from '../confirmation/ConfirmationProvider';
 
 /* Asks before a deletion that cannot be undone; onConfirm runs only on "Delete".
+ * title and confirmLabel replace "Delete" for other destructive actions (unlink, archive).
  * Shown in the app popup (ConfirmationHost), so it can be called outside components. */
 export const askDeleteConfirmation = ({
   translator,
   onConfirm,
   message,
+  title,
+  confirmLabel,
 }: {
   translator: (key: string) => string;
   onConfirm: () => void;
   message?: string;
+  title?: string;
+  confirmLabel?: string;
 }) => {
   confirmationProvider.open({
-    title: translator('Base_Delete'),
+    title: title ?? translator('Base_Delete'),
     message: message ?? translator('Base_DeleteConfirmation'),
-    confirmLabel: translator('Base_Delete'),
+    confirmLabel: confirmLabel ?? title ?? translator('Base_Delete'),
     cancelLabel: translator('Base_Cancel'),
     onConfirm,
   });

@@ -103,5 +103,7 @@
   "Intervention_SliceAction_UpdateInterventionStatus": "mise à jour de l'intervention",
   "Intervention_SliceAction_UnlinkEquipment": "dissociation d'un équipement de l'intervention",
   "Intervention_SliceAction_LinkEquipment": "ajout d'un équipement sur l'intervention",
-  "Intervention_SliceAction_SearchEquipmentToLink": "recherche des équipements à ajouter sur l'intervention"
+  "Intervention_SliceAction_SearchEquipmentToLink": "recherche des équipements à ajouter sur l'intervention",
+  "Intervention_UnlinkEquipmentConfirmation": "Délier cet équipement de l'intervention ?",
+  "Intervention_ArchiveEquipmentConfirmation": "Archiver cet équipement ?"
 }

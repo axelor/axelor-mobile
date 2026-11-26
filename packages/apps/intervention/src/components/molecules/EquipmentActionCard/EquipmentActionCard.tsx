@@ -19,6 +19,7 @@
 import React from 'react';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useNavigation,
   useTranslator,
@@ -75,7 +76,13 @@ const EquipmentActionCard = ({
           iconName: 'x-lg',
           helper: I18n.t('Intervention_Unlink'),
           large: !canCopy,
-          onPress: handleUnlink,
+          onPress: () =>
+            askDeleteConfirmation({
+              translator: I18n.t,
+              title: I18n.t('Intervention_Unlink'),
+              message: I18n.t('Intervention_UnlinkEquipmentConfirmation'),
+              onConfirm: handleUnlink,
+            }),
           hidden: !isUnlinkAction,
         },
         {
@@ -114,12 +121,18 @@ const EquipmentActionCard = ({
           iconColor: Colors.errorColor.background,
           helper: I18n.t('Intervention_Archive'),
           onPress: () =>
-            (dispatch as any)(
-              (archiveEquipment as any)({
-                equipmentId: idEquipment,
-                equipmentVersion,
-              }),
-            ).then(() => handleArchive()),
+            askDeleteConfirmation({
+              translator: I18n.t,
+              title: I18n.t('Intervention_Archive'),
+              message: I18n.t('Intervention_ArchiveEquipmentConfirmation'),
+              onConfirm: () =>
+                (dispatch as any)(
+                  (archiveEquipment as any)({
+                    equipmentId: idEquipment,
+                    equipmentVersion,
+                  }),
+                ).then(() => handleArchive()),
+            }),
           hidden: !canArchive,
         },
       ]}>
