@@ -1,0 +1,5 @@
+{
+  "title": "Waste product: opening an existing waste product no longer crashes while it loads",
+  "type": "fix",
+  "packages": ["stock", "manufacturing"]
+}

@@ -42,6 +42,11 @@ const ProductCardInfo = ({
     [navigation, product],
   );
 
+  /* Callers may render the card while the product is still loading. */
+  if (product == null) {
+    return null;
+  }
+
   return (
     <ObjectCard
       style={style}
