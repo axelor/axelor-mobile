@@ -22,6 +22,7 @@ import {
   handlerApiCall,
   isEmpty,
   linkingProvider,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -71,6 +72,11 @@ const DropdownContactView = ({
   refreshContactInfos,
 }: DropdownContactViewProps) => {
   const I18n = useTranslator();
+  const {readonly} = usePermitted({
+    modelName: isLead
+      ? 'com.axelor.apps.crm.db.Lead'
+      : 'com.axelor.apps.base.db.Partner',
+  });
 
   const {userId} = useSelector((state: any) => state.auth);
 
@@ -155,6 +161,7 @@ const DropdownContactView = ({
         onPress={() => linkingProvider.openMapApp(contact.address.fullName)}
         onUpdate={updateAddress}
         refreshContactInfos={refreshContactInfos}
+        readonly={readonly}
         canCreate={!isMainAddress}
       />
       <ContactInfoCard
@@ -166,6 +173,7 @@ const DropdownContactView = ({
         onPress={() => linkingProvider.openCallApp(contact.fixedPhone)}
         onUpdate={updateContactInfo}
         refreshContactInfos={refreshContactInfos}
+        readonly={readonly}
       />
       <ContactInfoCard
         headerIconName="phone-fill"
@@ -176,6 +184,7 @@ const DropdownContactView = ({
         onPress={() => linkingProvider.openCallApp(contact.mobilePhone)}
         onUpdate={updateContactInfo}
         refreshContactInfos={refreshContactInfos}
+        readonly={readonly}
       />
       <ContactInfoCard
         headerIconName="envelope-fill"
@@ -189,6 +198,7 @@ const DropdownContactView = ({
         onUpdate={updateEmail}
         onCreate={linkEmail}
         refreshContactInfos={refreshContactInfos}
+        readonly={readonly}
       />
       <ContactInfoCard
         headerIconName="link-45deg"
@@ -199,6 +209,7 @@ const DropdownContactView = ({
         onPress={() => linkingProvider.openBrowser(contact.webSite)}
         onUpdate={updateContactInfo}
         refreshContactInfos={refreshContactInfos}
+        readonly={readonly}
         border={!isEmpty(networkData)}
       />
       <SocialNetworksInfoCard {...networkData} />
