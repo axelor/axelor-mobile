@@ -1,0 +1,5 @@
+{
+  "title": "Lead form: show the lead email when editing a lead and save its changes",
+  "type": "fix",
+  "packages": ["crm"]
+}
