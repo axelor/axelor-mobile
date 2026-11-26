@@ -68,7 +68,8 @@ const TaskActionCard = ({
               projecTaskId: task.id,
               isTimeViewActive: true,
             }),
-          hidden: !canCreate,
+          /* The task opens on its time view, which only exists when the project tracks time. */
+          hidden: !canCreate || !task.project?.manageTimeSpent,
         },
       ]}
       translator={I18n.t}>
