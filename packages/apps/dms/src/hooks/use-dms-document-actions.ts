@@ -18,6 +18,7 @@
 
 import {useEffect} from 'react';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useFileApi,
   useNavigation,
@@ -102,12 +103,20 @@ export const useDmsDocumentActions = () => {
           iconColor: Colors.errorColor.background,
           helper: I18n.t('Dms_Delete'),
           onPress: () =>
-            dispatch(
-              ((isFavorite ? deleteFavoriteDocument : deleteDocument) as any)({
-                documentId: item.id,
-                userId: user?.id,
-              }),
-            ).then(() => context?.handleRefresh?.()),
+            askDeleteConfirmation({
+              translator: I18n.t,
+              onConfirm: () =>
+                dispatch(
+                  (
+                    (isFavorite
+                      ? deleteFavoriteDocument
+                      : deleteDocument) as any
+                  )({
+                    documentId: item.id,
+                    userId: user?.id,
+                  }),
+                ).then(() => context?.handleRefresh?.()),
+            }),
           hidden:
             !isConnected ||
             !canDelete ||
