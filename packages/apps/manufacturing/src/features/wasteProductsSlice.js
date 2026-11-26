@@ -43,13 +43,16 @@ export const fetchWasteProducts = createAsyncThunk(
 
 export const addWasteProductToManufOrder = createAsyncThunk(
   'wasteProducts/addWasteProductToManufOrder',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: createManufacturingOrderWasteProduct,
       data,
       action: 'Manufacturing_SliceAction_CreateWasteProduct',
       getState,
       responseOptions: {showToast: true},
+    }).then(res => {
+      dispatch(fetchWasteProducts({manufOrderId: data.manufOrderId, page: 0}));
+      return res;
     });
   },
 );
