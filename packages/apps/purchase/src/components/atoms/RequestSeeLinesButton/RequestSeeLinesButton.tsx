@@ -20,6 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -35,6 +36,9 @@ const RequestSeeLinesButton = () => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
+  });
 
   const styles = useMemo(
     () => getStyles(Colors.secondaryColor.background),
@@ -45,10 +49,13 @@ const RequestSeeLinesButton = () => {
     state => state.purchase_purchaseRequestLine,
   );
 
+  /* "Add product" is on the line list: open it even without lines. */
+  const disabled = totalPurchaseRequestLine === 0 && !canCreate;
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('RequestLineListScreen')}
-      disabled={totalPurchaseRequestLine === 0}
+      disabled={disabled}
       activeOpacity={0.9}>
       <Card style={styles.container}>
         <Text style={styles.text}>{I18n.t('Purchase_SeeLines')}</Text>
@@ -59,7 +66,7 @@ const RequestSeeLinesButton = () => {
             color={Colors.progressColor}
             isNeutralBackground={false}
           />
-          {totalPurchaseRequestLine > 0 && (
+          {!disabled && (
             <Icon name="chevron-right" color={Colors.primaryColor.background} />
           )}
         </View>
