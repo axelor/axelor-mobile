@@ -38,6 +38,7 @@ const ContactSearchBarAux = ({
   oneFilter,
   showTitle,
   onFetchDataAction,
+  objectState,
 }: SearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -45,8 +46,12 @@ const ContactSearchBarAux = ({
   const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
     (state: any) => state.contact,
   );
-  const {partner} = useSelector((state: any) => state.partner);
+  const {partner: storedPartner} = useSelector((state: any) => state.partner);
   const {user} = useSelector((state: any) => state.user);
+
+  /* In a form, filter on the partner chosen in the form, not on the last
+     partner loaded elsewhere in CRM. */
+  const partner = objectState != null ? objectState.partner : storedPartner;
 
   const fetchContactSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -97,6 +102,7 @@ interface SearchBarProps {
   oneFilter?: boolean;
   showTitle?: boolean;
   onFetchDataAction?: (searchValue: string) => void;
+  objectState?: any;
 }
 
 const ContactSearchBar = ({
@@ -111,6 +117,7 @@ const ContactSearchBar = ({
   oneFilter = false,
   showTitle = false,
   onFetchDataAction,
+  objectState,
 }: SearchBarProps) => {
   return (
     <ContactSearchBarAux
@@ -125,6 +132,7 @@ const ContactSearchBar = ({
       oneFilter={oneFilter}
       showTitle={showTitle}
       onFetchDataAction={onFetchDataAction}
+      objectState={objectState}
     />
   );
 };
