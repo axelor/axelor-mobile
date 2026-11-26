@@ -18,6 +18,7 @@
 
 import {useCallback, useMemo} from 'react';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useNavigation,
   usePermitted,
@@ -78,9 +79,13 @@ export const useCheckListItemActions = (handleRefresh?: () => void) => {
           iconColor: Colors.errorColor?.background,
           helper: I18n.t('Project_DeleteItem'),
           onPress: () =>
-            dispatch((deleteCheckListItem as any)(item)).then(() =>
-              handleRefresh?.(),
-            ),
+            askDeleteConfirmation({
+              translator: I18n.t,
+              onConfirm: () =>
+                dispatch((deleteCheckListItem as any)(item)).then(() =>
+                  handleRefresh?.(),
+                ),
+            }),
           hidden: !canDelete,
           large: readonly && creationDisabled,
         },
