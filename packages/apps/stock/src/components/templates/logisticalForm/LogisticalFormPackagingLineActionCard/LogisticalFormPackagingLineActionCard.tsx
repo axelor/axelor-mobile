@@ -18,6 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useNavigation,
   usePermitted,
@@ -57,10 +58,14 @@ const LogisticalFormPackagingLineActionCard = ({
         iconName: 'trash3-fill',
         iconColor: Colors.errorColor.background,
         helper: I18n.t('Stock_DeletePackagingLine'),
-        onPress: () => {
-          dispatch((deletePackagingLine as any)({id: packagingLine.id}));
-          handleRefresh?.();
-        },
+        onPress: () =>
+          askDeleteConfirmation({
+            translator: I18n.t,
+            onConfirm: () => {
+              dispatch((deletePackagingLine as any)({id: packagingLine.id}));
+              handleRefresh?.();
+            },
+          }),
         hidden: !canDelete,
       },
     ],
