@@ -18,6 +18,7 @@
 
 import {useCallback, useMemo} from 'react';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useNavigation,
   usePermitted,
@@ -69,10 +70,14 @@ export const usePackagingItemActions = (onRefresh?: () => void) => {
           iconName: 'trash3-fill',
           iconColor: Colors.errorColor.background,
           helper: I18n.t('Stock_DeletePackaging'),
-          onPress: () => {
-            dispatch((deletePackaging as any)({id: packaging.id}));
-            handleRefresh?.();
-          },
+          onPress: () =>
+            askDeleteConfirmation({
+              translator: I18n.t,
+              onConfirm: () => {
+                dispatch((deletePackaging as any)({id: packaging.id}));
+                handleRefresh?.();
+              },
+            }),
           hidden: !canDelete,
         },
       ];
