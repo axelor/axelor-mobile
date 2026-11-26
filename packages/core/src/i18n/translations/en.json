@@ -36,6 +36,8 @@
   "Base_Declare": "Declare",
   "Base_Cancel": "Cancel",
   "Base_Remove": "Remove",
+  "Base_Delete": "Delete",
+  "Base_DeleteConfirmation": "This cannot be undone. Do you really want to delete it?",
   "Base_Content": "Content",
   "Base_ViewAll": "View all",
   "Base_ChooseFile": "Choose a file",
