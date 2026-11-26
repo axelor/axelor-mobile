@@ -89,8 +89,8 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   }, [dispatch, manufOrderId, wasteProductId]);
 
   useEffect(() => {
-    setWasteQty(prodProduct?.qty);
-  }, [prodProduct]);
+    setWasteQty(wasteProductId != null ? prodProduct?.qty : 0);
+  }, [prodProduct, wasteProductId]);
 
   const handleCreateWasteProduct = useCallback(() => {
     dispatch(
