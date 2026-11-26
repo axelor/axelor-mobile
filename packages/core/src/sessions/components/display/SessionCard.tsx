@@ -33,6 +33,8 @@ import {
   Icon,
   LabelText,
 } from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
+import {askDeleteConfirmation} from '../../../utils/confirmation';
 import {sessionStorage} from '../../SessionStorage';
 import {Session} from '../../type';
 import LogoImage from './LogoImage';
@@ -55,6 +57,7 @@ const SessionCard = ({
   handleRemove?: (data: {sessionId: string}) => void;
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const ref = useRef<any>(null);
 
   const translateXAnim = useRef(new Animated.Value(0)).current;
@@ -135,10 +138,11 @@ const SessionCard = ({
           Colors.primaryColor.background,
           handleEdition,
         )}
-        {renderActionButton(
-          'trash3-fill',
-          Colors.errorColor.background,
-          animateRemoval,
+        {renderActionButton('trash3-fill', Colors.errorColor.background, () =>
+          askDeleteConfirmation({
+            translator: I18n.t,
+            onConfirm: animateRemoval,
+          }),
         )}
       </View>
     );

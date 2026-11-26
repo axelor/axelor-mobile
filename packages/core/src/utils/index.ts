@@ -18,6 +18,7 @@
 
 export {updateAgendaItems} from './agenda';
 export * from './api';
+export {askDeleteConfirmation} from './confirmation';
 export {
   decreaseDate,
   diffDate,
