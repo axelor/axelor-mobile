@@ -164,15 +164,30 @@ export async function updateLead({lead, emailId, emailVersion}) {
 export async function createLead({lead}) {
   const {matchers, formattedData} = formatRequestBody(lead, 'data');
 
-  return getActionApi().send({
-    url: '/ws/rest/com.axelor.apps.crm.db.Lead',
-    method: 'put',
-    body: {data: formattedData},
-    description: 'create lead',
-    matchers: {
-      modelName: 'com.axelor.apps.crm.db.Lead',
-      id: Date.now(),
-      fields: matchers,
-    },
-  });
+  return getActionApi()
+    .send({
+      url: '/ws/rest/com.axelor.apps.crm.db.Lead',
+      method: 'put',
+      body: {data: formattedData},
+      description: 'create lead',
+      matchers: {
+        modelName: 'com.axelor.apps.crm.db.Lead',
+        id: Date.now(),
+        fields: matchers,
+      },
+    })
+    .then(res => {
+      const createdLead = res?.data?.data?.[0];
+
+      if (!lead.email || createdLead?.id == null) {
+        return res;
+      }
+
+      return linkEmail({
+        id: createdLead.id,
+        version: createdLead.version,
+        email: lead.email,
+        isLead: true,
+      }).then(() => res);
+    });
 }
