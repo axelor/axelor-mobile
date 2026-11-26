@@ -1,0 +1,5 @@
+{
+  "title": "Partner addresses: hide the edit action of an address when the user cannot edit the partner and its addresses",
+  "type": "fix",
+  "packages": ["crm"]
+}
