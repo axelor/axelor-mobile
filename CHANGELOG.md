@@ -3,6 +3,14 @@ title: 8.5.0
 tags: Changelog
 ---
 
+## [8.5.34] (2026-11-26)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Add the route to the mobile offline configuration, so the offline package can load it at login
+
 ## [8.5.33] (2026-11-26)
 
 ### @axelor/aos-mobile-core
@@ -1089,6 +1097,7 @@ The configuration should be registered using the useMassIndicatorRegister hook.
 
 - StockLocationSearchBar: rename readonly prop
 
+[8.5.34]: https://github.com/axelor/axelor-mobile/compare/8.5.33...8.5.34
 [8.5.33]: https://github.com/axelor/axelor-mobile/compare/8.5.32...8.5.33
 [8.5.32]: https://github.com/axelor/axelor-mobile/compare/8.5.31...8.5.32
 [8.5.31]: https://github.com/axelor/axelor-mobile/compare/8.5.30...8.5.31
