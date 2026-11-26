@@ -1,0 +1,5 @@
+{
+  "title": "Documents: ask for confirmation before deleting a document",
+  "type": "fix",
+  "packages": ["dms"]
+}
