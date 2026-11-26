@@ -19,6 +19,7 @@
 import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useNavigation,
   usePermitted,
@@ -55,14 +56,19 @@ const CartLineValidationButton = ({
   const {cartLine} = useSelector((state: any) => state.sale_cartLine);
 
   const _deleteCartLine = useCallback(() => {
-    dispatch(
-      (deleteCartLine as any)({
-        cartLineId: cartLine?.id,
-        cartId: activeCart?.id,
-      }),
-    );
-    navigation.pop();
-  }, [activeCart?.id, cartLine?.id, dispatch, navigation]);
+    askDeleteConfirmation({
+      translator: I18n.t,
+      onConfirm: () => {
+        dispatch(
+          (deleteCartLine as any)({
+            cartLineId: cartLine?.id,
+            cartId: activeCart?.id,
+          }),
+        );
+        navigation.pop();
+      },
+    });
+  }, [I18n, activeCart?.id, cartLine?.id, dispatch, navigation]);
 
   const _updateCartLine = useCallback(() => {
     dispatch(
