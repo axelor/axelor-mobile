@@ -138,6 +138,7 @@
   "Sale_RemoveOne": "Retirer un",
   "Sale_AddProduct": "Ajouter un produit",
   "Sale_EmptyCart": "Vider le panier",
+  "Sale_EmptyCartConfirmation": "Retirer toutes les lignes du panier ?",
   "Sale_CreateSaleOrder": "Créer la commande",
   "Sale_Delete": "Supprimer",
   "Sale_NoCartAvailable": "Aucun panier disponible",

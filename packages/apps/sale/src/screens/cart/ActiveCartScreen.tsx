@@ -28,6 +28,7 @@ import {
 import {
   headerActionsProvider,
   SearchListView,
+  askDeleteConfirmation,
   useDispatch,
   useIsFocused,
   useNavigation,
@@ -98,14 +99,19 @@ const ActiveCartScreen = ({}) => {
   );
 
   const handleEmptyCart = useCallback(() => {
-    dispatch(
-      (emptyCart as any)({
-        id: activeCart?.id,
-        version: activeCart?.version,
-        userId: user.id,
-      }),
-    );
-  }, [activeCart?.id, activeCart?.version, dispatch, user.id]);
+    askDeleteConfirmation({
+      translator: I18n.t,
+      message: I18n.t('Sale_EmptyCartConfirmation'),
+      onConfirm: () =>
+        dispatch(
+          (emptyCart as any)({
+            id: activeCart?.id,
+            version: activeCart?.version,
+            userId: user.id,
+          }),
+        ),
+    });
+  }, [I18n, activeCart?.id, activeCart?.version, dispatch, user.id]);
 
   useEffect(() => {
     if (activeCart) {

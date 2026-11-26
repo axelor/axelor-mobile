@@ -18,6 +18,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useNavigation,
   usePermitted,
@@ -112,14 +113,17 @@ const CartLineActionCard = ({
           {
             iconName: 'trash3-fill',
             helper: I18n.t('Sale_RemoveFromCart'),
-            onPress: () => {
-              dispatch(
-                (deleteCartLine as any)({
-                  cartLineId: cartLine?.id,
-                  cartId: cartId,
-                }),
-              );
-            },
+            onPress: () =>
+              askDeleteConfirmation({
+                translator: I18n.t,
+                onConfirm: () =>
+                  dispatch(
+                    (deleteCartLine as any)({
+                      cartLineId: cartLine?.id,
+                      cartId: cartId,
+                    }),
+                  ),
+              }),
             iconColor: Colors.errorColor.background,
             large: cartLine.product?.productVariantConfig == null,
             hidden: !canDelete || hideDelete,

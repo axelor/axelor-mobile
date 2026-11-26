@@ -138,6 +138,7 @@
   "Sale_RemoveOne": "Remove one",
   "Sale_AddProduct": "Add product",
   "Sale_EmptyCart": "Empty cart",
+  "Sale_EmptyCartConfirmation": "Remove all the lines from the cart?",
   "Sale_CreateSaleOrder": "Create the sale order",
   "Sale_Delete": "Delete",
   "Sale_NoCartAvailable": "No cart available",
