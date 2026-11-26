@@ -60,7 +60,6 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
     state => state.manufacturingOrder,
   );
 
-  const [unit, setUnit] = useState(null);
   const [wasteQty, setWasteQty] = useState(0);
 
   const product = useMemo(
@@ -91,7 +90,6 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   useEffect(() => {
     setWasteQty(prodProduct?.qty);
-    setUnit(prodProduct?.unit);
   }, [prodProduct]);
 
   const handleCreateWasteProduct = useCallback(() => {
@@ -172,18 +170,18 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           isBigButton={true}
           translator={I18n.t}
         />
+        {/* The waste product requests have no unit: the server always uses
+            the product unit, so it cannot be changed here. */}
         <Picker
           title={I18n.t('Stock_Unit')}
-          onValueChange={setUnit}
-          defaultValue={unit?.id}
+          onValueChange={() => {}}
+          defaultValue={
+            (wasteProductId != null ? prodProduct?.unit : product?.unit)?.id
+          }
           listItems={unitList}
           labelField="name"
           valueField="id"
-          readonly={
-            readonly ||
-            manufOrder.statusSelect >= ManufOrder?.statusSelect.Finished
-          }
-          required={true}
+          readonly={true}
           isScrollViewContainer={true}
         />
       </ScrollView>
