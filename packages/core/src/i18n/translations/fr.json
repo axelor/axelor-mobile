@@ -36,6 +36,8 @@
   "Base_Declare": "Déclarer",
   "Base_Cancel": "Annuler",
   "Base_Remove": "Retirer",
+  "Base_Delete": "Supprimer",
+  "Base_DeleteConfirmation": "Cette action est irréversible. Voulez-vous vraiment le supprimer ?",
   "Base_Content": "Contenu",
   "Base_ViewAll": "Tout voir",
   "Base_ChooseFile": "Choisir un fichier",
