@@ -1,0 +1,5 @@
+{
+  "title": "Purchase request: open the line list of a request without lines to add the first one",
+  "type": "fix",
+  "packages": ["purchase"]
+}
