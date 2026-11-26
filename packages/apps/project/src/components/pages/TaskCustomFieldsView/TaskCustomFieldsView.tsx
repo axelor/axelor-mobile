@@ -29,7 +29,7 @@ const TaskCustomFieldsView = ({}) => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const configArray = useMemo(
-    () => projectTask.project?.customFieldManagementSelect.split(','),
+    () => projectTask.project?.customFieldManagementSelect?.split(',') ?? [],
     [projectTask.project?.customFieldManagementSelect],
   );
 
