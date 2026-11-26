@@ -1,0 +1,5 @@
+{
+  "title": "Cart: ask for confirmation before emptying the cart or removing a line",
+  "type": "fix",
+  "packages": ["sale"]
+}
