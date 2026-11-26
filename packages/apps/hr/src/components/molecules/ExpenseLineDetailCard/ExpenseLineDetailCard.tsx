@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {ActionCard, Checkbox, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useFileApi,
   usePermitted,
@@ -95,14 +96,18 @@ const ExpenseLineDetailCard = ({
   );
 
   const handleDelete = useCallback(() => {
-    dispatch(
-      (deleteExpenseLine as any)({
-        expenseLineId: item.id,
-        userId: userId,
-        expenseId: expense?.id,
-      }),
-    );
-  }, [dispatch, expense?.id, item.id, userId]);
+    askDeleteConfirmation({
+      translator: I18n.t,
+      onConfirm: () =>
+        dispatch(
+          (deleteExpenseLine as any)({
+            expenseLineId: item.id,
+            userId: userId,
+            expenseId: expense?.id,
+          }),
+        ),
+    });
+  }, [I18n, dispatch, expense?.id, item.id, userId]);
 
   const handleShowFile = async () => {
     await fileApi.openInExternalApp({
