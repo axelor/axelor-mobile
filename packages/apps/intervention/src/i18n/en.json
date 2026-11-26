@@ -103,5 +103,7 @@
   "Intervention_SliceAction_UpdateInterventionStatus": "update intervention status",
   "Intervention_SliceAction_UnlinkEquipment": "unlink equipment from intervention",
   "Intervention_SliceAction_LinkEquipment": "link equipment to intervention",
-  "Intervention_SliceAction_SearchEquipmentToLink": "search equipment available to link on intervention"
+  "Intervention_SliceAction_SearchEquipmentToLink": "search equipment available to link on intervention",
+  "Intervention_UnlinkEquipmentConfirmation": "Unlink this equipment from the intervention?",
+  "Intervention_ArchiveEquipmentConfirmation": "Archive this equipment?"
 }
