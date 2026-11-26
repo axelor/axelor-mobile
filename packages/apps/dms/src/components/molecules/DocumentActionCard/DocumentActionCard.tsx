@@ -18,6 +18,7 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {
+  askDeleteConfirmation,
   downloadFileOnPhone,
   useDispatch,
   useNavigation,
@@ -116,12 +117,20 @@ const DocumentActionCard = ({
           iconColor: Colors.errorColor.background,
           helper: I18n.t('Dms_Delete'),
           onPress: () =>
-            dispatch(
-              ((isFavorite ? deleteFavoriteDocument : deleteDocument) as any)({
-                documentId: document.id,
-                userId: user?.id,
-              }),
-            ).then(() => handleRefresh?.()),
+            askDeleteConfirmation({
+              translator: I18n.t,
+              onConfirm: () =>
+                dispatch(
+                  (
+                    (isFavorite
+                      ? deleteFavoriteDocument
+                      : deleteDocument) as any
+                  )({
+                    documentId: document.id,
+                    userId: user?.id,
+                  }),
+                ).then(() => handleRefresh?.()),
+            }),
           hidden:
             disabledDelete ||
             !canDelete ||
