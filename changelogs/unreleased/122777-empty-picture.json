@@ -1,0 +1,5 @@
+{
+  "title": "Image: show the placeholder when the picture field is empty",
+  "type": "fix",
+  "packages": ["ui"]
+}

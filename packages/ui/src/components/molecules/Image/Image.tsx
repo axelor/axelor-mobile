@@ -22,10 +22,16 @@ import {
   ImageResizeMode,
   ImageSourcePropType,
   ImageStyle,
+  ImageURISource,
   StyleProp,
 } from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Icon} from '../../atoms';
+
+/* The server answers an empty picture field with a 1x1 blank image and
+   status 200, so the image never fails: remember those addresses and show
+   the placeholder for them. */
+const emptyImageUris = new Set<string>();
 
 interface ImageProps {
   imageSize?: StyleProp<ImageStyle>;
@@ -57,6 +63,28 @@ const Image = ({
     });
   };
 
+  const uri = (source as ImageURISource | undefined)?.uri;
+
+  useEffect(() => {
+    if (uri == null || emptyImageUris.has(uri)) {
+      return;
+    }
+
+    let active = true;
+    ReactNativeImage.getSize(uri)
+      .then(({width, height}) => {
+        if (width === 1 && height === 1) {
+          emptyImageUris.add(uri);
+          active && setValid(false);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
+  }, [uri]);
+
   useEffect(() => {
     if (source != null) {
       const id = setTimeout(() => setValid(true));
@@ -68,7 +96,11 @@ const Image = ({
     }
   }, [source]);
 
-  if (source == null || isValid === false) {
+  if (
+    source == null ||
+    isValid === false ||
+    (uri != null && emptyImageUris.has(uri))
+  ) {
     return (
       <Icon
         name="camera-fill"
