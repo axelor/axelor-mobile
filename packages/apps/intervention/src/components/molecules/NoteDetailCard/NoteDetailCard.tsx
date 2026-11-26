@@ -18,6 +18,7 @@
 
 import React from 'react';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useFileApi,
   useNavigation,
@@ -87,12 +88,16 @@ const NoteDetailCard = ({
           iconColor: Colors.errorColor.background,
           helper: I18n.t('Intervention_Delete'),
           onPress: () =>
-            dispatch(
-              (deleteInterventionNote as any)({
-                interventionNoteId: note.id,
-                deliveredPartnerId: note.partner.id,
-              }),
-            ),
+            askDeleteConfirmation({
+              translator: I18n.t,
+              onConfirm: () =>
+                dispatch(
+                  (deleteInterventionNote as any)({
+                    interventionNoteId: note.id,
+                    deliveredPartnerId: note.partner.id,
+                  }),
+                ),
+            }),
           hidden: !canDelete,
         },
       ]}>

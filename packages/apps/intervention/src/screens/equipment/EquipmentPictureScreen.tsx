@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
+  askDeleteConfirmation,
   useSelector,
   useDispatch,
   useTranslator,
@@ -83,15 +84,19 @@ const EquipmentPictureScreen = ({}) => {
 
   const handleDeletePicture = useCallback(
     (pictureId: number) => {
-      dispatch(
-        (deleteEquipmentPicture as any)({
-          equipmentId: equipment.id,
-          version: equipment.version,
-          pictureId,
-        }),
-      );
+      askDeleteConfirmation({
+        translator: I18n.t,
+        onConfirm: () =>
+          dispatch(
+            (deleteEquipmentPicture as any)({
+              equipmentId: equipment.id,
+              version: equipment.version,
+              pictureId,
+            }),
+          ),
+      });
     },
-    [dispatch, equipment],
+    [I18n, dispatch, equipment],
   );
 
   const handleUpload = useCallback(
