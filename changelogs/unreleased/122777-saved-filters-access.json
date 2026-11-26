@@ -1,0 +1,5 @@
+{
+  "title": "Saved filters: do not crash the list when the user cannot read saved filters",
+  "type": "fix",
+  "packages": ["core"]
+}
