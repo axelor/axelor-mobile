@@ -1,5 +1,0 @@
-{
-  "title": "Project tasks: hide the log time action when the project does not track time spent",
-  "type": "fix",
-  "packages": ["project"]
-}

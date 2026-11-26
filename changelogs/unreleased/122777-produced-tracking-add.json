@@ -1,5 +1,0 @@
-{
-  "title": "Finished products: remove the \"Add tracking number\" button that did nothing when selecting the tracking number",
-  "type": "fix",
-  "packages": ["manufacturing"]
-}

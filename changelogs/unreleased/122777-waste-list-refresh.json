@@ -1,5 +1,0 @@
-{
-  "title": "Waste declaration: refresh the waste product list after adding one",
-  "type": "fix",
-  "packages": ["manufacturing"]
-}

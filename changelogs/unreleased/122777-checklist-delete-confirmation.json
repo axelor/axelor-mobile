@@ -1,5 +1,0 @@
-{
-  "title": "Checklists: ask for confirmation before deleting an item",
-  "type": "fix",
-  "packages": ["project"]
-}
