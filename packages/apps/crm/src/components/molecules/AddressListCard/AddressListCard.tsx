@@ -22,6 +22,7 @@ import {
   clipboardProvider,
   handlerApiCall,
   linkingProvider,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -62,6 +63,13 @@ const AddressListCard = ({
 }: AddressListCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  /* The update writes the partner address and the partner main address. */
+  const {readonly: addressReadonly} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.PartnerAddress',
+  });
+  const {readonly: partnerReadonly} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -141,14 +149,16 @@ const AddressListCard = ({
               backgroundColor={Colors.screenBackgroundColor}
               onPress={() => clipboardProvider.copyToClipboard(address)}
             />
-            <IconTile
-              icon="pencil-fill"
-              size={30}
-              iconSize={12}
-              color={Colors.primaryColor}
-              backgroundColor={Colors.screenBackgroundColor}
-              onPress={() => setIsVisible(true)}
-            />
+            {!addressReadonly && !partnerReadonly && (
+              <IconTile
+                icon="pencil-fill"
+                size={30}
+                iconSize={12}
+                color={Colors.primaryColor}
+                backgroundColor={Colors.screenBackgroundColor}
+                onPress={() => setIsVisible(true)}
+              />
+            )}
           </View>
         </TouchableOpacity>
         {borderBottom && (
