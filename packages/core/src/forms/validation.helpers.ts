@@ -33,7 +33,10 @@ export const updateRequiredFieldsOfConfig = (
   fields.forEach(_item => {
     result[_item.key] = {
       ..._item,
-      required: _item.required || _item.requiredIf?.({objectState, storeState}),
+      /* A hidden field cannot be filled, so it never blocks the actions. */
+      required:
+        _item.hideIf?.({objectState, storeState}) !== true &&
+        (_item.required || _item.requiredIf?.({objectState, storeState})),
     };
   });
 

@@ -127,6 +127,8 @@ const FloatingTools = ({
             ),
             color: Colors.successColor,
             indicator: isDirty,
+            /* Same rule as the form buttons: no save while a required field is empty. */
+            disabled: (isCreation ? createAction : updateAction)?.isDisabled,
           },
           {
             key: 'formAction_cancel',
