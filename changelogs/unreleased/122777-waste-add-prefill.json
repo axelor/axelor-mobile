@@ -1,5 +1,0 @@
-{
-  "title": "Waste products: do not pre-fill the quantity of the last viewed waste product when adding a new one",
-  "type": "fix",
-  "packages": ["manufacturing"]
-}

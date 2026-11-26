@@ -1,5 +1,0 @@
-{
-  "title": "Waste product: show the unit read-only, as the server always uses the product unit",
-  "type": "fix",
-  "packages": ["manufacturing"]
-}

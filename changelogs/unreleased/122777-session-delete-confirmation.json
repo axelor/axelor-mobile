@@ -1,5 +1,0 @@
-{
-  "title": "Sessions: ask for confirmation before removing a saved session",
-  "type": "fix",
-  "packages": ["core"]
-}
