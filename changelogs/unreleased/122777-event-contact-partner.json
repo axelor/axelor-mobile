@@ -1,0 +1,5 @@
+{
+  "title": "Event and opportunity forms: the contact search only lists the contacts of the partner chosen in the form",
+  "type": "fix",
+  "packages": ["crm"]
+}
