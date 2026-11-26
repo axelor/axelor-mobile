@@ -1,5 +1,0 @@
-{
-  "title": "HR: ask for confirmation before deleting an expense, an expense line, an empty timesheet or a timer",
-  "type": "fix",
-  "packages": ["hr"]
-}

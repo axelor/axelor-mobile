@@ -1,5 +1,0 @@
-{
-  "title": "Contact details: hide the edit and add actions of the address, phones, email and website when the user cannot edit the lead or partner",
-  "type": "fix",
-  "packages": ["crm"]
-}

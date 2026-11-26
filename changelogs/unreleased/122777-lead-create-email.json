@@ -1,5 +1,0 @@
-{
-  "title": "Lead form: save the email typed when creating a lead",
-  "type": "fix",
-  "packages": ["crm"]
-}

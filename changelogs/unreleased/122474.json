@@ -1,5 +1,0 @@
-{
-  "title": "Quality improvement: open the details (header, defects and decisions) from the list, show and search the manufacturing order sequence",
-  "type": "feat",
-  "packages": ["quality"]
-}
