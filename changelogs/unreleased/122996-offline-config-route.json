@@ -1,0 +1,5 @@
+{
+  "title": "Add the route to the mobile offline configuration, so the offline package can load it at login",
+  "type": "fix",
+  "packages": ["core"]
+}
