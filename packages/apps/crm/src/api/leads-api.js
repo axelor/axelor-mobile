@@ -147,7 +147,7 @@ export async function updateLead({lead, emailId, emailVersion}) {
         updateEmail({
           id: emailId,
           version: emailVersion,
-          email: lead.emailAddress?.address,
+          email: lead.email,
         }),
     );
 }
