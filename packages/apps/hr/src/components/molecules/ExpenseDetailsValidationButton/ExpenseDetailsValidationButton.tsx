@@ -19,6 +19,7 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
+  askDeleteConfirmation,
   useDispatch,
   useNavigation,
   usePermitted,
@@ -82,9 +83,16 @@ const ExpenseDetailsValidationButton = ({
   }, [dispatch, mode, expense]);
 
   const deleteExpenseAPI = useCallback(() => {
-    dispatch((deleteExpense as any)({expenseId: expense.id, userId: user.id}));
-    navigation.pop();
-  }, [dispatch, expense.id, navigation, user.id]);
+    askDeleteConfirmation({
+      translator: I18n.t,
+      onConfirm: () => {
+        dispatch(
+          (deleteExpense as any)({expenseId: expense.id, userId: user.id}),
+        );
+        navigation.pop();
+      },
+    });
+  }, [I18n, dispatch, expense.id, navigation, user.id]);
 
   const cancelExpenseAPI = useCallback(() => {
     dispatch(

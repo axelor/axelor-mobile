@@ -18,6 +18,7 @@
 
 import React, {useCallback, useState} from 'react';
 import {
+  askDeleteConfirmation,
   ISODateTimeToDate,
   useActiveFilter,
   useDispatch,
@@ -85,7 +86,11 @@ const TimerListScreen = ({navigation}) => {
             }
             showTrash={canDelete}
             onDelete={() =>
-              dispatch(deleteTimer({timerId: item.id, userId: userId}))
+              askDeleteConfirmation({
+                translator: I18n.t,
+                onConfirm: () =>
+                  dispatch(deleteTimer({timerId: item.id, userId: userId})),
+              })
             }
           />
         )}
