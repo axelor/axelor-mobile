@@ -40,6 +40,7 @@ import {Module} from './modules';
 import {MaintenanceTrigger} from '../apiProviders';
 import {resetConfigs} from '../features/appConfigSlice';
 import WebViewPreloader from '../webViews/WebViewPreloader';
+import {ConfirmationHost} from '../confirmation';
 
 interface instanceConfig {
   testInstanceConfig: proxy;
@@ -110,6 +111,7 @@ const ContextedApplication = ({
           <HeaderBandList />
           <LoadingIndicator />
           <BlockInteractionMessage />
+          <ConfirmationHost />
           <GlobalToolBox />
           <WebViewPreloader />
           <RootNavigator

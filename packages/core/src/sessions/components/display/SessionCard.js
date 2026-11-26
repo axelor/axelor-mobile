@@ -27,6 +27,8 @@ import {
 import {GestureHandlerRootView, RectButton} from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {useThemeColor, Card, Text, Icon} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
+import {askDeleteConfirmation} from '../../../utils/confirmation';
 import LogoImage from './LogoImage';
 import {sessionStorage} from '../..';
 
@@ -40,6 +42,7 @@ const SessionCard = ({
   handleRemove = null,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const ref = useRef(null);
 
   const translateXAnim = useRef(new Animated.Value(0)).current;
@@ -131,7 +134,11 @@ const SessionCard = ({
           trans,
           'trash3-fill',
           Colors.errorColor.background,
-          animateRemoval,
+          () =>
+            askDeleteConfirmation({
+              translator: I18n.t,
+              onConfirm: animateRemoval,
+            }),
         )}
       </View>
     );
