@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {memo, useCallback, useState, useMemo} from 'react';
+import React, {memo, useCallback, useRef, useState, useMemo} from 'react';
 import {Dimensions, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {
   Checkbox,
@@ -68,15 +68,20 @@ const Field = ({
   const {hidden, readonly} = permission ?? {};
 
   const [error, setError] = useState<any>();
+  const lastValidationId = useRef(0);
 
   const handleValidate = useCallback(
     (_value: any) => {
+      const validationId = ++lastValidationId.current;
+
       validateFieldSchema(_field, _value)
         .then(() => {
-          setError(null);
+          if (validationId === lastValidationId.current) setError(null);
         })
         .catch(_error => {
-          setError(`${_field.key} ${I18n.t(_error.message)}`);
+          if (validationId === lastValidationId.current) {
+            setError(`${_field.key} ${I18n.t(_error.message)}`);
+          }
         });
     },
     [I18n, _field],

@@ -1,0 +1,5 @@
+{
+  "title": "FormView: show the validation error of the last typed value only",
+  "type": "fix",
+  "packages": ["core"]
+}
