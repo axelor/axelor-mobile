@@ -3,6 +3,14 @@ title: 9.0.0
 tags: Changelog
 ---
 
+## [9.0.29] (2026-11-26)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Add the route to the mobile offline configuration, so the offline package can load it at login
+
 ## [9.0.28] (2026-11-26)
 
 ### @axelor/aos-mobile-core
@@ -871,6 +879,7 @@ This release brings a major update to the project’s dependencies, including Re
 
 - Login: allow session cookie with - character to match AOP changes
 
+[9.0.29]: https://github.com/axelor/axelor-mobile/compare/9.0.28...9.0.29
 [9.0.28]: https://github.com/axelor/axelor-mobile/compare/9.0.27...9.0.28
 [9.0.27]: https://github.com/axelor/axelor-mobile/compare/9.0.26...9.0.27
 [9.0.26]: https://github.com/axelor/axelor-mobile/compare/9.0.25...9.0.26
