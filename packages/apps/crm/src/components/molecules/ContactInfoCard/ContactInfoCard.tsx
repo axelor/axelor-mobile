@@ -47,6 +47,7 @@ interface ContactInfoCardProps {
   }) => Promise<any>;
   refreshContactInfos: () => void;
   canCreate?: boolean;
+  readonly?: boolean;
 }
 
 const ContactInfoCard = ({
@@ -63,6 +64,7 @@ const ContactInfoCard = ({
   onCreate,
   refreshContactInfos,
   canCreate = true,
+  readonly = false,
 }: ContactInfoCardProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -76,7 +78,7 @@ const ContactInfoCard = ({
     [contactInfo?.displayText],
   );
 
-  if (isCreation && !canCreate) {
+  if (isCreation && (!canCreate || readonly)) {
     return null;
   }
 
@@ -119,12 +121,14 @@ const ContactInfoCard = ({
                   clipboardProvider.copyToClipboard(contactInfo.displayText)
                 }
               />
-              <Icon
-                style={styles.icon}
-                name="pencil-fill"
-                touchable={true}
-                onPress={() => setIsVisible(true)}
-              />
+              {!readonly && (
+                <Icon
+                  style={styles.icon}
+                  name="pencil-fill"
+                  touchable={true}
+                  onPress={() => setIsVisible(true)}
+                />
+              )}
             </View>
           </View>
         </TouchableOpacity>
