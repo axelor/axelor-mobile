@@ -1,0 +1,5 @@
+{
+  "title": "Logistical forms: ask for confirmation before deleting a packaging or a packaging line",
+  "type": "fix",
+  "packages": ["stock"]
+}
