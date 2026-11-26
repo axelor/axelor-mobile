@@ -48,6 +48,7 @@ interface ContactInfoCardProps {
   }) => Promise<any>;
   refreshContactInfos: () => void;
   canCreate?: boolean;
+  readonly?: boolean;
 }
 
 const ContactInfoCard = ({
@@ -64,6 +65,7 @@ const ContactInfoCard = ({
   onCreate,
   refreshContactInfos,
   canCreate = true,
+  readonly = false,
 }: ContactInfoCardProps) => {
   const Colors = useThemeColor();
 
@@ -79,7 +81,7 @@ const ContactInfoCard = ({
     [contactInfo?.displayText],
   );
 
-  if (isCreation && !canCreate) return null;
+  if (isCreation && (!canCreate || readonly)) return null;
 
   return (
     <>
@@ -113,14 +115,16 @@ const ContactInfoCard = ({
                 color={Colors.secondaryColor}
                 backgroundColor={Colors.screenBackgroundColor}
               />
-              <IconTile
-                icon="pencil-fill"
-                size={30}
-                iconSize={12}
-                onPress={() => setIsVisible(true)}
-                color={Colors.primaryColor}
-                backgroundColor={Colors.screenBackgroundColor}
-              />
+              {!readonly && (
+                <IconTile
+                  icon="pencil-fill"
+                  size={30}
+                  iconSize={12}
+                  onPress={() => setIsVisible(true)}
+                  color={Colors.primaryColor}
+                  backgroundColor={Colors.screenBackgroundColor}
+                />
+              )}
             </View>
           </View>
         )}
