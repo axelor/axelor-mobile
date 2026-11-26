@@ -1,0 +1,5 @@
+{
+  "title": "Forms: disable the floating save button while a required field is empty, as the form buttons already do",
+  "type": "fix",
+  "packages": ["core"]
+}
