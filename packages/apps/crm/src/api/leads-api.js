@@ -23,7 +23,7 @@ import {
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
-import {updateEmail} from './contact-info-api';
+import {linkEmail, updateEmail} from './contact-info-api';
 
 const createLeadCriteria = (searchValue, userId, assigned, statusList) => {
   const criteria = [
@@ -141,15 +141,24 @@ export async function updateLead({lead, emailId, emailVersion}) {
         fields: matchers,
       },
     })
-    .then(
-      () =>
-        emailId &&
-        updateEmail({
+    .then(res => {
+      if (emailId != null) {
+        return updateEmail({
           id: emailId,
           version: emailVersion,
           email: lead.email,
-        }),
-    );
+        });
+      }
+
+      if (lead.email) {
+        return linkEmail({
+          id: lead.id,
+          version: res?.data?.data?.[0]?.version,
+          email: lead.email,
+          isLead: true,
+        });
+      }
+    });
 }
 
 export async function createLead({lead}) {
