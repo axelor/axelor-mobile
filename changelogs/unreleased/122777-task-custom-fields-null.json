@@ -1,0 +1,5 @@
+{
+  "title": "Task custom fields: do not crash when the project has no custom field management",
+  "type": "fix",
+  "packages": ["project"]
+}
