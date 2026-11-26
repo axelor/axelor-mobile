@@ -3,6 +3,93 @@ title: 9.1.0
 tags: Changelog
 ---
 
+## [9.1.15] (2026-11-26)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- FormView: show the validation error of the last typed value only
+- Forms: disable the floating save button while a required field is empty, as the form buttons already do
+- Intervention: ask for confirmation before deleting a note or an equipment picture, and before unlinking or archiving an equipment
+- Saved filters: do not crash the list when the user cannot read saved filters
+- Sessions: ask for confirmation before removing a saved session
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Image: show the placeholder when the picture field is empty
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- Documents: ask for confirmation before deleting a document
+
+### @axelor/aos-mobile-purchase
+
+#### Fixes
+
+- Purchase request: open the line list of a request without lines to add the first one
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Cart: ask for confirmation before emptying the cart or removing a line
+
+### @axelor/aos-mobile-project
+
+#### Fixes
+
+- Checklists: ask for confirmation before deleting an item
+- Project tasks: hide the log time action when the project does not track time spent
+- Task custom fields: do not crash when the project has no custom field management
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Intervention: ask for confirmation before deleting a note or an equipment picture, and before unlinking or archiving an equipment
+
+### @axelor/aos-mobile-quality
+
+#### Features
+
+- Quality improvement: open the details (header, defects and decisions) from the list, show and search the manufacturing order sequence
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- HR: ask for confirmation before deleting an expense, an expense line, an empty timesheet or a timer
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Contact details: hide the edit and add actions of the address, phones, email and website when the user cannot edit the lead or partner
+- Event and opportunity forms: the contact search only lists the contacts of the partner chosen in the form
+- Lead form: save the email typed when creating a lead
+- Lead form: show the lead email when editing a lead and save its changes
+- Partner addresses: hide the edit action of an address when the user cannot edit the partner and its addresses
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Finished products: remove the "Add tracking number" button that did nothing when selecting the tracking number
+- Waste products: do not pre-fill the quantity of the last viewed waste product when adding a new one
+- Waste declaration: refresh the waste product list after adding one
+- Waste product: show the unit read-only, as the server always uses the product unit
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Logistical forms: ask for confirmation before deleting a packaging or a packaging line
+
 ## [9.1.14] (2026-11-20)
 
 ### @axelor/aos-mobile-core
@@ -664,6 +751,7 @@ ManufacturingOrderHalfLabelCardList, ManufacturingOrderSaleOrderSetView and Manu
 - Alternatives barcodes: remove double search bars in favor of simpler search param
 - Customer delivery line: improve refresh management on validation
 
+[9.1.15]: https://github.com/axelor/axelor-mobile/compare/9.1.14...9.1.15
 [9.1.14]: https://github.com/axelor/axelor-mobile/compare/9.1.13...9.1.14
 [9.1.13]: https://github.com/axelor/axelor-mobile/compare/9.1.12...9.1.13
 [9.1.12]: https://github.com/axelor/axelor-mobile/compare/9.1.11...9.1.12
