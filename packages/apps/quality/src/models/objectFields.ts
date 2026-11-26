@@ -84,12 +84,17 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_qualityImprovement: schemaContructor.object({
     sequence: schemaContructor.string(),
-    qiDetection: schemaContructor.subObject().concat(
+    qiDetection: schemaContructor.subObject('name').concat(
       schemaContructor.object({
+        code: schemaContructor.string(),
         origin: schemaContructor.number(),
       }),
     ),
-    qiStatus: schemaContructor.subObject('sequence'),
+    qiStatus: schemaContructor.subObject('sequence').concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+      }),
+    ),
     gravityTypeSelect: schemaContructor.number(),
     analysisMethod: schemaContructor.subObject(),
     type: schemaContructor.number(),
@@ -109,16 +114,23 @@ export const quality_modelAPI: ObjectFields = {
             product: schemaContructor.subObject(),
           }),
         ),
-        manufOrder: schemaContructor.subObject().concat(
+        manufOrder: schemaContructor.subObject('manufOrderSeq').concat(
           schemaContructor.object({
             billOfMaterial: schemaContructor.subObject(),
             product: schemaContructor.subObject(),
           }),
         ),
-        operationOrder: schemaContructor.subObject(),
-        product: schemaContructor.subObject(),
+        operationOrder: schemaContructor.subObject('operationName').concat(
+          schemaContructor.object({
+            priority: schemaContructor.number(),
+          }),
+        ),
+        product: schemaContructor.subObject('fullName'),
         quantity: schemaContructor.number(),
         nonConformingQuantity: schemaContructor.number(),
+        detectedByInternal: schemaContructor.subObject('fullName'),
+        writtenOn: schemaContructor.string(),
+        controlEntry: schemaContructor.subObject('name'),
       }),
     ),
     qiResolution: schemaContructor.subObject(),
@@ -130,12 +142,23 @@ export const quality_modelAPI: ObjectFields = {
     qiResolutionDefaultsList: schemaContructor
       .array()
       .of(schemaContructor.subObject()),
+    decisionsWrittenBy: schemaContructor.subObject('fullName'),
+    decisionsWrittenOn: schemaContructor.string(),
+    qiResolutionDecisionsList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
   }),
   quality_qiResolutionDefault: schemaContructor.object({
     name: schemaContructor.string(),
     description: schemaContructor.string(),
     quantity: schemaContructor.number(),
-    qiDefault: schemaContructor.subObject(),
+    qiDefault: schemaContructor.subObject('name'),
+  }),
+  quality_qiResolutionDecision: schemaContructor.object({
+    qiDecision: schemaContructor.subObject('name'),
+    quantity: schemaContructor.number(),
+    description: schemaContructor.string(),
+    responsiblePartner: schemaContructor.subObject('fullName'),
   }),
   quality_qiDetection: schemaContructor.object({
     name: schemaContructor.string(),

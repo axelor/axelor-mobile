@@ -29,7 +29,7 @@ import {
 } from '../../components';
 import {searchQualityImprovement} from '../../features/qualityImprovementSlice';
 
-const QualityImprovementListScreen = ({}) => {
+const QualityImprovementListScreen = ({navigation}) => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
@@ -80,7 +80,14 @@ const QualityImprovementListScreen = ({}) => {
         sliceFunctionData={sliceFunctionData}
         searchPlaceholder={I18n.t('Base_Search')}
         renderListItem={({item}) => (
-          <QualityImprovementActionCard qualityImprovement={item} />
+          <QualityImprovementActionCard
+            qualityImprovement={item}
+            onPress={() =>
+              navigation.navigate('QualityImprovementDetailsScreen', {
+                qualityImprovementId: item.id,
+              })
+            }
+          />
         )}
       />
     </Screen>

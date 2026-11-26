@@ -31,3 +31,4 @@ export type {
   ControlTypeFieldValueUpdate,
 } from './controlTypeField';
 export {default as QualityImprovement} from './qualityImprovement';
+export type {QualityImprovementLine} from './qualityImprovement';

@@ -18,6 +18,7 @@
 
 import QualityImprovementListScreen from './QualityImprovementListScreen';
 import QualityImprovementFormScreen from './QualityImprovementFormScreen';
+import QualityImprovementDetailsScreen from './QualityImprovementDetailsScreen';
 
 export default {
   QualityImprovementListScreen: {
@@ -31,7 +32,12 @@ export default {
     component: QualityImprovementFormScreen,
     isUsableOnShortcut: true,
   },
+  QualityImprovementDetailsScreen: {
+    title: 'Quality_QualityImprovements',
+    component: QualityImprovementDetailsScreen,
+  },
 };
 
 export {QualityImprovementListScreen};
 export {QualityImprovementFormScreen};
+export {QualityImprovementDetailsScreen};

@@ -26,3 +26,4 @@ export {default as FileList} from './FileList/FileList';
 export {default as FillingMethodAlert} from './FillingMethodAlert/FillingMethodAlert';
 export {default as QIFormButton} from './QIFormButton/QIFormButton';
 export {default as QualityImprovementActionCard} from './QualityImprovementActionCard/QualityImprovementActionCard';
+export {default as QualityImprovementLineTypeSwitch} from './QualityImprovementLineTypeSwitch/QualityImprovementLineTypeSwitch';
